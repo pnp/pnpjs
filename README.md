@@ -1,6 +1,6 @@
 ![SharePoint Patterns and Practices](https://devofficecdn.azureedge.net/media/Default/PnP/sppnp.png)
 
-#This is 100% a work in progress and is not ready for public consumption :)#
+# This is 100% a work in progress and is not ready for public consumption :) #
 
 
 ### Authors
