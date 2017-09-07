@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+      "baseUrl": ".",
+      "rootDir": ".",
+      "outDir": "../../build/packages/common",
+      "paths": {
+          "@pnp/logging": ["../../build/packages/logging"]
+      },
+      "strictNullChecks": false
+    },
+    "files": [
+        "./index.ts"
+    ]
+}

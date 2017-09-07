@@ -1,0 +1,14 @@
+{
+  "ignore": [
+    "**/typedoctheme/**",
+    "**/server-root/**",
+    "**/docs/**",
+    "**/dist/**",
+    "**/debug/**"
+  ],
+  "dependencies": {
+    "mute": [
+      "tslint"
+    ]
+  }
+}

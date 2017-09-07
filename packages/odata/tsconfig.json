@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/odata",
+        "paths": {
+            "@pnp/logging": [
+                "../../build/packages/logging"
+            ],
+            "@pnp/common": [
+                "../../build/packages/common"
+            ]
+        }
+    },
+    "include": [
+        "./index.ts"
+    ]
+}

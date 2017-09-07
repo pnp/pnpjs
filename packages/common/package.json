@@ -1,0 +1,23 @@
+{
+  "name": "@pnp/common",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "pnp - provides shared functionality across all pnp libraries",
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {},
+  "peerDependencies": {
+    "@pnp/logging": "0.0.0-PLACEHOLDER"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnp/issues"
+  },
+  "homepage": "https://github.com/pnp/pnp",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pnp/pnp"
+  }
+}

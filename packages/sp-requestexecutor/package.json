@@ -1,0 +1,22 @@
+{
+  "name": "@pnp/sp-requestexecutor",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "pnp - provides the request executor client needed for use in add-in webs",
+  "main": "./lib/pnp.js",
+  "typings": "./lib/pnp",
+  "dependencies": {
+    "@types/sharepoint": "2013.1.9"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnp/issues"
+  },
+  "homepage": "https://github.com/pnp/pnp",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pnp/pnp"
+  }
+}
