@@ -1,7 +1,6 @@
 import { IConfigurationProvider } from "../configuration";
-import { TypedHash } from "../../collections/collections";
-import * as storage from "../../utils/storage";
-import { NoCacheAvailableException } from "../../utils/exceptions";
+import { TypedHash, PnPClientStore, PnPClientStorage } from "@pnp/common";
+import { NoCacheAvailableException } from "../exceptions";
 
 /**
  * A caching provider which can wrap other non-caching providers
@@ -9,7 +8,7 @@ import { NoCacheAvailableException } from "../../utils/exceptions";
  */
 export default class CachingConfigurationProvider implements IConfigurationProvider {
     private wrappedProvider: IConfigurationProvider;
-    private store: storage.PnPClientStore;
+    private store: PnPClientStore;
     private cacheKey: string;
 
     /**
@@ -19,7 +18,7 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
      * @param {string} cacheKey Key that will be used to store cached items to the cache
      * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
      */
-    constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: storage.PnPClientStore) {
+    constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: PnPClientStore) {
         this.wrappedProvider = wrappedProvider;
         this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
         this.cacheKey = `_configcache_${cacheKey}`;
@@ -61,8 +60,8 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
         return providerPromise;
     }
 
-    private selectPnPCache(): storage.PnPClientStore {
-        const pnpCache = new storage.PnPClientStorage();
+    private selectPnPCache(): PnPClientStore {
+        const pnpCache = new PnPClientStorage();
         if ((pnpCache.local) && (pnpCache.local.enabled)) {
             return pnpCache.local;
         }

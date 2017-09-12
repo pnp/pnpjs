@@ -54,6 +54,10 @@ export interface RelatedItemManger {
 
 export class RelatedItemManagerImpl extends SharePointQueryable implements RelatedItemManger {
 
+    constructor(baseUrl: string | SharePointQueryable, path = "_api/SP.RelatedItemManager") {
+        super(baseUrl, path);
+    }
+
     public static FromUrl(url: string): RelatedItemManagerImpl {
 
         if (url === null) {
@@ -67,10 +71,6 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         }
 
         return new RelatedItemManagerImpl(url);
-    }
-
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/SP.RelatedItemManager") {
-        super(baseUrl, path);
     }
 
     public getRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]> {

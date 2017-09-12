@@ -5,7 +5,7 @@ import {
     FetchOptions,
     ConfigOptions,
     mergeOptions,
- } from "@pnp/common";
+} from "@pnp/common";
 import { ODataParser } from "./core";
 import { ODataDefaultParser } from "./parsers";
 import { ICachingOptions } from "./caching";
@@ -55,23 +55,6 @@ export abstract class ODataQueryable {
     public concat(pathPart: string): this {
         this._url += pathPart;
         return this;
-    }
-
-    /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
-    protected append(pathPart: string) {
-        this._url = Util.combinePaths(this._url, pathPart);
-    }
-
-    /**
-     * Gets the parent url used when creating this instance
-     *
-     */
-    protected get parentUrl(): string {
-        return this._parentUrl;
     }
 
     /**
@@ -149,6 +132,23 @@ export abstract class ODataQueryable {
 
     protected deleteCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
         return this.toRequestContext("DELETE", options, parser, PipelineMethods.default).then(context => pipe(context));
+    }
+
+    /**
+     * Appends the given string and normalizes "/" chars
+     *
+     * @param pathPart The string to append
+     */
+    protected append(pathPart: string) {
+        this._url = Util.combinePaths(this._url, pathPart);
+    }
+
+    /**
+     * Gets the parent url used when creating this instance
+     *
+     */
+    protected get parentUrl(): string {
+        return this._parentUrl;
     }
 
     /**

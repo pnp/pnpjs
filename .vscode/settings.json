@@ -6,7 +6,7 @@
         "lib": true,
         "**/node_modules": true,
         "coverage": true,
-        "build": true,
+        "build": false,
         "debugging": true
     },
     "typescript.validate.enable": true,

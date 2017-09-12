@@ -99,6 +99,15 @@ export class WebInfos extends SharePointQueryableCollection {
 export class Web extends SharePointQueryableShareableWeb {
 
     /**
+     * Creates a new instance of the Web class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
+     */
+    constructor(baseUrl: string | SharePointQueryable, path = "_api/web") {
+        super(baseUrl, path);
+    }
+
+    /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
      * segment. If this is not found the method creates a new web with the entire string as
      * supplied.
@@ -107,15 +116,6 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public static fromUrl(url: string, path?: string) {
         return new Web(extractWebUrl(url), path);
-    }
-
-    /**
-     * Creates a new instance of the Web class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/web") {
-        super(baseUrl, path);
     }
 
     /**

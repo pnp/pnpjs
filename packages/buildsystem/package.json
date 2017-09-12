@@ -1,14 +1,14 @@
 {
-  "name": "@pnp/config-store",
-  "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - provides a way to manage configuration within your application",
+  "name": "@pnp/buildsystem",
+  "private": true,
+  "version": "0.0.1",
+  "description": "pnp - the build system used within the @pnp repo",
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {},
-  "peerDependencies": {
-    "@pnp/common": "0.0.0-PLACEHOLDER",
-    "@pnp/sp": "0.0.0-PLACEHOLDER",
-    "@pnp/logging": "0.0.0-PLACEHOLDER"
+  "peerDependencies": {},
+  "engines": {
+    "node": "^6.9.1"
   },
   "author": {
     "name": "Microsoft and other contributors"

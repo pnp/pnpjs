@@ -190,32 +190,32 @@ export class PipelineMethods {
 
         return new Promise<RequestContext<T>>((resolve, reject) => {
             // send or batch the request
-            // if (context.isBatched) {
+            if (context.isBatched) {
 
-            //     // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-            //     const p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
+                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
+                const p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
 
-            //     // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-            //     context.batchDependency();
+                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
+                context.batchDependency();
 
-            //     Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, LogLevel.Info);
+                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, LogLevel.Info);
 
-            //     // we set the result as the promise which will be resolved by the batch's execution
-            //     resolve(setResult(context, p));
+                // we set the result as the promise which will be resolved by the batch's execution
+                resolve(setResult(context, p));
 
-            // } else {
+            } else {
 
-            Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Sending request.`, LogLevel.Info);
+                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Sending request.`, LogLevel.Info);
 
-            // we are not part of a batch, so proceed as normal
-            const client = context.clientFactory();
-            const opts = Util.extend(context.options || {}, { method: context.verb });
-            client.fetch(context.requestAbsoluteUrl, opts)
-                .then(response => context.parser.parse(response))
-                .then(result => setResult(context, result))
-                .then(ctx => resolve(ctx))
-                .catch(e => reject(e));
-            // }
+                // we are not part of a batch, so proceed as normal
+                const client = context.clientFactory();
+                const opts = Util.extend(context.options || {}, { method: context.verb });
+                client.fetch(context.requestAbsoluteUrl, opts)
+                    .then(response => context.parser.parse(response))
+                    .then(result => setResult(context, result))
+                    .then(ctx => resolve(ctx))
+                    .catch(e => reject(e));
+            }
         });
     }
 
@@ -227,23 +227,22 @@ export class PipelineMethods {
 
         return new Promise<RequestContext<T>>(resolve => {
 
-            // TODO::
-            // if (context.isBatched) {
+            if (context.isBatched) {
 
-            //     Logger.log({
-            //         data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
-            //         level: LogLevel.Info,
-            //         message: `[${context.requestId}] (${(new Date()).getTime()}) ${context.verb} request will complete in batch ${context.batch.batchId}.`,
-            //     });
+                Logger.log({
+                    data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
+                    level: LogLevel.Info,
+                    message: `[${context.requestId}] (${(new Date()).getTime()}) ${context.verb} request will complete in batch ${context.batch.batchId}.`,
+                });
 
-            // } else {
+            } else {
 
-            Logger.log({
-                data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
-                level: LogLevel.Info,
-                message: `[${context.requestId}] (${(new Date()).getTime()}) Completing ${context.verb} request.`,
-            });
-            // }
+                Logger.log({
+                    data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
+                    level: LogLevel.Info,
+                    message: `[${context.requestId}] (${(new Date()).getTime()}) Completing ${context.verb} request.`,
+                });
+            }
 
             resolve(context);
         });

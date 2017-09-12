@@ -1,10 +1,11 @@
 // build funcs
-const tasks = require("./tooling/build/tasks"),
+const tasks = require("./build/packages/buildsystem").Tasks,
     path = require("path");
 
 const defaultBuildChain = [
+
     tasks.buildProject,
-    tasks.copyStaticAssets,
+    tasks.copyAssets,
     tasks.copyPackageFile,
 ];
 
@@ -34,14 +35,14 @@ const config = {
         "graph",
         {
             name: "sp",
-            buildChain: defaultBuildChain.slice(0).concat([tasks.doSPVersionStringReplace]),
+            buildChain: defaultBuildChain.slice(0).concat([tasks.replaceSPHttpVersion]),
         },
         "nodejs",
         {
             name: "sp-addinhelpers",
             buildChain: [tasks.installNPMDependencies].concat(defaultBuildChain.slice(0)),
-        }
-        
+        },
+        "config-store"
     ],
 
     // relative to the package folder

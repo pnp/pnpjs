@@ -1,5 +1,5 @@
 // build funcs
-const tasks = require("./tooling/build/tasks"),
+const tasks = require("./build/packages/buildsystem").Tasks,
     path = require("path");
 
 /**
@@ -19,7 +19,6 @@ const config = {
      *      "assets": string[], // optional, default is config.assets
      *      "buildChain": (ctx) => Promise<void>[], // optional, default is config.buildChain
      * }
-     * 
      */
     packages: [
         "debug",
@@ -31,7 +30,7 @@ const config = {
     // the set of tasks run on each project during a build
     buildChain: [
         tasks.buildProject,
-        tasks.debugStringReplacments,
+        tasks.replaceDebug,
     ],
 }
 

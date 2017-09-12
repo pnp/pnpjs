@@ -26,38 +26,10 @@ export interface SharePointQueryableConstructor<T> {
  */
 export class SharePointQueryable extends ODataQueryable {
 
-
     /**
      * Tracks the batch of which this query may be part
      */
     private _batch: SPBatch;
-
-    /**
-     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
-     */
-    protected addBatchDependency(): () => void {
-        if (this.hasBatch) {
-            return this._batch.addDependency();
-        }
-
-        return () => null;
-    }
-
-    /**
-     * Indicates if the current query has a batch associated
-     *
-     */
-    protected get hasBatch(): boolean {
-        return this._batch !== null;
-    }
-
-    /**
-     * The batch currently associated with this query or null
-     *
-     */
-    protected get batch(): SPBatch {
-        return this.hasBatch ? this._batch : null;
-    }
 
     /**
      * Creates a new instance of the SharePointQueryable class
@@ -106,10 +78,10 @@ export class SharePointQueryable extends ODataQueryable {
     }
 
     /**
-     * Creates a new instance of the supplied factory and extends this into that new instance
-     *
-     * @param factory constructor for the new SharePointQueryable
-     */
+         * Creates a new instance of the supplied factory and extends this into that new instance
+         *
+         * @param factory constructor for the new SharePointQueryable
+         */
     public as<T>(factory: SharePointQueryableConstructor<T>): T {
         const o = <T>new factory(this._url, null);
         return Util.extend(o, this, true);
@@ -159,6 +131,33 @@ export class SharePointQueryable extends ODataQueryable {
         }
 
         return url;
+    }
+
+    /**
+     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
+     */
+    protected addBatchDependency(): () => void {
+        if (this.hasBatch) {
+            return this._batch.addDependency();
+        }
+
+        return () => null;
+    }
+
+    /**
+     * Indicates if the current query has a batch associated
+     *
+     */
+    protected get hasBatch(): boolean {
+        return this._batch !== null;
+    }
+
+    /**
+     * The batch currently associated with this query or null
+     *
+     */
+    protected get batch(): SPBatch {
+        return this.hasBatch ? this._batch : null;
     }
 
     /**

@@ -1,4 +1,4 @@
-import { TypedHash, Dictionary } from "../collections/collections";
+import { TypedHash, Dictionary } from "@pnp/common";
 
 /**
  * Interface for configuration providers
@@ -90,7 +90,7 @@ export class Settings {
      * @param {string} key The key whose value we want to return. Returns null if the key does not exist
      * @return {string} string value from the configuration
      */
-    public get(key: string): string {
+    public get(key: string): string | null {
         return this._settings.get(key);
     }
 

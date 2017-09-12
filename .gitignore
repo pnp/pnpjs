@@ -21,6 +21,7 @@ node_modules
 # generated folders/files
 build
 lib
+debugging
 
 # Optional npm cache directory
 .npm

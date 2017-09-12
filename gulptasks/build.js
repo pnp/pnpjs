@@ -16,19 +16,41 @@ const gulp = require("gulp"),
     gutil = require('gulp-util'),
     path = require("path"),
     pump = require('pump'),
-    buildConfig = require("../pnp-build-config.js"),
-    debugConfig = require("../pnp-debug-config.js"),
-    buildEngine = require("../tooling/build/engine").engine;
+    fs = require("fs");
 
-// utility task that builds the packages into JavaScript using standard tsc
-gulp.task("build:packages", ["clean", "lint"], (done) => {
+/**
+ * Builds the build system for use by sub tasks
+ */
+gulp.task("bootstrap-buildsystem", (done) => {
 
-    buildEngine(buildConfig, done);
+    exec(`.\\node_modules\\.bin\\tsc -p ./packages/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
+
+        if (error === null) {
+            // now we copy over the package.json
+            fs.createReadStream('./packages/buildsystem/package.json')
+                .pipe(fs.createWriteStream('./build/packages/buildsystem/package.json'))
+                .on("close", () => done());
+        } else {
+            done(stdout);
+        }
+    });
 });
 
-gulp.task("build:debug", ["clean"], (done) => {
+// utility task that builds the packages into JavaScript using standard tsc
+gulp.task("build:packages", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
 
-    buildEngine(debugConfig, done);
+    const engine = require("../build/packages/buildsystem").engine;
+    const config = require("../pnp-build-config.js");
+
+    engine(pkg.version, config).then(done).catch(e => done(e));
+});
+
+gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
+
+    const engine = require("../build/packages/buildsystem").engine;
+    const config = require("../pnp-debug-config.js");
+
+    engine(pkg.version, config).then(done).catch(e => done(e));
 });
 
 gulp.task("build:testing", () => {

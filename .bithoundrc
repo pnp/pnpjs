@@ -1,10 +1,9 @@
 {
   "ignore": [
-    "**/typedoctheme/**",
-    "**/server-root/**",
-    "**/docs/**",
     "**/dist/**",
-    "**/debug/**"
+    "**/debug/**",
+    "**/gulptasks/**",
+    "**/tooling/**",
   ],
   "dependencies": {
     "mute": [

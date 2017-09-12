@@ -6,16 +6,16 @@ import { Util, Dictionary } from "@pnp/common";
  */
 export class SearchQueryBuilder {
 
-    public static create(queryText = "", queryTemplate: SearchQuery = {}): SearchQueryBuilder {
-        return new SearchQueryBuilder(queryText, queryTemplate);
-    }
-
     constructor(queryText = "", private _query = {}) {
 
         if (typeof queryText === "string" && queryText.length > 0) {
 
             this.extendQuery({ Querytext: queryText });
         }
+    }
+
+    public static create(queryText = "", queryTemplate: SearchQuery = {}): SearchQueryBuilder {
+        return new SearchQueryBuilder(queryText, queryTemplate);
     }
 
     public text(queryText: string): this {

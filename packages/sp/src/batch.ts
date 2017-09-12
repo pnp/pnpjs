@@ -1,4 +1,4 @@
-import { ODataParser } from "@pnp/odata";
+import { ODataBatch } from "@pnp/odata";
 import { Util, mergeHeaders, TypedHash } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { HttpClient } from "./net/httpclient";
@@ -9,84 +9,19 @@ import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 /**
  * Manages a batch of OData operations
  */
-export class SPBatch {
+export class SPBatch extends ODataBatch {
 
-    private _dependencies: Promise<void>[];
-    private _requests: ODataBatchRequestInfo[];
-
-    constructor(private baseUrl: string, private _batchId = Util.getGUID()) {
-        this._requests = [];
-        this._dependencies = [];
+    constructor(private baseUrl: string) {
+        super();
     }
 
-    public get batchId(): string {
-        return this._batchId;
-    }
+    protected executeImpl(): Promise<void> {
 
-    /**
-     * Adds a request to a batch (not designed for public use)
-     *
-     * @param url The full url of the request
-     * @param method The http method GET, POST, etc
-     * @param options Any options to include in the request
-     * @param parser The parser that will hadle the results of the request
-     */
-    public add<T>(url: string, method: string, options: any, parser: ODataParser<T>): Promise<T> {
-
-        const info = {
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
-            reject: <(reason?: any) => void>null,
-            resolve: <(value?: T | PromiseLike<T>) => void>null,
-            url: url,
-        };
-
-        const p = new Promise<T>((resolve, reject) => {
-            info.resolve = resolve;
-            info.reject = reject;
-        });
-
-        this._requests.push(info);
-
-        return p;
-    }
-
-    /**
-     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
-     * MUST be cleared using the returned resolve delegate to allow batches to run
-     */
-    public addDependency(): () => void {
-
-        let resolver: () => void;
-        const promise = new Promise<void>((resolve) => {
-            resolver = resolve;
-        });
-
-        this._dependencies.push(promise);
-
-        return resolver;
-    }
-
-    /**
-     * Execute the current batch and resolve the associated promises
-     *
-     * @returns A promise which will be resolved once all of the batch's child promises have resolved
-     */
-    public execute(): Promise<any> {
-
-        // we need to check the dependencies twice due to how different engines handle things.
-        // We can get a second set of promises added after the first set resolve
-        return Promise.all(this._dependencies).then(() => Promise.all(this._dependencies)).then(() => this.executeImpl());
-    }
-
-    private executeImpl(): Promise<any> {
-
-        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this._requests.length} requests.`, LogLevel.Info);
+        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
 
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
-        if (this._requests.length < 1) {
+        if (this.requests.length < 1) {
             Logger.write(`Resolving empty batch.`, LogLevel.Info);
             return Promise.resolve();
         }
@@ -105,8 +40,8 @@ export class SPBatch {
 
             let currentChangeSetId = "";
 
-            for (let i = 0; i < this._requests.length; i++) {
-                const reqInfo = this._requests[i];
+            for (let i = 0; i < this.requests.length; i++) {
+                const reqInfo = this.requests[i];
 
                 if (reqInfo.method === "GET") {
 
@@ -116,14 +51,14 @@ export class SPBatch {
                         currentChangeSetId = "";
                     }
 
-                    batchBody.push(`--batch_${this._batchId}\n`);
+                    batchBody.push(`--batch_${this.batchId}\n`);
 
                 } else {
 
                     if (currentChangeSetId.length < 1) {
                         // start new change set
                         currentChangeSetId = Util.getGUID();
-                        batchBody.push(`--batch_${this._batchId}\n`);
+                        batchBody.push(`--batch_${this.batchId}\n`);
                         batchBody.push(`Content-Type: multipart/mixed; boundary="changeset_${currentChangeSetId}"\n\n`);
                     }
 
@@ -197,10 +132,10 @@ export class SPBatch {
                 currentChangeSetId = "";
             }
 
-            batchBody.push(`--batch_${this._batchId}--\n`);
+            batchBody.push(`--batch_${this.batchId}--\n`);
 
             const batchHeaders: TypedHash<string> = {
-                "Content-Type": `multipart/mixed; boundary=batch_${this._batchId}`,
+                "Content-Type": `multipart/mixed; boundary=batch_${this.batchId}`,
             };
 
             const batchOptions = {
@@ -216,7 +151,7 @@ export class SPBatch {
                 .then(this._parseResponse)
                 .then((responses: Response[]) => {
 
-                    if (responses.length !== this._requests.length) {
+                    if (responses.length !== this.requests.length) {
                         throw new SPBatchParseException("Could not properly parse responses to match requests in batch.");
                     }
 
@@ -224,7 +159,7 @@ export class SPBatch {
 
                     return responses.reduce((chain, response, index) => {
 
-                        const request = this._requests[index];
+                        const request = this.requests[index];
 
                         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
 
@@ -293,13 +228,4 @@ export class SPBatch {
             resolve(responses);
         });
     }
-}
-
-interface ODataBatchRequestInfo {
-    url: string;
-    method: string;
-    options: any;
-    parser: ODataParser<any>;
-    resolve: (d: any) => void;
-    reject: (error: any) => void;
 }

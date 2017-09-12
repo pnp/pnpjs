@@ -36,6 +36,17 @@ export interface UtilityMethods {
  */
 export class UtilityMethod extends SharePointQueryable implements UtilityMethods {
 
+    /**
+     * Creates a new instance of the Utility method class
+     *
+     * @param baseUrl The parent url provider
+     * @param methodName The static method name to call on the utility class
+     */
+    constructor(baseUrl: string | SharePointQueryable, methodName: string) {
+
+        super(UtilityMethod.getBaseUrl(baseUrl), `_api/SP.Utilities.Utility.${methodName}`);
+    }
+
     private static getBaseUrl(candidate: string | SharePointQueryable) {
 
         if (typeof candidate === "string") {
@@ -52,40 +63,11 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
         return url.substr(0, index);
     }
 
-    /**
-     * Creates a new instance of the Utility method class
-     *
-     * @param baseUrl The parent url provider
-     * @param methodName The static method name to call on the utility class
-     */
-    constructor(baseUrl: string | SharePointQueryable, methodName: string) {
-
-        super(UtilityMethod.getBaseUrl(baseUrl), `_api/SP.Utilities.Utility.${methodName}`);
-    }
-
     public excute<T>(props: any): Promise<T> {
 
         return this.postAsCore<T>({
             body: JSON.stringify(props),
         });
-    }
-
-    /**
-     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
-     * @param factory Constructor used to create the new instance
-     * @param additionalPath Any additional path to include in the clone
-     * @param includeBatch If true this instance's batch will be added to the cloned instance
-     */
-    protected create(methodName: string, includeBatch: boolean): UtilityMethod {
-        let clone = new UtilityMethod(this.parentUrl, methodName);
-        const target = this.query.get("@target");
-        if (target !== null) {
-            clone.query.add("@target", target);
-        }
-        if (includeBatch && this.hasBatch) {
-            clone = clone.inBatch(this.batch);
-        }
-        return clone;
     }
 
     /**
@@ -204,6 +186,24 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
                 file: new File(spExtractODataId(r)),
             };
         });
+    }
+
+    /**
+     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
+     * @param factory Constructor used to create the new instance
+     * @param additionalPath Any additional path to include in the clone
+     * @param includeBatch If true this instance's batch will be added to the cloned instance
+     */
+    protected create(methodName: string, includeBatch: boolean): UtilityMethod {
+        let clone = new UtilityMethod(this.parentUrl, methodName);
+        const target = this.query.get("@target");
+        if (target !== null) {
+            clone.query.add("@target", target);
+        }
+        if (includeBatch && this.hasBatch) {
+            clone = clone.inBatch(this.batch);
+        }
+        return clone;
     }
 }
 
