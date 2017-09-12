@@ -1,8 +1,7 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteGroups } from "./sitegroups";
 import { BasePermissions } from "./types";
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
+import { Util, TypedHash } from "@pnp/common";
 
 /**
  * Describes a set of role assignments for the current scope

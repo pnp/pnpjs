@@ -1,8 +1,9 @@
 import { SharePointQueryableConstructor } from "./sharepointqueryable";
-import { Util, extractWebUrl } from "../utils/util";
-import { Logger, LogLevel } from "../utils/logging";
-import { ODataIdException } from "../utils/exceptions";
-import { ODataParser, ODataParserBase } from "../odata/core";
+import { extractWebUrl } from "./utils/extractweburl";
+import { Util } from "@pnp/common";
+import { Logger, LogLevel } from "@pnp/logging";
+import { SPODataIdException } from "./exceptions";
+import { ODataParser, ODataParserBase } from "@pnp/odata";
 
 export function spExtractODataId(candidate: any): string {
 
@@ -11,7 +12,7 @@ export function spExtractODataId(candidate: any): string {
     } else if (candidate.hasOwnProperty("__metadata") && candidate.__metadata.hasOwnProperty("id")) {
         return candidate.__metadata.id;
     } else {
-        throw new ODataIdException(candidate);
+        throw new SPODataIdException(candidate);
     }
 }
 

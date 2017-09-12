@@ -1,8 +1,8 @@
 import { SharePointQueryable } from "./sharepointqueryable";
-import { Util } from "../utils/util";
+import { Util } from "@pnp/common";
 import { EmailProperties } from "./types";
-import { ODataBatch } from "./batch";
-import { ICachingOptions } from "../odata/caching";
+import { SPBatch } from "./batch";
+import { ICachingOptions } from "@pnp/odata";
 import { File } from "./files";
 import { spExtractODataId } from "./odata";
 import { PrincipalInfo, PrincipalType, PrincipalSource, WikiPageCreationInformation } from "./types";
@@ -12,7 +12,7 @@ import { PrincipalInfo, PrincipalType, PrincipalSource, WikiPageCreationInformat
  */
 export interface UtilityMethods {
     usingCaching(options?: ICachingOptions): this;
-    inBatch(batch: ODataBatch): this;
+    inBatch(batch: SPBatch): this;
     sendEmail(props: EmailProperties): Promise<void>;
     getCurrentUserEmailAddresses(): Promise<string>;
     resolvePrincipal(email: string,

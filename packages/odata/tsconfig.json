@@ -3,15 +3,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/odata",
-        "paths": {
-            "@pnp/logging": [
-                "../../build/packages/logging"
-            ],
-            "@pnp/common": [
-                "../../build/packages/common"
-            ]
-        }
+        "outDir": "../../build/packages/odata"
     },
     "include": [
         "./index.ts"

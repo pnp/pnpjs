@@ -1,8 +1,8 @@
-import { HttpClientImpl } from "./httpclient";
-import { Util } from "../utils/util";
-import { SPRequestExecutorUndefinedException } from "../utils/exceptions";
-/**
+import { HttpClientImpl } from "@pnp/sp";
+import { Util } from "@pnp/common";
+import { SPRequestExecutorUndefinedException } from "./exceptions";
 
+/**
  * Makes requests using the SP.RequestExecutor library.
  */
 export class SPRequestExecutorClient implements HttpClientImpl {
@@ -60,9 +60,12 @@ export class SPRequestExecutorClient implements HttpClientImpl {
      */
     private convertToResponse = (spResponse: SP.ResponseInfo): Response => {
         const responseHeaders = new Headers();
-        for (const h in spResponse.headers) {
-            if (spResponse.headers[h]) {
-                responseHeaders.append(h, spResponse.headers[h]);
+
+        if (typeof spResponse.headers !== "undefined") {
+            for (const h in spResponse.headers) {
+                if (spResponse.headers[h]) {
+                    responseHeaders.append(h, spResponse.headers[h]);
+                }
             }
         }
 

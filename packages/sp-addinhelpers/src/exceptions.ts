@@ -1,3 +1,5 @@
+import { LogLevel, Logger } from "@pnp/logging";
+
 export class SPRequestExecutorUndefinedException extends Error {
 
     constructor() {
@@ -7,6 +9,6 @@ export class SPRequestExecutorUndefinedException extends Error {
         ].join(" ");
         super(msg);
         this.name = "SPRequestExecutorUndefinedException";
-        defaultLog(this);
+        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
     }
 }

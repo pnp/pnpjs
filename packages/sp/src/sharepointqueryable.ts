@@ -1,16 +1,20 @@
-import { Util } from "../utils/util";
-import { Dictionary } from "../collections/collections";
-import { FetchOptions, mergeOptions } from "../net/utils";
-import { ODataParser } from "../odata/core";
-import { ODataBatch } from "./batch";
-import { AlreadyInBatchException } from "../utils/exceptions";
-import { Logger, LogLevel } from "../utils/logging";
-import { ODataQueryable } from "../odata/queryable";
 import {
+    Util,
+    Dictionary,
+    FetchOptions,
+    mergeOptions,
+} from "@pnp/common";
+import {
+    ODataParser,
+    ODataQueryable,
     RequestContext,
     PipelineMethods,
-} from "../request/pipeline";
-import { HttpClient } from "../net/httpclient";
+} from "@pnp/odata";
+import { Logger, LogLevel } from "@pnp/logging";
+import { SPBatch } from "./batch";
+import { AlreadyInBatchException } from "./exceptions";
+import { HttpClient } from "./net/httpclient";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 export interface SharePointQueryableConstructor<T> {
     new(baseUrl: string | SharePointQueryable, path?: string): T;
@@ -26,7 +30,7 @@ export class SharePointQueryable extends ODataQueryable {
     /**
      * Tracks the batch of which this query may be part
      */
-    private _batch: ODataBatch;
+    private _batch: SPBatch;
 
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
@@ -51,7 +55,7 @@ export class SharePointQueryable extends ODataQueryable {
      * The batch currently associated with this query or null
      *
      */
-    protected get batch(): ODataBatch {
+    protected get batch(): SPBatch {
         return this.hasBatch ? this._batch : null;
     }
 
@@ -122,7 +126,7 @@ export class SharePointQueryable extends ODataQueryable {
      * b.execute().then(...)
      * ```
      */
-    public inBatch(batch: ODataBatch): this {
+    public inBatch(batch: SPBatch): this {
 
         if (this._batch !== null) {
             throw new AlreadyInBatchException();
@@ -166,7 +170,7 @@ export class SharePointQueryable extends ODataQueryable {
         factory: SharePointQueryableConstructor<T>,
         baseUrl: string | SharePointQueryable = this.parentUrl,
         path?: string,
-        batch?: ODataBatch): T {
+        batch?: SPBatch): T {
 
         let parent = new factory(baseUrl, path);
         parent.configure(this._options);
@@ -215,7 +219,7 @@ export class SharePointQueryable extends ODataQueryable {
 
         const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
 
-        return Util.toAbsoluteUrl(this.toUrlAndQuery()).then(url => {
+        return toAbsoluteUrl(this.toUrlAndQuery()).then(url => {
 
             mergeOptions(options, this._options);
 

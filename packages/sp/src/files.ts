@@ -1,7 +1,7 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "../odata/parsers";
-import { Util } from "../utils/util";
-import { MaxCommentLengthException } from "../utils/exceptions";
+import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "@pnp/odata";
+import { Util } from "@pnp/common";
+import { MaxCommentLengthException } from "./exceptions";
 import { LimitedWebPartManager } from "./webparts";
 import { Item } from "./items";
 import { SharePointQueryableShareableFile } from "./sharepointqueryableshareable";

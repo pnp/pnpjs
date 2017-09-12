@@ -1,5 +1,4 @@
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
+import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 
 /**

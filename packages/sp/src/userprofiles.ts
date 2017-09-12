@@ -1,7 +1,7 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { HashTagCollection, UserProfile } from "./types";
-import { readBlobAsArrayBuffer } from "../utils/files";
-import { ODataValue } from "../odata/parsers";
+import { readBlobAsArrayBuffer } from "@pnp/common";
+import { ODataValue } from "@pnp/odata";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 

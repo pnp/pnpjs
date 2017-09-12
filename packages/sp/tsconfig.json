@@ -4,14 +4,6 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "../../build/packages/sp",
-        "paths": {
-            "@pnp/logging": [
-                "../../build/packages/logging"
-            ],
-            "@pnp/common": [
-                "../../build/packages/common"
-            ]
-        },
         "strictNullChecks": false
     },
     "files": [

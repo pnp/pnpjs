@@ -1,9 +1,7 @@
 import { DigestCache } from "./digestcache";
-import { Util } from "../utils/util";
-import { RuntimeConfig } from "../configuration/pnplibconfig";
-import { APIUrlException } from "../utils/exceptions";
-import { mergeHeaders, FetchOptions } from "./utils";
-import { RequestClient } from "../request/requestclient";
+import { Util, mergeHeaders, FetchOptions, RequestClient } from "@pnp/common";
+import { SPRuntimeConfig } from "../config/splibconfig";
+import { APIUrlException } from "../exceptions";
 
 export interface HttpClientImpl {
     fetch(url: string, options: FetchOptions): Promise<Response>;
@@ -15,7 +13,7 @@ export class HttpClient implements RequestClient {
     private _impl: HttpClientImpl;
 
     constructor() {
-        this._impl = RuntimeConfig.spFetchClientFactory();
+        this._impl = SPRuntimeConfig.fetchClientFactory();
         this._digestCache = new DigestCache(this);
     }
 
@@ -26,7 +24,7 @@ export class HttpClient implements RequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, RuntimeConfig.spHeaders);
+        mergeHeaders(headers, SPRuntimeConfig.headers);
 
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);
@@ -41,7 +39,7 @@ export class HttpClient implements RequestClient {
         }
 
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:$$Version$$");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-$$Version$$");
         }
 
         opts = Util.extend(opts, { headers: headers });

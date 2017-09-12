@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
-import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "../odata/parsers";
+import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
     name: string;

@@ -9,6 +9,11 @@
             "es2015",
             "dom"
         ],
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        },
         "noImplicitAny": true,
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,

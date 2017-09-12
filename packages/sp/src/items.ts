@@ -3,10 +3,9 @@ import { SharePointQueryableShareableItem } from "./sharepointqueryableshareable
 import { Folder } from "./folders";
 import { File } from "./files";
 import { ContentType } from "./contenttypes";
-import { TypedHash } from "../collections/collections";
-import { Util } from "../utils/util";
+import { Util, TypedHash } from "@pnp/common";
 import { ListItemFormUpdateValue } from "./types";
-import { ODataParserBase } from "../odata/core";
+import { ODataParserBase } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 

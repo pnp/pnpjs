@@ -1,5 +1,5 @@
 {
-    "name": "@pnp/sp",
+    "name": "@pnp/nodejs",
     "version": "0.0.0-PLACEHOLDER",
     "description": "pnp - provides SharePoint query functionality",
     "main": "./index.js",

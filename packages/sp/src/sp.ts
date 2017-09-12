@@ -30,6 +30,11 @@ export {
 } from "./folders";
 
 export {
+    HttpClient,
+    HttpClientImpl,
+} from "./net/httpclient";
+
+export {
     Item,
     Items,
     ItemAddResult,
@@ -65,6 +70,10 @@ export {
     SharePointQueryableCollection,
     SharePointQueryableConstructor,
 } from "./sharepointqueryable";
+
+export {
+    SharePointQueryableSecurable,
+} from "./sharepointqueryablesecurable";
 
 export {
     RelatedItem,

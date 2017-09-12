@@ -9,18 +9,27 @@
 
 var gulp = require("gulp"),
     gulpTslint = require("gulp-tslint"),
-    config = require('./@configuration.js'),
-    tslint = require("tslint");
+    tslint = require("tslint"),
+    pump = require("pump");
 
-gulp.task("lint", function () {
+gulp.task("lint", (done) => {
 
     var program = tslint.Linter.createProgram("./packages/tsconfig.json");
 
-    return gulp.src([
-        "./packages/**/*.ts",
-        "!**/node_modules/**",
-        "!**/*.d.ts"
-    ])
-        .pipe(gulpTslint({ formatter: "prose", program }))
-        .pipe(gulpTslint.report({ emitError: false }));
+    pump([
+        gulp.src([
+            "./packages/**/*.ts",
+            "!**/node_modules/**",
+            "!**/*.d.ts"
+        ]),
+        gulpTslint({ formatter: "prose", program }),
+        gulpTslint.report({ emitError: false }),
+    ], (err) => {
+
+        if (typeof err !== "undefined") {
+            done(err);
+        } else {
+            done();
+        }
+    });
 });

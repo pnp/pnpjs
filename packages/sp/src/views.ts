@@ -1,6 +1,5 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { TypedHash } from "../collections/collections";
-import { Util } from "../utils/util";
+import { Util, TypedHash } from "@pnp/common";
 
 /**
  * Describes the views available in the current context

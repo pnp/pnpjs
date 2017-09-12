@@ -4,17 +4,6 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "../../build/packages/graph",
-        "paths": {
-            "@pnp/logging": [
-                "../../build/packages/logging"
-            ],
-            "@pnp/common": [
-                "../../build/packages/common"
-            ],
-            "@pnp/odata": [
-                "../../build/packages/odata"
-            ]
-        },
         "strictNullChecks": false
     },
     "files": [

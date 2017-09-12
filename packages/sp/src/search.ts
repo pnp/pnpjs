@@ -1,6 +1,5 @@
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Util } from "../utils/util";
-import { Dictionary } from "../collections/collections";
+import { Util, Dictionary } from "@pnp/common";
 
 /**
  * Allows for the fluent construction of search queries

@@ -6,12 +6,11 @@ import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
+import { Util, TypedHash } from "@pnp/common";
 import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
-import { NotSupportedInBatchException } from "../utils/exceptions";
+import { NotSupportedInBatchException } from "./exceptions";
 import { Folder } from "./folders";
 
 /**

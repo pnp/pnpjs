@@ -3,9 +3,9 @@
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/common"
+        "outDir": "../../build/packages/nodejs"
     },
-    "include": [
+    "files": [
         "./index.ts"
     ]
 }

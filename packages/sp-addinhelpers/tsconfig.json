@@ -3,9 +3,12 @@
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/common"
+        "outDir": "../../build/packages/sp-addinhelpers",
+        "types": [
+            "sharepoint"
+        ]
     },
-    "include": [
+    "files": [
         "./index.ts"
     ]
 }

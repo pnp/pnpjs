@@ -1,5 +1,5 @@
 import { ODataParser } from "./core";
-// TODO:: import { ODataBatch } from "../sharepoint/batch";
+import { ODataBatch } from "./odatabatch";
 import { ICachingOptions, CachingParserWrapper, CachingOptions } from "./caching";
 import { Logger, LogLevel } from "@pnp/logging";
 import { Util, FetchOptions, RequestClient } from "@pnp/common";
@@ -8,7 +8,7 @@ import { Util, FetchOptions, RequestClient } from "@pnp/common";
  * Defines the context for a given request to be processed in the pipeline
  */
 export interface RequestContext<T> {
-    // TODO:: batch: ODataBatch;
+    batch: ODataBatch;
     batchDependency: () => void;
     cachingOptions: ICachingOptions;
     hasResult?: boolean;

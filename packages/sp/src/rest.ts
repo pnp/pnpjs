@@ -2,13 +2,15 @@ import { Search, SearchQuery, SearchResults, SearchQueryBuilder } from "./search
 import { SearchSuggest, SearchSuggestQuery, SearchSuggestResult } from "./searchsuggest";
 import { Site } from "./site";
 import { Web } from "./webs";
-import { Util } from "@pnp/common";
+import { Util, UrlException, ConfigOptions } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableConstructor } from "./sharepointqueryable";
 import { UserProfileQuery } from "./userprofiles";
-import { ODataBatch } from "./batch";
-import { UrlException } from "../utils/exceptions";
+import { SPBatch } from "./batch";
 import { UtilityMethod, UtilityMethods } from "./utilities";
-import { ConfigOptions } from "../net/utils";
+import {
+    setup as _setup,
+    SPConfiguration,
+} from "./config/splibconfig";
 
 /**
  * Root of the SharePoint REST module
@@ -45,6 +47,15 @@ export class SPRest {
      */
     public configure(options: ConfigOptions, baseUrl = ""): SPRest {
         return new SPRest(options, baseUrl);
+    }
+
+    /**
+     * Global SharePoint configuration options
+     * 
+     * @param config The SharePoint configuration to apply
+     */
+    public setup(config: SPConfiguration) {
+        _setup(config);
     }
 
     /**
@@ -113,7 +124,7 @@ export class SPRest {
      * Creates a new batch object for use with the SharePointQueryable.addToBatch method
      *
      */
-    public createBatch(): ODataBatch {
+    public createBatch(): SPBatch {
         return this.web.createBatch();
     }
 

@@ -1,4 +1,4 @@
-import { Util } from "../utils/util";
+import { Util } from "@pnp/common";
 import { Web } from "./webs";
 import { spGetEntityUrl } from "./odata";
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";

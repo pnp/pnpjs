@@ -1,5 +1,5 @@
 // reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
-import { TypedHash } from "../collections/collections";
+import { TypedHash } from "@pnp/common";
 
 /**
  * Represents the unique sequential location of a change within the change log.

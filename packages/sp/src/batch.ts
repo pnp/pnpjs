@@ -1,16 +1,15 @@
-import { ODataParser } from "../odata/core";
-import { Util } from "../utils/util";
-import { Logger, LogLevel } from "../utils/logging";
-import { HttpClient } from "../net/httpclient";
-import { mergeHeaders } from "../net/utils";
-import { RuntimeConfig } from "../configuration/pnplibconfig";
-import { TypedHash } from "../collections/collections";
-import { BatchParseException } from "../utils/exceptions";
+import { ODataParser } from "@pnp/odata";
+import { Util, mergeHeaders, TypedHash } from "@pnp/common";
+import { Logger, LogLevel } from "@pnp/logging";
+import { HttpClient } from "./net/httpclient";
+import { SPRuntimeConfig } from "./config/splibconfig";
+import { SPBatchParseException } from "./exceptions";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
  * Manages a batch of OData operations
  */
-export class ODataBatch {
+export class SPBatch {
 
     private _dependencies: Promise<void>[];
     private _requests: ODataBatchRequestInfo[];
@@ -99,7 +98,7 @@ export class ODataBatch {
 
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch
-        return Util.toAbsoluteUrl(this.baseUrl).then(absoluteRequestUrl => {
+        return toAbsoluteUrl(this.baseUrl).then(absoluteRequestUrl => {
 
             // build all the requests, send them, pipe results in order to parsers
             const batchBody: string[] = [];
@@ -160,7 +159,7 @@ export class ODataBatch {
                 }
 
                 // merge global config headers
-                mergeHeaders(headers, RuntimeConfig.spHeaders);
+                mergeHeaders(headers, SPRuntimeConfig.headers);
 
                 // merge per-request headers
                 if (reqInfo.options) {
@@ -218,7 +217,7 @@ export class ODataBatch {
                 .then((responses: Response[]) => {
 
                     if (responses.length !== this._requests.length) {
-                        throw new BatchParseException("Could not properly parse responses to match requests in batch.");
+                        throw new SPBatchParseException("Could not properly parse responses to match requests in batch.");
                     }
 
                     Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
@@ -259,7 +258,7 @@ export class ODataBatch {
                             state = "batchHeaders";
                         } else {
                             if (line.trim() !== "") {
-                                throw new BatchParseException(`Invalid response, line ${i}`);
+                                throw new SPBatchParseException(`Invalid response, line ${i}`);
                             }
                         }
                         break;
@@ -271,7 +270,7 @@ export class ODataBatch {
                     case "status":
                         const parts = statusRegExp.exec(line);
                         if (parts.length !== 3) {
-                            throw new BatchParseException(`Invalid status, line ${i}`);
+                            throw new SPBatchParseException(`Invalid status, line ${i}`);
                         }
                         status = parseInt(parts[1], 10);
                         statusText = parts[2];
@@ -289,7 +288,7 @@ export class ODataBatch {
                 }
             }
             if (state !== "status") {
-                reject(new BatchParseException("Unexpected end of input"));
+                reject(new SPBatchParseException("Unexpected end of input"));
             }
             resolve(responses);
         });

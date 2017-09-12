@@ -1,22 +1,21 @@
+import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
-import { Lists } from "./lists";
+import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
+import { Folders, Folder } from "./folders";
+import { Lists, List } from "./lists";
 import { Fields } from "./fields";
 import { Navigation } from "./navigation";
 import { SiteGroups, SiteGroup } from "./sitegroups";
 import { ContentTypes } from "./contenttypes";
-import { Folders, Folder } from "./folders";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
-import { TypedHash } from "../collections/collections";
-import { Util, extractWebUrl } from "../utils/util";
+import { extractWebUrl } from "./utils/extractweburl";
 import { ChangeQuery } from "./types";
-import { List } from "./lists";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
-import { ODataBatch } from "./batch";
+import { SPBatch } from "./batch";
 import { Features } from "./features";
-import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 
 /**
@@ -242,8 +241,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * Creates a new batch for requests within the context of this web
      *
      */
-    public createBatch(): ODataBatch {
-        return new ODataBatch(this.parentUrl);
+    public createBatch(): SPBatch {
+        return new SPBatch(this.parentUrl);
     }
 
     /**

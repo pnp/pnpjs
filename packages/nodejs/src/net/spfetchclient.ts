@@ -2,9 +2,9 @@ declare var global: any;
 declare var require: (path: string) => any;
 const nodeFetch = require("node-fetch");
 const u: any = require("url");
-import { HttpClientImpl } from "./httpclient";
-import { Util } from "../utils/util";
-import { AuthUrlException } from "../utils/exceptions";
+import { HttpClientImpl } from "../types";
+import { Util } from "@pnp/common";
+import { AuthUrlException } from "../exceptions";
 
 export interface AuthToken {
     token_type: string;
@@ -18,10 +18,10 @@ export interface AuthToken {
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
  */
-export class NodeFetchClient implements HttpClientImpl {
+export class SPFetchClient implements HttpClientImpl {
 
     private static SharePointServicePrincipal = "00000003-0000-0ff1-ce00-000000000000";
-    private token: AuthToken = null;
+    private token: AuthToken | null = null;
 
     constructor(public siteUrl: string, private _clientId: string, private _clientSecret: string, private _realm = "") {
 
@@ -58,7 +58,7 @@ export class NodeFetchClient implements HttpClientImpl {
             } else {
                 this.getRealm().then((realm: string) => {
 
-                    const resource = this.getFormattedPrincipal(NodeFetchClient.SharePointServicePrincipal, u.parse(this.siteUrl).hostname, realm);
+                    const resource = this.getFormattedPrincipal(SPFetchClient.SharePointServicePrincipal, u.parse(this.siteUrl).hostname, realm);
                     const formattedClientId = this.getFormattedPrincipal(this._clientId, "", realm);
 
                     this.getAuthUrl(realm).then((authUrl: string) => {
@@ -102,7 +102,7 @@ export class NodeFetchClient implements HttpClientImpl {
                 "method": "POST",
             }).then((r: Response) => {
 
-                const data: string = r.headers.get("www-authenticate");
+                const data: string = r.headers.get("www-authenticate") || "";
                 const index = data.indexOf("Bearer realm=\"");
                 this._realm = data.substring(index + 14, index + 50);
                 resolve(this._realm);
