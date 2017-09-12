@@ -16,10 +16,8 @@ export function buildProject(ctx: BuildContext) {
         exec(`.\\node_modules\\.bin\\tsc -p ${ctx.projectFile}`, (error, stdout, stderr) => {
 
             if (error === null) {
-                log(`Successfully built ${ctx.projectFile}.`);
                 resolve();
             } else {
-                log(`Error building ${ctx.projectFile}.`);
                 reject(stdout);
             }
         });

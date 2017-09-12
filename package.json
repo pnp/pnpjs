@@ -1,11 +1,10 @@
 {
-  "private": true,
   "name": "@pnp/pnp-root",
+  "private": true,
   "version": "1.0.0-beta.0",
   "description": "A JavaScript library for SharePoint development.",
   "dependencies": {},
   "devDependencies": {
-    "@microsoft/microsoft-graph-types": "1.0.1",
     "@types/chai": "4.0.4",
     "@types/chai-as-promised": "0.0.31",
     "@types/core-js": "^0.9.43",

@@ -2,7 +2,7 @@ declare var require: (s: string) => any;
 const path = require("path");
 import { BuildContext } from "./buildcontext";
 import { ConfigSchema } from "./configschema";
-import { log } from "gulp-util";
+import { log, colors } from "gulp-util";
 
 /**
  * Engine function to process build files
@@ -36,11 +36,20 @@ export function engine(version: string, config: ConfigSchema): Promise<void> {
             version: version,
         };
 
+        // select the correct build chain
         const activeBuildChain = pkg.buildChain || config.buildChain;
 
-        log(`Adding ${buildContext.projectFile} to the build chain.`);
+        // log we have added the file
+        log(`Adding ${colors.cyan(buildContext.projectFile)} to the build chain.`);
 
-        return activeBuildChain.reduce((subChain, func) => subChain.then(() => func(buildContext)), chain);
+        return activeBuildChain.reduce((subChain, func) => subChain.then(() => func(buildContext)), chain).then(_ => {
+
+            log(`Successfully built ${colors.green(buildContext.projectFile)}.`);
+        }).catch(e => {
+
+            log(`Error building ${colors.red(buildContext.projectFile)}.`);
+            return e;
+        });
 
     }, Promise.resolve());
 }

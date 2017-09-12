@@ -32,7 +32,10 @@ const config = {
         "logging",
         "common",
         "odata",
-        "graph",
+        {
+            name: "graph",
+            buildChain: [tasks.installNPMDependencies].concat(defaultBuildChain.slice(0)),
+        },
         {
             name: "sp",
             buildChain: defaultBuildChain.slice(0).concat([tasks.replaceSPHttpVersion]),
