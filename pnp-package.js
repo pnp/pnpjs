@@ -37,13 +37,13 @@ const config = {
      */
     packages: [
         "logging",
-        // "common",
-        // "odata",
-        // "graph",
-        // "sp",
-        // "nodejs",
-        // "sp-addinhelpers",
-        // "config-store",
+        "common",
+        "odata",
+        "graph",
+        "sp",
+        "nodejs",
+        "sp-addinhelpers",
+        "config-store",
     ],
 
     assets: [

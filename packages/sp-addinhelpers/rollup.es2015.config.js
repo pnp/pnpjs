@@ -1,6 +1,6 @@
 const sourcemaps = require("rollup-plugin-sourcemaps");
 
-const moduleName = "logging";
+const moduleName = "sp-addinhelpers";
 
 module.exports = {
     input: `./build/packages/${moduleName}/index.js`,

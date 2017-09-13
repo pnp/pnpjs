@@ -31,22 +31,22 @@ const config = {
      */
     packages: [
         "logging",
-        // "common",
-        // "odata",
-        // {
-        //     name: "graph",
-        //     buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
-        // },
-        // {
-        //     name: "sp",
-        //     buildChain: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
-        // },
-        // "nodejs",
-        // {
-        //     name: "sp-addinhelpers",
-        //     buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
-        // },
-        // "config-store"
+        "common",
+        "odata",
+        {
+            name: "graph",
+            buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+        },
+        {
+            name: "sp",
+            buildChain: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
+        },
+        "nodejs",
+        {
+            name: "sp-addinhelpers",
+            buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+        },
+        "config-store"
     ],
 
     // relative to the package folder

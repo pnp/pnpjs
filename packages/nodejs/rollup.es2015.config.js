@@ -1,6 +1,6 @@
 const sourcemaps = require("rollup-plugin-sourcemaps");
 
-const moduleName = "logging";
+const moduleName = "nodejs";
 
 module.exports = {
     input: `./build/packages/${moduleName}/index.js`,

@@ -1,6 +1,6 @@
 const sourcemaps = require("rollup-plugin-sourcemaps");
 
-const moduleName = "logging";
+const moduleName = "graph";
 
 module.exports = {
     input: `./build/packages/${moduleName}/index.js`,
@@ -12,4 +12,3 @@ module.exports = {
         sourcemap: true,
     }
 };
-
