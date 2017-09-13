@@ -12,3 +12,13 @@ export class ProcessHttpClientResponseException extends Error {
         Logger.log({ data: this.data, level: LogLevel.Error, message: this.message });
     }
 }
+
+export class AlreadyInBatchException extends Error {
+
+    constructor(msg = "This query is already part of a batch.") {
+        super(msg);
+        this.name = "AlreadyInBatchException";
+        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
+    }
+}
+

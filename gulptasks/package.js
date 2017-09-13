@@ -9,7 +9,8 @@ var gulp = require("gulp"),
     webpack = require('webpack'),
     webpackConfig = require('../webpack.config.js'),
     config = require('./@configuration.js'),
-    gutil = require('gulp-util');
+    gutil = require('gulp-util'),
+    pkg = require("../package.json");
 
 // package the definitions
 gulp.task("package:defs", () => {
@@ -46,3 +47,12 @@ gulp.task("package:sync", ["package:code"]);
 
 // run the package chain
 gulp.task("package", ["clean", "lint", "package:code", "package:defs", "package:assets"]);
+
+
+gulp.task("package2", ["build:packages"], (done) => {
+
+    const engine = require("../build/packages/buildsystem").packager;
+    const config = require("../pnp-package.js");
+
+    engine(config).then(done).catch(e => done(e));
+});

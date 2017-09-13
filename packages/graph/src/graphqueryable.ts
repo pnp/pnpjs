@@ -3,13 +3,15 @@ import {
     Dictionary,
     FetchOptions,
 } from "@pnp/common";
-import { GraphHttpClient } from "./net/graphclient";
 import {
     ODataParser,
     ODataQueryable,
     RequestContext,
     PipelineMethods,
 } from "@pnp/odata";
+import { GraphHttpClient } from "./net/graphclient";
+import { GraphBatch } from "./batch";
+
 
 export interface GraphQueryableConstructor<T> {
     new(baseUrl: string | GraphQueryable, path?: string): T;
@@ -19,7 +21,7 @@ export interface GraphQueryableConstructor<T> {
  * Queryable Base Class
  *
  */
-export class GraphQueryable extends ODataQueryable {
+export class GraphQueryable extends ODataQueryable<GraphBatch> {
 
     /**
      * Creates a new instance of the Queryable class
@@ -110,11 +112,11 @@ export class GraphQueryable extends ODataQueryable {
 
         // TODO:: add batch support
         return Promise.resolve({
-            batch: null,
+            batch: this.batch,
             batchDependency: () => void (0),
             cachingOptions: this._cachingOptions,
             clientFactory: () => new GraphHttpClient(),
-            isBatched: false,
+            isBatched: this.hasBatch,
             isCached: this._useCaching,
             options: options,
             parser: parser,

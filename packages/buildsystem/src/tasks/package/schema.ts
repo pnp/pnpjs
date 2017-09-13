@@ -1,12 +1,19 @@
-import { TaskFunction } from "./tasks";
+import { PackageContext } from "./context";
+
+export type PackageTaskFunction = (ctx: PackageContext) => Promise<void>;
 
 export interface PackageInfo {
     name: string;
-    buildChain?: TaskFunction[];
+    packagePipeline?: PackageTaskFunction[];
     assets?: string[];
 }
 
-export interface ConfigSchema {
+export interface PackageSchema {
+
+    /**
+     * The directory to which packages will be written
+     */
+    outDir: string;
 
     /**
      * The path to the package root
@@ -26,5 +33,5 @@ export interface ConfigSchema {
     /**
      * the set of tasks run on each project during a build, in order
      */
-    buildChain: TaskFunction[];
+    packagePipeline: PackageTaskFunction[];
 }

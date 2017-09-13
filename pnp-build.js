@@ -1,10 +1,11 @@
 // build funcs
-const tasks = require("./build/packages/buildsystem").Tasks,
+const tasks = require("./build/packages/buildsystem").Tasks.Build,
     path = require("path");
 
-const defaultBuildChain = [
+const defaultBuildPipeline = [
 
     tasks.buildProject,
+    tasks.buildProjectES5,
     tasks.copyAssets,
     tasks.copyPackageFile,
 ];
@@ -30,32 +31,33 @@ const config = {
      */
     packages: [
         "logging",
-        "common",
-        "odata",
-        {
-            name: "graph",
-            buildChain: [tasks.installNPMDependencies].concat(defaultBuildChain.slice(0)),
-        },
-        {
-            name: "sp",
-            buildChain: defaultBuildChain.slice(0).concat([tasks.replaceSPHttpVersion]),
-        },
-        "nodejs",
-        {
-            name: "sp-addinhelpers",
-            buildChain: [tasks.installNPMDependencies].concat(defaultBuildChain.slice(0)),
-        },
-        "config-store"
+        // "common",
+        // "odata",
+        // {
+        //     name: "graph",
+        //     buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+        // },
+        // {
+        //     name: "sp",
+        //     buildChain: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
+        // },
+        // "nodejs",
+        // {
+        //     name: "sp-addinhelpers",
+        //     buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+        // },
+        // "config-store"
     ],
 
     // relative to the package folder
     assets: [
         "..\\..\\LICENSE",
         "..\\readme.md",
+        "rollup.*.config.js",
     ],
 
     // the set of tasks run on each project during a build
-    buildChain: defaultBuildChain,
+    buildPipeline: defaultBuildPipeline,
 }
 
 module.exports = config;

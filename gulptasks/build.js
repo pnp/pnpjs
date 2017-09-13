@@ -39,16 +39,16 @@ gulp.task("bootstrap-buildsystem", (done) => {
 // utility task that builds the packages into JavaScript using standard tsc
 gulp.task("build:packages", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").engine;
-    const config = require("../pnp-build-config.js");
+    const engine = require("../build/packages/buildsystem").builder;
+    const config = require("../pnp-build.js");
 
     engine(pkg.version, config).then(done).catch(e => done(e));
 });
 
 gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").engine;
-    const config = require("../pnp-debug-config.js");
+    const engine = require("../build/packages/buildsystem").builder;
+    const config = require("../pnp-debug.js");
 
     engine(pkg.version, config).then(done).catch(e => done(e));
 });

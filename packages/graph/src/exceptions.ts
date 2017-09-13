@@ -8,3 +8,14 @@ export class NoGraphClientAvailableException extends Error {
         Logger.log({ data: null, level: LogLevel.Error, message: this.message });
     }
 }
+
+export class GraphBatchParseException extends Error {
+
+    constructor(msg: string) {
+        super(msg);
+        this.name = "GraphBatchParseException";
+        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
+    }
+}
+
+

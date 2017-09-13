@@ -6,6 +6,7 @@ function getBanner() {
 
     return [
         "/**",
+        `@license`,
         ` * ${pkg.name} v${pkg.version} - ${pkg.description}`,
         ` * ${pkg.license} (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)`,
         " * Copyright (c) 2017 Microsoft",

@@ -1,5 +1,5 @@
 import { ODataBatch } from "@pnp/odata";
-import { Util, mergeHeaders, TypedHash } from "@pnp/common";
+import { Util, mergeHeaders } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { HttpClient } from "./net/httpclient";
 import { SPRuntimeConfig } from "./config/splibconfig";
@@ -80,9 +80,11 @@ export class SPBatch extends ODataBatch {
 
                     let method = reqInfo.method;
 
-                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
-                        method = reqInfo.options.headers["X-HTTP-Method"];
-                        delete reqInfo.options.headers["X-HTTP-Method"];
+                    const castHeaders: any = reqInfo.options.headers;
+                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof castHeaders["X-HTTP-Method"] !== "undefined") {
+
+                        method = castHeaders["X-HTTP-Method"];
+                        delete castHeaders["X-HTTP-Method"];
                     }
 
                     batchBody.push(`${method} ${url} HTTP/1.1\n`);
@@ -111,7 +113,7 @@ export class SPBatch extends ODataBatch {
                 }
 
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:$$Version$$");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-$$Version$$");
                 }
 
                 // write headers into batch body
@@ -134,13 +136,11 @@ export class SPBatch extends ODataBatch {
 
             batchBody.push(`--batch_${this.batchId}--\n`);
 
-            const batchHeaders: TypedHash<string> = {
-                "Content-Type": `multipart/mixed; boundary=batch_${this.batchId}`,
-            };
-
             const batchOptions = {
                 "body": batchBody.join(""),
-                "headers": batchHeaders,
+                "headers": {
+                    "Content-Type": `multipart/mixed; boundary=batch_${this.batchId}`,
+                },
                 "method": "POST",
             };
 

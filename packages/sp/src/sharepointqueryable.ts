@@ -12,7 +12,6 @@ import {
 } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
-import { AlreadyInBatchException } from "./exceptions";
 import { HttpClient } from "./net/httpclient";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
@@ -24,12 +23,7 @@ export interface SharePointQueryableConstructor<T> {
  * SharePointQueryable Base Class
  *
  */
-export class SharePointQueryable extends ODataQueryable {
-
-    /**
-     * Tracks the batch of which this query may be part
-     */
-    private _batch: SPBatch;
+export class SharePointQueryable extends ODataQueryable<SPBatch> {
 
     /**
      * Creates a new instance of the SharePointQueryable class
@@ -43,7 +37,6 @@ export class SharePointQueryable extends ODataQueryable {
 
         this._options = {};
         this._query = new Dictionary<string>();
-        this._batch = null;
 
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
@@ -88,28 +81,6 @@ export class SharePointQueryable extends ODataQueryable {
     }
 
     /**
-     * Adds this query to the supplied batch
-     *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
-     */
-    public inBatch(batch: SPBatch): this {
-
-        if (this._batch !== null) {
-            throw new AlreadyInBatchException();
-        }
-
-        this._batch = batch;
-
-        return this;
-    }
-
-    /**
      * Gets the full url with query information
      *
      */
@@ -131,33 +102,6 @@ export class SharePointQueryable extends ODataQueryable {
         }
 
         return url;
-    }
-
-    /**
-     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
-     */
-    protected addBatchDependency(): () => void {
-        if (this.hasBatch) {
-            return this._batch.addDependency();
-        }
-
-        return () => null;
-    }
-
-    /**
-     * Indicates if the current query has a batch associated
-     *
-     */
-    protected get hasBatch(): boolean {
-        return this._batch !== null;
-    }
-
-    /**
-     * The batch currently associated with this query or null
-     *
-     */
-    protected get batch(): SPBatch {
-        return this.hasBatch ? this._batch : null;
     }
 
     /**
@@ -224,7 +168,7 @@ export class SharePointQueryable extends ODataQueryable {
 
             // build our request context
             const context: RequestContext<T> = {
-                batch: this._batch,
+                batch: this.batch,
                 batchDependency: dependencyDispose,
                 cachingOptions: this._cachingOptions,
                 clientFactory: () => new HttpClient(),

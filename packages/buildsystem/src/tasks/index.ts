@@ -1,10 +1,5 @@
-import { BuildContext } from "../buildcontext";
+import * as _Build from "./build/index";
+import * as _Package from "./package/index";
 
-export type TaskFunction = (ctx: BuildContext) => Promise<void>;
-
-export * from "./build-project";
-export * from "./copy-assets";
-export * from "./copy-package-file";
-export * from "./install-npm-dependencies";
-export * from "./replace-debug";
-export * from "./replace-sp-http-version";
+export let Build = _Build;
+export let Package = _Package;

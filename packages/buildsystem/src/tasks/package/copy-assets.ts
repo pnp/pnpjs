@@ -1,7 +1,6 @@
 declare var require: (s: string) => any;
-import { BuildContext } from "../buildcontext";
+import { PackageContext } from "./context";
 const pump = require("pump");
-import { default as pump } from "pump";
 import { src, dest } from "gulp";
 
 /**
@@ -9,7 +8,7 @@ import { src, dest } from "gulp";
  * 
  * @param ctx The build context 
  */
-export function copyAssets(ctx: BuildContext) {
+export function copyAssets(ctx: PackageContext) {
 
     return new Promise((resolve, reject) => {
 

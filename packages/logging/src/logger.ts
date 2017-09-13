@@ -10,6 +10,9 @@ export class Logger {
 
     private static _instance: LoggerImpl;
 
+    /**
+     * Gets or sets the active log level to apply for log filtering
+     */
     public static get activeLogLevel(): LogLevel {
         return Logger.instance.activeLogLevel;
     }

@@ -1,14 +1,5 @@
 import { Logger, LogLevel } from "@pnp/logging";
 
-export class AlreadyInBatchException extends Error {
-
-    constructor(msg = "This query is already part of a batch.") {
-        super(msg);
-        this.name = "AlreadyInBatchException";
-        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
-    }
-}
-
 export class SPBatchParseException extends Error {
 
     constructor(msg: string) {

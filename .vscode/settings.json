@@ -4,10 +4,11 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "lib": true,
-        "**/node_modules": true,
+        "**/node_modules": false,
         "coverage": true,
-        "build": true,
-        "debugging": true
+        "build": false,
+        "debugging": true,
+        "dist": false
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "./node_modules/typescript/lib"

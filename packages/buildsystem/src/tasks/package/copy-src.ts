@@ -1,24 +1,23 @@
 declare var require: (s: string) => any;
-import { BuildContext } from "../buildcontext";
+import { PackageContext } from "./context";
 const pump = require("pump");
 import { src, dest } from "gulp";
-const replace = require("gulp-replace");
+const path = require("path");
 
 /**
- * Replaces the $$Version$$ string in the SharePoint HttpClient
+ * Copies static assets into the target folder
  * 
  * @param ctx The build context 
  */
-export function replaceSPHttpVersion(ctx: BuildContext) {
+export function copySrc(ctx: PackageContext) {
 
     return new Promise((resolve, reject) => {
 
         pump([
-            src("./src/net/httpclient.js", {
-                cwd: ctx.targetFolder,
+            src(["./src/**/*.d.ts"], {
+                cwd: ctx.projectFolder,
             }),
-            replace("$$Version$$", ctx.version),
-            dest(ctx.targetFolder, {
+            dest(path.join(ctx.targetFolder, "src"), {
                 overwrite: true,
             }),
         ], (err: (Error | null)) => {

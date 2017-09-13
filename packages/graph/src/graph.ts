@@ -5,6 +5,10 @@ export {
 } from "./groups";
 
 export {
+    GraphBatch,
+} from "./batch";
+
+export {
     GraphQueryable,
     GraphQueryableCollection,
     GraphQueryableInstance,

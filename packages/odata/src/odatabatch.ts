@@ -4,7 +4,7 @@ import { Util, FetchOptions } from "@pnp/common";
 export interface ODataBatchRequestInfo {
     url: string;
     method: string;
-    options: any;
+    options: FetchOptions;
     parser: ODataParser<any>;
     resolve: ((d: any) => void) | null;
     reject: ((error: any) => void) | null;

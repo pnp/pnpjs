@@ -164,6 +164,14 @@ export class Util {
     }
 
     /**
+     * Determines if an object is both defined and not null
+     * @param obj Object to test
+     */
+    public static objectDefinedNotNull(obj: any): boolean {
+        return typeof obj !== "undefined" && obj !== null;
+    }
+
+    /**
      * @returns whether the provided parameter is a JavaScript Array or not.
     */
     public static isArray(array: any): boolean {

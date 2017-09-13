@@ -9,13 +9,20 @@ import {
 import { ODataParser } from "./core";
 import { ODataDefaultParser } from "./parsers";
 import { ICachingOptions } from "./caching";
+import { AlreadyInBatchException } from "./exceptions";
+import { ODataBatch } from "./odatabatch";
 import {
     RequestContext,
     PipelineMethods,
     pipe,
 } from "./pipeline";
 
-export abstract class ODataQueryable {
+export abstract class ODataQueryable<BatchType extends ODataBatch> {
+
+    /**
+     * Tracks the batch of which this query may be part
+     */
+    protected _batch: BatchType;
 
     /**
      * Additional options to be set before sending actual http request
@@ -91,6 +98,28 @@ export abstract class ODataQueryable {
     }
 
     /**
+     * Adds this query to the supplied batch
+     *
+     * @example
+     * ```
+     *
+     * let b = pnp.sp.createBatch();
+     * pnp.sp.web.inBatch(b).get().then(...);
+     * b.execute().then(...)
+     * ```
+     */
+    public inBatch(batch: BatchType): this {
+
+        if (this.batch !== null) {
+            throw new AlreadyInBatchException();
+        }
+
+        this._batch = batch;
+
+        return this;
+    }
+
+    /**
      * Gets the currentl url, made absolute based on the availability of the _spPageContextInfo object
      *
      */
@@ -132,6 +161,33 @@ export abstract class ODataQueryable {
 
     protected deleteCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
         return this.toRequestContext("DELETE", options, parser, PipelineMethods.default).then(context => pipe(context));
+    }
+
+    /**
+     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
+    */
+    protected addBatchDependency(): () => void {
+        if (this.hasBatch) {
+            return this._batch.addDependency();
+        }
+
+        return () => null;
+    }
+
+    /**
+     * Indicates if the current query has a batch associated
+     *
+     */
+    protected get hasBatch(): boolean {
+        return Util.objectDefinedNotNull(this._batch);
+    }
+
+    /**
+     * The batch currently associated with this query or null
+     *
+     */
+    protected get batch(): BatchType | null {
+        return this.hasBatch ? this._batch : null;
     }
 
     /**

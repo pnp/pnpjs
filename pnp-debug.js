@@ -1,5 +1,5 @@
 // build funcs
-const tasks = require("./build/packages/buildsystem").Tasks,
+const tasks = require("./build/packages/buildsystem").Tasks.Build,
     path = require("path");
 
 /**
@@ -28,7 +28,7 @@ const config = {
     assets: [],
 
     // the set of tasks run on each project during a build
-    buildChain: [
+    buildPipeline: [
         tasks.buildProject,
         tasks.replaceDebug,
     ],
