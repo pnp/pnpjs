@@ -230,3 +230,11 @@ gulp.task("publish-beta", (done) => {
 
     engine(publishBetaTasks, rl);
 });
+
+gulp.task("publish2", ["package2"], (done) => {
+    
+        const engine = require("../build/packages/buildsystem").publisher;
+        const config = require("../pnp-publish.js");
+    
+        engine(config).then(done).catch(e => done(e));
+    });

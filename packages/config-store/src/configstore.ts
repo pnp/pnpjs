@@ -1,2 +1,2 @@
 export * from "./configuration";
-export * from "./providers";
+export * from "./providers/index";
