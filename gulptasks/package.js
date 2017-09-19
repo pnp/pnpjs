@@ -19,7 +19,7 @@ gulp.task("package:sync", ["package:code"]);
 /**
  * Packages the build files into their dist folders ready for publishing to npm
  */
-gulp.task("package", ["bootstrap-buildsystem", "build:packages"], (done) => {
+gulp.task("package", ["bootstrap-buildsystem", "build"], (done) => {
 
     const engine = require("../build/packages/buildsystem").packager;
     const config = cmdLine(require("../pnp-package.js"));

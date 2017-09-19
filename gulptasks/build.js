@@ -64,7 +64,6 @@ gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 /**
  * Builds the tests and src for testing
  */
-//, "build"
 gulp.task("build:test", ["clean", "lint:tests", "build"], (done) => {
 
     exec(`${tscPath} -p ./test/tsconfig.json`, (error, stdout, stderr) => {
