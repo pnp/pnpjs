@@ -16,14 +16,17 @@ const gulp = require("gulp"),
     gutil = require('gulp-util'),
     path = require("path"),
     pump = require('pump'),
-    fs = require("fs");
+    fs = require("fs"),
+    cmdLine = require("./args").processConfigCmdLine;
+
+const tscPath = ".\\node_modules\\.bin\\tsc";
 
 /**
  * Builds the build system for use by sub tasks
  */
 gulp.task("bootstrap-buildsystem", (done) => {
 
-    exec(`.\\node_modules\\.bin\\tsc -p ./packages/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
+    exec(`${tscPath} -p ./packages/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
 
         if (error === null) {
             // now we copy over the package.json
@@ -36,15 +39,20 @@ gulp.task("bootstrap-buildsystem", (done) => {
     });
 });
 
-// utility task that builds the packages into JavaScript using standard tsc
-gulp.task("build:packages", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
+/**
+ * Does the main build that is used by package and publish
+ */
+gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
 
     const engine = require("../build/packages/buildsystem").builder;
-    const config = require("../pnp-build.js");
+    const config = cmdLine(require("../pnp-build.js"));
 
     engine(pkg.version, config).then(done).catch(e => done(e));
 });
 
+/**
+ * Builds the files for debugging (F5 in code)
+ */
 gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 
     const engine = require("../build/packages/buildsystem").builder;
@@ -53,30 +61,32 @@ gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
     engine(pkg.version, config).then(done).catch(e => done(e));
 });
 
-gulp.task("build:testing", () => {
+/**
+ * Builds the tests and src for testing
+ */
+//, "build"
+gulp.task("build:test", ["clean", "lint:tests", "build"], (done) => {
 
-    var projectSrc = tsc.createProject("tsconfig.json");
-    var projectTests = tsc.createProject("tsconfig.json");
+    exec(`${tscPath} -p ./test/tsconfig.json`, (error, stdout, stderr) => {
 
-    return merge([
-        gulp.src(config.testing.testsSourceGlob)
-            .pipe(replace("$$Version$$", pkg.version))
-            .pipe(projectTests({
-                compilerOptions: {
-                    types: [
-                        "chai",
-                        "chai-as-promised",
-                        "node",
-                        "mocha"
-                    ]
+        if (error === null) {
+
+            // now we need to rewrite the require @pnp lines to be relative paths
+            pump([
+                gulp.src("./testing/**/*.js"),
+                replace(/require\(['|"]@pnp\/([\w-]*?)['|"]/ig, `require("${path.resolve("./testing/packages/$1").replace(/\\/g, "/")}"`),
+                gulp.dest("./testing"),
+            ], (err) => {
+
+                if (typeof err !== "undefined") {
+                    done(err);
+                } else {
+                    done();
                 }
-            }))
-            .pipe(gulp.dest(config.testing.testingTestsDest)),
-        gulp.src(config.paths.sourceGlob)
-            .pipe(projectSrc())
-            .pipe(gulp.dest(config.testing.testingSrcDest))
-    ]);
-});
+            });
 
-// run the build chain for lib
-gulp.task("build", ["build:packages"]);
+        } else {
+            done(stdout);
+        }
+    });
+});

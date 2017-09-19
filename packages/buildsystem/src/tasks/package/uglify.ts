@@ -31,7 +31,7 @@ function uglifyExec(cwd: string, inFile: string, outFile: string): Promise<void>
 
     return new Promise((resolve, reject) => {
 
-        exec(`${uglifyPath} --comments -c --source-map "content='${inFile}.map'" -o "${outFile}" -- "${inFile}"`,
+        exec(`${uglifyPath} --comments -c --source-map "content='${inFile}.map'" -o "${outFile}" -m -- "${inFile}"`,
             {
                 cwd: cwd,
             }, (error, stdout, stderr) => {

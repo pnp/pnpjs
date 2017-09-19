@@ -14,16 +14,14 @@
                 "../../build/packages/*"
             ]
         },
-        "noImplicitAny": true,
+        "strict": true,
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
-        "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "pretty": false,
         "experimentalDecorators": true,
-        "strictNullChecks": true,
         "noFallthroughCasesInSwitch": true,
         "inlineSources": true,
         "sourceMap": true,

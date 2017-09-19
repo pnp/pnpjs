@@ -6,11 +6,13 @@
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "4.0.4",
-    "@types/chai-as-promised": "0.0.31",
+    "@types/chai-as-promised": "7.1.0",
     "@types/core-js": "^0.9.43",
     "@types/gulp-util": "^3.0.31",
+    "@microsoft/microsoft-graph-types": "^1.0.1",
     "@types/mocha": "2.2.42",
     "@types/node": "^8.0.26",
+    "@types/sharepoint": "2013.1.9",
     "chai": "4.1.1",
     "chai-as-promised": "7.1.1",
     "del": "3.0.0",
@@ -58,6 +60,12 @@
     "tools",
     "spfx",
     "sharepoint framework"
+  ],
+  "maintainers": [
+    {
+      "name": "patrick-rodgers",
+      "email": "patrick.rodgers@microsoft.com"
+    }
   ],
   "bugs": {
     "url": "https://github.com/pnp/pnp/issues"

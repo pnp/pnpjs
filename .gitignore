@@ -20,7 +20,7 @@ node_modules
 
 # generated folders/files
 build
-lib
+dist
 debugging
 
 # Optional npm cache directory

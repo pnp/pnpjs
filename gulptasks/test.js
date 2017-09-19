@@ -13,25 +13,40 @@ var gulp = require("gulp"),
     config = require('./@configuration.js'),
     istanbul = require("gulp-istanbul");
 
-gulp.task("_istanbul:hook", ["build:testing"], () => {
+gulp.task("_istanbul:hook", ["build:test"], () => {
 
-    return gulp.src(config.testing.testingSrcDestGlob)
+    // we hook the built packages
+    return gulp.src("./testing/packages/**/*.js")
         .pipe(istanbul())
         .pipe(istanbul.hookRequire());
 });
 
-gulp.task("test", ["clean", "build:testing", "_istanbul:hook"], () => {
+gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
 
     // when using single, grab only that test.js file - otherwise use the entire test.js glob
-    let path = yargs.single ? './testing/tests/{path}.test.js'.replace('{path}', yargs.single) : config.testing.testingTestsDestGlob;
+
+    // we use the built *.test.js files here
+    let paths = ["./testing/test/main.js", "./testing/**/*.test.js"];
+
+    // update to only process specific packages
+    if (yargs.packages) {
+
+        let packages = yargs.packages.split(",").map(s => s.trim());
+
+        if (!Array.isArray(packages)) {
+            packages = [packages];
+        }
+
+        paths = packages.map(p => `./testing/packages/${p}/**/*.js`);
+    }
 
     // determine if we show the full coverage table
-    let reports = yargs["coverage-details"] ? ['text', 'text-summary'] : ['text-summary'];
+    // let reports = yargs["coverage-details"] ? ['text', 'text-summary'] : ['text-summary'];
 
-    return gulp.src(path)
+    return gulp.src(paths)
         .pipe(mocha({ ui: 'bdd', reporter: 'dot', timeout: 30000, "pnp-test-mode": "cmd" }))
         .pipe(istanbul.writeReports({
-            reporters: reports
+            reporters: ['text', 'text-summary']
         })).once('error', function () {
             process.exit(1);
         })

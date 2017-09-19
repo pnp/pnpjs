@@ -22,7 +22,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
     /**
      * Tracks the batch of which this query may be part
      */
-    protected _batch: BatchType;
+    protected _batch: BatchType | null;
 
     /**
      * Additional options to be set before sending actual http request
@@ -52,7 +52,17 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
     /**
      * Any options that were supplied when caching was enabled
      */
-    protected _cachingOptions: ICachingOptions;
+    protected _cachingOptions: ICachingOptions | null;
+
+    constructor() {
+        this._batch = null;
+        this._query = new Dictionary<string>();
+        this._options = {};
+        this._url = "";
+        this._parentUrl = "";
+        this._useCaching = false;
+        this._cachingOptions = null;
+    }
 
     /**
      * Directly concatonates the supplied string to the current url, not normalizing "/" chars
@@ -167,7 +177,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
     protected addBatchDependency(): () => void {
-        if (this.hasBatch) {
+        if (this._batch !== null) {
             return this._batch.addDependency();
         }
 

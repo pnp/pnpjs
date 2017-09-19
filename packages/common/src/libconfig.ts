@@ -45,19 +45,19 @@ export class CommonRuntimeConfigKeys {
 
 export class RuntimeConfigImpl {
 
-    private _values: Dictionary<any>;
+    private _v: Dictionary<any>;
 
     constructor() {
 
-        this._values = new Dictionary();
+        this._v = new Dictionary();
 
         // setup defaults
-        this._values.add(CommonRuntimeConfigKeys.defaultCachingStore, "session");
-        this._values.add(CommonRuntimeConfigKeys.defaultCachingTimeoutSeconds, 60);
-        this._values.add(CommonRuntimeConfigKeys.globalCacheDisable, false);
-        this._values.add(CommonRuntimeConfigKeys.enableCacheExpiration, false);
-        this._values.add(CommonRuntimeConfigKeys.cacheExpirationIntervalMilliseconds, 750);
-        this._values.add(CommonRuntimeConfigKeys.spfxContext, null);
+        this._v.add(CommonRuntimeConfigKeys.defaultCachingStore, "session");
+        this._v.add(CommonRuntimeConfigKeys.defaultCachingTimeoutSeconds, 60);
+        this._v.add(CommonRuntimeConfigKeys.globalCacheDisable, false);
+        this._v.add(CommonRuntimeConfigKeys.enableCacheExpiration, false);
+        this._v.add(CommonRuntimeConfigKeys.cacheExpirationIntervalMilliseconds, 750);
+        this._v.add(CommonRuntimeConfigKeys.spfxContext, null);
     }
 
     /**
@@ -67,12 +67,12 @@ export class RuntimeConfigImpl {
     public extend(config: TypedHash<any>): void {
 
         Object.keys(config).forEach((key: string) => {
-            this._values.add(key, config[key]);
+            this._v.add(key, config[key]);
         });
     }
 
     public get(key: string): any {
-        return this._values.get(key);
+        return this._v.get(key);
     }
 
     public get defaultCachingStore(): "session" | "local" {

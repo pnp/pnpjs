@@ -14,6 +14,7 @@ gulp.task('clean', (done) => {
         "./build",
         "./dist",
         "./debugging",
+        "./testing",
     ];
     
     del(directories).then(() => done()).catch(e => done(e));

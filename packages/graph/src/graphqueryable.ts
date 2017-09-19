@@ -1,6 +1,5 @@
 import {
     Util,
-    Dictionary,
     FetchOptions,
 } from "@pnp/common";
 import {
@@ -33,8 +32,6 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
     constructor(baseUrl: string | GraphQueryable, path?: string) {
         super();
 
-        this._query = new Dictionary<string>();
-
         if (typeof baseUrl === "string") {
 
             const urlStr = baseUrl as string;
@@ -44,6 +41,7 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
 
             const q = baseUrl as GraphQueryable;
             this._parentUrl = q._url;
+            this._options = q._options;
             this._url = Util.combinePaths(this._parentUrl, path);
         }
     }

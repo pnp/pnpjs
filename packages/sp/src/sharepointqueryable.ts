@@ -35,9 +35,6 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
     constructor(baseUrl: string | SharePointQueryable, path?: string) {
         super();
 
-        this._options = {};
-        this._query = new Dictionary<string>();
-
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.

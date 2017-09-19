@@ -1388,3 +1388,18 @@ export interface WikiPageCreationInformation {
      */
     WikiHtmlContent: string;
 }
+
+export enum RenderListDataOptions {
+    None = 0,
+    ContextInfo = 1,
+    ListData = 2,
+    ListSchema = 4,
+    MenuView = 8,
+}
+
+export interface RenderListDataParameters {
+    ViewXml?: string;
+    Paging?: string;
+    FolderServerRelativeUrl?: string;
+    RenderOptions?: RenderListDataOptions;
+}

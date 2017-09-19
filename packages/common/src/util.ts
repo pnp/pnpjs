@@ -1,5 +1,3 @@
-import { TypedHash } from "./collections";
-
 export class Util {
 
     /**
@@ -201,9 +199,9 @@ export class Util {
      * @param noOverwrite If true existing properties on the target are not overwritten from the source
      *
      */
-    public static extend(target: any, source: TypedHash<any>, noOverwrite = false): any {
+    public static extend(target: any, source: any, noOverwrite = false): any {
 
-        if (source === null || typeof source === "undefined") {
+        if (!Util.objectDefinedNotNull(source)) {
             return target;
         }
 

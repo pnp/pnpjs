@@ -7,8 +7,9 @@
         "**/node_modules": true,
         "coverage": true,
         "build": false,
-        "debugging": true,
-        "dist": true
+        "debugging": false,
+        "dist": true,
+        "testing": false
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "./node_modules/typescript/lib"

@@ -7,7 +7,7 @@ import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
 import { Util, TypedHash } from "@pnp/common";
-import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData } from "./types";
+import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
 import { NotSupportedInBatchException } from "./exceptions";
@@ -375,6 +375,28 @@ export class List extends SharePointQueryableSecurable {
             } else {
                 return data;
             }
+        });
+    }
+
+    /**
+     * Returns the data for the specified query view
+     * 
+     * @param parameters The parameters to be used to render list data as JSON string.
+     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     */
+    public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null): Promise<any> {
+
+        const postBody = {
+            overrideParameters: Util.extend({
+                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
+            }, overrideParameters),
+            parameters: Util.extend({
+                "__metadata": { "type": "SP.RenderListDataParameters" },
+            }, parameters),
+        };
+
+        return this.clone(List, "RenderListDataAsStream", true).postCore({
+            body: JSON.stringify(postBody),
         });
     }
 

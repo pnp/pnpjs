@@ -6,11 +6,11 @@ import { exec } from "child_process";
  * 
  * @param ctx The build context 
  */
-export function publishPackage(ctx: PublishContext) {
+export function publishBetaPackage(ctx: PublishContext) {
 
     return new Promise((resolve, reject) => {
 
-        exec("npm publish --access public",
+        exec("npm publish --tag beta --access public",
             {
                 cwd: ctx.packageFolder,
             }, (error, stdout, stderr) => {
