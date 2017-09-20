@@ -1,10 +1,11 @@
-import { Util } from "./utils/util";
-import { PnPClientStorage } from "./utils/storage";
-import { Settings } from "./configuration/configuration";
-import { Logger } from "./utils/logging";
-import { SPRest } from "./sharepoint/rest";
-import { setRuntimeConfig, LibraryConfiguration } from "./configuration/pnplibconfig";
-import { GraphRest } from "./graph/rest";
+import { Logger } from "@pnp/logging";
+import { Util, PnPClientStorage } from "@pnp/common";
+import { Settings } from "@pnp/config-store";
+import { SPRest } from "@pnp/sp";
+import { GraphRest } from "@pnp/graph";
+
+
+import { setup as _setup, PnPConfiguration } from "./config/pnplibconfig";
 
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
@@ -43,7 +44,7 @@ export const log = Logger;
 /**
  * Allows for the configuration of the library
  */
-export const setup: (config: LibraryConfiguration) => void = setRuntimeConfig;
+export const setup: (config: PnPConfiguration) => void = _setup;
 
 // /**
 //  * Expose a subset of classes from the library for public consumption

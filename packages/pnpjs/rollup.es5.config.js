@@ -1,6 +1,6 @@
 const sourcemaps = require("rollup-plugin-sourcemaps");
 
-const moduleName = "config-store";
+const moduleName = "pnpjs";
 
 module.exports = {
     input: `./build/packages/${moduleName}/es5/index.js`,
@@ -9,7 +9,7 @@ module.exports = {
     output: [{
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.umd.js`,
         format: "umd",
-        name: "pnp.config-store",
+        name: "$pnp",
         sourcemap: true,
     },
     {

@@ -127,6 +127,16 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): Webs {
+        return this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+    }
+
+    /**
      * Gets a collection of WebInfos for this web's subwebs
      *
      */

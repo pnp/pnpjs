@@ -46,7 +46,8 @@ const config = {
             name: "sp-addinhelpers",
             buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
         },
-        "config-store"
+        "config-store",
+        "pnpjs",
     ],
 
     // relative to the package folder

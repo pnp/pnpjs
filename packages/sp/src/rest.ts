@@ -184,3 +184,5 @@ export class SPRest {
         return instance.configure(this._options);
     }
 }
+
+export let sp = new SPRest();

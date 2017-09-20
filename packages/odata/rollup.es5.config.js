@@ -9,7 +9,7 @@ module.exports = {
     output: [{
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.umd.js`,
         format: "umd",
-        name: "pnp",
+        name: "pnp.odata",
         sourcemap: true,
     },
     {

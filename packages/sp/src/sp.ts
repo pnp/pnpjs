@@ -4,6 +4,11 @@ export {
 } from "./attachmentfiles";
 
 export {
+    SPConfiguration,
+    SPConfigurationPart,
+} from "./config/splibconfig";
+
+export {
     FieldAddResult,
     FieldUpdateResult,
 } from "./fields";
@@ -79,6 +84,11 @@ export {
     RelatedItem,
     RelatedItemManger,
 } from "./relateditems";
+
+export {
+    sp,
+    SPRest,
+} from "./rest";
 
 export {
     RoleDefinitionUpdateResult,

@@ -35,6 +35,7 @@ const config = {
         "nodejs",
         "sp-addinhelpers",
         "config-store",
+        "pnpjs",
     ],
 
     // the set of tasks run on each project during a build
