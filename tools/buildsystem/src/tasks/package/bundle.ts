@@ -47,12 +47,35 @@ class PnPLocalResolver {
 export function bundle(ctx: PackageContext) {
 
     // create our webpack config
-    const config = {
+    const config = [{
         cache: true,
         devtool: "source-map",
         entry: `./build/packages/${ctx.name}/es5/index.js`,
         output: {
             filename: `${ctx.name}.es5.umd.bundle.js`,
+            library: "pnp",
+            libraryTarget: "umd",
+            path: path.join(ctx.targetFolder, "dist"),
+        },
+        plugins: [
+            new webpack.BannerPlugin({ banner: "// TODO:: banner", entryOnly: true, raw: true }),
+            new webpack.DefinePlugin({
+                "process.env": {
+                    "NODE_ENV": JSON.stringify("production"),
+                },
+            }),
+        ],
+        resolve: {
+            extensions: [".js"],
+            plugins: [new PnPLocalResolver("described-resolve", "resolve")],
+        },
+    },
+    {
+        cache: true,
+        devtool: "source-map",
+        entry: `./build/packages/${ctx.name}/es5/index.js`,
+        output: {
+            filename: `${ctx.name}.es5.umd.bundle.min.js`,
             library: "pnp",
             libraryTarget: "umd",
             path: path.join(ctx.targetFolder, "dist"),
@@ -72,7 +95,7 @@ export function bundle(ctx: PackageContext) {
             extensions: [".js"],
             plugins: [new PnPLocalResolver("described-resolve", "resolve")],
         },
-    };
+    }];
 
     return new Promise((resolve, reject) => {
 
@@ -82,9 +105,9 @@ export function bundle(ctx: PackageContext) {
                 reject(err);
             }
 
-            console.log(stats.toString({
-                colors: true,
-            }));
+            // console.log(stats.toString({
+            //     colors: true,
+            // }));
 
             resolve();
         });
