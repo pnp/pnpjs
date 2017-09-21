@@ -1,15 +1,23 @@
 import { Logger } from "@pnp/logging";
 import { Util, PnPClientStorage } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
-import { SPRest } from "@pnp/sp";
-import { GraphRest } from "@pnp/graph";
-
-
+import { GraphRest, graph as _graph } from "@pnp/graph";
+import { SPRestAddIn } from "@pnp/sp-addinhelpers";
 import { setup as _setup, PnPConfiguration } from "./config/pnplibconfig";
 
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
  */
+
+/**
+ * Re-export everything from the dependencies to match the previous pattern
+ */
+export * from "@pnp/sp";
+export * from "@pnp/graph";
+export * from "@pnp/common";
+export * from "@pnp/logging";
+export * from "@pnp/config-store";
+export * from "@pnp/odata";
 
 /**
  * Utility methods
@@ -19,12 +27,12 @@ export const util = Util;
 /**
  * Provides access to the SharePoint REST interface
  */
-export const sp = new SPRest();
+export const sp = new SPRestAddIn();
 
 /**
  * Provides access to the Microsoft Graph REST interface
  */
-export const graph = new GraphRest();
+// export const graph = new GraphRest();
 
 /**
  * Provides access to local and session storage
@@ -59,7 +67,7 @@ const Def = {
     /**
      * Provides access to the Microsoft Graph REST interface
      */
-    graph: graph,
+    graph: <GraphRest>_graph,
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */

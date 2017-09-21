@@ -26,12 +26,12 @@ const tscPath = ".\\node_modules\\.bin\\tsc";
  */
 gulp.task("bootstrap-buildsystem", (done) => {
 
-    exec(`${tscPath} -p ./packages/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
+    exec(`${tscPath} -p ./tools/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
 
         if (error === null) {
             // now we copy over the package.json
-            fs.createReadStream('./packages/buildsystem/package.json')
-                .pipe(fs.createWriteStream('./build/packages/buildsystem/package.json'))
+            fs.createReadStream('./tools/buildsystem/package.json')
+                .pipe(fs.createWriteStream('./build/tools/buildsystem/package.json'))
                 .on("close", () => done());
         } else {
             done(stdout);
@@ -44,7 +44,7 @@ gulp.task("bootstrap-buildsystem", (done) => {
  */
 gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").builder;
+    const engine = require("../build/tools/buildsystem").builder;
     const config = cmdLine(require("../pnp-build.js"));
 
     engine(pkg.version, config).then(done).catch(e => done(e));
@@ -55,7 +55,7 @@ gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
  */
 gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").builder;
+    const engine = require("../build/tools/buildsystem").builder;
     const config = require("../pnp-debug.js");
 
     engine(pkg.version, config).then(done).catch(e => done(e));

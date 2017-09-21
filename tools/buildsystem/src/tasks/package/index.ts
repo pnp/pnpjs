@@ -1,3 +1,4 @@
+export * from "./bundle";
 export * from "./context";
 export * from "./copy-assets";
 export * from "./copy-src";

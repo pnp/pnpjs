@@ -11,7 +11,7 @@ const gulp = require("gulp"),
 
 gulp.task("publish", ["package"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").publisher;
+    const engine = require("../build/tools/buildsystem").publisher;
     const config = cmdLine(require("../pnp-publish.js"));
 
     engine(config).then(done).catch(e => done(e));
@@ -19,7 +19,7 @@ gulp.task("publish", ["package"], (done) => {
 
 gulp.task("publish-beta", ["package"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").publisher;
+    const engine = require("../build/tools/buildsystem").publisher;
     const config = cmdLine(require("../pnp-publish-beta.js"));
 
     engine(config).then(done).catch(e => done(e));

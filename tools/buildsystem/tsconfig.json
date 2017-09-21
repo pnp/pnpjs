@@ -4,7 +4,7 @@
         "module": "commonjs",
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/buildsystem",
+        "outDir": "../../build/tools/buildsystem",
         "declaration": true,
         "types": [],
         "lib": [

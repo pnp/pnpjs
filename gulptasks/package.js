@@ -21,7 +21,7 @@ gulp.task("package:sync", ["package:code"]);
  */
 gulp.task("package", ["bootstrap-buildsystem", "build"], (done) => {
 
-    const engine = require("../build/packages/buildsystem").packager;
+    const engine = require("../build/tools/buildsystem").packager;
     const config = cmdLine(require("../pnp-package.js"));
 
     engine(config).then(done).catch(e => done(e));

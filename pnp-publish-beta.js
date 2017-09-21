@@ -1,5 +1,5 @@
 // build funcs
-const tasks = require("./build/packages/buildsystem").Tasks.Publish,
+const tasks = require("./build/tools/buildsystem").Tasks.Publish,
     path = require("path");
     basePublishConfig = require("./pnp-publish");
 

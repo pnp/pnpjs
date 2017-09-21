@@ -1,5 +1,5 @@
 // build funcs
-const tasks = require("./build/packages/buildsystem").Tasks.Package,
+const tasks = require("./build/tools/buildsystem").Tasks.Package,
     path = require("path");
 
 const defaultPackagePipeline = [
@@ -9,6 +9,7 @@ const defaultPackagePipeline = [
     tasks.copySrc,
     tasks.writePackageFile,
     tasks.uglify,
+    tasks.bundle,
 ];
 
 /**

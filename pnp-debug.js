@@ -1,5 +1,5 @@
 // build funcs
-const tasks = require("./build/packages/buildsystem").Tasks.Build,
+const tasks = require("./build/tools/buildsystem").Tasks.Build,
     path = require("path");
 
 /**

@@ -10,7 +10,8 @@
     "@pnp/odata": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER",
     "@pnp/graph": "0.0.0-PLACEHOLDER",
-    "@pnp/config-store": "0.0.0-PLACEHOLDER"
+    "@pnp/config-store": "0.0.0-PLACEHOLDER",
+    "@pnp/sp-addinhelpers": "0.0.0-PLACEHOLDER"
   },
   "author": {
     "name": "Microsoft and other contributors"
