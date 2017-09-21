@@ -21,7 +21,7 @@ class PnPLocalResolver {
 
             if (/^@pnp\//i.test(info.request)) {
 
-                const moduleName = /^@pnp\/(\w*?)$/i.exec(info.request)[1];
+                const moduleName = /^@pnp\/([\w-]*?)$/i.exec(info.request)[1];
 
                 const o: ResolutionInfo = Object.assign({}, info, {
                     request: path.resolve("./dist/packages", moduleName),
