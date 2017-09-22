@@ -7,20 +7,26 @@
 //******************************************************************************
 
 const gulp = require("gulp"),
+    path = require("path"),
     cmdLine = require("./args").processConfigCmdLine;
+
+// give outselves a single reference to the projectRoot
+const projectRoot = path.resolve(__dirname, "../..");
+
+function doPublish(configFileName, done) {
+
+    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).publisher;
+    const config = cmdLine(require(path.join(projectRoot, configFileName)));
+
+    engine(config).then(done).catch(e => done(e));
+}
 
 gulp.task("publish", ["package"], (done) => {
 
-    const engine = require("../build/tools/buildsystem").publisher;
-    const config = cmdLine(require("../pnp-publish.js"));
-
-    engine(config).then(done).catch(e => done(e));
+    doPublish("./pnp-publish.js", done);
 });
 
 gulp.task("publish-beta", ["package"], (done) => {
 
-    const engine = require("../build/tools/buildsystem").publisher;
-    const config = cmdLine(require("../pnp-publish-beta.js"));
-
-    engine(config).then(done).catch(e => done(e));
+    doPublish("./pnp-publish-beta.js", done);
 });

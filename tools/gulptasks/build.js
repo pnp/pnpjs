@@ -6,14 +6,9 @@
 //******************************************************************************
 
 const gulp = require("gulp"),
-    tsc = require("gulp-typescript"),
-    config = require('./@configuration.js'),
-    merge = require("merge2"),
-    sourcemaps = require('gulp-sourcemaps'),
     replace = require('gulp-replace'),
-    pkg = require("../package.json"),
+    pkg = require("../../package.json"),
     exec = require('child_process').exec,
-    gutil = require('gulp-util'),
     path = require("path"),
     pump = require('pump'),
     fs = require("fs"),
@@ -21,12 +16,17 @@ const gulp = require("gulp"),
 
 const tscPath = ".\\node_modules\\.bin\\tsc";
 
+// give outselves a single reference to the projectRoot
+const projectRoot = path.resolve(__dirname, "../..");
+
 /**
  * Builds the build system for use by sub tasks
  */
 gulp.task("bootstrap-buildsystem", (done) => {
 
-    exec(`${tscPath} -p ./tools/buildsystem/tsconfig.json`, (error, stdout, stderr) => {
+    exec(`${tscPath} -p ./tools/buildsystem/tsconfig.json`, {
+        cwd: path.resolve(__dirname, "../.."),
+    }, (error, stdout, stderr) => {
 
         if (error === null) {
             // now we copy over the package.json
@@ -44,8 +44,9 @@ gulp.task("bootstrap-buildsystem", (done) => {
  */
 gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/tools/buildsystem").builder;
-    const config = cmdLine(require("../pnp-build.js"));
+    // create an instance of the engine used to process builds
+    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).builder;
+    const config = cmdLine(require(path.join(projectRoot, "./pnp-build.js")));
 
     engine(pkg.version, config).then(done).catch(e => done(e));
 });
@@ -55,8 +56,9 @@ gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
  */
 gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 
-    const engine = require("../build/tools/buildsystem").builder;
-    const config = require("../pnp-debug.js");
+    // create an instance of the engine used to process builds
+    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).builder;
+    const config = cmdLine(require(path.join(projectRoot, "./pnp-debug.js")));
 
     engine(pkg.version, config).then(done).catch(e => done(e));
 });
@@ -64,15 +66,17 @@ gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
 /**
  * Builds the tests and src for testing
  */
-gulp.task("build:test", ["clean", "lint:tests", "build"], (done) => {
+gulp.task("build:test", ["clean", "lint:tests"], (done) => {
 
-    exec(`${tscPath} -p ./test/tsconfig.json`, (error, stdout, stderr) => {
+    exec(`${tscPath} -p ./test/tsconfig.json`, {
+        cwd: projectRoot,
+    }, (error, stdout, stderr) => {
 
         if (error === null) {
 
-            // now we need to rewrite the require @pnp lines to be relative paths
             pump([
-                gulp.src("./testing/**/*.js"),
+                gulp.src(path.join(projectRoot, "./testing") + "/**/*.js"),
+                replace("$$Version$$", pkg.version),
                 replace(/require\(['|"]@pnp\/([\w-]*?)['|"]/ig, `require("${path.resolve("./testing/packages/$1").replace(/\\/g, "/")}"`),
                 gulp.dest("./testing"),
             ], (err) => {
@@ -85,7 +89,8 @@ gulp.task("build:test", ["clean", "lint:tests", "build"], (done) => {
             });
 
         } else {
-            done(stdout);
+            console.log(stdout);
+            done(error);
         }
     });
 });

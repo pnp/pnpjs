@@ -1,7 +1,7 @@
 declare var require: (s: string) => any;
-import { sp } from "../packages/sp";
-import { Logger, LogLevel, ConsoleListener } from "../packages/logging";
-import { SPFetchClient as NodeFetchClient } from "../packages/nodejs";
+import { sp } from "@pnp/sp";
+import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
+import { SPFetchClient as NodeFetchClient } from "@pnp/nodejs";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -9,7 +9,7 @@ import { SPFetchClient as NodeFetchClient } from "../packages/nodejs";
 // if you don't have a settings file defined this will error
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
-const settings = require("../../settings.js");
+const settings = require("../settings.js");
 
 // configure your node options
 sp.setup({
@@ -32,7 +32,7 @@ Logger.activeLogLevel = LogLevel.Info;
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./example";
+import { Example } from "./any";
 Example();
 
 // you can also set break points inside the src folder to examine how things are working

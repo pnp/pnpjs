@@ -8,7 +8,7 @@
         "coverage": true,
         "build": true,
         "debugging": true,
-        "dist": false,
+        "dist": true,
         "testing": true
     },
     "typescript.validate.enable": true,

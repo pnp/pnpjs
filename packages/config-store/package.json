@@ -4,7 +4,9 @@
   "description": "pnp - provides a way to manage configuration within your application",
   "main": "./index.js",
   "typings": "./index",
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "1.7.1"
+  },
   "peerDependencies": {
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER",

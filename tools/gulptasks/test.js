@@ -7,10 +7,7 @@
 
 var gulp = require("gulp"),
     mocha = require("gulp-mocha"),
-    istanbul = require("gulp-istanbul"),
-    tsc = require("gulp-typescript"),
     yargs = require('yargs').argv,
-    config = require('./@configuration.js'),
     istanbul = require("gulp-istanbul");
 
 gulp.task("_istanbul:hook", ["build:test"], () => {

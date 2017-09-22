@@ -5,6 +5,7 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
+    "tslib": "1.7.1",
     "@types/sharepoint": "2013.1.9"
   },
   "peerDependencies": {

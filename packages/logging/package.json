@@ -4,7 +4,9 @@
   "description": "pnp - light weight logging framework",
   "main": "./index.js",
   "typings": "./index",
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "1.7.1"
+  },
   "author": {
     "name": "Microsoft and other contributors"
   },

@@ -4,7 +4,9 @@
   "description": "pnp - provides shared functionality across all pnp libraries",
   "main": "./index.js",
   "typings": "./index",
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "1.7.1"
+  },
   "peerDependencies": {
     "@pnp/logging": "0.0.0-PLACEHOLDER"
   },

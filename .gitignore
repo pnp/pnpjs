@@ -22,6 +22,7 @@ node_modules
 build
 dist
 debugging
+testing
 
 # Optional npm cache directory
 .npm
@@ -30,6 +31,7 @@ debugging
 debug/*
 !debug/debug.ts
 !debug/example.ts
+!debug/tsconfig.json
 
 # project settings
 settings.js

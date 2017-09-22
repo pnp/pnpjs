@@ -1,4 +1,30 @@
 export {
+    spExtractODataId,
+    spODataEntity,
+    spODataEntityArray,
+} from "./odata";
+
+export {
+    SharePointQueryable,
+    SharePointQueryableInstance,
+    SharePointQueryableCollection,
+    SharePointQueryableConstructor,
+} from "./sharepointqueryable";
+
+export {
+    SharePointQueryableSecurable,
+} from "./sharepointqueryablesecurable";
+
+export {
+    FileFolderShared,
+    SharePointQueryableShareable,
+    SharePointQueryableShareableFile,
+    SharePointQueryableShareableFolder,
+    SharePointQueryableShareableItem,
+    SharePointQueryableShareableWeb,
+} from "./sharepointqueryableshareable";
+
+export {
     AttachmentFileAddResult,
     AttachmentFileInfo,
 } from "./attachmentfiles";
@@ -62,23 +88,6 @@ export {
     ListUpdateResult,
     ListEnsureResult,
 } from "./lists";
-
-export {
-    spExtractODataId,
-    spODataEntity,
-    spODataEntityArray,
-} from "./odata";
-
-export {
-    SharePointQueryable,
-    SharePointQueryableInstance,
-    SharePointQueryableCollection,
-    SharePointQueryableConstructor,
-} from "./sharepointqueryable";
-
-export {
-    SharePointQueryableSecurable,
-} from "./sharepointqueryablesecurable";
 
 export {
     RelatedItem,

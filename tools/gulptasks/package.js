@@ -5,7 +5,11 @@
 //* and pnp.min.js.map in the dist folder
 //******************************************************************************
 var gulp = require("gulp"),
+    path = require("path"),
     cmdLine = require("./args").processConfigCmdLine;
+
+// give outselves a single reference to the projectRoot
+const projectRoot = path.resolve(__dirname, "../..");
 
 // package the assets to dist
 // gulp.task("package:assets", () => {
@@ -21,8 +25,8 @@ gulp.task("package:sync", ["package:code"]);
  */
 gulp.task("package", ["bootstrap-buildsystem", "build"], (done) => {
 
-    const engine = require("../build/tools/buildsystem").packager;
-    const config = cmdLine(require("../pnp-package.js"));
+    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).packager;
+    const config = cmdLine(require(path.join(projectRoot, "./pnp-package.js")));
 
     engine(config).then(done).catch(e => done(e));
 });

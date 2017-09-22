@@ -4,13 +4,9 @@
         "module": "commonjs",
         "baseUrl": ".",
         "rootDir": "../",
-        "outDir": "../testing/",
-        "declaration": false,
+        "outDir": "../debugging/",
+        "declaration": true,
         "types": [
-            "chai",
-            "chai-as-promised",
-            "node",
-            "mocha",
             "sharepoint"
         ],
         "lib": [
@@ -24,15 +20,13 @@
         },
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
-        "sourceMap": false,
+        "inlineSources": true,
+        "sourceMap": true,
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
-        "experimentalDecorators": true,
-        "removeComments": true,
-        "importHelpers": true
+        "experimentalDecorators": true
     },
     "include": [
-        "./main.ts",
-        "../packages/**/*.ts"
+        "./debug.ts"
     ]
 }

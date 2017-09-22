@@ -4,7 +4,9 @@
     "description": "pnp - provides SharePoint query functionality",
     "main": "./index.js",
     "typings": "./index",
-    "dependencies": {},
+    "dependencies": {
+      "tslib": "1.7.1"
+    },
     "peerDependencies": {
       "@pnp/common": "0.0.0-PLACEHOLDER",
       "@pnp/logging": "0.0.0-PLACEHOLDER"

@@ -2,7 +2,7 @@ import { Logger } from "@pnp/logging";
 import { Util, PnPClientStorage } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
 import { GraphRest, graph as _graph } from "@pnp/graph";
-import { SPRestAddIn } from "@pnp/sp-addinhelpers";
+import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
 import { setup as _setup, PnPConfiguration } from "./config/pnplibconfig";
 
 /**
@@ -27,12 +27,12 @@ export const util = Util;
 /**
  * Provides access to the SharePoint REST interface
  */
-export const sp = new SPRestAddIn();
+export const sp = <SPRestAddIn>_sp;
 
 /**
  * Provides access to the Microsoft Graph REST interface
  */
-// export const graph = new GraphRest();
+export const graph = <GraphRest>_graph;
 
 /**
  * Provides access to local and session storage
@@ -67,7 +67,7 @@ const Def = {
     /**
      * Provides access to the Microsoft Graph REST interface
      */
-    graph: <GraphRest>_graph,
+    graph: graph,
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */
