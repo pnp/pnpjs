@@ -1,7 +1,10 @@
 import { Util } from "@pnp/common";
-import { Web } from "./webs";
 import { spGetEntityUrl } from "./odata";
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import {
+    SharePointQueryable,
+    SharePointQueryableInstance,
+    SharePointQueryableCollection,
+} from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
 import {
     RoleType,
@@ -17,6 +20,7 @@ import {
     SharingInformation,
     ShareObjectOptions,
 } from "./types";
+import { extractWebUrl } from "./utils/extractweburl";
 
 /**
  * Internal helper class used to augment classes to include sharing functionality
@@ -69,7 +73,9 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
 
         // start by looking up the role definition id we need to set the roleValue
-        return Web.fromUrl(this.toUrl()).roleDefinitions.select("Id").filter(`RoleTypeKind eq ${roleFilter}`).get().then((def: { Id: number }[]) => {
+        // remove need to reference Web here, which created a circular build issue
+        const w = new SharePointQueryableCollection("_api/web", "roledefinitions");
+        return w.select("Id").filter(`RoleTypeKind eq ${roleFilter}`).get().then((def: { Id: number }[]) => {
 
             if (!Array.isArray(def) || def.length < 1) {
                 throw new Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
@@ -248,19 +254,27 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         // we will give group precedence, because we had to make a choice
         if (typeof group !== "undefined" && group !== null) {
 
+
+
             switch (group) {
                 case RoleType.Contributor:
-                    return Web.fromUrl(this.toUrl()).associatedMemberGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
+                    // remove need to reference Web here, which created a circular build issue
+                    const memberGroup = new SharePointQueryableInstance("_api/web", "associatedmembergroup");
+                    return memberGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
                 case RoleType.Reader:
                 case RoleType.Guest:
-                    return Web.fromUrl(this.toUrl()).associatedVisitorGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
+                    // remove need to reference Web here, which created a circular build issue
+                    const visitorGroup = new SharePointQueryableInstance("_api/web", "associatedvisitorgroup");
+                    return visitorGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
                 default:
                     throw new Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
             }
         } else {
 
             const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
-            return Web.fromUrl(this.toUrl()).roleDefinitions.select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`).getAs<{ Id: number }[]>().then(def => {
+            // remove need to reference Web here, which created a circular build issue
+            const roleDefs = new SharePointQueryableCollection("_api/web", "roledefinitions");
+            return roleDefs.select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`).getAs<{ Id: number }[]>().then(def => {
                 if (def.length < 1) {
                     throw new Error("Could not locate associated role definition for supplied role. Edit and View are supported");
                 }
@@ -269,8 +283,8 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         }
     }
 
-    private getShareObjectWeb(candidate: string): Promise<Web> {
-        return Promise.resolve(Web.fromUrl(candidate, "/_api/SP.Web.ShareObject"));
+    private getShareObjectWeb(candidate: string): Promise<SharePointQueryableInstance> {
+        return Promise.resolve(new SharePointQueryableInstance(extractWebUrl(candidate), "/_api/SP.Web.ShareObject"));
     }
 
     private sendShareObjectRequest(options: any): Promise<SharingResult> {
@@ -295,8 +309,9 @@ export class SharePointQueryableShareableWeb extends SharePointQueryableSecurabl
     public shareWith(loginNames: string | string[], role: SharingRole = SharingRole.View, emailData?: SharingEmailData): Promise<SharingResult> {
 
         const dependency = this.addBatchDependency();
-
-        return Web.fromUrl(this.toUrl(), "/_api/web/url").get().then((url: string) => {
+        // remove need to reference Web here, which created a circular build issue
+        const web = new SharePointQueryableInstance(extractWebUrl(this.toUrl()), "/_api/web/url");
+        return web.get().then((url: string) => {
 
             dependency();
 

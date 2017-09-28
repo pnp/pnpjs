@@ -1,4 +1,3 @@
-import { Web } from "./webs";
 import { RoleAssignments } from "./roles";
 import { BasePermissions, PermissionKind } from "./types";
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
@@ -40,8 +39,9 @@ export class SharePointQueryableSecurable extends SharePointQueryableInstance {
      */
     public getCurrentUserEffectivePermissions(): Promise<BasePermissions> {
 
-        const w = Web.fromUrl(this.toUrl());
-        return w.currentUser.select("LoginName").getAs<{ LoginName: string }>().then(user => {
+        // remove need to reference Web here, which created a circular build issue
+        const w = new SharePointQueryableInstance("_api/web", "currentuser");
+        return w.select("LoginName").getAs<{ LoginName: string }>().then(user => {
 
             return this.getUserEffectivePermissions(user.LoginName);
         });
