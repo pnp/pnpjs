@@ -19,10 +19,10 @@ coverage
 node_modules
 
 # generated folders/files
-build
-dist
-debugging
-testing
+/build
+/dist
+/debugging
+/testing
 
 # Optional npm cache directory
 .npm
