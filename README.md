@@ -1,6 +1,12 @@
 ![SharePoint Patterns and Practices](https://devofficecdn.azureedge.net/media/Default/PnP/sppnp.png)
 
-# This is 100% a work in progress and is not ready for public consumption :) #
+## Pre-release Beta Note
+
+The software packages within this repo are currently pre-release and should be treated as beta versions. Please check them out and feel free to install them for use in non-production projects. We have documentation, samples, and guides coming - but for now have a look around and try things out.
+
+The following gulp commands are currently working: build, package, test, lint, and clean. Additionally F5 debugging works with ./debug/debug.ts - which can easily be modified to call other files.
+
+Have a look around and let us know what you think :)
 
 
 ### Authors
