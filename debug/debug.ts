@@ -1,4 +1,5 @@
 declare var require: (s: string) => any;
+
 import { sp } from "@pnp/sp";
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { SPFetchClient as NodeFetchClient } from "@pnp/nodejs";

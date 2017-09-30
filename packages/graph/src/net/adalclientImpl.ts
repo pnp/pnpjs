@@ -1,10 +1,8 @@
-import AuthenticationContext from "adal-angular";
-
-
+import * as AuthenticationContext from "adal-angular/lib/adal";
 
 export interface AdalJSClientConfig {
     tenant: string;
-    clientID: string;
+    clientId: string;
     redirectUri?: string;
     instance?: string;
     endpoints?: any[];
@@ -21,8 +19,6 @@ export interface AdalJSClientConfig {
 export class AdalJSClient {
 
     constructor(private _config: AdalJSClientConfig) {
-
-        this._config = null;
 
         const g = new AuthenticationContext(_config);
         console.log(JSON.stringify(g, null, 4));
