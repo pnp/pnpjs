@@ -6,6 +6,9 @@
         "outDir": "../../build/packages/graph",
         "strictNullChecks": false
     },
+    "types": [
+        "adal"
+    ],
     "files": [
         "./index.ts"
     ]

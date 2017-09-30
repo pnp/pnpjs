@@ -20,3 +20,8 @@ export {
     GraphConfiguration,
     GraphConfigurationPart,
 } from "./config/graphlibconfig";
+
+export {
+    AdalJSClient,
+    AdalJSClientConfig,
+} from "./net/adalclientimpl";

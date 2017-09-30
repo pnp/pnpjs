@@ -1,6 +1,5 @@
 /**
  * A set of logging levels
- *
  */
 export enum LogLevel {
     Verbose = 0,

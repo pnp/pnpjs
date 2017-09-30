@@ -1,6 +1,6 @@
 import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
 import { GraphHttpClientImpl } from "../net/graphclient";
-import { NoGraphClientAvailableException } from "../exceptions";
+import { Logger, LogLevel } from "@pnp/logging";
 
 export interface GraphConfigurationPart {
     graph?: {
@@ -20,6 +20,15 @@ export interface GraphConfiguration extends LibraryConfiguration, GraphConfigura
 
 export function setup(config: GraphConfiguration): void {
     RuntimeConfig.extend(config);
+}
+
+export class NoGraphClientAvailableException extends Error {
+
+    constructor(msg = "There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.") {
+        super(msg);
+        this.name = "NoGraphClientAvailableException";
+        Logger.log({ data: null, level: LogLevel.Error, message: this.message });
+    }
 }
 
 export class GraphRuntimeConfigImpl {

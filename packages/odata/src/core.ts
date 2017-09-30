@@ -1,5 +1,17 @@
-import { ProcessHttpClientResponseException } from "./exceptions";
 import { Logger, LogLevel } from "@pnp/logging";
+
+/**
+ * Represents an exception with an HttpClient request
+ *
+ */
+export class ProcessHttpClientResponseException extends Error {
+
+    constructor(public readonly status: number, public readonly statusText: string, public readonly data: any) {
+        super(`Error making HttpClient request in queryable: [${status}] ${statusText}`);
+        this.name = "ProcessHttpClientResponseException";
+        Logger.log({ data: this.data, level: LogLevel.Error, message: this.message });
+    }
+}
 
 export interface ODataParser<T> {
     parse(r: Response): Promise<T>;
@@ -41,7 +53,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
             }).catch(e => {
 
                 // we failed to read the body - possibly it is empty. Let's report the original status that caused
-                // the request to fail and log the error with parsing the body if anyone needs it for debugging
+                // the request to fail and log the error without parsing the body if anyone needs it for debugging
                 Logger.log({
                     data: e,
                     level: LogLevel.Warning,

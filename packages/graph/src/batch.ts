@@ -3,7 +3,6 @@ import { Logger, LogLevel } from "@pnp/logging";
 import { Util, beta } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
 import { GraphHttpClient } from "./net/graphclient";
-import { GraphBatchParseException } from "./exceptions";
 
 interface GraphBatchRequestFragment {
     id: string;
@@ -33,6 +32,15 @@ interface GraphBatchResponseFragment {
 interface GraphBatchResponse {
     responses: GraphBatchResponseFragment[];
     nextLink?: string;
+}
+
+export class GraphBatchParseException extends Error {
+
+    constructor(msg: string) {
+        super(msg);
+        this.name = "GraphBatchParseException";
+        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
+    }
 }
 
 export class GraphBatch extends ODataBatch {

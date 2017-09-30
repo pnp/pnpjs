@@ -15,7 +15,7 @@ export interface LogListener {
 }
 
 /**
- * Implementation of ILogListener which logs to the browser console
+ * Implementation of LogListener which logs to the console
  *
  */
 export class ConsoleListener implements LogListener {
@@ -60,7 +60,7 @@ export class ConsoleListener implements LogListener {
 }
 
 /**
- * Implementation of ILogListener which logs to the supplied function
+ * Implementation of LogListener which logs to the supplied function
  *
  */
 export class FunctionListener implements LogListener {

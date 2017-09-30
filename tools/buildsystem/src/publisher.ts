@@ -30,7 +30,7 @@ export function publisher(config: PublishSchema): Promise<void> {
         const packageFile = path.join(projectFolder, "package.json");
         const pkgObj = require(packageFile);
 
-        // establish the context that will be passed through all the build pipeline functions
+        // establish the context that will be passed through all the publish pipeline functions
         const packageContext: PublishContext = {
             name: pkg.name,
             packageFolder: projectFolder,

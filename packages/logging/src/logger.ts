@@ -79,16 +79,6 @@ export class Logger {
     public static log(entry: LogEntry) {
         Logger.instance.log(entry);
     }
-
-    /**
-     * Logs performance tracking data for the the execution duration of the supplied function using console.profile
-     *
-     * @param name The name of this profile boundary
-     * @param f The function to execute and track within this performance boundary
-     */
-    public static measure<T>(name: string, f: () => T): T {
-        return Logger.instance.measure(name, f);
-    }
 }
 
 class LoggerImpl {
@@ -114,19 +104,8 @@ class LoggerImpl {
     }
 
     public log(entry: LogEntry) {
-        if (typeof entry === "undefined" || entry.level < this.activeLogLevel) {
-            return;
-        }
-
-        this.subscribers.map(subscriber => subscriber.log(entry));
-    }
-
-    public measure<T>(name: string, f: () => T): T {
-        console.profile(name);
-        try {
-            return f();
-        } finally {
-            console.profileEnd();
+        if (typeof entry !== "undefined" && this.activeLogLevel <= entry.level) {
+            this.subscribers.map(subscriber => subscriber.log(entry));
         }
     }
 }
