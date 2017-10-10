@@ -51,7 +51,7 @@ export class AdalFetchClient implements HttpClientImpl {
         }
 
         if (!Util.isUrlAbsolute(url)) {
-            url = Util.combinePaths("https://graph.microsoft.com", url);
+            url = Util.combinePaths(this._resource, url);
         }
 
         return this.acquireToken().then(token => {
