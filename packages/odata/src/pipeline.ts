@@ -158,7 +158,7 @@ export class PipelineMethods {
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
                     // check if we have the data in cache and if so resolve the promise and return
-                    const data = cacheOptions.store.get(cacheOptions.key);
+                    let data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
                         // ensure we clear any help batch dependency we are resolving from the cache
                         Logger.log({
@@ -167,6 +167,10 @@ export class PipelineMethods {
                             message: `[${context.requestId}] (${(new Date()).getTime()}) Value returned from cache.`,
                         });
                         context.batchDependency();
+                        // handle the case where a parser needs to take special actions with a cached result (such as getAs)
+                        if (context.parser.hasOwnProperty("hydrate")) {
+                            data = context.parser.hydrate!(data);
+                        }
                         return setResult(context, data).then(ctx => resolve(ctx));
                     }
                 }

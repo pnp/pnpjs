@@ -6,7 +6,6 @@
   "dependencies": {},
   "devDependencies": {
     "@microsoft/microsoft-graph-types": "1.0.1",
-    "@types/adal": "^1.0.29",
     "@types/chai": "4.0.4",
     "@types/chai-as-promised": "7.1.0",
     "@types/core-js": "0.9.43",
@@ -14,7 +13,7 @@
     "@types/mocha": "2.2.43",
     "@types/node": "8.0.28",
     "@types/sharepoint": "2013.1.9",
-    "adal-angular": "1.0.15",
+    "adal-node": "^0.1.22",
     "chai": "4.1.2",
     "chai-as-promised": "7.1.1",
     "del": "3.0.0",

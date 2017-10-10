@@ -6,7 +6,6 @@
   "typings": "./index",
   "dependencies": {
     "@microsoft/microsoft-graph-types": "^1.0.1",
-    "adal-angular": "1.0.15",
     "tslib": "1.7.1"
   },
   "peerDependencies": {

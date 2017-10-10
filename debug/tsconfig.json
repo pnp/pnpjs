@@ -7,7 +7,6 @@
         "outDir": "../debugging/",
         "declaration": true,
         "types": [
-            "adal",
             "sharepoint"
         ],
         "lib": [

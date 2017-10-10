@@ -22,8 +22,13 @@ class SPODataEntityParserImpl<T> extends ODataParserBase<T> {
         super();
     }
 
+    public hydrate = (d: any) => {
+        const o = <T>new this.factory(spGetEntityUrl(d), null);
+        return Util.extend(o, d);
+    }
+
     public parse(r: Response): Promise<T> {
-        return super.parse(r).then(d => {
+        return super.parse(r).then((d: any) => {
             const o = <T>new this.factory(spGetEntityUrl(d), null);
             return Util.extend(o, d);
         });
@@ -34,6 +39,13 @@ class SPODataEntityArrayParserImpl<T> extends ODataParserBase<T[]> {
 
     constructor(protected factory: SharePointQueryableConstructor<T>) {
         super();
+    }
+
+    public hydrate = (d: any[]) => {
+        return d.map(v => {
+            const o = <T>new this.factory(spGetEntityUrl(v), null);
+            return Util.extend(o, v);
+        });
     }
 
     public parse(r: Response): Promise<T[]> {

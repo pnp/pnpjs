@@ -28,7 +28,6 @@ export class GraphHttpClient implements RequestClient {
 
         const opts = Util.extend(options, { headers: headers });
 
-        // TODO: we could process auth here
         return this.fetchRaw(url, opts);
     }
 

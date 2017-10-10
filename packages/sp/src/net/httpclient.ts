@@ -42,6 +42,11 @@ export class HttpClient implements RequestClient {
             headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-$$Version$$");
         }
 
+        if (!headers.has("User-Agent")) {
+            // this marks the requests for understanding by the service
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/$$Version$$");
+        }
+
         opts = Util.extend(opts, { headers: headers });
 
         if (opts.method && opts.method.toUpperCase() !== "GET") {

@@ -14,6 +14,7 @@ export class ProcessHttpClientResponseException extends Error {
 }
 
 export interface ODataParser<T> {
+    hydrate?: (d: any) => T;
     parse(r: Response): Promise<T>;
 }
 
