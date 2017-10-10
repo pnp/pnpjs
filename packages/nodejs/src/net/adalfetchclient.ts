@@ -1,7 +1,9 @@
+/// <reference path="types.d.ts" />
 declare var global: any;
+declare var require: (path: string) => any;
 import { HttpClientImpl } from "../types";
 import { AuthenticationContext } from "adal-node";
-import * as nodeFetch from "node-fetch";
+const nodeFetch = require("node-fetch");
 import { Util } from "@pnp/common";
 
 interface IAuthenticationContext {
