@@ -1,5 +1,7 @@
+declare var global: { fetch(url: string, options: any): Promise<Response> };
+
 export interface ConfigOptions {
-    headers?: string[][] | { [key: string]: string };
+    headers?: string[][] | { [key: string]: string } | Headers;
     mode?: "navigate" | "same-origin" | "no-cors" | "cors";
     credentials?: "omit" | "same-origin" | "include";
     cache?: "default" | "no-store" | "reload" | "no-cache" | "force-cache" | "only-if-cached";
@@ -8,6 +10,10 @@ export interface ConfigOptions {
 export interface FetchOptions extends ConfigOptions {
     method?: string;
     body?: any;
+}
+
+export interface HttpClientImpl {
+    fetch(url: string, options: FetchOptions): Promise<Response>;
 }
 
 export interface RequestClient {
@@ -25,5 +31,37 @@ export function mergeHeaders(target: Headers, source: any): void {
         temp.headers.forEach((value: string, name: string) => {
             target.append(name, value);
         });
+    }
+}
+
+/**
+ * Makes requests using the global/window fetch API
+ */
+export class FetchClient implements HttpClientImpl {
+    public fetch(url: string, options: FetchOptions): Promise<Response> {
+        return global.fetch(url, options);
+    }
+}
+
+/**
+ * Makes requests using the fetch API attaching the supplied token
+ */
+export class BearerTokenFetchClient extends FetchClient {
+
+    constructor(private _token: string) {
+        super();
+    }
+
+    public fetch(url: string, options: FetchOptions = {}): Promise<Response> {
+
+        const headers = new Headers();
+
+        mergeHeaders(headers, options.headers);
+
+        headers.set("Authorization", `Bearer ${this._token}`);
+
+        options.headers = headers;
+
+        return super.fetch(url, options);
     }
 }

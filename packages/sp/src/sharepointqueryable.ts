@@ -12,7 +12,7 @@ import {
 } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
-import { HttpClient } from "./net/httpclient";
+import { SPHttpClient } from "./net/sphttpclient";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 export interface SharePointQueryableConstructor<T> {
@@ -168,7 +168,7 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
                 batch: this.batch,
                 batchDependency: dependencyDispose,
                 cachingOptions: this._cachingOptions,
-                clientFactory: () => new HttpClient(),
+                clientFactory: () => new SPHttpClient(),
                 isBatched: this.hasBatch,
                 isCached: this._useCaching,
                 options: options,

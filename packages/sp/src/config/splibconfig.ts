@@ -1,6 +1,10 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
-import { HttpClientImpl } from "../net/httpclient";
-import { FetchClient } from "../net/fetchclient";
+import {
+    LibraryConfiguration,
+    TypedHash,
+    RuntimeConfig,
+    HttpClientImpl,
+    FetchClient,
+} from "@pnp/common";
 
 export interface SPConfigurationPart {
     sp?: {

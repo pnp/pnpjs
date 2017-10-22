@@ -8,7 +8,7 @@ import {
     RequestContext,
     PipelineMethods,
 } from "@pnp/odata";
-import { GraphHttpClient } from "./net/graphclient";
+import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
 
 

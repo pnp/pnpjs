@@ -1,8 +1,7 @@
 const nodeFetch = require("node-fetch");
 declare var global: any;
 
-import { FetchOptions } from "@pnp/common";
-import { HttpClientImpl } from "../";
+import { FetchOptions, HttpClientImpl } from "@pnp/common";
 
 export class MockFetchClient implements HttpClientImpl {
 

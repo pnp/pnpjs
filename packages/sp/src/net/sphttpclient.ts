@@ -1,13 +1,15 @@
 import { DigestCache } from "./digestcache";
-import { Util, mergeHeaders, FetchOptions, RequestClient } from "@pnp/common";
+import {
+    Util,
+    mergeHeaders,
+    FetchOptions,
+    RequestClient,
+    HttpClientImpl,
+} from "@pnp/common";
 import { SPRuntimeConfig } from "../config/splibconfig";
 import { APIUrlException } from "../exceptions";
 
-export interface HttpClientImpl {
-    fetch(url: string, options: FetchOptions): Promise<Response>;
-}
-
-export class HttpClient implements RequestClient {
+export class SPHttpClient implements RequestClient  {
 
     private _digestCache: DigestCache;
     private _impl: HttpClientImpl;

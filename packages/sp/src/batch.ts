@@ -1,7 +1,7 @@
 import { ODataBatch } from "@pnp/odata";
 import { Util, mergeHeaders } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { HttpClient } from "./net/httpclient";
+import { SPHttpClient } from "./net/sphttpclient";
 import { SPRuntimeConfig } from "./config/splibconfig";
 import { SPBatchParseException } from "./exceptions";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
@@ -29,7 +29,7 @@ export class SPBatch extends ODataBatch {
         // creating the client here allows the url to be populated for nodejs client as well as potentially
         // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
         // below to be correct
-        const client = new HttpClient();
+        const client = new SPHttpClient();
 
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch

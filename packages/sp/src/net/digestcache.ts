@@ -1,4 +1,4 @@
-import { HttpClient } from "./httpclient";
+import { SPHttpClient } from "./sphttpclient";
 import { Util, Dictionary } from "@pnp/common";
 import { ODataDefaultParser } from "@pnp/odata";
 import { SPRuntimeConfig } from "../config/splibconfig";
@@ -13,7 +13,7 @@ const digests = new Dictionary<CachedDigest>();
 
 export class DigestCache {
 
-    constructor(private _httpClient: HttpClient, private _digests: Dictionary<CachedDigest> = digests) { }
+    constructor(private _httpClient: SPHttpClient, private _digests: Dictionary<CachedDigest> = digests) { }
 
     public getDigest(webUrl: string): Promise<string> {
 

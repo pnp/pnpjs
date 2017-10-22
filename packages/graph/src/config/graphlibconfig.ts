@@ -1,5 +1,6 @@
 import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
-import { GraphHttpClientImpl } from "../net/graphclient";
+import { GraphHttpClientImpl } from "../net/graphhttpclient";
+import { SPfxClient } from "../net/spfxclient";
 import { Logger, LogLevel } from "@pnp/logging";
 
 export interface GraphConfigurationPart {
@@ -53,7 +54,7 @@ export class GraphRuntimeConfigImpl {
 
         // then try and use spfx context if available
         if (typeof RuntimeConfig.spfxContext !== "undefined") {
-            return () => RuntimeConfig.spfxContext.graphHttpClient;
+            return () => new SPfxClient(RuntimeConfig.spfxContext.graphHttpClient);
         }
 
         throw new NoGraphClientAvailableException();

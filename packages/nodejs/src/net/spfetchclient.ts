@@ -2,8 +2,7 @@ declare var global: any;
 declare var require: (path: string) => any;
 const nodeFetch = require("node-fetch");
 const u: any = require("url");
-import { HttpClientImpl } from "../types";
-import { Util } from "@pnp/common";
+import { Util, HttpClientImpl } from "@pnp/common";
 import { AuthUrlException } from "../exceptions";
 
 export interface AuthToken {

@@ -1,5 +1,4 @@
-import { HttpClientImpl } from "@pnp/sp";
-import { Util } from "@pnp/common";
+import { Util, HttpClientImpl } from "@pnp/common";
 import { SPRequestExecutorUndefinedException } from "./exceptions";
 
 /**

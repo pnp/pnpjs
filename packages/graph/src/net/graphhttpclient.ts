@@ -5,7 +5,6 @@ import {
     FetchOptions,
 } from "@pnp/common";
 import { GraphRuntimeConfig } from "../config/graphlibconfig";
-// import { APIUrlException } from "../utils/exceptions";
 
 export class GraphHttpClient implements RequestClient {
 

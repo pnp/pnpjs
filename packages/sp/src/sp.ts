@@ -61,9 +61,8 @@ export {
 } from "./folders";
 
 export {
-    HttpClient,
-    HttpClientImpl,
-} from "./net/httpclient";
+    SPHttpClient,
+} from "./net/sphttpclient";
 
 export {
     Item,
