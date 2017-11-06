@@ -4,11 +4,9 @@ needs please complete the below template to ensure we have the details to help. 
 **Please check out the [Developer Guide](https://github.com/SharePoint/PnP-JS-Core/wiki/Developer-Guide) to see if your question is already addressed there. This will help us ensure our documentation covers the most frequent questions.**
 
 #### Category
-[ ] Enhancement
-
-[ ] Bug
-
-[ ] Question
+- [ ] Enhancement
+- [ ] Bug
+- [ ] Question
 
 #### Version
 

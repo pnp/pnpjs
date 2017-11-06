@@ -1,13 +1,15 @@
-| Q               | A
-| --------------- | ---
-| Bug fix?        | [ ]
-| New feature?    | [ ]
-| New sample?      | [ ]
-| Related issues?  | fixes #X, partially #Y, mentioned in #Z
+#### Category
+- [ ] Bug fix?
+- [ ] New feature?
+- [ ] New sample?
+
+#### Related Issues
+
+fixes #X, partially #Y, mentioned in #Z
 
 #### What's in this Pull Request?
 
-Please describe the changes in this PR. Sample description or details around bugs which are being fixed.
+Please describe the changes in this PR. Simple description or details around bugs which are being fixed.
 
 
 #### Guidance
