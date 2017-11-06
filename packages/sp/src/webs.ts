@@ -457,6 +457,15 @@ export class Web extends SharePointQueryableShareableWeb {
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
         return this.clone(Web, `maptoicon(filename='${filename}', progid='${progId}', size=${size})`).get();
     }
+
+    /**
+     * Returns the tenant property corresponding to the specified key in the app catalog site
+     * 
+     * @param key 
+     */
+    public getStorageEntity(key: string): Promise<string> {
+        return this.clone(Web, `getStorageEntity('${key}')`).get();
+    }
 }
 
 /**

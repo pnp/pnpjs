@@ -36,6 +36,16 @@ export class Items extends SharePointQueryableCollection {
     }
 
     /**
+     * Gets BCS Item by string id
+     *
+     * @param stringId The string id of the BCS item to retrieve
+     */
+    public getItemByStringId(stringId: string): Item {
+        // creates an item with the parent list path and append out method call
+        return new Item(this.parentUrl, `getItemByStringId('${stringId}')`);
+    }
+
+    /**
      * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
      *
      * @param skip The starting id where the page should start, use with top to specify pages
