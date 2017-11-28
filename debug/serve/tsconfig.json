@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": "../../",
+        "outDir": "../../serve/",
+        "declaration": false,
+        "types": [
+            "sharepoint"
+        ],
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "paths": {
+            "@pnp/*": [
+                "../../packages/*"
+            ]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "inlineSources": true,
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "experimentalDecorators": true
+    },
+    "include": [
+        "./serve.ts"
+    ]
+}

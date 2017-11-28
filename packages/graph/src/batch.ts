@@ -71,7 +71,7 @@ export class GraphBatch extends ODataBatch {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-        let nextLinkFlag = false;
+        // let nextLinkFlag = false;
 
         return client.fetch(this.batchUrl, batchOptions)
             .then(r => r.json())
@@ -97,7 +97,7 @@ export class GraphBatch extends ODataBatch {
                             throw new GraphBatchParseException("Could not properly parse responses to match requests in batch.");
                         }
 
-                        nextLinkFlag = true;
+                        // nextLinkFlag = true;
                         // keep the chain moving, but don't add anything for this request yet
                         // here we need to process the next link - so what do we do?
                         // need to append a .then()

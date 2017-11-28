@@ -19,7 +19,6 @@ module.exports = [{
         extensions: ['.js'],
     },
     plugins: [
-        new webpack.NormalModuleReplacementPlugin(/\.\.\/net\/nodefetchclient/, "../net/nodefetchclientbrowser"),
         new webpack.BannerPlugin({ banner: config.header, entryOnly: true, raw: true }),
     ]
 },
@@ -40,7 +39,6 @@ module.exports = [{
         extensions: ['.js']
     },
     plugins: [
-        new webpack.NormalModuleReplacementPlugin(/\.\.\/net\/nodefetchclient/, "../net/nodefetchclientbrowser"),
         new webpack.BannerPlugin({ banner: config.header, entryOnly: true, raw: true }),
         new webpack.DefinePlugin({
             "process.env": {

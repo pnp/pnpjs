@@ -27,11 +27,15 @@ node_modules
 # Optional npm cache directory
 .npm
 
-# allow folks to add things to the debug folder, but don't include them in git
-debug/*
-!debug/debug.ts
-!debug/example.ts
-!debug/tsconfig.json
+# allow folks to add things to the debug /launch and /serve folder, but don't include them in git
+debug/launch/*
+!debug/launch/debug.ts
+!debug/launch/example.ts
+!debug/launch/tsconfig.json
+
+debug/serve/*
+!debug/serve/serve.ts
+!debug/serve/tsconfig.json
 
 # project settings
 settings.js

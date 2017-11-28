@@ -29,7 +29,7 @@ function readBlobAs<T>(blob: Blob, mode: "string" | "buffer"): Promise<T> {
         try {
 
             const reader = new FileReader();
-            reader.onload = (e: FileReaderEvent<T>) => {
+            reader.onload = (e: any) => {
                 resolve(e.target.result);
             };
 
@@ -45,19 +45,4 @@ function readBlobAs<T>(blob: Blob, mode: "string" | "buffer"): Promise<T> {
             reject(e);
         }
     });
-}
-
-/**
- * Used to cast the event response target
- */
-interface FileReaderEventTarget<T> extends EventTarget {
-    result: T;
-}
-
-/**
- * Used to cast the event response
- */
-interface FileReaderEvent<T> extends Event {
-    target: FileReaderEventTarget<T>;
-    getMessage(): string;
 }

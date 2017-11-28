@@ -17,6 +17,7 @@ import { spExtractODataId } from "./odata";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
+import { AppCatalog } from "./appcatalog";
 
 /**
  * Describes a collection of webs
@@ -206,6 +207,14 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public get siteGroups(): SiteGroups {
         return new SiteGroups(this);
+    }
+
+    /**
+     * Gets site user info list
+     *
+     */
+    public get siteUserInfoList(): List {
+        return new List(this, "siteuserinfolist");
     }
 
     /**
@@ -465,6 +474,15 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getStorageEntity(key: string): Promise<string> {
         return this.clone(Web, `getStorageEntity('${key}')`).get();
+    }
+
+    /**
+     * Gets the app catalog for this web
+     * 
+     * @param url Optional url or web containing the app catalog (default: current web)
+     */
+    public getAppCatalog(url?: string | Web) {
+        return new AppCatalog(url || this);
     }
 }
 

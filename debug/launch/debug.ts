@@ -10,7 +10,7 @@ import { SPFetchClient } from "@pnp/nodejs";
 // if you don't have a settings file defined this will error
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
-const settings = require("../../settings.js");
+const settings = require("../../../settings.js");
 
 // configure your node options
 sp.setup({

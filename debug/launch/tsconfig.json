@@ -3,8 +3,8 @@
         "target": "es5",
         "module": "commonjs",
         "baseUrl": ".",
-        "rootDir": "../",
-        "outDir": "../debugging/",
+        "rootDir": "../../",
+        "outDir": "../../debugging/",
         "declaration": true,
         "types": [
             "sharepoint"
@@ -15,7 +15,7 @@
         ],
         "paths": {
             "@pnp/*": [
-                "../packages/*"
+                "../../packages/*"
             ]
         },
         "forceConsistentCasingInFileNames": true,

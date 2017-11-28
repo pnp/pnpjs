@@ -37,7 +37,7 @@ export class GraphRuntimeConfigImpl {
     public get headers(): TypedHash<string> {
 
         const graphPart = RuntimeConfig.get("graph");
-        if (typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
+        if (graphPart !== null && typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
             return graphPart.headers;
         }
 

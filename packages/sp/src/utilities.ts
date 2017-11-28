@@ -113,12 +113,12 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             });
         }
 
-        return this.create("SendEmail", true).excute<void>(params);
+        return this.clone(UtilityMethod, "SendEmail", true).excute<void>(params);
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {
 
-        return this.create("GetCurrentUserEmailAddresses", true).excute<string>({});
+        return this.clone(UtilityMethod, "GetCurrentUserEmailAddresses", true).excute<string>({});
     }
 
     public resolvePrincipal(input: string,
@@ -137,7 +137,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             sources: sources,
         };
 
-        return this.create("ResolvePrincipalInCurrentContext", true).excute<PrincipalInfo>(params);
+        return this.clone(UtilityMethod, "ResolvePrincipalInCurrentContext", true).excute<PrincipalInfo>(params);
     }
 
     public searchPrincipals(input: string,
@@ -154,7 +154,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             sources: sources,
         };
 
-        return this.create("SearchPrincipalsUsingContextWeb", true).excute<PrincipalInfo[]>(params);
+        return this.clone(UtilityMethod, "SearchPrincipalsUsingContextWeb", true).excute<PrincipalInfo[]>(params);
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
@@ -163,7 +163,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             pageAddress: pageAddress,
         };
 
-        return this.create("CreateEmailBodyForInvitation", true).excute<string>(params);
+        return this.clone(UtilityMethod, "CreateEmailBodyForInvitation", true).excute<string>(params);
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<PrincipalInfo[]> {
@@ -173,12 +173,12 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             maxCount: maxCount,
         };
 
-        return this.create("ExpandGroupsToPrincipals", true).excute<PrincipalInfo[]>(params);
+        return this.clone(UtilityMethod, "ExpandGroupsToPrincipals", true).excute<PrincipalInfo[]>(params);
     }
 
     public createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult> {
 
-        return this.create("CreateWikiPageInContextWeb", true).excute<CreateWikiPageResult>({
+        return this.clone(UtilityMethod, "CreateWikiPageInContextWeb", true).excute<CreateWikiPageResult>({
             parameters: info,
         }).then(r => {
             return {
@@ -186,24 +186,6 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
                 file: new File(spExtractODataId(r)),
             };
         });
-    }
-
-    /**
-     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
-     * @param factory Constructor used to create the new instance
-     * @param additionalPath Any additional path to include in the clone
-     * @param includeBatch If true this instance's batch will be added to the cloned instance
-     */
-    protected create(methodName: string, includeBatch: boolean): UtilityMethod {
-        let clone = new UtilityMethod(this.parentUrl, methodName);
-        const target = this.query.get("@target");
-        if (target !== null) {
-            clone.query.add("@target", target);
-        }
-        if (includeBatch && this.hasBatch) {
-            clone = clone.inBatch(this.batch);
-        }
-        return clone;
     }
 }
 

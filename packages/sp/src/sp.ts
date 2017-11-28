@@ -25,6 +25,12 @@ export {
 } from "./sharepointqueryableshareable";
 
 export {
+    AppCatalog,
+    AppAddResult,
+    App,
+} from "./appcatalog";
+
+export {
     AttachmentFileAddResult,
     AttachmentFileInfo,
 } from "./attachmentfiles";

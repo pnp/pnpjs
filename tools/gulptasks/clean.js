@@ -21,6 +21,7 @@ gulp.task('clean', (done) => {
         "./build",
         "./dist",
         "./debugging",
+        "./serve",
         "./testing",
     ];
 

@@ -36,7 +36,7 @@ export class SPRuntimeConfigImpl {
     public get headers(): TypedHash<string> {
 
         const spPart = RuntimeConfig.get("sp");
-        if (typeof spPart !== "undefined" && typeof spPart.headers !== "undefined") {
+        if (spPart !== null && typeof spPart !== "undefined" && typeof spPart.headers !== "undefined") {
             return spPart.headers;
         }
 

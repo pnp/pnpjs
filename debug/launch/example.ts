@@ -1,6 +1,8 @@
 // use of relative paths to the modules
-import { Logger, LogLevel } from "../packages/logging";
-import { sp } from "../packages/sp";
+import { Logger, LogLevel } from "@pnp/logging";
+import { sp } from "@pnp/sp";
+
+declare var process: { exit(code?: number): void };
 
 export function Example() {
 
@@ -13,5 +15,7 @@ export function Example() {
             level: LogLevel.Info,
             message: "Web's Title",
         });
+
+        process.exit(0);
     });
 }

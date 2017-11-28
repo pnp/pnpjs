@@ -103,7 +103,7 @@ interface RetryContext {
     attempts: number;
     delay: number;
     reject: (reason?: any) => void;
-    resolve: (value?: {} | PromiseLike<{}>) => void;
+    resolve: (value?: Response | PromiseLike<Response>) => void;
     retryCount: number;
 }
 
