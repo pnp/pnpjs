@@ -479,12 +479,30 @@ export class Versions extends SharePointQueryableCollection {
     }
 
     /**
+     * Recycles the specified version of the file.
+     *
+     * @param versionId The ID of the file version to delete.
+     */
+    public recycleByID(versionId: number): Promise<void> {
+        return this.clone(Versions, `recycleByID(vid=${versionId})`).postCore();
+    }
+
+    /**
      * Deletes the file version object with the specified version label.
      *
      * @param label The version label of the file version to delete, for example: 1.2
      */
     public deleteByLabel(label: string): Promise<void> {
         return this.clone(Versions, `deleteByLabel(versionlabel='${label}')`).postCore();
+    }
+
+    /**
+     * Recycles the file version object with the specified version label.
+     *
+     * @param label The version label of the file version to delete, for example: 1.2
+     */
+    public recycleByLabel(label: string): Promise<void> {
+        return this.clone(Versions, `recycleByLabel(versionlabel='${label}')`).postCore();
     }
 
     /**

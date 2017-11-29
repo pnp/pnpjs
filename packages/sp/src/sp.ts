@@ -73,6 +73,8 @@ export {
 export {
     Item,
     Items,
+    ItemVersion,
+    ItemVersions,
     ItemAddResult,
     ItemUpdateResult,
     ItemUpdateResultData,

@@ -186,6 +186,13 @@ export class Item extends SharePointQueryableShareableItem {
     }
 
     /**
+     * Gets the collection of versions associated with this item
+     */
+    public get versions(): ItemVersions {
+        return new ItemVersions(this);
+    }
+
+    /**
      * Updates this list intance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
@@ -300,6 +307,54 @@ export interface ItemUpdateResult {
 
 export interface ItemUpdateResultData {
     "odata.etag": string;
+}
+
+/**
+ * Describes a collection of Version objects
+ *
+ */
+export class ItemVersions extends SharePointQueryableCollection {
+
+    /**
+     * Creates a new instance of the File class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     */
+    constructor(baseUrl: string | SharePointQueryable, path = "versions") {
+        super(baseUrl, path);
+    }
+
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
+     */
+    public getById(versionId: number): ItemVersion {
+        const v = new ItemVersion(this);
+        v.concat(`(${versionId})`);
+        return v;
+    }
+}
+
+
+/**
+ * Describes a single Version instance
+ *
+ */
+export class ItemVersion extends SharePointQueryableInstance {
+
+    /**
+    * Delete a specific version of a file.
+    *
+    * @param eTag Value used in the IF-Match header, by default "*"
+    */
+    public delete(): Promise<void> {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    }
 }
 
 /**
