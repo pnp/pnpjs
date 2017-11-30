@@ -4,7 +4,7 @@
 //* Defines a custom gulp task for creaing pnp.js, pnp.min.js, 
 //* and pnp.min.js.map in the dist folder
 //******************************************************************************
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     path = require("path"),
     cmdLine = require("./args").processConfigCmdLine;
 

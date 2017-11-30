@@ -5,7 +5,7 @@
 //* also reporting on code coverage (with istanbul).
 //******************************************************************************
 
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     mocha = require("gulp-mocha"),
     yargs = require('yargs').argv,
     istanbul = require("gulp-istanbul");

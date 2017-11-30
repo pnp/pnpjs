@@ -22,7 +22,7 @@ gulp.task('clean', (done) => {
         "./dist",
         "./debugging",
         "./serve",
-        "./testing",
+        "./testing"
     ];
 
     gutil.log(`${gutil.colors.bgBlue(" ")} Cleaning directories: ${directories.join(", ")}.`);

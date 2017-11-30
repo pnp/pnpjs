@@ -5,7 +5,7 @@
 //* local folder, setup file/folder watchers so that changes are reflected
 //* on file save, and open the default browser to the default html page. 
 //******************************************************************************
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     gutil = require("gulp-util"),
     config = require("./@configuration"),
     spsave = require("gulp-spsave");

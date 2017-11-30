@@ -7,7 +7,7 @@
 //* Rule violations are output automatically to the console.
 //******************************************************************************
 
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     gulpTslint = require("gulp-tslint"),
     tslint = require("tslint"),
     pump = require("pump");

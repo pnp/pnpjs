@@ -4,7 +4,7 @@
 //* Defines a set of gulp tasks used to integrate with travisci
 //******************************************************************************
 
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     mocha = require("gulp-mocha"),
     tslint = require("gulp-tslint"),
     config = require('./@configuration.js');
