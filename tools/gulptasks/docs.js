@@ -3,8 +3,34 @@ const gulp = require("gulp"),
     util = require("gulp-util"),
     tap = require("gulp-tap"),
     pump = require("pump"),
-    md = new require("markdown-it")();
+    hljs = require('highlight.js'),
+    MarkdownIt = new require("markdown-it");
 
+// this is our markdown processor and configuration
+const md = new MarkdownIt({
+    xhtmlOut: true,
+    linkify: true,
+    typographer: true,
+    highlight: (str, lang) => {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(lang, str).value;
+            } catch (_) { }
+        }
+
+        return ''; // use external default escaping
+    },
+    replaceLink: function (link, env) {
+        if (/\.md$/i.test(link)) {
+            return link.replace(/\.md$/, ".html");
+        }
+
+        return link;
+    }
+});
+
+// replace links plugin
+md.use(require('markdown-it-replace-link'));
 
 gulp.task("clean-docs", (done) => {
     del("./docs").then(() => {
@@ -12,15 +38,18 @@ gulp.task("clean-docs", (done) => {
     });
 });
 
-gulp.task("watch:docs", function() {
+gulp.task("watch:docs", function () {
     gulp.watch([
         "./docs-src/**/*.md",
         "./packages/**/docs/*.md",
     ], ["docs"]);
 });
 
+
 // translate the md to html
 function mdToHtml(file) {
+
+
     const result = md.render(file.contents.toString());
     file.contents = new Buffer(result);
     file.path = util.replaceExtension(file.path, '.html');
@@ -34,7 +63,6 @@ function removeDocsSubPath(file) {
 gulp.task("docs", ["clean-docs"], (done) => {
 
     // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
-    
     pump([
         gulp.src([
             "./docs-src/**/*.md",

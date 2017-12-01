@@ -1,6 +1,5 @@
 export * from "./blobutil";
 export * from "./collections";
-export * from "./configutil";
 export * from "./decorators";
 export * from "./exceptions";
 export * from "./libconfig";

@@ -50,8 +50,8 @@ const config = {
 
     assets: [
         "LICENSE",
-        "readme.md",
         "index.d.ts",
+        "**\\*.md"
     ],
 
     // the set of tasks run on each project during a build

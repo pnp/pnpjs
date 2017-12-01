@@ -1,3 +1,134 @@
-# Logging
+# @pnp/logging
 
-Here is a test landing page for logging
+The logging module provides light weight subscribable and extensiable logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.
+
+### Understanding the Logging Framework
+
+The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. And each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface, also shown.
+
+```TypeScript
+/**
+ * Interface that defines a log listner
+ *
+ */
+export interface LogListener {
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    log(entry: LogEntry): void;
+}
+
+/**
+ * Interface that defines a log entry
+ *
+ */
+export interface LogEntry {
+    /**
+     * The main message to be logged
+     */
+    message: string;
+    /**
+     * The level of information this message represents
+     */
+    level: LogLevel;
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     */
+    data?: any;
+}
+```
+
+## Writing to the Logger
+
+To write information to a logger you can use either write, writeJSON, or log.
+
+```TypeScript
+// write logs a simple string as the message value of the LogEntry
+Logger.write("This is logging a simple string");
+
+// optionally passing a level, default level is Verbose
+Logger.write("This is logging a simple string", LogLevel.Error);
+
+// this will convert the object to a string using JSON.stringify and set the message with the result
+Logger.writeJSON({ name: "value", name2: "value2"});
+
+// optionally passing a level, default level is Verbose
+Logger.writeJSON({ name: "value", name2: "value2"}, LogLevel.Warn);
+
+// specify the entire LogEntry interface using log
+Logger.log({
+    data: { name: "value", name2: "value2"},
+    level: LogLevel.Warning,
+    message: "This is my message"
+});
+```
+
+## Subscribing a Listener
+
+By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided Console Listener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.
+
+```TypeScript
+import {
+    Logger,
+    ConsoleListener,
+    LogLevel
+} from "sp-pnp-js";
+
+// subscribe a listener
+Logger.subscribe(new ConsoleListener());
+
+// set the active log level
+Logger.activeLogLevel = LogLevel.Info;
+```
+
+## Available Listeners
+
+There are two listeners included in the library, ConsoleListener and FunctionListener.
+
+### ConsoleListener
+
+This listener outputs information to the console and works in Node as well as within browsers. It takes no settings but does write to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.
+
+### FunctionListener
+
+The FunctionListener allows you to wrap any functionality by creating a function that takes a LogEntry as its single argument. This produces the same result as implementing the LogListener interface, but is useful if you already have a logging method or framework to which you want to pass the messages.
+
+```TypeScript
+import {
+    Logger,
+    FunctionListener,
+    LogEntry
+} from "sp-pnp-js";
+
+let listener = new FunctionListener((entry: LogEntry) => {
+
+    // pass all logging data to an existing framework
+    MyExistingCompanyLoggingFramework.log(entry.message);
+});
+
+Logger.subscribe(listener);
+```
+
+### Create a Custom Listener
+
+If desirable for your project you can create a custom listener to perform any logging action you would like. This is done by implementing the LogListener interface.
+
+```TypeScript
+import {
+    Logger,
+    LogListener,
+    LogEntry
+} from "sp-pnp-js";
+
+class MyListener implements LogListener {
+
+    log(entry: LogEntry): void {
+        // here you would do something with the entry
+    }    
+}
+
+Logger.subscribe(new MyListener());
+```
+

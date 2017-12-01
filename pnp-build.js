@@ -55,6 +55,7 @@ const config = {
         "..\\..\\LICENSE",
         "..\\readme.md",
         "rollup.*.config.js",
+        "**\\*.md"
     ],
 
     // the set of tasks run on each project during a build

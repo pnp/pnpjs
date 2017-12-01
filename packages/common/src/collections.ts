@@ -113,7 +113,7 @@ export class Dictionary<T> {
     /**
      * Gets a count of the items currently in the dictionary
      */
-    public count(): number {
+    public get count(): number {
         return this.keys.length;
     }
 }

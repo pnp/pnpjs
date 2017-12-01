@@ -94,7 +94,7 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
         // inlude our explicitly set query string params
         aliasedParams.merge(this._query);
 
-        if (aliasedParams.count() > 0) {
+        if (aliasedParams.count > 0) {
             url += `?${aliasedParams.getKeys().map(key => `${key}=${aliasedParams.get(key)}`).join("&")}`;
         }
 
