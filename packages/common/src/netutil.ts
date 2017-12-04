@@ -55,7 +55,7 @@ export class FetchClient implements HttpClientImpl {
 }
 
 /**
- * Makes requests using the fetch API attaching the supplied token
+ * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 export class BearerTokenFetchClient extends FetchClient {
 

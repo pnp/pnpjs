@@ -47,7 +47,7 @@ export class BufferFileParser implements ODataParser<ArrayBuffer> {
 
     public parse(r: any): Promise<ArrayBuffer> {
 
-        if (Util.isFunction(r.arrayBuffer)) {
+        if (Util.isFunc(r.arrayBuffer)) {
             return r.arrayBuffer();
         }
 

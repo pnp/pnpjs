@@ -15,54 +15,6 @@ export class Util {
     }
 
     /**
-     * Tests if a url param exists
-     *
-     * @param name The name of the url paramter to check
-     */
-    public static urlParamExists(name: string): boolean {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        return regex.test(location.search);
-    }
-
-    /**
-     * Gets a url param value by name
-     *
-     * @param name The name of the paramter for which we want the value
-     */
-    public static getUrlParamByName(name: string): string {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        const results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-
-    /**
-     * Gets a url param by name and attempts to parse a bool value
-     *
-     * @param name The name of the paramter for which we want the boolean value
-     */
-    public static getUrlParamBoolByName(name: string): boolean {
-        const p = this.getUrlParamByName(name);
-        const isFalse = (p === "" || /false|0/i.test(p));
-        return !isFalse;
-    }
-
-    /**
-     * Inserts the string s into the string target as the index specified by index
-     *
-     * @param target The string into which we will insert s
-     * @param index The location in target to insert s (zero based)
-     * @param s The string to insert into target at position index
-     */
-    public static stringInsert(target: string, index: number, s: string): string {
-        if (index > 0) {
-            return target.substring(0, index) + s + target.substring(index, target.length);
-        }
-        return s + target;
-    }
-
-    /**
      * Adds a value to a date
      *
      * @param date The date to which we will add units, done in local time
@@ -88,27 +40,7 @@ export class Util {
     }
 
     /**
-     * Loads a stylesheet into the current page
-     *
-     * @param path The url to the stylesheet
-     * @param avoidCache If true a value will be appended as a query string to avoid browser caching issues
-     */
-    public static loadStylesheet(path: string, avoidCache: boolean): void {
-        if (avoidCache) {
-            path += "?" + encodeURIComponent((new Date()).getTime().toString());
-        }
-        const head = document.getElementsByTagName("head");
-        if (head.length > 0) {
-            const e = document.createElement("link");
-            head[0].appendChild(e);
-            e.setAttribute("type", "text/css");
-            e.setAttribute("rel", "stylesheet");
-            e.setAttribute("href", path);
-        }
-    }
-
-    /**
-     * Combines an arbitrary set of paths ensuring that the slashes are normalized
+     * Combines an arbitrary set of paths ensuring and normalizes the slashes
      *
      * @param paths 0 to n path parts to combine
      */
@@ -155,10 +87,10 @@ export class Util {
     /**
      * Determines if a given value is a function
      *
-     * @param candidateFunction The thing to test for being a function
+     * @param cf The thing to test for functionness
      */
-    public static isFunction(candidateFunction: any): boolean {
-        return typeof candidateFunction === "function";
+    public static isFunc(cf: any): boolean {
+        return typeof cf === "function";
     }
 
     /**
@@ -179,16 +111,6 @@ export class Util {
         }
 
         return array && typeof array.length === "number" && array.constructor === Array;
-    }
-
-
-    /**
-     * Determines if a string is null or empty or undefined
-     *
-     * @param s The string to test
-     */
-    public static stringIsNullOrEmpty(s: string): boolean {
-        return typeof s === "undefined" || s === null || s.length < 1;
     }
 
     /**

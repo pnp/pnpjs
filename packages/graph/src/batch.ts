@@ -93,7 +93,7 @@ export class GraphBatch extends ODataBatch {
                     } else {
 
                         // do we have a next url? if no this is an error
-                        if (!Util.stringIsNullOrEmpty(parsedResponse.nextLink)) {
+                        if (parsedResponse.nextLink) {
                             throw new GraphBatchParseException("Could not properly parse responses to match requests in batch.");
                         }
 

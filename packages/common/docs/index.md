@@ -8,3 +8,8 @@ should you find them useful.
 * [blobutil](blobutil.md)
 * [collections](collections.md)
 * [decorators](decorators.md)
+* [exceptions](exceptions.md)
+* [libconfig](libconfig.md)
+* [netutil](netutil.md)
+* [storage](storage.md)
+* [util](util.md)
