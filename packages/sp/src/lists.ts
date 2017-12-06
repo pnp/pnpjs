@@ -433,7 +433,7 @@ export class List extends SharePointQueryableSecurable {
      *
      */
     public getListItemEntityTypeFullName(): Promise<string> {
-        return this.clone(List, null, false).select("ListItemEntityTypeFullName").getAs<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
     }
 }
 

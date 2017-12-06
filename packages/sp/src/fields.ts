@@ -74,7 +74,7 @@ export class Fields extends SharePointQueryableCollection {
             }, info),
         });
 
-        return this.clone(Fields, "createfieldasxml").postAsCore<{ Id: string }>({ body: postBody }).then((data) => {
+        return this.clone(Fields, "createfieldasxml").postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
                 data: data,
                 field: this.getById(data.Id),
@@ -96,7 +96,7 @@ export class Fields extends SharePointQueryableCollection {
             "__metadata": { "type": fieldType },
         }, properties));
 
-        return this.clone(Fields, null).postAsCore<{ Id: string }>({ body: postBody }).then((data) => {
+        return this.clone(Fields, null).postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
                 data: data,
                 field: this.getById(data.Id),

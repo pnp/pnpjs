@@ -8,7 +8,7 @@ import {
     ODataParser,
     ODataQueryable,
     RequestContext,
-    PipelineMethods,
+    defaultPipeline,
 } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
@@ -155,7 +155,7 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
         verb: string,
         options: FetchOptions = {},
         parser: ODataParser<T>,
-        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>> = PipelineMethods.default): Promise<RequestContext<T>> {
+        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>> = defaultPipeline): Promise<RequestContext<T>> {
 
         const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
 

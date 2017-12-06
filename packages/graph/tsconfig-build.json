@@ -4,7 +4,12 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "../../build/packages/graph",
-        "strictNullChecks": false
+        "strictNullChecks": false,
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
     },
     "types": [
         "adal"

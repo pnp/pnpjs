@@ -39,7 +39,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         const expString = expiration !== null ? expiration.toISOString() : null;
 
         // clone using the factory and send the request
-        return this.clone(SharePointQueryableShareable, "shareLink").postAsCore<ShareLinkResponse>({
+        return this.clone(SharePointQueryableShareable, "shareLink").postCore<ShareLinkResponse>({
             body: JSON.stringify({
                 request: {
                     createLink: true,
@@ -98,7 +98,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
                 });
             }
 
-            return this.clone(SharePointQueryableShareable, "shareObject").postAsCore<SharingResult>({
+            return this.clone(SharePointQueryableShareable, "shareObject").postCore<SharingResult>({
                 body: JSON.stringify(postBody),
             });
         });
@@ -161,7 +161,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
      */
     public unshareObjectWeb(url: string): Promise<SharingResult> {
 
-        return this.clone(SharePointQueryableShareable, "unshareObject").postAsCore<SharingResult>({
+        return this.clone(SharePointQueryableShareable, "unshareObject").postCore<SharingResult>({
             body: JSON.stringify({
                 url: url,
             }),
@@ -175,7 +175,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
      */
     public checkPermissions(recipients: SharingRecipient[]): Promise<SharingEntityPermission[]> {
 
-        return this.clone(SharePointQueryableShareable, "checkPermissions").postAsCore<SharingEntityPermission[]>({
+        return this.clone(SharePointQueryableShareable, "checkPermissions").postCore<SharingEntityPermission[]>({
             body: JSON.stringify({
                 recipients: recipients,
             }),
@@ -189,7 +189,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
      */
     public getSharingInformation(request: SharingInformationRequest = null): Promise<SharingInformation> {
 
-        return this.clone(SharePointQueryableShareable, "getSharingInformation").postAsCore<SharingInformation>({
+        return this.clone(SharePointQueryableShareable, "getSharingInformation").postCore<SharingInformation>({
             body: JSON.stringify({
                 request: request,
             }),
@@ -203,7 +203,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
      */
     public getObjectSharingSettings(useSimplifiedRoles = true): Promise<ObjectSharingSettings> {
 
-        return this.clone(SharePointQueryableShareable, "getObjectSharingSettings").postAsCore<ObjectSharingSettings>({
+        return this.clone(SharePointQueryableShareable, "getObjectSharingSettings").postCore<ObjectSharingSettings>({
             body: JSON.stringify({
                 useSimplifiedRoles: useSimplifiedRoles,
             }),
@@ -215,7 +215,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
      */
     public unshareObject(): Promise<SharingResult> {
 
-        return this.clone(SharePointQueryableShareable, "unshareObject").postAsCore<SharingResult>();
+        return this.clone(SharePointQueryableShareable, "unshareObject").postCore<SharingResult>();
     }
 
     /**
@@ -260,12 +260,12 @@ export class SharePointQueryableShareable extends SharePointQueryable {
                 case RoleType.Contributor:
                     // remove need to reference Web here, which created a circular build issue
                     const memberGroup = new SharePointQueryableInstance("_api/web", "associatedmembergroup");
-                    return memberGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
+                    return memberGroup.select("Id").get<{ Id: number }>().then(g => `group: ${g.Id}`);
                 case RoleType.Reader:
                 case RoleType.Guest:
                     // remove need to reference Web here, which created a circular build issue
                     const visitorGroup = new SharePointQueryableInstance("_api/web", "associatedvisitorgroup");
-                    return visitorGroup.select("Id").getAs<{ Id: number }>().then(g => `group: ${g.Id}`);
+                    return visitorGroup.select("Id").get<{ Id: number }>().then(g => `group: ${g.Id}`);
                 default:
                     throw new Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
             }
@@ -274,7 +274,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
             const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
             // remove need to reference Web here, which created a circular build issue
             const roleDefs = new SharePointQueryableCollection("_api/web", "roledefinitions");
-            return roleDefs.select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`).getAs<{ Id: number }[]>().then(def => {
+            return roleDefs.select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`).get<{ Id: number }[]>().then(def => {
                 if (def.length < 1) {
                     throw new Error("Could not locate associated role definition for supplied role. Edit and View are supported");
                 }

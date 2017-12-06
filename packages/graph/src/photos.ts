@@ -1,5 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
-import { BlobFileParser, BufferFileParser } from "@pnp/odata";
+import { BlobParser, BufferParser } from "@pnp/odata";
 
 export class Photo extends GraphQueryableInstance {
 
@@ -11,14 +11,14 @@ export class Photo extends GraphQueryableInstance {
      * Gets the image bytes as a blob (browser)
      */
     public getBlob(): Promise<Blob> {
-        return this.clone(Photo, "$value", false).get(new BlobFileParser());
+        return this.clone(Photo, "$value", false).get(new BlobParser());
     }
 
     /**
      * Gets the image file byets as a Buffer (node.js)
      */
-    public getBuffer(): Promise<Blob> {
-        return this.clone(Photo, "$value", false).get(new BufferFileParser());
+    public getBuffer(): Promise<ArrayBuffer> {
+        return this.clone(Photo, "$value", false).get(new BufferParser());
     }
 
     /**

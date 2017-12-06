@@ -6,7 +6,12 @@
         "outDir": "../../build/packages/sp-addinhelpers",
         "types": [
             "sharepoint"
-        ]
+        ],
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
     },
     "files": [
         "./index.ts"

@@ -146,4 +146,13 @@ export class Util {
     public static isUrlAbsolute(url: string): boolean {
         return /^https?:\/\/|^\/\//i.test(url);
     }
+
+    /**
+     * Determines if a string is null or empty or undefined
+     *
+     * @param s The string to test
+     */
+    public static stringIsNullOrEmpty(s: string): boolean {
+        return typeof s === "undefined" || s === null || s.length < 1;
+    }
 }

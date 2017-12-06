@@ -3,7 +3,12 @@
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/nodejs"
+        "outDir": "../../build/packages/logging",
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
     },
     "files": [
         "./index.ts"

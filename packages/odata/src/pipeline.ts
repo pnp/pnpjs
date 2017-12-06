@@ -251,13 +251,11 @@ export class PipelineMethods {
             resolve(context);
         });
     }
-
-    public static get default() {
-        return [
-            PipelineMethods.logStart,
-            PipelineMethods.caching,
-            PipelineMethods.send,
-            PipelineMethods.logEnd,
-        ];
-    }
 }
+
+export const defaultPipeline = [
+    PipelineMethods.logStart,
+    PipelineMethods.caching,
+    PipelineMethods.send,
+    PipelineMethods.logEnd,
+];

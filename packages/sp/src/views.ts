@@ -51,7 +51,7 @@ export class Views extends SharePointQueryableCollection {
             "__metadata": { "type": "SP.View" },
         }, additionalSettings));
 
-        return this.clone(Views, null).postAsCore<{ Id: string }>({ body: postBody }).then((data) => {
+        return this.clone(Views, null).postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
                 data: data,
                 view: this.getById(data.Id),

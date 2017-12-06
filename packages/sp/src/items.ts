@@ -60,7 +60,7 @@ export class Items extends SharePointQueryableCollection {
      *
      */
     public getPaged(): Promise<PagedItemCollection<any>> {
-        return this.getAs(new PagedItemCollectionParser());
+        return this.get(new PagedItemCollectionParser());
     }
 
     //
@@ -81,7 +81,7 @@ export class Items extends SharePointQueryableCollection {
                 "__metadata": { "type": listItemEntityType },
             }, properties));
 
-            const promise = this.clone(Items, null).postAsCore<{ Id: number }>({ body: postBody }).then((data) => {
+            const promise = this.clone(Items, null).postCore<{ Id: number }>({ body: postBody }).then((data) => {
                 return {
                     data: data,
                     item: this.getById(data.Id),

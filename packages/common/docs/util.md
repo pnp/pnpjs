@@ -107,6 +107,10 @@ const example2 = Util.extend(obj1, obj2, true);
 
 Determines if a supplied url is absolute and returns true; otherwise returns false.
 
+## stringIsNullOrEmpty
+
+Determines if a supplied string is null or empty
+
 ## Removed
 
 Some methods that were no longer used internally by the @pnp libraries have been removed from this class. You can find the source for those methods
@@ -179,14 +183,5 @@ public static stringInsert(target: string, index: number, s: string): string {
         return target.substring(0, index) + s + target.substring(index, target.length);
     }
     return s + target;
-}
-
-/**
- * Determines if a string is null or empty or undefined
- *
- * @param s The string to test
- */
-public static stringIsNullOrEmpty(s: string): boolean {
-    return typeof s === "undefined" || s === null || s.length < 1;
 }
 ```

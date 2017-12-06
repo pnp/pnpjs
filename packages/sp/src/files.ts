@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser } from "@pnp/odata";
 import { Util } from "@pnp/common";
 import { MaxCommentLengthException } from "./exceptions";
 import { LimitedWebPartManager } from "./webparts";
@@ -276,7 +276,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public getText(): Promise<string> {
 
-        return this.clone(File, "$value", false).get(new TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new TextParser(), { headers: { "binaryStringResponseBody": "true" } });
     }
 
     /**
@@ -285,7 +285,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public getBlob(): Promise<Blob> {
 
-        return this.clone(File, "$value", false).get(new BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new BlobParser(), { headers: { "binaryStringResponseBody": "true" } });
     }
 
     /**
@@ -293,7 +293,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public getBuffer(): Promise<ArrayBuffer> {
 
-        return this.clone(File, "$value", false).get(new BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new BufferParser(), { headers: { "binaryStringResponseBody": "true" } });
     }
 
     /**
@@ -301,7 +301,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public getJSON(): Promise<any> {
 
-        return this.clone(File, "$value", false).get(new JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new JSONParser(), { headers: { "binaryStringResponseBody": "true" } });
     }
 
     /**
@@ -396,7 +396,7 @@ export class File extends SharePointQueryableShareableFile {
      * @returns The size of the total uploaded data in bytes.
      */
     private startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
-        return this.clone(File, `startUpload(uploadId=guid'${uploadId}')`, false).postAsCore<string>({ body: fragment }).then(n => parseFloat(n));
+        return this.clone(File, `startUpload(uploadId=guid'${uploadId}')`, false).postCore<string>({ body: fragment }).then(n => parseFloat(n));
     }
 
     /**
@@ -411,7 +411,7 @@ export class File extends SharePointQueryableShareableFile {
      * @returns The size of the total uploaded data in bytes.
      */
     private continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
-        return this.clone(File, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false).postAsCore<string>({ body: fragment }).then(n => parseFloat(n));
+        return this.clone(File, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false).postCore<string>({ body: fragment }).then(n => parseFloat(n));
     }
 
     /**
@@ -426,7 +426,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     private finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<FileAddResult> {
         return this.clone(File, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false)
-            .postAsCore<{ ServerRelativeUrl: string }>({ body: fragment }).then((response) => {
+            .postCore<{ ServerRelativeUrl: string }>({ body: fragment }).then((response) => {
                 return {
                     data: response,
                     file: new File(response.ServerRelativeUrl),

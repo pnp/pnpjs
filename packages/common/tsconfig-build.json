@@ -3,7 +3,12 @@
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
-        "outDir": "../../build/packages/common"
+        "outDir": "../../build/packages/common",
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
     },
     "include": [
         "./index.ts"

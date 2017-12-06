@@ -78,7 +78,7 @@ export class Feature extends SharePointQueryableInstance {
 
         const idGet = new Feature(this).select("DefinitionId");
 
-        return idGet.getAs<{ DefinitionId: string }>().then(feature => {
+        return idGet.get<{ DefinitionId: string }>().then(feature => {
 
             const promise = this.getParent(Features, this.parentUrl, "", this.batch).remove(feature.DefinitionId, force);
 

@@ -25,23 +25,26 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
         return new Promise<T>((resolve, reject) => {
 
             if (this.handleError(r, reject)) {
-                if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length") || "-1") === 0) || r.status === 204) {
-                    resolve(<T>{});
-                } else {
-
-                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
-                    r.text()
-                        .then(txt => txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {})
-                        .then(json => resolve(this.parseODataJSON<T>(json)))
-                        .catch(e => reject(e));
-                }
+                // handle all requests as text, then parse if they are not empty
+                r.text()
+                    .then(txt => txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {})
+                    .then(json => resolve(this.parseODataJSON<T>(json)))
+                    .catch(e => reject(e));
             }
         });
     }
 
+    /**
+     * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
+     * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
+     *
+     * @param r Current response object
+     * @param reject reject delegate for the surrounding promise
+     */
     protected handleError(r: Response, reject: (reason?: any) => void): boolean {
         if (!r.ok) {
 
+            // read the response as text, it may not be valid json
             r.json().then(json => {
 
                 // include the headers as they contain diagnostic information
@@ -51,6 +54,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
                 };
 
                 reject(new ProcessHttpClientResponseException(r.status, r.statusText, data));
+
             }).catch(e => {
 
                 // we failed to read the body - possibly it is empty. Let's report the original status that caused
@@ -74,6 +78,11 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
         return r.ok;
     }
 
+    /**
+     * Normalizes the json response by removing the various nested levels
+     *
+     * @param json json object to parse
+     */
     protected parseODataJSON<U>(json: any): U {
         let result = json;
         if (json.hasOwnProperty("d")) {

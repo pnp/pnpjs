@@ -4,7 +4,12 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "../../build/packages/sp",
-        "strictNullChecks": false
+        "strictNullChecks": false,
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
     },
     "files": [
         "./index.ts"

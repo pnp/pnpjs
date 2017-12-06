@@ -65,7 +65,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
 
     public excute<T>(props: any): Promise<T> {
 
-        return this.postAsCore<T>({
+        return this.postCore<T>({
             body: JSON.stringify(props),
         });
     }

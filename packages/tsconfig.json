@@ -9,9 +9,11 @@
             "es2015",
             "dom"
         ],
+        "rootDir": ".",
+        "baseUrl": ".",
         "paths": {
             "@pnp/*": [
-                "../../build/packages/*"
+                "./*"
             ]
         },
         "strict": true,
@@ -26,6 +28,8 @@
         "inlineSources": true,
         "sourceMap": true,
         "skipDefaultLibCheck": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        // TODO:: eventually we want to support this, but for now we don't for ease of code migration
+        "strictNullChecks": false
     }
 }

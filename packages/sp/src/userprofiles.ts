@@ -1,7 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { HashTagCollection, UserProfile } from "./types";
 import { readBlobAsArrayBuffer } from "@pnp/common";
-import { ODataValue } from "@pnp/odata";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 
@@ -22,14 +21,14 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      * The url of the edit profile page for the current user
      */
     public get editProfileLink(): Promise<string> {
-        return this.clone(UserProfileQuery, "EditProfileLink").getAs(ODataValue<string>());
+        return this.clone(UserProfileQuery, "EditProfileLink").get();
     }
 
     /**
      * A boolean value that indicates whether the current user's "People I'm Following" list is public
      */
     public get isMyPeopleListPublic(): Promise<boolean> {
-        return this.clone(UserProfileQuery, "IsMyPeopleListPublic").getAs(ODataValue<boolean>());
+        return this.clone(UserProfileQuery, "IsMyPeopleListPublic").get();
     }
 
     /**
@@ -253,7 +252,7 @@ class ProfileLoader extends SharePointQueryable {
             q = q.inBatch(this.batch);
         }
 
-        return q.postAsCore<UserProfile>();
+        return q.postCore<UserProfile>();
     }
 
     /**
@@ -261,7 +260,7 @@ class ProfileLoader extends SharePointQueryable {
      *
      */
     public get userProfile(): Promise<UserProfile> {
-        return this.clone(ProfileLoader, "getuserprofile").postAsCore<UserProfile>();
+        return this.clone(ProfileLoader, "getuserprofile").postCore<UserProfile>();
     }
 
     /**

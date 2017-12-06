@@ -13,7 +13,7 @@ import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import {
     RequestContext,
-    PipelineMethods,
+    defaultPipeline,
     pipe,
 } from "./pipeline";
 
@@ -139,7 +139,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
     }
 
     /**
-     * Gets the currentl url, made absolute based on the availability of the _spPageContextInfo object
+     * Gets the currentl url
      *
      */
     public toUrl(): string {
@@ -158,28 +158,20 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
      * @param parser Allows you to specify a parser to handle the result
      * @param getOptions The options used for this request
      */
-    public get(parser: ODataParser<any> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<any> {
-        return this.toRequestContext("GET", options, parser, PipelineMethods.default).then(context => pipe(context));
+    public get<T = any>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+        return this.toRequestContext("GET", options, parser, defaultPipeline).then(context => pipe(context));
     }
 
-    public getAs<T>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext("GET", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("POST", options, parser, defaultPipeline).then(context => pipe(context));
     }
 
-    protected postCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("POST", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("PATCH", options, parser, defaultPipeline).then(context => pipe(context));
     }
 
-    protected postAsCore<T>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("POST", options, parser, PipelineMethods.default).then(context => pipe(context));
-    }
-
-    protected patchCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("PATCH", options, parser, PipelineMethods.default).then(context => pipe(context));
-    }
-
-    protected deleteCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("DELETE", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("DELETE", options, parser, defaultPipeline).then(context => pipe(context));
     }
 
     /**
