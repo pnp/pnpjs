@@ -37,6 +37,8 @@ gulp.task("serve", (done) => {
             throw new Error("You can only specify a single package when using serve.");
         }
 
+        gutil.log(`Serving package: ${args.packages[0]}`);
+
         // update the entry point to be the package that was requested
         config.entry = `./packages/${args.packages[0]}/index.ts`;
     }

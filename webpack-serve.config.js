@@ -58,12 +58,13 @@ module.exports = {
                     loader: "ts-loader",
                     options: {
                         compilerOptions: {
-                            rootDir: "../",
+                            rootDir: "../../",
                             strictNullChecks: false,
                             types: [
                                 "sharepoint"
                             ]
-                        }
+                        },
+                        configFile: "tsconfig-build.json",
                     }
                 },
                 {

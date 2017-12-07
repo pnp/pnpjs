@@ -38,6 +38,7 @@ gulp.task("clean-docs", (done) => {
     });
 });
 
+// watch the docs and rebuild the site if they change
 gulp.task("watch:docs", function () {
     gulp.watch([
         "./docs-src/**/*.md",
@@ -45,11 +46,8 @@ gulp.task("watch:docs", function () {
     ], ["docs"]);
 });
 
-
 // translate the md to html
 function mdToHtml(file) {
-
-
     const result = md.render(file.contents.toString());
     file.contents = new Buffer(result);
     file.path = util.replaceExtension(file.path, '.html');
