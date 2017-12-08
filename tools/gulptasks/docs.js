@@ -3,8 +3,14 @@ const gulp = require("gulp"),
     util = require("gulp-util"),
     tap = require("gulp-tap"),
     pump = require("pump"),
-    hljs = require('highlight.js'),
-    MarkdownIt = new require("markdown-it");
+    hljs = require("highlight.js"),
+    header = require("gulp-header"),
+    footer = require("gulp-footer"),
+    MarkdownIt = new require("markdown-it"),
+    fs = require('fs'),
+    path = require('path');
+
+const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
 
 // this is our markdown processor and configuration
 const md = new MarkdownIt({
@@ -47,9 +53,9 @@ gulp.task("watch:docs", function () {
 });
 
 // translate the md to html
-function mdToHtml(file) {
+function mdToHtml(file, a, b, header, footer) {
     const result = md.render(file.contents.toString());
-    file.contents = new Buffer(result);
+    file.contents = Buffer.concat([header, new Buffer(result), footer]);
     file.path = util.replaceExtension(file.path, '.html');
 }
 
@@ -58,33 +64,46 @@ function removeDocsSubPath(file) {
     file.path = file.path.replace("docs\\", "");
 }
 
+// gets the header and footer async as an array with [0] = header, [1] = footer
+function getHeaderFooter(filePath, splitString) {
+
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, { encoding: "utf-8" }, (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+
+            resolve(data.split(splitString));
+        });
+    });
+}
+
 gulp.task("docs", ["clean-docs"], (done) => {
 
     // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
-    pump([
-        gulp.src([
-            "./docs-src/**/*.md",
-            "./packages/**/docs/*.md",
-        ]),
-        tap(mdToHtml),
-        tap(removeDocsSubPath),
-        gulp.dest("./docs"),
-    ], (err) => {
+    getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
-        if (typeof err !== "undefined") {
-            done(err);
-        } else {
-            done();
-        }
+        pump([
+            gulp.src([
+                "./docs-src/**/*.md",
+                "./packages/**/docs/*.md",
+            ]),
+            tap.apply(tap, [mdToHtml].concat(hf.map(s => new Buffer(s)))),
+            tap(removeDocsSubPath),
+            gulp.dest("./docs"),
+        ], (err) => {
+
+            if (typeof err !== "undefined") {
+                done(err);
+            } else {
+                done();
+            }
+        });
     });
-
 
     // we need to build the script files for the site (ts) then webpack those and put them in the docs/scripts folder
 
-
     // we need to write a package index page to link to all the package docs
 
-    // we need to add a header/footer/surrounding code to each page as it is processed
-
-
+    // have a link in the footer to report issues with a docs page
 });

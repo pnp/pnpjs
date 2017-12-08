@@ -68,7 +68,7 @@ export class SPRequestExecutorClient implements HttpClientImpl {
             }
         }
 
-        // issue #256, Cannot have an empty string body when creating a Response with status 204
+        // Cannot have an empty string body when creating a Response with status 204
         const body = spResponse.statusCode === 204 ? null : spResponse.body;
 
         return new Response(body, {
