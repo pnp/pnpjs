@@ -2,5 +2,5 @@
 
 This module contains classes to allow use of the libraries within a SharePoint add-in.
 
-* [SPRequestExecutorClient](sprequestexecutorclient.md)
-* [SPRestAddIn](sprestaddin.md)
+* [SPRequestExecutorClient](sp-request-executor-client.md)
+* [SPRestAddIn](sp-rest-addin.md)

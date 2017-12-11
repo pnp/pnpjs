@@ -4,8 +4,8 @@ This package supplies helper code when using the other libraries within the cont
 as size concerns are generally less important and for simplicity. This also removes the node specific functionality from any of the packages. Primarily
 these consist of clients to enable use of the libraries in nodejs.
 
-* [AdalFetchClient](adalfetchclient.md)
-* [SPFetchClient](spfetchclient.md)
+* [AdalFetchClient](adal-fetch-client.md)
+* [SPFetchClient](sp-fetch-client.md)
 
 
 

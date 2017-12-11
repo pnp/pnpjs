@@ -106,4 +106,6 @@ gulp.task("docs", ["clean-docs"], (done) => {
     // we need to write a package index page to link to all the package docs
 
     // have a link in the footer to report issues with a docs page
+
+    // update link in page footer to include a path to the docs page that needs help
 });

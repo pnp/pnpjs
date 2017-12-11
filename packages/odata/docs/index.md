@@ -6,3 +6,7 @@ the core code is solid and well tested, with any updates benefitting all inherit
 
 * [caching](caching.md)
 * [core](core.md)
+* [OData Batching](odata-batch.md)
+* [Parsers](parsers.md)
+* [Pipeline](pipeline.md)
+* [Queryable](queryable.md)
