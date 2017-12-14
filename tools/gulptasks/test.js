@@ -7,8 +7,8 @@
 
 const gulp = require("gulp"),
     mocha = require("gulp-mocha"),
-    yargs = require('yargs').argv,
-    istanbul = require("gulp-istanbul");
+    istanbul = require("gulp-istanbul"),
+    cmdLine = require("./args").processConfigCmdLine;
 
 gulp.task("_istanbul:hook", ["build:test"], () => {
 
@@ -23,18 +23,13 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
     // when using single, grab only that test.js file - otherwise use the entire test.js glob
 
     // we use the built *.test.js files here
+    const args = cmdLine({});
     let paths = ["./testing/test/main.js", "./testing/**/*.test.js"];
 
     // update to only process specific packages
-    if (yargs.packages) {
+    if (args.hasOwnProperty("packages") && args.packages.length > 0) {
 
-        let packages = yargs.packages.split(",").map(s => s.trim());
-
-        if (!Array.isArray(packages)) {
-            packages = [packages];
-        }
-
-        paths = packages.map(p => `./testing/packages/${p}/**/*.js`);
+        paths = args.packages.map(p => `./testing/packages/${p}/**/*.js`);
     }
 
     // determine if we show the full coverage table

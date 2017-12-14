@@ -1,5 +1,4 @@
 const gulp = require("gulp"),
-    del = require("del"),
     util = require("gulp-util"),
     tap = require("gulp-tap"),
     pump = require("pump"),
@@ -38,12 +37,6 @@ const md = new MarkdownIt({
 // replace links plugin
 md.use(require('markdown-it-replace-link'));
 
-gulp.task("clean-docs", (done) => {
-    del("./docs").then(() => {
-        done();
-    });
-});
-
 // watch the docs and rebuild the site if they change
 gulp.task("watch:docs", function () {
     gulp.watch([
@@ -78,7 +71,7 @@ function getHeaderFooter(filePath, splitString) {
     });
 }
 
-gulp.task("docs", ["clean-docs"], (done) => {
+gulp.task("docs", ["clean:docs"], (done) => {
 
     // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {

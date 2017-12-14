@@ -1,6 +1,10 @@
 import { sp } from "@pnp/sp";
 
+// ******
+// Please edit this file and do any testing required. Please do not submit changes as part of a PR.
+// ******
+
 sp.web.get().then(w => {
 
-    alert("And I have changed! " + JSON.stringify(w.Title));
+    alert(JSON.stringify(w.Title));
 });
