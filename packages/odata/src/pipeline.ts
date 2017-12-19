@@ -76,6 +76,10 @@ function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
  */
 export function pipe<T>(context: RequestContext<T>): Promise<T | null> {
 
+    if (context.pipeline.length < 1) {
+        Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Request pipeline contains no methods!`, LogLevel.Warning);
+    }
+
     return next(context)
         .then(ctx => returnResult(ctx))
         .catch((e: Error) => {
