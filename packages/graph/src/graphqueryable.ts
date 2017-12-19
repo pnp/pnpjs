@@ -6,7 +6,6 @@ import {
     ODataParser,
     ODataQueryable,
     RequestContext,
-    defaultPipeline,
 } from "@pnp/odata";
 import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
@@ -106,7 +105,7 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
         verb: string,
         options: FetchOptions = {},
         parser: ODataParser<T>,
-        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>> = defaultPipeline): Promise<RequestContext<T>> {
+        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>> {
 
         // TODO:: add batch support
         return Promise.resolve({

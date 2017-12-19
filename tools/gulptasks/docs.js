@@ -9,6 +9,7 @@ const gulp = require("gulp"),
     fs = require('fs'),
     path = require('path');
 
+// the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
 
 // this is our markdown processor and configuration
@@ -36,14 +37,6 @@ const md = new MarkdownIt({
 
 // replace links plugin
 md.use(require('markdown-it-replace-link'));
-
-// watch the docs and rebuild the site if they change
-gulp.task("watch:docs", function () {
-    gulp.watch([
-        "./docs-src/**/*.md",
-        "./packages/**/docs/*.md",
-    ], ["docs"]);
-});
 
 // translate the md to html
 function mdToHtml(file, a, b, header, footer) {
@@ -73,9 +66,9 @@ function getHeaderFooter(filePath, splitString) {
 
 gulp.task("docs", ["clean:docs"], (done) => {
 
-    // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
+        // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
         pump([
             gulp.src([
                 "./docs-src/**/*.md",
@@ -97,8 +90,12 @@ gulp.task("docs", ["clean:docs"], (done) => {
     // we need to build the script files for the site (ts) then webpack those and put them in the docs/scripts folder
 
     // we need to write a package index page to link to all the package docs
+});
 
-    // have a link in the footer to report issues with a docs page
-
-    // update link in page footer to include a path to the docs page that needs help
+// watch the docs and rebuild the site if they change
+gulp.task("watch:docs", function () {
+    gulp.watch([
+        "./docs-src/**/*.md",
+        "./packages/**/docs/*.md",
+    ], ["docs"]);
 });

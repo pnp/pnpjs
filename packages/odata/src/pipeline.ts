@@ -253,9 +253,11 @@ export class PipelineMethods {
     }
 }
 
-export const defaultPipeline = [
-    PipelineMethods.logStart,
-    PipelineMethods.caching,
-    PipelineMethods.send,
-    PipelineMethods.logEnd,
-];
+export function getDefaultPipeline() {
+    return [
+        PipelineMethods.logStart,
+        PipelineMethods.caching,
+        PipelineMethods.send,
+        PipelineMethods.logEnd,
+    ].slice(0);
+}

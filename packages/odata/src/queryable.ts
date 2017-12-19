@@ -13,7 +13,7 @@ import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import {
     RequestContext,
-    defaultPipeline,
+    getDefaultPipeline,
     pipe,
 } from "./pipeline";
 
@@ -159,19 +159,19 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
      * @param getOptions The options used for this request
      */
     public get<T = any>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext("GET", options, parser, defaultPipeline).then(context => pipe(context));
+        return this.toRequestContext("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("POST", options, parser, defaultPipeline).then(context => pipe(context));
+        return this.toRequestContext("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("PATCH", options, parser, defaultPipeline).then(context => pipe(context));
+        return this.toRequestContext("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("DELETE", options, parser, defaultPipeline).then(context => pipe(context));
+        return this.toRequestContext("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     /**
