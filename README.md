@@ -1,10 +1,16 @@
 ![SharePoint Patterns and Practices](https://devofficecdn.azureedge.net/media/Default/PnP/sppnp.png)
 
+The SharePoint Patterns and Practices client side libraries were created to help enable developers to do their best work, without worrying about the exact
+REST api details. Built with feedback from the community they represent a way to simplify your day-to-day dev cycle while relying on tested and proven
+patterns.
+
+**If you are moving from sp-pnp-js please review the [transition guide](docs-src/transition-guide.md)**
+
 ## Pre-release Beta Note
 
 The software packages within this repo are currently pre-release and should be treated as beta versions. Please check them out and feel free to install them for use in non-production projects. We have documentation, samples, and guides coming - but for now have a look around and try things out.
 
-The following gulp commands are currently working: build, package, test, lint, and clean. Additionally F5 debugging works with ./debug/debug.ts - which can easily be modified to call other files.
+The following gulp commands are currently working: build, package, test, lint, serve, and clean. Additionally F5 debugging works with ./debug/launch/main.ts - which can easily be modified to call other files.
 
 Have a look around and let us know what you think :)
 
