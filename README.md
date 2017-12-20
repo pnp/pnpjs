@@ -40,7 +40,7 @@ The following packages comprise the Patterns and Practices client side libraries
 
 **Rollup library of core functionality (mimics sp-pnp-js)**
 
-### [@pnp/sp](packages/sp//docsindex.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fsp.svg)](https://badge.fury.io/js/%40pnp%2Fsp)
+### [@pnp/sp](packages/sp/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fsp.svg)](https://badge.fury.io/js/%40pnp%2Fsp)
 
 **Provides a fluent api for working with SharePoint REST**
 
