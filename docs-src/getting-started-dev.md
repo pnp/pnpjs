@@ -5,6 +5,7 @@ Thank you for your interest in contributing to our work. This guide should help 
 ## Contributor Guidance
 
 * Target your pull requests to the **dev** branch
+* Add/Update any relevant docs articles in the relevant package's docs folder related to your changes
 * Include a test for any new functionality and ensure all existing tests are passing by running `gulp test`
 * Ensure tslint checks pass by typing `gulp lint`
 * Keep your PRs as simple as possible () and describe the changes to help the reviewer understand your work
