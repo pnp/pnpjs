@@ -1,4 +1,4 @@
-# @pnp\common\util
+# @pnp/common/util
 
 This module exports a single static class containing utility functions.
 

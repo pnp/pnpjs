@@ -1,4 +1,4 @@
-# @pnp\odata\odatabatch
+# @pnp/odata/odatabatch
 
 This module contains an abstract class used as a base when inheriting libraries support batching.
 

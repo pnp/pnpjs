@@ -1,4 +1,4 @@
-# @pnp\common\libconfig
+# @pnp/common/libconfig
 
 Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core
 configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and

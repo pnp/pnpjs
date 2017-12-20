@@ -1,4 +1,4 @@
-# @pnp\common\decorators
+# @pnp/common/decorators
 
 This module contains two decorators used internally to communicate if a feature is either being deprecated or in beta
 

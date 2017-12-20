@@ -1,4 +1,4 @@
-# @pnp\common\exceptions
+# @pnp/common/exceptions
 
 This module contains general exception classes used across the @pnp libraryies.
 

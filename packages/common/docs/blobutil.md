@@ -1,4 +1,4 @@
-# @pnp\common\blobutil
+# @pnp/common/blobutil
 
 The blobutil module contains helper functions for reading blobs either as text or as an array buffer.
 

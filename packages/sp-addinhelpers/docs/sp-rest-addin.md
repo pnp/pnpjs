@@ -1,4 +1,4 @@
-# @pnp\sp-addinhelpers\sprestaddin
+# @pnp/sp-addinhelpers/sprestaddin
 
 This class extends the sp export from @pnp/sp and adds in the methods required to make cross domain calls
 

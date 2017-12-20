@@ -1,4 +1,4 @@
-# @pnp\odata\queryable
+# @pnp/odata/queryable
 
 The Queryable class is the base class for all of the libraries building fluent request apis.
 

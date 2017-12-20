@@ -1,4 +1,4 @@
-# @pnp\odata\core
+# @pnp/odata/core
 
 This modules contains shared interfaces and abstract classes used within, and by inheritors of, the @pnp/odata package.
 

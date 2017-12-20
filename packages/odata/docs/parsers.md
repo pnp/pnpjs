@@ -1,4 +1,4 @@
-# @pnp\odata\parsers
+# @pnp/odata/parsers
 
 This modules contains a set of generic parsers. These can be used or extended as needed, though it is likely in most cases the
 default parser will be all you need.
