@@ -14,9 +14,18 @@ The following gulp commands are currently working: build, package, test, lint, s
 
 Have a look around and let us know what you think :)
 
+**Don't forget to install from the beta channel for latest available updates:**
+
+`npm i @pnp/logging@beta @pnp/common@beta @pnp/odata@beta @pnp/sp@beta`
+
+## Documentation
+
+Please review the [github pages site](https://pnp.github.io/pnp/) containing the full documenation for the SharePoint Patterns and Practices Client Side libraries. This
+site is updated with each release.
+
 ## Packages
 
-The following packages comprise the Patterns and Practices client side libraries. Please see the individual package documentation for details on each.
+The following packages comprise the Patterns and Practices client side libraries. Please see the [documentation](https://pnp.github.io/pnp/) for details.
 
 ### [@pnp/common](packages/common/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
 
