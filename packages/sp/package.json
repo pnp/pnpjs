@@ -1,7 +1,7 @@
 {
     "name": "@pnp/sp",
     "version": "0.0.0-PLACEHOLDER",
-    "description": "pnp - provides SharePoint query functionality",
+    "description": "pnp - provides a fluent api for working with SharePoint REST",
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {

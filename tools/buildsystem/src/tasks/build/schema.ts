@@ -28,4 +28,9 @@ export interface BuildSchema {
      * the set of tasks run on each project during a build, in order
      */
     buildPipeline: BuildTaskFunction[];
+
+    /**
+     * Allows the override of the tsconfig.json file name
+     */
+    configFile?: string;
 }

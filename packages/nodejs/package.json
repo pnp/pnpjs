@@ -1,7 +1,7 @@
 {
   "name": "@pnp/nodejs",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - provides SharePoint query functionality",
+  "description": "pnp - provides functionality enabling the @pnp libraries within nodejs",
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {

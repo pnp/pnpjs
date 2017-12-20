@@ -9,6 +9,6 @@ export class SPRequestExecutorUndefinedException extends Error {
         ].join(" ");
         super(msg);
         this.name = "SPRequestExecutorUndefinedException";
-        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
+        Logger.error(this);
     }
 }

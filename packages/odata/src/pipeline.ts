@@ -60,10 +60,8 @@ export function setResult<T>(context: RequestContext<T>, value: any): Promise<Re
  */
 function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
 
-    const _next = c.pipeline.shift();
-
-    if (typeof _next !== "undefined") {
-        return _next(c);
+    if (c.pipeline.length > 0) {
+        return c.pipeline.shift()(c);
     } else {
         return Promise.resolve(c);
     }
@@ -83,11 +81,7 @@ export function pipe<T>(context: RequestContext<T>): Promise<T | null> {
     return next(context)
         .then(ctx => returnResult(ctx))
         .catch((e: Error) => {
-            Logger.log({
-                data: e,
-                level: LogLevel.Error,
-                message: `Error in request pipeline: ${e.message}`,
-            });
+            Logger.error(e);
             throw e;
         });
 }

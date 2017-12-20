@@ -79,6 +79,15 @@ export class Logger {
     public static log(entry: LogEntry) {
         Logger.instance.log(entry);
     }
+
+    /**
+     * Logs an error object to the subscribed listeners
+     * 
+     * @param err The error object
+     */
+    public static error(err: Error) {
+        Logger.instance.log({ data: err, level: LogLevel.Error, message: `[${err.name}]::${err.message}` });
+    }
 }
 
 class LoggerImpl {

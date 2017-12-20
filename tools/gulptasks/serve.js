@@ -54,7 +54,7 @@ gulp.task("serve", (done) => {
 
     // check to see if you used a flag to serve a single package
     const args = cmdLine({});
-    let entry = "./debug/serve/serve.ts";
+    let entry = "./debug/serve/main.ts";
     let configFileName = "tsconfig.json";
     let library = "pnp";
     

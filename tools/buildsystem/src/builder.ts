@@ -28,7 +28,8 @@ export function builder(version: string, config: BuildSchema): Promise<void> {
         }
 
         const projectFolder = path.join(config.packageRoot, pkg.name);
-        const projectFile = path.join(projectFolder, "tsconfig-build.json");
+
+        const projectFile = path.join(projectFolder, config.configFile || "tsconfig-build.json");
         const tsconfigObj = require(projectFile);
 
         // establish the context that will be passed through all the build pipeline functions

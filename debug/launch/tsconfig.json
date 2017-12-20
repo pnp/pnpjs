@@ -27,6 +27,6 @@
         "experimentalDecorators": true
     },
     "include": [
-        "./debug.ts"
+        "./main.ts"
     ]
 }

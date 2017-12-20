@@ -5,7 +5,7 @@
 			"name": "Debug",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/debug/launch/debug.ts",
+			"program": "${workspaceRoot}/debug/launch/main.ts",
 			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}",

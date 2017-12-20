@@ -8,6 +8,46 @@ The following gulp commands are currently working: build, package, test, lint, a
 
 Have a look around and let us know what you think :)
 
+## Packages
+
+The following packages comprise the Patterns and Practices client side libraries. Please see the individual package documentation for details on each.
+
+### [@pnp/common](packages/common/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
+
+**Provides shared functionality across all pnp libraries**
+
+### [@pnp/config-store](packages/config-store/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fconfig-store.svg)](https://badge.fury.io/js/%40pnp%2Fconfig-store)
+
+**Provides a way to manage configuration within your application**
+
+### [@pnp/graph](packages/graph/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fgraph.svg)](https://badge.fury.io/js/%40pnp%2Fgraph)
+
+**Provides functionality to query the Microsoft Graph**
+
+### [@pnp/logging](packages/logging/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Flogging.svg)](https://badge.fury.io/js/%40pnp%2Flogging)
+
+**Light-weight, subscribable logging framework**
+
+### [@pnp/nodejs](packages/nodejs/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fnodejs.svg)](https://badge.fury.io/js/%40pnp%2Fnodejs)
+
+**Provides functionality enabling the @pnp libraries within nodejs**
+
+### [@pnp/odata](packages/odata/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fodata.svg)](https://badge.fury.io/js/%40pnp%2Fodata)
+
+**Provides shared odata functionality and base classes**
+
+### [@pnp/pnpjs](packages/pnpjs/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fpnpjs.svg)](https://badge.fury.io/js/%40pnp%2Fpnpjs)
+
+**Rollup library of core functionality (mimics sp-pnp-js)**
+
+### [@pnp/sp](packages/sp//docsindex.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fsp.svg)](https://badge.fury.io/js/%40pnp%2Fsp)
+
+**Provides a fluent api for working with SharePoint REST**
+
+### [@pnp/sp-addinhelpers](packages/sp-addinhelpers/docs/index.md) [![npm version](https://badge.fury.io/js/%40pnp%2Fsp-addinhelpers.svg)](https://badge.fury.io/js/%40pnp%2Fsp-addinhelpers)
+
+**Provides functionality for working within SharePoint add-ins**
+
 
 ### Authors
 This project's contributors include Microsoft and [community contributors](AUTHORS). Work is done as as open source community project.

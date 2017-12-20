@@ -25,17 +25,40 @@ If you do not install all of the peer dependencies you will get a message specif
 With the separation of packages we have also simplified the imports, and allowed you more control over what you are importing. Compare these two examples showing
 the same set of imports, but one is done via sp-pnp-js and the other using the @pnp libraries.
 
+### From sp-pnp-js
+```TypeScript
+import pnp, {
+  Web,
+  Util,
+  Logger,
+  FunctionListener,
+  LogLevel,
+} from "sp-pnp-js";
+```
+
+### From @pnp libraries
+```TypeScript
+import {
+  Logger,
+  LogLevel,
+  FunctionListener,
+} from "@pnp/logging";
+
+import {
+  Util,
+} from "@pnp/common";
+
+import {
+  sp,
+  Web,
+} from "@pnp/sp";
+```
+
+In the above example the "sp" import replaces "pnp" and is the root of your method chains. Once we have updated our imports we have a few small code changes to make,
+depending on how you have used the library in your applications. Watch this short video discussing the most common updates:
+
+<<TODO RECORD VIDEO>>
 
 
-where things like Util and Web moved to
 
 
-
-
-
-
-
-## Changes
-
-
-getAs -> get

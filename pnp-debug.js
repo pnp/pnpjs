@@ -32,6 +32,8 @@ const config = {
         tasks.buildProject,
         tasks.replaceDebug,
     ],
+
+    configFile: "tsconfig.json",
 }
 
 module.exports = config;

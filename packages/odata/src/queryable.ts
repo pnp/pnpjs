@@ -6,7 +6,7 @@ import {
     ConfigOptions,
     mergeOptions,
 } from "@pnp/common";
-import { Logger, LogLevel } from "@pnp/logging";
+import { Logger } from "@pnp/logging";
 import { ODataParser } from "./core";
 import { ODataDefaultParser } from "./parsers";
 import { ICachingOptions } from "./caching";
@@ -22,7 +22,7 @@ export class AlreadyInBatchException extends Error {
     constructor(msg = "This query is already part of a batch.") {
         super(msg);
         this.name = "AlreadyInBatchException";
-        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
+        Logger.error(this);
     }
 }
 

@@ -27,6 +27,6 @@
         "experimentalDecorators": true
     },
     "include": [
-        "./serve.ts"
+        "./main.ts"
     ]
 }
