@@ -65,6 +65,17 @@ Logger.log({
 });
 ```
 
+## Log an error
+
+There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
+instance pased in, the level will be Error, and the message will be a concatenation of the Error instance name and message.
+
+```TypeScript
+const e = new Error("An Error");
+
+Logger.error(e);
+```
+
 ## Subscribing a Listener
 
 By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided Console Listener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.
