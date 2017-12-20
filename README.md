@@ -48,7 +48,6 @@ The following packages comprise the Patterns and Practices client side libraries
 
 **Provides functionality for working within SharePoint add-ins**
 
-
 ### Authors
 This project's contributors include Microsoft and [community contributors](AUTHORS). Work is done as as open source community project.
 
