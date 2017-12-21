@@ -33,17 +33,11 @@ function chainCommands(commands) {
 
 function doPublish(configFileName) {
 
-    console.log("do publish")
+    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).publisher;
+    const config = cmdLine(require(path.join(projectRoot, configFileName)));
 
-    return Promise.resolve();
-
-
-    // const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).publisher;
-    // const config = cmdLine(require(path.join(projectRoot, configFileName)));
-
-    // return engine(config);
+    return engine(config);
 }
-// "package"
 
 gulp.task("publish", (done) => {
 
@@ -67,7 +61,7 @@ gulp.task("publish", (done) => {
         // undo edit of .gitignore
         "git checkout .gitignore",
         // update package version
-        "npm version prerelease", // patch
+        "npm version patch",
         // push updates to master
         "git push",
         // package files
