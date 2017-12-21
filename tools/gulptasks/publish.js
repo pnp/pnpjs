@@ -24,7 +24,7 @@ function chainCommands(commands) {
             gutil.log(cmd);
             exec(cmd, { stdio: "inherit" });
             resolve();
-        } catch(e) {
+        } catch (e) {
             reject(e);
         }
 
@@ -62,7 +62,10 @@ gulp.task("publish", (done) => {
         "sed -i \"s/\\/docs/#\\/docs/\" .gitignore",
         // push docs and new version to git
         "git add ./docs",
-        "git commit -m\"Update docs during master merge\"",
+        "git commit -m \"Update docs during master merge\"",
+
+        // undo edit of .gitignore
+        "git checkout .gitignore",
         // update package version
         "npm version prerelease", // patch
         // push updates to master
@@ -70,23 +73,22 @@ gulp.task("publish", (done) => {
         // package files
         "gulp package",
     ])
-    .then(_ => doPublish("./pnp-publish.js"))
-    .then(_ => chainCommands([
-        // undo edit of .gitignore
-        "git checkout .gitignore",
-        // clean up docs in dev branch and merge master -> dev
-        "git checkout master",
-        "git pull",
-        "git checkout dev",
-        "git pull",
-        "git merge master",
-        "rmdir /S/Q docs",
-        "git add .",
-        "git commit -m \"Clean up docs from dev branch\"",
-        "git push",
-        // always leave things on the dev branch
-        "git checkout dev",
-    ])).then(done).catch(done);
+        .then(_ => doPublish("./pnp-publish.js"))
+        .then(_ => chainCommands([
+
+            // clean up docs in dev branch and merge master -> dev
+            "git checkout master",
+            "git pull",
+            "git checkout dev",
+            "git pull",
+            "git merge master",
+            "rmdir /S/Q docs",
+            "git add .",
+            "git commit -m \"Clean up docs from dev branch\"",
+            "git push",
+            // always leave things on the dev branch
+            "git checkout dev",
+        ])).then(done).catch(done);
 });
 
 gulp.task("publish-beta", ["package"], (done) => {
