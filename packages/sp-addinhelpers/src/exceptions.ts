@@ -1,4 +1,4 @@
-import { LogLevel, Logger } from "@pnp/logging";
+import { Logger } from "@pnp/logging";
 
 export class SPRequestExecutorUndefinedException extends Error {
 

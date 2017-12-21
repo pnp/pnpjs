@@ -1,4 +1,4 @@
-import { Logger, LogLevel } from "@pnp/logging";
+import { Logger } from "@pnp/logging";
 
 export class SPBatchParseException extends Error {
 
