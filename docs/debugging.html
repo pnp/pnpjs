@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        SharePoint Patters and Practices
+    </header>
+
+    <article>
+        <h1>Debugging</h1>
+<h2>Debugging Library Features in Code using Node</h2>
+<p>The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses the <a href="../blob/master/.vscode/launch.json">launch.json</a> file to build and run the library using ./debug/launch/main.ts as the program entry. You can add any number of files to this directory and they will be ignored by git, however the debug.ts file is not, so please ensure you don’t commit any login information.</p>
+<h3>Setup settings.js</h3>
+<p>If you have not already you need to create a settings.js files by copying settings.example.js and renaming it to settings.js. Then update the clientId, clientSecret, and siteUrl fields in the testing section.</p>
+<h3>Test your setup</h3>
+<p>If you hit F5 now you should be able to see the full response from getting the web’s title in the internal console window. If not, ensure that you have properly updated the settings file and registered the add-in perms correctly.</p>
+<h3>Create a debug module</h3>
+<p>Using ./debug/launch/example.ts as a reference create a debugging file in the debug folder, let’s call it mydebug.ts and add this content:</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// note we can use the correct package names for our imports</span>
+<span class="hljs-keyword">import</span> { sp, ListEnsureResult } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { Logger, LogLevel, ConsoleListener } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-keyword">declare</span> <span class="hljs-keyword">var</span> process: { exit(code?: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> };
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyDebug</span>(<span class="hljs-params"></span>) </span>{
+
+    <span class="hljs-comment">// run some debugging</span>
+    sp.web.lists.ensure(<span class="hljs-string">"MyFirstList"</span>).then(<span class="hljs-function">(<span class="hljs-params">list: ListEnsureResult</span>) =&gt;</span> {
+
+        Logger.log({
+            data: list.created,
+            message: <span class="hljs-string">"Was list created?"</span>,
+            level: LogLevel.Verbose
+        });
+
+        <span class="hljs-keyword">if</span> (list.created) {
+
+            Logger.log({
+                data: list.data,
+                message: <span class="hljs-string">"Raw data from list creation."</span>,
+                level: LogLevel.Verbose
+            });
+
+        } <span class="hljs-keyword">else</span> {
+
+            Logger.log({
+                data: <span class="hljs-literal">null</span>,
+                message: <span class="hljs-string">"List already existed!"</span>,
+                level: LogLevel.Verbose
+            });
+        }
+
+        process.exit(<span class="hljs-number">0</span>);
+    }).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+
+        Logger.error(e);
+        process.exit(<span class="hljs-number">1</span>);
+    });
+}
+</code></pre>
+<h3>Update main.ts to launch your module</h3>
+<p>First comment out the import for the default example and then add the import and function call for yours, the updated main.ts should look like this:</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">// comment out the example</span>
+<span class="hljs-comment">// import { Example } from "./example";</span>
+<span class="hljs-comment">// Example();</span>
+
+<span class="hljs-keyword">import</span> { MyDebug } <span class="hljs-keyword">from</span> <span class="hljs-string">"./mydebug"</span>
+MyDebug();
+
+<span class="hljs-comment">// ...</span>
+</code></pre>
+<h3>Debug!</h3>
+<p>Place a break point within the promise resolution in your debug file and hit F5. Your module should be run and your break point hit. You can then examine the contents of the objects and see the run time state. Remember you can also set breakpoints within the package src folders to see exactly how things are working during your debugging scenarios.</p>
+<h3>Next Steps</h3>
+<p>Using this pattern you can create and preserve multiple debugging scenarios in separate modules locally.</p>
+<h2>In Browser Debugging</h2>
+<p>You can also serve files locally to debug in a browser through two methods. The first will serve code using ./debug/serve/main.ts as the entry. Meaning you can easily
+write code and test it in the browser. The second method allows you to serve a single package (bundled with all dependencies) for in browser testing. Both methods serve
+the file from <a href="https://localhost:8080/assets/pnp.js">https://localhost:8080/assets/pnp.js</a>, allowing you to create a single page in your tenant for in browser testing.</p>
+<h3>Start the local serve</h3>
+<p>This will serve a package with ./debug/serve/main.ts as the entry.</p>
+<p><code>gulp serve</code></p>
+<h3>Add reference to library</h3>
+<p>Within a SharePoint page add a script editor web part and then paste in the following code. The div is to give you a place to target with visual updates should you desire.</p>
+<pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://localhost:8080/assets/pnp.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"pnptestdiv"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>You should see an alert with the current web’s title using the default main.ts. Feel free to update main.ts to do whatever you would like, but note that any changes
+included as part of a PR to this file will not be allowed.</p>
+<h3>Serve a specific package</h3>
+<p>For example if you wanted to serve the @pnp/sp package for testing you would use:</p>
+<p><code>gulp serve --p sp</code></p>
+<p>This will serve a bundle of the sp functionality along with all dependencies and place a global variable named “pnp.{packagename}”, in this case pnp.sp. This will be
+true for each package, if you served just the graph package the global would be pnp.graph. This mirrors how the umd modules are built in the distributed npm packages
+to allow testing with matching packages.</p>
+<h3>Next Steps</h3>
+<p>You can make changes to the library and immediately see them reflected in the browser. All files are watched regardless of which serve method you choose.</p>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft<br />
+        Please <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: {your title}&body=Please describe how we can improve the doc page $$OriginalFilePath$$">report documentation issues</a> so we can improve things!
+    </footer>
+</body>
+
+</html>
