@@ -18,6 +18,7 @@ import { SPBatch } from "./batch";
 import { Features } from "./features";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
+import { RegionalSettings } from "./regionalsettings";
 
 /**
  * Describes a collection of webs
@@ -215,6 +216,14 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public get siteUserInfoList(): List {
         return new List(this, "siteuserinfolist");
+    }
+
+    /**
+     * Gets regional settings
+     *
+     */
+    public get regionalSettings(): RegionalSettings {
+        return new RegionalSettings(this);
     }
 
     /**
