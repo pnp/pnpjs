@@ -1403,3 +1403,26 @@ export interface RenderListDataParameters {
     FolderServerRelativeUrl?: string;
     RenderOptions?: RenderListDataOptions;
 }
+
+export interface MenuNode {
+    CustomProperties: any[];
+    FriendlyUrlSegment: string;
+    IsDeleted: boolean;
+    IsHidden: boolean;
+    Key: string;
+    Nodes: MenuNode[];
+    NodeType: number;
+    SimpleUrl: string;
+    Title: string;
+}
+
+export interface MenuNodeCollection {
+    FriendlyUrlPrefix: string;
+    Nodes: MenuNode[];
+    SimpleUrl: string;
+    SPSitePrefix: string;
+    SPWebPrefix: string;
+    StartingNodeKey: string;
+    StartingNodeTitle: string;
+    Version: Date;
+}

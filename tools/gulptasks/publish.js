@@ -49,21 +49,27 @@ gulp.task("publish", (done) => {
         "git pull",
         "git merge dev",
         "npm install",
+
         // update docs
         "git checkout master",
         "gulp docs",
+
         // update .gitignore so we can push docs to master
         "sed -i \"s/\\/docs/#\\/docs/\" .gitignore",
+
         // push docs and new version to git
         "git add ./docs",
         "git commit -m \"Update docs during master merge\"",
 
         // undo edit of .gitignore
         "git checkout .gitignore",
+
         // update package version
         "npm version patch",
+
         // push updates to master
         "git push",
+
         // package files
         "gulp package",
     ])
@@ -80,6 +86,7 @@ gulp.task("publish", (done) => {
             "git add .",
             "git commit -m \"Clean up docs from dev branch\"",
             "git push",
+            
             // always leave things on the dev branch
             "git checkout dev",
         ])).then(done).catch(done);

@@ -155,3 +155,53 @@ export class Navigation extends SharePointQueryable {
     }
 }
 
+export interface INavigationService {
+    getMenuState(menuNodeKey?: string, depth?: number, mapProviderName?: string, customProperties?: string): Promise<MenuNodeCollection>;
+    getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
+}
+
+/**
+ * Represents the top level navigation service
+ */
+export class NavigationService extends SharePointQueryable implements INavigationService {
+
+    constructor(path: string = null) {
+        super("_api/navigation", path);
+    }
+
+    /**
+     * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
+     * 
+     * @param menuNodeKey MenuNode.Key of the start node within the SiteMapProvider If no key is provided the SiteMapProvider.RootNode will be the root of the menu state.
+     * @param depth Depth of the dump. If no value is provided a dump with the depth of 10 is returned
+     * @param mapProviderName The name identifying the SiteMapProvider to be used
+     * @param customProperties comma seperated list of custom properties to be returned.
+     */
+    public getMenuState(menuNodeKey: string = null, depth = 10, mapProviderName: string = null, customProperties: string = null): Promise<MenuNodeCollection> {
+
+        return (new NavigationService("MenuState")).postCore({
+            body: JSON.stringify({
+                customProperties: customProperties,
+                depth: depth,
+                mapProviderName: mapProviderName,
+                menuNodeKey: menuNodeKey,
+            }),
+        });
+    }
+
+    /**
+     * Tries to get a SiteMapNode.Key for a given URL within a site collection.
+     * 
+     * @param currentUrl A url representing the SiteMapNode
+     * @param mapProviderName The name identifying the SiteMapProvider to be used
+     */
+    public getMenuNodeKey(currentUrl: string, mapProviderName: string = null): Promise<string> {
+
+        return (new NavigationService("MenuNodeKey")).postCore({
+            body: JSON.stringify({
+                currentUrl: currentUrl,
+                mapProviderName: mapProviderName,
+            }),
+        });
+    }
+}

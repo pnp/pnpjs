@@ -4,6 +4,7 @@ import { Site } from "./site";
 import { Web } from "./webs";
 import { ConfigOptions } from "@pnp/common";
 import { UserProfileQuery } from "./userprofiles";
+import { INavigationService, NavigationService } from "./navigation";
 import { SPBatch } from "./batch";
 import { UtilityMethod, UtilityMethods } from "./utilities";
 import {
@@ -104,6 +105,13 @@ export class SPRest {
      */
     public get profiles(): UserProfileQuery {
         return new UserProfileQuery(this._baseUrl).configure(this._options);
+    }
+
+    /**
+     * Access to the site collection level navigation service
+     */
+    public get navigation(): INavigationService {
+        return new NavigationService();
     }
 
     /**

@@ -86,6 +86,8 @@ export {
     NavigationNodeUpdateResult,
     NavigationNodes,
     NavigationNode,
+    NavigationService,
+    INavigationService,
 } from "./navigation";
 
 export {
