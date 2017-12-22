@@ -1,5 +1,6 @@
 import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { MenuNodeCollection } from "./types";
 
 /**
  * Result from adding a navigation node
