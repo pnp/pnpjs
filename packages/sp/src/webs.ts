@@ -64,9 +64,9 @@ export class Webs extends SharePointQueryableCollection {
 
         const postBody = JSON.stringify({
             "parameters":
-            Util.extend({
-                "__metadata": { "type": "SP.WebCreationInformation" },
-            }, props),
+                Util.extend({
+                    "__metadata": { "type": "SP.WebCreationInformation" },
+                }, props),
         });
 
         return this.clone(Webs, "add").postCore({ body: postBody }).then((data) => {
@@ -136,6 +136,13 @@ export class Web extends SharePointQueryableShareableWeb {
     */
     public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): Webs {
         return this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+    }
+
+    /**
+     * Allows access to the web's all properties collection
+     */
+    public get allProperties(): SharePointQueryableCollection {
+        return this.clone(SharePointQueryableCollection, "allproperties");
     }
 
     /**
