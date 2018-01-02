@@ -80,7 +80,7 @@ gulp.task("publish:docs", (done) => {
 
         // always leave things on the dev branch
         "git checkout dev",
-        
+
     ]).then(done).catch(done);
 
 });
@@ -105,4 +105,4 @@ gulp.task("publish-beta", ["version:beta", "package"], (done) => {
     doPublish("./pnp-publish-beta.js").then(done).catch(done);
 });
 
-gulp.task("publish", ["version", "publish:packages", "publish:docs"]);
+gulp.task("publish", ["version", "package", "publish:packages", "publish:docs"]);
