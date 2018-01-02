@@ -17,7 +17,7 @@ If you hit F5 now you should be able to see the full response from getting the w
 Using ./debug/launch/example.ts as a reference create a debugging file in the debug folder, let's call it mydebug.ts and add this content:
 
 ```TypeScript
-// note we can use the correct package names for our imports
+// note we can use the actual package names for our imports
 import { sp, ListEnsureResult } from "@pnp/sp";
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 

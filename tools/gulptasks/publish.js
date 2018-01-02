@@ -39,7 +39,7 @@ function doPublish(configFileName) {
     return engine(config);
 }
 
-gulp.task("publish", (done) => {
+gulp.task("publish:docs", (done) => {
 
     chainCommands([
         // merge dev -> master
@@ -64,35 +64,45 @@ gulp.task("publish", (done) => {
         // undo edit of .gitignore
         "git checkout .gitignore",
 
-        // update package version
-        "npm version patch",
-
         // push updates to master
         "git push",
 
-        // package files
-        "gulp package",
-    ])
-        .then(_ => doPublish("./pnp-publish.js"))
-        .then(_ => chainCommands([
+        // clean up docs in dev branch and merge master -> dev
+        "git checkout master",
+        "git pull",
+        "git checkout dev",
+        "git pull",
+        "git merge master",
+        "rmdir /S/Q docs",
+        "git add .",
+        "git commit -m \"Clean up docs from dev branch\"",
+        "git push",
 
-            // clean up docs in dev branch and merge master -> dev
-            "git checkout master",
-            "git pull",
-            "git checkout dev",
-            "git pull",
-            "git merge master",
-            "rmdir /S/Q docs",
-            "git add .",
-            "git commit -m \"Clean up docs from dev branch\"",
-            "git push",
-            
-            // always leave things on the dev branch
-            "git checkout dev",
-        ])).then(done).catch(done);
+        // always leave things on the dev branch
+        "git checkout dev",
+        
+    ]).then(done).catch(done);
+
 });
 
-gulp.task("publish-beta", ["package"], (done) => {
+gulp.task("version", (done) => {
 
-    doPublish("./pnp-publish-beta.js").then(done).catch(done);;
+    chainCommands(["npm version patch"]);
 });
+
+gulp.task("version:beta", (done) => {
+
+    chainCommands(["npm version prerelease"]);
+});
+
+gulp.task("publish:packages", ["package"], (done) => {
+
+    doPublish("./pnp-publish.js").then(done).catch(done);
+});
+
+gulp.task("publish-beta", ["version:beta", "package"], (done) => {
+
+    doPublish("./pnp-publish-beta.js").then(done).catch(done);
+});
+
+gulp.task("publish", ["version", "publish:packages", "publish:docs"]);

@@ -10,6 +10,7 @@ const defaultPackagePipeline = [
     tasks.writePackageFile,
     tasks.uglify,
     tasks.bundle,
+    tasks.banner,
 ];
 
 /**

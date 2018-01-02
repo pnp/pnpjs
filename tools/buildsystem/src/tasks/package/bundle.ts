@@ -58,7 +58,6 @@ export function bundle(ctx: PackageContext) {
             path: path.join(ctx.targetFolder, "dist"),
         },
         plugins: [
-            new webpack.BannerPlugin({ banner: "// TODO:: banner", entryOnly: true, raw: true }),
             new webpack.DefinePlugin({
                 "process.env": {
                     "NODE_ENV": JSON.stringify("production"),
@@ -81,7 +80,6 @@ export function bundle(ctx: PackageContext) {
             path: path.join(ctx.targetFolder, "dist"),
         },
         plugins: [
-            new webpack.BannerPlugin({ banner: "// TODO:: banner", entryOnly: true, raw: true }),
             new webpack.DefinePlugin({
                 "process.env": {
                     "NODE_ENV": JSON.stringify("production"),
