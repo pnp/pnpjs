@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        SharePoint Patters and Practices
+    </header>
+
+    <article>
+        <h1>Getting Started</h1>
+<p>These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install
+the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
+more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.</p>
+<h2>Connect to SharePoint from Node</h2>
+<p>Because peer dependencies are not installed automatically you will need to list out each package to install. Don’t worry if you forget one you will get a message
+on the command line that a peer dependency is missing. Let’s for example look at installing the required libraries to connect to SharePoint from nodejs.</p>
+<pre><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/nodejs
+</code></pre>
+<p>This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the <a href="packages.html">packages</a> page.
+Once these are installed you need to import them into your project, to communicate with SharePoint from node we’ll need the following imports:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { SPFetchClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/nodejs"</span>;
+</code></pre>
+<p>Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// configure your node options (only once in your application)</span>
+sp.setup({
+    sp: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> SPFetchClient(<span class="hljs-string">"{site url}"</span>, <span class="hljs-string">"{client id}"</span>, <span class="hljs-string">"{client secret}"</span>);
+        },
+    },
+});
+
+<span class="hljs-comment">// make a call to SharePoint and log it in the console</span>
+sp.web.select(<span class="hljs-string">"Title"</span>, <span class="hljs-string">"Description"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(w, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+});
+</code></pre>
+<h2>Connect to Microsoft Graph From Node</h2>
+<p>Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources.</p>
+<pre><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs
+</code></pre>
+<p>Now we need to import what we’ll need to call graph</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+<span class="hljs-keyword">import</span> { AdalFetchClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/nodejs"</span>;
+</code></pre>
+<p>Now we can make our graph calls after setting up the Adal client. Note you’ll need to setup an AzureAD App registration with the necessary permissions.</p>
+<pre><code class="language-TypeScript">graph.setup({
+    graph: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AdalFetchClient(<span class="hljs-string">"{mytenant}.onmicrosoft.com"</span>, <span class="hljs-string">"{application id}"</span>, <span class="hljs-string">"{application secret}"</span>);
+        },
+    },
+});
+
+<span class="hljs-comment">// make a call to Graph and get all the groups</span>
+graph.v1.groups.get().then(<span class="hljs-function"><span class="hljs-params">g</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(g, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft<br />
+        Please <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: {your title}&body=Please describe how we can improve the doc page $$OriginalFilePath$$">report documentation issues</a> so we can improve things!
+    </footer>
+</body>
+
+</html>
