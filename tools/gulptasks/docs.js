@@ -5,6 +5,7 @@ const gulp = require("gulp"),
     hljs = require("highlight.js"),
     header = require("gulp-header"),
     footer = require("gulp-footer"),
+    replace = require('gulp-replace'),
     MarkdownIt = new require("markdown-it"),
     fs = require('fs'),
     path = require('path');
@@ -76,6 +77,10 @@ gulp.task("docs", ["clean:docs"], (done) => {
             ]),
             tap.apply(tap, [mdToHtml].concat(hf.map(s => new Buffer(s)))),
             tap(removeDocsSubPath),
+            replace("$$OriginalFilePath$$", function() {
+                // allows for the inclusion of the path in the issue title link in footer
+                return this.file.relative;
+            }),
             gulp.dest("./docs"),
         ], (err) => {
 
