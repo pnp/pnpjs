@@ -49,7 +49,6 @@ gulp.task("publish:packages-beta", ["package"], (done) => {
     doPublish("./pnp-publish-beta.js").then(done).catch(done);
 });
 
-
 gulp.task("publish-beta", (done) => {
    
     chainCommands([
@@ -63,7 +62,7 @@ gulp.task("publish-beta", (done) => {
         // push updates to dev
         "git push",
 
-        // packlage and publish the packages to npm
+        // package and publish the packages to npm
         "gulp publish:packages-beta",
 
         // always leave things on the dev branch
@@ -103,7 +102,7 @@ gulp.task("publish", (done) => {
         // push updates to master
         "git push",
 
-        // packlage and publish the packages to npm
+        // package and publish the packages to npm
         "gulp publish:packages",
 
         // clean up docs in dev branch and merge master -> dev
