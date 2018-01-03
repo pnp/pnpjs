@@ -20,9 +20,9 @@ describe("Collections", () => {
         it("Should add two values, remove one and result in a count() of 1", () => {
             dic.add("test1", "value");
             dic.add("test2", "value");
-            expect(dic.count()).to.eq(2);
+            expect(dic.count).to.eq(2);
             dic.remove("test2");
-            expect(dic.count()).to.eq(1);
+            expect(dic.count).to.eq(1);
         });
 
         it("Should return null for a non-existant value", () => {
@@ -36,9 +36,9 @@ describe("Collections", () => {
             dic.add("test2", "value2");
             dic.add("test3", "value3");
             dic.add("test4", "value4");
-            expect(dic.count()).to.eq(4);
+            expect(dic.count).to.eq(4);
             dic.remove("test3");
-            expect(dic.count()).to.eq(3);
+            expect(dic.count).to.eq(3);
             expect(dic.get("test1")).to.eq("value1");
             expect(dic.get("test2")).to.eq("value2");
             expect(dic.get("test4")).to.eq("value4");
@@ -49,9 +49,9 @@ describe("Collections", () => {
             dic.add("test2", "value2");
             dic.add("test3", "value3");
             dic.add("test4", "value4");
-            expect(dic.count()).to.eq(4);
+            expect(dic.count).to.eq(4);
             dic.clear();
-            expect(dic.count()).to.eq(0);
+            expect(dic.count).to.eq(0);
             expect(dic.get("test1")).to.be.null;
         });
     });

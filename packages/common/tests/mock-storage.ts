@@ -4,7 +4,7 @@ export default class MockStorage implements Storage {
     constructor(private _store = new Dictionary<string>(), private _length = 0) { }
 
     public get length(): number {
-        return this._store.count();
+        return this._store.count;
     }
 
     public set length(i: number) {

@@ -41,12 +41,6 @@ describe("Util", () => {
         });
     });
 
-    describe("stringInsert", () => {
-        it("Should insert the string cat into dog at index 2 resulting in docatg", () => {
-            expect(Util.stringInsert("dog", 2, "cat")).to.eq("docatg");
-        });
-    });
-
     describe("combinePaths", () => {
         it("Should combine the paths '/path/', 'path2', 'path3' and '/path4' to be path/path2/path3/path4", () => {
             expect(Util.combinePaths("/path/", "path2", "path3", "/path4")).to.eq("path/path2/path3/path4");
@@ -93,13 +87,13 @@ describe("Util", () => {
 
     describe("isFunction", () => {
         it("Should find that a function is a function", () => {
-            expect(Util.isFunction(() => { return; })).to.be.true;
+            expect(Util.isFunc(() => { return; })).to.be.true;
         });
 
         it("Should find that a non-function is not a function", () => {
-            expect(Util.isFunction({ val: 0 })).to.be.false;
-            expect(Util.isFunction(null)).to.be.false;
-            expect(Util.isFunction(undefined)).to.be.false;
+            expect(Util.isFunc({ val: 0 })).to.be.false;
+            expect(Util.isFunc(null)).to.be.false;
+            expect(Util.isFunc(undefined)).to.be.false;
         });
     });
 

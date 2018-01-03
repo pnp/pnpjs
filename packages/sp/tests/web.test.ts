@@ -175,7 +175,7 @@ describe("Web", () => {
 
         describe("getFolderByServerRelativeUrl", () => {
             it("should get a folder by the server relative url", function () {
-                return expect(sp.web.select("ServerRelativeUrl").getAs<{ ServerRelativeUrl: string }>().then(w => {
+                return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
                     const url = Util.combinePaths(w.ServerRelativeUrl, "SitePages");
                     return sp.web.getFolderByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
@@ -184,7 +184,7 @@ describe("Web", () => {
 
         describe("getFileByServerRelativeUrl", () => {
             it("should get a file by the server relative url", function () {
-                return expect(sp.web.select("ServerRelativeUrl").getAs<{ ServerRelativeUrl: string }>().then(w => {
+                return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
                     const url = Util.combinePaths(w.ServerRelativeUrl, "SitePages", "Home.aspx");
                     return sp.web.getFileByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
@@ -193,12 +193,12 @@ describe("Web", () => {
 
         describe("update", () => {
             it("should update the title of the web", function () {
-                return expect(sp.web.select("Title").getAs<{ Title: string }>().then(w => {
+                return expect(sp.web.select("Title").get<{ Title: string }>().then(w => {
 
                     const newTitle = w.Title + " updated";
                     sp.web.update({ Title: newTitle }).then(() => {
 
-                        sp.web.select("Title").getAs<{ Title: string }>().then(w2 => {
+                        sp.web.select("Title").get<{ Title: string }>().then(w2 => {
                             if (w2.Title !== newTitle) {
                                 throw new Error("Update web failed");
                             }
@@ -240,7 +240,7 @@ describe("Web", () => {
 
         describe("availableWebTemplates", () => {
             it("should check for all the available web templates", function () {
-                return expect(sp.web.availableWebTemplates().getAs<any[]>()).to.eventually.be.not.empty;
+                return expect(sp.web.availableWebTemplates().get<any[]>()).to.eventually.be.not.empty;
             });
         });
 

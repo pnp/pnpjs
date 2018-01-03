@@ -54,7 +54,7 @@ describe("Lists", () => {
 
         describe("getById", () => {
             it("Should get a list by id with the expected title", () => {
-                return expect(sp.web.lists.getByTitle("Documents").select("ID").getAs<{ Id: string }>().then((list) => {
+                return expect(sp.web.lists.getByTitle("Documents").select("ID").get<{ Id: string }>().then((list) => {
                     return sp.web.lists.getById(list.Id).select("Title").get();
                 })).to.eventually.have.property("Title", "Documents");
             });
