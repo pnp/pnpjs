@@ -39,7 +39,40 @@ function doPublish(configFileName) {
     return engine(config);
 }
 
-gulp.task("publish:docs", (done) => {
+gulp.task("publish:packages", ["package"], (done) => {
+
+    doPublish("./pnp-publish.js").then(done).catch(done);
+});
+
+gulp.task("publish:packages-beta", ["package"], (done) => {
+
+    doPublish("./pnp-publish-beta.js").then(done).catch(done);
+});
+
+
+gulp.task("publish-beta", (done) => {
+   
+    chainCommands([
+
+        // beta releases are done from dev branch
+        "git checkout dev",
+
+        // update package version
+        "npm version prerelease",
+
+        // push updates to dev
+        "git push",
+
+        // packlage and publish the packages to npm
+        "gulp publish:packages-beta",
+
+        // always leave things on the dev branch
+        "git checkout dev",
+
+    ]).then(done).catch(done);    
+});
+
+gulp.task("publish", (done) => {
 
     chainCommands([
         // merge dev -> master
@@ -64,8 +97,14 @@ gulp.task("publish:docs", (done) => {
         // undo edit of .gitignore
         "git checkout .gitignore",
 
+        // update package version
+        "npm version patch",
+
         // push updates to master
         "git push",
+
+        // packlage and publish the packages to npm
+        "gulp publish:packages",
 
         // clean up docs in dev branch and merge master -> dev
         "git checkout master",
@@ -82,27 +121,4 @@ gulp.task("publish:docs", (done) => {
         "git checkout dev",
 
     ]).then(done).catch(done);
-
 });
-
-gulp.task("version", (done) => {
-
-    chainCommands(["npm version patch"]);
-});
-
-gulp.task("version:beta", (done) => {
-
-    chainCommands(["npm version prerelease"]);
-});
-
-gulp.task("publish:packages", ["package"], (done) => {
-
-    doPublish("./pnp-publish.js").then(done).catch(done);
-});
-
-gulp.task("publish-beta", ["version:beta", "package"], (done) => {
-
-    doPublish("./pnp-publish-beta.js").then(done).catch(done);
-});
-
-gulp.task("publish", ["version", "package", "publish:packages", "publish:docs"]);
