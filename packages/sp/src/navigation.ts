@@ -1,4 +1,3 @@
-import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { MenuNodeCollection } from "./types";
 
@@ -7,15 +6,6 @@ import { MenuNodeCollection } from "./types";
  *
  */
 export interface NavigationNodeAddResult {
-    data: any;
-    node: NavigationNode;
-}
-
-/**
- * Result from udpdating a navigation node
- *
- */
-export interface NavigationNodeUpdateResult {
     data: any;
     node: NavigationNode;
 }
@@ -89,30 +79,6 @@ export class NavigationNode extends SharePointQueryableInstance {
      */
     public get children(): NavigationNodes {
         return new NavigationNodes(this, "Children");
-    }
-
-    /**
-     * Updates this node based on the supplied properties
-     *
-     * @param properties The hash of key/value pairs to update
-     */
-    public update(properties: TypedHash<boolean | string | number>): Promise<NavigationNodeUpdateResult> {
-
-        const postBody = JSON.stringify(Util.extend({
-            "__metadata": { "type": "SP.NavigationNode" },
-        }, properties));
-
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then((data) => {
-            return {
-                data: data,
-                node: this,
-            };
-        });
     }
 
     /**

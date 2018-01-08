@@ -83,7 +83,6 @@ export {
 
 export {
     NavigationNodeAddResult,
-    NavigationNodeUpdateResult,
     NavigationNodes,
     NavigationNode,
     NavigationService,
