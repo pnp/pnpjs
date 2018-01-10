@@ -76,4 +76,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ### Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
-![](https://telemetry.sharepointpnp.com/pnp/pnp/readme.md)
+![](https://telemetry.sharepointpnp.com/@pnp/pnp/readme)

@@ -43,7 +43,12 @@ md.use(require('markdown-it-replace-link'));
 // translate the md to html
 function mdToHtml(file, a, b, header, footer) {
     const result = md.render(file.contents.toString());
-    file.contents = Buffer.concat([header, new Buffer(result), footer]);
+
+    // append tracking image tag
+    const telemetryPath = path.relative(file.base, file.path).replace(/\.md$/i, "").replace(/\\/ig, "/");
+    const img = new Buffer(`<img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/${telemetryPath}" alt="spacer" />`);
+
+    file.contents = Buffer.concat([header, new Buffer(result), footer, img]);
     file.path = util.replaceExtension(file.path, '.html');
 }
 
@@ -134,6 +139,6 @@ gulp.task("serve:docs", ["watch:docs"], (done) => {
             open: "http://localhost:8888/",
             port: 8888,
             livereload: true,
-            fallback: "index.html", 
+            fallback: "index.html",
         }));
 });
