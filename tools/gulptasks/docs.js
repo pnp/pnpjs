@@ -8,7 +8,8 @@ const gulp = require("gulp"),
     replace = require('gulp-replace'),
     MarkdownIt = new require("markdown-it"),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    webserver = require('gulp-webserver');
 
 // the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
@@ -94,7 +95,7 @@ gulp.task("docs", ["clean:docs", "docs:copyassets"], (done) => {
             ]),
             tap.apply(tap, [mdToHtml].concat(hf.map(s => new Buffer(s)))),
             tap(removeDocsSubPath),
-            replace("$$OriginalFilePath$$", function() {
+            replace("$$OriginalFilePath$$", function () {
                 // allows for the inclusion of the path in the issue title link in footer
                 return this.file.relative;
             }),
@@ -120,4 +121,19 @@ gulp.task("watch:docs", function () {
         "./docs-src/**/*.*",
         "./packages/**/docs/*.md",
     ], ["docs"]);
+});
+
+gulp.task("serve:docs", ["watch:docs"], (done) => {
+
+    util.log("Docs will be served from:", util.colors.bgBlue.white("http://localhost:8888/"));
+
+    gulp.src('docs')
+        .pipe(webserver({
+            livereload: true,
+            directoryListing: false,
+            open: "http://localhost:8888/",
+            port: 8888,
+            livereload: true,
+            fallback: "index.html", 
+        }));
 });

@@ -10,13 +10,13 @@ describe("Lists", () => {
     before(function (done) {
 
         // sometimes we have web tests enabled but no notificationUrl set
-        webTestCheck = testSettings.notificationUrl !== null && testSettings.notificationUrl !== "";
+        webTestCheck = testSettings.sp.notificationUrl !== null && testSettings.sp.notificationUrl !== "";
 
         if (testSettings.enableWebTests && webTestCheck) {
 
             const now = new Date();
             const expirationDate = new Date(now.setDate(now.getDate() + 90)).toISOString();
-            sp.web.lists.getByTitle("Documents").subscriptions.add(testSettings.notificationUrl, expirationDate).then(_ => {
+            sp.web.lists.getByTitle("Documents").subscriptions.add(testSettings.sp.notificationUrl, expirationDate).then(_ => {
                 done();
             }).catch(_ => {
                 done();
@@ -57,7 +57,7 @@ describe("Lists", () => {
             it("Should be able to create a new webhook subscription in the current list", () => {
                 const now = new Date();
                 const expirationDate = new Date(now.setDate(now.getDate() + 90)).toISOString();
-                const expectVal = expect(sp.web.lists.getByTitle("Documents").subscriptions.add(testSettings.notificationUrl, expirationDate));
+                const expectVal = expect(sp.web.lists.getByTitle("Documents").subscriptions.add(testSettings.sp.notificationUrl, expirationDate));
                 return expectVal.to.eventually.have.property("subscription");
             });
         });

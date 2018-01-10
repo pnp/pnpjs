@@ -13,7 +13,7 @@ describe("Sharing", () => {
 
         // we need to take some steps to ensure we are operating on the correct web here
         // due to the url manipulation in the library for sharing
-        web = new Web(testSettings.webUrl);
+        web = new Web(testSettings.sp.webUrl);
 
         web.select("ServerRelativeUrl", "Url").get().then(u => {
 

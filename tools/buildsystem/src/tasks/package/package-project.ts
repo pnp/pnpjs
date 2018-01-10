@@ -1,7 +1,6 @@
 declare var require: (s: string) => any;
 import { PackageContext } from "./context";
 import { exec } from "child_process";
-import { log } from "gulp-util";
 const path = require("path");
 
 const rollupPath = ".\\node_modules\\.bin\\rollup";

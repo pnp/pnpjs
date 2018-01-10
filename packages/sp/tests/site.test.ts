@@ -27,14 +27,14 @@ describe("Site", () => {
 
         describe("getDocumentLibraries", () => {
             it("should get the site's document libraries", () => {
-                return expect(sp.site.getDocumentLibraries(testSettings.siteUrl)).to.eventually.not.be.empty;
+                return expect(sp.site.getDocumentLibraries(testSettings.sp.webUrl)).to.eventually.not.be.empty;
             });
         });
 
         describe("getWebUrlFromPageUrl", () => {
             it("should get the site's url from the pages url", () => {
-                const pageUrl = Util.combinePaths(testSettings.webUrl, "/SitePages/Home.aspx");
-                return expect(sp.site.getWebUrlFromPageUrl(pageUrl)).to.eventually.equal(testSettings.webUrl.replace(/\/$/, ""));
+                const pageUrl = Util.combinePaths(testSettings.sp.webUrl, "/SitePages/Home.aspx");
+                return expect(sp.site.getWebUrlFromPageUrl(pageUrl)).to.eventually.equal(testSettings.sp.webUrl.replace(/\/$/, ""));
             });
         });
 

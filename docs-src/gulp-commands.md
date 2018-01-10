@@ -71,6 +71,13 @@ the [website](https://pnp.github.io/pnp/) for each release and can be used local
 gulp docs
 ```
 
+To aid in creating docs you can also run a command to watch, compile, and serve the docs allowing you to see your edits in real time. This will also enable live reload in
+the browser.
+
+```
+gulp serve:docs
+```
+
 ## lint
 
 Runs the project linting based on the tslint.json rules defined at the project root. This should be done before any PR submissions as linting failures will block merging.

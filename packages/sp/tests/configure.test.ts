@@ -27,7 +27,7 @@ describe("Custom options", () => {
             sp.setup({
                 sp: {
                     fetchClientFactory: () => {
-                        return new SPFetchClient(testSettings.webUrl, testSettings.clientId, testSettings.clientSecret);
+                        return new SPFetchClient(testSettings.sp.webUrl, testSettings.sp.id, testSettings.sp.secret);
                     },
                 },
             });

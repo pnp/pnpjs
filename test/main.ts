@@ -3,7 +3,8 @@ import * as chai from "chai";
 import "mocha";
 import { Util } from "@pnp/common";
 import { Web, sp } from "@pnp/sp";
-import { SPFetchClient } from "@pnp/nodejs";
+import { graph } from "@pnp/graph";
+import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import * as chaiAsPromised from "chai-as-promised";
 chai.use(chaiAsPromised);
 
@@ -23,12 +24,19 @@ switch (mode) {
         const webTests = process.env.PnPTesting_ClientId && process.env.PnPTesting_ClientSecret && process.env.PnPTesting_SiteUrl;
 
         settings = {
+            enableWebTests: webTests,
             testing: {
-                clientId: process.env.PnPTesting_ClientId,
-                clientSecret: process.env.PnPTesting_ClientSecret,
-                enableWebTests: webTests,
-                notificationUrl: process.env.PnPTesting_NotificationUrl || null,
-                siteUrl: process.env.PnPTesting_SiteUrl,
+                graph: {
+                    id: "",
+                    secret: "",
+                    tenant: "",
+                },
+                sp: {
+                    id: process.env.PnPTesting_ClientId,
+                    notificationUrl: process.env.PnPTesting_NotificationUrl || null,
+                    secret: process.env.PnPTesting_ClientSecret,
+                    url: process.env.PnPTesting_SiteUrl,
+                },
             },
         };
 
@@ -49,6 +57,64 @@ switch (mode) {
         break;
 }
 
+function spTestSetup(): Promise<void> {
+
+    return new Promise((resolve, reject) => {
+
+        sp.setup({
+            sp: {
+                fetchClientFactory: () => {
+                    return new SPFetchClient(testSettings.sp.url, testSettings.sp.id, testSettings.sp.secret);
+                },
+            },
+        });
+
+        // create the web in which we will test
+        const d = new Date();
+        const g = Util.getGUID();
+
+        sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g).then(() => {
+
+            const url = Util.combinePaths(testSettings.sp.url, g);
+
+            // set the testing web url so our tests have access if needed
+            testSettings.sp.webUrl = url;
+
+            // re-setup the node client to use the new web
+            sp.setup({
+
+                sp: {
+                    // headers: {
+                    //     "Accept": "application/json;odata=verbose",
+                    // },
+                    fetchClientFactory: () => {
+                        return new SPFetchClient(url, testSettings.sp.id, testSettings.sp.secret);
+                    },
+                },
+            });
+
+            resolve();
+
+        }).catch(reject);
+    });
+}
+
+function graphTestSetup(): Promise<void> {
+
+    return new Promise((resolve, reject) => {
+
+        graph.setup({
+            graph: {
+                fetchClientFactory: () => {
+                    return new AdalFetchClient(testSettings.graph.tenant, testSettings.graph.id, testSettings.graph.secret);
+                },
+            },
+        });
+
+        resolve();
+    });
+}
+
 export let testSettings = Util.extend(settings.testing, { webUrl: "" });
 
 before(function (done: MochaDone) {
@@ -59,49 +125,16 @@ before(function (done: MochaDone) {
     // establish the connection to sharepoint
     if (testSettings.enableWebTests) {
 
-        sp.setup({
-            sp: {
-                fetchClientFactory: () => {
-                    return new SPFetchClient(testSettings.siteUrl, testSettings.clientId, testSettings.clientSecret);
-                },
-            },
-        });
-
-        // comment this out to keep older subsites
-        // cleanUpAllSubsites();
-
-        // create the web in which we will test
-        const d = new Date();
-        const g = Util.getGUID();
-
-        sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g).then(() => {
-
-            const url = Util.combinePaths(testSettings.siteUrl, g);
-
-            // set the testing web url so our tests have access if needed
-            testSettings.webUrl = url;
-
-            // re-setup the node client to use the new web
-            sp.setup({
-
-                sp: {
-                    // headers: {
-                    //     "Accept": "application/json;odata=verbose",
-                    // },
-                    fetchClientFactory: () => {
-                        return new SPFetchClient(url, testSettings.clientId, testSettings.clientSecret);
-                    },
-                },
-            });
-
-            done();
-        }).catch(e => {
+        Promise.all([
+            // un comment this to delete older subsites
+            // cleanUpAllSubsites(),
+            spTestSetup(),
+            graphTestSetup(),
+        ]).then(_ => done()).catch(e => {
 
             console.log("Error creating testing sub-site: " + JSON.stringify(e));
-            done();
+            done(e);
         });
-    } else {
-        done();
     }
 });
 
@@ -113,8 +146,8 @@ after(() => {
 });
 
 // this can be used to clean up lots of test sub webs :)
-export function cleanUpAllSubsites() {
-    sp.site.rootWeb.webs.select("Title").get().then((w) => {
+function cleanUpAllSubsites(): Promise<void> {
+    return sp.site.rootWeb.webs.select("Title").get().then((w) => {
         w.forEach((element: any) => {
             const web = new Web(element["odata.id"], "");
             web.webs.select("Title").get().then((sw: any[]) => {
@@ -124,5 +157,5 @@ export function cleanUpAllSubsites() {
                 }));
             }).then(() => { web.delete(); });
         });
-    }).catch(e => console.log("Error: " + JSON.stringify(e)));
+    });
 }

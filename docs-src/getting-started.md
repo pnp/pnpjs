@@ -90,7 +90,8 @@ public onInit(): Promise<void> {
 ## Connect to SharePoint from Node
 
 Because peer dependencies are not installed automatically you will need to list out each package to install. Don't worry if you forget one you will get a message
-on the command line that a peer dependency is missing. Let's for example look at installing the required libraries to connect to SharePoint from nodejs.
+on the command line that a peer dependency is missing. Let's for example look at installing the required libraries to connect to SharePoint from nodejs. You can see
+[./debug/launch/sp.ts](https://github.com/pnp/pnp/blob/dev/debug/launch/sp.ts) for a live example.
 
 ```
 npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/nodejs
@@ -124,7 +125,8 @@ sp.web.select("Title", "Description").get().then(w => {
 
 ## Connect to Microsoft Graph From Node
 
-Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources.
+Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
+[./debug/launch/graph.ts](https://github.com/pnp/pnp/blob/dev/debug/launch/graph.ts) for a live example.
 
 ```
 npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs

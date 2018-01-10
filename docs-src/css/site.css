@@ -50,8 +50,13 @@ code {
 }
 
 #headerText {
-font-size: 2em;
-display:block;
+    font-size: 2em;
+    display:block;
+}
+
+#headerText a {
+    color: #ffffff;
+    text-decoration: none;
 }
 
 #subheaderText {

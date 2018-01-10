@@ -1,4 +1,3 @@
-// use of relative paths to the modules
 import { Logger, LogLevel } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 
@@ -17,5 +16,9 @@ export function Example() {
         });
 
         process.exit(0);
+    }).catch(e => {
+
+        Logger.error(e);
+        process.exit(1);
     });
 }

@@ -12,7 +12,7 @@ dependencies between the packages to do this. With each release we will release 
 you are working with compatible versions. One thing to keep in mind with peer dependencies is that they are not automatically installed. The advantage is you
 will only have one copy of each library in your project.
 
-Installing peer dependencies is easy, you can specify each of the packages in a single line, here we are installing everything to use the @pnp/sp package.
+Installing peer dependencies is easy, you can specify each of the packages in a single line, here we are installing everything required to use the @pnp/sp package.
 
 ```
 npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp
@@ -59,6 +59,32 @@ depending on how you have used the library in your applications. Watch this shor
 
 <<TODO RECORD VIDEO>>
 
+## Updated settings file format
 
+If you are doing local debugging or testing you have likely created a settings.js from the supplied settings.example.js. Please note the format of that file has changed,
+the new format is shown below.
 
+```JavaScript
+var settings = {
 
+    spsave: {
+        username: "develina.devsson@mydevtenant.onmicrosoft.com",
+        password: "pass@word1",
+        siteUrl: "https://mydevtenant.sharepoint.com/"
+    },
+    testing: {
+        enableWebTests: true,
+        sp: {
+            id: "{ client id }",
+            secret: "{ client secret }",
+            url: "{ site collection url }",
+            notificationUrl: "{ notification url }",
+        },
+        graph: {
+            tenant: "{tenant.onmicrosoft.com}",
+            id: "{your app id}",
+            secret: "{your secret}"
+        },
+    }
+}
+```

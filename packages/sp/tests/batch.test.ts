@@ -11,7 +11,7 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for a single request", () => {
 
-            const web = new Web(testSettings.webUrl);
+            const web = new Web(testSettings.sp.webUrl);
 
             const order = [];
 
@@ -29,7 +29,7 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an even number of requests", () => {
 
-            const web = new Web(testSettings.webUrl);
+            const web = new Web(testSettings.sp.webUrl);
 
             const order = [];
 
@@ -59,7 +59,7 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an odd number of requests", () => {
 
-            const web = new Web(testSettings.webUrl);
+            const web = new Web(testSettings.sp.webUrl);
 
             const order = [];
 

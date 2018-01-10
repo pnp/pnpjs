@@ -27,6 +27,7 @@
     "gulp-tslint": "8.1.2",
     "gulp-typescript": "3.2.3",
     "gulp-util": "3.0.8",
+    "gulp-webserver": "0.9.1",
     "highlight.js": "9.12.0",
     "markdown-it": "8.4.0",
     "markdown-it-replace-link": "1.0.1",

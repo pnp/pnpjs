@@ -2,7 +2,8 @@ declare var require: (s: string) => any;
 
 import { sp } from "@pnp/sp";
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { SPFetchClient } from "@pnp/nodejs";
+import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
+import { graph } from "@pnp/graph";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -16,7 +17,15 @@ const settings = require("../../../settings.js");
 sp.setup({
     sp: {
         fetchClientFactory: () => {
-            return new SPFetchClient(settings.testing.siteUrl, settings.testing.clientId, settings.testing.clientSecret);
+            return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret);
+        },
+    },
+});
+
+graph.setup({
+    graph: {
+        fetchClientFactory: () => {
+            return new AdalFetchClient(settings.testing.graph.tenant, settings.testing.graph.id, settings.testing.graph.secret);
         },
     },
 });
@@ -33,7 +42,7 @@ Logger.activeLogLevel = LogLevel.Info;
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./any";
+import { Example } from "./sp";
 Example();
 
 // you can also set break points inside the src folder to examine how things are working
