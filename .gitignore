@@ -29,12 +29,12 @@ node_modules
 
 # allow folks to add things to the debug /launch and /serve folder, but don't include them in git
 debug/launch/*
-!debug/launch/debug.ts
+!debug/launch/main.ts
 !debug/launch/example.ts
 !debug/launch/tsconfig.json
 
 debug/serve/*
-!debug/serve/serve.ts
+!debug/serve/main.ts
 !debug/serve/tsconfig.json
 
 # project settings
