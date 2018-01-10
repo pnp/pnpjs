@@ -8,14 +8,36 @@ import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import * as chaiAsPromised from "chai-as-promised";
 chai.use(chaiAsPromised);
 
+export interface ISettingsTestingPart {
+    enableWebTests: boolean;
+    graph?: {
+        id: string;
+        secret: string;
+        tenant: string;
+    };
+    sp?: {
+        webUrl?: string;
+        id: string;
+        notificationUrl: string | null;
+        secret: string;
+        url: string;
+    };
+}
+
+export interface ISettings {
+    testing: ISettingsTestingPart;
+}
+
 // we need to load up the appropriate settings based on where we are running
-let settings = null;
+let settings: ISettings = null;
 let mode = "cmd";
 process.argv.forEach(s => {
     if (/^--pnp-test-mode/.test(s)) {
         mode = s.split("=")[1];
     }
 });
+
+
 
 switch (mode) {
 
@@ -24,8 +46,8 @@ switch (mode) {
         const webTests = process.env.PnPTesting_ClientId && process.env.PnPTesting_ClientSecret && process.env.PnPTesting_SiteUrl;
 
         settings = {
-            enableWebTests: webTests,
             testing: {
+                enableWebTests: Boolean.parse(webTests).valueOf(),
                 graph: {
                     id: "",
                     secret: "",
@@ -57,14 +79,14 @@ switch (mode) {
         break;
 }
 
-function spTestSetup(): Promise<void> {
+function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
     return new Promise((resolve, reject) => {
 
         sp.setup({
             sp: {
                 fetchClientFactory: () => {
-                    return new SPFetchClient(testSettings.sp.url, testSettings.sp.id, testSettings.sp.secret);
+                    return new SPFetchClient(ts.sp.url, ts.sp.id, ts.sp.secret);
                 },
             },
         });
@@ -75,10 +97,10 @@ function spTestSetup(): Promise<void> {
 
         sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g).then(() => {
 
-            const url = Util.combinePaths(testSettings.sp.url, g);
+            const url = Util.combinePaths(ts.sp.url, g);
 
             // set the testing web url so our tests have access if needed
-            testSettings.sp.webUrl = url;
+            ts.sp.webUrl = url;
 
             // re-setup the node client to use the new web
             sp.setup({
@@ -88,7 +110,7 @@ function spTestSetup(): Promise<void> {
                     //     "Accept": "application/json;odata=verbose",
                     // },
                     fetchClientFactory: () => {
-                        return new SPFetchClient(url, testSettings.sp.id, testSettings.sp.secret);
+                        return new SPFetchClient(url, ts.sp.id, ts.sp.secret);
                     },
                 },
             });
@@ -99,14 +121,14 @@ function spTestSetup(): Promise<void> {
     });
 }
 
-function graphTestSetup(): Promise<void> {
+function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
     return new Promise((resolve, reject) => {
 
         graph.setup({
             graph: {
                 fetchClientFactory: () => {
-                    return new AdalFetchClient(testSettings.graph.tenant, testSettings.graph.id, testSettings.graph.secret);
+                    return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
                 },
             },
         });
@@ -115,7 +137,7 @@ function graphTestSetup(): Promise<void> {
     });
 }
 
-export let testSettings = Util.extend(settings.testing, { webUrl: "" });
+export let testSettings: ISettingsTestingPart = Util.extend(settings.testing, { webUrl: "" });
 
 before(function (done: MochaDone) {
 
@@ -128,8 +150,8 @@ before(function (done: MochaDone) {
         Promise.all([
             // un comment this to delete older subsites
             // cleanUpAllSubsites(),
-            spTestSetup(),
-            graphTestSetup(),
+            spTestSetup(testSettings),
+            graphTestSetup(testSettings),
         ]).then(_ => done()).catch(e => {
 
             console.log("Error creating testing sub-site: " + JSON.stringify(e));
