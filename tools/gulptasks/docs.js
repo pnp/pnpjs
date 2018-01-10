@@ -65,7 +65,24 @@ function getHeaderFooter(filePath, splitString) {
     });
 }
 
-gulp.task("docs", ["clean:docs"], (done) => {
+gulp.task("docs:copyassets", ["clean:docs"], (done) => {
+
+    pump([
+        gulp.src([
+            "./docs-src/**/*.css",
+        ]),
+        gulp.dest("docs"),
+    ], (err) => {
+
+        if (typeof err !== "undefined") {
+            done(err);
+        } else {
+            done();
+        }
+    });
+});
+
+gulp.task("docs", ["clean:docs", "docs:copyassets"], (done) => {
 
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
@@ -81,7 +98,7 @@ gulp.task("docs", ["clean:docs"], (done) => {
                 // allows for the inclusion of the path in the issue title link in footer
                 return this.file.relative;
             }),
-            gulp.dest("./docs"),
+            gulp.dest("docs"),
         ], (err) => {
 
             if (typeof err !== "undefined") {
@@ -100,7 +117,7 @@ gulp.task("docs", ["clean:docs"], (done) => {
 // watch the docs and rebuild the site if they change
 gulp.task("watch:docs", function () {
     gulp.watch([
-        "./docs-src/**/*.md",
+        "./docs-src/**/*.*",
         "./packages/**/docs/*.md",
     ], ["docs"]);
 });

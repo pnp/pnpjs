@@ -4,6 +4,89 @@ These libraries are geared towards folks working with TypeScript but will work e
 the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
 more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
+## Getting Started with SharePoint Framework
+
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration.
+
+### Establish Context
+
+Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request
+urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the spfx context to the library. Either through the setup method
+imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if
+you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports. 
+
+The setup is always done in the onInit method to ensure it runs before your other lifecycle code. You can also set any other settings at this time.
+
+#### Using @pnp/common setup
+
+```TypeScript
+import { setup as pnpSetup } from "@pnp/common";
+
+// ...
+
+public onInit(): Promise<void> {
+
+  return super.onInit().then(_ => {
+
+    // other init code may be present
+
+    pnpSetup({
+      spfxContext: this.context
+    });
+  });
+}
+
+// ...
+
+```
+
+#### Using @pnp/sp setup
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+// ...
+
+public onInit(): Promise<void> {
+
+  return super.onInit().then(_ => {
+
+    // other init code may be present
+
+    sp.setup({
+      spfxContext: this.context
+    });
+  });
+}
+
+// ...
+
+```
+
+#### Using @pnp/graph setup
+
+```TypeScript
+import { graph } from "@pnp/graph";
+
+// ...
+
+public onInit(): Promise<void> {
+
+  return super.onInit().then(_ => {
+
+    // other init code may be present
+
+    graph.setup({
+      spfxContext: this.context
+    });
+  });
+}
+
+// ...
+
+```
+
+
 ## Connect to SharePoint from Node
 
 Because peer dependencies are not installed automatically you will need to list out each package to install. Don't worry if you forget one you will get a message

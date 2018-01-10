@@ -34,6 +34,10 @@ export interface LibraryConfiguration {
     spfxContext?: any;
 }
 
+export function setup(config: LibraryConfiguration): void {
+    RuntimeConfig.extend(config);
+}
+
 export class RuntimeConfigImpl {
 
     private _v: Dictionary<any>;

@@ -40,6 +40,3 @@ These steps will help you get your environment setup for contributing to the cor
 
 10. Then you can follow the guidance in the [debugging](debugging.md) article to get started testing right away!
 
-
-
-
