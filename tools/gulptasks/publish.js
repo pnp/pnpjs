@@ -26,6 +26,7 @@ function chainCommands(commands) {
             resolve();
         } catch (e) {
             reject(e);
+            throw e;
         }
 
     })), Promise.resolve());
@@ -39,6 +40,74 @@ function doPublish(configFileName) {
     return engine(config);
 }
 
+/**
+ * Dynamically creates and executes a script to publish things
+ * 
+ * @param {boolean} docsOnly If true only docs will be published, otherwise a new patch version will be published
+ */
+function runPublishScript(docsOnly) {
+
+    const script = [];
+
+    // merge dev -> master
+    script.push(
+        "git checkout dev",
+        "git pull",
+        "git checkout master",
+        "git pull",
+        "git merge dev",
+        "npm install");
+
+    // update docs
+    script.push(
+        "git checkout master",
+        "gulp docs");
+
+    // update .gitignore so we can push docs to master
+    script.push("sed -i \"s/\\/docs/#\\/docs/\" .gitignore");
+
+    // add and commit docs
+    script.push(
+        "git add ./docs",
+        "git commit -m \"Update docs during master merge\"");
+
+    // undo edit of .gitignore
+    script.push("git checkout .gitignore");
+
+    if (docsOnly) {
+
+        // push the updated docs to master
+        script.push("git push");
+
+    } else {
+
+        // update package version
+        // push updates to master
+        // package and publish to npm
+        script.push(
+            "npm version patch",
+            "git push",
+            "gulp publish:packages");
+    }
+
+    // clean up docs in dev branch and merge master -> dev
+    script.push(
+        "git checkout master",
+        "git pull",
+        "git checkout dev",
+        "git pull",
+        "git merge master",
+        "rmdir /S/Q docs",
+        "git add .",
+        "git commit -m \"Clean up docs on dev branch\"",
+        "git push");
+
+    // always leave things on the dev branch
+    script.push("git checkout dev");
+
+    return chainCommands(script);
+}
+
 gulp.task("publish:packages", ["package"], (done) => {
 
     doPublish("./pnp-publish.js").then(done).catch(done);
@@ -50,7 +119,7 @@ gulp.task("publish:packages-beta", ["package"], (done) => {
 });
 
 gulp.task("publish-beta", (done) => {
-   
+
     chainCommands([
 
         // beta releases are done from dev branch
@@ -68,56 +137,15 @@ gulp.task("publish-beta", (done) => {
         // always leave things on the dev branch
         "git checkout dev",
 
-    ]).then(done).catch(done);    
+    ]).then(done).catch(done);
+});
+
+gulp.task("publish:docs", (done) => {
+
+    runPublishScript(true).then(done).catch(done);
 });
 
 gulp.task("publish", (done) => {
 
-    chainCommands([
-        // merge dev -> master
-        "git checkout dev",
-        "git pull",
-        "git checkout master",
-        "git pull",
-        "git merge dev",
-        "npm install",
-
-        // update docs
-        "git checkout master",
-        "gulp docs",
-
-        // update .gitignore so we can push docs to master
-        "sed -i \"s/\\/docs/#\\/docs/\" .gitignore",
-
-        // push docs and new version to git
-        "git add ./docs",
-        "git commit -m \"Update docs during master merge\"",
-
-        // undo edit of .gitignore
-        "git checkout .gitignore",
-
-        // update package version
-        "npm version patch",
-
-        // push updates to master
-        "git push",
-
-        // package and publish the packages to npm
-        "gulp publish:packages",
-
-        // clean up docs in dev branch and merge master -> dev
-        "git checkout master",
-        "git pull",
-        "git checkout dev",
-        "git pull",
-        "git merge master",
-        "rmdir /S/Q docs",
-        "git add .",
-        "git commit -m \"Clean up docs from dev branch\"",
-        "git push",
-
-        // always leave things on the dev branch
-        "git checkout dev",
-
-    ]).then(done).catch(done);
+    runPublishScript(false).then(done).catch(done);
 });
