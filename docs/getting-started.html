@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/css/default.css"> 
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText"><a href="/">SharePoint Patterns and Practices</a></span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <article>
+        <h1>Getting Started</h1>
+<p>These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install
+the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
+more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.</p>
+<h2>Getting Started with SharePoint Framework</h2>
+<p>The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration.</p>
+<h3>Establish Context</h3>
+<p>Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request
+urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the spfx context to the library. Either through the setup method
+imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if
+you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.</p>
+<p>The setup is always done in the onInit method to ensure it runs before your other lifecycle code. You can also set any other settings at this time.</p>
+<h4>Using @pnp/common setup</h4>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { setup <span class="hljs-keyword">as</span> pnpSetup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">public</span> onInit(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.onInit().then(_ =&gt; {
+
+    <span class="hljs-comment">// other init code may be present</span>
+
+    pnpSetup({
+      spfxContext: <span class="hljs-keyword">this</span>.context
+    });
+  });
+}
+
+<span class="hljs-comment">// ...</span>
+
+</code></pre>
+<h4>Using @pnp/sp setup</h4>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">public</span> onInit(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.onInit().then(_ =&gt; {
+
+    <span class="hljs-comment">// other init code may be present</span>
+
+    sp.setup({
+      spfxContext: <span class="hljs-keyword">this</span>.context
+    });
+  });
+}
+
+<span class="hljs-comment">// ...</span>
+
+</code></pre>
+<h4>Using @pnp/graph setup</h4>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">public</span> onInit(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.onInit().then(_ =&gt; {
+
+    <span class="hljs-comment">// other init code may be present</span>
+
+    graph.setup({
+      spfxContext: <span class="hljs-keyword">this</span>.context
+    });
+  });
+}
+
+<span class="hljs-comment">// ...</span>
+
+</code></pre>
+<h2>Connect to SharePoint from Node</h2>
+<p>Because peer dependencies are not installed automatically you will need to list out each package to install. Don’t worry if you forget one you will get a message
+on the command line that a peer dependency is missing. Let’s for example look at installing the required libraries to connect to SharePoint from nodejs. You can see
+<a href="https://github.com/pnp/pnp/blob/dev/debug/launch/sp.ts">./debug/launch/sp.ts</a> for a live example.</p>
+<pre><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/nodejs
+</code></pre>
+<p>This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the <a href="packages.html">packages</a> page.
+Once these are installed you need to import them into your project, to communicate with SharePoint from node we’ll need the following imports:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { SPFetchClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/nodejs"</span>;
+</code></pre>
+<p>Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// configure your node options (only once in your application)</span>
+sp.setup({
+    sp: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> SPFetchClient(<span class="hljs-string">"{site url}"</span>, <span class="hljs-string">"{client id}"</span>, <span class="hljs-string">"{client secret}"</span>);
+        },
+    },
+});
+
+<span class="hljs-comment">// make a call to SharePoint and log it in the console</span>
+sp.web.select(<span class="hljs-string">"Title"</span>, <span class="hljs-string">"Description"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(w, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+});
+</code></pre>
+<h2>Connect to Microsoft Graph From Node</h2>
+<p>Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
+<a href="https://github.com/pnp/pnp/blob/dev/debug/launch/graph.ts">./debug/launch/graph.ts</a> for a live example.</p>
+<pre><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs
+</code></pre>
+<p>Now we need to import what we’ll need to call graph</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+<span class="hljs-keyword">import</span> { AdalFetchClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/nodejs"</span>;
+</code></pre>
+<p>Now we can make our graph calls after setting up the Adal client. Note you’ll need to setup an AzureAD App registration with the necessary permissions.</p>
+<pre><code class="language-TypeScript">graph.setup({
+    graph: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AdalFetchClient(<span class="hljs-string">"{mytenant}.onmicrosoft.com"</span>, <span class="hljs-string">"{application id}"</span>, <span class="hljs-string">"{application secret}"</span>);
+        },
+    },
+});
+
+<span class="hljs-comment">// make a call to Graph and get all the groups</span>
+graph.v1.groups.get().then(<span class="hljs-function"><span class="hljs-params">g</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(g, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: getting-started.html&body=Please describe how we can improve the doc page:">report documentation issues</a> so we can improve things!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/getting-started" alt="spacer" />

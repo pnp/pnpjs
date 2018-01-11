@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/css/default.css"> 
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText"><a href="/">SharePoint Patterns and Practices</a></span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <article>
+        <h1>@pnp/sp/webs</h1>
+<p>Webs are one of the fundamental entry points when working with SharePoint. Webs serve as a container for lists, features, sub-webs, and all of the entity types.</p>
+<h2>Add a Web</h2>
+<p>Using the library you can add a web to another web’s collection of subwebs. The basic usage requires only a title and url. This will result in a team site with all of the default settings.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp, { WebAddResult } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+pnp.sp.web.webs.add(<span class="hljs-string">"title"</span>, <span class="hljs-string">"subweb1"</span>).then(<span class="hljs-function">(<span class="hljs-params">w: WebAddResult</span>) =&gt;</span> {
+
+    <span class="hljs-comment">// show the response from the server when adding the web</span>
+    <span class="hljs-built_in">console</span>.log(w.data);
+
+    w.web.select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+        <span class="hljs-comment">// show our title</span>
+        <span class="hljs-built_in">console</span>.log(w.Title);
+    });
+});
+</code></pre>
+<p>You can also provide other settings such as description, template, language, and inherit permissions.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp, { WebAddResult } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// create a German language wiki site with title, url, description, which inherits permissions</span>
+pnp.sp.web.webs.add(<span class="hljs-string">"wiki"</span>, <span class="hljs-string">"subweb2"</span>, <span class="hljs-string">"a wiki web"</span>, <span class="hljs-string">"WIKI#0"</span>, <span class="hljs-number">1031</span>, <span class="hljs-literal">true</span>).then(<span class="hljs-function">(<span class="hljs-params">w: WebAddResult</span>) =&gt;</span> {
+
+    <span class="hljs-comment">// show the response from the server when adding the web</span>
+    <span class="hljs-built_in">console</span>.log(w.data);
+
+    w.web.select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+        <span class="hljs-comment">// show our title</span>
+        <span class="hljs-built_in">console</span>.log(w.Title);
+    });
+});
+</code></pre>
+<h2>Get A Web’s properties</h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// basic get of the webs properties</span>
+pnp.sp.web.get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w.Title);
+});
+
+<span class="hljs-comment">// use odata operators to get specific fields</span>
+pnp.sp.web.select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w.Title);
+});
+
+<span class="hljs-comment">// use with a simple getAs to give the result a type</span>
+pnp.sp.web.select(<span class="hljs-string">"Title"</span>).getAs&lt;{ Title: <span class="hljs-built_in">string</span> }&gt;().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w.Title);
+});
+</code></pre>
+<h2>Get Complex Properties</h2>
+<p>Some properties, such as AllProperties, are not returned by default. You can still access them using the expand operator.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+pnp.sp.web.select(<span class="hljs-string">"AllProperties"</span>).expand(<span class="hljs-string">"AllProperties"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w.AllProperties);
+});
+</code></pre>
+<h2>Get a Web Directly</h2>
+<p>You can also use the Web object directly to get any web, though of course the current user must have the necessary permissions. This is done by importing the web object.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://my-tenant.sharepoint.com/sites/mysite"</span>);
+
+web.get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w);
+});
+</code></pre>
+<h2>Open Web By Id</h2>
+<p>Because this method is a POST request you can chain off it directly. You will get back the full web properties in the data property of the return object. You can also chain directly off the returned Web instance on the web property.</p>
+<pre><code class="language-TypeScript">pnp.sp.site.openWebById(<span class="hljs-string">"111ca453-90f5-482e-a381-cee1ff383c9e"</span>).then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-comment">//we got all the data from the web as well</span>
+    <span class="hljs-built_in">console</span>.log(w.data);
+
+    <span class="hljs-comment">// we can chain</span>
+    w.web.select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w2</span> =&gt;</span> {
+        <span class="hljs-comment">// ...</span>
+    });
+});
+</code></pre>
+<h2>Update Web Properties</h2>
+<p>You can update web properties using the update method. The properties available for update are listed in <a href="https://msdn.microsoft.com/en-us/library/office/dn499819.aspx#bk_WebProperties">this table</a>. Updating is a simple as passing a plain object with the properties you want to update.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://my-tenant.sharepoint.com/sites/mysite"</span>);
+
+web.update({
+    Title: <span class="hljs-string">"New Title"</span>,
+    CustomMasterUrl: <span class="hljs-string">"{path to masterpage}"</span>,
+    Description: <span class="hljs-string">"My new description"</span>,
+}).then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w);
+});
+</code></pre>
+<h2>Delete a Web</h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://my-tenant.sharepoint.com/sites/mysite"</span>);
+
+web.delete().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(w);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: sp\webs.html&body=Please describe how we can improve the doc page:">report documentation issues</a> so we can improve things!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/sp/docs/webs" alt="spacer" />
