@@ -1,5 +1,7 @@
 # @pnp/sp-addinhelpers
 
+[![npm version](https://badge.fury.io/js/%40pnp%2Fsp-addinhelpers.svg)](https://badge.fury.io/js/%40pnp%2Fsp-addinhelpers)
+
 This module contains classes to allow use of the libraries within a SharePoint add-in.
 
 ## Getting Started

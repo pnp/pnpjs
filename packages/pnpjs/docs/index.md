@@ -1,5 +1,7 @@
 # @pnp/pnpjs
 
+[![npm version](https://badge.fury.io/js/%40pnp%2Fpnpjs.svg)](https://badge.fury.io/js/%40pnp%2Fpnpjs)
+
 The pnpjs library is a rollup of the core libraries across the @pnp scope and is designed only as a bridge to help folks transition from sp-pnp-js, primarily 
 in scenarios where a single file is being imported via a script tag. It is recommended to not use this rollup library where possible and [migrate to the 
 individual libraries](../transition-guide.md).

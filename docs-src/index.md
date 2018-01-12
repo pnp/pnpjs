@@ -6,11 +6,11 @@ patterns.
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) program*.
 
-**If you are moving from sp-pnp-js please review the [transition guide](transition-guide.md)**
-
 ## General Guidance
 
-These articles provide general guidance for working with the libraries.
+<div id="guide-links">
+
+These articles provide general guidance for working with the libraries. If you are migrating from _sp-pnp-js_ please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Getting Started Contributing](getting-started-dev.md)
@@ -19,41 +19,39 @@ These articles provide general guidance for working with the libraries.
 * [Install Beta Versions](beta-versions.md)
 * [Polyfills](polyfills.md)
 
+</div>
+
 ## Packages
 
-The following packages comprise the Patterns and Practices client side libraries. Please see the individual package documentation for details on each.
+The following packages comprise the Patterns and Practices client side libraries. All of the packages are published as a set and depend on their peers within
+the @pnp scope.
 
-[![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
+The latest published version is **$$Version$$**.
 
 <div id="packages-table">
 
-<dl>
-
-</dl>
-
-
-|     ||  |
+|     ||  | 
 | ---| -------------|-------------|
-| **@pnp/**| |  | 
-|| **[common](common/index.md)** | Provides shared functionality across all pnp libraries | 
-|| **[config-store](config-store/index.md)** | Provides a way to manage configuration within your application | 
-|| **[graph](graph/index.md)** | Provides functionality to query the Microsoft Graph | 
-|| **[logging](logging/index.md)** | Light-weight, subscribable logging framework | 
-|| **[nodejs](nodejs/index.md)** | Provides functionality enabling the @pnp libraries within nodejs | 
-|| **[odata](odata/index.md)** | Provides shared odata functionality and base classes | 
-|| **[pnpjs](pnpjs/index.md)** | Rollup library of core functionality (mimics sp-pnp-js) | 
-|| **[sp](sp/index.md)** | Provides a fluent api for working with SharePoint REST | 
-|| **[sp-addinhelpers](sp-addinhelpers/index.md)** | Provides functionality for working within SharePoint add-ins
+| @pnp/| | | 
+|| [common](common/index.md)  | Provides shared functionality across all pnp libraries | 
+|| [config-store](config-store/index.md) | Provides a way to manage configuration within your application | 
+|| [graph](graph/index.md) | Provides a fluent api for working with Microsoft Graph |
+|| [logging](logging/index.md) | Light-weight, subscribable logging framework |
+|| [nodejs](nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
+|| [odata](odata/index.md) | Provides shared odata functionality and base classes |
+|| [pnpjs](pnpjs/index.md) | Rollup library of core functionality (mimics sp-pnp-js) |
+|| [sp](sp/index.md) | Provides a fluent api for working with SharePoint REST |
+|| [sp-addinhelpers](sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
 
 </div>
 
-### Issues, Questions, Ideas
+## Issues, Questions, Ideas
 
 Please [log an issue](https://github.com/pnp/pnp/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate all
-contructive feedback, questions, ideas, and bug reports. Thank you for your interest in giving back
+contructive feedback, questions, ideas, and bug reports. Thank you for your interest in giving back.
 
 
-### Code of Conduct
+## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ### "Sharing is Caring"

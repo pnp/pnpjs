@@ -1,5 +1,7 @@
 # @pnp/common
 
+[![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
+
 The common modules provides a set of utilities classes and reusable building blocks used throughout the @pnp modules. They can be used wihtin your applications as well
 without depending on the remainder of the @pnp libraries.
 

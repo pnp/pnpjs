@@ -68,6 +68,15 @@ code {
     display:block;
 }
 
+#guide-links a {
+    text-decoration: none;
+    color: rgb(0, 0, 238); 
+}
+
+#guide-links li {
+    list-style-type: square
+}
+
 #packages-table table {
     padding: 4px;
 }
@@ -83,7 +92,11 @@ code {
 }
 
 #packages-table table td:nth-child(3) {
-    padding-left: 5px;
+    padding-left: 2em;
+}
+
+#packages-table table td:nth-child(4) {
+    padding-left: 2em;
 }
 
 #packages-table table tr:first-child td:first-child {

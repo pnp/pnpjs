@@ -58,6 +58,12 @@ function runPublishScript(docsOnly) {
         "git merge dev",
         "npm install");
 
+    if (!docsOnly) {
+
+        // version here to all subsequent actions have the new version available in package.json
+        script.push("npm version patch");
+    }
+
     // update docs
     script.push(
         "git checkout master",
@@ -74,20 +80,13 @@ function runPublishScript(docsOnly) {
     // undo edit of .gitignore
     script.push("git checkout .gitignore");
 
-    if (docsOnly) {
+    // push the updates to master (docs and version info)
+    script.push("git push");
 
-        // push the updated docs to master
-        script.push("git push");
+    if (!docsOnly) {
 
-    } else {
-
-        // update package version
-        // push updates to master
         // package and publish to npm
-        script.push(
-            "npm version patch",
-            "git push",
-            "gulp publish:packages");
+        script.push("gulp publish:packages");
     }
 
     // clean up docs in dev branch and merge master -> dev

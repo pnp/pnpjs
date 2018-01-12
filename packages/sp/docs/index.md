@@ -1,5 +1,7 @@
 # @pnp/sp
 
+[![npm version](https://badge.fury.io/js/%40pnp%2Fsp.svg)](https://badge.fury.io/js/%40pnp%2Fsp)
+
 This package contains the fluent api used to call the SharePoint rest services.
 
 ## Getting Started

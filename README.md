@@ -19,9 +19,9 @@ site is updated with each release. If cannot find what you need, please let us k
 
 ## Packages
 
-The following packages comprise the Patterns and Practices client side libraries.
-
 [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
+
+The following packages comprise the Patterns and Practices client side libraries.
 
 ## [@pnp/common](packages/common/docs/index.md)
 

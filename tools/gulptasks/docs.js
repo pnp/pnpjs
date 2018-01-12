@@ -12,7 +12,9 @@ const gulp = require("gulp"),
     reload = require("tiny-lr"),
     opn = require("opn"),
     connectReload = require("connect-livereload"),
-    watch = require("watch");
+    watch = require("watch"),
+    semver = require("semver"),
+    execSync = require('child_process').execSync;
 
 // the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
@@ -99,6 +101,8 @@ gulp.task("docs:copyassets", ["clean-docs"], (done) => {
 
 gulp.task("docs:generate", ["docs:copyassets"], (done) => {
 
+    const latestVersion = semver.clean(execSync("npm show @pnp/common version").toString());
+    
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
         // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
@@ -113,6 +117,7 @@ gulp.task("docs:generate", ["docs:copyassets"], (done) => {
                 // allows for the inclusion of the path in the issue title link in footer
                 return this.file.relative;
             }),
+            replace("$$Version$$", latestVersion),
             gulp.dest("docs"),
         ], (err) => {
 
@@ -123,11 +128,6 @@ gulp.task("docs:generate", ["docs:copyassets"], (done) => {
             }
         });
     });
-
-    // we need to build the script files for the site (ts) then webpack those and put them in the docs/scripts folder
-
-    // we need to write a package index page to link to all the package docs
-
 });
 
 // watch the docs and rebuild the site if they change
