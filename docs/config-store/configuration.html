@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/default-highlightjs.css"> 
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText"><a href="/pnp">SharePoint Patterns and Practices</a></span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <article>
+        <h1>@pnp/config-store/configuration</h1>
+<p>The main class exported from the config-store package is Settings. This is the class through which you will load and access your
+settings via <a href="providers.html">providers</a>.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { Settings, SPListConfigurationProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/config-store"</span>;
+
+<span class="hljs-comment">// create an instance of the setttings class, could be static and shared across your application</span>
+<span class="hljs-comment">// or built as needed.</span>
+<span class="hljs-keyword">const</span> settings = <span class="hljs-keyword">new</span> Settings();
+
+<span class="hljs-comment">// you can add/update a single value using add</span>
+settings.add(<span class="hljs-string">"mykey"</span>, <span class="hljs-string">"myvalue"</span>);
+
+<span class="hljs-comment">// you can also add/update a JSON value which will be stringified for you as a shorthand</span>
+settings.addJSON(<span class="hljs-string">"mykey2"</span>, {
+    field: <span class="hljs-number">1</span>,
+    field2: <span class="hljs-number">2</span>,
+    field3: <span class="hljs-number">3</span>,
+});
+
+<span class="hljs-comment">// and you can apply a plain object of keys/values that will be written as single values</span>
+<span class="hljs-comment">// this results in each enumerable property of the supplied object being added to the settings collection</span>
+settings.apply({
+    field: <span class="hljs-number">1</span>,
+    field2: <span class="hljs-number">2</span>,
+    field3: <span class="hljs-number">3</span>,
+});
+
+<span class="hljs-comment">// and finally you can load values from a configuration provider</span>
+<span class="hljs-keyword">const</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://mytenant.sharepoint.com/sites/dev"</span>);
+<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> SPListConfigurationProvider(w, <span class="hljs-string">"myconfiglistname"</span>);
+
+<span class="hljs-comment">// this will load values from the supplied list</span>
+<span class="hljs-comment">// by default the key will be from the Title field and the value from a column named Value</span>
+settings.load(provider);
+
+
+<span class="hljs-comment">// once we have loaded values we can then read them</span>
+<span class="hljs-keyword">const</span> value = settings.get(<span class="hljs-string">"mykey"</span>);
+
+<span class="hljs-comment">// or read JSON that will be parsed for you from the store</span>
+<span class="hljs-keyword">const</span> value2 = settings.getJSON(<span class="hljs-string">"mykey2"</span>);
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: config-store\configuration.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/config-store/docs/configuration" alt="spacer" />
