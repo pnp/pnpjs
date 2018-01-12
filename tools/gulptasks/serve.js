@@ -72,8 +72,12 @@ gulp.task("serve", (done) => {
         // update to use the config file for build of a specific package
         configFileName = "tsconfig-build.json";
 
-        // update the library to match what whould be generated
-        library = `pnp.${args.packages[0]}`;
+        // update the library to match what would be generated
+        if (args.packages[0].toLowerCase() === "pnpjs") {
+            library = "$pnp";
+        } else {
+            library = `pnp.${args.packages[0]}`;
+        }        
     }
 
     // our webpack config

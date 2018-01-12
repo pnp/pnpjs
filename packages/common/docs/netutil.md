@@ -8,7 +8,8 @@ are described below (many have no use outside the library) as well as several cl
 ### HttpClientImpl
 
 Defines an implementation of an Http Client within the context of @pnp. This being a class with a a single method "fetch" take a URL and 
-options and returning a Promise<Response>. Used primarily with the shared request pipeline to define the client used to make the actual request.
+options and returning a Promise<Response>. Used primarily with the shared request pipeline to define the client used to make the actual request. You can 
+write your own [custom implementation](custom-httpclientimpl.md) if needed.
 
 ### RequestClient
 

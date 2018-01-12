@@ -57,6 +57,9 @@ import {
 In the above example the "sp" import replaces "pnp" and is the root of your method chains. Once we have updated our imports we have a few small code changes to make,
 depending on how you have used the library in your applications. Watch this short video discussing the most common updates:
 
+
+
+
 <<TODO RECORD VIDEO>>
 
 ## Updated settings file format

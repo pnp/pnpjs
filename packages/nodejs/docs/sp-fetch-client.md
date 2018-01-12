@@ -1,4 +1,4 @@
-# pnp/nodejs/spfetchclient
+# @pnp/nodejs/spfetchclient
 
 The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret.
 

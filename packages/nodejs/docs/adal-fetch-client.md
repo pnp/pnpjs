@@ -1,4 +1,4 @@
-# pnp/nodejs/adalfetchclient
+# @pnp/nodejs/adalfetchclient
 
 The AdalFetchClient class depends on the adal-node package to authenticate against Azure AD. The example below
 outlines usage with the @pnp/graph library, though it would work in any case where an Azure AD Bearer token is expected.

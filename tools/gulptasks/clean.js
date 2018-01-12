@@ -35,7 +35,7 @@ gulp.task('clean', (done) => {
     });
 });
 
-gulp.task("clean:docs", (done) => {
+gulp.task("clean-docs", (done) => {
     del("./docs").then(() => {
         done();
     });

@@ -12,11 +12,12 @@ Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates aro
 
 These articles provide general guidance for working with the libraries.
 
-* [Getting Started](getting-started.md)
+* **[Getting Started](getting-started.md)**
 * [Getting Started Contributing](getting-started-dev.md)
 * [Gulp Commands](gulp-commands.md)
 * [Debugging](debugging.md)
 * [Install Beta Versions](beta-versions.md)
+* [Polyfills](polyfills.md)
 
 ## Packages
 

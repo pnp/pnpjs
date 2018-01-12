@@ -59,7 +59,7 @@ gulp clean
 To clean the docs use:
 
 ```
-gulp clean:docs
+gulp clean-docs
 ```
 
 ## docs
@@ -75,7 +75,7 @@ To aid in creating docs you can also run a command to watch, compile, and serve 
 the browser.
 
 ```
-gulp serve:docs
+gulp docs-serve
 ```
 
 ## lint

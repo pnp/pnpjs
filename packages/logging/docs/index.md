@@ -2,7 +2,13 @@
 
 The logging module provides light weight subscribable and extensiable logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.
 
-### Understanding the Logging Framework
+## Getting Started
+
+Install the logging module, it has no other dependencies
+
+`npm install @pnp/logging --save`
+
+## Understanding the Logging Framework
 
 The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. And each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface, also shown.
 
@@ -45,6 +51,11 @@ export interface LogEntry {
 To write information to a logger you can use either write, writeJSON, or log.
 
 ```TypeScript
+import {
+    Logger,
+    LogLevel
+} from "@pnp/logging";
+
 // write logs a simple string as the message value of the LogEntry
 Logger.write("This is logging a simple string");
 
@@ -85,7 +96,7 @@ import {
     Logger,
     ConsoleListener,
     LogLevel
-} from "sp-pnp-js";
+} from "@pnp/logging";
 
 // subscribe a listener
 Logger.subscribe(new ConsoleListener());
@@ -111,7 +122,7 @@ import {
     Logger,
     FunctionListener,
     LogEntry
-} from "sp-pnp-js";
+} from "@pnp/logging";
 
 let listener = new FunctionListener((entry: LogEntry) => {
 
@@ -131,7 +142,7 @@ import {
     Logger,
     LogListener,
     LogEntry
-} from "sp-pnp-js";
+} from "@pnp/logging";
 
 class MyListener implements LogListener {
 

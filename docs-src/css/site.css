@@ -24,6 +24,10 @@ footer {
     padding-bottom: 4em;
 }
 
+footer a {
+    color: #ffffff;
+}
+
 h1 {
     color: #0078d7;
     margin-top: 2em;

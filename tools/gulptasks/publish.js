@@ -140,7 +140,7 @@ gulp.task("publish-beta", (done) => {
     ]).then(done).catch(done);
 });
 
-gulp.task("publish:docs", (done) => {
+gulp.task("publish-docs", (done) => {
 
     runPublishScript(true).then(done).catch(done);
 });
