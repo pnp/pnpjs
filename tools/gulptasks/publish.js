@@ -75,7 +75,7 @@ function runPublishScript(docsOnly) {
     // add and commit docs
     script.push(
         "git add ./docs",
-        "git commit -m \"Update docs during master merge\"");
+        "git commit -m \"Update docs\"");
 
     // undo edit of .gitignore
     script.push("git checkout .gitignore");
