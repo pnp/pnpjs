@@ -32,6 +32,7 @@
     "highlight.js": "9.12.0",
     "markdown-it": "8.4.0",
     "markdown-it-replace-link": "1.0.1",
+    "markdown-it-video": "0.5.1",
     "merge2": "1.2.1",
     "mocha": "4.1.0",
     "node-fetch": "1.7.3",

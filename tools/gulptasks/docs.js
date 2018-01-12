@@ -43,6 +43,11 @@ const md = new MarkdownIt({
 // replace links plugin
 md.use(require('markdown-it-replace-link'));
 
+// embed youtube player
+md.use(require('markdown-it-video', {
+    youtube: { width: 640, height: 390 }
+}));
+
 // translate the md to html
 function mdToHtml(file, a, b, header, footer) {
     const result = md.render(file.contents.toString());
