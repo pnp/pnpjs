@@ -22,6 +22,7 @@ const md = new MarkdownIt({
     xhtmlOut: true,
     linkify: true,
     typographer: true,
+    html: true,
     highlight: (str, lang) => {
         if (lang && hljs.getLanguage(lang)) {
             try {
@@ -156,7 +157,7 @@ gulp.task("docs-serve", ["watch:docs"], (done) => {
     // setup and launch the connect server
     connect()
         .use(connectReload())
-        .use("/pnp", serveStatic("./docs"))        
+        .use("/pnp", serveStatic("./docs"))
         .listen(8888, () => {
 
             util.log("Docs served from:", util.colors.bgBlue.white("http://localhost:8888/pnp"));

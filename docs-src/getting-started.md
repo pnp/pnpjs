@@ -4,6 +4,27 @@ These libraries are geared towards folks working with TypeScript but will work e
 the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
 more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
+## Install
+
+First you will need to install those libraries you want to use in your application. Here we will install the most frequently used. This step applies to any 
+environment or project.
+
+`npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/graph --save`
+
+Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
+for more details on all the possibilities.
+
+```TypeScript
+import { Util } from "@pnp/common";
+
+(function() {
+
+  // get and log a random string
+  console.log(Util.getRandomString(20));
+
+})()
+```
+
 ## Getting Started with SharePoint Framework
 
 The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration.
@@ -155,6 +176,3 @@ graph.v1.groups.get().then(g => {
     console.log(JSON.stringify(g, null, 4));
 });
 ```
-
-
-

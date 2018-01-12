@@ -25,42 +25,27 @@ The following packages comprise the Patterns and Practices client side libraries
 
 [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
 
-### [@pnp/common](common/index.md)
+<div id="packages-table">
 
-Provides shared functionality across all pnp libraries
+<dl>
 
-### [@pnp/config-store](config-store/index.md)
+</dl>
 
-Provides a way to manage configuration within your application
 
-### [@pnp/graph](graph/index.md)
+|     ||  |
+| ---| -------------|-------------|
+| **@pnp/**| |  | 
+|| **[common](common/index.md)** | Provides shared functionality across all pnp libraries | 
+|| **[config-store](config-store/index.md)** | Provides a way to manage configuration within your application | 
+|| **[graph](graph/index.md)** | Provides functionality to query the Microsoft Graph | 
+|| **[logging](logging/index.md)** | Light-weight, subscribable logging framework | 
+|| **[nodejs](nodejs/index.md)** | Provides functionality enabling the @pnp libraries within nodejs | 
+|| **[odata](odata/index.md)** | Provides shared odata functionality and base classes | 
+|| **[pnpjs](pnpjs/index.md)** | Rollup library of core functionality (mimics sp-pnp-js) | 
+|| **[sp](sp/index.md)** | Provides a fluent api for working with SharePoint REST | 
+|| **[sp-addinhelpers](sp-addinhelpers/index.md)** | Provides functionality for working within SharePoint add-ins
 
-Provides functionality to query the Microsoft Graph
-
-### [@pnp/logging](logging/index.md)
-
-Light-weight, subscribable logging framework
-
-### [@pnp/nodejs](nodejs/index.md)
-
-Provides functionality enabling the @pnp libraries within nodejs
-
-### [@pnp/odata](odata/index.md)
-
-Provides shared odata functionality and base classes
-
-### [@pnp/pnpjs](pnpjs/index.md)
-
-Rollup library of core functionality (mimics sp-pnp-js)
-
-### [@pnp/sp](sp/index.md)
-
-Provides a fluent api for working with SharePoint REST
-
-### [@pnp/sp-addinhelpers](sp-addinhelpers/index.md)
-
-Provides functionality for working within SharePoint add-ins
-
+</div>
 
 ### Issues, Questions, Ideas
 

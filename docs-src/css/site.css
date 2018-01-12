@@ -67,3 +67,26 @@ code {
     font-size: 1.25em;
     display:block;
 }
+
+#packages-table table {
+    padding: 4px;
+}
+
+#packages-table table td:nth-child(2) {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+#packages-table table td:nth-child(2) a  {
+    text-decoration: none;
+    color: rgb(0, 0, 238);
+}
+
+#packages-table table td:nth-child(3) {
+    padding-left: 5px;
+}
+
+#packages-table table tr:first-child td:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+}
