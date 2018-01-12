@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/default-highlightjs.css"> 
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText"><a href="/pnp">SharePoint Patterns and Practices</a></span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <article>
+        <h1>@pnp/sp/files</h1>
+<p>One of the more challenging tasks on the client side is working with SharePoint files, especially if they are large files. We have added some methods to the library to help and their use is outlined below.</p>
+<h2>Reading Files</h2>
+<p>Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your <a href="Response-Parsers">own parser</a>.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/file.avi"</span>).getBlob().then(<span class="hljs-function">(<span class="hljs-params">blob: Blob</span>) =&gt;</span> {});
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/file.avi"</span>).getBuffer().then(<span class="hljs-function">(<span class="hljs-params">buffer: <span class="hljs-built_in">ArrayBuffer</span></span>) =&gt;</span> {});
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/file.json"</span>).getJSON().then(<span class="hljs-function">(<span class="hljs-params">json: <span class="hljs-built_in">any</span></span>) =&gt;</span> {});
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/file.txt"</span>).getText().then(<span class="hljs-function">(<span class="hljs-params">text: <span class="hljs-built_in">string</span></span>) =&gt;</span> {});
+
+<span class="hljs-comment">// all of these also work from a file object no matter how you access it</span>
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents"</span>).files.getByName(<span class="hljs-string">"file.txt"</span>).getText().then(<span class="hljs-function">(<span class="hljs-params">text: <span class="hljs-built_in">string</span></span>) =&gt;</span> {});
+</code></pre>
+<h2>Adding Files</h2>
+<p>Likewise you can add files using one of two methods, add or addChunked. The second is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">declare</span> <span class="hljs-keyword">var</span> <span class="hljs-built_in">require</span>: <span class="hljs-function">(<span class="hljs-params">s: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">any</span>;
+
+<span class="hljs-keyword">import</span> { ConsoleListener, Web, Logger, LogLevel, ODataRaw } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">"./auth"</span>;
+<span class="hljs-keyword">let</span> $ = <span class="hljs-built_in">require</span>(<span class="hljs-string">"jquery"</span>);
+
+<span class="hljs-keyword">let</span> siteUrl = <span class="hljs-string">"https://mytenant.sharepoint.com/sites/dev"</span>;
+
+<span class="hljs-comment">// comment this out for non-node execution</span>
+<span class="hljs-comment">// auth(siteUrl);</span>
+
+Logger.subscribe(<span class="hljs-keyword">new</span> ConsoleListener());
+Logger.activeLogLevel = LogLevel.Verbose;
+
+<span class="hljs-keyword">let</span> web = <span class="hljs-keyword">new</span> Web(siteUrl);
+
+$(() =&gt; {
+    $(<span class="hljs-string">"#testingdiv"</span>).append(<span class="hljs-string">"&lt;button id='thebuttontodoit'&gt;Do It&lt;/button&gt;"</span>);
+
+    $(<span class="hljs-string">"#thebuttontodoit"</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+
+        e.preventDefault();
+
+        <span class="hljs-keyword">let</span> input = &lt;HTMLInputElement&gt;<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"thefileinput"</span>);
+        <span class="hljs-keyword">let</span> file = input.files[<span class="hljs-number">0</span>];
+
+        <span class="hljs-comment">// you can adjust this number to control what size files are uploaded in chunks</span>
+        <span class="hljs-keyword">if</span> (file.size &lt;= <span class="hljs-number">10485760</span>) {
+
+            <span class="hljs-comment">// small upload</span>
+            web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared%20Documents/test/"</span>).files.add(file.name, file, <span class="hljs-literal">true</span>).then(_ =&gt; Logger.write(<span class="hljs-string">"done"</span>));
+        } <span class="hljs-keyword">else</span> {
+
+            <span class="hljs-comment">// large upload</span>
+            web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared%20Documents/test/"</span>).files.addChunked(file.name, file, <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> {
+
+                Logger.log({ data: data, level: LogLevel.Verbose, message: <span class="hljs-string">"progress"</span> });
+
+            }, <span class="hljs-literal">true</span>).then(_ =&gt; Logger.write(<span class="hljs-string">"done!"</span>));
+        }
+    });
+});
+</code></pre>
+<h3>Setting Associated Item Values</h3>
+<p>You can also update the file properties of a newly uploaded file using code similar to the below snippet:</p>
+<pre><code class="language-TypeScript">web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared%20Documents/test/"</span>).files.add(file.name, file, <span class="hljs-literal">true</span>).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+    
+    f.file.getItem().then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+
+        item.update({
+            Title: <span class="hljs-string">"A Title"</span>,
+            OtherField: <span class="hljs-string">"My Other Value"</span>
+        });
+    });
+});
+</code></pre>
+<h2>Update File Content</h2>
+<p>You can of course use similar methods to update existing files as shown below:</p>
+<pre><code class="language-typescript">web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/test.txt"</span>).setContent(<span class="hljs-string">"New string content for the file."</span>);
+
+web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/documents/test.mp4"</span>).setContentChunked(file);
+</code></pre>
+<h2>Check in, Check out, and Approve &amp; Deny</h2>
+<p>The library provides helper methods for checking in, checking out, and approving files. Examples of these methods are shown below.</p>
+<h3>Check In</h3>
+<p>Check in takes two optional arguments, comment and check in type.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp, { CheckinType } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// default options with empty comment and CheckinType.Major</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).checkin().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File checked in!"</span>);
+});
+
+<span class="hljs-comment">// supply a comment (&lt; 1024 chars) and using default check in type CheckinType.Major</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).checkin(<span class="hljs-string">"A comment"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File checked in!"</span>);
+});
+
+<span class="hljs-comment">// Supply both comment and check in type</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).checkin(<span class="hljs-string">"A comment"</span>, CheckinType.Overwrite).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File checked in!"</span>);
+});
+</code></pre>
+<h3>Check Out</h3>
+<p>Check out takes no arguments.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).checkout().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File checked out!"</span>);
+});
+</code></pre>
+<h3>Approve and Deny</h3>
+<p>You can also approve or deny files in libraries that use approval. Approve takes a single required argument of comment, the comment is optional for deny.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).approve(<span class="hljs-string">"Approval Comment"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File approved!"</span>);
+});
+
+<span class="hljs-comment">// deny with no comment</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).deny().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File denied!"</span>);
+});
+
+<span class="hljs-comment">// deny with a supplied comment.</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).deny(<span class="hljs-string">"Deny comment"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File denied!"</span>);
+});
+</code></pre>
+<h2>Publish and Unpublish</h2>
+<p>You can both publish and unpublish a file using the library. Both methods take an optional comment argument.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// publish with no comment</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).publish().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File published!"</span>);
+});
+
+<span class="hljs-comment">// publish with a supplied comment.</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).publish(<span class="hljs-string">"Publish comment"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File published!"</span>);
+});
+
+<span class="hljs-comment">// unpublish with no comment</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).unpublish().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File unpublished!"</span>);
+});
+
+<span class="hljs-comment">// unpublish with a supplied comment.</span>
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/shared documents/file.txt"</span>).unpublish(<span class="hljs-string">"Unpublish comment"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File unpublished!"</span>);
+});
+</code></pre>
+<h2>Advanced Upload Options</h2>
+<p>Both the addChunked and setContentChunked methods support options beyond just supplying the file content.</p>
+<h3>progress function</h3>
+<p>A method that is called each time a chunk is uploaded and provides enough information to report progress or update a progress bar easily. The method has the signature:</p>
+<p><code>(data: ChunkedFileUploadProgressData) =&gt; void</code></p>
+<p>The data interface is:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ChunkedFileUploadProgressData {
+    stage: <span class="hljs-string">"starting"</span> | <span class="hljs-string">"continue"</span> | <span class="hljs-string">"finishing"</span>;
+    blockNumber: <span class="hljs-built_in">number</span>;
+    totalBlocks: <span class="hljs-built_in">number</span>;
+    chunkSize: <span class="hljs-built_in">number</span>;
+    currentPointer: <span class="hljs-built_in">number</span>;
+    fileSize: <span class="hljs-built_in">number</span>;
+}
+</code></pre>
+<h3>chunkSize</h3>
+<p>This property controls the size of the individual chunks and is defaulted to 10485760 bytes (10 MB). You can adjust this based on your bandwidth needs - especially if writing code for mobile uploads or you are seeing frequent timeouts.</p>
+<h2>getItem</h2>
+<p>This method allows you to get the item associated with this file. You can optionally specify one or more select fields. The result will be merged with a new Item instance so you will have both the returned property values and chaining ability in a single object.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getItem().then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(item);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getItem(<span class="hljs-string">"Title"</span>, <span class="hljs-string">"Modified"</span>).then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(item);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getItem().then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+
+    <span class="hljs-comment">// you can also chain directly off this item instance</span>
+    item.getCurrentUserEffectivePermissions().then(<span class="hljs-function"><span class="hljs-params">perms</span> =&gt;</span> {
+
+        <span class="hljs-built_in">console</span>.log(perms);
+    });
+});
+</code></pre>
+<p>You can also supply a generic typing parameter and the resulting type will be a union type of Item and the generic type parameter. This allows you to have proper intellisense and type checking.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// also supports typing the objects so your type will be a union type</span>
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getItem&lt;{ Id: <span class="hljs-built_in">number</span>, Title: <span class="hljs-built_in">string</span> }&gt;(<span class="hljs-string">"Id"</span>, <span class="hljs-string">"Title"</span>).then(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+
+    <span class="hljs-comment">// You get intellisense and proper typing of the returned object</span>
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Id: <span class="hljs-subst">${item.Id}</span> -- <span class="hljs-subst">${item.Title}</span>`</span>);
+
+    <span class="hljs-comment">// You can also chain directly off this item instance</span>
+    item.getCurrentUserEffectivePermissions().then(<span class="hljs-function"><span class="hljs-params">perms</span> =&gt;</span> {
+
+        <span class="hljs-built_in">console</span>.log(perms);
+    });
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: sp\files.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/sp/docs/files" alt="spacer" />
