@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/default-highlightjs.css"> 
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText"><a href="/pnp">SharePoint Patterns and Practices</a></span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <article>
+        <h1>@pnp/sp/sharing</h1>
+<p><strong><em>Note: This API is still considered “beta” meaning it may change and some behaviors may differ across tenants by version. It is also supported only in SharePoint Online.</em></strong></p>
+<p>One of the newer abilities in SharePoint is the ability to share webs, files, or folders with both internal and external folks. It is important to remember that these settings are managed at the tenant level and override anything you may supply as an argument to these methods. If you receive an <em>InvalidOperationException</em> when using these methods please check your tenant sharing settings to ensure sharing is not blocked before submitting an issue.</p>
+<h2>getShareLink</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<p>Creates a sharing link for the given resource with an optional expiration.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/folder1"</span>).getShareLink(SharingLinkKind.AnonymousView).then(result: <span class="hljs-function"><span class="hljs-params">ShareLinkResponse</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/folder1"</span>).getShareLink(SharingLinkKind.AnonymousView, Util.dateAdd(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(), <span class="hljs-string">"day"</span>, <span class="hljs-number">5</span>)).then(result: <span class="hljs-function"><span class="hljs-params">ShareLinkResponse</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>shareWith</h2>
+<p><strong>Applies to: Item, Folder, File, Web</strong></p>
+<p>Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the loginnames parameter or an array of loginnames. The folder method takes an optional parameter “shareEverything” which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>, SharingRole.Edit).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/folder1"</span>).shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>, SharingRole.Edit, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test.txt"</span>).shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test.txt"</span>).shareWith(<span class="hljs-string">"i:0#.f|membership|user@site.com"</span>, SharingRole.Edit).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>shareObject &amp; shareObjectRaw</h2>
+<p><strong>Applies to: Web</strong></p>
+<p>Allows you to share any shareable object in a web by providing the appropriate parameters. These two methods differ in that shareObject will try and fix up your query based on the supplied parameters where shareObjectRaw will send your supplied json object directly to the server. The later method is provided for the greatest amount of flexibility.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.shareObject(<span class="hljs-string">"https://mysite.sharepoint.com/sites/dev/Docs/test.txt"</span>, <span class="hljs-string">"i:0#.f|membership|user@site.com"</span>, SharingRole.View).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.shareObjectRaw({
+    url: <span class="hljs-string">"https://mysite.sharepoint.com/sites/dev/Docs/test.txt"</span>,
+    peoplePickerInput: [{ Key: <span class="hljs-string">"i:0#.f|membership|user@site.com"</span> }],
+    roleValue: <span class="hljs-string">"role: 1973741327"</span>,
+    groupId: <span class="hljs-number">0</span>,
+    propagateAcl: <span class="hljs-literal">false</span>,
+    sendEmail: <span class="hljs-literal">true</span>,
+    includeAnonymousLinkInEmail: <span class="hljs-literal">false</span>,
+    emailSubject: <span class="hljs-string">"subject"</span>,
+    emailBody: <span class="hljs-string">"body"</span>,
+    useSimplifiedRoles: <span class="hljs-literal">true</span>,
+});
+</code></pre>
+<h2>unshareObject</h2>
+<p><strong>Applies to: Web</strong></p>
+<pre><code class="language-TypeScript">pnp.sp.web.unshareObject(<span class="hljs-string">"https://mysite.sharepoint.com/sites/dev/Docs/test.txt"</span>).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>checkSharingPermissions</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<p>Checks Permissions on the list of Users and returns back role the users have on the Item.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).checkSharingPermissions([{ alias: <span class="hljs-string">"i:0#.f|membership|user@site.com"</span> }]).then(<span class="hljs-function">(<span class="hljs-params">result: SharingEntityPermissions[]</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>getSharingInformation</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<p>Get Sharing Information.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getSharingInformation().then(<span class="hljs-function">(<span class="hljs-params">result: SharingInformation</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>getObjectSharingSettings</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<p>Gets the sharing settings</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).getObjectSharingSettings().then(<span class="hljs-function">(<span class="hljs-params">result: ObjectSharingSettings</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>unshare</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<p>Unshares a given resource</p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).unshare().then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>deleteSharingLinkByKind</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit).then(<span class="hljs-function">(<span class="hljs-params">result: SharingResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+<h2>unshareLink</h2>
+<p><strong>Applies to: Item, Folder, File</strong></p>
+<pre><code class="language-TypeScript">pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).unshareLink(SharingLinkKind.AnonymousEdit).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"done"</span>);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+
+pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/test"</span>).unshareLink(SharingLinkKind.AnonymousEdit, <span class="hljs-string">"12345"</span>).then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"done"</span>);
+}).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(e);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: sp\sharing.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/sp/docs/sharing" alt="spacer" />
