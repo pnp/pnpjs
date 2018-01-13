@@ -7,14 +7,9 @@ const gulp = require("gulp"),
     MarkdownIt = new require("markdown-it"),
     fs = require("fs"),
     path = require("path"),
-    connect = require("connect"),
-    serveStatic = require("serve-static"),
-    reload = require("tiny-lr"),
-    opn = require("opn"),
-    connectReload = require("connect-livereload"),
-    watch = require("watch"),
     semver = require("semver"),
-    execSync = require('child_process').execSync;
+    execSync = require('child_process').execSync,
+    serverFactory = require("@pnp/dev-server");
 
 // the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
@@ -82,13 +77,16 @@ function getHeaderFooter(filePath, splitString) {
     });
 }
 
-gulp.task("docs:copyassets", ["clean-docs"], (done) => {
+gulp.task("docs:copyassets", (done) => {
 
     pump([
         gulp.src([
             "./docs-src/**/*.css",
         ]),
-        gulp.dest("docs"),
+        gulp.dest("docs",
+        {
+            overwrite: true,
+        }),
     ], (err) => {
 
         if (typeof err !== "undefined") {
@@ -99,10 +97,10 @@ gulp.task("docs:copyassets", ["clean-docs"], (done) => {
     });
 });
 
-gulp.task("docs:generate", ["docs:copyassets"], (done) => {
+gulp.task("docs:generate", (done) => {
 
     const latestVersion = semver.clean(execSync("npm show @pnp/common version").toString());
-    
+
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
         // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
@@ -118,7 +116,9 @@ gulp.task("docs:generate", ["docs:copyassets"], (done) => {
                 return this.file.relative;
             }),
             replace("$$Version$$", latestVersion),
-            gulp.dest("docs"),
+            gulp.dest("docs", {
+                overwrite: true,
+            }),
         ], (err) => {
 
             if (typeof err !== "undefined") {
@@ -135,32 +135,22 @@ gulp.task("watch:docs", ["docs"], function () {
     gulp.watch([
         "./docs-src/**/*.*",
         "./packages/**/docs/*.md",
-    ], ["docs:generate"]);
+    ], ["docs:generate", "docs:copyassets"]);
 });
 
 gulp.task("docs", ["clean-docs", "docs:copyassets", "docs:generate"]);
 
 gulp.task("docs-serve", ["watch:docs"], (done) => {
 
-    const lrServer = reload();
-    lrServer.listen();
+    serverFactory({
+        root: "./docs",
+        path: "/pnp",
+        debug: true,
+    }).then(server => {
 
-    // watch docs folder to trigger reload once docs are rebuilt by watch:docs
-    watch.watchTree("./docs", {}, function (filename) {
-        lrServer.changed({
-            body: {
-                files: filename
-            }
-        });
+        console.log(`server.listening: ${server.listening}`);
+    }).catch(e => {
+
+        done(e);
     });
-
-    // setup and launch the connect server
-    connect()
-        .use(connectReload())
-        .use("/pnp", serveStatic("./docs"))
-        .listen(8888, () => {
-
-            util.log("Docs served from:", util.colors.bgBlue.white("http://localhost:8888/pnp"));
-            opn("http://localhost:8888/pnp");
-        });
 });
