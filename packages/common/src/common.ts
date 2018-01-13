@@ -6,4 +6,4 @@ export * from "./libconfig";
 export * from "./netutil";
 export * from "./spfxContextInterface";
 export * from "./storage";
-export { Util } from "./util";
+export * from "./util";

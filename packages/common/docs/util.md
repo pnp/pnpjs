@@ -1,6 +1,20 @@
 # @pnp/common/util
 
-This module exports a single static class containing utility functions.
+This module contains utility methods that you can import either individually from the common library or in a single static class "Util". Both are shown below.
+
+```TypeScript
+import {
+    Util,
+    getRandomString,
+} from "@pnp/common";
+
+
+// use from Util static class
+console.log(Util.getRandomString(10));
+
+// use from individual method imported
+console.log(getRandomString(10));
+```
 
 ## getCtxCallback
 
