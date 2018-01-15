@@ -7,7 +7,7 @@ settings via [providers](providers.md).
 import { Web } from "@pnp/sp";
 import { Settings, SPListConfigurationProvider } from "@pnp/config-store";
 
-// create an instance of the setttings class, could be static and shared across your application
+// create an instance of the settings class, could be static and shared across your application
 // or built as needed.
 const settings = new Settings();
 
@@ -30,13 +30,15 @@ settings.apply({
 });
 
 // and finally you can load values from a configuration provider
+
+import { Web } from "@pnp/sp";
+
 const w = new Web("https://mytenant.sharepoint.com/sites/dev");
 const provider = new SPListConfigurationProvider(w, "myconfiglistname");
 
 // this will load values from the supplied list
 // by default the key will be from the Title field and the value from a column named Value
 settings.load(provider);
-
 
 // once we have loaded values we can then read them
 const value = settings.get("mykey");

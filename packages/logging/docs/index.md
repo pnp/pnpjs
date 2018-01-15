@@ -12,7 +12,7 @@ Install the logging module, it has no other dependencies
 
 ## Understanding the Logging Framework
 
-The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. And each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface, also shown.
+The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface.
 
 ```TypeScript
 /**
@@ -45,6 +45,18 @@ export interface LogEntry {
      * Any associated data that a given logging listener may choose to log or ignore
      */
     data?: any;
+}
+```
+
+### Log Levels
+
+```TypeScript
+export const enum LogLevel {
+    Verbose = 0,
+    Info = 1,
+    Warning = 2,
+    Error = 3,
+    Off = 99,
 }
 ```
 
@@ -81,7 +93,7 @@ Logger.log({
 ## Log an error
 
 There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
-instance pased in, the level will be Error, and the message will be a concatenation of the Error instance name and message.
+instance pased in, the level will be Error, and the message will be the Error instance message.
 
 ```TypeScript
 const e = new Error("An Error");
@@ -91,7 +103,7 @@ Logger.error(e);
 
 ## Subscribing a Listener
 
-By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided Console Listener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.
+By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided ConsoleListener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.
 
 ```TypeScript
 import {
@@ -113,7 +125,7 @@ There are two listeners included in the library, ConsoleListener and FunctionLis
 
 ### ConsoleListener
 
-This listener outputs information to the console and works in Node as well as within browsers. It takes no settings but does write to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.
+This listener outputs information to the console and works in Node as well as within browsers. It takes no settings and writes to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.
 
 ### FunctionListener
 

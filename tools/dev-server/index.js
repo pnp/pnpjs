@@ -1,13 +1,10 @@
 const
     connect = require("connect"),
     serveStatic = require("serve-static"),
-    util = require("gulp-util"),
     reload = require("tiny-lr"),
     opn = require("opn"),
     connectReload = require("connect-livereload"),
     watch = require("watch"),
-    semver = require("semver"),
-    execSync = require('child_process').execSync,
     url = require("url");
 
 module.exports = (opts) => {
@@ -21,13 +18,14 @@ module.exports = (opts) => {
             livereload: true,
             open: true,
             debug: false,
+            logFunc: (m) => console.log(m),
         }, opts);
 
         const serveUrl = url.resolve(`http://localhost:${options.port}/`, options.path).toString();
 
         if (options.debug) {
-            console.log(`@pnp/dev-server:: options: ${JSON.stringify(options, null, 4)}`);
-            console.log(`@pnp/dev-server:: serveUrl: ${serveUrl}`);
+            options.logFunc(`@pnp/dev-server:: options: ${JSON.stringify(options, null, 4)}`);
+            options.logFunc(`@pnp/dev-server:: serveUrl: ${serveUrl}`);
         }
 
         const _server = connect();
@@ -42,7 +40,7 @@ module.exports = (opts) => {
             watch.watchTree(options.root, (filename) => {
 
                 if (options.debug) {
-                    console.log(`@pnp/dev-server:: watch triggered, filename: ${filename}`);
+                    logFunc(`@pnp/dev-server:: watch triggered, filename: ${filename}`);
                 }
 
                 lrServer.changed({
@@ -62,7 +60,9 @@ module.exports = (opts) => {
         // start the server and listen, return the server instance
         resolve(_server.listen(options.port, () => {
 
-            util.log("Server running at:", util.colors.bgBlue.white(serveUrl));
+            if (options.debug) {
+                options.logFunc(`Server started and listening at ${serveUrl}`);
+            }
 
             if (options.open) {
                 opn(serveUrl);

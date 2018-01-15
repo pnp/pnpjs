@@ -17,7 +17,7 @@ import { sp } from "@pnp/sp";
 
 (function main() {
 
-    // here we will load the current web's properties
+    // here we will load the current web's title
     sp.web.select("Title").get().then(w => {
 
         console.log(`Web Title: ${w.Title}`);
@@ -25,7 +25,7 @@ import { sp } from "@pnp/sp";
 })()
 ```
 
-## Getting Started with SharePoint Framework
+## Getting Started: SharePoint Framework
 
 Install the library and required dependencies
 
@@ -64,8 +64,7 @@ public render(): void {
 }
 ```
 
-
-## Getting Started on Nodejs
+## Getting Started: Nodejs
 
 Install the library and required dependencies
 

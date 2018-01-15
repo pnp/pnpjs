@@ -79,9 +79,9 @@ The second method is to enable automated cache expiration through global config.
 
 ```TypeScript
 
-import { RumtimeConfig } from "@pnp/common";
+import { RuntimeConfig } from "@pnp/common";
 
-RumtimeConfig.setup({
+RuntimeConfig.setup({
     enableCacheExpiration: true,
     cacheExpirationIntervalMilliseconds: 1000, // optional
 });

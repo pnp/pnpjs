@@ -15,6 +15,65 @@ export class SPBatch extends ODataBatch {
         super();
     }
 
+    /**
+     * Parses the response from a batch request into an array of Response instances
+     *
+     * @param body Text body of the response from the batch request
+     */
+    public static ParseResponse(body: string): Promise<Response[]> {
+        return new Promise((resolve, reject) => {
+            const responses: Response[] = [];
+            const header = "--batchresponse_";
+            // Ex. "HTTP/1.1 500 Internal Server Error"
+            const statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
+            const lines = body.split("\n");
+            let state = "batch";
+            let status: number;
+            let statusText: string;
+            for (let i = 0; i < lines.length; ++i) {
+                const line = lines[i];
+                switch (state) {
+                    case "batch":
+                        if (line.substr(0, header.length) === header) {
+                            state = "batchHeaders";
+                        } else {
+                            if (line.trim() !== "") {
+                                throw new SPBatchParseException(`Invalid response, line ${i}`);
+                            }
+                        }
+                        break;
+                    case "batchHeaders":
+                        if (line.trim() === "") {
+                            state = "status";
+                        }
+                        break;
+                    case "status":
+                        const parts = statusRegExp.exec(line);
+                        if (parts.length !== 3) {
+                            throw new SPBatchParseException(`Invalid status, line ${i}`);
+                        }
+                        status = parseInt(parts[1], 10);
+                        statusText = parts[2];
+                        state = "statusHeaders";
+                        break;
+                    case "statusHeaders":
+                        if (line.trim() === "") {
+                            state = "body";
+                        }
+                        break;
+                    case "body":
+                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
+                        state = "batch";
+                        break;
+                }
+            }
+            if (state !== "status") {
+                reject(new SPBatchParseException("Unexpected end of input"));
+            }
+            resolve(responses);
+        });
+    }
+
     protected executeImpl(): Promise<void> {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
@@ -148,7 +207,7 @@ export class SPBatch extends ODataBatch {
 
             return client.fetch(Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(r => r.text())
-                .then(this._parseResponse)
+                .then(SPBatch.ParseResponse)
                 .then((responses: Response[]) => {
 
                     if (responses.length !== this.requests.length) {
@@ -167,65 +226,6 @@ export class SPBatch extends ODataBatch {
 
                     }, Promise.resolve());
                 });
-        });
-    }
-
-    /**
-     * Parses the response from a batch request into an array of Response instances
-     *
-     * @param body Text body of the response from the batch request
-     */
-    private _parseResponse(body: string): Promise<Response[]> {
-        return new Promise((resolve, reject) => {
-            const responses: Response[] = [];
-            const header = "--batchresponse_";
-            // Ex. "HTTP/1.1 500 Internal Server Error"
-            const statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
-            const lines = body.split("\n");
-            let state = "batch";
-            let status: number;
-            let statusText: string;
-            for (let i = 0; i < lines.length; ++i) {
-                const line = lines[i];
-                switch (state) {
-                    case "batch":
-                        if (line.substr(0, header.length) === header) {
-                            state = "batchHeaders";
-                        } else {
-                            if (line.trim() !== "") {
-                                throw new SPBatchParseException(`Invalid response, line ${i}`);
-                            }
-                        }
-                        break;
-                    case "batchHeaders":
-                        if (line.trim() === "") {
-                            state = "status";
-                        }
-                        break;
-                    case "status":
-                        const parts = statusRegExp.exec(line);
-                        if (parts.length !== 3) {
-                            throw new SPBatchParseException(`Invalid status, line ${i}`);
-                        }
-                        status = parseInt(parts[1], 10);
-                        statusText = parts[2];
-                        state = "statusHeaders";
-                        break;
-                    case "statusHeaders":
-                        if (line.trim() === "") {
-                            state = "body";
-                        }
-                        break;
-                    case "body":
-                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
-                        state = "batch";
-                        break;
-                }
-            }
-            if (state !== "status") {
-                reject(new SPBatchParseException("Unexpected end of input"));
-            }
-            resolve(responses);
         });
     }
 }

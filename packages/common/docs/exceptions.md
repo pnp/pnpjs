@@ -1,6 +1,6 @@
 # @pnp/common/exceptions
 
-This module contains general exception classes used across the @pnp libraryies.
+This module contains general exception classes used across the @pnp libraries.
 
 ## UrlException
 

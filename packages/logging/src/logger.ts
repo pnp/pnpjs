@@ -86,7 +86,7 @@ export class Logger {
      * @param err The error object
      */
     public static error(err: Error) {
-        Logger.instance.log({ data: err, level: LogLevel.Error, message: `[${err.name}]::${err.message}` });
+        Logger.instance.log({ data: err, level: LogLevel.Error, message: err.message });
     }
 }
 

@@ -140,12 +140,11 @@ gulp.task("watch:docs", ["docs"], function () {
 
 gulp.task("docs", ["clean-docs", "docs:copyassets", "docs:generate"]);
 
-gulp.task("docs-serve", ["watch:docs"], (done) => {
+gulp.task("docs-serve", ["clean-docs", "watch:docs"], (done) => {
 
     serverFactory({
         root: "./docs",
         path: "/pnp",
-        debug: true,
     }).then(server => {
 
         console.log(`server.listening: ${server.listening}`);

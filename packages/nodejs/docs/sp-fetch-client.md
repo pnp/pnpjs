@@ -58,4 +58,4 @@ Now that we have created an add-in registration we need to tell SharePoint what 
   </AppPermissionRequests>
 ```
 
-**Note that the above XML will grant full tenant control, you should grant onlt those permissions necessary for your application**
+**Note that the above XML will grant full tenant control, you should grant only those permissions necessary for your application**

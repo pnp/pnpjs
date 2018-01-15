@@ -6,7 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "@microsoft/microsoft-graph-types": "^1.0.1",
-    "tslib": "1.7.1"
+    "tslib": "1.8.1"
   },
   "peerDependencies": {
     "@pnp/common": "0.0.0-PLACEHOLDER",

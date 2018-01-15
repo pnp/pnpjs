@@ -1,6 +1,6 @@
 # @pnp/common/decorators
 
-This module contains two decorators used internally to communicate if a feature is either being deprecated or in beta
+This module contains decorators use internally within the @pnp libraries. You are welcome to use them in your projects.
 
 ## deprecated
 

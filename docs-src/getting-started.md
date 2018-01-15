@@ -4,15 +4,17 @@ These libraries are geared towards folks working with TypeScript but will work e
 the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
 more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
+If you need to support older browsers please review the article on [polyfills](polyfill.md) for required functionality.
+
 ## Install
 
-First you will need to install those libraries you want to use in your application. Here we will install the most frequently used. This step applies to any 
+First you will need to install those libraries you want to use in your application. Here we will install the most frequently used packages. This step applies to any 
 environment or project.
 
 `npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/graph --save`
 
 Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
-for more details on all the possibilities.
+for more details.
 
 ```TypeScript
 import { Util } from "@pnp/common";

@@ -60,7 +60,7 @@ import { RuntimeConfig } from "@pnp/common";
 
 // add your custom keys to the global configuration
 // note you can use object hashes as values
-RumtimeConfig.extend({
+RuntimeConfig.extend({
    "myKey1": "value 1",
    "myKey2": {
        "subKey": "sub value 1",
@@ -69,7 +69,7 @@ RumtimeConfig.extend({
 });
 
 // read your custom values
-const v = RumtimeConfig.get("myKey1"); // "value 1"
+const v = RuntimeConfig.get("myKey1"); // "value 1"
 ```
 
 ## Using RuntimeConfig within your Application
@@ -78,7 +78,7 @@ If you have a set of properties you will access very frequently it may be desira
 do so you will need to create an interface for your configration (optional) and a wrapper class for RuntimeConfig to expose your properties
 
 ```TypeScript
-import { LibraryConfiguration, RumtimeConfig } from "@pnp/common";
+import { LibraryConfiguration, RuntimeConfig } from "@pnp/common";
 
 // first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because
 // TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.

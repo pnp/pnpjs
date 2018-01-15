@@ -19,11 +19,19 @@ underlying HttpClientImpl fetch method.
 
 ## Classes
 
-Thid module export two classes of note, FetchClient and BearerTokenFetchClient. Both implement HttpClientImpl.
+This module export two classes of note, FetchClient and BearerTokenFetchClient. Both implement HttpClientImpl.
 
 ### FetchClient
 
-Basic implementation that calls the global (window) fetch method with no additinoal processing.
+Basic implementation that calls the global (window) fetch method with no additional processing.
+
+```TypeScript
+import { FetchClient } from "@pnp/common";
+
+const client = new FetchClient();
+
+client.fetch("{url}", {});
+```
 
 ### BearerTokenFetchClient
 

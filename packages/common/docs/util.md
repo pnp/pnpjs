@@ -12,7 +12,7 @@ import {
 // use from Util static class
 console.log(Util.getRandomString(10));
 
-// use from individual method imported
+// use from individual;y imported method
 console.log(getRandomString(10));
 ```
 
@@ -56,13 +56,15 @@ Manipulates a date, please see the [Stackoverflow discussion](https://stackoverf
 
 ## combinePaths
 
-Combines any number of paths, normalizign the slashes as required
+Combines any number of paths, normalizing the slashes as required
 
 ```TypeScript
 import { Util } from "@pnp/common";
 
+// "https://microsoft.com/something/more"
 const paths = Util.combinePaths("https://microsoft.com", "something", "more");
 
+// "also/works/with/relative"
 const paths2 = Util.combinePaths("/also/", "/works", "with/", "/relative\\");
 ```
 
@@ -127,7 +129,7 @@ Determines if a supplied string is null or empty
 
 ## Removed
 
-Some methods that were no longer used internally by the @pnp libraries have been removed from this class. You can find the source for those methods
+Some methods that were no longer used internally by the @pnp libraries have been removed. You can find the source for those methods
 below for use in your projects should you require.
 
 ```TypeScript

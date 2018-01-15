@@ -17,7 +17,7 @@ These articles provide general guidance for working with the libraries. If you a
 * [Gulp Commands](gulp-commands.md)
 * [Debugging](debugging.md)
 * [Install Beta Versions](beta-versions.md)
-* [Polyfills](polyfills.md)
+* [Polyfills](polyfill.md)
 
 </div>
 
@@ -47,8 +47,8 @@ The latest published version is **$$Version$$**.
 
 ## Issues, Questions, Ideas
 
-Please [log an issue](https://github.com/pnp/pnp/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate all
-contructive feedback, questions, ideas, and bug reports. Thank you for your interest in giving back.
+Please [log an issue](https://github.com/pnp/pnp/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any
+contructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
 
 
 ## Code of Conduct

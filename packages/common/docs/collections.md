@@ -14,7 +14,7 @@ export interface TypedHash<T> {
 
 ## Dictionary<T>
 
-A dictionary using string keys and containing values of type T. It works by maintaining to parallel arrays of keys and values.
+A dictionary using string keys and containing values of type T. It works by maintaining two parallel arrays of keys and values.
 
 ```TypeScript
 const d = new Dictionary<number>();
