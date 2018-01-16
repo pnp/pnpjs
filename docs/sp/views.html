@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnp">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnp">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/sp/views.html">views</a>
+    </nav>
+
+    <article>
+        <h1>@pnp/sp/views</h1>
+<p>Views define the columns, ordering, and other details we see when we look at a list. You can have multiple views for a list, including private views - and one default view.</p>
+<h2>Get a View’s Properties</h2>
+<p>To get a views properties you need to know it’s id or title. You can use the standard OData operators as expected to select properties. For a list of the properties, please see <a href="https://msdn.microsoft.com/en-us/library/office/dn531433.aspx#bk_View">this article</a>.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// know a view's GUID id</span>
+pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).getView(<span class="hljs-string">"2B382C69-DF64-49C4-85F1-70FB9CECACFE"</span>).select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(v);
+});
+
+<span class="hljs-comment">// get by the display title of the view</span>
+pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).views.getByTitle(<span class="hljs-string">"All Documents"</span>).select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(v);
+});
+</code></pre>
+<h2>Add a View</h2>
+<p>To add a view you use the add method of the views collection. You must supply a title and can supply other parameters as well.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// create a new view with default fields and properties</span>
+pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).views.add(<span class="hljs-string">"My New View"</span>).then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(v);
+});
+
+<span class="hljs-comment">// create a new view with specific properties</span>
+pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).views.add(<span class="hljs-string">"My New View 2"</span>, <span class="hljs-literal">false</span>, {
+
+    RowLimit: <span class="hljs-number">10</span>,
+    ViewQuery: <span class="hljs-string">"&lt;OrderBy&gt;&lt;FieldRef Name='Modified' Ascending='False' /&gt;&lt;/OrderBy&gt;"</span>,
+}).then(<span class="hljs-function">(<span class="hljs-params">v: ViewAddResult</span>) =&gt;</span> {
+
+    <span class="hljs-comment">// manipulate the view's fields</span>
+    v.view.fields.removeAll().then(_ =&gt; {
+
+        <span class="hljs-built_in">Promise</span>.all([
+            v.view.fields.add(<span class="hljs-string">"Title"</span>),
+            v.view.fields.add(<span class="hljs-string">"Modified"</span>),
+        ]).then(_ =&gt;{
+
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"View created"</span>);
+        });
+    });
+});
+</code></pre>
+<h2>Update a View</h2>
+<pre><code class="language-TypeScript">pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).views.getByTitle(<span class="hljs-string">"My New View"</span>).update({
+    RowLimit: <span class="hljs-number">20</span>,
+}).then(<span class="hljs-function">(<span class="hljs-params">v: ViewUpdateResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(v);
+});
+</code></pre>
+<h2>Delete a View</h2>
+<pre><code class="language-TypeScript">pnp.sp.web.lists.getByTitle(<span class="hljs-string">"Documents"</span>).views.getByTitle(<span class="hljs-string">"My New View"</span>).delete().then(_ =&gt; {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"View deleted"</span>);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: sp\views.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/sp/docs/views" alt="spacer" />
