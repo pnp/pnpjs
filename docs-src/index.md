@@ -18,6 +18,7 @@ These articles provide general guidance for working with the libraries. If you a
 * [Debugging](debugging.md)
 * [Install Beta Versions](beta-versions.md)
 * [Polyfills](polyfill.md)
+* [Package Structure](package-structure.md)
 
 </div>
 

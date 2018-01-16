@@ -11,6 +11,11 @@ module.exports = {
         format: "umd",
         name: "pnp.config-store",
         sourcemap: true,
+        globals: {
+            "@pnp/logging": "pnp.logging",
+            "@pnp/common": "pnp.common",
+            "@pnp/sp": "pnp.sp",
+        },
     },
     {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.js`,

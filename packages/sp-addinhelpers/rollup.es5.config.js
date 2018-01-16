@@ -11,6 +11,10 @@ module.exports = {
         format: "umd",
         name: "pnp.sp-addinhelpers",
         sourcemap: true,
+        globals: {
+            "@pnp/common": "pnp.common",
+            "@pnp/sp": "pnp.sp",
+        },
     },
     {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.js`,

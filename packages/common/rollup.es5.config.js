@@ -11,6 +11,9 @@ module.exports = {
         format: "umd",
         name: "pnp.common",
         sourcemap: true,
+        globals: {
+            "@pnp/logging": "pnp.logging",
+        },
     },
     {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.js`,
