@@ -9,7 +9,8 @@ const gulp = require("gulp"),
     path = require("path"),
     semver = require("semver"),
     execSync = require('child_process').execSync,
-    serverFactory = require("@pnp/dev-server");
+    serverFactory = require("@pnp/dev-server"),
+    sequence = require("run-sequence");
 
 // the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
@@ -55,7 +56,7 @@ function mdToHtml(file, a, b, header, footer) {
     const img = new Buffer(`<img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/${telemetryPath}" alt="spacer" />`);
 
     file.contents = Buffer.concat([header, new Buffer(result), footer, img]);
-    file.path = util.replaceExtension(file.path, '.html');
+    file.path = util.replaceExtension(file.path, ".html");
 }
 
 // remove the docs subpath for packages folders
@@ -77,6 +78,19 @@ function getHeaderFooter(filePath, splitString) {
     });
 }
 
+function filePathReplacer() {
+    return this.file.relative;
+}
+
+function breadcumbReplacer() {
+
+    return [`<a href="/pnp">@pnp</a>`]
+        .concat(this.file.relative.split(/\\|\//).map((p, i, arr) => {
+            return `<a href="/pnp/${arr.slice(0, i + 1).join("/")}">${util.replaceExtension(p.replace(/-/g, " "), "")}</a>`;
+        }))
+        .join("&nbsp;&nbsp;&gt;&nbsp;&nbsp;");
+}
+
 gulp.task("docs:copyassets", (done) => {
 
     pump([
@@ -84,9 +98,9 @@ gulp.task("docs:copyassets", (done) => {
             "./docs-src/**/*.css",
         ]),
         gulp.dest("docs",
-        {
-            overwrite: true,
-        }),
+            {
+                overwrite: true,
+            }),
     ], (err) => {
 
         if (typeof err !== "undefined") {
@@ -111,11 +125,9 @@ gulp.task("docs:generate", (done) => {
             ]),
             tap.apply(tap, [mdToHtml].concat(hf.map(s => new Buffer(s)))),
             tap(removeDocsSubPath),
-            replace("$$OriginalFilePath$$", function () {
-                // allows for the inclusion of the path in the issue title link in footer
-                return this.file.relative;
-            }),
+            replace("$$OriginalFilePath$$", filePathReplacer),
             replace("$$Version$$", latestVersion),
+            replace("$$breadcumbs$$", breadcumbReplacer),
             gulp.dest("docs", {
                 overwrite: true,
             }),
@@ -140,16 +152,18 @@ gulp.task("watch:docs", ["docs"], function () {
 
 gulp.task("docs", ["clean-docs", "docs:copyassets", "docs:generate"]);
 
-gulp.task("docs-serve", ["clean-docs", "watch:docs"], (done) => {
+gulp.task("docs-serve", (done) => {
 
-    serverFactory({
-        root: "./docs",
-        path: "/pnp",
-    }).then(server => {
+    sequence("clean-docs", "watch:docs", () => {
+        serverFactory({
+            root: "./docs",
+            path: "/pnp",
+        }).then(server => {
 
-        console.log(`server.listening: ${server.listening}`);
-    }).catch(e => {
+            console.log(`server.listening: ${server.listening}`);
+        }).catch(e => {
 
-        done(e);
+            done(e);
+        });
     });
 });

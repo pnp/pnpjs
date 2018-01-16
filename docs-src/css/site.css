@@ -69,6 +69,20 @@ code {
     display:block;
 }
 
+#breadcrumbs {
+    background-color: #2b88d8;
+    padding-left: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    color: #ffffff;
+    border-bottom: 4px solid #71afe5;
+}
+
+#breadcrumbs a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
 #guide-links a {
     text-decoration: none;
     color: rgb(0, 0, 238); 
