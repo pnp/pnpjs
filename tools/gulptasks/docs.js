@@ -10,7 +10,8 @@ const gulp = require("gulp"),
     semver = require("semver"),
     execSync = require('child_process').execSync,
     serverFactory = require("@pnp/dev-server"),
-    sequence = require("run-sequence");
+    sequence = require("run-sequence"),
+    pkg = require(path.resolve(__dirname, "../../package.json"));
 
 // the root of our docs src
 const docsSrcRoot = path.resolve(__dirname, "../../docs-src");
@@ -113,8 +114,6 @@ gulp.task("docs:copyassets", (done) => {
 
 gulp.task("docs:generate", (done) => {
 
-    const latestVersion = semver.clean(execSync("npm show @pnp/common version").toString());
-
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 
         // we need to take the md files in /docs-src and each package directory and transform them to html and put them in /docs
@@ -126,7 +125,7 @@ gulp.task("docs:generate", (done) => {
             tap.apply(tap, [mdToHtml].concat(hf.map(s => new Buffer(s)))),
             tap(removeDocsSubPath),
             replace("$$OriginalFilePath$$", filePathReplacer),
-            replace("$$Version$$", latestVersion),
+            replace("$$Version$$", pkg.version),
             replace("$$breadcumbs$$", breadcumbReplacer),
             gulp.dest("docs", {
                 overwrite: true,

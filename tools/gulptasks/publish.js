@@ -61,7 +61,7 @@ function runPublishScript(docsOnly) {
     if (!docsOnly) {
 
         // version here to all subsequent actions have the new version available in package.json
-        script.push("npm version 1.0.0-rc.0");
+        script.push("npm version patch");
     }
 
     // update docs
