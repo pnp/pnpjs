@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnp">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnp">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/common">common</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/common/custom-httpclientimpl.html">custom httpclientimpl</a>
+    </nav>
+
+    <article>
+        <h1>Custom HttpClientImpl</h1>
+<p><strong>This should be considered an advanced topic and creating a custom HttpClientImpl is not something you will likely need to do. Also, we don’t offer support beyond this article for writing your own implementation.</strong></p>
+<p>It is possible you may need complete control over the sending and receiving of requests.</p>
+<p>Before you get started read and understand the <a href="https://fetch.spec.whatwg.org/">fetch specification</a> as you are essentially writing a custom fetch implementation.</p>
+<p>The first step (second if you read the fetch spec as mentioned just above) is to understand the interface you need to implement, HttpClientImpl.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> HttpClientImpl {
+    fetch(url: <span class="hljs-built_in">string</span>, options: FetchOptions): <span class="hljs-built_in">Promise</span>&lt;Response&gt;;
+}
+</code></pre>
+<p>There is a single method “fetch” which takes a url string and a set of options. These options can be just about anything but are constrained within the library to the FetchOptions interface.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> FetchOptions {
+    method?: <span class="hljs-built_in">string</span>;
+    headers?: HeadersInit | { [index: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span> };
+    body?: BodyInit;
+    mode?: <span class="hljs-built_in">string</span> | RequestMode;
+    credentials?: <span class="hljs-built_in">string</span> | RequestCredentials;
+    cache?: <span class="hljs-built_in">string</span> | RequestCache;
+}
+</code></pre>
+<p>So you will need to handle any of those options along with the provided url when sending your request. The library will expect your implementation to return a Promise that resolves to a Response defined by the <a href="https://fetch.spec.whatwg.org/">fetch specification</a> - which you’ve already read 👍.</p>
+<h2>Using Your Custom HttpClientImpl</h2>
+<p>Once you have written your implementation using it on your requests is done by setting it in the global library configuration:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { setup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+<span class="hljs-keyword">import</span> { sp, Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { MyAwesomeClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"./awesomeclient"</span>;
+
+sp.setup({
+    sp: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> MyAwesomeClient();
+        }
+    }
+});
+
+<span class="hljs-keyword">let</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"{site url}"</span>);
+
+<span class="hljs-comment">// this request will use your client.</span>
+w.select(<span class="hljs-string">"Title"</span>).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(w);
+});
+</code></pre>
+<h2>Subclassing is Better</h2>
+<p>You can of course inherit from one of the implementations available within the @pnp scope if you just need to say add a header or need to do <em>something</em> to every request sent. Perhaps some advanced logging. This approach will save you from needing to fully write a fetch implementation.</p>
+<h1>A FINAL NOTE</h1>
+<p>Whatever you do, <strong>do not</strong> write a client that uses a client id and secret and exposes them on the client side. Client Id and Secret should only ever be used on a server, never exposed to clients as anyone with those values has the full permissions granted to that id and secret.</p>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: common\custom-httpclientimpl.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/common/docs/custom-httpclientimpl" alt="spacer" />

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnp">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnp">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/common">common</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/common/util.html">util</a>
+    </nav>
+
+    <article>
+        <h1>@pnp/common/util</h1>
+<p>This module contains utility methods that you can import either individually from the common library or in a single static class “Util”. Both are shown below.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    Util,
+    getRandomString,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+
+<span class="hljs-comment">// use from Util static class</span>
+<span class="hljs-built_in">console</span>.log(Util.getRandomString(<span class="hljs-number">10</span>));
+
+<span class="hljs-comment">// use from individual;y imported method</span>
+<span class="hljs-built_in">console</span>.log(getRandomString(<span class="hljs-number">10</span>));
+</code></pre>
+<h2>getCtxCallback</h2>
+<p>Gets a callback function which will maintain context across async calls.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Util } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-keyword">const</span> contextThis = {
+    myProp: <span class="hljs-number">6</span>,
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">theFunction</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// "this" within this function will be the context object supplied</span>
+    <span class="hljs-comment">// in this case the variable contextThis, so myProp will exist</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.myProp;
+}
+
+<span class="hljs-keyword">const</span> callback = Util.getCtxCallback(contextThis, theFunction);
+
+callback(); <span class="hljs-comment">// returns 6</span>
+
+<span class="hljs-comment">// You can also supply additional parameters if needed</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">theFunction2</span>(<span class="hljs-params">g: <span class="hljs-built_in">number</span></span>) </span>{
+    <span class="hljs-comment">// "this" within this function will be the context object supplied</span>
+    <span class="hljs-comment">// in this case the variable contextThis, so myProp will exist</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.myProp + g;
+}
+
+<span class="hljs-keyword">const</span> callback2 = Util.getCtxCallback(contextThis, theFunction, <span class="hljs-number">4</span>);
+
+callback2(); <span class="hljs-comment">// returns 10 (6 + 4)</span>
+</code></pre>
+<h2>dateAdd</h2>
+<p>Manipulates a date, please see the <a href="https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object">Stackoverflow discussion</a> from where this method was taken.</p>
+<h2>combinePaths</h2>
+<p>Combines any number of paths, normalizing the slashes as required</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Util } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-comment">// "https://microsoft.com/something/more"</span>
+<span class="hljs-keyword">const</span> paths = Util.combinePaths(<span class="hljs-string">"https://microsoft.com"</span>, <span class="hljs-string">"something"</span>, <span class="hljs-string">"more"</span>);
+
+<span class="hljs-comment">// "also/works/with/relative"</span>
+<span class="hljs-keyword">const</span> paths2 = Util.combinePaths(<span class="hljs-string">"/also/"</span>, <span class="hljs-string">"/works"</span>, <span class="hljs-string">"with/"</span>, <span class="hljs-string">"/relative\\"</span>);
+</code></pre>
+<h2>getRandomString</h2>
+<p>Gets a random string consiting of the number of characters requested.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Util } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-keyword">const</span> randomString = Util.getRandomString(<span class="hljs-number">10</span>);
+</code></pre>
+<h2>getGUID</h2>
+<p>Creates a random guid, please see the <a href="https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript">Stackoverflow discussion</a> from where this method was taken.</p>
+<h2>isFunc</h2>
+<p>Determines if a supplied variable represents a function.</p>
+<h2>objectDefinedNotNull</h2>
+<p>Determines if an object is defined and not null.</p>
+<h2>isArray</h2>
+<p>Determines if a supplied variable represents an array.</p>
+<h2>extend</h2>
+<p>Merges a source object’s own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwritting of existing
+properties.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Util } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-keyword">let</span> obj1 = {
+    prop: <span class="hljs-number">1</span>,
+    prop2: <span class="hljs-number">2</span>,
+};
+
+<span class="hljs-keyword">const</span> obj2 = {
+    prop: <span class="hljs-number">4</span>,
+    prop3: <span class="hljs-number">9</span>,
+};
+
+<span class="hljs-keyword">const</span> example1 = Util.extend(obj1, obj2);
+<span class="hljs-comment">// example1 = { prop: 4, prop2: 2, prop3: 9 }</span>
+
+<span class="hljs-keyword">const</span> example2 = Util.extend(obj1, obj2, <span class="hljs-literal">true</span>);
+<span class="hljs-comment">// example2 = { prop: 1, prop2: 2, prop3: 9 }</span>
+</code></pre>
+<h2>isUrlAbsolute</h2>
+<p>Determines if a supplied url is absolute and returns true; otherwise returns false.</p>
+<h2>stringIsNullOrEmpty</h2>
+<p>Determines if a supplied string is null or empty</p>
+<h2>Removed</h2>
+<p>Some methods that were no longer used internally by the @pnp libraries have been removed. You can find the source for those methods
+below for use in your projects should you require.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">/**
+ * Loads a stylesheet into the current page
+ *
+ * @param path The url to the stylesheet
+ * @param avoidCache If true a value will be appended as a query string to avoid browser caching issues
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> loadStylesheet(path: <span class="hljs-built_in">string</span>, avoidCache: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">if</span> (avoidCache) {
+        path += <span class="hljs-string">"?"</span> + <span class="hljs-built_in">encodeURIComponent</span>((<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()).getTime().toString());
+    }
+    <span class="hljs-keyword">const</span> head = <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">"head"</span>);
+    <span class="hljs-keyword">if</span> (head.length &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">const</span> e = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"link"</span>);
+        head[<span class="hljs-number">0</span>].appendChild(e);
+        e.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"text/css"</span>);
+        e.setAttribute(<span class="hljs-string">"rel"</span>, <span class="hljs-string">"stylesheet"</span>);
+        e.setAttribute(<span class="hljs-string">"href"</span>, path);
+    }
+}
+
+<span class="hljs-comment">/**
+ * Tests if a url param exists
+ *
+ * @param name The name of the url paramter to check
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> urlParamExists(name: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">boolean</span> {
+    name = name.replace(<span class="hljs-regexp">/[\[]/</span>, <span class="hljs-string">"\\["</span>).replace(<span class="hljs-regexp">/[\]]/</span>, <span class="hljs-string">"\\]"</span>);
+    <span class="hljs-keyword">const</span> regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"[\\?&amp;]"</span> + name + <span class="hljs-string">"=([^&amp;#]*)"</span>);
+    <span class="hljs-keyword">return</span> regex.test(location.search);
+}
+
+<span class="hljs-comment">/**
+ * Gets a url param value by name
+ *
+ * @param name The name of the paramter for which we want the value
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> getUrlParamByName(name: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> {
+    name = name.replace(<span class="hljs-regexp">/[\[]/</span>, <span class="hljs-string">"\\["</span>).replace(<span class="hljs-regexp">/[\]]/</span>, <span class="hljs-string">"\\]"</span>);
+    <span class="hljs-keyword">const</span> regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"[\\?&amp;]"</span> + name + <span class="hljs-string">"=([^&amp;#]*)"</span>);
+    <span class="hljs-keyword">const</span> results = regex.exec(location.search);
+    <span class="hljs-keyword">return</span> results == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-built_in">decodeURIComponent</span>(results[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/\+/g</span>, <span class="hljs-string">" "</span>));
+}
+
+<span class="hljs-comment">/**
+ * Gets a url param by name and attempts to parse a bool value
+ *
+ * @param name The name of the paramter for which we want the boolean value
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> getUrlParamBoolByName(name: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">boolean</span> {
+    <span class="hljs-keyword">const</span> p = <span class="hljs-keyword">this</span>.getUrlParamByName(name);
+    <span class="hljs-keyword">const</span> isFalse = (p === <span class="hljs-string">""</span> || <span class="hljs-regexp">/false|0/i</span>.test(p));
+    <span class="hljs-keyword">return</span> !isFalse;
+}
+
+<span class="hljs-comment">/**
+ * Inserts the string s into the string target as the index specified by index
+ *
+ * @param target The string into which we will insert s
+ * @param index The location in target to insert s (zero based)
+ * @param s The string to insert into target at position index
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> stringInsert(target: <span class="hljs-built_in">string</span>, index: <span class="hljs-built_in">number</span>, s: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">if</span> (index &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> target.substring(<span class="hljs-number">0</span>, index) + s + target.substring(index, target.length);
+    }
+    <span class="hljs-keyword">return</span> s + target;
+}
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: common\util.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/common/docs/util" alt="spacer" />

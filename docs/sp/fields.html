@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnp/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnp/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnp">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnp">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnp/sp/fields.html">fields</a>
+    </nav>
+
+    <article>
+        <h1>@pnp/sp/fields</h1>
+<p>Fields allow you to store typed information within a SharePoint list. There are many types of fields and the library seeks to simplify working with the most common types. Fields exist in both site collections (site columns) or lists (list columns) and you can add/modify/delete them at either of these levels.</p>
+<h2>Get Fields</h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+<span class="hljs-comment">// get all the fields in a web</span>
+web.fields.get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// you can use odata operators on the fields collection</span>
+web.fields.select(<span class="hljs-string">"Title"</span>, <span class="hljs-string">"InternalName"</span>, <span class="hljs-string">"TypeAsString"</span>).top(<span class="hljs-number">10</span>).orderBy(<span class="hljs-string">"Id"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// get all the available fields in a web (includes parent web's fields)</span>
+web.availablefields.get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// get the fields in a list</span>
+web.lists.getByTitle(<span class="hljs-string">"MyList"</span>).fields.get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// you can also get individual fields using getById, getByTitle, or getByInternalNameOrTitle</span>
+web.fields.getById(<span class="hljs-string">"dee9c205-2537-44d6-94e2-7c957e6ebe6e"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+web.fields.getByTitle(<span class="hljs-string">"MyField4"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+web.fields.getByInternalNameOrTitle(<span class="hljs-string">"MyField4"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+<h2>Add Fields</h2>
+<p>You can add fields using the add, createFieldAsXml, or one of the type specific methods. Functionally there is no difference, however one method may be easier given a certain scenario.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+<span class="hljs-comment">// if you use add you _must_ include the correct FieldTypeKind in the extended properties</span>
+web.fields.add(<span class="hljs-string">"MyField1"</span>, <span class="hljs-string">"SP.FieldText"</span>, { 
+    Group: <span class="hljs-string">"~Example"</span>,
+    FieldTypeKind: <span class="hljs-number">2</span>,
+    Filterable: <span class="hljs-literal">true</span>,
+    Hidden: <span class="hljs-literal">false</span>,
+    EnforceUniqueValues: <span class="hljs-literal">true</span>,
+}).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// you can also use the addText or any of the other type specific methods on the collection</span>
+web.fields.addText(<span class="hljs-string">"MyField2"</span>, <span class="hljs-number">75</span>, { 
+    Group: <span class="hljs-string">"~Example"</span>
+}).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// if you have the field schema (for example from an old elements file) you can use createFieldAsXml</span>
+<span class="hljs-keyword">let</span> xml = <span class="hljs-string">`&lt;Field DisplayName="MyField4" Type="Text" Required="FALSE" StaticName="MyField4" Name="MyField4" MaxLength="125" Group="~Example" /&gt;`</span>;
+
+web.fields.createFieldAsXml(xml).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// the same operations work on a list's fields collection</span>
+web.lists.getByTitle(<span class="hljs-string">"MyList"</span>).fields.addText(<span class="hljs-string">"MyField5"</span>, <span class="hljs-number">100</span>).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+<h2>Update a Field</h2>
+<p>You can also update the properties of a field in both webs and lists, but not all properties are able to be updated after creation. You can review <a href="https://msdn.microsoft.com/en-us/library/office/dn600182.aspx#bk_FieldProperties">this list</a> for details.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+web.fields.getByTitle(<span class="hljs-string">"MyField4"</span>).update({ 
+    Description: <span class="hljs-string">"A new description"</span>,
+ }).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+<h2>Delete a Field</h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+web.fields.getByTitle(<span class="hljs-string">"MyField4"</span>).delete().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnp/issues/new?title=Documentation: sp\fields.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/sp/docs/fields" alt="spacer" />
