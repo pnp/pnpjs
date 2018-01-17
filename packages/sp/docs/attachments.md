@@ -70,8 +70,6 @@ list.items.getById(2).attachmentFiles.addMultiple(fileInfos).then(r => {
 
 ## Delete Multiple
 
-_Added in 3.0.2_
-
 ```TypeScript
 const list = pnp.sp.web.lists.getByTitle("MyList");
 

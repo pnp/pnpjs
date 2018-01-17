@@ -86,7 +86,7 @@ graph.setup({
     },
 });
 
-// here we will load the current web's properties
+// here we will load the groups information
 graph.v1.groups.get().then(g => {
 
     console.log(`Groups: ${JSON.stringify(g, null, 4)}`);
