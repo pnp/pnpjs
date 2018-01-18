@@ -4,7 +4,7 @@ import { ContentTypes } from "./contenttypes";
 import { Fields } from "./fields";
 import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
 import { Util, TypedHash } from "@pnp/common";
 import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "./types";
@@ -184,8 +184,8 @@ export class List extends SharePointQueryableSecurable {
      * Gets the default view of this list
      *
      */
-    public get defaultView(): SharePointQueryableInstance {
-        return new SharePointQueryableInstance(this, "DefaultView");
+    public get defaultView(): View {
+        return new View(this, "DefaultView");
     }
 
     /**
