@@ -41,6 +41,8 @@ export {
 } from "./config/splibconfig";
 
 export {
+    Field,
+    Fields,
     FieldAddResult,
     FieldUpdateResult,
 } from "./fields";

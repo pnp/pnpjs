@@ -67,10 +67,10 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
     }
 
     /**
-         * Creates a new instance of the supplied factory and extends this into that new instance
-         *
-         * @param factory constructor for the new SharePointQueryable
-         */
+     * Creates a new instance of the supplied factory and extends this into that new instance
+     *
+     * @param factory constructor for the new SharePointQueryable
+     */
     public as<T>(factory: SharePointQueryableConstructor<T>): T {
         const o = <T>new factory(this._url, null);
         return Util.extend(o, this, true);
