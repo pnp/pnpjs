@@ -9,20 +9,27 @@
             "es2015",
             "dom"
         ],
-        "noImplicitAny": true,
+        "rootDir": ".",
+        "baseUrl": ".",
+        "paths": {
+            "@pnp/*": [
+                "./*"
+            ]
+        },
+        "strict": true,
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
-        "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "pretty": false,
         "experimentalDecorators": true,
-        "strictNullChecks": true,
         "noFallthroughCasesInSwitch": true,
         "inlineSources": true,
         "sourceMap": true,
         "skipDefaultLibCheck": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        // TODO:: eventually we want to support this, but for now we don't for ease of code migration
+        "strictNullChecks": false
     }
 }

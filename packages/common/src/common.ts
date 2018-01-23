@@ -1,10 +1,9 @@
 export * from "./blobutil";
 export * from "./collections";
-export * from "./configutil";
 export * from "./decorators";
 export * from "./exceptions";
 export * from "./libconfig";
 export * from "./netutil";
-export { ISPFXContext } from "./spfxContextInterface";
+export * from "./spfxContextInterface";
 export * from "./storage";
-export { Util } from "./util";
+export * from "./util";

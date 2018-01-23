@@ -1,9 +1,48 @@
 export {
+    spExtractODataId,
+    spODataEntity,
+    spODataEntityArray,
+} from "./odata";
+
+export {
+    SharePointQueryable,
+    SharePointQueryableInstance,
+    SharePointQueryableCollection,
+    SharePointQueryableConstructor,
+} from "./sharepointqueryable";
+
+export {
+    SharePointQueryableSecurable,
+} from "./sharepointqueryablesecurable";
+
+export {
+    FileFolderShared,
+    SharePointQueryableShareable,
+    SharePointQueryableShareableFile,
+    SharePointQueryableShareableFolder,
+    SharePointQueryableShareableItem,
+    SharePointQueryableShareableWeb,
+} from "./sharepointqueryableshareable";
+
+export {
+    AppCatalog,
+    AppAddResult,
+    App,
+} from "./appcatalog";
+
+export {
     AttachmentFileAddResult,
     AttachmentFileInfo,
 } from "./attachmentfiles";
 
 export {
+    SPConfiguration,
+    SPConfigurationPart,
+} from "./config/splibconfig";
+
+export {
+    Field,
+    Fields,
     FieldAddResult,
     FieldUpdateResult,
 } from "./fields";
@@ -30,8 +69,14 @@ export {
 } from "./folders";
 
 export {
+    SPHttpClient,
+} from "./net/sphttpclient";
+
+export {
     Item,
     Items,
+    ItemVersion,
+    ItemVersions,
     ItemAddResult,
     ItemUpdateResult,
     ItemUpdateResultData,
@@ -40,9 +85,10 @@ export {
 
 export {
     NavigationNodeAddResult,
-    NavigationNodeUpdateResult,
     NavigationNodes,
     NavigationNode,
+    NavigationService,
+    INavigationService,
 } from "./navigation";
 
 export {
@@ -54,22 +100,14 @@ export {
 } from "./lists";
 
 export {
-    spExtractODataId,
-    spODataEntity,
-    spODataEntityArray,
-} from "./odata";
-
-export {
-    SharePointQueryable,
-    SharePointQueryableInstance,
-    SharePointQueryableCollection,
-    SharePointQueryableConstructor,
-} from "./sharepointqueryable";
-
-export {
     RelatedItem,
     RelatedItemManger,
 } from "./relateditems";
+
+export {
+    sp,
+    SPRest,
+} from "./rest";
 
 export {
     RoleDefinitionUpdateResult,

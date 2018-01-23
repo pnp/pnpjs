@@ -1,16 +1,18 @@
-import { Util } from "../utils/util";
-import { Dictionary } from "../collections/collections";
-import { FetchOptions, mergeOptions } from "../net/utils";
-import { ODataParser } from "../odata/core";
-import { ODataBatch } from "./batch";
-import { AlreadyInBatchException } from "../utils/exceptions";
-import { Logger, LogLevel } from "../utils/logging";
-import { ODataQueryable } from "../odata/queryable";
 import {
+    Util,
+    Dictionary,
+    FetchOptions,
+    mergeOptions,
+} from "@pnp/common";
+import {
+    ODataParser,
+    ODataQueryable,
     RequestContext,
-    PipelineMethods,
-} from "../request/pipeline";
-import { HttpClient } from "../net/httpclient";
+} from "@pnp/odata";
+import { Logger, LogLevel } from "@pnp/logging";
+import { SPBatch } from "./batch";
+import { SPHttpClient } from "./net/sphttpclient";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 export interface SharePointQueryableConstructor<T> {
     new(baseUrl: string | SharePointQueryable, path?: string): T;
@@ -20,40 +22,7 @@ export interface SharePointQueryableConstructor<T> {
  * SharePointQueryable Base Class
  *
  */
-export class SharePointQueryable extends ODataQueryable {
-
-
-    /**
-     * Tracks the batch of which this query may be part
-     */
-    private _batch: ODataBatch;
-
-    /**
-     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
-     */
-    protected addBatchDependency(): () => void {
-        if (this.hasBatch) {
-            return this._batch.addDependency();
-        }
-
-        return () => null;
-    }
-
-    /**
-     * Indicates if the current query has a batch associated
-     *
-     */
-    protected get hasBatch(): boolean {
-        return this._batch !== null;
-    }
-
-    /**
-     * The batch currently associated with this query or null
-     *
-     */
-    protected get batch(): ODataBatch {
-        return this.hasBatch ? this._batch : null;
-    }
+export class SharePointQueryable extends ODataQueryable<SPBatch> {
 
     /**
      * Creates a new instance of the SharePointQueryable class
@@ -64,10 +33,6 @@ export class SharePointQueryable extends ODataQueryable {
      */
     constructor(baseUrl: string | SharePointQueryable, path?: string) {
         super();
-
-        this._options = {};
-        this._query = new Dictionary<string>();
-        this._batch = null;
 
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
@@ -112,28 +77,6 @@ export class SharePointQueryable extends ODataQueryable {
     }
 
     /**
-     * Adds this query to the supplied batch
-     *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
-     */
-    public inBatch(batch: ODataBatch): this {
-
-        if (this._batch !== null) {
-            throw new AlreadyInBatchException();
-        }
-
-        this._batch = batch;
-
-        return this;
-    }
-
-    /**
      * Gets the full url with query information
      *
      */
@@ -150,7 +93,7 @@ export class SharePointQueryable extends ODataQueryable {
         // inlude our explicitly set query string params
         aliasedParams.merge(this._query);
 
-        if (aliasedParams.count() > 0) {
+        if (aliasedParams.count > 0) {
             url += `?${aliasedParams.getKeys().map(key => `${key}=${aliasedParams.get(key)}`).join("&")}`;
         }
 
@@ -166,7 +109,7 @@ export class SharePointQueryable extends ODataQueryable {
         factory: SharePointQueryableConstructor<T>,
         baseUrl: string | SharePointQueryable = this.parentUrl,
         path?: string,
-        batch?: ODataBatch): T {
+        batch?: SPBatch): T {
 
         let parent = new factory(baseUrl, path);
         parent.configure(this._options);
@@ -211,20 +154,20 @@ export class SharePointQueryable extends ODataQueryable {
         verb: string,
         options: FetchOptions = {},
         parser: ODataParser<T>,
-        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>> = PipelineMethods.default): Promise<RequestContext<T>> {
+        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>> {
 
         const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
 
-        return Util.toAbsoluteUrl(this.toUrlAndQuery()).then(url => {
+        return toAbsoluteUrl(this.toUrlAndQuery()).then(url => {
 
             mergeOptions(options, this._options);
 
             // build our request context
             const context: RequestContext<T> = {
-                batch: this._batch,
+                batch: this.batch,
                 batchDependency: dependencyDispose,
                 cachingOptions: this._cachingOptions,
-                clientFactory: () => new HttpClient(),
+                clientFactory: () => new SPHttpClient(),
                 isBatched: this.hasBatch,
                 isCached: this._useCaching,
                 options: options,

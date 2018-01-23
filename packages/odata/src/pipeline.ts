@@ -1,5 +1,5 @@
 import { ODataParser } from "./core";
-// TODO:: import { ODataBatch } from "../sharepoint/batch";
+import { ODataBatch } from "./odatabatch";
 import { ICachingOptions, CachingParserWrapper, CachingOptions } from "./caching";
 import { Logger, LogLevel } from "@pnp/logging";
 import { Util, FetchOptions, RequestClient } from "@pnp/common";
@@ -8,7 +8,7 @@ import { Util, FetchOptions, RequestClient } from "@pnp/common";
  * Defines the context for a given request to be processed in the pipeline
  */
 export interface RequestContext<T> {
-    // TODO:: batch: ODataBatch;
+    batch: ODataBatch;
     batchDependency: () => void;
     cachingOptions: ICachingOptions;
     hasResult?: boolean;
@@ -60,10 +60,8 @@ export function setResult<T>(context: RequestContext<T>, value: any): Promise<Re
  */
 function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
 
-    const _next = c.pipeline.shift();
-
-    if (typeof _next !== "undefined") {
-        return _next(c);
+    if (c.pipeline.length > 0) {
+        return c.pipeline.shift()(c);
     } else {
         return Promise.resolve(c);
     }
@@ -76,14 +74,14 @@ function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
  */
 export function pipe<T>(context: RequestContext<T>): Promise<T | null> {
 
+    if (context.pipeline.length < 1) {
+        Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Request pipeline contains no methods!`, LogLevel.Warning);
+    }
+
     return next(context)
         .then(ctx => returnResult(ctx))
         .catch((e: Error) => {
-            Logger.log({
-                data: e,
-                level: LogLevel.Error,
-                message: `Error in request pipeline: ${e.message}`,
-            });
+            Logger.error(e);
             throw e;
         });
 }
@@ -158,7 +156,7 @@ export class PipelineMethods {
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
                     // check if we have the data in cache and if so resolve the promise and return
-                    const data = cacheOptions.store.get(cacheOptions.key);
+                    let data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
                         // ensure we clear any help batch dependency we are resolving from the cache
                         Logger.log({
@@ -167,6 +165,10 @@ export class PipelineMethods {
                             message: `[${context.requestId}] (${(new Date()).getTime()}) Value returned from cache.`,
                         });
                         context.batchDependency();
+                        // handle the case where a parser needs to take special actions with a cached result (such as getAs)
+                        if (context.parser.hasOwnProperty("hydrate")) {
+                            data = context.parser.hydrate!(data);
+                        }
                         return setResult(context, data).then(ctx => resolve(ctx));
                     }
                 }
@@ -190,32 +192,32 @@ export class PipelineMethods {
 
         return new Promise<RequestContext<T>>((resolve, reject) => {
             // send or batch the request
-            // if (context.isBatched) {
+            if (context.isBatched) {
 
-            //     // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-            //     const p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
+                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
+                const p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
 
-            //     // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-            //     context.batchDependency();
+                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
+                context.batchDependency();
 
-            //     Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, LogLevel.Info);
+                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, LogLevel.Info);
 
-            //     // we set the result as the promise which will be resolved by the batch's execution
-            //     resolve(setResult(context, p));
+                // we set the result as the promise which will be resolved by the batch's execution
+                resolve(setResult(context, p));
 
-            // } else {
+            } else {
 
-            Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Sending request.`, LogLevel.Info);
+                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Sending request.`, LogLevel.Info);
 
-            // we are not part of a batch, so proceed as normal
-            const client = context.clientFactory();
-            const opts = Util.extend(context.options || {}, { method: context.verb });
-            client.fetch(context.requestAbsoluteUrl, opts)
-                .then(response => context.parser.parse(response))
-                .then(result => setResult(context, result))
-                .then(ctx => resolve(ctx))
-                .catch(e => reject(e));
-            // }
+                // we are not part of a batch, so proceed as normal
+                const client = context.clientFactory();
+                const opts = Util.extend(context.options || {}, { method: context.verb });
+                client.fetch(context.requestAbsoluteUrl, opts)
+                    .then(response => context.parser.parse(response))
+                    .then(result => setResult(context, result))
+                    .then(ctx => resolve(ctx))
+                    .catch(e => reject(e));
+            }
         });
     }
 
@@ -227,34 +229,33 @@ export class PipelineMethods {
 
         return new Promise<RequestContext<T>>(resolve => {
 
-            // TODO::
-            // if (context.isBatched) {
+            if (context.isBatched) {
 
-            //     Logger.log({
-            //         data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
-            //         level: LogLevel.Info,
-            //         message: `[${context.requestId}] (${(new Date()).getTime()}) ${context.verb} request will complete in batch ${context.batch.batchId}.`,
-            //     });
+                Logger.log({
+                    data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
+                    level: LogLevel.Info,
+                    message: `[${context.requestId}] (${(new Date()).getTime()}) ${context.verb} request will complete in batch ${context.batch.batchId}.`,
+                });
 
-            // } else {
+            } else {
 
-            Logger.log({
-                data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
-                level: LogLevel.Info,
-                message: `[${context.requestId}] (${(new Date()).getTime()}) Completing ${context.verb} request.`,
-            });
-            // }
+                Logger.log({
+                    data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
+                    level: LogLevel.Info,
+                    message: `[${context.requestId}] (${(new Date()).getTime()}) Completing ${context.verb} request.`,
+                });
+            }
 
             resolve(context);
         });
     }
+}
 
-    public static get default() {
-        return [
-            PipelineMethods.logStart,
-            PipelineMethods.caching,
-            PipelineMethods.send,
-            PipelineMethods.logEnd,
-        ];
-    }
+export function getDefaultPipeline() {
+    return [
+        PipelineMethods.logStart,
+        PipelineMethods.caching,
+        PipelineMethods.send,
+        PipelineMethods.logEnd,
+    ].slice(0);
 }

@@ -4,14 +4,13 @@ import { ContentTypes } from "./contenttypes";
 import { Fields } from "./fields";
 import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
-import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData } from "./types";
+import { Util, TypedHash } from "@pnp/common";
+import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
-import { NotSupportedInBatchException } from "../utils/exceptions";
+import { NotSupportedInBatchException } from "./exceptions";
 import { Folder } from "./folders";
 
 /**
@@ -185,8 +184,8 @@ export class List extends SharePointQueryableSecurable {
      * Gets the default view of this list
      *
      */
-    public get defaultView(): SharePointQueryableInstance {
-        return new SharePointQueryableInstance(this, "DefaultView");
+    public get defaultView(): View {
+        return new View(this, "DefaultView");
     }
 
     /**
@@ -380,6 +379,28 @@ export class List extends SharePointQueryableSecurable {
     }
 
     /**
+     * Returns the data for the specified query view
+     * 
+     * @param parameters The parameters to be used to render list data as JSON string.
+     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     */
+    public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null): Promise<any> {
+
+        const postBody = {
+            overrideParameters: Util.extend({
+                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
+            }, overrideParameters),
+            parameters: Util.extend({
+                "__metadata": { "type": "SP.RenderListDataParameters" },
+            }, parameters),
+        };
+
+        return this.clone(List, "RenderListDataAsStream", true).postCore({
+            body: JSON.stringify(postBody),
+        });
+    }
+
+    /**
      * Gets the field values and field schema attributes for a list item.
      */
     public renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<ListFormData> {
@@ -412,7 +433,7 @@ export class List extends SharePointQueryableSecurable {
      *
      */
     public getListItemEntityTypeFullName(): Promise<string> {
-        return this.clone(List, null, false).select("ListItemEntityTypeFullName").getAs<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
     }
 }
 

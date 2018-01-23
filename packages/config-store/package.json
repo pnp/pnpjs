@@ -2,10 +2,14 @@
   "name": "@pnp/config-store",
   "version": "0.0.0-PLACEHOLDER",
   "description": "pnp - provides a way to manage configuration within your application",
-  "main": "./lib/common.js",
-  "typings": "./lib/pnp",
-  "dependencies": {},
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {
+    "tslib": "1.8.1"
+  },
   "peerDependencies": {
+    "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/sp": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER"
   },
   "author": {

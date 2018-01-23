@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
-import { TextFileParser, BlobFileParser, JSONFileParser, BufferFileParser } from "../odata/parsers";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
     name: string;
@@ -50,7 +50,7 @@ export class AttachmentFiles extends SharePointQueryableCollection {
     }
 
     /**
-     * Adds mjultiple new attachment to the collection. Not supported for batching.
+     * Adds multiple new attachment to the collection. Not supported for batching.
      *
      * @files name The collection of files to add
      */
@@ -60,6 +60,15 @@ export class AttachmentFiles extends SharePointQueryableCollection {
         return files.reduce((chain, file) => chain.then(() => this.clone(AttachmentFiles, `add(FileName='${file.name}')`, false).postCore({
             body: file.content,
         })), Promise.resolve());
+    }
+
+    /**
+     * Delete multiple attachments from the collection. Not supported for batching.
+     *
+     * @files name The collection of files to delete
+     */
+    public deleteMultiple(...files: string[]): Promise<void> {
+        return files.reduce((chain, file) => chain.then(() => this.getByName(file).delete()), Promise.resolve());
     }
 }
 
@@ -74,8 +83,7 @@ export class AttachmentFile extends SharePointQueryableInstance {
      *
      */
     public getText(): Promise<string> {
-
-        return this.clone(AttachmentFile, "$value", false).get(new TextFileParser());
+        return this.getParsed(new TextParser());
     }
 
     /**
@@ -83,24 +91,21 @@ export class AttachmentFile extends SharePointQueryableInstance {
      *
      */
     public getBlob(): Promise<Blob> {
-
-        return this.clone(AttachmentFile, "$value", false).get(new BlobFileParser());
+        return this.getParsed(new BlobParser());
     }
 
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     public getBuffer(): Promise<ArrayBuffer> {
-
-        return this.clone(AttachmentFile, "$value", false).get(new BufferFileParser());
+        return this.getParsed(new BufferParser());
     }
 
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     public getJSON(): Promise<any> {
-
-        return this.clone(AttachmentFile, "$value", false).get(new JSONFileParser());
+        return this.getParsed(new JSONParser());
     }
 
     /**
@@ -130,6 +135,10 @@ export class AttachmentFile extends SharePointQueryableInstance {
                 "X-HTTP-Method": "DELETE",
             },
         });
+    }
+
+    private getParsed<T>(parser: ODataParser<T>): Promise<T> {
+        return this.clone(AttachmentFile, "$value", false).get(parser);
     }
 }
 

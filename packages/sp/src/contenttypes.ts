@@ -1,5 +1,4 @@
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
+import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 
 /**
@@ -37,7 +36,7 @@ export class ContentTypes extends SharePointQueryableCollection {
             "contentTypeId": contentTypeId,
         });
 
-        return this.clone(ContentTypes, "addAvailableContentType").postAsCore<{ id: string }>({ body: postBody }).then((data) => {
+        return this.clone(ContentTypes, "addAvailableContentType").postCore<{ id: string }>({ body: postBody }).then((data) => {
             return {
                 contentType: this.getById(data.id),
                 data: data,

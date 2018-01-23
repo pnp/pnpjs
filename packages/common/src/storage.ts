@@ -249,7 +249,7 @@ class MemoryStorage {
     constructor(private _store = new Dictionary<string>()) { }
 
     public get length(): number {
-        return this._store.count();
+        return this._store.count;
     }
 
     public clear(): void {

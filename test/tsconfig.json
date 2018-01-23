@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": "../",
+        "outDir": "../testing/",
+        "declaration": false,
+        "types": [
+            "chai",
+            "chai-as-promised",
+            "node",
+            "mocha",
+            "sharepoint"
+        ],
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "paths": {
+            "@pnp/*": [
+                "../packages/*"
+            ]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "importHelpers": true
+    },
+    "include": [
+        "./main.ts",
+        "../packages/**/*.ts"
+    ]
+}

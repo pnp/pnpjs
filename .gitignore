@@ -19,16 +19,24 @@ coverage
 node_modules
 
 # generated folders/files
-build
-lib
+/build
+/dist
+/debugging
+/testing
 
 # Optional npm cache directory
 .npm
 
-# allow folks to add things to the debug folder, but don't include them in git
-debug/*
-!debug/debug.ts
-!debug/example.ts
+# allow folks to add things to the debug /launch and /serve folder, but don't include them in git
+debug/launch/*
+!debug/launch/main.ts
+!debug/launch/sp.ts
+!debug/launch/graph.ts
+!debug/launch/tsconfig.json
+
+debug/serve/*
+!debug/serve/main.ts
+!debug/serve/tsconfig.json
 
 # project settings
 settings.js
@@ -37,4 +45,8 @@ bower_components
 
 # need to include this for bower to work, but leave this ignored as PRs
 # with updates to dist will be disallowed
-dist/
+dist
+
+# by default we ignore docs as we don't want the generated files in the dev branch
+# we will manually update docs during the docs publish process to master
+/docs

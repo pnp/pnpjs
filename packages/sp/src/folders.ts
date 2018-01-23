@@ -1,8 +1,7 @@
+import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareable";
 import { Files } from "./files";
-import { TypedHash } from "../collections/collections";
-import { Util } from "../utils/util";
 import { spGetEntityUrl } from "./odata";
 import { Item } from "./items";
 

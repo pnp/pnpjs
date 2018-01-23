@@ -5,6 +5,10 @@ export {
 } from "./groups";
 
 export {
+    GraphBatch,
+} from "./batch";
+
+export {
     GraphQueryable,
     GraphQueryableCollection,
     GraphQueryableInstance,
@@ -16,3 +20,7 @@ export {
     GraphConfiguration,
     GraphConfigurationPart,
 } from "./config/graphlibconfig";
+
+export {
+    SPfxClient,
+} from "./net/spfxclient";

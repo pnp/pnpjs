@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/common",
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
+    },
+    "include": [
+        "./index.ts"
+    ]
+}

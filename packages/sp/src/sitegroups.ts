@@ -1,7 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteUsers } from "./siteusers";
-import { Util } from "../utils/util";
-import { TypedHash } from "../collections/collections";
+import { Util, TypedHash } from "@pnp/common";
 
 /**
  * Principal Type enum

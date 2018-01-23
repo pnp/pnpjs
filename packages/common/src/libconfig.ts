@@ -34,30 +34,25 @@ export interface LibraryConfiguration {
     spfxContext?: any;
 }
 
-export class CommonRuntimeConfigKeys {
-    public static readonly defaultCachingStore = "defaultCachingStore";
-    public static readonly defaultCachingTimeoutSeconds = "defaultCachingTimeoutSeconds";
-    public static readonly globalCacheDisable = "globalCacheDisable";
-    public static readonly enableCacheExpiration = "enableCacheExpiration";
-    public static readonly cacheExpirationIntervalMilliseconds = "cacheExpirationIntervalMilliseconds";
-    public static readonly spfxContext = "spfxContext";
+export function setup(config: LibraryConfiguration): void {
+    RuntimeConfig.extend(config);
 }
 
 export class RuntimeConfigImpl {
 
-    private _values: Dictionary<any>;
+    private _v: Dictionary<any>;
 
     constructor() {
 
-        this._values = new Dictionary();
+        this._v = new Dictionary();
 
         // setup defaults
-        this._values.add(CommonRuntimeConfigKeys.defaultCachingStore, "session");
-        this._values.add(CommonRuntimeConfigKeys.defaultCachingTimeoutSeconds, 60);
-        this._values.add(CommonRuntimeConfigKeys.globalCacheDisable, false);
-        this._values.add(CommonRuntimeConfigKeys.enableCacheExpiration, false);
-        this._values.add(CommonRuntimeConfigKeys.cacheExpirationIntervalMilliseconds, 750);
-        this._values.add(CommonRuntimeConfigKeys.spfxContext, null);
+        this._v.add("defaultCachingStore", "session");
+        this._v.add("defaultCachingTimeoutSeconds", 60);
+        this._v.add("globalCacheDisable", false);
+        this._v.add("enableCacheExpiration", false);
+        this._v.add("cacheExpirationIntervalMilliseconds", 750);
+        this._v.add("spfxContext", null);
     }
 
     /**
@@ -67,36 +62,36 @@ export class RuntimeConfigImpl {
     public extend(config: TypedHash<any>): void {
 
         Object.keys(config).forEach((key: string) => {
-            this._values.add(key, config[key]);
+            this._v.add(key, config[key]);
         });
     }
 
     public get(key: string): any {
-        return this._values.get(key);
+        return this._v.get(key);
     }
 
     public get defaultCachingStore(): "session" | "local" {
-        return this.get(CommonRuntimeConfigKeys.defaultCachingStore);
+        return this.get("defaultCachingStore");
     }
 
     public get defaultCachingTimeoutSeconds(): number {
-        return this.get(CommonRuntimeConfigKeys.defaultCachingTimeoutSeconds);
+        return this.get("defaultCachingTimeoutSeconds");
     }
 
     public get globalCacheDisable(): boolean {
-        return this.get(CommonRuntimeConfigKeys.globalCacheDisable);
+        return this.get("globalCacheDisable");
     }
 
     public get enableCacheExpiration(): boolean {
-        return this.get(CommonRuntimeConfigKeys.enableCacheExpiration);
+        return this.get("enableCacheExpiration");
     }
 
     public get cacheExpirationIntervalMilliseconds(): number {
-        return this.get(CommonRuntimeConfigKeys.cacheExpirationIntervalMilliseconds);
+        return this.get("cacheExpirationIntervalMilliseconds");
     }
 
     public get spfxContext(): ISPFXContext {
-        return this.get(CommonRuntimeConfigKeys.spfxContext);
+        return this.get("spfxContext");
     }
 }
 

@@ -1,15 +1,10 @@
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Util } from "../utils/util";
-import { Dictionary } from "../collections/collections";
+import { Util, Dictionary } from "@pnp/common";
 
 /**
  * Allows for the fluent construction of search queries
  */
 export class SearchQueryBuilder {
-
-    public static create(queryText = "", queryTemplate: SearchQuery = {}): SearchQueryBuilder {
-        return new SearchQueryBuilder(queryText, queryTemplate);
-    }
 
     constructor(queryText = "", private _query = {}) {
 
@@ -17,6 +12,10 @@ export class SearchQueryBuilder {
 
             this.extendQuery({ Querytext: queryText });
         }
+    }
+
+    public static create(queryText = "", queryTemplate: SearchQuery = {}): SearchQueryBuilder {
+        return new SearchQueryBuilder(queryText, queryTemplate);
     }
 
     public text(queryText: string): this {

@@ -1,5 +1,5 @@
 // reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
-import { TypedHash } from "../collections/collections";
+import { TypedHash } from "@pnp/common";
 
 /**
  * Represents the unique sequential location of a change within the change log.
@@ -1387,4 +1387,42 @@ export interface WikiPageCreationInformation {
      * The wiki content to be set in the wiki page.
      */
     WikiHtmlContent: string;
+}
+
+export enum RenderListDataOptions {
+    None = 0,
+    ContextInfo = 1,
+    ListData = 2,
+    ListSchema = 4,
+    MenuView = 8,
+}
+
+export interface RenderListDataParameters {
+    ViewXml?: string;
+    Paging?: string;
+    FolderServerRelativeUrl?: string;
+    RenderOptions?: RenderListDataOptions;
+}
+
+export interface MenuNode {
+    CustomProperties: any[];
+    FriendlyUrlSegment: string;
+    IsDeleted: boolean;
+    IsHidden: boolean;
+    Key: string;
+    Nodes: MenuNode[];
+    NodeType: number;
+    SimpleUrl: string;
+    Title: string;
+}
+
+export interface MenuNodeCollection {
+    FriendlyUrlPrefix: string;
+    Nodes: MenuNode[];
+    SimpleUrl: string;
+    SPSitePrefix: string;
+    SPWebPrefix: string;
+    StartingNodeKey: string;
+    StartingNodeTitle: string;
+    Version: Date;
 }

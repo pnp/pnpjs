@@ -1,23 +1,24 @@
+import { Util, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
-import { Lists } from "./lists";
+import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
+import { Folders, Folder } from "./folders";
+import { Lists, List } from "./lists";
 import { Fields } from "./fields";
 import { Navigation } from "./navigation";
 import { SiteGroups, SiteGroup } from "./sitegroups";
 import { ContentTypes } from "./contenttypes";
-import { Folders, Folder } from "./folders";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
-import { TypedHash } from "../collections/collections";
-import { Util, extractWebUrl } from "../utils/util";
+import { extractWebUrl } from "./utils/extractweburl";
 import { ChangeQuery } from "./types";
-import { List } from "./lists";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
-import { ODataBatch } from "./batch";
+import { SPBatch } from "./batch";
 import { Features } from "./features";
-import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
+import { AppCatalog } from "./appcatalog";
+import { RegionalSettings } from "./regionalsettings";
 
 /**
  * Describes a collection of webs
@@ -63,9 +64,9 @@ export class Webs extends SharePointQueryableCollection {
 
         const postBody = JSON.stringify({
             "parameters":
-            Util.extend({
-                "__metadata": { "type": "SP.WebCreationInformation" },
-            }, props),
+                Util.extend({
+                    "__metadata": { "type": "SP.WebCreationInformation" },
+                }, props),
         });
 
         return this.clone(Webs, "add").postCore({ body: postBody }).then((data) => {
@@ -100,6 +101,15 @@ export class WebInfos extends SharePointQueryableCollection {
 export class Web extends SharePointQueryableShareableWeb {
 
     /**
+     * Creates a new instance of the Web class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
+     */
+    constructor(baseUrl: string | SharePointQueryable, path = "_api/web") {
+        super(baseUrl, path);
+    }
+
+    /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
      * segment. If this is not found the method creates a new web with the entire string as
      * supplied.
@@ -111,20 +121,28 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
-     * Creates a new instance of the Web class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/web") {
-        super(baseUrl, path);
-    }
-
-    /**
      * Gets this web's subwebs
      *
      */
     public get webs(): Webs {
         return new Webs(this);
+    }
+
+    /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): Webs {
+        return this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+    }
+
+    /**
+     * Allows access to the web's all properties collection
+     */
+    public get allProperties(): SharePointQueryableCollection {
+        return this.clone(SharePointQueryableCollection, "allproperties");
     }
 
     /**
@@ -200,6 +218,22 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+     * Gets site user info list
+     *
+     */
+    public get siteUserInfoList(): List {
+        return new List(this, "siteuserinfolist");
+    }
+
+    /**
+     * Gets regional settings
+     *
+     */
+    public get regionalSettings(): RegionalSettings {
+        return new RegionalSettings(this);
+    }
+
+    /**
      * Gets the current user
      */
     public get currentUser(): CurrentUser {
@@ -242,8 +276,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * Creates a new batch for requests within the context of this web
      *
      */
-    public createBatch(): ODataBatch {
-        return new ODataBatch(this.parentUrl);
+    public createBatch(): SPBatch {
+        return new SPBatch(this.parentUrl);
     }
 
     /**
@@ -447,6 +481,24 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
         return this.clone(Web, `maptoicon(filename='${filename}', progid='${progId}', size=${size})`).get();
+    }
+
+    /**
+     * Returns the tenant property corresponding to the specified key in the app catalog site
+     * 
+     * @param key 
+     */
+    public getStorageEntity(key: string): Promise<string> {
+        return this.clone(Web, `getStorageEntity('${key}')`).get();
+    }
+
+    /**
+     * Gets the app catalog for this web
+     * 
+     * @param url Optional url or web containing the app catalog (default: current web)
+     */
+    public getAppCatalog(url?: string | Web) {
+        return new AppCatalog(url || this);
     }
 }
 

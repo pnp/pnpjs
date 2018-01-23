@@ -1,6 +1,7 @@
 import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
-import { GraphHttpClientImpl } from "../net/graphclient";
-import { NoGraphClientAvailableException } from "../exceptions";
+import { GraphHttpClientImpl } from "../net/graphhttpclient";
+import { SPfxClient } from "../net/spfxclient";
+import { Logger, LogLevel } from "@pnp/logging";
 
 export interface GraphConfigurationPart {
     graph?: {
@@ -22,12 +23,21 @@ export function setup(config: GraphConfiguration): void {
     RuntimeConfig.extend(config);
 }
 
+export class NoGraphClientAvailableException extends Error {
+
+    constructor(msg = "There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.") {
+        super(msg);
+        this.name = "NoGraphClientAvailableException";
+        Logger.log({ data: null, level: LogLevel.Error, message: this.message });
+    }
+}
+
 export class GraphRuntimeConfigImpl {
 
     public get headers(): TypedHash<string> {
 
         const graphPart = RuntimeConfig.get("graph");
-        if (typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
+        if (graphPart !== null && typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
             return graphPart.headers;
         }
 
@@ -44,7 +54,7 @@ export class GraphRuntimeConfigImpl {
 
         // then try and use spfx context if available
         if (typeof RuntimeConfig.spfxContext !== "undefined") {
-            return () => RuntimeConfig.spfxContext.graphHttpClient;
+            return () => new SPfxClient(RuntimeConfig.spfxContext.graphHttpClient);
         }
 
         throw new NoGraphClientAvailableException();

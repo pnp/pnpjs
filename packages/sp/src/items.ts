@@ -3,10 +3,9 @@ import { SharePointQueryableShareableItem } from "./sharepointqueryableshareable
 import { Folder } from "./folders";
 import { File } from "./files";
 import { ContentType } from "./contenttypes";
-import { TypedHash } from "../collections/collections";
-import { Util } from "../utils/util";
+import { Util, TypedHash } from "@pnp/common";
 import { ListItemFormUpdateValue } from "./types";
-import { ODataParserBase } from "../odata/core";
+import { ODataParserBase } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 
@@ -37,6 +36,16 @@ export class Items extends SharePointQueryableCollection {
     }
 
     /**
+     * Gets BCS Item by string id
+     *
+     * @param stringId The string id of the BCS item to retrieve
+     */
+    public getItemByStringId(stringId: string): Item {
+        // creates an item with the parent list path and append out method call
+        return new Item(this.parentUrl, `getItemByStringId('${stringId}')`);
+    }
+
+    /**
      * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
      *
      * @param skip The starting id where the page should start, use with top to specify pages
@@ -51,7 +60,7 @@ export class Items extends SharePointQueryableCollection {
      *
      */
     public getPaged(): Promise<PagedItemCollection<any>> {
-        return this.getAs(new PagedItemCollectionParser());
+        return this.get(new PagedItemCollectionParser());
     }
 
     //
@@ -60,6 +69,7 @@ export class Items extends SharePointQueryableCollection {
      * Adds a new item to the collection
      *
      * @param properties The new items's properties
+     * @param listItemEntityTypeFullName The type name of the list's entities
      */
     public add(properties: TypedHash<any> = {}, listItemEntityTypeFullName: string = null): Promise<ItemAddResult> {
 
@@ -71,7 +81,7 @@ export class Items extends SharePointQueryableCollection {
                 "__metadata": { "type": listItemEntityType },
             }, properties));
 
-            const promise = this.clone(Items, null).postAsCore<{ Id: number }>({ body: postBody }).then((data) => {
+            const promise = this.clone(Items, null).postCore<{ Id: number }>({ body: postBody }).then((data) => {
                 return {
                     data: data,
                     item: this.getById(data.Id),
@@ -176,23 +186,29 @@ export class Item extends SharePointQueryableShareableItem {
     }
 
     /**
+     * Gets the collection of versions associated with this item
+     */
+    public get versions(): ItemVersions {
+        return new ItemVersions(this);
+    }
+
+    /**
      * Updates this list intance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
+     * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public update(properties: TypedHash<any>, eTag = "*"): Promise<ItemUpdateResult> {
+    public update(properties: TypedHash<any>, eTag = "*", listItemEntityTypeFullName: string = null): Promise<ItemUpdateResult> {
 
         return new Promise<ItemUpdateResult>((resolve, reject) => {
 
             const removeDependency = this.addBatchDependency();
 
-            const parentList = this.getParent(SharePointQueryableInstance, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
-
-            parentList.select("ListItemEntityTypeFullName").getAs<{ ListItemEntityTypeFullName: string }>().then((d) => {
+            return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(listItemEntityType => {
 
                 const postBody = JSON.stringify(Util.extend({
-                    "__metadata": { "type": d.ListItemEntityTypeFullName },
+                    "__metadata": { "type": listItemEntityType },
                 }, properties));
 
                 removeDependency();
@@ -265,6 +281,18 @@ export class Item extends SharePointQueryableShareableItem {
             body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
         });
     }
+
+    /**
+     * Ensures we have the proper list item entity type name, either from the value provided or from the list
+     *
+     * @param candidatelistItemEntityTypeFullName The potential type name
+     */
+    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
+
+        return candidatelistItemEntityTypeFullName ?
+            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            this.getParent(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/"))).getListItemEntityTypeFullName();
+    }
 }
 
 export interface ItemAddResult {
@@ -279,6 +307,54 @@ export interface ItemUpdateResult {
 
 export interface ItemUpdateResultData {
     "odata.etag": string;
+}
+
+/**
+ * Describes a collection of Version objects
+ *
+ */
+export class ItemVersions extends SharePointQueryableCollection {
+
+    /**
+     * Creates a new instance of the File class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     */
+    constructor(baseUrl: string | SharePointQueryable, path = "versions") {
+        super(baseUrl, path);
+    }
+
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
+     */
+    public getById(versionId: number): ItemVersion {
+        const v = new ItemVersion(this);
+        v.concat(`(${versionId})`);
+        return v;
+    }
+}
+
+
+/**
+ * Describes a single Version instance
+ *
+ */
+export class ItemVersion extends SharePointQueryableInstance {
+
+    /**
+    * Delete a specific version of a file.
+    *
+    * @param eTag Value used in the IF-Match header, by default "*"
+    */
+    public delete(): Promise<void> {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    }
 }
 
 /**

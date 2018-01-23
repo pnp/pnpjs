@@ -1,8 +1,7 @@
-import { Dictionary } from "../collections/collections";
-import { HttpClient } from "./httpclient";
-import { Util } from "../utils/util";
-import { ODataDefaultParser } from "../odata/parsers";
-import { RuntimeConfig } from "../configuration/pnplibconfig";
+import { SPHttpClient } from "./sphttpclient";
+import { Util, Dictionary } from "@pnp/common";
+import { ODataDefaultParser } from "@pnp/odata";
+import { SPRuntimeConfig } from "../config/splibconfig";
 
 export class CachedDigest {
     public expiration: Date;
@@ -14,7 +13,7 @@ const digests = new Dictionary<CachedDigest>();
 
 export class DigestCache {
 
-    constructor(private _httpClient: HttpClient, private _digests: Dictionary<CachedDigest> = digests) { }
+    constructor(private _httpClient: SPHttpClient, private _digests: Dictionary<CachedDigest> = digests) { }
 
     public getDigest(webUrl: string): Promise<string> {
 
@@ -36,7 +35,7 @@ export class DigestCache {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: Util.extend(headers, RuntimeConfig.spHeaders, true),
+            headers: Util.extend(headers, SPRuntimeConfig.headers, true),
             method: "POST",
         }).then((response) => {
             const parser = new ODataDefaultParser();

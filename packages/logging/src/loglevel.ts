@@ -1,8 +1,7 @@
 /**
  * A set of logging levels
- *
  */
-export enum LogLevel {
+export const enum LogLevel {
     Verbose = 0,
     Info = 1,
     Warning = 2,

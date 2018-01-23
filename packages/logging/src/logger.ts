@@ -10,6 +10,9 @@ export class Logger {
 
     private static _instance: LoggerImpl;
 
+    /**
+     * Gets or sets the active log level to apply for log filtering
+     */
     public static get activeLogLevel(): LogLevel {
         return Logger.instance.activeLogLevel;
     }
@@ -78,13 +81,12 @@ export class Logger {
     }
 
     /**
-     * Logs performance tracking data for the the execution duration of the supplied function using console.profile
-     *
-     * @param name The name of this profile boundary
-     * @param f The function to execute and track within this performance boundary
+     * Logs an error object to the subscribed listeners
+     * 
+     * @param err The error object
      */
-    public static measure<T>(name: string, f: () => T): T {
-        return Logger.instance.measure(name, f);
+    public static error(err: Error) {
+        Logger.instance.log({ data: err, level: LogLevel.Error, message: err.message });
     }
 }
 
@@ -111,19 +113,8 @@ class LoggerImpl {
     }
 
     public log(entry: LogEntry) {
-        if (typeof entry === "undefined" || entry.level < this.activeLogLevel) {
-            return;
-        }
-
-        this.subscribers.map(subscriber => subscriber.log(entry));
-    }
-
-    public measure<T>(name: string, f: () => T): T {
-        console.profile(name);
-        try {
-            return f();
-        } finally {
-            console.profileEnd();
+        if (typeof entry !== "undefined" && this.activeLogLevel <= entry.level) {
+            this.subscribers.map(subscriber => subscriber.log(entry));
         }
     }
 }

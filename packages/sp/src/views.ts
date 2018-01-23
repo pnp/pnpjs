@@ -1,6 +1,5 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { TypedHash } from "../collections/collections";
-import { Util } from "../utils/util";
+import { Util, TypedHash } from "@pnp/common";
 
 /**
  * Describes the views available in the current context
@@ -52,7 +51,7 @@ export class Views extends SharePointQueryableCollection {
             "__metadata": { "type": "SP.View" },
         }, additionalSettings));
 
-        return this.clone(Views, null).postAsCore<{ Id: string }>({ body: postBody }).then((data) => {
+        return this.clone(Views, null).postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
                 data: data,
                 view: this.getById(data.Id),

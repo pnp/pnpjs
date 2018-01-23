@@ -5,17 +5,33 @@ import {
     FetchOptions,
     ConfigOptions,
     mergeOptions,
- } from "@pnp/common";
+} from "@pnp/common";
+import { Logger } from "@pnp/logging";
 import { ODataParser } from "./core";
 import { ODataDefaultParser } from "./parsers";
 import { ICachingOptions } from "./caching";
+import { ODataBatch } from "./odatabatch";
 import {
     RequestContext,
-    PipelineMethods,
+    getDefaultPipeline,
     pipe,
 } from "./pipeline";
 
-export abstract class ODataQueryable {
+export class AlreadyInBatchException extends Error {
+
+    constructor(msg = "This query is already part of a batch.") {
+        super(msg);
+        this.name = "AlreadyInBatchException";
+        Logger.error(this);
+    }
+}
+
+export abstract class ODataQueryable<BatchType extends ODataBatch> {
+
+    /**
+     * Tracks the batch of which this query may be part
+     */
+    protected _batch: BatchType | null;
 
     /**
      * Additional options to be set before sending actual http request
@@ -45,7 +61,17 @@ export abstract class ODataQueryable {
     /**
      * Any options that were supplied when caching was enabled
      */
-    protected _cachingOptions: ICachingOptions;
+    protected _cachingOptions: ICachingOptions | null;
+
+    constructor() {
+        this._batch = null;
+        this._query = new Dictionary<string>();
+        this._options = {};
+        this._url = "";
+        this._parentUrl = "";
+        this._useCaching = false;
+        this._cachingOptions = null;
+    }
 
     /**
      * Directly concatonates the supplied string to the current url, not normalizing "/" chars
@@ -55,23 +81,6 @@ export abstract class ODataQueryable {
     public concat(pathPart: string): this {
         this._url += pathPart;
         return this;
-    }
-
-    /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
-    protected append(pathPart: string) {
-        this._url = Util.combinePaths(this._url, pathPart);
-    }
-
-    /**
-     * Gets the parent url used when creating this instance
-     *
-     */
-    protected get parentUrl(): string {
-        return this._parentUrl;
     }
 
     /**
@@ -108,7 +117,29 @@ export abstract class ODataQueryable {
     }
 
     /**
-     * Gets the currentl url, made absolute based on the availability of the _spPageContextInfo object
+     * Adds this query to the supplied batch
+     *
+     * @example
+     * ```
+     *
+     * let b = pnp.sp.createBatch();
+     * pnp.sp.web.inBatch(b).get().then(...);
+     * b.execute().then(...)
+     * ```
+     */
+    public inBatch(batch: BatchType): this {
+
+        if (this.batch !== null) {
+            throw new AlreadyInBatchException();
+        }
+
+        this._batch = batch;
+
+        return this;
+    }
+
+    /**
+     * Gets the currentl url
      *
      */
     public toUrl(): string {
@@ -127,28 +158,64 @@ export abstract class ODataQueryable {
      * @param parser Allows you to specify a parser to handle the result
      * @param getOptions The options used for this request
      */
-    public get(parser: ODataParser<any> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<any> {
-        return this.toRequestContext("GET", options, parser, PipelineMethods.default).then(context => pipe(context));
+    public get<T = any>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+        return this.toRequestContext("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
-    public getAs<T>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext("GET", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
-    protected postCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("POST", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
-    protected postAsCore<T>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("POST", options, parser, PipelineMethods.default).then(context => pipe(context));
+    protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
-    protected patchCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("PATCH", options, parser, PipelineMethods.default).then(context => pipe(context));
+    /**
+     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
+    */
+    protected addBatchDependency(): () => void {
+        if (this._batch !== null) {
+            return this._batch.addDependency();
+        }
+
+        return () => null;
     }
 
-    protected deleteCore(options: FetchOptions = {}, parser: ODataParser<any> = new ODataDefaultParser()): Promise<any> {
-        return this.toRequestContext("DELETE", options, parser, PipelineMethods.default).then(context => pipe(context));
+    /**
+     * Indicates if the current query has a batch associated
+     *
+     */
+    protected get hasBatch(): boolean {
+        return Util.objectDefinedNotNull(this._batch);
+    }
+
+    /**
+     * The batch currently associated with this query or null
+     *
+     */
+    protected get batch(): BatchType | null {
+        return this.hasBatch ? this._batch : null;
+    }
+
+    /**
+     * Appends the given string and normalizes "/" chars
+     *
+     * @param pathPart The string to append
+     */
+    protected append(pathPart: string) {
+        this._url = Util.combinePaths(this._url, pathPart);
+    }
+
+    /**
+     * Gets the parent url used when creating this instance
+     *
+     */
+    protected get parentUrl(): string {
+        return this._parentUrl;
     }
 
     /**
