@@ -1,6 +1,6 @@
 {
   "name": "@pnp/pnp",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "A JavaScript library for SharePoint development.",
   "main": "./lib/pnp.js",
   "typings": "./lib/pnp",
