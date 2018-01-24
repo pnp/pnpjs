@@ -1,8 +1,6 @@
 ![SharePoint Patterns and Practices Logo](https://devofficecdn.azureedge.net/media/Default/PnP/sppnp.png)
 
-The SharePoint Patterns and Practices client side libraries were created to help enable developers to do their best work, without worrying about the exact
-REST api details. Built with feedback from the community they represent a way to simplify your day-to-day dev cycle while relying on tested and proven
-patterns.
+PnPJS is a fluent JavaScript API for consuming SharePoint and Office 365 REST APIs in a type-safe way. You can use it with SharePoint Framework, Nodejs, or JavaScript projects. This an open source initiative complements existing SDKs provided by Microsoft offering developers another way to consume information from SharePoint and Office 365.
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) program*.
 
