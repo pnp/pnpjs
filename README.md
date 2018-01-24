@@ -12,7 +12,7 @@ Please see the [Getting Started guide](https://pnp.github.io/pnp/getting-started
 
 ## Documentation
 
-Please review the [documentation](https://pnp.github.io/pnp/) for the SharePoint Patterns and Practices Client Side libraries. This
+Please review the [documentation](https://pnp.github.io/pnp/) for the PnPJS libraries. This
 site is updated with each release. If cannot find what you need, please let us know by logging an [documentation request](https://github.com/pnp/pnp/issues).
 
 ## Packages

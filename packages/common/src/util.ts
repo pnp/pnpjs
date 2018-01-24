@@ -53,6 +53,8 @@ export function combinePaths(...paths: string[]): string {
 
 /**
  * Gets a random string of chars length
+ * 
+ * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
  *
  * @param chars The length of the random string to generate
  */
