@@ -26,7 +26,7 @@ export class AlreadyInBatchException extends Error {
     }
 }
 
-export abstract class ODataQueryable<BatchType extends ODataBatch> {
+export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any> {
 
     /**
      * Tracks the batch of which this query may be part
@@ -158,7 +158,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch> {
      * @param parser Allows you to specify a parser to handle the result
      * @param getOptions The options used for this request
      */
-    public get<T = any>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+    public get<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
         return this.toRequestContext("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 

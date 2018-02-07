@@ -32,11 +32,8 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
         paths = args.packages.map(p => `./testing/packages/${p}/**/*.js`);
     }
 
-    // determine if we show the full coverage table
-    // let reports = yargs["coverage-details"] ? ['text', 'text-summary'] : ['text-summary'];
-
     return gulp.src(paths)
-        .pipe(mocha({ ui: 'bdd', reporter: 'dot', timeout: 30000, "pnp-test-mode": "cmd" }))
+        .pipe(mocha({ ui: 'bdd', reporter: 'dot', timeout: 40000, "pnp-test-mode": "cmd" }))
         .pipe(istanbul.writeReports({
             reporters: ['text', 'text-summary']
         })).once('error', function () {

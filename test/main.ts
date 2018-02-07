@@ -8,6 +8,8 @@ import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import * as chaiAsPromised from "chai-as-promised";
 chai.use(chaiAsPromised);
 
+declare var process: any;
+
 export interface ISettingsTestingPart {
     enableWebTests: boolean;
     graph?: {
@@ -31,7 +33,7 @@ export interface ISettings {
 // we need to load up the appropriate settings based on where we are running
 let settings: ISettings = null;
 let mode = "cmd";
-process.argv.forEach(s => {
+process.argv.forEach((s: string) => {
     if (/^--pnp-test-mode/.test(s)) {
         mode = s.split("=")[1];
     }

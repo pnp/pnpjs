@@ -64,7 +64,7 @@ export class Items extends SharePointQueryableCollection {
         return this.get(new PagedItemCollectionParser());
     }
 
-/**
+    /**
      * Gets all the items in a list, regardless of count. Does not support batching or caching
      * 
      *  @param requestSize Number of items to return in each request (Default: 2000)
