@@ -32,7 +32,7 @@ describe("Client-side Page", () => {
 
                 // need to make the path relative
                 const rel = testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
-                const promise = ClientSidePage.fromFile(sp.web.getFileByServerRelativeUrl(Util.combinePaths(rel, "SitePages", pageFileName)));
+                const promise = ClientSidePage.fromFile(sp.web.getFileByServerRelativeUrl(Util.combinePaths("/", rel, "SitePages", pageFileName)));
                 return expect(promise).to.eventually.be.fulfilled;
             });
         });
@@ -49,7 +49,7 @@ describe("Client-side Page", () => {
             });
 
             it("Should update a pages content with an embed control", () => {
-                return sp.web.getClientSideWebParts().get().then(parts => {
+                return sp.web.getClientSideWebParts().then(parts => {
 
                     sp.web.addClientSidePage(`TestingAdd_${Util.getRandomString(4)}.aspx`).then(page => {
 
