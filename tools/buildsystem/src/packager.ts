@@ -1,9 +1,10 @@
 declare var require: (s: string) => any;
 const path = require("path");
+const colors = require("ansi-colors");
+const log = require("fancy-log");
+
 import { PackageContext } from "./tasks/package/context";
 import { PackageSchema } from "./tasks/package/schema";
-// you have to use require due to breaking changes within chalk
-const util = require("gulp-util");
 
 /**
  * Engine function to process build files
@@ -45,16 +46,16 @@ export function packager(config: PackageSchema): Promise<void> {
         const activePackagePipeline = pkg.packagePipeline || config.packagePipeline;
 
         // log we have added the file
-        util.log(`${util.colors.bgBlue(" ")} Adding ${util.colors.cyan(packageFile)} to the packaging pipeline.`);
+        log(`${colors.bgblue(" ")} Adding ${colors.cyan(packageFile)} to the packaging pipeline.`);
 
         return activePackagePipeline.reduce((subPipe, func) => subPipe.then(() => func(packageContext)), pipe).then(_ => {
 
-            util.log(`${util.colors.bgGreen(" ")} Packaged ${util.colors.cyan(packageFile)}.`);
+            log(`${colors.bggreen(" ")} Packaged ${colors.cyan(packageFile)}.`);
 
         }).catch(e => {
 
-            util.log(`${util.colors.bgRed(" ")} ${util.colors.bold.red(`Error packaging `)} ${util.colors.cyan.bold(packageFile)}.`);
-            util.log(`${util.colors.bgRed(" ")} ${util.colors.bold.red("Error:")} ${util.colors.bold.white(typeof e === "string" ? e : JSON.stringify(e))}`);
+            log(`${colors.bgred(" ")} ${colors.bold.red(`Error packaging `)} ${colors.cyan.bold(packageFile)}.`);
+            log(`${colors.bgred(" ")} ${colors.bold.red("Error:")} ${colors.bold.white(typeof e === "string" ? e : JSON.stringify(e))}`);
         });
 
     }, Promise.resolve());
