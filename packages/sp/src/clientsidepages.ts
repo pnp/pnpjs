@@ -81,6 +81,10 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
 
     const blocks: T[] = [];
 
+    if (typeof html === "undefined" || html === null) {
+        return blocks;
+    }
+
     // remove some extra whitespace if present
     const cleanedHtml = html.replace(/[\t\r\n]/g, "");
 

@@ -20,12 +20,14 @@ describe("Client-side Page", () => {
             });
         });
 
-        describe("load", () => {
+        describe("load", function () {
 
             const pageFileName = `TestingAdd_${Util.getRandomString(4)}.aspx`;
 
             before(done => {
-                sp.web.addClientSidePage(pageFileName).then(_ => done());
+                sp.web.addClientSidePage(pageFileName).then(_ => {
+                    done();
+                });
             });
 
             it("Should load from an existing file", () => {
