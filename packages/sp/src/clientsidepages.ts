@@ -293,47 +293,40 @@ export class ClientSidePage extends File {
         this.sections = [];
 
         // gather our controls from the supplied html
-        const rawControls = getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, markup => {
+        let counter = 0;
+        getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, markup => {
 
             // get the control type
             const ct = /controlType&quot;&#58;(\d*?),/i.exec(markup);
 
             // if no control type is present this is a column which we give type 0 to let us process it
-            const rawType = ct == null || ct.length < 2 ? "0" : ct[1];
+            const controlType = ct == null || ct.length < 2 ? 0 : parseInt(ct[1], 10);
 
-            return {
-                controlType: parseInt(rawType, 10),
-                markup: markup,
-            };
-        });
+            let control: CanvasControl = null;
 
-        let control: CanvasControl = null;
-
-        for (let i = 0; i < rawControls.length; i++) {
-
-            switch (rawControls[i].controlType) {
+            switch (controlType) {
                 case 0:
                     // empty canvas column
                     control = new CanvasColumn(null, 0);
-                    control.fromHtml(rawControls[i].markup);
+                    control.fromHtml(markup);
                     this.mergeColumnToTree(<CanvasColumn>control);
                     break;
                 case 3:
                     // client side webpart
                     control = new ClientSideWebpart("");
-                    control.order = i + 1;
-                    control.fromHtml(rawControls[i].markup);
+                    control.order = ++counter;
+                    control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
                 case 4:
                     // client side text
                     control = new ClientSideText();
-                    control.order = i + 1;
-                    control.fromHtml(rawControls[i].markup);
+                    control.order = ++counter;
+                    control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
             }
-        }
+        });
 
         return this;
     }
