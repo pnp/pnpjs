@@ -1,7 +1,7 @@
 # @pnp/sp/clientsidepages
 
 The ability to manage client-side pages is a capability introduced in version 1.0.2 of @pnp/sp. Through the methods described
-you can add and edite "modern" pages in SharePoint sites.
+you can add and edit "modern" pages in SharePoint sites.
 
 ## Add Client-side page
 
