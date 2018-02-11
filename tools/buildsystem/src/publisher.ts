@@ -33,7 +33,7 @@ export function publisher(config: PublishSchema): Promise<void> {
         const pkgObj = require(packageFile);
 
         // establish the context that will be passed through all the publish pipeline functions
-        const packageContext: PublishContext = {
+        const publishContext: PublishContext = {
             name: pkg.name,
             packageFolder: projectFolder,
             pkgObj: pkgObj,
@@ -45,13 +45,13 @@ export function publisher(config: PublishSchema): Promise<void> {
         // log we have added the file
         log(`${colors.bgblue(" ")} Adding ${colors.cyan(packageFile)} to the publishing pipeline.`);
 
-        return activePublishPipeline.reduce((subPipe, func) => subPipe.then(() => func(packageContext)), pipe).then(_ => {
+        return activePublishPipeline.reduce((subPipe, func) => subPipe.then(() => func(publishContext)), pipe).then(_ => {
 
             log(`${colors.bgGreen(" ")} Published ${colors.cyan(packageFile)}.`);
 
         }).catch(e => {
 
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error building `))} ${colors.bold(colors.cyan(buildContext.projectFile))}.`);
+            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error publishing `))} ${colors.bold(colors.cyan(publishContext.packageFolder))}.`);
             log(`${colors.bgred(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 

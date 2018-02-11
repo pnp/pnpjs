@@ -1,6 +1,5 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
+import { LibraryConfiguration, TypedHash, RuntimeConfig, SPfxClient } from "@pnp/common";
 import { GraphHttpClientImpl } from "../net/graphhttpclient";
-import { SPfxClient } from "../net/spfxclient";
 import { Logger, LogLevel } from "@pnp/logging";
 
 export interface GraphConfigurationPart {
