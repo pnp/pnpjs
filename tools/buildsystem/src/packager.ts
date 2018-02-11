@@ -54,8 +54,8 @@ export function packager(config: PackageSchema): Promise<void> {
 
         }).catch(e => {
 
-            log(`${colors.bgred(" ")} ${colors.bold.red(`Error packaging `)} ${colors.cyan.bold(packageFile)}.`);
-            log(`${colors.bgred(" ")} ${colors.bold.red("Error:")} ${colors.bold.white(typeof e === "string" ? e : JSON.stringify(e))}`);
+            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error building `))} ${colors.bold(colors.cyan(buildContext.projectFile))}.`);
+            log(`${colors.bgred(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 
     }, Promise.resolve());
