@@ -41,6 +41,7 @@ const config = {
             name: "sp",
             buildChain: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
         },
+        "teams",
         "nodejs",
         {
             name: "sp-addinhelpers",

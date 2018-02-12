@@ -2,6 +2,9 @@ export { graph, GraphRest } from "./rest";
 
 export {
     GroupAddResult,
+    GroupType,
+    Group,
+    Groups,
 } from "./groups";
 
 export {
@@ -22,3 +25,5 @@ export {
 } from "./config/graphlibconfig";
 
 export { SPfxClient } from "./net/spfxclient";
+
+export * from "./types";

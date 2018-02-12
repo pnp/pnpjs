@@ -6,6 +6,7 @@ import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./plans";
 import { Photo } from "./photos";
+import { GraphEndpoints } from "..";
 
 export enum GroupType {
     /**
@@ -151,6 +152,25 @@ export class Group extends GraphQueryableInstance {
     public addFavorite(): Promise<void> {
 
         return this.clone(Group, "addFavorite").postCore();
+    }
+
+    public createTeam(): Promise<any> {
+
+        return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).postCore({
+            body: JSON.stringify({
+                "funSettings": {
+                    "allowGiphy": true,
+                    "giphyContentRating": "strict",
+                },
+                "memberSettings": {
+                    "allowCreateUpdateChannels": true,
+                },
+                "messagingSettings": {
+                    "allowUserDeleteMessages": true,
+                    "allowUserEditMessages": true,
+                },
+            }),
+        });
     }
 
     /**

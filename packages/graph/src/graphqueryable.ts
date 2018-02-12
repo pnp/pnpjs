@@ -9,6 +9,7 @@ import {
 } from "@pnp/odata";
 import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
+import { GraphEndpoints } from "./types";
 
 
 export interface GraphQueryableConstructor<T> {
@@ -91,6 +92,12 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
         }
 
         return new factory(this, additionalPath);
+    }
+
+    protected setEndpoint(endpoint: string): this {
+
+        this._url = GraphEndpoints.ensure(this._url, endpoint);
+        return this;
     }
 
     /**

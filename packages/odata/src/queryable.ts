@@ -159,19 +159,19 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      * @param getOptions The options used for this request
      */
     public get<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.toRequestContext<T>("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.toRequestContext<T>("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.toRequestContext<T>("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     /**

@@ -1,9 +1,19 @@
 import { Logger, LogLevel } from "@pnp/logging";
 import { graph } from "@pnp/graph";
+import { AdalFetchClient } from "@pnp/nodejs";
 
 declare var process: { exit(code?: number): void };
 
-export function Example() {
+export function Example(settings: any) {
+
+    graph.setup({
+        graph: {
+            fetchClientFactory: () => {
+                return new AdalFetchClient(settings.testing.graph.tenant, settings.testing.graph.id, settings.testing.graph.secret);
+            },
+        },
+    });
+
 
     graph.v1.groups.get().then(g => {
 
