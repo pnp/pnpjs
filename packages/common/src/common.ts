@@ -7,4 +7,3 @@ export * from "./netutil";
 export * from "./spfxContextInterface";
 export * from "./storage";
 export * from "./util";
-export { SPfxClient } from "./net/spfxclient";
