@@ -47,7 +47,7 @@ export function publisher(config: PublishSchema): Promise<void> {
 
         return activePublishPipeline.reduce((subPipe, func) => subPipe.then(() => func(publishContext)), pipe).then(_ => {
 
-            log(`${colors.bgGreen(" ")} Published ${colors.cyan(packageFile)}.`);
+            log(`${colors.bggreen(" ")} Published ${colors.cyan(packageFile)}.`);
 
         }).catch(e => {
 
