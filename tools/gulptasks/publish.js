@@ -10,7 +10,7 @@ const gulp = require("gulp"),
     path = require("path"),
     cmdLine = require("./args").processConfigCmdLine,
     exec = require("child_process").execSync,
-    gutil = require("gulp-util");
+    log = require("fancy-log");
 
 
 // give outselves a single reference to the projectRoot
@@ -21,7 +21,7 @@ function chainCommands(commands) {
     return commands.reduce((chain, cmd) => chain.then(new Promise((resolve, reject) => {
 
         try {
-            gutil.log(cmd);
+            log(cmd);
             exec(cmd, { stdio: "inherit" });
             resolve();
         } catch (e) {

@@ -1,8 +1,9 @@
 declare var require: (s: string) => any;
-import { BuildContext } from "./context";
-import { exec } from "child_process";
-import { log } from "gulp-util";
 const path = require("path");
+const log = require("fancy-log");
+
+import { exec } from "child_process";
+import { BuildContext } from "./context";
 
 const tscPath = ".\\node_modules\\.bin\\tsc";
 

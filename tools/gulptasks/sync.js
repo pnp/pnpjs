@@ -6,7 +6,6 @@
 //* on file save, and open the default browser to the default html page. 
 //******************************************************************************
 const gulp = require("gulp"),
-    gutil = require("gulp-util"),
     config = require("./@configuration"),
     spsave = require("gulp-spsave");
 

@@ -1,5 +1,5 @@
 const gulp = require("gulp"),
-    util = require("gulp-util"),
+    replaceExt = require("replace-ext"),
     tap = require("gulp-tap"),
     pump = require("pump"),
     hljs = require("highlight.js"),
@@ -57,7 +57,7 @@ function mdToHtml(file, a, b, header, footer) {
     const img = new Buffer(`<img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/${telemetryPath}" alt="spacer" />`);
 
     file.contents = Buffer.concat([header, new Buffer(result), footer, img]);
-    file.path = util.replaceExtension(file.path, ".html");
+    file.path = replaceExt(file.path, ".html");
 }
 
 // remove the docs subpath for packages folders
@@ -87,7 +87,7 @@ function breadcumbReplacer() {
 
     return [`<a href="/pnp">@pnp</a>`]
         .concat(this.file.relative.split(/\\|\//).map((p, i, arr) => {
-            return `<a href="/pnp/${arr.slice(0, i + 1).join("/")}">${util.replaceExtension(p.replace(/-/g, " "), "")}</a>`;
+            return `<a href="/pnp/${arr.slice(0, i + 1).join("/")}">${replaceExt(p.replace(/-/g, " "), "")}</a>`;
         }))
         .join("&nbsp;&nbsp;&gt;&nbsp;&nbsp;");
 }

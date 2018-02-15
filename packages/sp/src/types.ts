@@ -1431,3 +1431,22 @@ export enum FieldUserSelectionMode {
     PeopleAndGroups = 1,
     PeopleOnly = 0,
 }
+
+export interface FieldCreationProperties extends TypedHash<string | number | boolean> {
+    DefaultFormula?: string;
+    Description?: string;
+    EnforceUniqueValues?: boolean;
+    FieldTypeKind?: number;
+    Group?: string;
+    Hidden?: boolean;
+    Indexed?: boolean;
+    Required?: boolean;
+    Title?: string;
+    ValidationFormula?: string;
+    ValidationMessage?: string;
+}
+
+export enum ChoiceFieldFormatType {
+    Dropdown,
+    RadioButtons,
+}

@@ -6,7 +6,10 @@ import { Web, sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import * as chaiAsPromised from "chai-as-promised";
+
 chai.use(chaiAsPromised);
+
+declare var process: any;
 
 export interface ISettingsTestingPart {
     enableWebTests: boolean;
@@ -31,9 +34,13 @@ export interface ISettings {
 // we need to load up the appropriate settings based on where we are running
 let settings: ISettings = null;
 let mode = "cmd";
-process.argv.forEach(s => {
+let site: string = null;
+process.argv.forEach((s: string) => {
     if (/^--pnp-test-mode/.test(s)) {
         mode = s.split("=")[1];
+    }
+    if (/^--pnp-test-site/.test(s)) {
+        site = s.split("=")[1];
     }
 });
 
@@ -82,6 +89,20 @@ switch (mode) {
 function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
     return new Promise((resolve, reject) => {
+
+        if (site && site.length > 0) {
+            // we have a site url provided, we'll use that
+            sp.setup({
+                sp: {
+                    fetchClientFactory: () => {
+                        return new SPFetchClient(site, ts.sp.id, ts.sp.secret);
+                    },
+                },
+            });
+
+            ts.sp.webUrl = site;
+            return resolve();
+        }
 
         sp.setup({
             sp: {

@@ -8,7 +8,8 @@
 const gulp = require("gulp"),
     del = require("del"),
     yargs = require("yargs").argv,
-    gutil = require("gulp-util");
+    log = require("fancy-log"),
+    colors = require("ansi-colors");
 
 gulp.task('clean', (done) => {
 
@@ -25,12 +26,12 @@ gulp.task('clean', (done) => {
         "./testing"
     ];
 
-    gutil.log(`${gutil.colors.bgBlue(" ")} Cleaning directories: ${directories.join(", ")}.`);
+    log(`${colors.bgblue(" ")} Cleaning directories: ${directories.join(", ")}.`);
     del(directories).then(() => {
-        gutil.log(`${gutil.colors.bgGreen(" ")} Cleaned directories: ${directories.join(", ")}.`);
+        log(`${colors.bggreen(" ")} Cleaned directories: ${directories.join(", ")}.`);
         done();
     }).catch(e => {
-        gutil.log(`${gutil.colors.bgRed(" ")} Error cleaned directories: ${directories.join(", ")}.`);
+        log(`${colors.bgred(" ")} Error cleaned directories: ${directories.join(", ")}.`);
         done(e);
     });
 });

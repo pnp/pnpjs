@@ -19,6 +19,7 @@ import { Features } from "./features";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
+import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
 
 /**
  * Describes a collection of webs
@@ -499,6 +500,24 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getAppCatalog(url?: string | Web) {
         return new AppCatalog(url || this);
+    }
+
+    /**
+     * Gets the collection of available client side web parts for this web instance
+     */
+    public getClientSideWebParts(): Promise<ClientSidePageComponent[]> {
+        return this.clone(SharePointQueryableCollection, "GetClientSideWebParts").get();
+    }
+
+    /**
+     * Creates a new client side page
+     * 
+     * @param pageName Name of the new page
+     * @param title Display title of the new page
+     * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
+     */
+    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<ClientSidePage> {
+        return ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
     }
 }
 

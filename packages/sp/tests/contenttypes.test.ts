@@ -4,8 +4,6 @@ import { sp } from "../";
 import { testSettings } from "../../../test/main";
 import { toMatchEndRegex } from "./utils";
 
-/* tslint:disable max-line-length */
-
 describe("ContentTypes", () => {
     it("Should be an object", () => {
         const contenttypes = new ContentTypes("_api/web/lists/getByTitle('Tasks')");

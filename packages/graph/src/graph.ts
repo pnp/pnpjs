@@ -21,6 +21,4 @@ export {
     GraphConfigurationPart,
 } from "./config/graphlibconfig";
 
-export {
-    SPfxClient,
-} from "./net/spfxclient";
+export { SPfxClient } from "./net/spfxclient";
