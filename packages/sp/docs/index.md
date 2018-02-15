@@ -97,6 +97,7 @@ sp.web.select("Title").get().then(w => {
 * [Alias Parameters](alias-parameters.md)
 * [ALM api](alm.md)
 * [Attachments](attachments.md)
+* [Client-side Pages](client-side-pages.md)
 * [Features](features.md)
 * [Fields](fields.md)
 * [Files](files.md)

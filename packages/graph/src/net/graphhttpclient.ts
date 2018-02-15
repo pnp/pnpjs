@@ -3,12 +3,13 @@ import {
     RequestClient,
     mergeHeaders,
     FetchOptions,
+    HttpClientImpl,
 } from "@pnp/common";
 import { GraphRuntimeConfig } from "../config/graphlibconfig";
 
 export class GraphHttpClient implements RequestClient {
 
-    private _impl: GraphHttpClientImpl;
+    private _impl: HttpClientImpl;
 
     constructor() {
 
@@ -39,7 +40,7 @@ export class GraphHttpClient implements RequestClient {
 
         const retry = (ctx: RetryContext): void => {
 
-            this._impl.fetch(url, {}, options).then((response) => ctx.resolve(response)).catch((response) => {
+            this._impl.fetch(url, options).then((response) => ctx.resolve(response)).catch((response) => {
 
                 // Check if request was throttled - http status code 429
                 // Check if request failed due to server unavailable - http status code 503
@@ -105,8 +106,4 @@ interface RetryContext {
     reject: (reason?: any) => void;
     resolve: (value?: Response | PromiseLike<Response>) => void;
     retryCount: number;
-}
-
-export interface GraphHttpClientImpl {
-    fetch(url: string, configuration: any, options: FetchOptions): Promise<Response>;
 }

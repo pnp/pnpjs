@@ -25,6 +25,43 @@ pnp.sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(
 });
 ```
 
+### Get All Items
+
+_Added in 1.0.2_
+
+Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
+be used.
+
+```TypeScript
+// basic usage
+pnp.sp.web.lists.getByTitle("BigList").items.getAll().then((allItems: any[]) => {
+
+    // how many did we get
+    console.log(allItems.length);
+});
+
+// set page size
+pnp.sp.web.lists.getByTitle("BigList").items.getAll(4000).then((allItems: any[]) => {
+
+    // how many did we get
+    console.log(allItems.length);
+});
+
+// use select and top. top will set page size and override the any value passed to getAll
+pnp.sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll().then((allItems: any[]) => {
+
+    // how many did we get
+    console.log(allItems.length);
+});
+
+// we can also use filter as a supported odata operation, but this will likely fail on large lists
+pnp.sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll().then((allItems: any[]) => {
+
+    // how many did we get
+    console.log(allItems.length);
+});
+```
+
 ### Retrieving Lookup Fields
 
 When working with lookup fields you need to use the expand operator along with select to get the related fields from the lookup column. This works for both the items collection and item instances.

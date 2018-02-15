@@ -1,7 +1,6 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig } from "@pnp/common";
-import { GraphHttpClientImpl } from "../net/graphhttpclient";
-import { SPfxClient } from "../net/spfxclient";
+import { LibraryConfiguration, TypedHash, RuntimeConfig, HttpClientImpl } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
+import { SPfxClient } from "../net/spfxclient";
 
 export interface GraphConfigurationPart {
     graph?: {
@@ -13,7 +12,7 @@ export interface GraphConfigurationPart {
         /**
          * Defines a factory method used to create fetch clients
          */
-        fetchClientFactory?: () => GraphHttpClientImpl;
+        fetchClientFactory?: () => HttpClientImpl;
     };
 }
 
@@ -44,7 +43,7 @@ export class GraphRuntimeConfigImpl {
         return {};
     }
 
-    public get fetchClientFactory(): () => GraphHttpClientImpl {
+    public get fetchClientFactory(): () => HttpClientImpl {
 
         const graphPart = RuntimeConfig.get("graph");
         // use a configured factory firt

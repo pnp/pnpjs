@@ -13,11 +13,12 @@ const projectRoot = path.resolve(__dirname, "../..");
 
 const gulp = require("gulp"),
     tsc = require("gulp-typescript"),
-    gutil = require("gulp-util"),
     webpack = require('webpack'),
     server = require("webpack-dev-server"),
     cmdLine = require("./args").processConfigCmdLine,
-    pkg = require(path.join(projectRoot, "package.json"));
+    pkg = require(path.join(projectRoot, "package.json")),
+    log = require("fancy-log"),
+    colors = require("ansi-colors");
 
 /**
  * handles mapping the @pnp paths to the local ./packages
@@ -64,7 +65,7 @@ gulp.task("serve", (done) => {
             throw new Error("You can only specify a single package when using serve.");
         }
 
-        gutil.log(`Serving package: ${args.packages[0]}`);
+        log(`Serving package: ${args.packages[0]}`);
 
         // update the entry point to be the package that was requested
         entry = `./packages/${args.packages[0]}/index.ts`;
@@ -142,6 +143,6 @@ gulp.task("serve", (done) => {
             throw new gutil.PluginError("serve", err);
         }
 
-        gutil.log("File will be served from:", gutil.colors.bgBlue.white("https://localhost:8080/assets/pnp.js"));
+        log("File will be served from:", colors.bgblue(colors.white("https://localhost:8080/assets/pnp.js")));
     });
 });

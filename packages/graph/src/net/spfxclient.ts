@@ -1,4 +1,4 @@
-import { FetchOptions, ISPFXGraphHttpClient, HttpClientImpl } from "@pnp/common";
+import { FetchOptions, HttpClientImpl, ISPFXGraphHttpClient } from "@pnp/common";
 
 export class SPfxClient implements HttpClientImpl {
     constructor(private _client: ISPFXGraphHttpClient, private _configuration: any = {}) { }

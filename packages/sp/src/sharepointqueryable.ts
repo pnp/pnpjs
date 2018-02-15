@@ -22,7 +22,7 @@ export interface SharePointQueryableConstructor<T> {
  * SharePointQueryable Base Class
  *
  */
-export class SharePointQueryable extends ODataQueryable<SPBatch> {
+export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
 
     /**
      * Creates a new instance of the SharePointQueryable class
@@ -187,7 +187,7 @@ export class SharePointQueryable extends ODataQueryable<SPBatch> {
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class SharePointQueryableCollection extends SharePointQueryable {
+export class SharePointQueryableCollection<GetType = any[]> extends SharePointQueryable<GetType> {
 
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)

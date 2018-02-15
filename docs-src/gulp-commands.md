@@ -146,3 +146,26 @@ You can test individual packages as needed, and there is no need to include depe
 # test the logging and sp packages
 gulp test --p logging,sp
 ```
+
+If you are working on a specific set of tests for a single module you can also use the single or s parameter to select just
+a single module of tests. You specify the filename without the ".test.ts" suffix. It must be within the specified package and
+this option can only be used with a single package for --p
+
+```
+# will test only the client-side pages module within the sp package
+gulp test --p sp --s clientsidepages
+```
+
+If you want you can test within the same site and avoid creating a new one, though for some tests this might cause conflicts.
+This flag can be helpful if you are rapidly testing things with no conflict as you can avoid creating a site each time. Works
+with both of the above options --p and --s as well as individually. The url must be absolute.
+
+```
+#testing using the specified site.
+gulp test --site https://{tenant}.sharepoint.com/sites/testing
+
+# with other options
+gulp test --p logging,sp --site https://{tenant}.sharepoint.com/sites/testing
+
+gulp test --p sp --s clientsidepages --site https://{tenant}.sharepoint.com/sites/testing
+```

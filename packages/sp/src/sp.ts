@@ -35,6 +35,8 @@ export {
     AttachmentFileInfo,
 } from "./attachmentfiles";
 
+export * from "./clientsidepages";
+
 export {
     SPConfiguration,
     SPConfigurationPart,
