@@ -2,7 +2,6 @@ declare var require: (s: string) => any;
 
 import { sp } from "@pnp/sp";
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import { graph } from "@pnp/graph";
 
 // setup the connection to SharePoint using the settings file, you can
@@ -12,23 +11,6 @@ import { graph } from "@pnp/graph";
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
 const settings = require("../../../settings.js");
-
-// configure your node options
-sp.setup({
-    sp: {
-        fetchClientFactory: () => {
-            return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret);
-        },
-    },
-});
-
-graph.setup({
-    graph: {
-        fetchClientFactory: () => {
-            return new AdalFetchClient(settings.testing.graph.tenant, settings.testing.graph.id, settings.testing.graph.secret);
-        },
-    },
-});
 
 // // setup console logger
 Logger.subscribe(new ConsoleListener());
@@ -43,7 +25,7 @@ Logger.activeLogLevel = LogLevel.Info;
 // will allow you to keep all your debugging files locally
 // comment out the example
 import { Example } from "./sp";
-Example();
+Example(settings);
 
 // you can also set break points inside the src folder to examine how things are working
 // within the library while debugging!
