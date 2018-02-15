@@ -1426,3 +1426,8 @@ export interface MenuNodeCollection {
     StartingNodeTitle: string;
     Version: Date;
 }
+
+export enum FieldUserSelectionMode {
+    PeopleAndGroups = 1,
+    PeopleOnly = 0,
+}
