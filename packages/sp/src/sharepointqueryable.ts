@@ -224,25 +224,15 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
     }
 
     /**
-     * Orders based on the supplied fields ascending
+     * Orders based on the supplied fields
      *
-     * @param orderby The name of the field to sort on
+     * @param orderby The name of the field on which to sort
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
     public orderBy(orderBy: string, ascending = true): this {
-        const keys = this._query.getKeys();
-        const query: string[] = [];
-        const asc = ascending ? " asc" : " desc";
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i] === "$orderby") {
-                query.push(this._query.get("$orderby"));
-                break;
-            }
-        }
-        query.push(`${orderBy}${asc}`);
-
+        const query = this._query.getKeys().filter(k => k === "$orderby").map(k => this._query.get(k));
+        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this._query.add("$orderby", query.join(","));
-
         return this;
     }
 
