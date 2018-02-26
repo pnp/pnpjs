@@ -132,6 +132,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      */
     protected clone<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
         let clone = new factory(this, additionalPath);
+        clone.configure(this._options);
         const target = this.query.get("@target");
         if (target !== null) {
             clone.query.add("@target", target);

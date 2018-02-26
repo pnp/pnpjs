@@ -8,7 +8,7 @@ describe("Custom options", () => {
     const mockFetch = new MockFetchClient();
     const headerName = "my-header";
     const headerValue = "my header value";
-    const headers = {};
+    const headers: any = {};
     headers[headerName] = headerValue;
     headers["X-RequestDigest"] = "test";
 
@@ -65,7 +65,7 @@ describe("Custom options", () => {
     });
 
     it("Should override header when setting headers on a web", () => {
-        const webHeaders = {};
+        const webHeaders: any = {};
         webHeaders[headerName] = "web's value";
         return sp.configure(headers).web.configure({
             headers: webHeaders,
@@ -77,7 +77,7 @@ describe("Custom options", () => {
     });
 
     it("Should add another header when setting headers on a web", () => {
-        const webHeaders = {};
+        const webHeaders: any = {};
         webHeaders["new-header"] = "web's value";
         return sp.configure(headers).web.configure({
             headers: webHeaders,
@@ -112,7 +112,7 @@ describe("Custom options", () => {
     });
 
     it("Should use different headers for requests", () => {
-        const webHeaders = {};
+        const webHeaders: any = {};
         webHeaders["new-header"] = "web's value";
         const sp2 = sp.configure({
             headers: headers,
@@ -164,5 +164,22 @@ describe("Custom options", () => {
                 expect(mode).to.equal("navigate");
                 expect(cache).to.equal("default");
             });
+    });
+
+    it("Should set options when using clone method", () => {
+        const webHeaders: any = {};
+        webHeaders[headerName] = "myvalue";
+        webHeaders["X-RequestDigest"] = "1234";
+
+        return sp.configure({
+            headers: webHeaders,
+        }).utility.sendEmail({
+            Body: "pnpjs",
+            Subject: "test mail",
+            To: ["some@mail.com"],
+        }).then(() => {
+            const header = mockFetch.options.headers.get(headerName);
+            expect(header).to.equal("myvalue");
+        });
     });
 });
