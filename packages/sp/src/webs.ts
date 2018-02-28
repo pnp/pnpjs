@@ -323,12 +323,35 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+     * Gets a folder by server relative relative path if your folder name contains # and % characters
+     * you need to first encode the file name using encodeURIComponent() and then pass the url
+     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123");    
+     * This works only in SharePoint online.
+     *
+     * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
+     */
+    public getFolderByServerRelativePath(folderRelativeUrl: string): Folder {
+        return new Folder(this, `getFolderByServerRelativePath(decodedUrl='${folderRelativeUrl}')`);
+    }
+
+    /**
      * Gets a file by server relative url
      *
      * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
      */
     public getFileByServerRelativeUrl(fileRelativeUrl: string): File {
         return new File(this, `getFileByServerRelativeUrl('${fileRelativeUrl}')`);
+    }
+
+    /**
+     * Gets a file by server relative url if your file name contains # and % characters
+     * you need to first encode the file name using encodeURIComponent() and then pass the url
+     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123.docx");
+     * 
+     * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
+     */
+    public getFileByServerRelativePath(fileRelativeUrl: string): File {
+        return new File(this, `getFileByServerRelativePath(decodedUrl='${fileRelativeUrl}')`);
     }
 
     /**

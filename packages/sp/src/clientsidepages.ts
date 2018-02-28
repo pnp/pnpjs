@@ -658,7 +658,7 @@ export class ClientSideWebpart extends CanvasControl {
     }
 
     public import(component: ClientSidePageComponent): void {
-        this.webPartId = component.Id;
+        this.webPartId = component.Id.replace(/^\{|\}$/g, "");
         const manifest: ClientSidePageComponentManifest = JSON.parse(component.Manifest);
         this.title = manifest.preconfiguredEntries[0].title.default;
         this.description = manifest.preconfiguredEntries[0].description.default;

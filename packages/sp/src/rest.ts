@@ -6,7 +6,9 @@ import { ConfigOptions } from "@pnp/common";
 import { UserProfileQuery } from "./userprofiles";
 import { INavigationService, NavigationService } from "./navigation";
 import { SPBatch } from "./batch";
+import { SocialQuery, SocialMethods } from "./social";
 import { UtilityMethod, UtilityMethods } from "./utilities";
+import { SharePointQueryableConstructor, SharePointQueryable } from "./sharepointqueryable";
 import {
     setup as _setup,
     SPConfiguration,
@@ -60,7 +62,7 @@ export class SPRest {
             finalQuery = query;
         }
 
-        return new SearchSuggest(this._baseUrl).configure(this._options).execute(finalQuery);
+        return this.create(SearchSuggest).execute(finalQuery);
     }
 
     /**
@@ -80,7 +82,7 @@ export class SPRest {
             finalQuery = query;
         }
 
-        return new Search(this._baseUrl).configure(this._options).execute(finalQuery);
+        return this.create(Search).execute(finalQuery);
     }
 
     /**
@@ -88,7 +90,7 @@ export class SPRest {
      *
      */
     public get site(): Site {
-        return new Site(this._baseUrl).configure(this._options);
+        return this.create(Site);
     }
 
     /**
@@ -96,7 +98,7 @@ export class SPRest {
      *
      */
     public get web(): Web {
-        return new Web(this._baseUrl).configure(this._options);
+        return this.create(Web);
     }
 
     /**
@@ -104,7 +106,14 @@ export class SPRest {
      *
      */
     public get profiles(): UserProfileQuery {
-        return new UserProfileQuery(this._baseUrl).configure(this._options);
+        return this.create(UserProfileQuery);
+    }
+
+    /**
+     * Access to social methods
+     */
+    public get social(): SocialMethods {
+        return this.create(SocialQuery);
     }
 
     /**
@@ -126,7 +135,17 @@ export class SPRest {
      * Static utilities methods from SP.Utilities.Utility
      */
     public get utility(): UtilityMethods {
-        return new UtilityMethod(this._baseUrl, "").configure(this._options);
+        return this.create(UtilityMethod, "");
+    }
+
+    /**
+     * Handles creating and configuring the objects returned from this class
+     * 
+     * @param fm The factory method used to create the instance
+     * @param path Optional additional path information to pass to the factory method
+     */
+    private create<T extends SharePointQueryable>(fm: SharePointQueryableConstructor<T>, path?: string): T {
+        return new fm(this._baseUrl, path).configure(this._options);
     }
 }
 

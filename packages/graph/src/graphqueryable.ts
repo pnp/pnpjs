@@ -85,12 +85,15 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
      */
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
 
-        // TODO:: include batching info in clone
-        if (includeBatch) {
-            return new factory(this, additionalPath);
-        }
+        const clone = new factory(this, additionalPath);
+        clone.configure(this._options);
 
-        return new factory(this, additionalPath);
+        // TODO:: include batching info in clone
+        // if (includeBatch) {
+        //     clone = clone.inBatch(this._batch);
+        // }
+
+        return clone;
     }
 
     /**
@@ -165,25 +168,15 @@ export class GraphQueryableCollection extends GraphQueryable {
     }
 
     /**
-     * Orders based on the supplied fields ascending
+     * Orders based on the supplied fields
      *
-     * @param orderby The name of the field to sort on
+     * @param orderby The name of the field on which to sort
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
     public orderBy(orderBy: string, ascending = true): this {
-        const keys = this._query.getKeys();
-        const query: string[] = [];
-        const asc = ascending ? " asc" : " desc";
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i] === "$orderby") {
-                query.push(this._query.get("$orderby"));
-                break;
-            }
-        }
-        query.push(`${orderBy}${asc}`);
-
+        const query = this._query.getKeys().filter(k => k === "$orderby").map(k => this._query.get(k));
+        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this._query.add("$orderby", query.join(","));
-
         return this;
     }
 
