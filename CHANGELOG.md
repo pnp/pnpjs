@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- @pnp/sp: Support for backwards navigation in item paging skip method
+- @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API
+- @pnp/sp: Added support for social follow API (_api/social.following)
+
+### Fixed
+- @pnp/sp: Fixed issue with File.setContentChunked and Files.addChunked in odata=verbose mode
+- @pnp/sp: Fixed issue clone and configure
+- @pnp/graph: Fixed issue clone and configure
+- @pnp/sp: Fixed issue with adding client-side webparts with ids with {} chars [PR](#1)
+
 
 ## 1.0.2 - 2018-02-15
 
