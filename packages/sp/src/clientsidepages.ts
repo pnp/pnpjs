@@ -37,13 +37,12 @@ export type CanvasColumnFactorType = 0 | 2 | 4 | 6 | 8 | 12;
  * @param collection Collection of orderable things
  */
 function getNextOrder(collection: { order: number }[]): number {
-    let order = 1;
-    for (let i = 0; i < collection.length; i++) {
-        if (collection[i].order > order) {
-            order = collection[i].order + 1;
-        }
+
+    if (collection.length < 1) {
+        return 1;
     }
-    return order;
+
+    return Math.max.apply(null, collection.map(i => i.order)) + 1;
 }
 
 /**
@@ -88,7 +87,7 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
     // remove some extra whitespace if present
     const cleanedHtml = html.replace(/[\t\r\n]/g, "");
 
-    // find the first control div
+    // find the first div
     let startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern);
 
     if (startIndex < 0) {
@@ -154,6 +153,23 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
     }
 
     return blocks;
+}
+
+/**
+ * Normalizes the order value for all the sections, columns, and controls to be 1 based and stepped (1, 2, 3...)
+ * 
+ * @param collection The collection to normalize
+ */
+function reindex(collection: { order: number, columns?: { order: number }[], controls?: { order: number }[] }[]): void {
+
+    for (let i = 0; i < collection.length; i++) {
+        collection[i].order = i + 1;
+        if (collection[i].hasOwnProperty("columns")) {
+            reindex(collection[i].columns);
+        } else if (collection[i].hasOwnProperty("controls")) {
+            reindex(collection[i].controls);
+        }
+    }
 }
 
 /**
@@ -268,6 +284,9 @@ export class ClientSidePage extends File {
      * Converts this page's content to html markup
      */
     public toHtml(): string {
+
+        // trigger reindex of the entire tree
+        reindex(this.sections);
 
         const html: string[] = [];
 
@@ -564,6 +583,7 @@ export class CanvasColumn extends CanvasControl {
 
     public getControlData(): ClientSideControlData {
         return {
+            displayMode: 2,
             position: {
                 sectionFactor: this.factor,
                 sectionIndex: this.order,
