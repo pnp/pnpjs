@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Fixed issue clone and configure [PR](https://github.com/pnp/pnp/pull/16)
 - @pnp/graph: Fixed issue clone and configure [PR](https://github.com/pnp/pnp/pull/16)
 - @pnp/sp: Fixed issue with adding client-side webparts with ids with {} chars [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Fixed issue with adding client-side webparts and setting order values [PR](https://github.com/pnp/pnp/pull/17)
 
 
 ## 1.0.2 - 2018-02-15
