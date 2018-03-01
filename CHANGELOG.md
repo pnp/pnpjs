@@ -7,28 +7,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- @pnp/sp: Support for backwards navigation in item paging skip method
-- @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API
-- @pnp/sp: Added support for social follow API (_api/social.following)
+- @pnp/sp: Support for backwards navigation in item paging skip method [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Added support for social follow API (_api/social.following) [PR](https://github.com/pnp/pnp/pull/16) [Docs](./packages/sp/docs/social.md)
 
 ### Fixed
-- @pnp/sp: Fixed issue with File.setContentChunked and Files.addChunked in odata=verbose mode
-- @pnp/sp: Fixed issue clone and configure
-- @pnp/graph: Fixed issue clone and configure
-- @pnp/sp: Fixed issue with adding client-side webparts with ids with {} chars [PR](#1)
+- @pnp/sp: Fixed issue with File.setContentChunked and Files.addChunked in odata=verbose mode [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Fixed issue clone and configure [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/graph: Fixed issue clone and configure [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Fixed issue with adding client-side webparts with ids with {} chars [PR](https://github.com/pnp/pnp/pull/16)
+- @pnp/sp: Fixed issue with adding client-side webparts and setting order values [PR](https://github.com/pnp/pnp/pull/17)
 
 
 ## 1.0.2 - 2018-02-15
 
 ### Added
-- @pnp/sp: Support for managing client-side pages
-- @pnp/sp: getAll method on Items collection
-- @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection
-- @pnp/sp: getClientSideWebParts method on Web
-- tooling: updates to test gulp task to support --s and --site parameters
+- @pnp/sp: Support for managing client-side pages [PR](https://github.com/pnp/pnp/pull/7)
+- @pnp/sp: getAll method on Items collection [PR](https://github.com/pnp/pnp/pull/4)
+- @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection [PR](https://github.com/pnp/pnp/pull/4)
+- @pnp/sp: getClientSideWebParts method on Web [PR](https://github.com/pnp/pnp/pull/7)
+- tooling: updates to test gulp task to support --s and --site parameters [PR](https://github.com/pnp/pnp/pull/7)
 
 ### Changed
-- Removed gulp-util in favor of individual libraries per guidance
+- Removed gulp-util in favor of individual libraries per guidance [PR](https://github.com/pnp/pnp/pull/7)
 
 ## 1.0.1 - 2018-01-22
 
