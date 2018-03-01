@@ -1,7 +1,6 @@
 import {
     SharePointQueryable,
     SharePointQueryableInstance,
-    SharePointQueryableCollection,
 } from "./sharepointqueryable";
 
 import { Util } from "@pnp/common";

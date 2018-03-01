@@ -226,7 +226,7 @@ export class ClientSidePage extends File {
                             PageLayoutType: pageLayoutType,
                             PromotedState: PromotedState.NotPromoted,
                             Title: title,
-                        }).then((iar: ItemUpdateResult) => new ClientSidePage(iar.item.file));
+                        }).then((iar: ItemUpdateResult) => new ClientSidePage(iar.item.file, (<any>iar.item).CommentsDisabled));
                     });
                 });
             });

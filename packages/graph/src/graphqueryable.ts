@@ -85,13 +85,13 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
      */
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
 
-        const clone = new factory(this, additionalPath);
+        let clone = new factory(this, additionalPath);
         clone.configure(this._options);
 
         // TODO:: include batching info in clone
-        // if (includeBatch) {
-        //     clone = clone.inBatch(this._batch);
-        // }
+        if (includeBatch) {
+            clone = clone.inBatch(this._batch);
+        }
 
         return clone;
     }

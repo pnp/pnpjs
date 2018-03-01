@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Support for backwards navigation in item paging skip method [[PR](https://github.com/pnp/pnp/pull/16)]
 - @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API [[PR](https://github.com/pnp/pnp/pull/16)]
 - @pnp/sp: Added support for social follow API (_api/social.following) [[PR](https://github.com/pnp/pnp/pull/16)] [[Docs](./packages/sp/docs/social.md)]
+- @pnp/sp: Added commentsDisabled property to ClientSidePage class [[PR](https://github.com/pnp/pnp/pull/18)] [[Docs](./packages/sp/docs/client-side-pages.md#control-comments)]
 
 ### Fixed
 - @pnp/sp: Fixed issue with File.setContentChunked and Files.addChunked in odata=verbose mode [[PR](https://github.com/pnp/pnp/pull/16)]
