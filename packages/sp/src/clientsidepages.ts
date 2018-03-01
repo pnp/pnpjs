@@ -181,8 +181,9 @@ export class ClientSidePage extends File {
      * Creates a new instance of the ClientSidePage class
      *
      * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
+     * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
      */
-    constructor(file: File, public sections: CanvasSection[] = []) {
+    constructor(file: File, public sections: CanvasSection[] = [], public commentsDisabled = false) {
         super(file);
     }
 
@@ -354,8 +355,9 @@ export class ClientSidePage extends File {
      * Loads this page's content from the server
      */
     public load(): Promise<void> {
-        return this.getItem<{ CanvasContent1: string }>("CanvasContent1").then(item => {
+        return this.getItem<{ CanvasContent1: string, CommentsDisabled: boolean }>("CanvasContent1", "CommentsDisabled").then(item => {
             this.fromHtml(item.CanvasContent1);
+            this.commentsDisabled = item.CommentsDisabled;
         });
     }
 
@@ -370,14 +372,20 @@ export class ClientSidePage extends File {
      * Enables comments on this page
      */
     public enableComments(): Promise<ItemUpdateResult> {
-        return this.setCommentsOn(true);
+        return this.setCommentsOn(true).then(r => {
+            this.commentsDisabled = false;
+            return r;
+        });
     }
 
     /**
      * Disables comments on this page
      */
     public disableComments(): Promise<ItemUpdateResult> {
-        return this.setCommentsOn(false);
+        return this.setCommentsOn(false).then(r => {
+            this.commentsDisabled = true;
+            return r;
+        });
     }
 
     /**
