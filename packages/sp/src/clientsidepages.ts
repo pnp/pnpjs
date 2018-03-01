@@ -389,6 +389,39 @@ export class ClientSidePage extends File {
     }
 
     /**
+     * Finds a control by the specified instance id
+     * 
+     * @param id Instance id of the control to find
+     */
+    public findControlById<T extends CanvasControl = CanvasControl>(id: string): T {
+        return this.findControl((c) => c.id === id);
+    }
+
+    /**
+     * Finds a control within this page's control tree using the supplied predicate
+     * 
+     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
+     */
+    public findControl<T extends CanvasControl = CanvasControl>(predicate: (c: CanvasControl) => boolean): T {
+        // check all sections
+        for (let i = 0; i < this.sections.length; i++) {
+            // check all columns
+            for (let j = 0; j < this.sections[i].columns.length; j++) {
+                // check all controls
+                for (let k = 0; k < this.sections[i].columns[j].controls.length; k++) {
+                    // check to see if the predicate likes this control
+                    if (predicate(this.sections[i].columns[j].controls[k])) {
+                        return <T>this.sections[i].columns[j].controls[k];
+                    }
+                }
+            }
+        }
+
+        // we found nothing so give nothing back
+        return null;
+    }
+
+    /**
      * Sets the comments flag for a page
      * 
      * @param on If true comments are enabled, false they are disabled

@@ -110,6 +110,31 @@ page.addSection().addControl(part);
 await page.save();
 ```
 
+## Find Controls
+
+Added in _1.0.3_
+
+You can use the either of the two available method to locate controls within a page. These method search through all sections, columns, and controls returning the first instance that meets the supplied criteria.
+
+```TypeScript
+import { ClientSideWebPart } from "@pnp/sp";
+
+// find a control by instance id
+const control1 = page.findControlById("b99bfccc-164e-4d3d-9b96-da48db62eb78");
+
+// type the returned control
+const control2 = page.findControlById<ClientSideWebPart>("c99bfccc-164e-4d3d-9b96-da48db62eb78");
+const control3 = page.findControlById<ClientSideText>("a99bfccc-164e-4d3d-9b96-da48db62eb78");
+
+// use any predicate to find a control
+const control4 = page2.findControl<ClientSideWebpart>((c: CanvasControl) => {
+
+    // any logic you wish can be used on the control here
+    // return true to return that control
+    return c.order > 3;
+});
+```
+
 ## Control Comments
 
 You can choose to enable or disable comments on a page using these methods
