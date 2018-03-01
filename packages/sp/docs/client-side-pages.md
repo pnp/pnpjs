@@ -115,6 +115,9 @@ await page.save();
 You can choose to enable or disable comments on a page using these methods
 
 ```TypeScript
+// indicates if comments are disabled, not valid until the page is loaded (Added in _1.0.3_)
+page.commentsDisabled
+
 // enable comments
 await page.enableComments();
 
