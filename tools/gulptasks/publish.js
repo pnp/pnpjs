@@ -125,7 +125,7 @@ gulp.task("publish-beta", (done) => {
         "git checkout dev",
 
         // update package version
-        "npm version prerelease --preid beta",
+        "npm version prerelease",
 
         // push updates to dev
         "git push",
