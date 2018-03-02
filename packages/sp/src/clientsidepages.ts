@@ -313,7 +313,6 @@ export class ClientSidePage extends File {
         this.sections = [];
 
         // gather our controls from the supplied html
-        let counter = 0;
         getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, markup => {
 
             // get the control type
@@ -334,19 +333,20 @@ export class ClientSidePage extends File {
                 case 3:
                     // client side webpart
                     control = new ClientSideWebpart("");
-                    control.order = ++counter;
                     control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
                 case 4:
                     // client side text
                     control = new ClientSideText();
-                    control.order = ++counter;
                     control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
             }
         });
+
+        // refresh all the orders within the tree
+        reindex(this.sections);
 
         return this;
     }
@@ -453,7 +453,7 @@ export class ClientSidePage extends File {
 
         const columns = section.columns.filter(c => c.order === control.controlData.position.sectionIndex);
         if (columns.length < 1) {
-            column = new CanvasColumn(section, control.controlData.position.sectionIndex);
+            column = new CanvasColumn(section, control.controlData.position.sectionIndex, control.controlData.position.sectionFactor);
             section.columns.push(column);
         } else {
             column = columns[0];
