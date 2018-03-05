@@ -6,13 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.0.3 - 2018-03-05
+
 ### Added
 - @pnp/sp: Support for backwards navigation in item paging skip method [[PR](https://github.com/pnp/pnp/pull/16)]
 - @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API [[PR](https://github.com/pnp/pnp/pull/16)]
 - @pnp/sp: Added support for social follow API (_api/social.following) [[PR](https://github.com/pnp/pnp/pull/16)] [[Docs](./packages/sp/docs/social.md)]
 - @pnp/sp: Added commentsDisabled property to ClientSidePage class [[PR](https://github.com/pnp/pnp/pull/18)] [[Docs](./packages/sp/docs/client-side-pages.md#control-comments)]
 - @pnp/sp: Adds support for finding controls to ClientSidePage class [[PR](https://github.com/pnp/pnp/pull/19)] [[Docs](./packages/sp/docs/client-side-pages.md#find-controls)]
-
+- @pnp/sp: Export ContentTypes and RegionalSettings related classes ([@allanhvam](https://github.com/allanhvam)) [[PR](https://github.com/pnp/pnp/pull/24)]
 
 
 ### Fixed
