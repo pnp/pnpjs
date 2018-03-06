@@ -63,7 +63,7 @@ export class Groups extends GraphQueryableCollection {
         if (groupType !== GroupType.Security) {
 
             postBody = Util.extend(postBody, {
-                groupTypes: [groupType === GroupType.Office365 ? "Unified" : "DynamicMembership"],
+                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
             });
         }
 

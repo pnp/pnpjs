@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
-## 1.0.2 - 2018-02-15
+## 1.0.2 : 2018-02-15
 
 ### Added
 - @pnp/sp: Support for managing client-side pages
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection
 - @pnp/sp: getClientSideWebParts method on Web
 - tooling: updates to test gulp task to support --s and --site parameters
+
 
 ### Changed
 - Removed gulp-util in favor of individual libraries per guidance

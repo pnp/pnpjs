@@ -174,6 +174,10 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
         return this.toRequestContext<T>("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
+    protected putCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
+        return this.toRequestContext<T>("PUT", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
