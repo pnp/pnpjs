@@ -5,12 +5,12 @@ the SharePoint SP product libraries being present to allow use of the SP.Request
 
 ## Setup
 
-To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a 
+To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a
 SharePoint add-in web.
 
 ```TypeScript
 // note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods
-import { sp, SPRequestExecutorClient } from "@pnp\sp-addinhelpers";
+import { sp, SPRequestExecutorClient } from "@pnp/sp-addinhelpers";
 
 // this only needs to be done once within your application
 sp.setup({
