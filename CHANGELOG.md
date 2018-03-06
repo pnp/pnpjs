@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- all: Documentation fixes for typos [[PR](https://github.com/pnp/pnp/pull/26)]
+
 ## 1.0.3 - 2018-03-05
 
 ### Added
