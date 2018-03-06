@@ -14,7 +14,6 @@ export function Example(settings: any) {
         },
     });
 
-
     graph.v1.groups.get().then(g => {
 
         Logger.log({

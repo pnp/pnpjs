@@ -107,6 +107,7 @@ sp.web.select("Title").get().then(w => {
 * [Related Items](related-items.md)
 * [Search](search.md)
 * [Sharing](sharing.md)
+* [Social](social.md)
 * [SP.Utilities.Utility](sp-utilities-utility.md)
 * [Views](views.md)
 * [Webs](webs.md)

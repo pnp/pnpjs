@@ -6,19 +6,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- all: Documentation fixes for typos [[PR](https://github.com/pnp/pnp/pull/26)]
+
+## 1.0.3 - 2018-03-05
+
+### Added
+- @pnp/sp: Support for backwards navigation in item paging skip method [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/sp: Added support for % and # character in files and folders with the ResourcePath API [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/sp: Added support for social follow API (_api/social.following) [[PR](https://github.com/pnp/pnp/pull/16)] [[Docs](./packages/sp/docs/social.md)]
+- @pnp/sp: Added commentsDisabled property to ClientSidePage class [[PR](https://github.com/pnp/pnp/pull/18)] [[Docs](./packages/sp/docs/client-side-pages.md#control-comments)]
+- @pnp/sp: Adds support for finding controls to ClientSidePage class [[PR](https://github.com/pnp/pnp/pull/19)] [[Docs](./packages/sp/docs/client-side-pages.md#find-controls)]
+- @pnp/sp: Export ContentTypes and RegionalSettings related classes ([@allanhvam](https://github.com/allanhvam)) [[PR](https://github.com/pnp/pnp/pull/24)]
+
+
+### Fixed
+- @pnp/sp: Fixed issue with File.setContentChunked and Files.addChunked in odata=verbose mode [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/sp: Fixed issue clone and configure [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/graph: Fixed issue clone and configure [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/sp: Fixed issue with adding client-side webparts with ids with {} chars [[PR](https://github.com/pnp/pnp/pull/16)]
+- @pnp/sp: Fixed issue with adding client-side webparts and setting order values [[PR](https://github.com/pnp/pnp/pull/17)]
+
 
 ## 1.0.2 : 2018-02-15
 
 ### Added
-- @pnp/sp: Support for managing client-side pages
-- @pnp/sp: getAll method on Items collection
-- @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection
-- @pnp/sp: getClientSideWebParts method on Web
-- tooling: updates to test gulp task to support --s and --site parameters
+- @pnp/sp: Support for managing client-side pages [[PR](https://github.com/pnp/pnp/pull/7)]
+- @pnp/sp: getAll method on Items collection [[PR](https://github.com/pnp/pnp/pull/4)]
+- @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection [[PR](https://github.com/pnp/pnp/pull/4)]
+- @pnp/sp: getClientSideWebParts method on Web [[PR](https://github.com/pnp/pnp/pull/7)]
+- tooling: updates to test gulp task to support --s and --site parameters [[PR](https://github.com/pnp/pnp/pull/7)]
 
 
 ### Changed
-- Removed gulp-util in favor of individual libraries per guidance
+- Removed gulp-util in favor of individual libraries per guidance [[PR](https://github.com/pnp/pnp/pull/7)]
 
 ## 1.0.1 - 2018-01-22
 

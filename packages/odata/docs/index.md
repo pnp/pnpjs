@@ -10,7 +10,7 @@ the core code is solid and well tested, with any updates benefitting all inherit
 
 Install the library and required dependencies
 
-`npm install @pnp\logging @pnp\common @pnp\odata --save`
+`npm install @pnp/logging @pnp/common @pnp/odata --save`
 
 ## Library Topics
 

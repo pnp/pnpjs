@@ -24,7 +24,7 @@ Logger.activeLogLevel = LogLevel.Info;
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./teams";
+import { Example } from "./sp";
 Example(settings);
 
 // you can also set break points inside the src folder to examine how things are working

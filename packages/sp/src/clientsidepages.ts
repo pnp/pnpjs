@@ -37,13 +37,12 @@ export type CanvasColumnFactorType = 0 | 2 | 4 | 6 | 8 | 12;
  * @param collection Collection of orderable things
  */
 function getNextOrder(collection: { order: number }[]): number {
-    let order = 1;
-    for (let i = 0; i < collection.length; i++) {
-        if (collection[i].order > order) {
-            order = collection[i].order + 1;
-        }
+
+    if (collection.length < 1) {
+        return 1;
     }
-    return order;
+
+    return Math.max.apply(null, collection.map(i => i.order)) + 1;
 }
 
 /**
@@ -88,7 +87,7 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
     // remove some extra whitespace if present
     const cleanedHtml = html.replace(/[\t\r\n]/g, "");
 
-    // find the first control div
+    // find the first div
     let startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern);
 
     if (startIndex < 0) {
@@ -157,6 +156,23 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
 }
 
 /**
+ * Normalizes the order value for all the sections, columns, and controls to be 1 based and stepped (1, 2, 3...)
+ * 
+ * @param collection The collection to normalize
+ */
+function reindex(collection: { order: number, columns?: { order: number }[], controls?: { order: number }[] }[]): void {
+
+    for (let i = 0; i < collection.length; i++) {
+        collection[i].order = i + 1;
+        if (collection[i].hasOwnProperty("columns")) {
+            reindex(collection[i].columns);
+        } else if (collection[i].hasOwnProperty("controls")) {
+            reindex(collection[i].controls);
+        }
+    }
+}
+
+/**
  * Represents the data and methods associated with client side "modern" pages
  */
 export class ClientSidePage extends File {
@@ -165,8 +181,9 @@ export class ClientSidePage extends File {
      * Creates a new instance of the ClientSidePage class
      *
      * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
+     * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
      */
-    constructor(file: File, public sections: CanvasSection[] = []) {
+    constructor(file: File, public sections: CanvasSection[] = [], public commentsDisabled = false) {
         super(file);
     }
 
@@ -209,7 +226,7 @@ export class ClientSidePage extends File {
                             PageLayoutType: pageLayoutType,
                             PromotedState: PromotedState.NotPromoted,
                             Title: title,
-                        }).then((iar: ItemUpdateResult) => new ClientSidePage(iar.item.file));
+                        }).then((iar: ItemUpdateResult) => new ClientSidePage(iar.item.file, (<any>iar.item).CommentsDisabled));
                     });
                 });
             });
@@ -269,6 +286,9 @@ export class ClientSidePage extends File {
      */
     public toHtml(): string {
 
+        // trigger reindex of the entire tree
+        reindex(this.sections);
+
         const html: string[] = [];
 
         html.push("<div>");
@@ -293,7 +313,6 @@ export class ClientSidePage extends File {
         this.sections = [];
 
         // gather our controls from the supplied html
-        let counter = 0;
         getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, markup => {
 
             // get the control type
@@ -314,19 +333,20 @@ export class ClientSidePage extends File {
                 case 3:
                     // client side webpart
                     control = new ClientSideWebpart("");
-                    control.order = ++counter;
                     control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
                 case 4:
                     // client side text
                     control = new ClientSideText();
-                    control.order = ++counter;
                     control.fromHtml(markup);
                     this.mergeControlToTree(control);
                     break;
             }
         });
+
+        // refresh all the orders within the tree
+        reindex(this.sections);
 
         return this;
     }
@@ -335,8 +355,9 @@ export class ClientSidePage extends File {
      * Loads this page's content from the server
      */
     public load(): Promise<void> {
-        return this.getItem<{ CanvasContent1: string }>("CanvasContent1").then(item => {
+        return this.getItem<{ CanvasContent1: string, CommentsDisabled: boolean }>("CanvasContent1", "CommentsDisabled").then(item => {
             this.fromHtml(item.CanvasContent1);
+            this.commentsDisabled = item.CommentsDisabled;
         });
     }
 
@@ -351,14 +372,53 @@ export class ClientSidePage extends File {
      * Enables comments on this page
      */
     public enableComments(): Promise<ItemUpdateResult> {
-        return this.setCommentsOn(true);
+        return this.setCommentsOn(true).then(r => {
+            this.commentsDisabled = false;
+            return r;
+        });
     }
 
     /**
      * Disables comments on this page
      */
     public disableComments(): Promise<ItemUpdateResult> {
-        return this.setCommentsOn(false);
+        return this.setCommentsOn(false).then(r => {
+            this.commentsDisabled = true;
+            return r;
+        });
+    }
+
+    /**
+     * Finds a control by the specified instance id
+     * 
+     * @param id Instance id of the control to find
+     */
+    public findControlById<T extends CanvasControl = CanvasControl>(id: string): T {
+        return this.findControl((c) => c.id === id);
+    }
+
+    /**
+     * Finds a control within this page's control tree using the supplied predicate
+     * 
+     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
+     */
+    public findControl<T extends CanvasControl = CanvasControl>(predicate: (c: CanvasControl) => boolean): T {
+        // check all sections
+        for (let i = 0; i < this.sections.length; i++) {
+            // check all columns
+            for (let j = 0; j < this.sections[i].columns.length; j++) {
+                // check all controls
+                for (let k = 0; k < this.sections[i].columns[j].controls.length; k++) {
+                    // check to see if the predicate likes this control
+                    if (predicate(this.sections[i].columns[j].controls[k])) {
+                        return <T>this.sections[i].columns[j].controls[k];
+                    }
+                }
+            }
+        }
+
+        // we found nothing so give nothing back
+        return null;
     }
 
     /**
@@ -393,7 +453,7 @@ export class ClientSidePage extends File {
 
         const columns = section.columns.filter(c => c.order === control.controlData.position.sectionIndex);
         if (columns.length < 1) {
-            column = new CanvasColumn(section, control.controlData.position.sectionIndex);
+            column = new CanvasColumn(section, control.controlData.position.sectionIndex, control.controlData.position.sectionFactor);
             section.columns.push(column);
         } else {
             column = columns[0];
@@ -564,6 +624,7 @@ export class CanvasColumn extends CanvasControl {
 
     public getControlData(): ClientSideControlData {
         return {
+            displayMode: 2,
             position: {
                 sectionFactor: this.factor,
                 sectionIndex: this.order,
@@ -658,7 +719,7 @@ export class ClientSideWebpart extends CanvasControl {
     }
 
     public import(component: ClientSidePageComponent): void {
-        this.webPartId = component.Id;
+        this.webPartId = component.Id.replace(/^\{|\}$/g, "");
         const manifest: ClientSidePageComponentManifest = JSON.parse(component.Manifest);
         this.title = manifest.preconfiguredEntries[0].title.default;
         this.description = manifest.preconfiguredEntries[0].description.default;

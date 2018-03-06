@@ -38,6 +38,14 @@ export {
 export * from "./clientsidepages";
 
 export {
+    ContentType,
+    ContentTypes,
+    ContentTypeAddResult,
+    FieldLink,
+    FieldLinks,
+} from "./contenttypes";
+
+export {
     SPConfiguration,
     SPConfigurationPart,
 } from "./config/splibconfig";
@@ -102,6 +110,13 @@ export {
 } from "./lists";
 
 export {
+    RegionalSettings,
+    InstalledLanguages,
+    TimeZone,
+    TimeZones,
+} from "./regionalsettings";
+
+export {
     RelatedItem,
     RelatedItemManger,
 } from "./relateditems";
@@ -156,6 +171,8 @@ export {
     UserUpdateResult,
     SiteUserProps,
 } from "./siteusers";
+
+export * from "./social";
 
 export {
     SubscriptionAddResult,
