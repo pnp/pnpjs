@@ -8,7 +8,7 @@ The common modules provides a set of utilities classes and reusable building blo
 
 Install the library and required dependencies
 
-`npm install @pnp\logging @pnp\common --save`
+`npm install @pnp/logging @pnp/common --save`
 
 Import and use functionality, see details on modules below.
 

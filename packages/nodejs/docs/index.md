@@ -7,10 +7,10 @@ Primarily these consist of clients to enable use of the libraries in nodejs.
 
 ## Getting Started
 
-Install the library and required dependencies. You will also need to install other libraries such as [@pnp/sp](../sp) or [@pnp/graph](../graph) to use the 
+Install the library and required dependencies. You will also need to install other libraries such as [@pnp/sp](../sp) or [@pnp/graph](../graph) to use the
 exported functionality.
 
-`npm install @pnp\logging @pnp\common @pnp\nodejs --save`
+`npm install @pnp/logging @pnp/common @pnp/nodejs --save`
 
 * [AdalFetchClient](adal-fetch-client.md)
 * [SPFetchClient](sp-fetch-client.md)
