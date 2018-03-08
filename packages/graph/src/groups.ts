@@ -6,7 +6,8 @@ import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./plans";
 import { Photo } from "./photos";
-import { GraphEndpoints } from "..";
+import { Team } from "./teams";
+import { GraphEndpoints, TeamProperties } from "./types";
 
 export enum GroupType {
     /**
@@ -50,7 +51,7 @@ export class Groups extends GraphQueryableCollection {
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    public add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<string | number | boolean> = {}): Promise<GroupAddResult> {
+    public add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<any> = {}): Promise<GroupAddResult> {
 
         let postBody = Util.extend({
             displayName: name,
@@ -147,6 +148,13 @@ export class Group extends GraphQueryableInstance {
     }
 
     /**
+     * Gets the team associated with this group, if it exists
+     */
+    public get team(): Team {
+        return new Team(this);
+    }
+
+    /**
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
     public addFavorite(): Promise<void> {
@@ -154,22 +162,15 @@ export class Group extends GraphQueryableInstance {
         return this.clone(Group, "addFavorite").postCore();
     }
 
-    public createTeam(): Promise<any> {
+    /**
+     * Creates a Microsoft Team associated with this group
+     * 
+     * @param properties Initial properties for the new Team
+     */
+    public createTeam(properties: TeamProperties): Promise<any> {
 
-        return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).postCore({
-            body: JSON.stringify({
-                "funSettings": {
-                    "allowGiphy": true,
-                    "giphyContentRating": "strict",
-                },
-                "memberSettings": {
-                    "allowCreateUpdateChannels": true,
-                },
-                "messagingSettings": {
-                    "allowUserDeleteMessages": true,
-                    "allowUserEditMessages": true,
-                },
-            }),
+        return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).putCore({
+            body: JSON.stringify(properties),
         });
     }
 

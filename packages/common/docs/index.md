@@ -20,6 +20,7 @@ console.log(Util.getGUID());
 
 ## Exports
 
+* [adalclient](adalclient.md)
 * [blobutil](blobutil.md)
 * [collections](collections.md)
 * [decorators](decorators.md)

@@ -1,6 +1,5 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig, HttpClientImpl } from "@pnp/common";
+import { LibraryConfiguration, TypedHash, RuntimeConfig, HttpClientImpl, AdalClient } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPfxClient } from "../net/spfxclient";
 
 export interface GraphConfigurationPart {
     graph?: {
@@ -47,13 +46,13 @@ export class GraphRuntimeConfigImpl {
 
         const graphPart = RuntimeConfig.get("graph");
         // use a configured factory firt
-        if (typeof graphPart !== "undefined" && typeof graphPart.fetchClientFactory !== "undefined") {
+        if (graphPart !== null && typeof graphPart.fetchClientFactory !== "undefined") {
             return graphPart.fetchClientFactory;
         }
 
         // then try and use spfx context if available
         if (typeof RuntimeConfig.spfxContext !== "undefined") {
-            return () => new SPfxClient(RuntimeConfig.spfxContext.graphHttpClient);
+            return () => AdalClient.fromSPFxContext(RuntimeConfig.spfxContext);
         }
 
         throw new NoGraphClientAvailableException();

@@ -159,6 +159,10 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      * @param getOptions The options used for this request
      */
     public get<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+        return this.getCore(parser, options);
+    }
+
+    protected getCore<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
         return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 

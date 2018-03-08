@@ -5,6 +5,8 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
+    "@types/adal-angular": "1.0.0",
+    "adal-angular": "1.0.17",
     "tslib": "1.8.1"
   },
   "peerDependencies": {

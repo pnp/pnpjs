@@ -14,7 +14,7 @@ const gulp = require("gulp"),
 gulp.task('clean', (done) => {
 
     if (yargs.noclean || yargs.nc) {
-        gutil.log(`${gutil.colors.bgWhite(" ")} Skipping clean due to flag.`);
+        log(`${colors.bgwhite(" ")} Skipping clean due to flag.`);
         return done();
     }
 

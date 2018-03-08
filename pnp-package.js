@@ -43,7 +43,6 @@ const config = {
         "odata",
         "graph",
         "sp",
-        "teams",
         "nodejs",
         "sp-addinhelpers",
         "config-store",
