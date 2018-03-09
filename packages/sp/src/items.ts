@@ -66,7 +66,7 @@ export class Items extends SharePointQueryableCollection {
      *
      */
     public getPaged(): Promise<PagedItemCollection<any>> {
-        return this.get(new PagedItemCollectionParser());
+        return this.get(new PagedItemCollectionParser(this));
     }
 
     /**
@@ -419,7 +419,7 @@ export class ItemVersion extends SharePointQueryableInstance {
  */
 export class PagedItemCollection<T> {
 
-    constructor(private nextUrl: string, public results: T) { }
+    constructor(private parent: Items, private nextUrl: string, public results: T) { }
 
     /**
      * If true there are more results available in the set, otherwise there are not
@@ -434,7 +434,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<any>> {
 
         if (this.hasNext) {
-            const items = new Items(this.nextUrl, null);
+            const items = new Items(this.nextUrl, null).configureFrom(this.parent);
             return items.getPaged();
         }
 
@@ -443,6 +443,11 @@ export class PagedItemCollection<T> {
 }
 
 class PagedItemCollectionParser extends ODataParserBase<PagedItemCollection<any>> {
+
+    constructor(private _parent: Items) {
+        super();
+    }
+
     public parse(r: Response): Promise<PagedItemCollection<any>> {
 
         return new Promise<PagedItemCollection<any>>((resolve, reject) => {
@@ -450,7 +455,7 @@ class PagedItemCollectionParser extends ODataParserBase<PagedItemCollection<any>
             if (this.handleError(r, reject)) {
                 r.json().then(json => {
                     const nextUrl = json.hasOwnProperty("d") && json.d.hasOwnProperty("__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection(nextUrl, this.parseODataJSON(json)));
+                    resolve(new PagedItemCollection(this._parent, nextUrl, this.parseODataJSON(json)));
                 });
             }
         });

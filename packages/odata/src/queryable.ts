@@ -102,6 +102,16 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     }
 
     /**
+     * Configures this instance from the configure options of the supplied instance
+     * 
+     * @param o Instance from which options should be taken
+     */
+    public configureFrom(o: ODataQueryable<any, any>): this {
+        mergeOptions(this._options, o._options);
+        return this;
+    }
+
+    /**
      * Enables caching for this request
      *
      * @param options Defines the options used when caching this request
