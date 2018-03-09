@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/common: AdalClient for in-browser adal auth support. [[PR](https://github.com/pnp/pnp/pull/32)]
 - @pnp/sp: Support for $expand in items.getAll ([@eirikb](https://github.com/eirikb)) [[PR](https://github.com/pnp/pnp/pull/33)]
 
+### Changed
+
+- @pnp/sp: Change search result properties to be enumerable [[PR](https://github.com/pnp/pnp/pull/41)]
+
 ### Fixed
 
 - all: Documentation fixes for typos [[PR](https://github.com/pnp/pnp/pull/26)]
