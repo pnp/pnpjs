@@ -1,5 +1,6 @@
 import { GraphQueryable } from "./graphqueryable";
 import { Groups } from "./groups";
+import { Users } from "./users";
 // import { Me } from "./me";
 
 /**
@@ -20,6 +21,10 @@ export class V1 extends GraphQueryable {
 
     public get groups(): Groups {
         return new Groups(this);
+    }
+
+    public get users(): Users {
+        return new Users(this);
     }
 
     // public get me(): Me {
