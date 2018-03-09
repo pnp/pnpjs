@@ -91,7 +91,7 @@ export class Items extends SharePointQueryableCollection {
         // $select - allow picking the return fields (good behavior)
         // $filter - allow setting a filter, though this may fail due for large lists
         this.query.getKeys()
-            .filter(k => /^\$select$|^\$filter$|^\$top$/.test(k.toLowerCase()))
+            .filter(k => /^\$select$|^\$filter$|^\$top$|^\$expand$/.test(k.toLowerCase()))
             .reduce((i, k) => {
                 i.query.add(k, this.query.get(k));
                 return i;
