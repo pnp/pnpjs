@@ -85,7 +85,7 @@ export class Group extends GraphQueryableInstance {
     /**
      * The calendar associated with this group
      */
-    public get caldendar(): Calendar {
+    public get calendar(): Calendar {
         return new Calendar(this, "calendar");
     }
 
@@ -149,7 +149,6 @@ export class Group extends GraphQueryableInstance {
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
     public addFavorite(): Promise<void> {
-
         return this.clone(Group, "addFavorite").postCore();
     }
 
