@@ -26,6 +26,10 @@ export class GraphHttpClient implements RequestClient {
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);
 
+        if (!headers.has("Content-Type")) {
+            headers.append("Content-Type", "application/json;");
+        }
+
         const opts = Util.extend(options, { headers: headers });
 
         return this.fetchRaw(url, opts);

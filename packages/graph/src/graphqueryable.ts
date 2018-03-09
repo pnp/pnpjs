@@ -9,6 +9,7 @@ import {
 } from "@pnp/odata";
 import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
+import { GraphEndpoints } from "./types";
 
 
 export interface GraphQueryableConstructor<T> {
@@ -19,7 +20,7 @@ export interface GraphQueryableConstructor<T> {
  * Queryable Base Class
  *
  */
-export class GraphQueryable extends ODataQueryable<GraphBatch> {
+export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, GetType> {
 
     /**
      * Creates a new instance of the Queryable class
@@ -61,7 +62,13 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
      */
     public toUrlAndQuery(): string {
 
-        return this.toUrl() + `?${this._query.getKeys().map(key => `${key}=${this._query.get(key)}`).join("&")}`;
+        let url = this.toUrl();
+
+        if (!Util.isUrlAbsolute(url)) {
+            url = Util.combinePaths("https://graph.microsoft.com", url);
+        }
+
+        return url + `?${this._query.getKeys().map(key => `${key}=${this._query.get(key)}`).join("&")}`;
     }
 
     /**
@@ -94,6 +101,12 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
         }
 
         return clone;
+    }
+
+    protected setEndpoint(endpoint: string): this {
+
+        this._url = GraphEndpoints.ensure(this._url, endpoint);
+        return this;
     }
 
     /**
@@ -132,7 +145,7 @@ export class GraphQueryable extends ODataQueryable<GraphBatch> {
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class GraphQueryableCollection extends GraphQueryable {
+export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<GetType> {
 
     /**
      *
@@ -232,7 +245,7 @@ export class GraphQueryableSearchableCollection extends GraphQueryableCollection
  * Represents an instance that can be selected
  *
  */
-export class GraphQueryableInstance extends GraphQueryable {
+export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
 
     /**
      * Choose which fields to return

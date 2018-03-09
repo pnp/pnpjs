@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- all: Documentation fixes for typos [[PR](https://github.com/pnp/pnp/pull/26)]
+
 ## 1.0.3 - 2018-03-05
 
 ### Added
@@ -25,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Fixed issue with adding client-side webparts and setting order values [[PR](https://github.com/pnp/pnp/pull/17)]
 
 
-## 1.0.2 - 2018-02-15
+## 1.0.2 : 2018-02-15
 
 ### Added
 - @pnp/sp: Support for managing client-side pages [[PR](https://github.com/pnp/pnp/pull/7)]
@@ -33,6 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: addUser, addLookup, addChoice, addMultiChoice, and addBoolean on Fields collection [[PR](https://github.com/pnp/pnp/pull/4)]
 - @pnp/sp: getClientSideWebParts method on Web [[PR](https://github.com/pnp/pnp/pull/7)]
 - tooling: updates to test gulp task to support --s and --site parameters [[PR](https://github.com/pnp/pnp/pull/7)]
+
 
 ### Changed
 - Removed gulp-util in favor of individual libraries per guidance [[PR](https://github.com/pnp/pnp/pull/7)]
