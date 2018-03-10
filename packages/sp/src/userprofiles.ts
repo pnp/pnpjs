@@ -1,6 +1,7 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { HashTagCollection, UserProfile } from "./types";
 import { Util } from "../utils/util";
+import { ClientPeoplePickerQueryParameters, PeoplePickerEntity } from "./types";
 import { readBlobAsArrayBuffer } from "@pnp/common";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
@@ -256,10 +257,20 @@ export class UserProfileQuery extends SharePointQueryableInstance {
         return this.profileLoader.shareAllSocialData(share);
     }
 
-    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
         return this.clientPeoplePickerQuery.clientPeoplePickerResolveUser(queryParams);
     }
 
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
     public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
         return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
     }
@@ -340,16 +351,30 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
         super(baseUrl, path);
     }
 
-    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickerresolveuser");
-        return q.postAsCore<PeoplePickerEntity[]>({ body: this.createClientPeoplePickerQueryParameters(queryParams) });
+        return q.postAsCore<string>({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        }).then((json) => JSON.parse(json));
     }
 
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
     public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickersearchuser");
-        return q.postAsCore<PeoplePickerEntity[]>({ body: this.createClientPeoplePickerQueryParameters(queryParams) });
+        return q.postAsCore<string>({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        }).then((json) => JSON.parse(json));
     }
 
     /**
@@ -357,7 +382,7 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
      *
      * @param queryParams The query parameters to create request body
      */
-    private createClientPeoplePickerQueryParameters(queryParams: ClientPeoplePickerQueryParameters): string {
+    private createClientPeoplePickerQueryParametersRequestBody(queryParams: ClientPeoplePickerQueryParameters): string {
         return JSON.stringify({
             "queryParams":
                 Util.extend({
@@ -365,82 +390,4 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
                 }, queryParams),
         });
     }
-}
-
-export interface ClientPeoplePickerQueryParameters {
-    AllowEmailAddresses?: boolean;
-    AllowMultipleEntities?: boolean;
-    AllowOnlyEmailAddresses?: boolean;
-    AllUrlZones?: boolean;
-    EnabledClaimProviders?: string;
-    ForceClaims?: boolean;
-    MaximumEntitySuggestions?: number;
-    PrincipalSource?: PrincipalSource;
-    PrincipalType?: PrincipalType;
-    QuerySettings?: PeoplePickerQuerySettings;
-    QueryString?: string;
-    Required?: boolean;
-    SharePointGroupID?: number;
-    UrlZone?: UrlZone;
-    UrlZoneSpecified?: boolean;
-    WebApplicationID?: string;
-}
-
-export interface PeoplePickerQuerySettings {
-    ExcludeAllUsersOnTenantClaim?: boolean;
-}
-
-export interface PeoplePickerEntity {
-    Description: string;
-    DisplayText: string;
-    EntityData: PeoplePickerEntityData;
-    EntityType: string;
-    IsResolved: boolean;
-    Key: string;
-    MultipleMatches: PeoplePickerEntityData[];
-    ProviderDisplayName: string;
-    ProviderName: string;
-}
-
-export interface PeoplePickerEntityData {
-    AccountName?: string;
-    Department?: string;
-    Email?: string;
-    IsAltSecIdPresent?: boolean;
-    MobilePhone?: string;
-    ObjectId?: string;
-    PrincipalType?: string;
-    SPGroupID?: string;
-    SPUserID?: string;
-    Title?: string;
-}
-
-/* tslint:disable:no-bitwise */
-export const enum PrincipalSource {
-    None = 0,
-    UserInfoList = 1,
-    Windows = 2,
-    MembershipProvider = 4,
-    RoleProvider = 8,
-    All = RoleProvider | MembershipProvider | Windows | UserInfoList,
-}
-/* tslint:enable:no-bitwise */
-
-/* tslint:disable:no-bitwise */
-export const enum PrincipalType {
-    None = 0,
-    User = 1,
-    DistributionList = 2,
-    SecurityGroup = 4,
-    SharePointGroup = 8,
-    All = SharePointGroup | SecurityGroup | DistributionList | User,
-}
-/* tslint:enable:no-bitwise */
-
-export const enum UrlZone {
-    DefaultZone,
-    Intranet,
-    Internet,
-    Custom,
-    Extranet,
 }

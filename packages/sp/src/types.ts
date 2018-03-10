@@ -673,23 +673,69 @@ export interface UserIdInfo {
     NameIdIssuer?: string;
 }
 
-export enum PrincipalType {
+/**
+ * Specifies the type of a principal.
+ */
+/* tslint:disable:no-bitwise */
+export const enum PrincipalType {
+    /**
+     * Enumeration whose value specifies no principal type.
+     */
     None = 0,
+    /**
+     * Enumeration whose value specifies a user as the principal type.
+     */
     User = 1,
+    /**
+     * Enumeration whose value specifies a distribution list as the principal type.
+     */
     DistributionList = 2,
+    /**
+     * Enumeration whose value specifies a security group as the principal type.
+     */
     SecurityGroup = 4,
+    /**
+     * Enumeration whose value specifies a group as the principal type.
+     */
     SharePointGroup = 8,
-    All = 15,
+    /**
+     * Enumeration whose value specifies all principal types.
+     */
+    All = SharePointGroup | SecurityGroup | DistributionList | User,
 }
+/* tslint:enable:no-bitwise */
 
-export enum PrincipalSource {
+/**
+ * Specifies the source of a principal.
+ */
+/* tslint:disable:no-bitwise */
+export const enum PrincipalSource {
+    /**
+     * Enumeration whose value specifies no principal source.
+     */
     None = 0,
+    /**
+     * Enumeration whose value specifies user information list as the principal source.
+     */
     UserInfoList = 1,
+    /**
+     * Enumeration whose value specifies Active Directory as the principal source.
+     */
     Windows = 2,
+    /**
+     * Enumeration whose value specifies the current membership provider as the principal source.
+     */
     MembershipProvider = 4,
+    /**
+     * Enumeration whose value specifies the current role provider as the principal source.
+     */
     RoleProvider = 8,
-    All = 15,
+    /**
+     * Enumeration whose value specifies all principal sources.
+     */
+    All = RoleProvider | MembershipProvider | Windows | UserInfoList,
 }
+/* tslint:enable:no-bitwise */
 
 export enum RoleType {
     None = 0,
@@ -1468,4 +1514,135 @@ export interface FieldCreationProperties extends TypedHash<string | number | boo
 export enum ChoiceFieldFormatType {
     Dropdown,
     RadioButtons,
+}
+
+/**
+ * Client people picker query parameters
+ */
+export interface ClientPeoplePickerQueryParameters {
+    /**
+     * Gets or sets a value that specifies whether e-mail addresses can be used to perform search.
+     */
+    AllowEmailAddresses?: boolean;
+    /**
+     * Gets or sets a value that specifies whether multiple entities are allowed.
+     */
+    AllowMultipleEntities?: boolean;
+    /**
+     * Gets or sets a value that specifies whether only e-mail addresses can be used to perform search.
+     */
+    AllowOnlyEmailAddresses?: boolean;
+    /**
+     * Gets or sets a value that specifies whether all URL zones are used to perform search.
+     */
+    AllUrlZones?: boolean;
+    /**
+     * Gets or sets a value that specifies claim providers that are used to perform search.
+     */
+    EnabledClaimProviders?: string;
+    /**
+     * Gets or sets a value that specifies whether claims are forced (if yes, multiple results for single entity can be returned).
+     */
+    ForceClaims?: boolean;
+    /**
+     * Gets or sets a value that specifies limit of results returned.
+     */
+    MaximumEntitySuggestions: number;
+    /**
+     * Gets or sets a value that specifies principal sources to perform search.
+     */
+    PrincipalSource?: PrincipalSource;
+    /**
+     * Gets or sets a value that specifies principal types to search for.
+     */
+    PrincipalType?: PrincipalType;
+    /**
+     * Gets or sets a value that specifies additional query settings.
+     */
+    QuerySettings?: PeoplePickerQuerySettings;
+    /**
+     * Gets or sets a value that specifies the term to search for.
+     */
+    QueryString: string;
+    /**
+     * Gets or sets a value that specifies ID of the SharePoint Group that will be used to perform search.
+     */
+    SharePointGroupID?: number;
+    /**
+     * Gets or sets a value that specifies URL zones that are used to perform search.
+     */
+    UrlZone?: UrlZone;
+    /**
+     * Gets or sets a value that specifies whether search is limited to specific URL zone.
+     */
+    UrlZoneSpecified?: boolean;
+    /**
+     * Gets or sets a value that specifies GUID of the Web Application that is used to perform search.
+     */
+    WebApplicationID?: string;
+}
+
+/**
+ * People picker query settings
+ */
+export interface PeoplePickerQuerySettings {
+    ExcludeAllUsersOnTenantClaim?: boolean;
+}
+
+/**
+ * People picker entity
+ */
+export interface PeoplePickerEntity {
+    Description: string;
+    DisplayText: string;
+    EntityData: PeoplePickerEntityData;
+    EntityType: string;
+    IsResolved: boolean;
+    Key: string;
+    MultipleMatches: PeoplePickerEntityData[];
+    ProviderDisplayName: string;
+    ProviderName: string;
+}
+
+/**
+ * People picker entity data
+ */
+export interface PeoplePickerEntityData {
+    AccountName?: string;
+    Department?: string;
+    Email?: string;
+    IsAltSecIdPresent?: string;
+    MobilePhone?: string;
+    ObjectId?: string;
+    OtherMails?: string;
+    PrincipalType?: string;
+    SPGroupID?: string;
+    SPUserID?: string;
+    Title?: string;
+}
+
+/**
+ * Specifies the originating zone of a request received.
+ */
+export const enum UrlZone {
+    /**
+     * Specifies the default zone used for requests unless another zone is specified.
+     */
+    DefaultZone,
+    /**
+     * Specifies an intranet zone.
+     */
+    Intranet,
+    /**
+     * Specifies an Internet zone.
+     */
+    Internet,
+    /**
+     * Specifies a custom zone.
+     */
+    Custom,
+    /**
+     * Specifies an extranet zone.
+     */
+    Extranet,
 }
