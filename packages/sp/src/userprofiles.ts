@@ -1,7 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
-import { HashTagCollection, UserProfile } from "./types";
+import { ClientPeoplePickerQueryParameters, HashTagCollection, PeoplePickerEntity, UserProfile } from "./types";
 import { Util } from "../utils/util";
-import { ClientPeoplePickerQueryParameters, PeoplePickerEntity } from "./types";
 import { readBlobAsArrayBuffer } from "@pnp/common";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
