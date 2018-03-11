@@ -1,7 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { ClientPeoplePickerQueryParameters, HashTagCollection, PeoplePickerEntity, UserProfile } from "./types";
-import { Util } from "../utils/util";
-import { readBlobAsArrayBuffer } from "@pnp/common";
+import { readBlobAsArrayBuffer, Util } from "@pnp/common";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 
@@ -358,7 +357,7 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
     public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickerresolveuser");
-        return q.postAsCore<string>({
+        return q.postCore<string>({
             body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
         }).then((json) => JSON.parse(json));
     }
@@ -371,7 +370,7 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
     public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickersearchuser");
-        return q.postAsCore<string>({
+        return q.postCore<string>({
             body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
         }).then((json) => JSON.parse(json));
     }
