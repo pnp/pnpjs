@@ -10,7 +10,7 @@ const header = (pkg) => [
     ` * ${pkg.name} v${pkg.version} - ${pkg.description}`,
     ` * ${pkg.license} (https://github.com/pnp/pnp/blob/master/LICENSE)`,
     ` * Copyright (c) ${new Date().getFullYear()} Microsoft`,
-    " * docs: http://officedev.github.io/PnP-JS-Core",
+    " * docs: https://pnp.github.io/pnp/",
     ` * source: ${pkg.homepage}`,
     ` * bugs: ${pkg.bugs.url}`,
     " */",

@@ -1,3 +1,4 @@
+export * from "./adalclient";
 export * from "./blobutil";
 export * from "./collections";
 export * from "./decorators";
