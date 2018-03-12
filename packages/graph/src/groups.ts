@@ -6,6 +6,8 @@ import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./plans";
 import { Photo } from "./photos";
+import { Team } from "./teams";
+import { GraphEndpoints, TeamProperties } from "./types";
 
 export enum GroupType {
     /**
@@ -49,7 +51,7 @@ export class Groups extends GraphQueryableCollection {
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    public add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<string | number | boolean> = {}): Promise<GroupAddResult> {
+    public add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<any> = {}): Promise<GroupAddResult> {
 
         let postBody = Util.extend({
             displayName: name,
@@ -62,7 +64,7 @@ export class Groups extends GraphQueryableCollection {
         if (groupType !== GroupType.Security) {
 
             postBody = Util.extend(postBody, {
-                groupTypes: [groupType === GroupType.Office365 ? "Unified" : "DynamicMembership"],
+                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
             });
         }
 
@@ -85,7 +87,7 @@ export class Group extends GraphQueryableInstance {
     /**
      * The calendar associated with this group
      */
-    public get caldendar(): Calendar {
+    public get calendar(): Calendar {
         return new Calendar(this, "calendar");
     }
 
@@ -146,11 +148,29 @@ export class Group extends GraphQueryableInstance {
     }
 
     /**
+     * Gets the team associated with this group, if it exists
+     */
+    public get team(): Team {
+        return new Team(this);
+    }
+
+    /**
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
     public addFavorite(): Promise<void> {
-
         return this.clone(Group, "addFavorite").postCore();
+    }
+
+    /**
+     * Creates a Microsoft Team associated with this group
+     * 
+     * @param properties Initial properties for the new Team
+     */
+    public createTeam(properties: TeamProperties): Promise<any> {
+
+        return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).putCore({
+            body: JSON.stringify(properties),
+        });
     }
 
     /**

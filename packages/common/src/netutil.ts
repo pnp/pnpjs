@@ -63,6 +63,14 @@ export class BearerTokenFetchClient extends FetchClient {
         super();
     }
 
+    public get token() {
+        return this._token;
+    }
+
+    public set token(token: string) {
+        this._token = token;
+    }
+
     public fetch(url: string, options: FetchOptions = {}): Promise<Response> {
 
         const headers = new Headers();

@@ -39,11 +39,11 @@ export class AdalFetchClient implements HttpClientImpl {
 
     public fetch(url: string, options: any): Promise<Response> {
 
-        if (Util.objectDefinedNotNull(options)) {
+        if (!Util.objectDefinedNotNull(options)) {
             options = {
                 headers: new Headers(),
             };
-        } else if (Util.objectDefinedNotNull(options.headers)) {
+        } else if (!Util.objectDefinedNotNull(options.headers)) {
             options = Util.extend(options, {
                 headers: new Headers(),
             });

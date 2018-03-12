@@ -7,6 +7,15 @@ export interface ISPFXContext {
     graphHttpClient: ISPFXGraphHttpClient;
 
     pageContext: {
+        aadInfo: {
+            tenantId: {
+                toString(): string,
+            },
+        }
+        legacyPageContext: {
+            aadTenantId: string,
+            msGraphEndpointUrl: string,
+        },
         web: {
             absoluteUrl: string,
         },

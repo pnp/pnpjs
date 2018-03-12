@@ -1,13 +1,29 @@
-import { V1 } from "./v1";
+import { GraphQueryable } from "./graphqueryable";
 import {
     setup as _setup,
     GraphConfiguration,
 } from "./config/graphlibconfig";
 
-export class GraphRest {
+import { Groups } from "./groups";
+import { Me } from "./me";
+import { Teams } from "./teams";
 
-    public get v1(): V1 {
-        return new V1("");
+export class GraphRest extends GraphQueryable {
+
+    constructor(baseUrl: string | GraphQueryable, path?: string) {
+        super(baseUrl, path);
+    }
+
+    public get groups(): Groups {
+        return new Groups(this);
+    }
+
+    public get teams(): Teams {
+        return new Teams();
+    }
+
+    public get me(): Me {
+        return new Me(this);
     }
 
     public setup(config: GraphConfiguration) {
@@ -15,4 +31,4 @@ export class GraphRest {
     }
 }
 
-export let graph = new GraphRest();
+export let graph = new GraphRest("v1.0");

@@ -369,7 +369,7 @@ export class SearchResults {
                 Object.defineProperty(res, cell.Key,
                     {
                         configurable: false,
-                        enumerable: false,
+                        enumerable: true,
                         value: cell.Value,
                         writable: false,
                     });

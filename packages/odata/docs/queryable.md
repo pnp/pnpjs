@@ -25,6 +25,10 @@ Directly concatonates the supplied string to the current url, not normalizing "/
 
 Sets custom options for current object and all derived objects accessible via chaining
 
+### configureFrom
+
+Sets custom options from another queryable instance's options
+
 ### usingCaching
 
 Enables caching for this request. See [caching](caching.md) for more details.
