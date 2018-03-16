@@ -1,6 +1,6 @@
 # @pnp/nodejs/spfetchclient
 
-The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret.
+The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret in nodejs. Remember it is not a good practive to expose client ids and secrets on the client and use of this class is intended for nodejs exclusively.
 
 ```TypeScript
 import { SPFetchClient } from "@pnp/nodejs";
@@ -22,6 +22,20 @@ sp.web.get().then(w => {
 }).catch(e => {
 
     console.error(e);
+});
+```
+
+## Set Realm
+
+In some cases automatically resolving the realm may not work. In this case you can set the realm parameter in the SPFetchClient constructor. You can determine the correct value for the realm by navigating to "https://{site name}-admin.sharepoint.com/_layouts/15/TA_AllAppPrincipals.aspx" and copying the GUID value that appears after the "@" - this is the realm id.
+
+```TypeScript
+sp.setup({
+    sp: {
+        fetchClientFactory: () => {
+            return new SPFetchClient("{site url}", "{client id}", "{client secret}", "{realm}");
+        },
+    },
 });
 ```
 
