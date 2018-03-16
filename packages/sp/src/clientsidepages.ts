@@ -695,7 +695,7 @@ export class ClientSideText extends CanvasControl {
 
         super.fromHtml(html);
 
-        const match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>/i.exec(html);
+        const match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(html);
 
         this.text = match.length > 1 ? match[1] : "";
     }
