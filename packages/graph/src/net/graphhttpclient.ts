@@ -27,7 +27,7 @@ export class GraphHttpClient implements RequestClient {
         mergeHeaders(headers, options.headers);
 
         if (!headers.has("Content-Type")) {
-            headers.append("Content-Type", "application/json;");
+            headers.append("Content-Type", "application/json");
         }
 
         const opts = Util.extend(options, { headers: headers });

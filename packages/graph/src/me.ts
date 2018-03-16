@@ -1,5 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
-import { OneNote } from "./onenote";
+import { OneNote, OneNoteMethods } from "./onenote";
 
 export class Me extends GraphQueryableInstance {
 
@@ -10,7 +10,7 @@ export class Me extends GraphQueryableInstance {
     /**
     * The onenote associated with me
     */
-    public get onenote(): OneNote {
-        return new OneNote(this, "onenote");
+    public get onenote(): OneNoteMethods {
+        return new OneNote(this);
     }
 }
