@@ -48,7 +48,9 @@ try {
 
 If you are working inside of SharePoint Framework you have two options to help you setup the client. You can always use the above setup when needed if you prefer.
 For the below setup to work your tenant must have the features [descibed here](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient) enabled and
-permissions granted as needed. By providing the context in the onInit we can create the adal client from known information.
+permissions granted as needed. This means having targeted release activated for everyone, not just select users.
+
+By providing the context in the onInit we can create the adal client from known information.
 
 ```TypeScript
 import { graph } from "@pnp/graph";

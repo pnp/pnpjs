@@ -27,3 +27,5 @@ export {
 export * from "./teams";
 
 export * from "./types";
+
+export * from "./onenote";
