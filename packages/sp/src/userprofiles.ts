@@ -1,9 +1,10 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
-import { HashTagCollection, UserProfile } from "./types";
-import { readBlobAsArrayBuffer } from "@pnp/common";
+import { ClientPeoplePickerQueryParameters, HashTagCollection, PeoplePickerEntity, UserProfile } from "./types";
+import { readBlobAsArrayBuffer, Util } from "@pnp/common";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 
+    private clientPeoplePickerQuery: ClientPeoplePickerQuery;
     private profileLoader: ProfileLoader;
 
     /**
@@ -14,6 +15,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     constructor(baseUrl: string | SharePointQueryable, path = "_api/sp.userprofiles.peoplemanager") {
         super(baseUrl, path);
 
+        this.clientPeoplePickerQuery = new ClientPeoplePickerQuery(baseUrl);
         this.profileLoader = new ProfileLoader(baseUrl);
     }
 
@@ -252,6 +254,24 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     public shareAllSocialData(share: boolean): Promise<void> {
         return this.profileLoader.shareAllSocialData(share);
     }
+
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
+        return this.clientPeoplePickerQuery.clientPeoplePickerResolveUser(queryParams);
+    }
+
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
+    public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
+        return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
+    }
 }
 
 class ProfileLoader extends SharePointQueryable {
@@ -315,5 +335,57 @@ class ProfileLoader extends SharePointQueryable {
      */
     public shareAllSocialData(share: boolean): Promise<void> {
         return this.clone(ProfileLoader, `getuserprofile/shareallsocialdata(${share})`).postCore();
+    }
+}
+
+class ClientPeoplePickerQuery extends SharePointQueryable {
+
+    /**
+     * Creates a new instance of the PeoplePickerQuery class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this people picker query
+     */
+    constructor(baseUrl: string | SharePointQueryable, path = "_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface") {
+        super(baseUrl, path);
+    }
+
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
+        const q = this.clone(ClientPeoplePickerQuery, null);
+        q.concat(".clientpeoplepickerresolveuser");
+        return q.postCore<string>({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        }).then((json) => JSON.parse(json));
+    }
+
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
+    public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
+        const q = this.clone(ClientPeoplePickerQuery, null);
+        q.concat(".clientpeoplepickersearchuser");
+        return q.postCore<string>({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        }).then((json) => JSON.parse(json));
+    }
+
+    /**
+     * Creates ClientPeoplePickerQueryParameters request body
+     *
+     * @param queryParams The query parameters to create request body
+     */
+    private createClientPeoplePickerQueryParametersRequestBody(queryParams: ClientPeoplePickerQueryParameters): string {
+        return JSON.stringify({
+            "queryParams":
+                Util.extend({
+                    "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
+                }, queryParams),
+        });
     }
 }
