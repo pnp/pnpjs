@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/common: AdalClient for in-browser adal auth support. [[PR](https://github.com/pnp/pnp/pull/32)]
 - @pnp/sp: Support for $expand in items.getAll ([@eirikb](https://github.com/eirikb)) [[PR](https://github.com/pnp/pnp/pull/33)]
 - @pnp/odata: configureFrom method to queryable [[PR](https://github.com/pnp/pnp/pull/42)]
+- @pnp/graph: Added basic support for onenote notebooks ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/37)]
+- @pnp/graph: Added basic support for users ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/38)]
+- @pnp/sp: Added support for ClientPeoplePickerWebServiceInterface ([@phawrylak](https://github.com/phawrylak)) [[PR](https://github.com/pnp/pnp/pull/43)]
 
 ### Changed
 
@@ -22,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/graph: Typo in groups.calendar property name ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/36)]
 - @pnp/graph: Issue with graph.setup and fetchClientFactory [[PR](https://github.com/pnp/pnp/pull/32)]
 - @pnp/sp: Issue where configuration options not passed to child calls in getPaged and getAll [[PR](https://github.com/pnp/pnp/pull/42)]
+- @pnp/sp: Issue with matching last closing div ([@estruyf](https://github.com/estruyf)) [[PR](https://github.com/pnp/pnp/pull/47)]
 
 ## 1.0.3 - 2018-03-05
 
