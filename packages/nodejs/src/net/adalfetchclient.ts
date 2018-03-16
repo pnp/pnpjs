@@ -1,28 +1,27 @@
-/// <reference path="types.d.ts" />
 declare var global: any;
 declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
 const nodeFetch = require("node-fetch");
 import { Util, HttpClientImpl } from "@pnp/common";
 
-interface IAuthenticationContext {
+// interface IAuthenticationContext {
 
-    new(authorityUrl: string): IAuthenticationContext;
-    acquireTokenWithClientCredentials(resource: string, clientId: string, clientSecret: string, callback: (err: any, token: AADToken) => void): void;
-}
+//     new(authorityUrl: string): IAuthenticationContext;
+//     acquireTokenWithClientCredentials(resource: string, clientId: string, clientSecret: string, callback: (err: any, token: any) => void): void;
+// }
 
 export interface AADToken {
     accessToken: string;
     expiresIn: number;
-    expiresOn: Date;
-    isMRRT: boolean;
+    expiresOn: string | Date;
+    isMRRT?: boolean;
     resource: string;
     tokenType: string;
 }
 
 export class AdalFetchClient implements HttpClientImpl {
 
-    private authContext: IAuthenticationContext;
+    private authContext: any;
 
     constructor(private _tenant: string,
         private _clientId: string,
