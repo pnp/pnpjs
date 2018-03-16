@@ -7,6 +7,7 @@ import {
 import { Groups } from "./groups";
 import { Me } from "./me";
 import { Teams } from "./teams";
+import { Users } from "./users";
 
 export class GraphRest extends GraphQueryable {
 
@@ -24,6 +25,10 @@ export class GraphRest extends GraphQueryable {
 
     public get me(): Me {
         return new Me(this);
+    }
+
+    public get users(): Users {
+        return new Users(this);
     }
 
     public setup(config: GraphConfiguration) {
