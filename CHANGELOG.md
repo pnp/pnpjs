@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - @pnp/sp: Change search result properties to be enumerable [[PR](https://github.com/pnp/pnp/pull/41)]
 - @pnp/nodejs: Updated docs for SPFetchClient
+- @pnp/odata: Created a Queryable base class to serve as a generic base to ODataQueryable [[PR](https://github.com/pnp/pnp/pull/53)]
 
 ### Fixed
 
