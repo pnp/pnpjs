@@ -38,11 +38,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
             this._parentUrl = urlStr;
             this._url = Util.combinePaths(urlStr, path);
         } else {
-
-            const q = baseUrl as GraphQueryable;
-            this._parentUrl = q._url;
-            this._options = q._options;
-            this._url = Util.combinePaths(this._parentUrl, path);
+            this.extend(baseUrl as GraphQueryable, path);
         }
     }
 

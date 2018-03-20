@@ -56,13 +56,11 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
             }
         } else {
             const q = baseUrl as SharePointQueryable;
-            this._parentUrl = q._url;
-            this._options = q._options;
+            this.extend(q, path);
             const target = q._query.get("@target");
             if (target !== null) {
                 this._query.add("@target", target);
             }
-            this._url = Util.combinePaths(this._parentUrl, path);
         }
     }
 

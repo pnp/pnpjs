@@ -8,7 +8,7 @@ import {
 } from "@pnp/common";
 import { Logger } from "@pnp/logging";
 import { ODataParser } from "./core";
-import { ODataDefaultParser } from "./parsers";
+import { ODataDefaultParser, JSONParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import {
@@ -26,12 +26,7 @@ export class AlreadyInBatchException extends Error {
     }
 }
 
-export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any> {
-
-    /**
-     * Tracks the batch of which this query may be part
-     */
-    protected _batch: BatchType | null;
+export abstract class Queryable<GetType> {
 
     /**
      * Additional options to be set before sending actual http request
@@ -64,13 +59,26 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     protected _cachingOptions: ICachingOptions | null;
 
     constructor() {
-        this._batch = null;
         this._query = new Dictionary<string>();
         this._options = {};
         this._url = "";
         this._parentUrl = "";
         this._useCaching = false;
         this._cachingOptions = null;
+    }
+
+    /**
+     * Gets the full url with query information
+     *
+     */
+    public abstract toUrlAndQuery(): string;
+
+    /**
+    * Gets the currentl url
+    *
+    */
+    public toUrl(): string {
+        return this._url;
     }
 
     /**
@@ -106,7 +114,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      * 
      * @param o Instance from which options should be taken
      */
-    public configureFrom(o: ODataQueryable<any, any>): this {
+    public configureFrom(o: Queryable<any>): this {
         mergeOptions(this._options, o._options);
         return this;
     }
@@ -124,6 +132,92 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
             }
         }
         return this;
+    }
+
+    /**
+     * Executes the currently built request
+     *
+     * @param parser Allows you to specify a parser to handle the result
+     * @param getOptions The options used for this request
+     */
+    public get<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
+        return this.getCore(parser, options);
+    }
+
+    protected getCore<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
+        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
+    protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
+        return this.toRequestContext<T>("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
+    protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
+        return this.toRequestContext<T>("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
+    protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
+        return this.toRequestContext<T>("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
+    protected putCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
+        return this.toRequestContext<T>("PUT", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    }
+
+    /**
+     * Appends the given string and normalizes "/" chars
+     *
+     * @param pathPart The string to append
+     */
+    protected append(pathPart: string) {
+        this._url = Util.combinePaths(this._url, pathPart);
+    }
+
+    /**
+     * Gets the parent url used when creating this instance
+     *
+     */
+    protected get parentUrl(): string {
+        return this._parentUrl;
+    }
+
+    /**
+     * Extends this queryable from 
+     * 
+     * @param parent Parent queryable from which we will derive a base url
+     * @param path Additional path
+     */
+    protected extend(parent: Queryable<any>, path?: string) {
+        this._parentUrl = parent._url;
+        this._url = Util.combinePaths(this._parentUrl, path);
+        this.configureFrom(parent);
+    }
+
+    /**
+     * Converts the current instance to a request context
+     *
+     * @param verb The request verb
+     * @param options The set of supplied request options
+     * @param parser The supplied ODataParser instance
+     * @param pipeline Optional request processing pipeline
+     */
+    protected abstract toRequestContext<T>(
+        verb: string,
+        options: FetchOptions,
+        parser: ODataParser<T>,
+        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>>;
+}
+
+export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any> extends Queryable<GetType> {
+
+    /**
+     * Tracks the batch of which this query may be part
+     */
+    protected _batch: BatchType | null;
+
+    constructor() {
+        super();
+        this._batch = null;
     }
 
     /**
@@ -155,12 +249,6 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     public toUrl(): string {
         return this._url;
     }
-
-    /**
-     * Gets the full url with query information
-     *
-     */
-    public abstract toUrlAndQuery(): string;
 
     /**
      * Executes the currently built request
@@ -218,35 +306,4 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     protected get batch(): BatchType | null {
         return this.hasBatch ? this._batch : null;
     }
-
-    /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
-    protected append(pathPart: string) {
-        this._url = Util.combinePaths(this._url, pathPart);
-    }
-
-    /**
-     * Gets the parent url used when creating this instance
-     *
-     */
-    protected get parentUrl(): string {
-        return this._parentUrl;
-    }
-
-    /**
-     * Converts the current instance to a request context
-     *
-     * @param verb The request verb
-     * @param options The set of supplied request options
-     * @param parser The supplied ODataParser instance
-     * @param pipeline Optional request processing pipeline
-     */
-    protected abstract toRequestContext<T>(
-        verb: string,
-        options: FetchOptions,
-        parser: ODataParser<T>,
-        pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>>;
 }
