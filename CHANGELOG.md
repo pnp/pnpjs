@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/graph: Typo in groups.calendar property name ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/36)]
 - @pnp/graph: Issue with graph.setup and fetchClientFactory [[PR](https://github.com/pnp/pnp/pull/32)]
 - @pnp/sp: Issue where configuration options not passed to child calls in getPaged and getAll [[PR](https://github.com/pnp/pnp/pull/42)]
-- @pnp/sp: Issue with matching last closing div ([@estruyf](https://github.com/estruyf)) [[PR](https://github.com/pnp/pnp/pull/47)]
+- @pnp/sp: Issue with matching last closing div when loading ClientText part ([@estruyf](https://github.com/estruyf)) [[PR](https://github.com/pnp/pnp/pull/47)]
 - @pnp/nodejs: Issue with types.d.ts local dep [[PR](https://github.com/pnp/pnp/pull/50)]
 
 ## 1.0.3 - 2018-03-05
