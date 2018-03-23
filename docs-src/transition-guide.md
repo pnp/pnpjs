@@ -89,3 +89,17 @@ var settings = {
     }
 }
 ```
+
+## HttpClient Renamed
+
+If you used HttpClient from sp-pnp-js a lot it would be good to know that it was renamed to SPHttpClient. A transition to @pnp/sp assumes replacement of:
+
+```TypeScript
+import { HttpClient } from 'sp-pnp-js';
+```
+
+to the following import statement:
+
+```TypeScript
+import { SPHttpClient } from '@pnp/sp';
+```
