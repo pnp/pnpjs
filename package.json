@@ -1,7 +1,7 @@
 {
   "name": "@pnp/pnp-root",
   "private": true,
-  "version": "1.0.4-2",
+  "version": "1.0.4-3",
   "description": "A JavaScript library for SharePoint development.",
   "dependencies": {},
   "devDependencies": {
