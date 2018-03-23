@@ -8,6 +8,7 @@ import { SharePointQueryableShareableFile } from "./sharepointqueryableshareable
 import { spGetEntityUrl } from "./odata";
 
 export interface ChunkedFileUploadProgressData {
+    uploadId: string;
     stage: "starting" | "continue" | "finishing";
     blockNumber: number;
     totalBlocks: number;
@@ -348,20 +349,20 @@ export class File extends SharePointQueryableShareableFile {
         const uploadId = getGUID();
 
         // start the chain with the first fragment
-        progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
+        progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks: blockCount });
 
         let chain = this.startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
         for (let i = 2; i < blockCount; i++) {
             chain = chain.then(pointer => {
-                progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
+                progress({ uploadId, blockNumber: i, chunkSize, currentPointer: pointer, fileSize, stage: "continue", totalBlocks: blockCount });
                 return this.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
             });
         }
 
         return chain.then(pointer => {
-            progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
+            progress({ uploadId, blockNumber: blockCount, chunkSize, currentPointer: pointer, fileSize, stage: "finishing", totalBlocks: blockCount });
             return this.finishUpload(uploadId, pointer, file.slice(pointer));
         });
     }
@@ -380,7 +381,7 @@ export class File extends SharePointQueryableShareableFile {
      * @param fragment The file contents.
      * @returns The size of the total uploaded data in bytes.
      */
-    private startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
+    protected startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
         return this.clone(File, `startUpload(uploadId=guid'${uploadId}')`, false)
             .postCore<string>({ body: fragment })
             .then(n => {
@@ -404,7 +405,7 @@ export class File extends SharePointQueryableShareableFile {
      * @param fragment The file contents.
      * @returns The size of the total uploaded data in bytes.
      */
-    private continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
+    protected continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
         return this.clone(File, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false)
             .postCore<string>({ body: fragment })
             .then(n => {
@@ -427,7 +428,7 @@ export class File extends SharePointQueryableShareableFile {
      * @param fragment The file contents.
      * @returns The newly uploaded file.
      */
-    private finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<FileAddResult> {
+    protected finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<FileAddResult> {
         return this.clone(File, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false)
             .postCore<{ ServerRelativeUrl: string }>({ body: fragment })
             .then(response => {
