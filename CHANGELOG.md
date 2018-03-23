@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Issue where configuration options not passed to child calls in getPaged and getAll [[PR](https://github.com/pnp/pnp/pull/42)]
 - @pnp/sp: Issue with matching last closing div ([@estruyf](https://github.com/estruyf)) [[PR](https://github.com/pnp/pnp/pull/47)]
 - @pnp/nodejs: Issue with types.d.ts local dep [[PR](https://github.com/pnp/pnp/pull/50)]
+- buildsystem: Issue where the $$Version$$ placeholder was not being replaced on build [[PR](https://github.com/pnp/pnp/pull/61)]
 
 ## 1.0.3 - 2018-03-05
 
