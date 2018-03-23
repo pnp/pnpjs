@@ -79,9 +79,9 @@ The second method is to enable automated cache expiration through global config.
 
 ```TypeScript
 
-import { RuntimeConfig } from "@pnp/common";
+import { setup } from "@pnp/common";
 
-RuntimeConfig.setup({
+setup({
     enableCacheExpiration: true,
     cacheExpirationIntervalMilliseconds: 1000, // optional
 });
