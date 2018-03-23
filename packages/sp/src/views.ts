@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 
 /**
  * Describes the views available in the current context
@@ -45,7 +45,7 @@ export class Views extends SharePointQueryableCollection {
      */
     public add(title: string, personalView = false, additionalSettings: TypedHash<any> = {}): Promise<ViewAddResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "PersonalView": personalView,
             "Title": title,
             "__metadata": { "type": "SP.View" },
@@ -78,7 +78,7 @@ export class View extends SharePointQueryableInstance {
      */
     public update(properties: TypedHash<any>): Promise<ViewUpdateResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "__metadata": { "type": "SP.View" },
         }, properties));
 

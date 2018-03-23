@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 
 /**
  * Describes a collection of user custom actions
@@ -35,7 +35,7 @@ export class UserCustomActions extends SharePointQueryableCollection {
      */
     public add(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionAddResult> {
 
-        const postBody = JSON.stringify(Util.extend({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
+        const postBody = JSON.stringify(extend({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
 
         return this.postCore({ body: postBody }).then((data) => {
             return {
@@ -67,7 +67,7 @@ export class UserCustomAction extends SharePointQueryableInstance {
     */
     public update(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionUpdateResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "__metadata": { "type": "SP.UserCustomAction" },
         }, properties));
 

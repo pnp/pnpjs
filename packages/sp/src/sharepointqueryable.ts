@@ -1,8 +1,11 @@
 import {
-    Util,
+    combinePaths,
+    isUrlAbsolute,
     Dictionary,
     FetchOptions,
     mergeOptions,
+    extend,
+    getGUID,
 } from "@pnp/common";
 import {
     ODataParser,
@@ -39,20 +42,20 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
             // being created from just a string.
 
             const urlStr = baseUrl as string;
-            if (Util.isUrlAbsolute(urlStr) || urlStr.lastIndexOf("/") < 0) {
+            if (isUrlAbsolute(urlStr) || urlStr.lastIndexOf("/") < 0) {
                 this._parentUrl = urlStr;
-                this._url = Util.combinePaths(urlStr, path);
+                this._url = combinePaths(urlStr, path);
             } else if (urlStr.lastIndexOf("/") > urlStr.lastIndexOf("(")) {
                 // .../items(19)/fields
                 const index = urlStr.lastIndexOf("/");
                 this._parentUrl = urlStr.slice(0, index);
-                path = Util.combinePaths(urlStr.slice(index), path);
-                this._url = Util.combinePaths(this._parentUrl, path);
+                path = combinePaths(urlStr.slice(index), path);
+                this._url = combinePaths(this._parentUrl, path);
             } else {
                 // .../items(19)
                 const index = urlStr.lastIndexOf("(");
                 this._parentUrl = urlStr.slice(0, index);
-                this._url = Util.combinePaths(urlStr, path);
+                this._url = combinePaths(urlStr, path);
             }
         } else {
             const q = baseUrl as SharePointQueryable;
@@ -71,7 +74,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      */
     public as<T>(factory: SharePointQueryableConstructor<T>): T {
         const o = <T>new factory(this._url, null);
-        return Util.extend(o, this, true);
+        return extend(o, this, true);
     }
 
     /**
@@ -173,7 +176,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
                 parser: parser,
                 pipeline: pipeline,
                 requestAbsoluteUrl: url,
-                requestId: Util.getGUID(),
+                requestId: getGUID(),
                 verb: verb,
             };
 

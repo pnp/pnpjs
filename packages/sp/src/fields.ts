@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import {
     XmlSchemaFieldCreationInformation,
     DateTimeFieldFormatType,
@@ -69,7 +69,7 @@ export class Fields extends SharePointQueryableCollection {
 
         const postBody: string = JSON.stringify({
             "parameters":
-                Util.extend({
+                extend({
                     "__metadata":
                         {
                             "type": "SP.XmlSchemaFieldCreationInformation",
@@ -94,7 +94,7 @@ export class Fields extends SharePointQueryableCollection {
      */
     public add(title: string, fieldType: string, properties: FieldCreationProperties & { FieldTypeKind: number }): Promise<FieldAddResult> {
 
-        const postBody: string = JSON.stringify(Util.extend({
+        const postBody: string = JSON.stringify(extend({
             "Title": title,
             "__metadata": { "type": fieldType },
         }, properties));
@@ -121,7 +121,7 @@ export class Fields extends SharePointQueryableCollection {
             MaxLength: maxLength,
         };
 
-        return this.add(title, "SP.FieldText", Util.extend(props, properties));
+        return this.add(title, "SP.FieldText", extend(props, properties));
     }
 
     /**
@@ -152,7 +152,7 @@ export class Fields extends SharePointQueryableCollection {
                 OutputType: outputType,
             };
 
-        return this.add(title, "SP.FieldCalculated", Util.extend(props, properties));
+        return this.add(title, "SP.FieldCalculated", extend(props, properties));
     }
 
     /**
@@ -177,7 +177,7 @@ export class Fields extends SharePointQueryableCollection {
             FriendlyDisplayFormat: friendlyDisplayFormat,
         };
 
-        return this.add(title, "SP.FieldDateTime", Util.extend(props, properties));
+        return this.add(title, "SP.FieldDateTime", extend(props, properties));
     }
 
     /**
@@ -197,14 +197,14 @@ export class Fields extends SharePointQueryableCollection {
         let props: { FieldTypeKind: number } = { FieldTypeKind: 9 };
 
         if (typeof minValue !== "undefined") {
-            props = Util.extend({ MinimumValue: minValue }, props);
+            props = extend({ MinimumValue: minValue }, props);
         }
 
         if (typeof maxValue !== "undefined") {
-            props = Util.extend({ MaximumValue: maxValue }, props);
+            props = extend({ MaximumValue: maxValue }, props);
         }
 
-        return this.add(title, "SP.FieldNumber", Util.extend(props, properties));
+        return this.add(title, "SP.FieldNumber", extend(props, properties));
     }
 
     /**
@@ -229,14 +229,14 @@ export class Fields extends SharePointQueryableCollection {
         };
 
         if (typeof minValue !== "undefined") {
-            props = Util.extend({ MinimumValue: minValue }, props);
+            props = extend({ MinimumValue: minValue }, props);
         }
 
         if (typeof maxValue !== "undefined") {
-            props = Util.extend({ MaximumValue: maxValue }, props);
+            props = extend({ MaximumValue: maxValue }, props);
         }
 
-        return this.add(title, "SP.FieldCurrency", Util.extend(props, properties));
+        return this.add(title, "SP.FieldCurrency", extend(props, properties));
     }
 
     /**
@@ -269,7 +269,7 @@ export class Fields extends SharePointQueryableCollection {
             RichText: richText,
         };
 
-        return this.add(title, "SP.FieldMultiLineText", Util.extend(props, properties));
+        return this.add(title, "SP.FieldMultiLineText", extend(props, properties));
     }
 
     /**
@@ -287,7 +287,7 @@ export class Fields extends SharePointQueryableCollection {
             FieldTypeKind: 11,
         };
 
-        return this.add(title, "SP.FieldUrl", Util.extend(props, properties));
+        return this.add(title, "SP.FieldUrl", extend(props, properties));
     }
 
     /** Adds a user field to the colleciton
@@ -306,7 +306,7 @@ export class Fields extends SharePointQueryableCollection {
             SelectionMode: selectionMode,
         };
 
-        return this.add(title, "SP.FieldUser", Util.extend(props, properties));
+        return this.add(title, "SP.FieldUser", extend(props, properties));
     }
 
     /**
@@ -324,7 +324,7 @@ export class Fields extends SharePointQueryableCollection {
         properties?: FieldCreationProperties): Promise<FieldAddResult> {
 
         const postBody: string = JSON.stringify({
-            parameters: Util.extend({
+            parameters: extend({
                 FieldTypeKind: 7,
                 LookupFieldName: lookupFieldName,
                 LookupListId: lookupListId,
@@ -366,7 +366,7 @@ export class Fields extends SharePointQueryableCollection {
             FillInChoice: fillIn,
         };
 
-        return this.add(title, "SP.FieldChoice", Util.extend(props, properties));
+        return this.add(title, "SP.FieldChoice", extend(props, properties));
     }
 
     /**
@@ -391,7 +391,7 @@ export class Fields extends SharePointQueryableCollection {
             FillInChoice: fillIn,
         };
 
-        return this.add(title, "SP.FieldMultiChoice", Util.extend(props, properties));
+        return this.add(title, "SP.FieldMultiChoice", extend(props, properties));
     }
 
     /**
@@ -408,7 +408,7 @@ export class Fields extends SharePointQueryableCollection {
             FieldTypeKind: 8,
         };
 
-        return this.add(title, "SP.Field", Util.extend(props, properties));
+        return this.add(title, "SP.Field", extend(props, properties));
     }
 }
 
@@ -426,7 +426,7 @@ export class Field extends SharePointQueryableInstance {
      */
     public update(properties: TypedHash<string | number | boolean>, fieldType = "SP.Field"): Promise<FieldUpdateResult> {
 
-        const postBody: string = JSON.stringify(Util.extend({
+        const postBody: string = JSON.stringify(extend({
             "__metadata": { "type": fieldType },
         }, properties));
 

@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { ClientPeoplePickerQueryParameters, HashTagCollection, PeoplePickerEntity, UserProfile } from "./types";
-import { readBlobAsArrayBuffer, Util } from "@pnp/common";
+import { readBlobAsArrayBuffer, extend } from "@pnp/common";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 
@@ -383,7 +383,7 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
     private createClientPeoplePickerQueryParametersRequestBody(queryParams: ClientPeoplePickerQueryParameters): string {
         return JSON.stringify({
             "queryParams":
-                Util.extend({
+                extend({
                     "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
                 }, queryParams),
         });

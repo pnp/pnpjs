@@ -1,6 +1,6 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Members, Owners } from "./members";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
@@ -53,7 +53,7 @@ export class Groups extends GraphQueryableCollection {
      */
     public add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<any> = {}): Promise<GroupAddResult> {
 
-        let postBody = Util.extend({
+        let postBody = extend({
             displayName: name,
             mailEnabled: groupType === GroupType.Office365,
             mailNickname: mailNickname,
@@ -63,7 +63,7 @@ export class Groups extends GraphQueryableCollection {
         // include a group type if required
         if (groupType !== GroupType.Security) {
 
-            postBody = Util.extend(postBody, {
+            postBody = extend(postBody, {
                 groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
             });
         }

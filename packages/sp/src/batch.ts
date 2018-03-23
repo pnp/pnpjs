@@ -1,5 +1,5 @@
 import { ODataBatch } from "@pnp/odata";
-import { Util, mergeHeaders } from "@pnp/common";
+import { getGUID, isUrlAbsolute, combinePaths, mergeHeaders } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./net/sphttpclient";
 import { SPRuntimeConfig } from "./config/splibconfig";
@@ -116,7 +116,7 @@ export class SPBatch extends ODataBatch {
 
                     if (currentChangeSetId.length < 1) {
                         // start new change set
-                        currentChangeSetId = Util.getGUID();
+                        currentChangeSetId = getGUID();
                         batchBody.push(`--batch_${this.batchId}\n`);
                         batchBody.push(`Content-Type: multipart/mixed; boundary="changeset_${currentChangeSetId}"\n\n`);
                     }
@@ -131,7 +131,7 @@ export class SPBatch extends ODataBatch {
                 const headers = new Headers();
 
                 // this is the url of the individual request within the batch
-                const url = Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : Util.combinePaths(absoluteRequestUrl, reqInfo.url);
+                const url = isUrlAbsolute(reqInfo.url) ? reqInfo.url : combinePaths(absoluteRequestUrl, reqInfo.url);
 
                 Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Adding request ${reqInfo.method} ${url} to batch.`, LogLevel.Verbose);
 
@@ -205,7 +205,7 @@ export class SPBatch extends ODataBatch {
 
             Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-            return client.fetch(Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+            return client.fetch(combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(r => r.text())
                 .then(SPBatch.ParseResponse)
                 .then((responses: Response[]) => {

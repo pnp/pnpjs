@@ -45,7 +45,7 @@ export function dateAdd(date: Date, interval: string, units: number): Date | und
 export function combinePaths(...paths: string[]): string {
 
     return paths
-        .filter(path => !Util.stringIsNullOrEmpty(path))
+        .filter(path => !stringIsNullOrEmpty(path))
         .map(path => path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""))
         .join("/")
         .replace(/\\/g, "/");
@@ -123,7 +123,7 @@ export function isArray(array: any): boolean {
  */
 export function extend(target: any, source: any, noOverwrite = false): any {
 
-    if (!Util.objectDefinedNotNull(source)) {
+    if (!objectDefinedNotNull(source)) {
         return target;
     }
 

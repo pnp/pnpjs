@@ -1,7 +1,7 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteGroups } from "./sitegroups";
 import { BasePermissions } from "./types";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 
 /**
  * Describes a set of role assignments for the current scope
@@ -145,7 +145,7 @@ export class RoleDefinitions extends SharePointQueryableCollection {
     public add(name: string, description: string, order: number, basePermissions: BasePermissions): Promise<RoleDefinitionAddResult> {
 
         const postBody = JSON.stringify({
-            BasePermissions: Util.extend({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: extend({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
             Description: description,
             Name: name,
             Order: order,
@@ -176,10 +176,10 @@ export class RoleDefinition extends SharePointQueryableInstance {
     public update(properties: TypedHash<any>): Promise<RoleDefinitionUpdateResult> {
 
         if (typeof properties.hasOwnProperty("BasePermissions") !== "undefined") {
-            properties["BasePermissions"] = Util.extend({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
+            properties["BasePermissions"] = extend({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
         }
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "__metadata": { "type": "SP.RoleDefinition" },
         }, properties));
 

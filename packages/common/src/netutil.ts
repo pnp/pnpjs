@@ -1,4 +1,4 @@
-import { Util } from "./util";
+import { extend, objectDefinedNotNull } from "./util";
 
 declare var global: { fetch(url: string, options: any): Promise<Response> };
 
@@ -38,9 +38,9 @@ export function mergeHeaders(target: Headers, source: any): void {
 
 export function mergeOptions(target: ConfigOptions, source: ConfigOptions): void {
 
-    if (Util.objectDefinedNotNull(source)) {
-        const headers = Util.extend(target.headers || {}, source.headers);
-        target = Util.extend(target, source);
+    if (objectDefinedNotNull(source)) {
+        const headers = extend(target.headers || {}, source.headers);
+        target = extend(target, source);
         target.headers = headers;
     }
 }

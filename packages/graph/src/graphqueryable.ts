@@ -1,6 +1,9 @@
 import {
-    Util,
+    combinePaths,
+    extend,
+    isUrlAbsolute,
     FetchOptions,
+    getGUID,
 } from "@pnp/common";
 import {
     ODataParser,
@@ -36,7 +39,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
 
             const urlStr = baseUrl as string;
             this._parentUrl = urlStr;
-            this._url = Util.combinePaths(urlStr, path);
+            this._url = combinePaths(urlStr, path);
         } else {
             this.extend(baseUrl as GraphQueryable, path);
         }
@@ -49,7 +52,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
      */
     public as<T>(factory: GraphQueryableConstructor<T>): T {
         const o = <T>new factory(this._url, null);
-        return Util.extend(o, this, true);
+        return extend(o, this, true);
     }
 
     /**
@@ -60,8 +63,8 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
 
         let url = this.toUrl();
 
-        if (!Util.isUrlAbsolute(url)) {
-            url = Util.combinePaths("https://graph.microsoft.com", url);
+        if (!isUrlAbsolute(url)) {
+            url = combinePaths("https://graph.microsoft.com", url);
         }
 
         return url + `?${this._query.getKeys().map(key => `${key}=${this._query.get(key)}`).join("&")}`;
@@ -131,7 +134,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
             parser: parser,
             pipeline: pipeline,
             requestAbsoluteUrl: this.toUrlAndQuery(),
-            requestId: Util.getGUID(),
+            requestId: getGUID(),
             verb: verb,
         });
     }

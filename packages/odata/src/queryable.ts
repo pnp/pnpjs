@@ -1,10 +1,11 @@
 import {
-    Util,
+    combinePaths,
     Dictionary,
     RuntimeConfig,
     FetchOptions,
     ConfigOptions,
     mergeOptions,
+    objectDefinedNotNull,
 } from "@pnp/common";
 import { Logger } from "@pnp/logging";
 import { ODataParser } from "./core";
@@ -170,7 +171,7 @@ export abstract class Queryable<GetType> {
      * @param pathPart The string to append
      */
     protected append(pathPart: string) {
-        this._url = Util.combinePaths(this._url, pathPart);
+        this._url = combinePaths(this._url, pathPart);
     }
 
     /**
@@ -189,7 +190,7 @@ export abstract class Queryable<GetType> {
      */
     protected extend(parent: Queryable<any>, path?: string) {
         this._parentUrl = parent._url;
-        this._url = Util.combinePaths(this._parentUrl, path);
+        this._url = combinePaths(this._parentUrl, path);
         this.configureFrom(parent);
     }
 
@@ -296,7 +297,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      *
      */
     protected get hasBatch(): boolean {
-        return Util.objectDefinedNotNull(this._batch);
+        return objectDefinedNotNull(this._batch);
     }
 
     /**

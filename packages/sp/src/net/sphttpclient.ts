@@ -1,10 +1,11 @@
 import { DigestCache } from "./digestcache";
 import {
-    Util,
+    extend,
     mergeHeaders,
     FetchOptions,
     RequestClient,
     HttpClientImpl,
+    getCtxCallback,
 } from "@pnp/common";
 import { SPRuntimeConfig } from "../config/splibconfig";
 import { APIUrlException } from "../exceptions";
@@ -21,7 +22,7 @@ export class SPHttpClient implements RequestClient  {
 
     public fetch(url: string, options: FetchOptions = {}): Promise<Response> {
 
-        let opts = Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        let opts = extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
 
         const headers = new Headers();
 
@@ -49,7 +50,7 @@ export class SPHttpClient implements RequestClient  {
             headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/$$Version$$");
         }
 
-        opts = Util.extend(opts, { headers: headers });
+        opts = extend(opts, { headers: headers });
 
         if (opts.method && opts.method.toUpperCase() !== "GET") {
 
@@ -76,7 +77,7 @@ export class SPHttpClient implements RequestClient  {
         // here we need to normalize the headers
         const rawHeaders = new Headers();
         mergeHeaders(rawHeaders, options.headers);
-        options = Util.extend(options, { headers: rawHeaders });
+        options = extend(options, { headers: rawHeaders });
 
         const retry = (ctx: RetryContext): void => {
 
@@ -101,7 +102,7 @@ export class SPHttpClient implements RequestClient  {
                 }
 
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(Util.getCtxCallback(this, retry, ctx), delay);
+                setTimeout(getCtxCallback(this, retry, ctx), delay);
             });
         };
 
@@ -120,22 +121,22 @@ export class SPHttpClient implements RequestClient  {
     }
 
     public get(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "GET" });
+        const opts = extend(options, { method: "GET" });
         return this.fetch(url, opts);
     }
 
     public post(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "POST" });
+        const opts = extend(options, { method: "POST" });
         return this.fetch(url, opts);
     }
 
     public patch(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "PATCH" });
+        const opts = extend(options, { method: "PATCH" });
         return this.fetch(url, opts);
     }
 
     public delete(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "DELETE" });
+        const opts = extend(options, { method: "DELETE" });
         return this.fetch(url, opts);
     }
 }

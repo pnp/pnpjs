@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser } from "@pnp/odata";
-import { Util } from "@pnp/common";
+import { extend, getGUID } from "@pnp/common";
 import { MaxCommentLengthException } from "./exceptions";
 import { LimitedWebPartManager } from "./webparts";
 import { Item } from "./items";
@@ -326,7 +326,7 @@ export class File extends SharePointQueryableShareableFile {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return Util.extend(new Item(spGetEntityUrl(d)), d);
+            return extend(new Item(spGetEntityUrl(d)), d);
         });
     }
 
@@ -345,7 +345,7 @@ export class File extends SharePointQueryableShareableFile {
 
         const fileSize = file.size;
         const blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
-        const uploadId = Util.getGUID();
+        const uploadId = getGUID();
 
         // start the chain with the first fragment
         progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });

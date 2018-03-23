@@ -1,4 +1,4 @@
-import { Util } from "@pnp/common";
+import { extend, combinePaths } from "@pnp/common";
 import { spGetEntityUrl } from "./odata";
 import {
     SharePointQueryable,
@@ -91,7 +91,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
 
             if (typeof emailData !== "undefined") {
 
-                postBody = Util.extend(postBody, {
+                postBody = extend(postBody, {
                     emailBody: emailData.body,
                     emailSubject: typeof emailData.subject !== "undefined" ? emailData.subject : "",
                     sendEmail: true,
@@ -119,7 +119,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         }
 
         // extend our options with some defaults
-        options = Util.extend(options, {
+        options = extend(options, {
             group: null,
             includeAnonymousLinkInEmail: false,
             propagateAcl: false,
@@ -143,7 +143,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
 
             if (typeof options.emailData !== "undefined" && options.emailData !== null) {
 
-                postBody = Util.extend(postBody, {
+                postBody = extend(postBody, {
                     emailBody: options.emailData.body,
                     emailSubject: typeof options.emailData.subject !== "undefined" ? options.emailData.subject : "Shared with you.",
                     sendEmail: true,
@@ -315,7 +315,7 @@ export class SharePointQueryableShareableWeb extends SharePointQueryableSecurabl
 
             dependency();
 
-            return this.shareObject(Util.combinePaths(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
+            return this.shareObject(combinePaths(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
         });
     }
 

@@ -2,7 +2,7 @@ import { ODataParser } from "./core";
 import { ODataBatch } from "./odatabatch";
 import { ICachingOptions, CachingParserWrapper, CachingOptions } from "./caching";
 import { Logger, LogLevel } from "@pnp/logging";
-import { Util, FetchOptions, RequestClient } from "@pnp/common";
+import { extend, FetchOptions, RequestClient, isFunc } from "@pnp/common";
 
 /**
  * Defines the context for a given request to be processed in the pipeline
@@ -150,7 +150,7 @@ export class PipelineMethods {
 
                 let cacheOptions = new CachingOptions(context.requestAbsoluteUrl.toLowerCase());
                 if (typeof context.cachingOptions !== "undefined") {
-                    cacheOptions = Util.extend(cacheOptions, context.cachingOptions);
+                    cacheOptions = extend(cacheOptions, context.cachingOptions);
                 }
 
                 // we may not have a valid store
@@ -164,7 +164,9 @@ export class PipelineMethods {
                             level: LogLevel.Info,
                             message: `[${context.requestId}] (${(new Date()).getTime()}) Value returned from cache.`,
                         });
-                        context.batchDependency();
+                        if (isFunc(context.batchDependency)) {
+                            context.batchDependency();
+                        }
                         // handle the case where a parser needs to take special actions with a cached result (such as getAs)
                         if (context.parser.hasOwnProperty("hydrate")) {
                             data = context.parser.hydrate!(data);
@@ -198,7 +200,9 @@ export class PipelineMethods {
                 const p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
 
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                context.batchDependency();
+                if (isFunc(context.batchDependency)) {
+                    context.batchDependency();
+                }
 
                 Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, LogLevel.Info);
 
@@ -211,7 +215,7 @@ export class PipelineMethods {
 
                 // we are not part of a batch, so proceed as normal
                 const client = context.clientFactory();
-                const opts = Util.extend(context.options || {}, { method: context.verb });
+                const opts = extend(context.options || {}, { method: context.verb });
                 client.fetch(context.requestAbsoluteUrl, opts)
                     .then(response => context.parser.parse(response))
                     .then(result => setResult(context, result))

@@ -1,4 +1,4 @@
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareable";
 import { Files } from "./files";
@@ -118,7 +118,7 @@ export class Folder extends SharePointQueryableShareableFolder {
     }
 
     public update(properties: TypedHash<string | number | boolean>): Promise<FolderUpdateResult> {
-        const postBody: string = JSON.stringify(Util.extend({
+        const postBody: string = JSON.stringify(extend({
             "__metadata": { "type": "SP.Folder" },
         }, properties));
 
@@ -164,7 +164,7 @@ export class Folder extends SharePointQueryableShareableFolder {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return Util.extend(new Item(spGetEntityUrl(d)), d);
+            return extend(new Item(spGetEntityUrl(d)), d);
         });
     }
 }
