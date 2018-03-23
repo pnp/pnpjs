@@ -14,13 +14,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/graph: Added basic support for onenote notebooks ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/37)]
 - @pnp/graph: Added basic support for users ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnp/pull/38)]
 - @pnp/sp: Added support for ClientPeoplePickerWebServiceInterface ([@phawrylak](https://github.com/phawrylak)) [[PR](https://github.com/pnp/pnp/pull/43)]
+- @pnp/sp: Added remove method to client side section, column, and part [[PR](https://github.com/pnp/pnp/pull/60)]
 
 ### Changed
 
 - @pnp/sp: Change search result properties to be enumerable [[PR](https://github.com/pnp/pnp/pull/41)]
 - @pnp/nodejs: Updated docs for SPFetchClient
 - @pnp/odata: Created a Queryable base class to serve as a generic base to ODataQueryable [[PR](https://github.com/pnp/pnp/pull/53)]
+- all: Internally replaced import of Util with import of individual methods [[PR](https://github.com/pnp/pnp/pull/60)]
 - all: Documentation updates
+
 
 ### Fixed
 
