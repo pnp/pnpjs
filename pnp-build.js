@@ -35,16 +35,16 @@ const config = {
         "odata",
         {
             name: "graph",
-            buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+            buildPipeline: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
         },
         {
             name: "sp",
-            buildChain: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
+            buildPipeline: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
         },
         "nodejs",
         {
             name: "sp-addinhelpers",
-            buildChain: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
+            buildPipeline: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
         },
         "config-store",
         "pnpjs",
