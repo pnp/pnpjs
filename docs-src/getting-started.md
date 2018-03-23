@@ -178,3 +178,39 @@ graph.v1.groups.get().then(g => {
     console.log(JSON.stringify(g, null, 4));
 });
 ```
+
+## Getting Started outside SharePoint Framework
+
+In some cases you may be working in a way such that we cannot determine the base url for the web. In this scenario you have two options.
+
+### Set baseUrl through setup:
+
+Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use verbose mode, something you may have to do when
+working against unpatched versions of SharePoint 2013 as [discussed here](https://blogs.msdn.microsoft.com/patrickrodgers/2016/06/13/pnp-jscore-1-0-1/).
+This is optional for 2016 or SharePoint Online.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+sp.setup({
+  sp: {
+    headers: {
+      Accept: "application/json;odata=verbose",
+    },
+    baseUrl: "{Absolute SharePoint Web URL}"
+  },
+});
+
+const w = await sp.web.get();
+```
+
+### Create Web instances directly
+
+Using this method you create the web directly with the url you want to use as the base.
+
+```TypeScript
+import { Web } from "@pnp/sp";
+
+const web = new Web("{Absolute SharePoint Web URL}");
+const w = await web.get();
+```
