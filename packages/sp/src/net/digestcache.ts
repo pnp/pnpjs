@@ -1,5 +1,5 @@
 import { SPHttpClient } from "./sphttpclient";
-import { Util, Dictionary } from "@pnp/common";
+import { combinePaths, extend, Dictionary } from "@pnp/common";
 import { ODataDefaultParser } from "@pnp/odata";
 import { SPRuntimeConfig } from "../config/splibconfig";
 
@@ -25,7 +25,7 @@ export class DigestCache {
             }
         }
 
-        const url = Util.combinePaths(webUrl, "/_api/contextinfo");
+        const url = combinePaths(webUrl, "/_api/contextinfo");
 
         const headers = {
             "Accept": "application/json;odata=verbose",
@@ -35,7 +35,7 @@ export class DigestCache {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: Util.extend(headers, SPRuntimeConfig.headers, true),
+            headers: extend(headers, SPRuntimeConfig.headers, true),
             method: "POST",
         }).then((response) => {
             const parser = new ODataDefaultParser();

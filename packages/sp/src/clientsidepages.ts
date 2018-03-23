@@ -1,7 +1,7 @@
 import { List } from "./lists";
 import { TemplateFileType, FileAddResult, File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { Util, TypedHash } from "@pnp/common";
+import { TypedHash, extend, combinePaths, getGUID } from "@pnp/common";
 
 /**
  * Page promotion state
@@ -207,7 +207,7 @@ export class ClientSidePage extends File {
             // get our server relative path
             return library.rootFolder.select("ServerRelativePath").get().then(path => {
 
-                const pageServerRelPath = Util.combinePaths("/", path.ServerRelativePath.DecodedUrl, pageName);
+                const pageServerRelPath = combinePaths("/", path.ServerRelativePath.DecodedUrl, pageName);
 
                 // add the template file
                 return library.rootFolder.files.addTemplateFile(pageServerRelPath, TemplateFileType.ClientSidePage).then((far: FileAddResult) => {
@@ -334,13 +334,13 @@ export class ClientSidePage extends File {
                     // client side webpart
                     control = new ClientSideWebpart("");
                     control.fromHtml(markup);
-                    this.mergeControlToTree(control);
+                    this.mergePartToTree(<ClientSidePart>control);
                     break;
                 case 4:
                     // client side text
                     control = new ClientSideText();
                     control.fromHtml(markup);
-                    this.mergeControlToTree(control);
+                    this.mergePartToTree(<ClientSidePart>control);
                     break;
             }
         });
@@ -393,7 +393,7 @@ export class ClientSidePage extends File {
      * 
      * @param id Instance id of the control to find
      */
-    public findControlById<T extends CanvasControl = CanvasControl>(id: string): T {
+    public findControlById<T extends ClientSidePart = ClientSidePart>(id: string): T {
         return this.findControl((c) => c.id === id);
     }
 
@@ -402,7 +402,7 @@ export class ClientSidePage extends File {
      * 
      * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
      */
-    public findControl<T extends CanvasControl = CanvasControl>(predicate: (c: CanvasControl) => boolean): T {
+    public findControl<T extends ClientSidePart = ClientSidePart>(predicate: (c: ClientSidePart) => boolean): T {
         // check all sections
         for (let i = 0; i < this.sections.length; i++) {
             // check all columns
@@ -438,7 +438,7 @@ export class ClientSidePage extends File {
      * 
      * @param control The control to merge
      */
-    private mergeControlToTree(control: CanvasControl): void {
+    private mergePartToTree(control: ClientSidePart): void {
 
         let section: CanvasSection = null;
         let column: CanvasColumn = null;
@@ -498,8 +498,13 @@ export class ClientSidePage extends File {
 
 export class CanvasSection {
 
-    constructor(public page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
+    /**
+     * Used to track this object inside the collection at runtime
+     */
+    private _memId: string;
 
+    constructor(public page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
+        this._memId = getGUID();
     }
 
     /**
@@ -529,7 +534,7 @@ export class CanvasSection {
      * 
      * @param control Control to add to the default column
      */
-    public addControl(control: CanvasControl): this {
+    public addControl(control: ClientSidePart): this {
         this.defaultColumn.addControl(control);
         return this;
     }
@@ -544,18 +549,25 @@ export class CanvasSection {
 
         return html.join("");
     }
+
+    /**
+     * Removes this section and all contained columns and controls from the collection
+     */
+    public remove(): void {
+        this.page.sections = this.page.sections.filter(section => section._memId !== this._memId);
+        reindex(this.page.sections);
+    }
 }
 
 export abstract class CanvasControl {
 
     constructor(
         protected controlType: number,
-        protected dataVersion: string,
+        public dataVersion: string,
         public column: CanvasColumn = null,
         public order = 1,
-        public id: string = Util.getGUID(),
-        public controlData: ClientSideControlData = null) {
-    }
+        public id: string = getGUID(),
+        public controlData: ClientSideControlData = null) { }
 
     /**
      * Value of the control's "data-sp-controldata" attribute
@@ -582,18 +594,18 @@ export class CanvasColumn extends CanvasControl {
         public section: CanvasSection,
         public order: number,
         public factor: CanvasColumnFactorType = 12,
-        public controls: CanvasControl[] = [],
+        public controls: ClientSidePart[] = [],
         dataVersion = "1.0") {
         super(0, dataVersion);
     }
 
-    public addControl(control: CanvasControl): this {
+    public addControl(control: ClientSidePart): this {
         control.column = this;
         this.controls.push(control);
         return this;
     }
 
-    public getControl<T extends CanvasControl>(index: number): T {
+    public getControl<T extends ClientSidePart>(index: number): T {
         return <T>this.controls[index];
     }
 
@@ -632,9 +644,31 @@ export class CanvasColumn extends CanvasControl {
             },
         };
     }
+
+    /**
+     * Removes this column and all contained controls from the collection
+     */
+    public remove(): void {
+        this.section.columns = this.section.columns.filter(column => column.id !== this.id);
+        reindex(this.column.controls);
+    }
 }
 
-export class ClientSideText extends CanvasControl {
+/**
+ * Avstract class with shared functionality for parts
+ */
+export abstract class ClientSidePart extends CanvasControl {
+
+    /**
+     * Removes this column and all contained controls from the collection
+     */
+    public remove(): void {
+        this.column.controls = this.column.controls.filter(control => control.id !== this.id);
+        reindex(this.column.controls);
+    }
+}
+
+export class ClientSideText extends ClientSidePart {
 
     private _text: string;
 
@@ -701,7 +735,7 @@ export class ClientSideText extends CanvasControl {
     }
 }
 
-export class ClientSideWebpart extends CanvasControl {
+export class ClientSideWebpart extends ClientSidePart {
 
     constructor(public title: string,
         public description = "",
@@ -727,7 +761,7 @@ export class ClientSideWebpart extends CanvasControl {
     }
 
     public setProperties<T = any>(properties: T): this {
-        this.propertieJson = properties;
+        this.propertieJson = extend(this.propertieJson, properties);
         return this;
     }
 

@@ -2,7 +2,13 @@ declare var global: any;
 declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
 const nodeFetch = require("node-fetch");
-import { Util, HttpClientImpl } from "@pnp/common";
+import {
+    combinePaths,
+    objectDefinedNotNull,
+    HttpClientImpl,
+    isUrlAbsolute,
+    extend,
+} from "@pnp/common";
 
 // interface IAuthenticationContext {
 
@@ -33,23 +39,23 @@ export class AdalFetchClient implements HttpClientImpl {
         global.Request = nodeFetch.Request;
         global.Response = nodeFetch.Response;
 
-        this.authContext = new AuthenticationContext(Util.combinePaths(this._authority, this._tenant));
+        this.authContext = new AuthenticationContext(combinePaths(this._authority, this._tenant));
     }
 
     public fetch(url: string, options: any): Promise<Response> {
 
-        if (!Util.objectDefinedNotNull(options)) {
+        if (!objectDefinedNotNull(options)) {
             options = {
                 headers: new Headers(),
             };
-        } else if (!Util.objectDefinedNotNull(options.headers)) {
-            options = Util.extend(options, {
+        } else if (!objectDefinedNotNull(options.headers)) {
+            options = extend(options, {
                 headers: new Headers(),
             });
         }
 
-        if (!Util.isUrlAbsolute(url)) {
-            url = Util.combinePaths(this._resource, url);
+        if (!isUrlAbsolute(url)) {
+            url = combinePaths(this._resource, url);
         }
 
         return this.acquireToken().then(token => {

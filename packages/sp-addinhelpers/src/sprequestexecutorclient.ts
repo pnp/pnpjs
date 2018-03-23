@@ -1,4 +1,4 @@
-import { Util, HttpClientImpl } from "@pnp/common";
+import { extend, HttpClientImpl } from "@pnp/common";
 import { SPRequestExecutorUndefinedException } from "./exceptions";
 
 /**
@@ -46,9 +46,9 @@ export class SPRequestExecutorClient implements HttpClientImpl {
             };
 
             if (options.body) {
-                requestOptions = Util.extend(requestOptions, { body: options.body });
+                requestOptions = extend(requestOptions, { body: options.body });
             } else {
-                requestOptions = Util.extend(requestOptions, { binaryStringRequestBody: true });
+                requestOptions = extend(requestOptions, { binaryStringRequestBody: true });
             }
             executor.executeAsync(requestOptions);
         });

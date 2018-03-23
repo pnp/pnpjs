@@ -1,4 +1,4 @@
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 
 /**
@@ -61,7 +61,7 @@ export class ContentTypes extends SharePointQueryableCollection {
         group = "Custom Content Types",
         additionalSettings: TypedHash<string | number | boolean> = {}): Promise<ContentTypeAddResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "Description": description,
             "Group": group,
             "Id": { "StringValue": id },

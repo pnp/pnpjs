@@ -1,5 +1,5 @@
 import { ODataParser, ODataParserBase } from "./core";
-import { Util } from "@pnp/common";
+import { isFunc } from "@pnp/common";
 
 export class ODataDefaultParser extends ODataParserBase<any> {
 }
@@ -29,7 +29,7 @@ export class BufferParser implements ODataParser<ArrayBuffer> {
 
     public parse(r: any): Promise<ArrayBuffer> {
 
-        if (Util.isFunc(r.arrayBuffer)) {
+        if (isFunc(r.arrayBuffer)) {
             return r.arrayBuffer();
         }
 

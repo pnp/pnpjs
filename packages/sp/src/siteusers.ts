@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteGroups } from "./sitegroups";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 
 /**
  * Properties that provide both a getter, and a setter.
@@ -111,7 +111,7 @@ export class SiteUser extends SharePointQueryableInstance {
     */
     public update(properties: TypedHash<any>): Promise<UserUpdateResult> {
 
-        const postBody = Util.extend({ "__metadata": { "type": "SP.User" } }, properties);
+        const postBody = extend({ "__metadata": { "type": "SP.User" } }, properties);
 
         return this.postCore({
             body: JSON.stringify(postBody),

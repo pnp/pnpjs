@@ -1,6 +1,6 @@
 import { SharePointQueryableConstructor } from "./sharepointqueryable";
 import { extractWebUrl } from "./utils/extractweburl";
-import { Util } from "@pnp/common";
+import { extend, combinePaths } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPODataIdException } from "./exceptions";
 import { ODataParser, ODataParserBase } from "@pnp/odata";
@@ -24,13 +24,13 @@ class SPODataEntityParserImpl<T> extends ODataParserBase<T> {
 
     public hydrate = (d: any) => {
         const o = <T>new this.factory(spGetEntityUrl(d), null);
-        return Util.extend(o, d);
+        return extend(o, d);
     }
 
     public parse(r: Response): Promise<T> {
         return super.parse(r).then((d: any) => {
             const o = <T>new this.factory(spGetEntityUrl(d), null);
-            return Util.extend(o, d);
+            return extend(o, d);
         });
     }
 }
@@ -44,7 +44,7 @@ class SPODataEntityArrayParserImpl<T> extends ODataParserBase<T[]> {
     public hydrate = (d: any[]) => {
         return d.map(v => {
             const o = <T>new this.factory(spGetEntityUrl(v), null);
-            return Util.extend(o, v);
+            return extend(o, v);
         });
     }
 
@@ -52,7 +52,7 @@ class SPODataEntityArrayParserImpl<T> extends ODataParserBase<T[]> {
         return super.parse(r).then((d: any[]) => {
             return d.map(v => {
                 const o = <T>new this.factory(spGetEntityUrl(v), null);
-                return Util.extend(o, v);
+                return extend(o, v);
             });
         });
     }
@@ -62,7 +62,7 @@ export function spGetEntityUrl(entity: any): string {
 
     if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
         // we are dealign with minimal metadata (default)
-        return Util.combinePaths(extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
+        return combinePaths(extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
     } else if (entity.hasOwnProperty("__metadata")) {
         // we are dealing with verbose, which has an absolute uri
         return entity.__metadata.uri;

@@ -1,4 +1,4 @@
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
@@ -65,7 +65,7 @@ export class Webs extends SharePointQueryableCollection {
 
         const postBody = JSON.stringify({
             "parameters":
-                Util.extend({
+                extend({
                     "__metadata": { "type": "SP.WebCreationInformation" },
                 }, props),
         });
@@ -370,7 +370,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public update(properties: TypedHash<string | number | boolean>): Promise<WebUpdateResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "__metadata": { "type": "SP.Web" },
         }, properties));
 
@@ -475,7 +475,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getChanges(query: ChangeQuery): Promise<any> {
 
-        const postBody = JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        const postBody = JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
         return this.clone(Web, "getchanges").postCore({ body: postBody });
     }
 

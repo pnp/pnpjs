@@ -2,7 +2,11 @@ declare var global: any;
 declare var require: (path: string) => any;
 const nodeFetch = require("node-fetch");
 const u: any = require("url");
-import { Util, HttpClientImpl } from "@pnp/common";
+import {
+    HttpClientImpl,
+    isUrlAbsolute,
+    combinePaths,
+} from "@pnp/common";
 import { AuthUrlException } from "../exceptions";
 
 export interface AuthToken {
@@ -35,8 +39,8 @@ export class SPFetchClient implements HttpClientImpl {
 
     public fetch(url: string, options: any): Promise<Response> {
 
-        if (!Util.isUrlAbsolute(url)) {
-            url = Util.combinePaths(this.siteUrl, url);
+        if (!isUrlAbsolute(url)) {
+            url = combinePaths(this.siteUrl, url);
         }
 
         return this.getAddInOnlyAccessToken().then(token => {
@@ -92,7 +96,7 @@ export class SPFetchClient implements HttpClientImpl {
                 resolve(this._realm);
             }
 
-            const url = Util.combinePaths(this.siteUrl, "vti_bin/client.svc");
+            const url = combinePaths(this.siteUrl, "vti_bin/client.svc");
 
             nodeFetch(url, {
                 "headers": {

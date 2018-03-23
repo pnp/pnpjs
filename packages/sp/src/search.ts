@@ -1,5 +1,5 @@
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Util, Dictionary } from "@pnp/common";
+import { extend, Dictionary } from "@pnp/common";
 
 /**
  * Allows for the fluent construction of search queries
@@ -196,7 +196,7 @@ export class SearchQueryBuilder {
 
     private extendQuery(part: any): this {
 
-        this._query = Util.extend(this._query, part);
+        this._query = extend(this._query, part);
         return this;
     }
 }
@@ -251,7 +251,7 @@ export class Search extends SharePointQueryableInstance {
         }
 
         const postBody = JSON.stringify({
-            request: Util.extend({
+            request: extend({
                 "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
             }, formattedBody),
         });
@@ -336,7 +336,7 @@ export class SearchResults {
         // otherwise get the previous RowLimit or default to 10
         const rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
 
-        const query: SearchQuery = Util.extend(this._query, {
+        const query: SearchQuery = extend(this._query, {
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
         });

@@ -3,7 +3,7 @@ import { SharePointQueryableShareableItem } from "./sharepointqueryableshareable
 import { Folder } from "./folders";
 import { File } from "./files";
 import { ContentType } from "./contenttypes";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { ListItemFormUpdateValue } from "./types";
 import { ODataParserBase } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
@@ -134,7 +134,7 @@ export class Items extends SharePointQueryableCollection {
 
         return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(listItemEntityType => {
 
-            const postBody = JSON.stringify(Util.extend({
+            const postBody = JSON.stringify(extend({
                 "__metadata": { "type": listItemEntityType },
             }, properties));
 
@@ -264,7 +264,7 @@ export class Item extends SharePointQueryableShareableItem {
 
             return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(listItemEntityType => {
 
-                const postBody = JSON.stringify(Util.extend({
+                const postBody = JSON.stringify(extend({
                     "__metadata": { "type": listItemEntityType },
                 }, properties));
 

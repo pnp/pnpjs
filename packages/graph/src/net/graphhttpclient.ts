@@ -1,9 +1,10 @@
 import {
-    Util,
+    extend,
     RequestClient,
     mergeHeaders,
     FetchOptions,
     HttpClientImpl,
+    getCtxCallback,
 } from "@pnp/common";
 import { GraphRuntimeConfig } from "../config/graphlibconfig";
 
@@ -30,7 +31,7 @@ export class GraphHttpClient implements RequestClient {
             headers.append("Content-Type", "application/json");
         }
 
-        const opts = Util.extend(options, { headers: headers });
+        const opts = extend(options, { headers: headers });
 
         return this.fetchRaw(url, opts);
     }
@@ -40,7 +41,7 @@ export class GraphHttpClient implements RequestClient {
         // here we need to normalize the headers
         const rawHeaders = new Headers();
         mergeHeaders(rawHeaders, options.headers);
-        options = Util.extend(options, { headers: rawHeaders });
+        options = extend(options, { headers: rawHeaders });
 
         const retry = (ctx: RetryContext): void => {
 
@@ -65,7 +66,7 @@ export class GraphHttpClient implements RequestClient {
                 }
 
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(Util.getCtxCallback(this, retry, ctx), delay);
+                setTimeout(getCtxCallback(this, retry, ctx), delay);
             });
         };
 
@@ -84,22 +85,22 @@ export class GraphHttpClient implements RequestClient {
     }
 
     public get(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "GET" });
+        const opts = extend(options, { method: "GET" });
         return this.fetch(url, opts);
     }
 
     public post(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "POST" });
+        const opts = extend(options, { method: "POST" });
         return this.fetch(url, opts);
     }
 
     public patch(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "PATCH" });
+        const opts = extend(options, { method: "PATCH" });
         return this.fetch(url, opts);
     }
 
     public delete(url: string, options: FetchOptions = {}): Promise<Response> {
-        const opts = Util.extend(options, { method: "DELETE" });
+        const opts = extend(options, { method: "DELETE" });
         return this.fetch(url, opts);
     }
 }

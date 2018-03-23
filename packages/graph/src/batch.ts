@@ -1,6 +1,6 @@
 import { ODataBatch } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { Util, beta } from "@pnp/common";
+import { beta, objectDefinedNotNull, extend } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
 import { GraphHttpClient } from "./net/graphhttpclient";
 
@@ -84,7 +84,7 @@ export class GraphBatch extends ODataBatch {
 
                     const request = this.requests[index];
 
-                    if (Util.objectDefinedNotNull(request)) {
+                    if (objectDefinedNotNull(request)) {
 
                         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
 
@@ -124,26 +124,26 @@ export class GraphBatch extends ODataBatch {
             // merge global config headers
             if (typeof GraphRuntimeConfig.headers !== "undefined" && GraphRuntimeConfig.headers !== null) {
 
-                headers = Util.extend(headers, GraphRuntimeConfig.headers);
+                headers = extend(headers, GraphRuntimeConfig.headers);
             }
 
             if (typeof reqInfo.options !== "undefined") {
 
                 // merge per request headers
                 if (typeof reqInfo.options.headers !== "undefined" && reqInfo.options.headers !== null) {
-                    headers = Util.extend(headers, reqInfo.options.headers);
+                    headers = extend(headers, reqInfo.options.headers);
                 }
 
                 // add a request body
                 if (typeof reqInfo.options.body !== "undefined" && reqInfo.options.body !== null) {
 
-                    requestFragment = Util.extend(requestFragment, {
+                    requestFragment = extend(requestFragment, {
                         body: reqInfo.options.body,
                     });
                 }
             }
 
-            requestFragment = Util.extend(requestFragment, {
+            requestFragment = extend(requestFragment, {
                 headers: headers,
             });
 

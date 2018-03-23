@@ -1,5 +1,5 @@
 import { ODataParser } from "./core";
-import { Util, FetchOptions } from "@pnp/common";
+import { getGUID, FetchOptions } from "@pnp/common";
 
 export interface ODataBatchRequestInfo {
     url: string;
@@ -15,7 +15,7 @@ export abstract class ODataBatch {
     protected _dependencies: Promise<void>[];
     protected _requests: ODataBatchRequestInfo[];
 
-    constructor(private _batchId = Util.getGUID()) {
+    constructor(private _batchId = getGUID()) {
         this._requests = [];
         this._dependencies = [];
     }

@@ -1,5 +1,5 @@
 import { SharePointQueryable } from "./sharepointqueryable";
-import { Util } from "@pnp/common";
+import { extend } from "@pnp/common";
 import { EmailProperties } from "./types";
 import { SPBatch } from "./batch";
 import { ICachingOptions } from "@pnp/odata";
@@ -88,27 +88,27 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
 
         if (props.To && props.To.length > 0) {
 
-            params.properties = Util.extend(params.properties, {
+            params.properties = extend(params.properties, {
                 To: { results: props.To },
             });
         }
 
         if (props.CC && props.CC.length > 0) {
 
-            params.properties = Util.extend(params.properties, {
+            params.properties = extend(params.properties, {
                 CC: { results: props.CC },
             });
         }
 
         if (props.BCC && props.BCC.length > 0) {
 
-            params.properties = Util.extend(params.properties, {
+            params.properties = extend(params.properties, {
                 BCC: { results: props.BCC },
             });
         }
 
         if (props.AdditionalHeaders) {
-            params.properties = Util.extend(params.properties, {
+            params.properties = extend(params.properties, {
                 AdditionalHeaders: props.AdditionalHeaders,
             });
         }

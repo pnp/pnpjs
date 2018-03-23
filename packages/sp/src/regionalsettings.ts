@@ -9,7 +9,7 @@ import {
 } from "./odata";
 
 import {
-    Util,
+    dateAdd,
 } from "@pnp/common";
 
 /**
@@ -102,7 +102,7 @@ export class TimeZone extends SharePointQueryableInstance {
         if (typeof localTime === "string") {
             dateIsoString = localTime;
         } else {
-            dateIsoString = Util.dateAdd(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
+            dateIsoString = dateAdd(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
         }
 
         return this.clone(TimeZone, `localtimetoutc('${dateIsoString}')`)

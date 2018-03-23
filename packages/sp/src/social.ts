@@ -3,7 +3,7 @@ import {
     SharePointQueryableInstance,
 } from "./sharepointqueryable";
 
-import { Util } from "@pnp/common";
+import { extend } from "@pnp/common";
 
 export interface SocialMethods {
     my: MySocialQueryMethods;
@@ -85,7 +85,7 @@ export class SocialQuery extends SharePointQueryableInstance implements SocialMe
     private createSocialActorInfoRequestBody(actorInfo: SocialActorInfo): string {
         return JSON.stringify({
             "actor":
-                Util.extend({
+                extend({
                     Id: null,
                     "__metadata": { "type": "SP.Social.SocialActorInfo" },
                 }, actorInfo),

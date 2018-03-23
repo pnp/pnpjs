@@ -1,5 +1,5 @@
 import { ODataParser } from "./core";
-import { RuntimeConfig, Util, PnPClientStore, PnPClientStorage } from "@pnp/common";
+import { RuntimeConfig, dateAdd, PnPClientStore, PnPClientStorage } from "@pnp/common";
 
 export interface ICachingOptions {
     expiration?: Date;
@@ -11,7 +11,7 @@ export class CachingOptions implements ICachingOptions {
 
     protected static storage = new PnPClientStorage();
 
-    public expiration = Util.dateAdd(new Date(), "second", RuntimeConfig.defaultCachingTimeoutSeconds);
+    public expiration = dateAdd(new Date(), "second", RuntimeConfig.defaultCachingTimeoutSeconds);
 
     public storeName: "session" | "local" = RuntimeConfig.defaultCachingStore;
 

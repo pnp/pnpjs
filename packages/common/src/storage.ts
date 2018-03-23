@@ -1,4 +1,4 @@
-import { Util } from "./util";
+import { dateAdd, getCtxCallback } from "./util";
 import { Dictionary } from "./collections";
 import { RuntimeConfig } from "./libconfig";
 import { Logger, LogLevel } from "@pnp/logging";
@@ -166,7 +166,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
-            expire = Util.dateAdd(new Date(), "second", defaultTimeout);
+            expire = dateAdd(new Date(), "second", defaultTimeout);
         }
 
         return JSON.stringify({ pnp: 1, expiration: expire, value: o });
@@ -181,7 +181,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
         this.deleteExpired().then(_ => {
 
             // call ourself in the future
-            setTimeout(Util.getCtxCallback(this, this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
+            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
         }).catch(e => {
 
             // we've got some error - so just stop the loop and report the error

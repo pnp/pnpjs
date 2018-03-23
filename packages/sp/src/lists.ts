@@ -6,7 +6,7 @@ import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
@@ -59,7 +59,7 @@ export class Lists extends SharePointQueryableCollection {
      */
     public add(title: string, description = "", template = 100, enableContentTypes = false, additionalSettings: TypedHash<string | number | boolean> = {}): Promise<ListAddResult> {
 
-        const addSettings = Util.extend({
+        const addSettings = extend({
             "AllowContentTypes": enableContentTypes,
             "BaseTemplate": template,
             "ContentTypesEnabled": enableContentTypes,
@@ -95,7 +95,7 @@ export class Lists extends SharePointQueryableCollection {
 
         return new Promise((resolve, reject) => {
 
-            const addOrUpdateSettings = Util.extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
+            const addOrUpdateSettings = extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
 
             const list: List = this.getByTitle(addOrUpdateSettings.Title);
 
@@ -260,7 +260,7 @@ export class List extends SharePointQueryableSecurable {
     /* tslint:disable no-string-literal */
     public update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<ListUpdateResult> {
 
-        const postBody = JSON.stringify(Util.extend({
+        const postBody = JSON.stringify(extend({
             "__metadata": { "type": "SP.List" },
         }, properties));
 
@@ -306,7 +306,7 @@ export class List extends SharePointQueryableSecurable {
     public getChanges(query: ChangeQuery): Promise<any> {
 
         return this.clone(List, "getchanges").postCore({
-            body: JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     }
 
@@ -333,7 +333,7 @@ export class List extends SharePointQueryableSecurable {
 
         const q = this.clone(List, "getitems");
         return q.expand.apply(q, expands).postCore({
-            body: JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
     }
 
@@ -343,7 +343,7 @@ export class List extends SharePointQueryableSecurable {
     public getListItemChangesSinceToken(query: ChangeLogitemQuery): Promise<string> {
 
         return this.clone(List, "getlistitemchangessincetoken").postCore({
-            body: JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse(r) { return r.text(); } });
     }
 
@@ -387,10 +387,10 @@ export class List extends SharePointQueryableSecurable {
     public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null): Promise<any> {
 
         const postBody = {
-            overrideParameters: Util.extend({
+            overrideParameters: extend({
                 "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
             }, overrideParameters),
-            parameters: Util.extend({
+            parameters: extend({
                 "__metadata": { "type": "SP.RenderListDataParameters" },
             }, parameters),
         };

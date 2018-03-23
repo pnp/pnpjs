@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteUsers } from "./siteusers";
-import { Util, TypedHash } from "@pnp/common";
+import { extend, TypedHash } from "@pnp/common";
 
 /**
  * Principal Type enum
@@ -55,7 +55,7 @@ export class SiteGroups extends SharePointQueryableCollection {
      * @param props The group properties object of property names and values to be set for the group
      */
     public add(properties: TypedHash<any>): Promise<GroupAddResult> {
-        const postBody = JSON.stringify(Util.extend(
+        const postBody = JSON.stringify(extend(
             { "__metadata": { "type": "SP.Group" } }, properties));
 
         return this.postCore({ body: postBody }).then((data) => {
@@ -127,7 +127,7 @@ export class SiteGroup extends SharePointQueryableInstance {
     /* tslint:disable no-string-literal */
     public update(properties: TypedHash<any>): Promise<GroupUpdateResult> {
 
-        const postBody = Util.extend({ "__metadata": { "type": "SP.Group" } }, properties);
+        const postBody = extend({ "__metadata": { "type": "SP.Group" } }, properties);
 
         return this.postCore({
             body: JSON.stringify(postBody),
