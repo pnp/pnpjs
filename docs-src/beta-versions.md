@@ -14,4 +14,4 @@ npm install @pnp/logging@beta @pnp/common@beta @pnp/odata@beta --save
 ```
 
 Do please remember that it is always possible something does not work in a beta version, so be aware and if you find something please [report an
-issue](https://github.com/pnp/pnp/issues).
+issue](https://github.com/pnp/pnpjs/issues).
