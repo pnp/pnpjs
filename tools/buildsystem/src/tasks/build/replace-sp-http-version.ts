@@ -14,11 +14,12 @@ export function replaceSPHttpVersion(ctx: BuildContext) {
     return new Promise((resolve, reject) => {
 
         pump([
-            src(["./src/net/httpclient.js", "./src/batch.js"], {
+            src(["./src/net/sphttpclient.js", "./src/batch.js"], {
+                base: ".",
                 cwd: ctx.targetFolder,
             }),
             replace("$$Version$$", ctx.version),
-            dest(ctx.targetFolder, {
+            dest(".", {
                 overwrite: true,
             }),
         ], (err: (Error | null)) => {
