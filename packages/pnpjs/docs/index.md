@@ -35,7 +35,7 @@ Install only this library.
 `npm install @pnp/pnpjs`
 
 Browse to _./node_modules/@pnp/pnpjs/dist_ and grab either _pnpjs.es5.umd.bundle.js_ or _pnpjs.es5.umd.bundle.min.js_ depending on your needs. You can then add a script
-tag referecing this file and you will have a global variable "$pnp".
+tag referencing this file and you will have a global variable "$pnp".
 
 For example you might paste the following into a script editor web part:
 
