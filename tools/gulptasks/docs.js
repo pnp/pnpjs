@@ -54,7 +54,7 @@ function mdToHtml(file, a, b, header, footer) {
 
     // append tracking image tag
     const telemetryPath = path.relative(file.base, file.path).replace(/\.md$/i, "").replace(/\\/ig, "/");
-    const img = new Buffer(`<img src="https://telemetry.sharepointpnp.com/@pnp/pnp/ghpages/${telemetryPath}" alt="spacer" />`);
+    const img = new Buffer(`<img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/${telemetryPath}" alt="spacer" />`);
 
     file.contents = Buffer.concat([header, new Buffer(result), footer, img]);
     file.path = replaceExt(file.path, ".html");
@@ -85,9 +85,9 @@ function filePathReplacer() {
 
 function breadcumbReplacer() {
 
-    return [`<a href="/pnp">@pnp</a>`]
+    return [`<a href="/pnpjs">@pnp</a>`]
         .concat(this.file.relative.split(/\\|\//).map((p, i, arr) => {
-            return `<a href="/pnp/${arr.slice(0, i + 1).join("/")}">${replaceExt(p.replace(/-/g, " "), "")}</a>`;
+            return `<a href="/pnpjs/${arr.slice(0, i + 1).join("/")}">${replaceExt(p.replace(/-/g, " "), "")}</a>`;
         }))
         .join("&nbsp;&nbsp;&gt;&nbsp;&nbsp;");
 }
@@ -156,7 +156,7 @@ gulp.task("docs-serve", (done) => {
     sequence("clean-docs", "watch:docs", () => {
         serverFactory({
             root: "./docs",
-            path: "/pnp",
+            path: "/pnpjs",
         }).then(server => {
 
             console.log(`server.listening: ${server.listening}`);

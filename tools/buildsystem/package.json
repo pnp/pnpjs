@@ -8,7 +8,7 @@
   "dependencies": {},
   "peerDependencies": {},
   "engines": {
-    "node": "^6.9.1"
+    "node": "^8.9.4"
   },
   "author": {
     "name": "Microsoft and other contributors"
