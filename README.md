@@ -4,7 +4,7 @@ PnPJS is a fluent JavaScript API for consuming SharePoint and Office 365 REST AP
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
 
-**If you are moving from sp-pnp-js please review the [transition guide](https://pnp.github.io/pnp/transition-guide.html)**
+**If you are moving from sp-pnp-js please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide.html)**
 
 ## Getting Started
 
@@ -12,8 +12,8 @@ Please see the [Getting Started guide](https://pnp.github.io/pnp/getting-started
 
 ## Documentation
 
-Please review the [documentation](https://pnp.github.io/pnp/) for the PnPJS libraries. This
-site is updated with each release. If cannot find what you need, please let us know by logging an [documentation request](https://github.com/pnp/pnp/issues).
+Please review the [documentation](https://pnp.github.io/pnpjs/) for the PnPJS libraries. This
+site is updated with each release. If cannot find what you need, please let us know by logging an [documentation request](https://github.com/pnp/pnpjs/issues).
 
 ## Packages
 
@@ -68,4 +68,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ### Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
-![](https://telemetry.sharepointpnp.com/@pnp/pnp/readme)
+![](https://telemetry.sharepointpnp.com/@pnp/pnpjs/readme)
