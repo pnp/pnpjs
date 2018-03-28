@@ -65,7 +65,7 @@ gulp clean-docs
 ## docs
 
 The docs command builds the html documentation from the md files located in the docs-src folder and all of the package docs folders. This is the command used to generate
-the [website](https://pnp.github.io/pnp/) for each release and can be used locally to have an easily clickable reference. The entire site will be rebuilt each time.
+the [website](https://pnp.github.io/pnpjs/) for each release and can be used locally to have an easily clickable reference. The entire site will be rebuilt each time.
 
 ```
 gulp docs

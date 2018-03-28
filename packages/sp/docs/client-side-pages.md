@@ -61,7 +61,7 @@ section.addColumn(6);
 const column = section.addColumn(6);
 
 // add a text control to the second new column
-column.addControl(new ClientSideText("Be sure to check out the @pnp docs at https://pnp.github.io/pnp/"));
+column.addControl(new ClientSideText("Be sure to check out the @pnp docs at https://pnp.github.io/pnpjs/"));
 
 // we need to save our content changes
 await page.save();

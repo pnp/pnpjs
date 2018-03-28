@@ -9,7 +9,7 @@ Thank you for your interest in contributing to our work. This guide should help 
 * Include a test for any new functionality and ensure all existing tests are passing by running `gulp test`
 * Ensure tslint checks pass by typing `gulp lint`
 * Keep your PRs as simple as possible and describe the changes to help the reviewer understand your work
-* If you have an idea for a larger change to the library please [open an issue](https://github.com/pnp/pnp/issues) and let's discuss before you invest many hours - these are very welcome but want to ensure it is something we can merge before you spend the time :)
+* If you have an idea for a larger change to the library please [open an issue](https://github.com/pnp/pnpjs/issues) and let's discuss before you invest many hours - these are very welcome but want to ensure it is something we can merge before you spend the time :)
 
 ## Setup your development environment
 

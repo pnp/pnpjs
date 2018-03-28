@@ -8,7 +8,7 @@ Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates aro
 
 ## Getting Started
 
-Please see the [Getting Started guide](https://pnp.github.io/pnp/getting-started.html) in the main documentation.
+Please see the [Getting Started guide](https://pnp.github.io/pnpjs/getting-started.html) in the main documentation.
 
 ## Documentation
 

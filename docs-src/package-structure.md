@@ -35,7 +35,7 @@ files are the debug mapping files related to the .js file of the same name.
 ### Docs
 
 This folder contains markdown documentation for the library. All packages will include an index.md which serves as the root of the docs. These files are also used
-to build the [public site](https://pnp.github.io/pnp/). To edit these files they can be found in the packages/{package}/docs folder.
+to build the [public site](https://pnp.github.io/pnpjs/). To edit these files they can be found in the packages/{package}/docs folder.
 
 ### Src
 

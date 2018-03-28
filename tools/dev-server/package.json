@@ -6,7 +6,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pnp/pnp/tree/dev/tools/dev-server"
+    "url": "https://github.com/pnp/pnpjs/tree/dev/tools/dev-server"
   },
   "author": "Patrick Rodgers",
   "license": "MIT",

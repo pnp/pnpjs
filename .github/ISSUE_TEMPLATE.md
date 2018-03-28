@@ -1,7 +1,7 @@
 Thank you for reporting an issue, suggesting an enhancement, or asking a question. We appreciate your feedback - to help the team understand your
 needs please complete the below template to ensure we have the details to help. Thanks!
 
-**Please check out the [Docs](https://pnp.github.io/pnp/) to see if your question is already addressed there. This will help us ensure our documentation covers the most frequent questions.**
+**Please check out the [Docs](https://pnp.github.io/pnpjs/) to see if your question is already addressed there. This will help us ensure our documentation covers the most frequent questions.**
 
 ### Category
 - [ ] Enhancement
