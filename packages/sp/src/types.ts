@@ -1646,3 +1646,9 @@ export const enum UrlZone {
      */
     Extranet,
 }
+
+export interface StorageEntity {
+    Value: string | null;
+    Comment: string | null;
+    Description: string | null;
+}
