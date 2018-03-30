@@ -7,20 +7,20 @@ Getting items from a list is one of the basic actions that most applications req
 ### Basic Get
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
 // get all the items from a list
-pnp.sp.web.lists.getByTitle("My List").items.get().then((items: any[]) => {
+sp.web.lists.getByTitle("My List").items.get().then((items: any[]) => {
     console.log(items);
 });
 
 // get a specific item by id
-pnp.sp.web.lists.getByTitle("My List").items.getById(1).get().then((item: any) => {
+sp.web.lists.getByTitle("My List").items.getById(1).get().then((item: any) => {
     console.log(item);
 });
 
 // use odata operators for more efficient queries
-pnp.sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true).get().then((items: any[]) => {
+sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true).get().then((items: any[]) => {
     console.log(items);
 });
 ```
@@ -34,28 +34,28 @@ be used.
 
 ```TypeScript
 // basic usage
-pnp.sp.web.lists.getByTitle("BigList").items.getAll().then((allItems: any[]) => {
+sp.web.lists.getByTitle("BigList").items.getAll().then((allItems: any[]) => {
 
     // how many did we get
     console.log(allItems.length);
 });
 
 // set page size
-pnp.sp.web.lists.getByTitle("BigList").items.getAll(4000).then((allItems: any[]) => {
+sp.web.lists.getByTitle("BigList").items.getAll(4000).then((allItems: any[]) => {
 
     // how many did we get
     console.log(allItems.length);
 });
 
 // use select and top. top will set page size and override the any value passed to getAll
-pnp.sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll().then((allItems: any[]) => {
+sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll().then((allItems: any[]) => {
 
     // how many did we get
     console.log(allItems.length);
 });
 
 // we can also use filter as a supported odata operation, but this will likely fail on large lists
-pnp.sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll().then((allItems: any[]) => {
+sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll().then((allItems: any[]) => {
 
     // how many did we get
     console.log(allItems.length);
@@ -67,11 +67,11 @@ pnp.sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'T
 When working with lookup fields you need to use the expand operator along with select to get the related fields from the lookup column. This works for both the items collection and item instances.
 
 ```TypeScript
-pnp.sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((items: any[]) => {
+sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((items: any[]) => {
     console.log(items);
 });
 
-pnp.sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((item: any) => {
+sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((item: any) => {
     console.log(item);
 });
 ```
@@ -112,10 +112,10 @@ w.lists.getByTitle("Pages").items
 There are several ways to add items to a list. The simplest just uses the _add_ method of the items collection passing in the properties as a plain object.
 
 ```TypeScript
-import { default as pnp, ItemAddResult } from "@pnp/sp";
+import { sp, ItemAddResult } from "@pnp/sp";
 
 // add an item to the list
-pnp.sp.web.lists.getByTitle("My List").items.add({
+sp.web.lists.getByTitle("My List").items.add({
     Title: "Title",
     Description: "Description"
 }).then((iar: ItemAddResult) => {
@@ -128,7 +128,7 @@ pnp.sp.web.lists.getByTitle("My List").items.add({
 You can also set the content type id when you create an item as shown in the example below:
 
 ```TypeScript
-pnp.sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
+sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
     Title: "Test 1",
     ContentTypeId: "0x01030058FD86C279252341AB303852303E4DAF"
 });
@@ -141,7 +141,7 @@ There are two types of user fields, those that allow a single value and those th
 Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an object with a "results" property and an array. Examples for both are shown below.
 
 ```TypeScript
-pnp.sp.web.lists.getByTitle("PeopleFields").items.add({
+sp.web.lists.getByTitle("PeopleFields").items.add({
     Title: Util.getGUID(),
     User1Id: 9, // allows a single user
     User2Id: { 
@@ -150,6 +150,19 @@ pnp.sp.web.lists.getByTitle("PeopleFields").items.add({
 }).then(i => {
     console.log(i);
 });
+```
+
+If you want to update or add user field values when using **validateUpdateListItem** you need to use the form shown below. You can specify multiple values in the array.
+
+```TypeScript
+const result = await sp.web.lists.getByTitle("UserFieldList").items.getById(1).validateUpdateListItem([{
+    FieldName: "UserField",
+    FieldValue: JSON.stringify([{ "Key": "i:0#.f|membership|person@tenant.com" }]),
+},
+{
+    FieldName: "Title",
+    FieldValue: "Test - Updated",
+}]);
 ```
 
 ### Lookup Fields
@@ -162,7 +175,7 @@ What is said for User Fields is, in general, relevant to Lookup Fields:
 - Numeric Ids for lookups' items should be passed as values
 
 ```TypeScript
-pnp.sp.web.lists.getByTitle("LookupFields").items.add({
+sp.web.lists.getByTitle("LookupFields").items.add({
     Title: Util.getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
     MuptiLookupFieldId: { 
@@ -174,13 +187,13 @@ pnp.sp.web.lists.getByTitle("LookupFields").items.add({
 ### Add Multiple Items
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
-let list = pnp.sp.web.lists.getByTitle("rapidadd");
+let list = sp.web.lists.getByTitle("rapidadd");
 
 list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 
-    let batch = pnp.sp.web.createBatch();
+    let batch = sp.web.createBatch();
 
     list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
         console.log(b);
@@ -199,9 +212,9 @@ list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 The update method is very similar to the add method in that it takes a plain object representing the fields to update. The property names are the internal names of the fields. If you aren't sure you can always do a get request for an item in the list and see the field names that come back - you would use these same names to update the item.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
-let list = pnp.sp.web.lists.getByTitle("MyList");
+let list = sp.web.lists.getByTitle("MyList");
 
 list.items.getById(1).update({
     Title: "My New Title",
@@ -214,10 +227,10 @@ list.items.getById(1).update({
 ### Getting and updating a collection using filter
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
 // you are getting back a collection here
-pnp.sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get().then((items: any[]) => {
+sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get().then((items: any[]) => {
     // see if we got something
     if (items.length > 0) {
         pnp.sp.web.lists.getByTitle("MyList").items.getById(items[0].Id).update({
@@ -235,13 +248,13 @@ pnp.sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").
 This approach avoids multiple calls for the same list's entity type name.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
-let list = pnp.sp.web.lists.getByTitle("rapidupdate");
+let list = sp.web.lists.getByTitle("rapidupdate");
 
 list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 
-    let batch = pnp.sp.web.createBatch();
+    let batch = sp.web.createBatch();
 
     // note requirement of "*" eTag param - or use a specific eTag value as needed
     list.items.getById(1).inBatch(batch).update({ Title: "Batch 6" }, "*", entityTypeFullName).then(b => {
@@ -261,9 +274,9 @@ list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import sp from "@pnp/sp";
 
-let list = pnp.sp.web.lists.getByTitle("MyList");
+let list = sp.web.lists.getByTitle("MyList");
 
 list.items.getById(1).delete().then(_ => {});
 ```
@@ -276,7 +289,7 @@ Field's `EntityPropertyName` value should be used.
 The easiest way to get know EntityPropertyName is to use the following snippet:
 
 ```TypeScript
-pnp.sp.web.lists
+sp.web.lists
   .getByTitle('[Lists_Title]')
   .fields
   .select('Title, EntityPropertyName')
