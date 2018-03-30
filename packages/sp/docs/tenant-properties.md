@@ -26,6 +26,8 @@ This method can be used from any web to retrieve values previsouly set.
 import { sp, StorageEntity } from "@pnp/sp";
 
 const prop: StorageEntity = await sp.getStorageEntity("Test1");
+
+console.log(prop.Value);
 ```
 
 ## removeStorageEntity
