@@ -774,7 +774,7 @@ export enum ReorderingRuleMatchType {
 export enum QueryPropertyValueType {
     None = 0,
     StringType = 1,
-    Int32TYpe = 2,
+    Int32Type = 2,
     BooleanType = 3,
     StringArrayType = 4,
     UnSupportedType = 5,
