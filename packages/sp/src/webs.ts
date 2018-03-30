@@ -10,7 +10,7 @@ import { ContentTypes } from "./contenttypes";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
 import { extractWebUrl } from "./utils/extractweburl";
-import { ChangeQuery } from "./types";
+import { ChangeQuery, StorageEntity } from "./types";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
@@ -510,10 +510,38 @@ export class Web extends SharePointQueryableShareableWeb {
     /**
      * Returns the tenant property corresponding to the specified key in the app catalog site
      * 
-     * @param key 
+     * @param key Id of storage entity to be set
      */
-    public getStorageEntity(key: string): Promise<string> {
+    public getStorageEntity(key: string): Promise<StorageEntity> {
         return this.clone(Web, `getStorageEntity('${key}')`).get();
+    }
+
+    /**
+     * This will set the storage entity identified by the given key (MUST be called in the context of the app catalog)
+     * 
+     * @param key Id of storage entity to be set
+     * @param value Value of storage entity to be set
+     * @param description Description of storage entity to be set
+     * @param comments Comments of storage entity to be set
+     */
+    public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
+        return this.clone(Web, `setStorageEntity`).postCore({
+            body: JSON.stringify({
+                comments,
+                description,
+                key,
+                value,
+            }),
+        });
+    }
+
+    /**
+     * This will remove the storage entity identified by the given key
+     * 
+     * @param key Id of storage entity to be removed
+     */
+    public removeStorageEntity(key: string): Promise<void> {
+        return this.clone(Web, `removeStorageEntity('${key}')`).postCore();
     }
 
     /**
