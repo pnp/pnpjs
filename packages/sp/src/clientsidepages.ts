@@ -655,7 +655,7 @@ export class CanvasColumn extends CanvasControl {
 }
 
 /**
- * Avstract class with shared functionality for parts
+ * Abstract class with shared functionality for parts
  */
 export abstract class ClientSidePart extends CanvasControl {
 
@@ -742,7 +742,8 @@ export class ClientSideWebpart extends ClientSidePart {
         public propertieJson: TypedHash<any> = {},
         public webPartId = "",
         protected htmlProperties = "",
-        protected serverProcessedContent: ServerProcessedContent = null) {
+        protected serverProcessedContent: ServerProcessedContent = null,
+        protected canvasDataVersion = "1.0") {
         super(3, "1.0");
     }
 
@@ -757,6 +758,7 @@ export class ClientSideWebpart extends ClientSidePart {
         const manifest: ClientSidePageComponentManifest = JSON.parse(component.Manifest);
         this.title = manifest.preconfiguredEntries[0].title.default;
         this.description = manifest.preconfiguredEntries[0].description.default;
+        this.dataVersion = "";
         this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
     }
 
@@ -786,9 +788,9 @@ export class ClientSideWebpart extends ClientSidePart {
 
         const html: string[] = [];
 
-        html.push(`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.dataVersion}" data-sp-controldata="${this.jsonData}">`);
+        html.push(`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.canvasDataVersion}" data-sp-controldata="${this.jsonData}">`);
 
-        html.push(`<div data-sp-webpart="" data-sp-canvasdataversion="${this.dataVersion}" data-sp-webpartdata="${ClientSidePage.jsonToEscapedString(data)}">`);
+        html.push(`<div data-sp-webpart="" data-sp-webpartdataversion="${this.dataVersion}" data-sp-webpartdata="${ClientSidePage.jsonToEscapedString(data)}">`);
 
         html.push(`<div data-sp-componentid>`);
         html.push(this.webPartId);
@@ -813,6 +815,8 @@ export class ClientSideWebpart extends ClientSidePart {
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
+        this.canvasDataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion");
+        this.dataVersion = getAttrValueFromString(html, "data-sp-webpartdataversion");
         this.setProperties(webPartData.properties);
 
         if (typeof webPartData.serverProcessedContent !== "undefined") {
@@ -840,6 +844,7 @@ export class ClientSideWebpart extends ClientSidePart {
             },
             webPartId: this.webPartId,
         };
+
     }
 
     protected renderHtmlProperties(): string {
@@ -853,25 +858,28 @@ export class ClientSideWebpart extends ClientSidePart {
         } else if (typeof this.serverProcessedContent !== "undefined") {
 
             if (typeof this.serverProcessedContent.searchablePlainTexts !== "undefined") {
-                for (let i = 0; i < this.serverProcessedContent.searchablePlainTexts.length; i++) {
-                    const prop = this.serverProcessedContent.searchablePlainTexts[i];
-                    html.push(`<div data-sp-prop-name="${prop.Name}" data-sp-searchableplaintext="true">`);
-                    html.push(prop.Value);
+
+                const keys = Object.keys(this.serverProcessedContent.searchablePlainTexts);
+                for (let i = 0; i < keys.length; i++) {
+                    html.push(`<div data-sp-prop-name="${keys[i]}" data-sp-searchableplaintext="true">`);
+                    html.push(this.serverProcessedContent.searchablePlainTexts[keys[i]]);
                     html.push("</div>");
                 }
             }
 
             if (typeof this.serverProcessedContent.imageSources !== "undefined") {
-                for (let i = 0; i < this.serverProcessedContent.imageSources.length; i++) {
-                    const prop = this.serverProcessedContent.imageSources[i];
-                    html.push(`<img data-sp-prop-name="${prop.Name}" src="${prop.Value}" />`);
+
+                const keys = Object.keys(this.serverProcessedContent.imageSources);
+                for (let i = 0; i < keys.length; i++) {
+                    html.push(`<img data-sp-prop-name="${keys[i]}" src="${this.serverProcessedContent.imageSources[keys[i]]}" />`);
                 }
             }
 
             if (typeof this.serverProcessedContent.links !== "undefined") {
-                for (let i = 0; i < this.serverProcessedContent.links.length; i++) {
-                    const prop = this.serverProcessedContent.links[i];
-                    html.push(`<a data-sp-prop-name="${prop.Name}" href="${prop.Value}"></a>`);
+
+                const keys = Object.keys(this.serverProcessedContent.links);
+                for (let i = 0; i < keys.length; i++) {
+                    html.push(`<a data-sp-prop-name="${keys[i]}" href="${this.serverProcessedContent.links[keys[i]]}"></a>`);
                 }
             }
         }
@@ -959,9 +967,9 @@ interface ClientSidePageComponentManifest {
 }
 
 export interface ServerProcessedContent {
-    searchablePlainTexts: any[];
-    imageSources: any[];
-    links: any[];
+    searchablePlainTexts: TypedHash<string>;
+    imageSources: TypedHash<string>;
+    links: TypedHash<string>;
 }
 
 export interface ClientSideControlPosition {
