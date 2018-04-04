@@ -10,6 +10,7 @@ const gulp = require("gulp"),
     istanbul = require("gulp-istanbul"),
     path = require("path"),
     yargs = require('yargs').argv,
+    fs = require("fs"),
     cmdLine = require("./args").processConfigCmdLine;
 
 gulp.task("_istanbul:hook", ["build:test"], () => {
@@ -20,17 +21,27 @@ gulp.task("_istanbul:hook", ["build:test"], () => {
         .pipe(istanbul.hookRequire());
 });
 
+function getAllPackageFolderNames() {
+
+    const root = path.resolve("./packages");
+    return fs.readdirSync(root).filter(dirName => {
+        dir = path.join(root, dirName);
+        const stat = fs.statSync(dir);
+        return stat && stat.isDirectory();
+    });
+}
+
 gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
 
     // when using single, grab only that test.js file - otherwise use the entire test.js glob
 
     // we use the built *.test.js files here
-    const args = cmdLine({});
+    const args = cmdLine({ packages: getAllPackageFolderNames() });
     let paths = ["./testing/test/main.js"];
     const siteUrl = yargs.site ? yargs.site : "";
 
     // update to only process specific packages
-    if (args.hasOwnProperty("packages") && args.packages.length > 0) {
+    if (yargs.packages || yargs.p) {
 
         if (yargs.single || yargs.s) {
             // and only a single set of tests
