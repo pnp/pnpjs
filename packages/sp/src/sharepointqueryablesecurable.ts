@@ -28,7 +28,7 @@ export class SharePointQueryableSecurable extends SharePointQueryableInstance {
     public getUserEffectivePermissions(loginName: string): Promise<BasePermissions> {
         const q = this.clone(SharePointQueryable, "getUserEffectivePermissions(@user)");
         q.query.add("@user", `'${encodeURIComponent(loginName)}'`);
-        return q.get().then(r => {
+        return q.get<any>().then(r => {
             // handle verbose mode
             return r.hasOwnProperty("GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r;
         });

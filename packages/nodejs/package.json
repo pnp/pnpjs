@@ -5,9 +5,9 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
-    "adal-node": "0.1.22",
-    "node-fetch": "1.7.3",
-    "tslib": "1.8.1"
+    "adal-node": "0.1.28",
+    "node-fetch": "2.1.2",
+    "tslib": "1.9.0"
   },
   "peerDependencies": {
     "@pnp/common": "0.0.0-PLACEHOLDER",
