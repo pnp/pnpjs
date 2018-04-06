@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-addinhelpers">sp addinhelpers</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-addinhelpers/sp-rest-addin.html">sp rest addin</a>
+    </nav>
+
+    <article>
+        <h1>@pnp/sp-addinhelpers/sprestaddin</h1>
+<p>This class extends the sp export from @pnp/sp and adds in the methods required to make cross domain calls</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods</span>
+<span class="hljs-keyword">import</span> { sp, SPRequestExecutorClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-addinhelpers"</span>;
+
+<span class="hljs-comment">// this only needs to be done once within your application</span>
+sp.setup({
+    sp: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> SPRequestExecutorClient();
+        }
+    }
+});
+
+<span class="hljs-comment">// now we need to use the crossDomainWeb method to make our requests to the host web</span>
+<span class="hljs-keyword">const</span> addInWenUrl = <span class="hljs-string">"{The add-in web url, likely from the query string}"</span>;
+<span class="hljs-keyword">const</span> hostWebUrl = <span class="hljs-string">"{The host web url, likely from the query string}"</span>;
+
+<span class="hljs-comment">// make requests into the host web via the SP.RequestExecutor</span>
+sp.crossDomainWeb(addInWenUrl, hostWebUrl).get().then(<span class="hljs-function"><span class="hljs-params">w</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(w, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp-addinhelpers\sp-rest-addin.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp-addinhelpers/docs/sp-rest-addin" alt="spacer" />

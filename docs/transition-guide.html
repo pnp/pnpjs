@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/transition-guide.html">transition guide</a>
+    </nav>
+
+    <article>
+        <h1>Transition Guide</h1>
+<p>These libraries are based on the <a href="https://github.com/SharePoint/PnP-JS-Core">sp-pnp-js</a> library and our goal was to make transition as easy as possible. The most
+obvious difference is the splitting of the library into multiple packages. We have however created a rollup library to help folks make the move - though our
+recommendation is to switch to the separate packages. This article outlines transitioning your existing projects from sp-pnp-js to the new libraries, please provide
+feedback on how we can improve out guidance.</p>
+<h2>Installing @pnp libraries</h2>
+<p>With the separation of the packages we needed a way to indicate how they are related, while making things easy for folks to track and update and we have used peer
+dependencies between the packages to do this. With each release we will release all packages so that the version numbers move in lock-step, making it easy to ensure
+you are working with compatible versions. One thing to keep in mind with peer dependencies is that they are not automatically installed. The advantage is you
+will only have one copy of each library in your project.</p>
+<p>Installing peer dependencies is easy, you can specify each of the packages in a single line, here we are installing everything required to use the @pnp/sp package.</p>
+<pre><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp
+</code></pre>
+<p>If you do not install all of the peer dependencies you will get a message specifying which ones are missing along with the version expected.</p>
+<h2>Import Simplification</h2>
+<p>With the separation of packages we have also simplified the imports, and allowed you more control over what you are importing. Compare these two examples showing
+the same set of imports, but one is done via sp-pnp-js and the other using the @pnp libraries.</p>
+<h3>From sp-pnp-js</h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp, {
+  Web,
+  Util,
+  Logger,
+  FunctionListener,
+  LogLevel,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"sp-pnp-js"</span>;
+</code></pre>
+<h3>From @pnp libraries</h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+  Logger,
+  LogLevel,
+  FunctionListener,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-keyword">import</span> {
+  Util,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-keyword">import</span> {
+  sp,
+  Web,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+</code></pre>
+<p>In the above example the “sp” import replaces “pnp” and is the root of your method chains. Once we have updated our imports we have a few small code changes to make,
+depending on how you have used the library in your applications. Watch this short video discussing the most common updates:</p>
+<p><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item youtube-player" type="text/html" width="640" height="390" src="https://www.youtube.com/embed/oAZX2_DFVjY" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></p>
+<h2>Updated settings file format</h2>
+<p>If you are doing local debugging or testing you have likely created a settings.js from the supplied settings.example.js. Please note the format of that file has changed,
+the new format is shown below.</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">var</span> settings = {
+
+    <span class="hljs-attr">spsave</span>: {
+        <span class="hljs-attr">username</span>: <span class="hljs-string">"develina.devsson@mydevtenant.onmicrosoft.com"</span>,
+        <span class="hljs-attr">password</span>: <span class="hljs-string">"pass@word1"</span>,
+        <span class="hljs-attr">siteUrl</span>: <span class="hljs-string">"https://mydevtenant.sharepoint.com/"</span>
+    },
+    <span class="hljs-attr">testing</span>: {
+        <span class="hljs-attr">enableWebTests</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">sp</span>: {
+            <span class="hljs-attr">id</span>: <span class="hljs-string">"{ client id }"</span>,
+            <span class="hljs-attr">secret</span>: <span class="hljs-string">"{ client secret }"</span>,
+            <span class="hljs-attr">url</span>: <span class="hljs-string">"{ site collection url }"</span>,
+            <span class="hljs-attr">notificationUrl</span>: <span class="hljs-string">"{ notification url }"</span>,
+        },
+        <span class="hljs-attr">graph</span>: {
+            <span class="hljs-attr">tenant</span>: <span class="hljs-string">"{tenant.onmicrosoft.com}"</span>,
+            <span class="hljs-attr">id</span>: <span class="hljs-string">"{your app id}"</span>,
+            <span class="hljs-attr">secret</span>: <span class="hljs-string">"{your secret}"</span>
+        },
+    }
+}
+</code></pre>
+<h2>HttpClient Renamed</h2>
+<p>If you used HttpClient from sp-pnp-js it was renamed to SPHttpClient. A transition to @pnp/sp assumes replacement of:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { HttpClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'sp-pnp-js'</span>;
+</code></pre>
+<p>to the following import statement:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { SPHttpClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@pnp/sp'</span>;
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: transition-guide.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/transition-guide" alt="spacer" />
