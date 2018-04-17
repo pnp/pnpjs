@@ -167,7 +167,7 @@ export class PipelineMethods {
                         if (isFunc(context.batchDependency)) {
                             context.batchDependency();
                         }
-                        // handle the case where a parser needs to take special actions with a cached result (such as getAs)
+                        // handle the case where a parser needs to take special actions with a cached result
                         if (context.parser.hasOwnProperty("hydrate")) {
                             data = context.parser.hydrate!(data);
                         }
