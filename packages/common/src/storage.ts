@@ -233,7 +233,7 @@ export interface PnPClientStore {
      * @param getter A function which will upon execution provide the desired value
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    getOrPut(key: string, getter: Function, expire?: Date): any;
+    getOrPut<T>(key: string, getter: () => Promise<T>, expire?: Date): Promise<T>;
 
     /**
      * Removes any expired items placed in the store by the pnp library, leaves other items untouched

@@ -30,15 +30,12 @@ settings.apply({
 });
 
 // and finally you can load values from a configuration provider
-
-import { Web } from "@pnp/sp";
-
 const w = new Web("https://mytenant.sharepoint.com/sites/dev");
 const provider = new SPListConfigurationProvider(w, "myconfiglistname");
 
 // this will load values from the supplied list
 // by default the key will be from the Title field and the value from a column named Value
-settings.load(provider);
+await settings.load(provider);
 
 // once we have loaded values we can then read them
 const value = settings.get("mykey");

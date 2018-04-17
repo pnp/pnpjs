@@ -16,26 +16,7 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
      * @param {string} keyFieldName The name of the field in the list to use as the setting key (optional, default: "Title")
      * @param {string} valueFieldName The name of the field in the list to use as the setting value (optional, default: "Value")
      */
-    constructor(private sourceWeb: Web, private sourceListTitle = "config", private keyFieldName = "Title", private valueFieldName = "Value") {
-    }
-
-    /**
-     * Gets the url of the SharePoint site, where the configuration list is located
-     *
-     * @return {string} Url address of the site
-     */
-    public get web(): Web {
-        return this.sourceWeb;
-    }
-
-    /**
-     * Gets the title of the SharePoint list, which contains the configuration settings
-     *
-     * @return {string} List title
-     */
-    public get listTitle(): string {
-        return this.sourceListTitle;
-    }
+    constructor(public readonly web: Web, public readonly listTitle = "config", private keyFieldName = "Title", private valueFieldName = "Value") { }
 
     /**
      * Loads the configuration values from the SharePoint list
@@ -44,15 +25,10 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
      */
     public getConfiguration(): Promise<TypedHash<string>> {
 
-        return this.web.lists.getByTitle(this.listTitle).items.select(this.keyFieldName, this.valueFieldName)
-            .get<any[]>().then((data) => data.reduce((c: any, item: any) => {
-
-                return Object.defineProperty(c, item[this.keyFieldName], {
-                    configurable: false,
-                    enumerable: false,
-                    value: item[this.valueFieldName],
-                    writable: false,
-                });
+        return this.web.lists.getByTitle(this.listTitle).items.select(this.keyFieldName, this.valueFieldName).get<any[]>()
+            .then((data) => data.reduce((c: any, item: any) => {
+                c[item[this.keyFieldName]] = item[this.valueFieldName];
+                return c;
             }, {}));
     }
 
@@ -61,8 +37,7 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
      *
      * @return {CachingConfigurationProvider} Caching providers which wraps the current provider
      */
-    public asCaching(): CachingConfigurationProvider {
-        const cacheKey = `splist_${this.web.toUrl()}+${this.listTitle}`;
+    public asCaching(cacheKey = `pnp_configcache_splist_${this.web.toUrl()}+${this.listTitle}`): CachingConfigurationProvider {
         return new CachingConfigurationProvider(this, cacheKey);
     }
 }
