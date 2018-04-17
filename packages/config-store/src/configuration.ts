@@ -78,9 +78,7 @@ export class Settings {
             provider.getConfiguration().then((value) => {
                 this._settings.merge(value);
                 resolve();
-            }).catch((reason) => {
-                reject(reason);
-            });
+            }).catch(reject);
         });
     }
 
