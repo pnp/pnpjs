@@ -4,6 +4,7 @@ import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareab
 import { Files } from "./files";
 import { spGetEntityUrl } from "./odata";
 import { Item } from "./items";
+import { SPHttpClient } from "./net/sphttpclient";
 
 /**
  * Describes a collection of Folder objects
@@ -167,6 +168,27 @@ export class Folder extends SharePointQueryableShareableFolder {
             return extend(new Item(spGetEntityUrl(d)), d);
         });
     }
+
+    /**
+     * Moves a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    public moveTo(destUrl: string): Promise<void> {
+        return this.select("ServerRelativeUrl").get().then(({ ServerRelativeUrl: srcUrl }) => {
+            const client = new SPHttpClient();
+            const webBaseUrl = this.toUrl().split("/_api")[0];
+            const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+            const methodUrl = `${webBaseUrl}/_api/SP.MoveCopyUtil.MoveFolder()`;
+            return client.post(methodUrl, {
+                body: JSON.stringify({
+                    destUrl: destUrl.indexOf("http") === 0 ? destUrl : `${hostUrl}${destUrl}`,
+                    srcUrl: `${hostUrl}${srcUrl}`,
+                }),
+            }).then(r => r.json());
+        });
+    }
+
 }
 
 export interface FolderAddResult {
