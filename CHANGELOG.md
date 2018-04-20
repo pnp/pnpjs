@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- @pnp/sp: Added web's getParentWeb helper method [[PR](https://github.com/pnp/pnpjs/pull/74)]
+
 ### Fixed
 
 - @pnp/nodejs: Fixed incorrect import for Request shims due to version change [[PR](https://github.com/pnp/pnpjs/pull/67)]
