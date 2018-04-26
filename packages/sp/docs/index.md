@@ -112,3 +112,4 @@ sp.web.select("Title").get().then(w => {
 * [Tenant Properties](tenant-properties.md)
 * [Views](views.md)
 * [Webs](webs.md)
+* [Comments and Likes](comments-likes.md)

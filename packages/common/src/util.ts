@@ -121,10 +121,10 @@ export function isArray(array: any): boolean {
  * @param noOverwrite If true existing properties on the target are not overwritten from the source
  *
  */
-export function extend(target: any, source: any, noOverwrite = false): any {
+export function extend<T extends { [key: string]: any; } = any, S extends { [key: string]: any; } = any>(target: T, source: S, noOverwrite = false): T & S {
 
     if (!objectDefinedNotNull(source)) {
-        return target;
+        return <T & S>target;
     }
 
     // ensure we don't overwrite things we don't want overwritten

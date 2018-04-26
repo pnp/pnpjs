@@ -37,6 +37,8 @@ export {
 
 export * from "./clientsidepages";
 
+export * from "./comments";
+
 export {
     ContentType,
     ContentTypes,
