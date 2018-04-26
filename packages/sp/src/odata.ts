@@ -16,40 +16,40 @@ export function spExtractODataId(candidate: any): string {
     }
 }
 
-class SPODataEntityParserImpl<T> extends ODataParserBase<T> {
+class SPODataEntityParserImpl<T, D> extends ODataParserBase<T & D> {
 
     constructor(protected factory: SharePointQueryableConstructor<T>) {
         super();
     }
 
-    public hydrate = (d: any) => {
+    public hydrate = (d: D) => {
         const o = <T>new this.factory(spGetEntityUrl(d), null);
         return extend(o, d);
     }
 
-    public parse(r: Response): Promise<T> {
+    public parse(r: Response): Promise<T & D> {
         return super.parse(r).then((d: any) => {
             const o = <T>new this.factory(spGetEntityUrl(d), null);
-            return extend(o, d);
+            return extend<T, D>(o, d);
         });
     }
 }
 
-class SPODataEntityArrayParserImpl<T> extends ODataParserBase<T[]> {
+class SPODataEntityArrayParserImpl<T, D> extends ODataParserBase<(T & D)[]> {
 
     constructor(protected factory: SharePointQueryableConstructor<T>) {
         super();
     }
 
-    public hydrate = (d: any[]) => {
+    public hydrate = (d: D[]) => {
         return d.map(v => {
             const o = <T>new this.factory(spGetEntityUrl(v), null);
             return extend(o, v);
         });
     }
 
-    public parse(r: Response): Promise<T[]> {
-        return super.parse(r).then((d: any[]) => {
+    public parse(r: Response): Promise<(T & D)[]> {
+        return super.parse(r).then((d: D[]) => {
             return d.map(v => {
                 const o = <T>new this.factory(spGetEntityUrl(v), null);
                 return extend(o, v);
@@ -63,6 +63,8 @@ export function spGetEntityUrl(entity: any): string {
     if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
         // we are dealign with minimal metadata (default)
         return combinePaths(extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
+    } else if (entity.hasOwnProperty("odata.editLink")) {
+        return entity["odata.editLink"];
     } else if (entity.hasOwnProperty("__metadata")) {
         // we are dealing with verbose, which has an absolute uri
         return entity.__metadata.uri;
@@ -74,10 +76,10 @@ export function spGetEntityUrl(entity: any): string {
     }
 }
 
-export function spODataEntity<T>(factory: SharePointQueryableConstructor<T>): ODataParser<T> {
-    return new SPODataEntityParserImpl(factory);
+export function spODataEntity<T, DataType = any>(factory: SharePointQueryableConstructor<T>): ODataParser<T & DataType> {
+    return new SPODataEntityParserImpl<T, DataType>(factory);
 }
 
-export function spODataEntityArray<T>(factory: SharePointQueryableConstructor<T>): ODataParser<T[]> {
-    return new SPODataEntityArrayParserImpl(factory);
+export function spODataEntityArray<T, DataType = any>(factory: SharePointQueryableConstructor<T>): ODataParser<(T & DataType)[]> {
+    return new SPODataEntityArrayParserImpl<T, DataType>(factory);
 }

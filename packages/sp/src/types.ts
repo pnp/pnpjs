@@ -1652,3 +1652,11 @@ export interface StorageEntity {
     Comment: string | null;
     Description: string | null;
 }
+
+export interface LikeData {
+    name: string;
+    loginName: string;
+    id: number;
+    email: string;
+    creationDate: string;
+}
