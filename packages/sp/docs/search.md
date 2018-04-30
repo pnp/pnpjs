@@ -7,10 +7,10 @@ Using search you can access content throughout your organization in a secure and
 Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the SearchQuery interface, or a SearchQueryBuilder instance. The first two are shown below.
 
 ```TypeScript
-import pnp, { SearchQuery, SearchResults } from "@pnp/sp";
+import { sp, SearchQuery, SearchResults } from "@pnp/sp";
 
 // text search using SharePoint default values for other parameters
-pnp.sp.search("test").then((r: SearchResults) => {
+sp.search("test").then((r: SearchResults) => {
 
     console.log(r.ElapsedTime);
     console.log(r.RowCount);
@@ -18,7 +18,7 @@ pnp.sp.search("test").then((r: SearchResults) => {
 });
 
 // define a search query object matching the SearchQuery interface
-pnp.sp.search(<SearchQuery>{
+sp.search(<SearchQuery>{
     Querytext: "test",
     RowLimit: 10,
     EnableInterleaving: true,
@@ -35,7 +35,7 @@ pnp.sp.search(<SearchQuery>{
 Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.
 
 ```TypeScript
-import pnp, { SearchQueryBuilder, SearchResults } from "@pnp/sp";
+import { sp, SearchQueryBuilder, SearchResults } from "@pnp/sp";
 
 // this will hold our current results
 let currentResults: SearchResults = null;
@@ -46,7 +46,7 @@ function onStart() {
 
     // construct our query that will be throughout the paging process, likely from user input
     const q = SearchQueryBuilder.create("test").rowLimit(5);
-    pnp.sp.search(q).then((r: SearchResults) => {
+    sp.search(q).then((r: SearchResults) => {
 
         currentResults = r; // update the current results
         page = 0; // reset if needed
@@ -81,12 +81,12 @@ The SearchQueryBuilder allows you to build your queries in a fluent manner. It a
 // basic usage
 let q = SearchQueryBuilder.create().text("test").rowLimit(4).enablePhonetic;
 
-pnp.sp.search(q).then(h => { /* ... */ });
+sp.search(q).then(h => { /* ... */ });
 
 // provide a default query text in the create()
 let q2 = SearchQueryBuilder.create("text").rowLimit(4).enablePhonetic;
 
-pnp.sp.search(q2).then(h => { /* ... */ });
+sp.search(q2).then(h => { /* ... */ });
 
 // provide query text and a template
 
@@ -98,8 +98,8 @@ const appSearchSettings: SearchQuery = {
 
 let q3 = SearchQueryBuilder.create("test", appSearchSettings).enableQueryRules;
 let q4 = SearchQueryBuilder.create("financial data", appSearchSettings).enableSorting.enableStemming;
-pnp.sp.search(q3).then(h => { /* ... */ });
-pnp.sp.search(q4).then(h => { /* ... */ });
+sp.search(q3).then(h => { /* ... */ });
+sp.search(q4).then(h => { /* ... */ });
 ```
 
 # Search Suggest
@@ -107,14 +107,14 @@ pnp.sp.search(q4).then(h => { /* ... */ });
 Search suggest works in much the same way as search, except against the suggest end point. It takes a string or a plain object that matches SearchSuggestQuery.
 
 ```TypeScript
-import pnp, { SearchSuggestQuery, SearchSuggestResult } from "@pnp/sp";
+import { sp, SearchSuggestQuery, SearchSuggestResult } from "@pnp/sp";
 
-pnp.sp.searchSuggest("test").then((r: SearchSuggestResult) => {
+sp.searchSuggest("test").then((r: SearchSuggestResult) => {
 
     console.log(r);
 });
 
-pnp.sp.searchSuggest(<SearchSuggestQuery>{
+sp.searchSuggest(<SearchSuggestQuery>{
     querytext: "test",
     count: 5,
 }).then((r: SearchSuggestResult) => {
