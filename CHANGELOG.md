@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/config-store: Fixed docs and a bug in loading configuration [[PR](https://github.com/pnp/pnpjs/pull/73)]
 - @pnp/sp: Fixed clientPeoplePickerSearchUser and clientPeoplePickerResolveUser methods running error with verbose OData mode [[PR](https://github.com/pnp/pnpjs/pull/79)]
 - tooling: Fixed bug in gulp task test when using the --p flag .inactive.js test files were run [[PR](https://github.com/pnp/pnpjs/pull/85)]
+- docs: Fixed import references ([@tarjeieo](https://github.com/tarjeieo)) [[PR](https://github.com/pnp/pnpjs/pull/87)]
 
 ## 1.0.4 - 2018-04-06
 
