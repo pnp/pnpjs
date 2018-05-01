@@ -463,7 +463,12 @@ export class List extends SharePointQueryableSecurable {
                     __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
                 },
             }),
-        }).then(res => res.AddValidateUpdateItemUsingPath.results);
+        }).then(res => {
+            if (typeof res.AddValidateUpdateItemUsingPath !== "undefined") {
+                return res.AddValidateUpdateItemUsingPath.results;
+            }
+            return res;
+        });
     }
 }
 
