@@ -8,8 +8,7 @@ import {
     objectDefinedNotNull,
 } from "@pnp/common";
 import { Logger } from "@pnp/logging";
-import { ODataParser } from "./core";
-import { ODataDefaultParser, JSONParser } from "./parsers";
+import { ODataParser, ODataDefaultParser, JSONParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import {

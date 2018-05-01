@@ -1,4 +1,4 @@
-import { ODataParser } from "./core";
+import { ODataParser } from "./parsers";
 import { RuntimeConfig, dateAdd, PnPClientStore, PnPClientStorage } from "@pnp/common";
 
 export interface ICachingOptions {
