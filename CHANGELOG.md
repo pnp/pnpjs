@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - tooling: Fixed bug in gulp task test when using the --p flag .inactive.js test files were run [[PR](https://github.com/pnp/pnpjs/pull/85)]
 - docs: Fixed import references ([@tarjeieo](https://github.com/tarjeieo)) [[PR](https://github.com/pnp/pnpjs/pull/87)]
 - @pnp/odata: Updated all parsers to use same error handling code path [[PR](https://github.com/pnp/pnpjs/pull/90)]
+- @pnp/sp: listItemAllFields object type fix [[PR](https://github.com/pnp/pnpjs/pull/98)]
 
 ### Changed
 
