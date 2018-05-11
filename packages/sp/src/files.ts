@@ -114,8 +114,8 @@ export class File extends SharePointQueryableShareableFile {
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
      */
-    public get listItemAllFields(): SharePointQueryableCollection {
-        return new SharePointQueryableCollection(this, "listItemAllFields");
+    public get listItemAllFields(): SharePointQueryableInstance {
+        return new SharePointQueryableInstance(this, "listItemAllFields");
     }
 
     /**
