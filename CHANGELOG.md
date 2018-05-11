@@ -8,13 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- @pnp/sp: Added web's getParentWeb helper method [[PR](https://github.com/pnp/pnpjs/pull/74)]
 - @pnp/sp: Added moveTo helper method for folder object [[PR](https://github.com/pnp/pnpjs/pull/75)]
+- @pnp/sp: Added support for likes and comments on list items and modern pages [[PR](https://github.com/pnp/pnpjs/pull/85)]
 
 ### Fixed
 
 - @pnp/nodejs: Fixed incorrect import for Request shims due to version change [[PR](https://github.com/pnp/pnpjs/pull/67)]
 - @pnp/sp: Fixed docs for web example code [[PR](https://github.com/pnp/pnpjs/pull/72)]
 - @pnp/config-store: Fixed docs and a bug in loading configuration [[PR](https://github.com/pnp/pnpjs/pull/73)]
+- @pnp/sp: Fixed clientPeoplePickerSearchUser and clientPeoplePickerResolveUser methods running error with verbose OData mode [[PR](https://github.com/pnp/pnpjs/pull/79)]
+- tooling: Fixed bug in gulp task test when using the --p flag .inactive.js test files were run [[PR](https://github.com/pnp/pnpjs/pull/85)]
+- docs: Fixed import references ([@tarjeieo](https://github.com/tarjeieo)) [[PR](https://github.com/pnp/pnpjs/pull/87)]
+- @pnp/odata: Updated all parsers to use same error handling code path [[PR](https://github.com/pnp/pnpjs/pull/90)]
+- @pnp/sp: AddValidateUpdateItemUsingPath method [[PR](https://github.com/pnp/pnpjs/pull/89)]
+- @pnp/sp: listItemAllFields object type fix [[PR](https://github.com/pnp/pnpjs/pull/98)]
+
+### Changed
+
+- @pnp/odata: Removed core.ts and moved code into parsers.ts to simplify [[PR](https://github.com/pnp/pnpjs/pull/90)]
 
 ## 1.0.4 - 2018-04-06
 

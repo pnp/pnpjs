@@ -47,7 +47,7 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
             // and only a single set of tests
             paths.push(path.resolve(`./testing/packages/${args.packages[0]}/tests`, (yargs.single || yargs.s) + ".test.js"));
         } else {
-            paths = args.packages.map(p => `./testing/packages/${p}/**/*.js`);
+            paths = args.packages.map(p => `./testing/packages/${p}/tests/*.test.js`);
         }
 
     } else {

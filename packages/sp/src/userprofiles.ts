@@ -357,9 +357,16 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
     public clientPeoplePickerResolveUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickerresolveuser");
-        return q.postCore<string>({
+        return q.postCore<string | { ClientPeoplePickerResolveUser: string }>({
             body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
-        }).then((json) => JSON.parse(json));
+        })
+            .then(res => {
+                if (typeof res === "object") {
+                    return res.ClientPeoplePickerResolveUser;
+                }
+                return res;
+            })
+            .then(JSON.parse);
     }
 
     /**
@@ -370,9 +377,16 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
     public clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]> {
         const q = this.clone(ClientPeoplePickerQuery, null);
         q.concat(".clientpeoplepickersearchuser");
-        return q.postCore<string>({
+        return q.postCore<string | { ClientPeoplePickerSearchUser: string }>({
             body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
-        }).then((json) => JSON.parse(json));
+        })
+            .then(res => {
+                if (typeof res === "object") {
+                    return res.ClientPeoplePickerSearchUser;
+                }
+                return res;
+            })
+            .then(JSON.parse);
     }
 
     /**

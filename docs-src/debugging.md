@@ -6,7 +6,7 @@ The easiest way to debug the library when working on new features is using F5 in
 
 ### Setup settings.js
 
-If you have not already you need to create a settings.js files by copying settings.example.js and renaming it to settings.js. Then update the clientId, clientSecret, and siteUrl fields in the testing section.
+If you have not already you need to create a settings.js files by copying settings.example.js and renaming it to settings.js. Then update the clientId, clientSecret, and siteUrl fields in the testing section. (See below for guidance on registering a client id and secret)
 
 ### Test your setup
 
@@ -85,7 +85,6 @@ Place a break point within the promise resolution in your debug file and hit F5.
 
 Using this pattern you can create and preserve multiple debugging scenarios in separate modules locally.
 
-
 ## In Browser Debugging
 
 You can also serve files locally to debug in a browser through two methods. The first will serve code using ./debug/serve/main.ts as the entry. Meaning you can easily
@@ -123,3 +122,43 @@ to allow testing with matching packages.
 ### Next Steps
 
 You can make changes to the library and immediately see them reflected in the browser. All files are watched regardless of which serve method you choose.
+
+## Register an Add-in
+
+Before you can begin debugging you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure you farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
+
+1. Navigation to {site url}/_layouts/appregnew.aspx
+2. Click "Generate" for both the Client Id and Secret values
+3. Give you add-in a title, this can be anything but will let you locate it in the list of add-in permissions
+4. Provide a fake value for app domain and redirect uri, you can use the values shown in the examples
+5. Click "Create"
+6. Copy the returned block of text containing the client id and secret as well as app name for your records and later in this article.
+
+### Grant Your Add-In Permissions
+
+Now that we have created an add-in registration we need to tell SharePoint what permissions it can use. Due to an update in SharePoint Online you now have to [register add-ins with certain permissions in the admin site](https://msdn.microsoft.com/en-us/pnp_articles/how-to-provide-add-in-app-only-tenant-administrative-permissions-in-sharepoint-online).
+
+1. Navigate to {admin site url}/_layouts/appinv.aspx
+2. Paste your client id from the above section into the Add Id box and click "Lookup"
+3. You should see the information populated into the form from the last section, if not ensure you have the correct id value
+4. Paste the below XML into the permissions request xml box and hit "Create"
+5. You should get a confirmation message.
+
+```XML
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+  </AppPermissionRequests>
+```
+
+**_Note these are very broad permissions to ensure you can test any feature of the library, for production you should tailor the permissions to only those required_**
+
+### Configure the project settings file
+
+1. If you have not already, make a copy of settings.example.js and name it settings.js
+2. Edit this file to set the values on the testing.sp object to 
+    - id: "The client id you created"
+    - secret: "The client secret you created"
+    - url: "{site url}"
+3. You can disable web tests at any time by setting enableWebTests to false in settings.js, this can be helpful as they take a few minutes to run

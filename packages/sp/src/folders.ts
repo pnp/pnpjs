@@ -82,8 +82,8 @@ export class Folder extends SharePointQueryableShareableFolder {
      * Gets this folder's list item field values
      *
      */
-    public get listItemAllFields(): SharePointQueryableCollection {
-        return new SharePointQueryableCollection(this, "listItemAllFields");
+    public get listItemAllFields(): SharePointQueryableInstance {
+        return new SharePointQueryableInstance(this, "listItemAllFields");
     }
 
     /**

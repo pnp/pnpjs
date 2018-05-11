@@ -4,11 +4,12 @@ import { Folder } from "./folders";
 import { File } from "./files";
 import { ContentType } from "./contenttypes";
 import { extend, TypedHash } from "@pnp/common";
-import { ListItemFormUpdateValue } from "./types";
+import { ListItemFormUpdateValue, LikeData } from "./types";
 import { ODataParserBase } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 import { Logger, LogLevel } from "@pnp/logging";
+import { Comments } from "./comments";
 
 /**
  * Describes a collection of Item objects
@@ -187,6 +188,13 @@ export class Item extends SharePointQueryableShareableItem {
     }
 
     /**
+     * Gets the collection of comments associated with this list item
+     */
+    public get comments(): Comments {
+        return new Comments(this);
+    }
+
+    /**
      * Gets the effective base permissions for the item
      *
      */
@@ -284,6 +292,27 @@ export class Item extends SharePointQueryableShareableItem {
                 });
             }).catch(e => reject(e));
         });
+    }
+
+    /**
+     * Gets the collection of people who have liked this item
+     */
+    public getLikedBy(): Promise<LikeData[]> {
+        return this.clone(Item, "likedBy").postCore<LikeData[]>();
+    }
+
+    /**
+     * Likes this item as the current user
+     */
+    public like(): Promise<void> {
+        return this.clone(Item, "like").postCore<void>();
+    }
+
+    /**
+     * Unlikes this item as the current user
+     */
+    public unlike(): Promise<void> {
+        return this.clone(Item, "unlike").postCore<void>();
     }
 
     /**

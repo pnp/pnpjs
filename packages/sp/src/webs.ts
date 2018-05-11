@@ -4,6 +4,7 @@ import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable"
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
 import { Fields } from "./fields";
+import { Site } from "./site";
 import { Navigation } from "./navigation";
 import { SiteGroups, SiteGroup } from "./sitegroups";
 import { ContentTypes } from "./contenttypes";
@@ -127,6 +128,15 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public get webs(): Webs {
         return new Webs(this);
+    }
+
+    /**
+     * Gets this web's parent web and data
+     *
+     */
+    public getParentWeb(): Promise<{ data: any; web: Web }> {
+        return this.select("ParentWeb/Id").expand("ParentWeb").get()
+            .then(({ ParentWeb }) => new Site(this.toUrlAndQuery().split("/_api")[0]).openWebById(ParentWeb.Id));
     }
 
     /**
@@ -325,7 +335,7 @@ export class Web extends SharePointQueryableShareableWeb {
     /**
      * Gets a folder by server relative relative path if your folder name contains # and % characters
      * you need to first encode the file name using encodeURIComponent() and then pass the url
-     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123");    
+     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123");
      * This works only in SharePoint online.
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -347,7 +357,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * Gets a file by server relative url if your file name contains # and % characters
      * you need to first encode the file name using encodeURIComponent() and then pass the url
      * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123.docx");
-     * 
+     *
      * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
      */
     public getFileByServerRelativePath(fileRelativeUrl: string): File {
@@ -509,7 +519,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * Returns the tenant property corresponding to the specified key in the app catalog site
-     * 
+     *
      * @param key Id of storage entity to be set
      */
     public getStorageEntity(key: string): Promise<StorageEntity> {
@@ -518,7 +528,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * This will set the storage entity identified by the given key (MUST be called in the context of the app catalog)
-     * 
+     *
      * @param key Id of storage entity to be set
      * @param value Value of storage entity to be set
      * @param description Description of storage entity to be set
@@ -537,7 +547,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * This will remove the storage entity identified by the given key
-     * 
+     *
      * @param key Id of storage entity to be removed
      */
     public removeStorageEntity(key: string): Promise<void> {
@@ -546,7 +556,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * Gets the app catalog for this web
-     * 
+     *
      * @param url Optional url or web containing the app catalog (default: current web)
      */
     public getAppCatalog(url?: string | Web) {
@@ -562,7 +572,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * Creates a new client side page
-     * 
+     *
      * @param pageName Name of the new page
      * @param title Display title of the new page
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
