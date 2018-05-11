@@ -13,6 +13,14 @@ import { sp } from "@pnp/sp";
 const page = await sp.web.addClientSidePage(`MyFirstPage.aspx`);
 ```
 
+Added in 1.0.5 you can also add a client side page using the list path. This gets around potential language issues with list title. You must specify the list path when calling this method in addition to the new page's filename.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const page = await sp.web.addClientSidePageByPath(`MyFirstPage.aspx`, "/sites/dev/SitePages");
+```
+
 ## Load Client-side page
 
 You can also load an existing page based on the file representing that page. Note that the static fromFile returns a promise which 
