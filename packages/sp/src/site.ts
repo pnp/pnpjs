@@ -46,6 +46,14 @@ export class Site extends SharePointQueryableInstance {
     }
 
     /**
+     * Gets a Web instance representing the root web of the site collection
+     * correctly setup for chaining within the library
+     */
+    public getRootWeb(): Promise<Web> {
+        return this.rootWeb.select("Url").get().then(web => new Web(web.Url));
+    }
+
+    /**
      * Gets the context information for this site collection
      */
     public getContextInfo(): Promise<ContextInfo> {
