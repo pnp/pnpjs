@@ -7,7 +7,7 @@ import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
 import { extend, TypedHash } from "@pnp/common";
-import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "./types";
+import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters, ListItemFormUpdateValue } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { spExtractODataId } from "./odata";
 import { NotSupportedInBatchException } from "./exceptions";
@@ -380,7 +380,7 @@ export class List extends SharePointQueryableSecurable {
 
     /**
      * Returns the data for the specified query view
-     * 
+     *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
      */
@@ -434,6 +434,41 @@ export class List extends SharePointQueryableSecurable {
      */
     public getListItemEntityTypeFullName(): Promise<string> {
         return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
+    }
+
+    /**
+     * Creates an item using path (in a folder), validates and sets its field values.
+     *
+     * @param formValues The fields to change and their new values.
+     * @param decodedUrl Path decoded url; folder's server relative path.
+     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
+     * @param checkInComment Optional check in comment.
+     */
+    public addValidateUpdateItemUsingPath(
+        formValues: ListItemFormUpdateValue[],
+        decodedUrl: string,
+        bNewDocumentUpdate = false,
+        checkInComment?: string,
+    ): Promise<ListItemFormUpdateValue[]> {
+        return this.clone(List, "AddValidateUpdateItemUsingPath()").postCore({
+            body: JSON.stringify({
+                bNewDocumentUpdate,
+                checkInComment,
+                formValues,
+                listItemCreateInfo: {
+                    FolderPath: {
+                        DecodedUrl: decodedUrl,
+                        __metadata: { type: "SP.ResourcePath" },
+                    },
+                    __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
+                },
+            }),
+        }).then(res => {
+            if (typeof res.AddValidateUpdateItemUsingPath !== "undefined") {
+                return res.AddValidateUpdateItemUsingPath.results;
+            }
+            return res;
+        });
     }
 }
 
