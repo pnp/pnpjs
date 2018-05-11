@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Added moveTo helper method for folder object [[PR](https://github.com/pnp/pnpjs/pull/75)]
 - @pnp/sp: Added support for likes and comments on list items and modern pages [[PR](https://github.com/pnp/pnpjs/pull/85)]
 - @pnp/sp: Added addClientSidePageByPath method to Web [[PR](https://github.com/pnp/pnpjs/pull/101)]
+- @pnp/sp: Added getRootWeb method to Site [[PR](https://github.com/pnp/pnpjs/pull/102)]
 
 ### Fixed
 
