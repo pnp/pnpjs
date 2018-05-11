@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/config-store">config store</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/config-store/providers.html">providers</a>
+    </nav>
+
+    <article>
+        <h1>@pnp/config-store/providers</h1>
+<p>Currently there is a single provider included in the library, but contributions of additional providers are welcome.</p>
+<h2>SPListConfigurationProvider</h2>
+<p>This provider is based on a SharePoint list and read all of the rows and makes them available as a TypedHash<string>. By default the column names used are Title for key and “Value” for value, but you can update these as needed. Additionally the settings class supports the idea of last value in wins - so you can easily load multiple configurations. This helps to support a common scenario in the enterprise where you might have one main list for global configuration but some settings can be set at the web level. In this case you would first load the global, then the local settings and any local values will take precedence.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { Settings, SPListConfigurationProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/config-store"</span>;
+
+<span class="hljs-comment">// create a new provider instance</span>
+<span class="hljs-keyword">const</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://mytenant.sharepoint.com/sites/dev"</span>);
+<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> SPListConfigurationProvider(w, <span class="hljs-string">"myconfiglistname"</span>);
+
+<span class="hljs-keyword">const</span> settings = <span class="hljs-keyword">new</span> Settings();
+
+<span class="hljs-comment">// load our values from the list</span>
+<span class="hljs-keyword">await</span> settings.load(provider);
+</code></pre>
+<h2>CachingConfigurationProvider</h2>
+<p>Because making requests on each page load is very inefficient you can optionally use the caching configuration provider, which wraps a
+provider and caches the configuration in local or session storage.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+<span class="hljs-keyword">import</span> { Settings, SPListConfigurationProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/config-store"</span>;
+
+<span class="hljs-comment">// create a new provider instance</span>
+<span class="hljs-keyword">const</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://mytenant.sharepoint.com/sites/dev"</span>);
+<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> SPListConfigurationProvider(w, <span class="hljs-string">"myconfiglistname"</span>);
+
+<span class="hljs-comment">// get an instance of the provider wrapped</span>
+<span class="hljs-comment">// you can optionally provide a key that will be used in the cache to the asCaching method</span>
+<span class="hljs-keyword">const</span> wrappedProvider = provider.asCaching();
+
+<span class="hljs-comment">// use that wrapped provider to populate the settings</span>
+<span class="hljs-keyword">await</span> settings.load(wrappedProvider);
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: config-store\providers.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/config-store/docs/providers" alt="spacer" />
