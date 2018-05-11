@@ -580,6 +580,17 @@ export class Web extends SharePointQueryableShareableWeb {
     public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<ClientSidePage> {
         return ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
     }
+
+    /**
+     * Creates a new client side page using the library path
+     *
+     * @param pageName Name of the new page
+     * @param listRelativePath The server relative path to the list's root folder (including /sites/ if applicable)
+     * @param title Display title of the new page
+     */
+    public addClientSidePageByPath(pageName: string, listRelativePath: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(this.getList(listRelativePath), pageName, title);
+    }
 }
 
 /**
