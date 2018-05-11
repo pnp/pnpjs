@@ -1,4 +1,4 @@
-import { ODataParser } from "./core";
+import { ODataParser } from "./parsers";
 import { ODataBatch } from "./odatabatch";
 import { ICachingOptions, CachingParserWrapper, CachingOptions } from "./caching";
 import { Logger, LogLevel } from "@pnp/logging";
