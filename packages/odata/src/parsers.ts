@@ -137,8 +137,17 @@ export class BufferParser extends ODataParserBase<ArrayBuffer> {
 
         if (isFunc(r.arrayBuffer)) {
             r.arrayBuffer().then(resolve);
+        } else {
+            (<any>r).buffer().then(resolve);
         }
+    }
+}
 
-        (<any>r).buffer().then(resolve);
+export class LambdaParser<T = any> implements ODataParser<T> {
+
+    constructor(private parser: (r: Response) => Promise<T>) { }
+
+    public parse(r: Response): Promise<T> {
+        return this.parser(r);
     }
 }

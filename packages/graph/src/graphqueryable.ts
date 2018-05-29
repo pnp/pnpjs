@@ -129,7 +129,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
             cachingOptions: this._cachingOptions,
             clientFactory: () => new GraphHttpClient(),
             isBatched: this.hasBatch,
-            isCached: this._useCaching,
+            isCached: /^get$/i.test(verb) && this._useCaching,
             options: options,
             parser: parser,
             pipeline: pipeline,

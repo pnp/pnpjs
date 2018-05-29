@@ -13,8 +13,15 @@ export function replaceSPHttpVersion(ctx: BuildContext) {
 
     return new Promise((resolve, reject) => {
 
+        const sources = [
+            "./src/net/sphttpclient.js",
+            "./src/batch.js",
+            "./es5/src/net/sphttpclient.js",
+            "./es5/src/batch.js",
+        ];
+
         pump([
-            src(["./src/net/sphttpclient.js", "./src/batch.js"], {
+            src(sources, {
                 base: ".",
                 cwd: ctx.targetFolder,
             }),

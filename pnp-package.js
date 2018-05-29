@@ -26,7 +26,7 @@ const config = {
     // root location, relative 
     packageRoot: path.resolve(".\\build\\packages\\"),
 
-    // the list of packages to be built, in order
+    // the list of packages to be packaged, in order
     // can be a string name or a plain object with additional settings
     /**
      * Plain object format
@@ -43,10 +43,23 @@ const config = {
         "odata",
         "graph",
         "sp",
-        "nodejs",
+        {
+            name: "nodejs",
+            // don't bundle for node
+            packagePipeline: [
+                tasks.packageProject,
+                tasks.copyAssets,
+                tasks.copySrc,
+                tasks.writePackageFile,
+                tasks.uglify,
+                tasks.banner,
+            ],
+        },
         "sp-addinhelpers",
         "config-store",
         "pnpjs",
+        "sp-clientsvc",
+        "sp-taxonomy",
     ],
 
     assets: [
@@ -57,6 +70,6 @@ const config = {
 
     // the set of tasks run on each project during a build
     packagePipeline: defaultPackagePipeline,
-}
+};
 
 module.exports = config;

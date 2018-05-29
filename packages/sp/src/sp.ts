@@ -189,6 +189,14 @@ export {
 } from "./usercustomactions";
 
 export {
+    toAbsoluteUrl,
+} from "./utils/toabsoluteurl";
+
+export {
+    extractWebUrl,
+} from "./utils/extractweburl";
+
+export {
     UtilityMethod,
     CreateWikiPageResult,
 } from "./utilities";

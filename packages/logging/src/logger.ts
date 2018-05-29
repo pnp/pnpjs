@@ -1,6 +1,6 @@
-import { LogLevel } from "./loglevel";
 import { LogListener } from "./listeners";
 import { LogEntry } from "./logentry";
+import { LogLevel } from "./loglevel";
 
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
@@ -55,9 +55,9 @@ export class Logger {
      * Writes the supplied string to the subscribed listeners
      *
      * @param message The message to write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
      */
-    public static write(message: string, level: LogLevel = LogLevel.Verbose) {
+    public static write(message: string, level: LogLevel = LogLevel.Info) {
         Logger.instance.log({ level: level, message: message });
     }
 
@@ -65,9 +65,9 @@ export class Logger {
      * Writes the supplied string to the subscribed listeners
      *
      * @param json The json object to stringify and write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
      */
-    public static writeJSON(json: any, level: LogLevel = LogLevel.Verbose) {
+    public static writeJSON(json: any, level: LogLevel = LogLevel.Info) {
         Logger.instance.log({ level: level, message: JSON.stringify(json) });
     }
 
@@ -108,7 +108,7 @@ class LoggerImpl {
         return this.subscribers.length;
     }
 
-    public write(message: string, level: LogLevel = LogLevel.Verbose) {
+    public write(message: string, level: LogLevel = LogLevel.Info) {
         this.log({ level: level, message: message });
     }
 

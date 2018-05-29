@@ -1,6 +1,6 @@
+import { PnPClientStorageWrapper, PnPClientStore, TypedHash } from "@pnp/common";
 import { expect } from "chai";
 import { CachingConfigurationProvider, Settings } from "../../";
-import { TypedHash, PnPClientStore, PnPClientStorageWrapper } from "@pnp/common";
 import { default as MockConfigurationProvider } from "../mock-configurationprovider";
 import MockStorage from "../mock-storage";
 
@@ -62,9 +62,9 @@ describe("Configuration", () => {
         });
 
         it("Uses provided cachekey with a '_configcache_' prefix", () => {
-            const provider = new CachingConfigurationProvider(wrapped, "cacheKey", store);
+            const provider = new CachingConfigurationProvider(wrapped, "_configcache_cacheKey", store);
             return settings.load(provider).then(() => {
-                expect(store.get("_configcache_cacheKey")).not.to.be.null;
+                return expect(store.get("_configcache_cacheKey")).not.to.be.null;
             });
         });
     });

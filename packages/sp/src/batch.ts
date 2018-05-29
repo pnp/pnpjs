@@ -220,7 +220,7 @@ export class SPBatch extends ODataBatch {
 
                         const request = this.requests[index];
 
-                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
+                        Logger.write(`[${request.id}] (${(new Date()).getTime()}) Resolving request in batch ${this.batchId}.`, LogLevel.Info);
 
                         return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
 

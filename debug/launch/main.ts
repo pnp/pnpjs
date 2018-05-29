@@ -1,8 +1,13 @@
 declare var require: (s: string) => any;
 
-import { sp } from "@pnp/sp";
-import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { graph } from "@pnp/graph";
+import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
+// importing the example debug scenario and running it
+// adding your debugging to other files and importing them will keep them out of git
+// PRs updating the debug.ts or example.ts will not be accepted unless they are fixing bugs
+// add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
+// will allow you to keep all your debugging files locally
+// comment out the example
+import { Example } from "./sp";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -18,14 +23,7 @@ Logger.subscribe(new ConsoleListener());
 // change this to LogLevel.Verbose for more details about the request
 Logger.activeLogLevel = LogLevel.Info;
 
-// importing the example debug scenario and running it
-// adding your debugging to other files and importing them will keep them out of git
-// PRs updating the debug.ts or example.ts will not be accepted unless they are fixing bugs
-// add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
-// will allow you to keep all your debugging files locally
-// comment out the example
-import { Example } from "./sp";
 Example(settings);
 
 // you can also set break points inside the src folder to examine how things are working
-// within the library while debugging!
+// within the library while debugging

@@ -36,12 +36,3 @@ export class NotSupportedInBatchException extends Error {
     }
 }
 
-export class APIUrlException extends Error {
-
-    constructor(msg = "Unable to determine API url.") {
-        super(msg);
-        this.name = "APIUrlException";
-        Logger.error(this);
-    }
-}
-

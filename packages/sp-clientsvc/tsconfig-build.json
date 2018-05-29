@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/sp-clientsvc",
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*"
+            ]
+        }
+    },
+    "files": [
+        "./index.ts"
+    ]
+}

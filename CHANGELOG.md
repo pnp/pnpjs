@@ -6,6 +6,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.1.0 - 2018-05-29
+
+### Added
+
+- @pnp/sp-taxonomy: Added new library to support fluent queries against SharePoint Taxonomy data
+- @pnp/sp-clientsvc: Added new library with fluent API base classes for client.svc based requests
+- @pnp/common: Added utility method sanitizeGuid and getAttrValueFromString
+- @pnp/odata: Added LambdaParser that takes any function to handle parsing Response
+- tooling: Added --stats flag to gulp package to output webpack stats during bundle
+
+### Fixed
+
+- @pnp/odata: Fixed bug in BufferParser
+- tooling: Fixed bug in serving individual packages using --p
+- @pnp/sp: fixed issue in generated js files where $$VERSION$$ placeholder was not replaced correctly
+- @pnp/graph: Disallowed caching of non-GET requests
+- tooling: Fixed docs-clean ordering issue so everything is clean before other tasks run
+
+### Changed
+
+- @pnp/nodejs: Updated how global shims are set for Request types (Headers, Response, Request)
+- @pnp/odata: Changes to request pipeline to support sp-clientsvc (non-breaking)
+- @pnp/odata: Remove public get from abstract class Queryable (non-breaking)
+- @pnp/sp: Added exports for toAbsoluteUrl and extractWebUrl utility methods
+- @pnp/logging: Changed default LogLevel to Info for write and writeJSON
+- build: Added preserveConstEnums flag to tsconfig.json
+- docs: Small formatting changes, added anchors to headings in html to ease linking
+- all: Updated package.json dependencies in root and individual packages
+- docs: Updates to docs, added section on sp-taxonomy and sp-clientsvc libraries
+
+### Removed
+
+- @pnp/sp: Removed unused APIUrlException class
+- @pnp/nodejs: Removed packaging step to webpack bundle, no need for node and reduces package size
+
+### Deprecated
+
+- @pnp/common: Deprecated exported static Util class. Migrate to using the individually exported methods
+
 ## 1.0.5 - 2018-05-11
 
 ### Added

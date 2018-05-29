@@ -1,5 +1,6 @@
+import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import { sp, Lists, List, ControlMode, PageType } from "../";
+import { ControlMode, List, Lists, PageType, sp } from "../";
 import { testSettings } from "../../../test/main";
 import { toMatchEndRegex } from "./utils";
 
@@ -62,9 +63,12 @@ describe("Lists", () => {
 
         describe("add", () => {
             it("Should add a list with the expected title", () => {
-                return expect(sp.web.lists.add("pnp testing add").then(() => {
-                    return sp.web.lists.getByTitle("pnp testing add").select("Title").get();
-                })).to.eventually.have.property("Title", "pnp testing add");
+
+                const title = `Test_ListAdd_${getRandomString(8)}`;
+
+                return expect(sp.web.lists.add(title).then(() => {
+                    return sp.web.lists.getByTitle(title).select("Title").get();
+                })).to.eventually.have.property("Title", title);
             });
         });
 

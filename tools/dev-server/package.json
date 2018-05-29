@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@pnp/dev-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple development server",
   "main": "index.js",
   "repository": {
@@ -11,11 +11,11 @@
   "author": "Patrick Rodgers",
   "license": "MIT",
   "dependencies": {
-    "connect": "3.6.5",
+    "connect": "3.6.6",
     "connect-livereload": "0.6.0",
-    "opn": "5.2.0",
-    "serve-static": "1.13.1",
-    "tiny-lr": "1.0.5",
+    "opn": "5.3.0",
+    "serve-static": "1.13.2",
+    "tiny-lr": "1.1.1",
     "url": "0.11.0",
     "watch": "1.0.2"
   }

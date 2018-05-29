@@ -1,8 +1,21 @@
-import { Logger, LogLevel } from "@pnp/logging";
+import { LogLevel, Logger } from "@pnp/logging";
+
+export function deprecatedClass(deprecationVersion: string, message: string) {
+
+    return (target: any): void => {
+        Logger.log({
+            data: {
+                target: target,
+            },
+            level: LogLevel.Warning,
+            message: `(${deprecationVersion}) ${message}`,
+        });
+    };
+}
 
 export function deprecated(deprecationVersion: string, message: string) {
 
-    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    return (target: any, propertyKey: string, descriptor: PropertyDescriptor): any => {
 
         const method = descriptor.value;
 

@@ -1,7 +1,7 @@
 import { List } from "./lists";
 import { TemplateFileType, FileAddResult, File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, combinePaths, getGUID } from "@pnp/common";
+import { TypedHash, extend, combinePaths, getGUID, getAttrValueFromString } from "@pnp/common";
 
 /**
  * Page promotion state
@@ -55,18 +55,6 @@ function getNextOrder(collection: { order: number }[]): number {
 function regexIndexOf(this: string, regex: RegExp | string, startpos = 0) {
     const indexOf = this.substring(startpos).search(regex);
     return (indexOf >= 0) ? (indexOf + (startpos)) : indexOf;
-}
-
-/**
- * Gets an attribute value from an html string block
- * 
- * @param html HTML to search
- * @param attrName The name of the attribute to find
- */
-function getAttrValueFromString(html: string, attrName: string): string {
-    const reg = new RegExp(`${attrName}="([^"]*?)"`, "i");
-    const match = reg.exec(html);
-    return match.length > 0 ? match[1] : null;
 }
 
 /**

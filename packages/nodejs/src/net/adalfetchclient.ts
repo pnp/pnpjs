@@ -1,7 +1,7 @@
-declare var global: any;
 declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
-const nodeFetch = require("node-fetch");
+const nodeFetch = require("node-fetch").default;
+
 import {
     combinePaths,
     objectDefinedNotNull,
@@ -34,10 +34,6 @@ export class AdalFetchClient implements HttpClientImpl {
         private _secret: string,
         private _resource = "https://graph.microsoft.com",
         private _authority = "https://login.windows.net") {
-
-        global.Headers = nodeFetch.Headers;
-        global.Request = nodeFetch.Request;
-        global.Response = nodeFetch.Response;
 
         this.authContext = new AuthenticationContext(combinePaths(this._authority, this._tenant));
     }

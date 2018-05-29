@@ -111,6 +111,22 @@ web.fields.getByTitle("MyField4").update({
 });
 ```
 
+### Update a Url/Picture Field
+
+When updating a URL or Picture field you need to include the __metadata descriptor as shown below.
+
+```TypeScript
+const data = {
+    "My_Field_Name": {
+        "__metadata": { "type": "SP.FieldUrlValue" },
+        "Description": "A Pretty picture",
+        "Url": "https://tenant.sharepoint.com/sites/dev/Style%20Library/DSC_0024.JPG",
+    },
+};
+
+await sp.web.lists.getByTitle("MyListTitle").items.getById(1).update(data);
+```
+
 ## Delete a Field
 
 ```TypeScript

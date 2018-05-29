@@ -43,16 +43,16 @@ export function publisher(config: PublishSchema): Promise<void> {
         const activePublishPipeline = pkg.publishPipeline || config.publishPipeline;
 
         // log we have added the file
-        log(`${colors.bgblue(" ")} Adding ${colors.cyan(packageFile)} to the publishing pipeline.`);
+        log(`${colors.bgBlue(" ")} Adding ${colors.cyan(packageFile)} to the publishing pipeline.`);
 
         return activePublishPipeline.reduce((subPipe, func) => subPipe.then(() => func(publishContext)), pipe).then(_ => {
 
-            log(`${colors.bggreen(" ")} Published ${colors.cyan(packageFile)}.`);
+            log(`${colors.bgGreen(" ")} Published ${colors.cyan(packageFile)}.`);
 
         }).catch(e => {
 
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error publishing `))} ${colors.bold(colors.cyan(publishContext.packageFolder))}.`);
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error publishing `))} ${colors.bold(colors.cyan(publishContext.packageFolder))}.`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 
     }, Promise.resolve());

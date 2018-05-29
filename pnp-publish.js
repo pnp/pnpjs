@@ -36,10 +36,12 @@ const config = {
         "sp-addinhelpers",
         "config-store",
         "pnpjs",
+        "sp-clientsvc",
+        "sp-taxonomy"
     ],
 
     // the set of tasks run on each project during a build
     publishPipeline: defaultPublishPipeline,
-}
+};
 
 module.exports = config;

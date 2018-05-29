@@ -1,10 +1,7 @@
-import {
-    FetchOptions,
-    BearerTokenFetchClient,
-} from "./netutil";
-import { isUrlAbsolute, combinePaths } from "./util";
+import * as AuthenticationContext from "adal-angular";
+import { BearerTokenFetchClient, FetchOptions } from "./netutil";
 import { ISPFXContext } from "./spfxContextInterface";
-import AuthenticationContext, * as adal from "adal-angular";
+import { combinePaths, isUrlAbsolute } from "./util";
 
 /**
  * Azure AD Client for use in the browser
@@ -103,7 +100,7 @@ export class AdalClient extends BearerTokenFetchClient {
         return new Promise(resolve => {
 
             if (AdalClient._authContext === null) {
-                AdalClient._authContext = (<any>adal).inject({
+                AdalClient._authContext = AuthenticationContext.inject({
                     clientId: this.clientId,
                     displayCall: (url: string) => {
                         if (this._displayCallback) {

@@ -30,6 +30,7 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         // TODO:: eventually we want to support this, but for now we don't for ease of code migration
-        "strictNullChecks": false
+        "strictNullChecks": false,
+        "preserveConstEnums": true
     }
 }

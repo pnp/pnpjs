@@ -48,6 +48,13 @@ md.use(require('markdown-it-video', {
     youtube: { width: 640, height: 390 }
 }));
 
+// anchor headers
+md.use(require('markdown-it-anchor'), {
+    permalink: true,
+    permalinkSymbol: "#",
+    permalinkClass: "permalink",
+});
+
 // translate the md to html
 function mdToHtml(file, a, b, header, footer) {
     const result = md.render(file.contents.toString());
@@ -92,7 +99,7 @@ function breadcumbReplacer() {
         .join("&nbsp;&nbsp;&gt;&nbsp;&nbsp;");
 }
 
-gulp.task("docs:copyassets", (done) => {
+gulp.task("docs:copyassets", ["clean-docs"], (done) => {
 
     pump([
         gulp.src([
@@ -112,7 +119,7 @@ gulp.task("docs:copyassets", (done) => {
     });
 });
 
-gulp.task("docs:generate", (done) => {
+gulp.task("docs:generate", ["clean-docs"], (done) => {
 
     getHeaderFooter(path.join(docsSrcRoot, "templates/article.html"), "$$content$$").then(hf => {
 

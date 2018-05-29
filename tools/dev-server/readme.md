@@ -1,7 +1,6 @@
 # @pnp/dev-server
 
-A simple server for serving the docs site while editing documentation and assets. Created as a learning exercise and to provide the bare-minimum of 
-required functionality.
+A simple server for serving the docs site while editing documentation and assets. Created as a learning exercise and to provide the bare-minimum of required functionality.
 
 `npm install @pnp/dev-server --save`
 

@@ -1,5 +1,5 @@
+import { FetchOptions, getGUID } from "@pnp/common";
 import { ODataParser } from "./parsers";
-import { getGUID, FetchOptions } from "@pnp/common";
 
 export interface ODataBatchRequestInfo {
     url: string;
@@ -8,16 +8,19 @@ export interface ODataBatchRequestInfo {
     parser: ODataParser<any>;
     resolve: ((d: any) => void) | null;
     reject: ((error: any) => void) | null;
+    id: string;
 }
 
 export abstract class ODataBatch {
 
     protected _dependencies: Promise<void>[];
     protected _requests: ODataBatchRequestInfo[];
+    protected _resolveBatchDependencies: Promise<void>[];
 
     constructor(private _batchId = getGUID()) {
         this._requests = [];
         this._dependencies = [];
+        this._resolveBatchDependencies = [];
     }
 
     public get batchId(): string {
@@ -38,15 +41,16 @@ export abstract class ODataBatch {
      * @param options Any request options
      * @param parser The parser used to handle the eventual return from the query
      */
-    public add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>): Promise<T> {
+    public add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>, requestId: string): Promise<T> {
 
         const info: ODataBatchRequestInfo = {
+            id: requestId,
             method: method.toUpperCase(),
-            options: options,
-            parser: parser,
+            options,
+            parser,
             reject: null,
             resolve: null,
-            url: url,
+            url,
         };
 
         const p = new Promise<T>((resolve, reject) => {
@@ -76,6 +80,15 @@ export abstract class ODataBatch {
     }
 
     /**
+     * The batch's execute method will not resolve util any promises added here resolve
+     * 
+     * @param p The dependent promise
+     */
+    public addResolveBatchDependency(p: Promise<any>): void {
+        this._resolveBatchDependencies.push(p);
+    }
+
+    /**
      * Execute the current batch and resolve the associated promises
      *
      * @returns A promise which will be resolved once all of the batch's child promises have resolved
@@ -84,7 +97,11 @@ export abstract class ODataBatch {
 
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
-        return Promise.all(this._dependencies).then(() => Promise.all(this._dependencies)).then(() => this.executeImpl());
+        return Promise.all(this._dependencies)
+            .then(() => Promise.all(this._dependencies))
+            .then(() => this.executeImpl())
+            .then(() => Promise.all(this._resolveBatchDependencies))
+            .then(() => void (0));
     }
 
     protected abstract executeImpl(): Promise<void>;

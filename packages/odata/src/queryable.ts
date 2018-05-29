@@ -134,16 +134,6 @@ export abstract class Queryable<GetType> {
         return this;
     }
 
-    /**
-     * Executes the currently built request
-     *
-     * @param parser Allows you to specify a parser to handle the result
-     * @param getOptions The options used for this request
-     */
-    public get<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
-        return this.getCore(parser, options);
-    }
-
     protected getCore<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
         return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
@@ -182,7 +172,7 @@ export abstract class Queryable<GetType> {
     }
 
     /**
-     * Extends this queryable from 
+     * Extends this queryable from the provided parent 
      * 
      * @param parent Parent queryable from which we will derive a base url
      * @param path Additional path
