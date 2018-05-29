@@ -110,4 +110,17 @@ describe("Util", () => {
             expect(Util.isArray(undefined)).to.be.false;
         });
     });
+
+    describe("getAttrValueFromString", () => {
+
+        it("Should correctly parse attribute values", () => {
+            expect(Util.getAttrValueFromString(`<thing att='value' />`, "att")).to.eq("value");
+            expect(Util.getAttrValueFromString(`<thing att="value1293.?,/\|!@#$%^&*()[]{}" />`, "att")).to.eq("value1293\\.\\?,/\\|!@#\\$%\\^&\\*\\(\\)\\[\\]\\{\\}");
+            expect(Util.getAttrValueFromString(`<thing att  =  'value' />`, "att")).to.eq("value");
+            expect(Util.getAttrValueFromString(`<thing att='value"' />`, "att")).to.eq("value\"");
+            expect(Util.getAttrValueFromString(`<thing att="value'" />`, "att")).to.eq("value'");
+            expect(Util.getAttrValueFromString(`<thing att='value value' att2="something" />`, "att")).to.eq("value value");
+            expect(Util.getAttrValueFromString(`<thing att='value'></thing>`, "att")).to.eq("value");
+        });
+    });
 });

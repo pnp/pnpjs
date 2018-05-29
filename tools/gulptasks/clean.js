@@ -14,7 +14,7 @@ const gulp = require("gulp"),
 gulp.task('clean', (done) => {
 
     if (yargs.noclean || yargs.nc) {
-        log(`${colors.bgwhite(" ")} Skipping clean due to flag.`);
+        log(`${colors.bgWhite(" ")} Skipping clean due to flag.`);
         return done();
     }
 
@@ -26,12 +26,12 @@ gulp.task('clean', (done) => {
         "./testing"
     ];
 
-    log(`${colors.bgblue(" ")} Cleaning directories: ${directories.join(", ")}.`);
+    log(`${colors.bgBlue(" ")} Cleaning directories: ${directories.join(", ")}.`);
     del(directories).then(() => {
-        log(`${colors.bggreen(" ")} Cleaned directories: ${directories.join(", ")}.`);
+        log(`${colors.bgGreen(" ")} Cleaned directories: ${directories.join(", ")}.`);
         done();
     }).catch(e => {
-        log(`${colors.bgred(" ")} Error cleaned directories: ${directories.join(", ")}.`);
+        log(`${colors.bgRed(" ")} Error cleaned directories: ${directories.join(", ")}.`);
         done(e);
     });
 });

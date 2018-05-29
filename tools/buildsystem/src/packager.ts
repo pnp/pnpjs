@@ -46,16 +46,16 @@ export function packager(config: PackageSchema): Promise<void> {
         const activePackagePipeline = pkg.packagePipeline || config.packagePipeline;
 
         // log we have added the file
-        log(`${colors.bgblue(" ")} Adding ${colors.cyan(packageFile)} to the packaging pipeline.`);
+        log(`${colors.bgBlue(" ")} Adding ${colors.cyan(packageFile)} to the packaging pipeline.`);
 
         return activePackagePipeline.reduce((subPipe, func) => subPipe.then(() => func(packageContext)), pipe).then(_ => {
 
-            log(`${colors.bggreen(" ")} Packaged ${colors.cyan(packageFile)}.`);
+            log(`${colors.bgGreen(" ")} Packaged ${colors.cyan(packageFile)}.`);
 
         }).catch(e => {
 
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error packaging `))} ${colors.bold(colors.cyan(packageContext.projectFolder))}.`);
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error packaging `))} ${colors.bold(colors.cyan(packageContext.projectFolder))}.`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 
     }, Promise.resolve());

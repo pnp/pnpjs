@@ -8,9 +8,9 @@ import {
     getCtxCallback,
 } from "@pnp/common";
 import { SPRuntimeConfig } from "../config/splibconfig";
-import { APIUrlException } from "../exceptions";
+import { extractWebUrl } from "../utils/extractweburl";
 
-export class SPHttpClient implements RequestClient  {
+export class SPHttpClient implements RequestClient {
 
     private _digestCache: DigestCache;
     private _impl: HttpClientImpl;
@@ -56,12 +56,7 @@ export class SPHttpClient implements RequestClient  {
 
             // if we have either a request digest or an authorization header we don't need a digest
             if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
-                const index = url.indexOf("_api/");
-                if (index < 0) {
-                    throw new APIUrlException();
-                }
-                const webUrl = url.substr(0, index);
-                return this._digestCache.getDigest(webUrl)
+                return this._digestCache.getDigest(extractWebUrl(url))
                     .then((digest) => {
                         headers.append("X-RequestDigest", digest);
                         return this.fetchRaw(url, opts);

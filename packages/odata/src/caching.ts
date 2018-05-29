@@ -29,19 +29,17 @@ export class CachingOptions implements ICachingOptions {
 export class CachingParserWrapper<T> implements ODataParser<T> {
 
     constructor(
-        private _parser: ODataParser<T>,
-        private _cacheOptions: CachingOptions) { }
+        public parser: ODataParser<T>,
+        public cacheOptions: CachingOptions) { }
 
     public parse(response: Response): Promise<T> {
+        return this.parser.parse(response).then(r => this.cacheData(r));
+    }
 
-        // add this to the cache based on the options
-        return this._parser.parse(response).then(data => {
-
-            if (this._cacheOptions.store !== null) {
-                this._cacheOptions.store.put(this._cacheOptions.key, data, this._cacheOptions.expiration);
-            }
-
-            return data;
-        });
+    protected cacheData(data: any): any {
+        if (this.cacheOptions.store !== null) {
+            this.cacheOptions.store.put(this.cacheOptions.key, data, this.cacheOptions.expiration);
+        }
+        return data;
     }
 }

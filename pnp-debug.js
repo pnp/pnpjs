@@ -34,6 +34,6 @@ const config = {
     ],
 
     configFile: "tsconfig.json",
-}
+};
 
 module.exports = config;

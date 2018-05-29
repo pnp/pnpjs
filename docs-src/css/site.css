@@ -1,5 +1,5 @@
 body {
-    font-family: "Arial Narrow", Arial, sans-serif;
+    font-family: Consolas, monaco, monospace;
     margin: 0px;
     padding: 0px;
     background-color: #fafafa;
@@ -49,10 +49,10 @@ code {
     display: block;
     background-color: #efefef;
     overflow-x: auto;
-    margin: 1em;
+    margin: .8em;
     font-family: "Input", "Courier New", Courier, monospace;
-    border: 3px solid #ffffff;
-    padding: 4px;
+    border: 1px solid #777777;
+    padding: .5em;
 }
 
 #headerText {
@@ -118,4 +118,13 @@ code {
 #packages-table table tr:first-child td:first-child {
     font-weight: bold;
     font-size: 1.2em;
+}
+
+.permalink {
+   color: #efefef;
+   text-decoration: none;
+}
+
+.permalink:hover {
+    color: #000000;
 }

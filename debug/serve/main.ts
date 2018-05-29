@@ -35,4 +35,3 @@ document.onreadystatechange = async () => {
         e.innerHTML = html.join("<br />");
     }
 };
-

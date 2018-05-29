@@ -41,26 +41,24 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
 
-            const urlStr = baseUrl as string;
-            if (isUrlAbsolute(urlStr) || urlStr.lastIndexOf("/") < 0) {
-                this._parentUrl = urlStr;
-                this._url = combinePaths(urlStr, path);
-            } else if (urlStr.lastIndexOf("/") > urlStr.lastIndexOf("(")) {
+            if (isUrlAbsolute(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
+                this._parentUrl = baseUrl;
+                this._url = combinePaths(baseUrl, path);
+            } else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
-                const index = urlStr.lastIndexOf("/");
-                this._parentUrl = urlStr.slice(0, index);
-                path = combinePaths(urlStr.slice(index), path);
+                const index = baseUrl.lastIndexOf("/");
+                this._parentUrl = baseUrl.slice(0, index);
+                path = combinePaths(baseUrl.slice(index), path);
                 this._url = combinePaths(this._parentUrl, path);
             } else {
                 // .../items(19)
-                const index = urlStr.lastIndexOf("(");
-                this._parentUrl = urlStr.slice(0, index);
-                this._url = combinePaths(urlStr, path);
+                const index = baseUrl.lastIndexOf("(");
+                this._parentUrl = baseUrl.slice(0, index);
+                this._url = combinePaths(baseUrl, path);
             }
         } else {
-            const q = baseUrl as SharePointQueryable;
-            this.extend(q, path);
-            const target = q._query.get("@target");
+            this.extend(baseUrl, path);
+            const target = baseUrl._query.get("@target");
             if (target !== null) {
                 this._query.add("@target", target);
             }
@@ -171,7 +169,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
                 cachingOptions: this._cachingOptions,
                 clientFactory: () => new SPHttpClient(),
                 isBatched: this.hasBatch,
-                isCached: this._useCaching,
+                isCached: /^get$/i.test(verb) && this._useCaching,
                 options: options,
                 parser: parser,
                 pipeline: pipeline,

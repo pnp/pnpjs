@@ -1,7 +1,7 @@
 declare var require: (s: string) => any;
-const path = require("path");
-const colors = require("ansi-colors");
-const log = require("fancy-log");
+const path = require("path"),
+    colors = require("ansi-colors"),
+    log = require("fancy-log");
 
 import { BuildContext } from "./tasks/build/context";
 import { BuildSchema } from "./tasks/build/schema";
@@ -48,16 +48,16 @@ export function builder(version: string, config: BuildSchema): Promise<void> {
         const activeBuildPipeline = pkg.buildPipeline || config.buildPipeline;
 
         // log we have added the file
-        log(`${colors.bgblue(" ")} Adding ${colors.cyan(buildContext.projectFile)} to the build pipeline.`);
+        log(`${colors.bgBlue(" ")} Adding ${colors.cyan(buildContext.projectFile)} to the build pipeline.`);
 
         return activeBuildPipeline.reduce((subPipe, func) => subPipe.then(() => func(buildContext)), pipe).then(_ => {
 
-            log(`${colors.bggreen(" ")} Built ${colors.cyan(buildContext.projectFile)}.`);
+            log(`${colors.bgGreen(" ")} Built ${colors.cyan(buildContext.projectFile)}.`);
 
         }).catch(e => {
 
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red(`Error building `))} ${colors.bold(colors.cyan(buildContext.projectFile))}.`);
-            log(`${colors.bgred(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error building `))} ${colors.bold(colors.cyan(buildContext.projectFile))}.`);
+            log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 
     }, Promise.resolve());

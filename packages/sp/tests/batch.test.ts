@@ -1,9 +1,6 @@
 import { expect } from "chai";
-import { ContentTypes, ContentType } from "../src/contenttypes";
 import { Web } from "../";
 import { testSettings } from "../../../test/main";
-import { toMatchEndRegex } from "./utils";
-import { Util } from "@pnp/common";
 
 describe("Batching", () => {
 
@@ -13,11 +10,11 @@ describe("Batching", () => {
 
             const web = new Web(testSettings.sp.webUrl);
 
-            const order = [];
+            const order: number[] = [];
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(l => {
+            web.inBatch(batch).get().then(_ => {
                 order.push(1);
             });
 
@@ -31,23 +28,23 @@ describe("Batching", () => {
 
             const web = new Web(testSettings.sp.webUrl);
 
-            const order = [];
+            const order: number[] = [];
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(l => {
+            web.inBatch(batch).get().then(_ => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch).get().then(l => {
+            web.lists.inBatch(batch).get().then(_ => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch).get().then(l => {
+            web.lists.top(2).inBatch(batch).get().then(_ => {
                 order.push(3);
             });
 
-            web.lists.select("Title").inBatch(batch).get().then(l => {
+            web.lists.select("Title").inBatch(batch).get().then(_ => {
                 order.push(4);
             });
 
@@ -61,19 +58,19 @@ describe("Batching", () => {
 
             const web = new Web(testSettings.sp.webUrl);
 
-            const order = [];
+            const order: number[] = [];
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(l => {
+            web.inBatch(batch).get().then(_ => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch).get().then(l => {
+            web.lists.inBatch(batch).get().then(_ => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch).get().then(l => {
+            web.lists.top(2).inBatch(batch).get().then(_ => {
                 order.push(3);
             });
 

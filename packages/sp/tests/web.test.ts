@@ -1,7 +1,7 @@
-import { testSettings } from "../../../test/main";
+import { combinePaths, getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import { sp, Web } from "../";
-import { Util } from "@pnp/common";
+import { Web, sp } from "../";
+import { testSettings } from "../../../test/main";
 import { toMatchEndRegex } from "./utils";
 
 describe("Webs", () => {
@@ -10,8 +10,10 @@ describe("Webs", () => {
 
         describe("add", () => {
             it("should add a new child web", function () {
-                // allow 30 seconds for the web to be created
-                return expect(sp.web.webs.add("web.webs.add test", "websaddtest")).to.eventually.be.fulfilled;
+
+                const title = `Test_ChildWebAdd_${getRandomString(8)}`;
+
+                return expect(sp.web.webs.add(title, title)).to.eventually.be.fulfilled;
             });
         });
     }
@@ -176,7 +178,7 @@ describe("Web", () => {
         describe("getFolderByServerRelativeUrl", () => {
             it("should get a folder by the server relative url", function () {
                 return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
-                    const url = Util.combinePaths(w.ServerRelativeUrl, "SitePages");
+                    const url = combinePaths(w.ServerRelativeUrl, "SitePages");
                     return sp.web.getFolderByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
             });
@@ -185,7 +187,7 @@ describe("Web", () => {
         describe("getFileByServerRelativeUrl", () => {
             it("should get a file by the server relative url", function () {
                 return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
-                    const url = Util.combinePaths(w.ServerRelativeUrl, "SitePages", "Home.aspx");
+                    const url = combinePaths(w.ServerRelativeUrl, "SitePages", "Home.aspx");
                     return sp.web.getFileByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
             });
@@ -223,8 +225,8 @@ describe("Web", () => {
                 this.timeout(60000);
 
                 const index = testSettings.sp.url.indexOf("/sites/");
-                const colorUrl = "/" + Util.combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-                const fontUrl = "/" + Util.combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+                const colorUrl = "/" + combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+                const fontUrl = "/" + combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
                 return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
             });

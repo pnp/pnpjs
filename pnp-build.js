@@ -48,6 +48,8 @@ const config = {
         },
         "config-store",
         "pnpjs",
+        "sp-clientsvc",
+        "sp-taxonomy",
     ],
 
     // relative to the package folder
@@ -60,6 +62,6 @@ const config = {
 
     // the set of tasks run on each project during a build
     buildPipeline: defaultBuildPipeline,
-}
+};
 
 module.exports = config;

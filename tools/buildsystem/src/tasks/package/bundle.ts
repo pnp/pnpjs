@@ -1,8 +1,9 @@
 declare var require: (s: string) => any;
 import { PackageContext } from "./context";
-import { src, dest } from "gulp";
-const webpack = require("webpack");
-const path = require("path");
+const webpack = require("webpack"),
+    path = require("path"),
+    yargs = require("yargs").argv,
+    log = require("fancy-log");
 
 interface ResolutionInfo {
     request: string;
@@ -103,9 +104,12 @@ export function bundle(ctx: PackageContext) {
                 reject(err);
             }
 
-            // console.log(stats.toString({
-            //     colors: true,
-            // }));
+            if (yargs.stats) {
+
+                log(stats.toString({
+                    colors: true,
+                }));
+            }
 
             resolve();
         });

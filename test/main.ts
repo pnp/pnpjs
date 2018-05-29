@@ -1,11 +1,11 @@
 declare var require: (s: string) => any;
-import * as chai from "chai";
-import "mocha";
 import { Util } from "@pnp/common";
-import { Web, sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
-import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
+import { AdalFetchClient, SPFetchClient } from "@pnp/nodejs";
+import { Web, sp } from "@pnp/sp";
+import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
+import "mocha";
 
 chai.use(chaiAsPromised);
 
@@ -44,8 +44,6 @@ process.argv.forEach((s: string) => {
     }
 });
 
-
-
 switch (mode) {
 
     case "travis":
@@ -54,7 +52,7 @@ switch (mode) {
 
         settings = {
             testing: {
-                enableWebTests: Boolean.parse(webTests).valueOf(),
+                enableWebTests: /true/i.test(webTests),
                 graph: {
                     id: "",
                     secret: "",

@@ -1,8 +1,7 @@
 declare var global: any;
 declare var require: (path: string) => any;
+const nodeFetch = require("node-fetch").default;
 
-const NodeFetch = require("node-fetch");
-const nodeFetch = NodeFetch.default;
 
 const u: any = require("url");
 import {
@@ -31,10 +30,7 @@ export class SPFetchClient implements HttpClientImpl {
 
     constructor(public siteUrl: string, private _clientId: string, private _clientSecret: string, private _realm = "") {
 
-        // here we set the globals for fetch things when this client is instantiated
-        global.Headers = NodeFetch.Headers;
-        global.Request = NodeFetch.Request;
-        global.Response = NodeFetch.Response;
+        // here we set the globals for page context info to help when building absolute urls
         global._spPageContextInfo = {
             webAbsoluteUrl: siteUrl,
         };

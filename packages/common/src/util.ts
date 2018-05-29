@@ -1,3 +1,6 @@
+import { TypedHash } from "./collections";
+import { deprecatedClass } from "./decorators";
+
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -119,9 +122,10 @@ export function isArray(array: any): boolean {
  * @param target The object to which properties will be copied
  * @param source The source object from which properties will be copied
  * @param noOverwrite If true existing properties on the target are not overwritten from the source
+ * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export function extend<T extends { [key: string]: any; } = any, S extends { [key: string]: any; } = any>(target: T, source: S, noOverwrite = false): T & S {
+export function extend<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false, filter?: (propName: string) => boolean): T & S {
 
     if (!objectDefinedNotNull(source)) {
         return <T & S>target;
@@ -130,8 +134,14 @@ export function extend<T extends { [key: string]: any; } = any, S extends { [key
     // ensure we don't overwrite things we don't want overwritten
     const check: (o: any, i: string) => Boolean = noOverwrite ? (o, i) => !(i in o) : () => true;
 
+    // allow filtering of copied properties
+    const check2: (p: string) => boolean = isFunc(filter) ? filter : () => true;
+
+    // final filter we will use
+    const f = (v: string) => check(target, v) && check2(v);
+
     return Object.getOwnPropertyNames(source)
-        .filter((v: string) => check(target, v))
+        .filter(f)
         .reduce((t: any, v: string) => {
             t[v] = source[v];
             return t;
@@ -156,6 +166,39 @@ export function stringIsNullOrEmpty(s: string): boolean {
     return typeof s === "undefined" || s === null || s.length < 1;
 }
 
+/**
+ * Gets an attribute value from an html/xml string block. NOTE: if the input attribute value has
+ * RegEx special characters they will be escaped in the returned string
+ * 
+ * @param html HTML to search
+ * @param attrName The name of the attribute to find
+ */
+export function getAttrValueFromString(html: string, attrName: string): string {
+
+    // make the input safe for regex
+    html = html.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const reg = new RegExp(`${attrName}\\s*?=\\s*?("|')([^\\1]*?)\\1`, "i");
+    const match = reg.exec(html);
+    return match !== null && match.length > 0 ? match[2] : null;
+}
+
+/**
+ * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
+ * 
+ * @param guid The candidate guid
+ */
+export function sanitizeGuid(guid: string): string {
+
+    if (stringIsNullOrEmpty(guid)) {
+        return guid;
+    }
+
+    const matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
+
+    return matches === null ? guid : matches[1];
+}
+
+deprecatedClass("1.1.0", "The Util class will be removed two major releases from the stated version. Please migrate to the individual exposed methods.");
 export class Util {
 
     /**
@@ -242,4 +285,19 @@ export class Util {
      * @param s The string to test
      */
     public static stringIsNullOrEmpty = stringIsNullOrEmpty;
+
+    /**
+     * Gets an attribute value from an html/xml string block
+     * 
+     * @param html HTML to search
+     * @param attrName The name of the attribute to find
+     */
+    public static getAttrValueFromString = getAttrValueFromString;
+
+    /**
+     * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
+     * 
+     * @param guid The candidate guid id
+     */
+    public static sanitizeGuid = sanitizeGuid;
 }
