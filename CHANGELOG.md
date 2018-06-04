@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- @pnp/nodejs: Fixed typo reported in #117 [[PR](https://github.com/pnp/pnpjs/pull/121)]
+
+### Changed
+
+- @pnp/sp-taxonomy: Updated default value for isAvailableForTagging when creating a team to true [[PR](https://github.com/pnp/pnpjs/pull/116)]
+
 ## 1.1.0 - 2018-05-29
 
 ### Added
