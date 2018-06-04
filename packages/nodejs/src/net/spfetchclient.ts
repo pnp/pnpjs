@@ -4,11 +4,7 @@ const nodeFetch = require("node-fetch").default;
 
 
 const u: any = require("url");
-import {
-    HttpClientImpl,
-    isUrlAbsolute,
-    combinePaths,
-} from "@pnp/common";
+import { HttpClientImpl, combinePaths, isUrlAbsolute } from "@pnp/common";
 import { AuthUrlException } from "../exceptions";
 
 export interface AuthToken {
@@ -95,7 +91,7 @@ export class SPFetchClient implements HttpClientImpl {
                 resolve(this._realm);
             }
 
-            const url = combinePaths(this.siteUrl, "vti_bin/client.svc");
+            const url = combinePaths(this.siteUrl, "_vti_bin/client.svc");
 
             nodeFetch(url, {
                 "headers": {
