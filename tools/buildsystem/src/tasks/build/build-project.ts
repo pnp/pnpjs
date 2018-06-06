@@ -5,11 +5,11 @@ const log = require("fancy-log");
 import { exec } from "child_process";
 import { BuildContext } from "./context";
 
-const tscPath = ".\\node_modules\\.bin\\tsc";
+const tscPath = "./node_modules/.bin/tsc";
 
 /**
  * Builds the project based on the supplied tsconfig.json file
- * 
+ *
  * @param ctx The build context
  */
 export function buildProject(ctx: BuildContext) {
@@ -31,7 +31,7 @@ export function buildProject(ctx: BuildContext) {
 
 /**
  * Builds the project based on the supplied tsconfig.json file, overriding the build to produce es5
- * 
+ *
  * @param ctx The build context
  */
 export function buildProjectES5(ctx: BuildContext) {

@@ -1,6 +1,6 @@
 //******************************************************************************
 //* build.js
-//* 
+//*
 //* Defines a custom gulp task for compiling TypeScript source code into
 //* js files.  It outputs the details as to what it generated to the console.
 //******************************************************************************
@@ -14,7 +14,7 @@ const gulp = require("gulp"),
     fs = require("fs"),
     cmdLine = require("./args").processConfigCmdLine;
 
-const tscPath = ".\\node_modules\\.bin\\tsc";
+const tscPath = "./node_modules/.bin/tsc";
 
 // give outselves a single reference to the projectRoot
 const projectRoot = path.resolve(__dirname, "../..");

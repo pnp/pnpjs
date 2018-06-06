@@ -12,8 +12,8 @@ const defaultPublishPipeline = [
 */
 const config = {
 
-    // root location, relative 
-    packageRoot: path.resolve(".\\dist\\packages\\"),
+    // root location, relative
+    packageRoot: path.resolve("./dist/packages/"),
 
     // the list of packages to be built, in order
     // can be a string name or a plain object with additional settings
@@ -24,7 +24,7 @@ const config = {
      *      "assets": string[], // optional, default is config.assets
      *      "buildChain": (ctx) => Promise<void>[], // optional, default is config.buildChain
      * }
-     * 
+     *
      */
     packages: [
         "logging",
