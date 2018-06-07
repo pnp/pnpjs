@@ -5,7 +5,7 @@ const log = require("fancy-log");
 import { exec } from "child_process";
 import { BuildContext } from "./context";
 
-const tscPath = "./node_modules/.bin/tsc";
+const tscPath = path.join("./node_modules/.bin/tsc");
 
 /**
  * Builds the project based on the supplied tsconfig.json file

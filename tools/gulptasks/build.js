@@ -14,7 +14,7 @@ const gulp = require("gulp"),
     fs = require("fs"),
     cmdLine = require("./args").processConfigCmdLine;
 
-const tscPath = "./node_modules/.bin/tsc";
+const tscPath = path.join("./node_modules/.bin/tsc");
 
 // give outselves a single reference to the projectRoot
 const projectRoot = path.resolve(__dirname, "../..");

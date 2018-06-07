@@ -3,7 +3,7 @@ import { PackageContext } from "./context";
 import { exec } from "child_process";
 const path = require("path");
 
-const rollupPath = "./node_modules/.bin/rollup";
+const rollupPath = path.join("./node_modules/.bin/rollup");
 
 /**
  * Builds the project based on the supplied tsconfig.json file
