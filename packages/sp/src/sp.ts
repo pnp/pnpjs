@@ -189,6 +189,10 @@ export {
 } from "./usercustomactions";
 
 export {
+    UserProfileQuery
+} from "./userprofiles";
+
+export {
     toAbsoluteUrl,
 } from "./utils/toabsoluteurl";
 
