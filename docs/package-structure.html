@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/package-structure.html">package structure</a>
+    </nav>
+
+    <article>
+        <h1 id="package-structure">Package Structure <a class="permalink" href="#package-structure" aria-hidden="true">#</a></h1>
+<p>Each of the packages is published with the same structure, so this article applies to all of the packages. We will use @pnp/common as an example for discussion.</p>
+<h2 id="folders">Folders <a class="permalink" href="#folders" aria-hidden="true">#</a></h2>
+<p>In addition to the files in the root each package has three folders dist, docs, and src.</p>
+<h3 id="root-files">Root Files <a class="permalink" href="#root-files" aria-hidden="true">#</a></h3>
+<p>These files are found at the root of each package.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index.d.ts</td>
+<td>Referenced in package.json typings property and provides the TypeScript type information for consumers</td>
+</tr>
+<tr>
+<td>LICENSE</td>
+<td>Package license</td>
+</tr>
+<tr>
+<td>package.json</td>
+<td>npm package definition</td>
+</tr>
+<tr>
+<td><a href="http://readme.md">readme.md</a></td>
+<td>Basic readme referencing the docs site</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dist">Dist <a class="permalink" href="#dist" aria-hidden="true">#</a></h3>
+<p>The dist folder contains the transpiled files bundled in various ways. You can choose the best file for your usage as needed. Below the {package} will be
+replaced with the name of the package - in our examples case this would be “common” making the file name “{package}.es5.js” = “common.es5.js”. All of the *.map
+files are the debug mapping files related to the .js file of the same name.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{package}.es5.js</td>
+<td>Library packaged in es5 format not wrapped as a module</td>
+</tr>
+<tr>
+<td>{package}.es5.umd.bundle.js</td>
+<td>The library bundled with all dependencies into a single UMD module. Global variable will be “pnp.{package}”. Referenced in the main property of package.json</td>
+</tr>
+<tr>
+<td>{package}.es5.umd.bundle.min.js</td>
+<td>Minified version of the bundled umd module</td>
+</tr>
+<tr>
+<td>{package}.es5.umd.js</td>
+<td>The library in es5 bundled as a UMD modules with no included dependencies. They are designed to work with the other *.es5.umd.js files. Referenced in the module property of package.json</td>
+</tr>
+<tr>
+<td>{package}.es5.umd.min.js</td>
+<td>Minified version of the es5 umd module</td>
+</tr>
+<tr>
+<td>{package}.js</td>
+<td>es6 format file of the library. Referenced by es2015 property of package.json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="docs">Docs <a class="permalink" href="#docs" aria-hidden="true">#</a></h3>
+<p>This folder contains markdown documentation for the library. All packages will include an <a href="http://index.md">index.md</a> which serves as the root of the docs. These files are also used
+to build the <a href="https://pnp.github.io/pnpjs/">public site</a>. To edit these files they can be found in the packages/{package}/docs folder.</p>
+<h3 id="src">Src <a class="permalink" href="#src" aria-hidden="true">#</a></h3>
+<p>Contains the TypeScript definition files refrenced by the index.d.ts in the package root. These files serve to provide typing information about the library to
+consumers who can process typing information.</p>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: package-structure.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/package-structure" alt="spacer" />

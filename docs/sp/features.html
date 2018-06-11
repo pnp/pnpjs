@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/features.html">features</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspfeatures">@pnp/sp/features <a class="permalink" href="#pnpspfeatures" aria-hidden="true">#</a></h1>
+<p>Features are used by SharePoint to package a set of functionality and either enable (activate) or disable (deactivate) that functionality based on requirements for a specific site. You can manage feature activation using the library as shown below. Note that the features collection only contains <em>active</em> features.</p>
+<h2 id="list-all-features">List all Features <a class="permalink" href="#list-all-features" aria-hidden="true">#</a></h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+<span class="hljs-comment">// get all the active features</span>
+web.features.get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// select properties using odata operators</span>
+web.features.select(<span class="hljs-string">"DisplayName"</span>, <span class="hljs-string">"DefinitionId"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// get a particular feature by id</span>
+web.features.getById(<span class="hljs-string">"87294c72-f260-42f3-a41b-981a2ffce37a"</span>).select(<span class="hljs-string">"DisplayName"</span>, <span class="hljs-string">"DefinitionId"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// get features using odata operators</span>
+web.features.filter(<span class="hljs-string">"DisplayName eq 'MDSFeature'"</span>).get().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+<h2 id="activate-a-feature">Activate a Feature <a class="permalink" href="#activate-a-feature" aria-hidden="true">#</a></h2>
+<p>To activate a feature you must know the feature id. You can optionally force activation - if you aren’t sure don’t use force.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+<span class="hljs-comment">// activate the minimum download strategy feature</span>
+web.features.add(<span class="hljs-string">"87294c72-f260-42f3-a41b-981a2ffce37a"</span>).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+<h2 id="deactivate-a-feature">Deactivate a Feature <a class="permalink" href="#deactivate-a-feature" aria-hidden="true">#</a></h2>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> pnp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">let</span> web = pnp.sp.web;
+
+web.features.remove(<span class="hljs-string">"87294c72-f260-42f3-a41b-981a2ffce37a"</span>).then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+
+<span class="hljs-comment">// you can also deactivate a feature but going through the collection's remove method is faster</span>
+web.features.getById(<span class="hljs-string">"87294c72-f260-42f3-a41b-981a2ffce37a"</span>).deactivate().then(<span class="hljs-function"><span class="hljs-params">f</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(f);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\features.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/features" alt="spacer" />
