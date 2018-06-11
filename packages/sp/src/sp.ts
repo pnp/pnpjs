@@ -189,7 +189,7 @@ export {
 } from "./usercustomactions";
 
 export {
-    UserProfileQuery
+    UserProfileQuery,
 } from "./userprofiles";
 
 export {
