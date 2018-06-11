@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <span id="headerText">
+            <a href="/pnpjs">SharePoint Patterns and Practices</a>
+        </span>
+        <span id="subheaderText">Client Side Libraries</span>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy">sp taxonomy</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy/term-sets.html">term sets</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpsp-taxonomytermsets">@pnp/sp-taxonomy/termsets <a class="permalink" href="#pnpsp-taxonomytermsets" aria-hidden="true">#</a></h1>
+<p>Term sets contain terms within the taxonomy heirarchy.</p>
+<h2 id="load-a-term-set">Load a term set <a class="permalink" href="#load-a-term-set" aria-hidden="true">#</a></h2>
+<p>You load a term set directly from a term store.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+</code></pre>
+<p>Or you can load a term set from a collection - though if you know the id it is more efficient to get the term set directly.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span> = store.getTermSetsByName(<span class="hljs-string">"my set"</span>, <span class="hljs-number">1031</span>).getById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> setWithData = store.getTermSetsByName(<span class="hljs-string">"my set"</span>, <span class="hljs-number">1031</span>).getByName(<span class="hljs-string">"my set"</span>).get();
+</code></pre>
+<h2 id="term-set-methods-and-properties">Term set methods and properties <a class="permalink" href="#term-set-methods-and-properties" aria-hidden="true">#</a></h2>
+<h3 id="addstakeholder">addStakeholder <a class="permalink" href="#addstakeholder" aria-hidden="true">#</a></h3>
+<p>Adds a stakeholder to the TermSet</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.addStakeholder(<span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>);
+</code></pre>
+<h3 id="deletestakeholder">deleteStakeholder <a class="permalink" href="#deletestakeholder" aria-hidden="true">#</a></h3>
+<p>Deletes a stakeholder to the TermSet</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.deleteStakeholder(<span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>);
+</code></pre>
+<h3 id="get">get <a class="permalink" href="#get" aria-hidden="true">#</a></h3>
+<p>Gets the data for this TermSet</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet, ITermSetData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> setWithData: ITermSet &amp; ITermSetData = <span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.get();
+</code></pre>
+<h3 id="terms">terms <a class="permalink" href="#terms" aria-hidden="true">#</a></h3>
+<p>Provides access to the <a href="terms.html">terms</a> collection for this termset</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet, ITerms, ITermData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> terms: ITerms = <span class="hljs-keyword">set</span>.terms;
+
+<span class="hljs-comment">// load the data into the terms instances</span>
+<span class="hljs-keyword">const</span> termsWithData: (ITermData &amp; ITerm)[] = <span class="hljs-keyword">set</span>.terms.get();
+</code></pre>
+<h3 id="gettermbyid">getTermById <a class="permalink" href="#gettermbyid" aria-hidden="true">#</a></h3>
+<p>Gets a term by id from this set</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet, ITermData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> term: ITerm = <span class="hljs-keyword">set</span>.getTermById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-comment">// load the data into the term instances</span>
+<span class="hljs-keyword">const</span> termWithData: ITermData &amp; ITerm = term.get();
+</code></pre>
+<h3 id="addterm">addTerm <a class="permalink" href="#addterm" aria-hidden="true">#</a></h3>
+<p>Adds a term to a term set</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermSet, ITermData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> term: ITerm &amp; ITermData = <span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.addTerm(<span class="hljs-string">"name"</span>, <span class="hljs-number">1031</span>, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// you can optionally set the id when you create the term</span>
+<span class="hljs-keyword">const</span> term2: ITerm &amp; ITermData = <span class="hljs-keyword">await</span> <span class="hljs-keyword">set</span>.addTerm(<span class="hljs-string">"name"</span>, <span class="hljs-number">1031</span>, <span class="hljs-literal">true</span>, <span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+</code></pre>
+
+    </article>
+
+    <footer>
+        &copy; Microsoft 2018
+        <br /> Please
+        <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp-taxonomy\term-sets.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp-taxonomy/docs/term-sets" alt="spacer" />
