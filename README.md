@@ -56,6 +56,14 @@ The following packages comprise the Patterns and Practices client side libraries
 
 **Provides functionality for working within SharePoint add-ins**
 
+## [@pnp/sp-taxonomy](packages/sp-taxonomy/docs/index.md)
+
+**Provides a fluent API for querying taxonomy information**
+
+## [@pnp/sp-clientsvc](packages/sp-clientsvc/docs/index.md)
+
+**Handles generic communication with client.svc endpoint, removing SP.\*.js dependencies**
+
 
 ## Authors
 This project's contributors include Microsoft and [community contributors](AUTHORS). Work is done as as open source community project.
