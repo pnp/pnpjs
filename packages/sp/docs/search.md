@@ -39,7 +39,7 @@ import { sp, SearchQueryBuilder, SearchResults } from "@pnp/sp";
 
 // this will hold our current results
 let currentResults: SearchResults = null;
-let page = 0;
+let page = 1;
 
 // triggered on page load through some means
 function onStart() {
@@ -49,7 +49,7 @@ function onStart() {
     sp.search(q).then((r: SearchResults) => {
 
         currentResults = r; // update the current results
-        page = 0; // reset if needed
+        page = 1; // reset if needed
         // update UI with data...
     });
 }
