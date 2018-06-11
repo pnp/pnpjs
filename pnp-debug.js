@@ -7,8 +7,8 @@ const tasks = require("./build/tools/buildsystem").Tasks.Build,
 */
 const config = {
 
-    // root location, relative 
-    packageRoot: path.resolve(".\\debug"),
+    // root location, relative
+    packageRoot: path.resolve("./debug"),
 
     // the list of packages to be built, in order
     // can be a string name or a plain object with additional settings

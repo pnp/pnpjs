@@ -3,12 +3,12 @@ import { PackageContext } from "./context";
 import { exec } from "child_process";
 const path = require("path");
 
-const uglifyPath = path.resolve(".\\node_modules\\.bin\\uglifyjs");
+const uglifyPath = path.resolve("./node_modules/.bin/uglifyjs");
 
 /**
  * Minifies the files created in es5 format into the target dist folder
- * 
- * @param ctx The build context 
+ *
+ * @param ctx The build context
  */
 export function uglify(ctx: PackageContext) {
 
