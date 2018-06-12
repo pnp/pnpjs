@@ -57,8 +57,10 @@ gulp.task("travis:test", ["build:test"], () => {
         });
 });
 
+gulp.task("travis:prereqs", ["clean", "travis:lint", "package"]);
+
 // runs when someone executes a PR from a fork
-gulp.task("travis:pull-request", ["clean", "travis:lint", "travis:test", "package"]);
+gulp.task("travis:pull-request", ["travis:prereqs",  "travis:test"]);
 
 // runs when things are pushed/merged
-gulp.task("travis:push", ["clean", "travis:lint", "travis:webtest", "package"]);
+gulp.task("travis:push", ["travis:prereqs", "travis:webtest"]);
