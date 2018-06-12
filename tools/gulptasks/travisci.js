@@ -6,18 +6,36 @@
 
 const gulp = require("gulp"),
     mocha = require("gulp-mocha"),
-    tslint = require("gulp-tslint"),
-    config = require('./@configuration.js');
+    tslint = require("tslint"),
+    pump = require("pump"),
+    gulpTslint = require("gulp-tslint");
 
-gulp.task("travis:lint", function () {
-    return gulp.src(config.paths.sourceGlob)
-        .pipe(tslint({ formatter: "prose" }))
-        .pipe(tslint.report({ emitError: true }));
+gulp.task("travis:lint", (done) => {
+
+    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
+
+    pump([
+        gulp.src([
+            "./packages/**/*.ts",
+            "!./packages/**/*.test.ts",
+            "!**/node_modules/**",
+            "!**/*.d.ts"
+        ]),
+        gulpTslint({ formatter: "prose", program }),
+        gulpTslint.report({ emitError: true }),
+    ], (err) => {
+
+        if (typeof err !== "undefined") {
+            done(err);
+        } else {
+            done();
+        }
+    });
 });
 
-gulp.task("travis:webtest", ["build:testing"], () => {
+gulp.task("travis:webtest", ["build:test"], () => {
 
-    return gulp.src(config.testing.testingTestsDestGlob)
+    return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
         .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 45000, "pnp-test-mode": "travis" }))
         .once('error', function () {
             process.exit(1);
@@ -27,9 +45,9 @@ gulp.task("travis:webtest", ["build:testing"], () => {
         });
 });
 
-gulp.task("travis:test", ["build:testing"], () => {
+gulp.task("travis:test", ["build:test"], () => {
 
-    return gulp.src(config.testing.testingTestsDestGlob)
+    return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
         .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 5000, "pnp-test-mode": "travis-noweb" }))
         .once('error', function () {
             process.exit(1);
@@ -40,7 +58,7 @@ gulp.task("travis:test", ["build:testing"], () => {
 });
 
 // runs when someone executes a PR from a fork
-gulp.task("travis:pull-request", ["clean", "travis:lint", "travis:test", "package:code", "package:defs"]);
+gulp.task("travis:pull-request", ["clean", "travis:lint", "travis:test", "package"]);
 
 // runs when things are pushed/merged
-gulp.task("travis:push", ["clean", "travis:lint", "travis:webtest", "package:code", "package:defs"]);
+gulp.task("travis:push", ["clean", "travis:lint", "travis:webtest", "package"]);

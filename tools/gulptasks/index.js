@@ -6,5 +6,5 @@ require("./test.js");
 require("./serve.js");
 // require("./sync.js");
 require("./docs.js");
-// require("./travisci.js");
+require("./travisci.js");
 require("./publish.js");

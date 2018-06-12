@@ -142,7 +142,7 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
 function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
         graph.setup({
             graph: {
