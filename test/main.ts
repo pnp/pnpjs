@@ -136,13 +136,13 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
             resolve();
 
-        }).catch(reject);
+        }).catch(e => reject(e));
     });
 }
 
 function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
         graph.setup({
             graph: {
@@ -176,6 +176,8 @@ before(function (done: MochaDone) {
             console.log("Error creating testing sub-site: " + JSON.stringify(e));
             done(e);
         });
+    } else {
+        done();
     }
 });
 
