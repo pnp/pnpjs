@@ -717,9 +717,15 @@ export class ClientSideText extends ClientSidePart {
 
         super.fromHtml(html);
 
-        const match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(html);
+        this.text = "";
 
-        this.text = match.length > 1 ? match[1] : "";
+        getBoundedDivMarkup(html, /<div[^>]*data-sp-rte[^>]*>/i, (s: string) => {
+
+            // now we need to grab the inner text between the divs
+            const match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(s);
+
+            this.text = match.length > 1 ? match[1] : "";
+        });
     }
 }
 
