@@ -107,7 +107,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      *
      * @param loginName The account name of the user.
      */
-    public getPropertiesFor(loginName: string): Promise<any[]> {
+    public getPropertiesFor(loginName: string): Promise<any> {
         const q = this.clone(UserProfileQuery, "getpropertiesfor(@v)");
         q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
