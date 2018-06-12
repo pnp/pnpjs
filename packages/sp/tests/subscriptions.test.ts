@@ -5,14 +5,10 @@ import { testSettings } from "../../../test/main";
 describe("Lists", () => {
 
     let lists: Lists;
-    let webTestCheck: boolean;
 
     before(function (done) {
 
-        // sometimes we have web tests enabled but no notificationUrl set
-        webTestCheck = testSettings.sp.notificationUrl !== null && testSettings.sp.notificationUrl !== "";
-
-        if (testSettings.enableWebTests && webTestCheck) {
+        if (testSettings.enableWebTests) {
 
             const now = new Date();
             const expirationDate = new Date(now.setDate(now.getDate() + 90)).toISOString();

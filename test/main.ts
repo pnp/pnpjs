@@ -136,7 +136,7 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
             resolve();
 
-        }).catch(reject);
+        }).catch(e => reject(e));
     });
 }
 
@@ -176,6 +176,8 @@ before(function (done: MochaDone) {
             console.log("Error creating testing sub-site: " + JSON.stringify(e));
             done(e);
         });
+    } else {
+        done();
     }
 });
 
