@@ -57,16 +57,10 @@ gulp.task("travis:test", ["build:test"], () => {
         });
 });
 
-gulp.task("travis:prereqs", ["clean", "travis:lint", "package"], (done) => {
-
-    const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).packager;
-    const config = cmdLine(require(path.join(projectRoot, "./pnp-package.js")));
-
-    engine(config).then(_ => done()).catch(e => done(e));
-});
+gulp.task("travis:prereqs", ["clean", "travis:lint", "package"]);
 
 // runs when someone executes a PR from a fork
-gulp.task("travis:pull-request", ["travis:prereqs",  "travis:test"]);
+gulp.task("travis:pull-request", ["travis:prereqs", "clean", "travis:lint", "package", "travis:test"]);
 
 // runs when things are pushed/merged
-gulp.task("travis:push", ["travis:prereqs", "travis:webtest"]);
+gulp.task("travis:push", ["travis:prereqs", "clean", "travis:lint", "package", "travis:webtest"]);
