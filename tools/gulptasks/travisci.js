@@ -33,7 +33,7 @@ gulp.task("travis:lint", (done) => {
     });
 });
 
-gulp.task("travis:webtest", ["build:test"], () => {
+gulp.task("travis:webtest", ["travis:prereqs", "build:test"], () => {
 
     return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
         .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 45000, "pnp-test-mode": "travis" }))
@@ -45,7 +45,7 @@ gulp.task("travis:webtest", ["build:test"], () => {
         });
 });
 
-gulp.task("travis:test", ["build:test"], () => {
+gulp.task("travis:test", ["travis:prereqs", "build:test"], () => {
 
     return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
         .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 5000, "pnp-test-mode": "travis-noweb" }))
@@ -60,7 +60,7 @@ gulp.task("travis:test", ["build:test"], () => {
 gulp.task("travis:prereqs", ["clean", "travis:lint", "package"]);
 
 // runs when someone executes a PR from a fork
-gulp.task("travis:pull-request", ["travis:prereqs", "clean", "travis:lint", "package", "travis:test"]);
+gulp.task("travis:pull-request", ["travis:prereqs", "travis:test"]);
 
 // runs when things are pushed/merged
-gulp.task("travis:push", ["travis:prereqs", "clean", "travis:lint", "package", "travis:webtest"]);
+gulp.task("travis:push", ["travis:prereqs", "travis:webtest"]);
