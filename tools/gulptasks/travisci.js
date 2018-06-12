@@ -58,11 +58,11 @@ gulp.task("travis:test", ["build:test"], () => {
 });
 
 gulp.task("travis:prereqs", ["clean", "travis:lint", "package"], (done) => {
-    
+
     const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).packager;
     const config = cmdLine(require(path.join(projectRoot, "./pnp-package.js")));
 
-    engine(config).then(done).catch(e => done(e));
+    engine(config).then(_ => done()).catch(e => done(e));
 });
 
 // runs when someone executes a PR from a fork
