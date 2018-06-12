@@ -48,13 +48,9 @@ switch (mode) {
 
     case "travis":
 
-        const webTests = process.env.PnPTesting_ClientId && process.env.PnPTesting_ClientSecret && process.env.PnPTesting_SiteUrl;
-
-        console.log(`webTests setting in main: ${webTests}`);
-
         settings = {
             testing: {
-                enableWebTests: /true/i.test(webTests),
+                enableWebTests: true,
                 graph: {
                     id: "",
                     secret: "",

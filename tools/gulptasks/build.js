@@ -22,7 +22,7 @@ const projectRoot = path.resolve(__dirname, "../..");
 /**
  * Builds the build system for use by sub tasks
  */
-gulp.task("bootstrap-buildsystem", (done) => {
+gulp.task("bootstrap-buildsystem", ["clean"], (done) => {
 
     exec(`${tscPath} -p ./tools/buildsystem/tsconfig.json`, {
         cwd: path.resolve(__dirname, "../.."),
