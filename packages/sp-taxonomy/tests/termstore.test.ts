@@ -19,25 +19,23 @@ describe("TermStore", () => {
 
                 storeId = store.Id;
 
-                store.getSiteCollectionGroup(false).get().then(group => {
+                return store.getSiteCollectionGroup(false).get().then(group => {
 
-                    group.termSets.select("Id", "Name").get().then(sets => {
+                    return group.termSets.select("Id", "Name").get().then(sets => {
 
                         termSetId = sets[0].Id;
                         termSetName = sets[0].Name;
 
-                        store.getTermSetById(termSetId).terms.select("Id").get().then(terms => {
+                        return store.getTermSetById(termSetId).terms.select("Id").get().then(terms => {
 
                             if (terms.length > 0) {
 
                                 termId = terms[0].Id;
                             }
-
-                            done();
                         });
                     });
                 });
-            });
+            }).then(done).catch(e => done(e));
         });
 
         it("Should get changes", () => {
