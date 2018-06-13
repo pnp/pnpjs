@@ -138,6 +138,14 @@ Runs the tests specified in each package's tests folder
 gulp test
 ```
 
+### Verbose
+
+The test command will switch to the "spec" mocha reporter if you supply the verbose flag. Doing so will list out each test's description and sucess instead of the "dot" used by default. This flag works with all other test options.
+
+```
+gulp test --verbose
+```
+
 ### Test individual packages
 
 You can test individual packages as needed, and there is no need to include dependencies in this case
