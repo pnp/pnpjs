@@ -7,7 +7,7 @@
   "dependencies": {
     "@types/adal-angular": "1.0.1",
     "adal-angular": "1.0.17",
-    "tslib": "1.9.1"
+    "tslib": "1.9.2"
   },
   "peerDependencies": {
     "@pnp/logging": "0.0.0-PLACEHOLDER"
