@@ -54,14 +54,16 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
         paths.push("./testing/**/*.test.js");
     }
 
+    const reporter = yargs.verbose ? "spec" : "dot";
+
     return gulp.src(paths)
-        .pipe(mocha({ ui: 'bdd', reporter: 'dot', timeout: 40000, "pnp-test-mode": "cmd", "pnp-test-site": siteUrl }))
+        .pipe(mocha({ ui: "bdd", reporter: reporter, timeout: 40000, "pnp-test-mode": "cmd", "pnp-test-site": siteUrl }))
         .pipe(istanbul.writeReports({
-            reporters: ['text', 'text-summary']
-        })).once('error', function () {
+            reporters: ["text", "text-summary"]
+        })).once("error", function () {
             process.exit(1);
         })
-        .once('end', function () {
+        .once("end", function () {
             process.exit();
         });
 });
