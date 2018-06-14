@@ -242,7 +242,10 @@ export class ClientSidePage extends File {
             .replace(/"/g, "&quot;")
             .replace(/:/g, "&#58;")
             .replace(/{/g, "&#123;")
-            .replace(/}/g, "&#125;");
+            .replace(/}/g, "&#125;")
+            .replace(/\[/g, "\[")
+            .replace(/\]/g, "\]")
+            .replace(/\./g, "\.");
     }
 
     /**
@@ -256,7 +259,10 @@ export class ClientSidePage extends File {
             .replace(/&quot;/g, `"`)
             .replace(/&#58;/g, ":")
             .replace(/&#123;/g, "{")
-            .replace(/&#125;/g, "}"));
+            .replace(/&#125;/g, "}")
+            .replace(/\\\[/g, "[")
+            .replace(/\\\]/g, "]")
+            .replace(/\\\./g, "."));
     }
 
     /**
@@ -777,6 +783,7 @@ export class ClientSideWebpart extends ClientSidePart {
             id: this.webPartId,
             instanceId: this.id,
             properties: this.propertieJson,
+            serverProcessedContent: this.serverProcessedContent,
             title: this.title,
         };
 
@@ -809,8 +816,8 @@ export class ClientSideWebpart extends ClientSidePart {
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion");
-        this.dataVersion = getAttrValueFromString(html, "data-sp-webpartdataversion");
+        this.canvasDataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = getAttrValueFromString(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
 
         if (typeof webPartData.serverProcessedContent !== "undefined") {
