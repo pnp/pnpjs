@@ -36,11 +36,19 @@ gulp.task("travis:lint", (done) => {
 gulp.task("travis:webtest", ["travis:prereqs", "build:test"], () => {
 
     return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
-        .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 45000, "pnp-test-mode": "travis" }))
-        .once('error', function () {
+        .pipe(mocha({
+            ui: "bdd",
+            reporter: "spec",
+            timeout: 60000,
+            "pnp-test-mode": "travis",
+            retries: 2,
+            slow: 5000,
+            ignoreTimeouts: true,
+        }))
+        .once("error", () => {
             process.exit(1);
         })
-        .once('end', function () {
+        .once("end", () => {
             process.exit();
         });
 });
@@ -48,16 +56,23 @@ gulp.task("travis:webtest", ["travis:prereqs", "build:test"], () => {
 gulp.task("travis:test", ["travis:prereqs", "build:test"], () => {
 
     return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
-        .pipe(mocha({ ui: 'bdd', reporter: 'spec', timeout: 5000, "pnp-test-mode": "travis-noweb" }))
-        .once('error', function () {
+        .pipe(mocha({
+            ui: "bdd",
+            reporter: "spec",
+            timeout: 1000,
+            "pnp-test-mode": "travis-noweb",
+            retries: 2,
+            slow: 300,
+        }))
+        .once("error", () => {
             process.exit(1);
         })
-        .once('end', function () {
+        .once("end", () => {
             process.exit();
         });
 });
 
-gulp.task("travis:prereqs", ["clean", "travis:lint", "package"]);
+gulp.task("travis:prereqs"); //, ["clean", "travis:lint", "package"]);
 
 // runs when someone executes a PR from a fork
 gulp.task("travis:pull-request", ["travis:prereqs", "travis:test"]);

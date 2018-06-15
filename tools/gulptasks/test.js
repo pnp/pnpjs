@@ -14,7 +14,6 @@ const gulp = require("gulp"),
     cmdLine = require("./args").processConfigCmdLine;
 
 gulp.task("_istanbul:hook", ["build:test"], () => {
-
     // we hook the built packages
     return gulp.src("./testing/packages/**/*.js")
         .pipe(istanbul())
@@ -57,7 +56,14 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
     const reporter = yargs.verbose ? "spec" : "dot";
 
     return gulp.src(paths)
-        .pipe(mocha({ ui: "bdd", reporter: reporter, timeout: 40000, "pnp-test-mode": "cmd", "pnp-test-site": siteUrl }))
+        .pipe(mocha({
+            ui: "bdd",
+            reporter: reporter,
+            timeout: 40000,
+            "pnp-test-mode": "cmd",
+            "pnp-test-site": siteUrl,
+            slow: 3000,
+        }))
         .pipe(istanbul.writeReports({
             reporters: ["text", "text-summary"]
         })).once("error", function () {
