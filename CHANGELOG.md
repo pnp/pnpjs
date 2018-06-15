@@ -11,10 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - tooling: Setup Travis CI to process PRs and merges [[PR](https://github.com/pnp/pnpjs/pull/131)]
 - tooling: Added support for --verbose flag when using gulp test
 
+### Changed
+
+- tooling: Updated travis test to use a custom mocha impl allowing for ignore timeouts [[PR](https://github.com/pnp/pnpjs/pull/136)]
+
 ### Fixed
 
 - @pnp/sp: Fixed bug where parsing ClientSideText webpart from existing page included extra "</div>" [[PR](https://github.com/pnp/pnpjs/pull/129)]
 - @pnp/sp: Changed return type of getPropertiesFor to be any instead of any[] [[PR](https://github.com/pnp/pnpjs/pull/130)]
+- @pnp/sp: Fixed issue with decoding escaped json in ClientSidePage [[PR](https://github.com/pnp/pnpjs/pull/133)]
 
 ## 1.1.1 - 2018-06-11
 
