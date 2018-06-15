@@ -212,7 +212,7 @@ describe("Web", () => {
 
         describe("delete", () => {
             it("should create and then delete a new sub-web", function () {
-                this.timeout(40000);
+                this.ignoreTimeout(true);
                 return expect(sp.web.webs.add("Better be deleted!", "web-delete-test").then(result => {
                     return result.web.delete();
                 })).to.eventually.be.fulfilled;
@@ -223,6 +223,7 @@ describe("Web", () => {
             it("should apply a theme to our web", function () {
                 // this takes a long time to process
                 this.timeout(60000);
+                this.ignoreTimeout(true);
 
                 const index = testSettings.sp.url.indexOf("/sites/");
                 const colorUrl = "/" + combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
