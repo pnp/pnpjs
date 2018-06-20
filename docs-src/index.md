@@ -14,6 +14,7 @@ These articles provide general guidance for working with the libraries. If you a
 * [Getting Started Contributing](getting-started-dev.md)
 * [Gulp Commands](gulp-commands.md)
 * [Debugging](debugging.md)
+* [Deployment](deployment.md)
 * [Install Beta Versions](beta-versions.md)
 * [Polyfills](polyfill.md)
 * [Package Structure](package-structure.md)
