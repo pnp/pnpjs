@@ -4,6 +4,12 @@
 
 This module provides a fluent interface for working with the SharePoint term store. It does not rely on SP.taxonomy.js or other dependencies outside the @pnp scope. It is designed to function in a similar manner and present a similar feel to the other data retrieval libraries. It works by calling the "/\_vti_bin/client.svc/ProcessQuery" endpoint.
 
+## Getting Started
+
+You will need to install the @pnp/sp-taxonomy package as well as the packages it requires to run.
+
+`npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/sp-taxonomy @pnp/sp-clientsvc --save`
+
 ## Root Object
 
 All fluent taxonomy operations originate from the Taxonomy object. You can access it in several ways.
