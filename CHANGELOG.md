@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - tooling: Updated travis test to use a custom mocha impl allowing for ignore timeouts [[PR](https://github.com/pnp/pnpjs/pull/136)]
+- @pnp/pnpjs: Updated global variable name from $pnp -> pnp, docs updated to reflect change [[PR](https://github.com/pnp/pnpjs/pull/143)]
 
 ### Fixed
 
