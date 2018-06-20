@@ -8,7 +8,9 @@
     "tslib": "1.9.2"
   },
   "peerDependencies": {
+    "@pnp/logging": "0.0.0-PLACEHOLDER",
     "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/odata": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER",
     "@pnp/sp-clientsvc": "0.0.0-PLACEHOLDER"
   },
