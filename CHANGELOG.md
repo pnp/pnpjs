@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - tooling: Setup Travis CI to process PRs and merges [[PR](https://github.com/pnp/pnpjs/pull/131)]
 - tooling: Added support for --verbose flag when using gulp test
+- documentation: Added article on deployment lsiting cdnjs urls [[PR](https://github.com/pnp/pnpjs/pull/145)]
 
 ### Changed
 
