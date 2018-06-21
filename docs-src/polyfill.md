@@ -11,12 +11,12 @@ control, so please ensure you understand any associated risks.
 To use this option you need to wrap the code in a function, here called "stuffisloaded". Then you need to add another script tag as shown below that will load what you need from the polyfill service. Note the parameter "callback" takes our function name.
 
 ```HTML
-<script src="https://mysite/site assests/pnpjs.es5.umd.bundle.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pnp-pnpjs/1.1.1/pnpjs.es5.umd.bundle.min.js" type="text/javascript"></script>
 <script>
 // this function will be executed once the polyfill is loaded.
 function stuffisloaded() {
 
-  $pnp.sp.web.select("Title").get()
+  pnp.sp.web.select("Title").get()
     .then(function(data){
       document.getElementById("main").innerText=data.Title;
   })   
