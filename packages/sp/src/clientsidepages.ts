@@ -254,15 +254,16 @@ export class ClientSidePage extends File {
      * @param escapedString 
      */
     public static escapedStringToJson<T = any>(escapedString: string): T {
+        const unespace = (escaped: string): string => {
+            const mapDict = [
+                [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
+                [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+            ];
+            return mapDict.reduce((r, m) => r.replace(m[0], m[1] as string), escaped);
+        };
 
-        return JSON.parse(escapedString
-            .replace(/&quot;/g, `"`)
-            .replace(/&#58;/g, ":")
-            .replace(/&#123;/g, "{")
-            .replace(/&#125;/g, "}")
-            .replace(/\\\[/g, "[")
-            .replace(/\\\]/g, "]")
-            .replace(/\\\./g, "."));
+        return JSON.parse(unespace(escapedString));
     }
 
     /**
