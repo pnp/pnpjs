@@ -104,7 +104,8 @@ gulp.task("docs:copyassets", ["clean-docs"], (done) => {
     pump([
         gulp.src([
             "./docs-src/**/*.css",
-        ]),
+            "./docs-src/**/*.png",
+        ], { base: "./docs-src" }),
         gulp.dest("docs",
             {
                 overwrite: true,
