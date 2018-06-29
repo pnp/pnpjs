@@ -16,6 +16,14 @@ export interface AuthToken {
     access_token: string;
 }
 
+export enum SPOAuthEnv {
+    SPO,
+    China,
+    Germany,
+    USDef,
+    USGov,
+}
+
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
  */
@@ -24,7 +32,7 @@ export class SPFetchClient implements HttpClientImpl {
     private static SharePointServicePrincipal = "00000003-0000-0ff1-ce00-000000000000";
     private token: AuthToken | null = null;
 
-    constructor(public siteUrl: string, private _clientId: string, private _clientSecret: string, private _realm = "") {
+    constructor(public siteUrl: string, private _clientId: string, private _clientSecret: string, public authEnv: SPOAuthEnv = SPOAuthEnv.SPO, private _realm = "") {
 
         // here we set the globals for page context info to help when building absolute urls
         global._spPageContextInfo = {
@@ -83,6 +91,17 @@ export class SPFetchClient implements HttpClientImpl {
         });
     }
 
+    public getAuthHostUrl(env: SPOAuthEnv): string {
+        switch (env) {
+            case SPOAuthEnv.China:
+                return "accounts.accesscontrol.chinacloudapi.cn";
+            case SPOAuthEnv.Germany:
+                return "login.microsoftonline.de";
+            default:
+                return "accounts.accesscontrol.windows.net";
+        }
+    }
+
     private getRealm(): Promise<string> {
 
         return new Promise(resolve => {
@@ -110,7 +129,7 @@ export class SPFetchClient implements HttpClientImpl {
 
     private getAuthUrl(realm: string): Promise<string> {
 
-        const url = `https://accounts.accesscontrol.windows.net/metadata/json/1?realm=${realm}`;
+        const url = `https://${this.getAuthHostUrl(this.authEnv)}/metadata/json/1?realm=${realm}`;
 
         return nodeFetch(url).then((r: Response) => r.json()).then((json: { endpoints: { protocol: string, location: string }[] }) => {
 
