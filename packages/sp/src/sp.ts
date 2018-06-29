@@ -206,6 +206,9 @@ export {
 } from "./utilities";
 
 export {
+    View,
+    Views,
+    ViewFields,
     ViewAddResult,
     ViewUpdateResult,
 } from "./views";
