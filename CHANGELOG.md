@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - tooling: Setup Travis CI to process PRs and merges [[PR](https://github.com/pnp/pnpjs/pull/131)]
 - tooling: Added support for --verbose flag when using gulp test
 - documentation: Added article on deployment listing cdnjs urls [[PR](https://github.com/pnp/pnpjs/pull/145)]
+- @pnp/nodejs: Support for local cloud authentication [[PR](https://github.com/pnp/pnpjs/pull/154)]
 
 ### Changed
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/pnpjs: Updated global variable name from $pnp -> pnp, docs updated to reflect change [[PR](https://github.com/pnp/pnpjs/pull/143)]
 - @pnp/common: dateAdd timespan parameter now bound to custom string enumeration type
 - documentation: Styling changes [[PR](https://github.com/pnp/pnpjs/pull/151)]
+- @pnp/nodejs: SPFetchClient contructor realm parameter is now fifth [[PR](https://github.com/pnp/pnpjs/pull/154)]
 
 ### Fixed
 
