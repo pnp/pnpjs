@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/common: dateAdd timespan parameter now bound to custom string enumeration type
 - documentation: Styling changes [[PR](https://github.com/pnp/pnpjs/pull/151)]
 - @pnp/nodejs: SPFetchClient contructor realm parameter is now fifth [[PR](https://github.com/pnp/pnpjs/pull/154)]
+- @pnp/sp: Added View, Views, and ViewFields to the exports [[PR](https://github.com/pnp/pnpjs/pull/155)]
 
 ### Fixed
 
