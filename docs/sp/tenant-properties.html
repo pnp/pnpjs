@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="logo">
+                <img src="img/office365-header-icon.png" alt="Logo" />
+            </div>
+            <div class="pnp-title">
+                <span id="headerText">
+                    <a href="/pnpjs">SharePoint Patterns and Practices</a>
+                </span>
+                <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+            </div>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/tenant-properties.html">tenant properties</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspweb-tenant-properties">@pnp/sp/web - tenant properties <a class="permalink" href="#pnpspweb-tenant-properties" aria-hidden="true">#</a></h1>
+<p>You can set, read, and remove tenant properties using the methods shown below:</p>
+<h2 id="setstorageentity">setStorageEntity <a class="permalink" href="#setstorageentity" aria-hidden="true">#</a></h2>
+<p>This method MUST be called in the context of the app catalog web or you will get an access denied message.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://tenant.sharepoint.com/sites/appcatalog/"</span>);
+
+<span class="hljs-comment">// specify required key and value</span>
+<span class="hljs-keyword">await</span> w.setStorageEntity(<span class="hljs-string">"Test1"</span>, <span class="hljs-string">"Value 1"</span>);
+
+<span class="hljs-comment">// specify optional description and comments</span>
+<span class="hljs-keyword">await</span> w.setStorageEntity(<span class="hljs-string">"Test2"</span>, <span class="hljs-string">"Value 2"</span>, <span class="hljs-string">"description"</span>, <span class="hljs-string">"comments"</span>);
+</code></pre>
+<h2 id="getstorageentity">getStorageEntity <a class="permalink" href="#getstorageentity" aria-hidden="true">#</a></h2>
+<p>This method can be used from any web to retrieve values previsouly set.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, StorageEntity } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> prop: StorageEntity = <span class="hljs-keyword">await</span> sp.getStorageEntity(<span class="hljs-string">"Test1"</span>);
+
+<span class="hljs-built_in">console</span>.log(prop.Value);
+</code></pre>
+<h2 id="removestorageentity">removeStorageEntity <a class="permalink" href="#removestorageentity" aria-hidden="true">#</a></h2>
+<p>This method MUST be called in the context of the app catalog web or you will get an access denied message.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { Web } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> w = <span class="hljs-keyword">new</span> Web(<span class="hljs-string">"https://tenant.sharepoint.com/sites/appcatalog/"</span>);
+
+<span class="hljs-keyword">await</span> w.removeStorageEntity(<span class="hljs-string">"Test1"</span>);
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\tenant-properties.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/tenant-properties" alt="spacer" />
