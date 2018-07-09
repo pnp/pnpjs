@@ -1,5 +1,5 @@
 import { extend, combinePaths } from "@pnp/common";
-import { spGetEntityUrl } from "./odata";
+import { spExtractODataId } from "./odata";
 import {
     SharePointQueryable,
     SharePointQueryableInstance,
@@ -567,9 +567,9 @@ export class FileFolderShared extends SharePointQueryableInstance {
     protected getShareable(): Promise<SharePointQueryableShareable> {
 
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
-        return this.clone(SharePointQueryableShareableFile, "listItemAllFields", false).select("odata.editlink").get().then(d => {
+        return this.clone(SharePointQueryableShareableFile, "listItemAllFields", false).select("odata.id").get().then(d => {
 
-            let shareable = new SharePointQueryableShareable(spGetEntityUrl(d));
+            let shareable = new SharePointQueryableShareable(spExtractODataId(d));
 
             // we need to handle batching
             if (this.hasBatch) {

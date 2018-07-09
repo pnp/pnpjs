@@ -5,7 +5,7 @@ import { MaxCommentLengthException } from "./exceptions";
 import { LimitedWebPartManager } from "./webparts";
 import { Item } from "./items";
 import { SharePointQueryableShareableFile } from "./sharepointqueryableshareable";
-import { spGetEntityUrl } from "./odata";
+import { spExtractODataId } from "./odata";
 
 export interface ChunkedFileUploadProgressData {
     uploadId: string;
@@ -327,7 +327,7 @@ export class File extends SharePointQueryableShareableFile {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(new Item(spGetEntityUrl(d)), d);
+            return extend(new Item(spExtractODataId(d)), d);
         });
     }
 
@@ -434,7 +434,7 @@ export class File extends SharePointQueryableShareableFile {
             .then(response => {
                 return {
                     data: response,
-                    file: new File(response.ServerRelativeUrl),
+                    file: new File(spExtractODataId(response)),
                 };
             });
     }
