@@ -2,7 +2,7 @@ import { extend, TypedHash } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareable";
 import { Files } from "./files";
-import { spGetEntityUrl } from "./odata";
+import { spExtractODataId } from "./odata";
 import { Item } from "./items";
 import { SPHttpClient } from "./net/sphttpclient";
 
@@ -165,7 +165,7 @@ export class Folder extends SharePointQueryableShareableFolder {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(new Item(spGetEntityUrl(d)), d);
+            return extend(new Item(spExtractODataId(d)), d);
         });
     }
 

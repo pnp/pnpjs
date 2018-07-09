@@ -9,15 +9,6 @@ export class SPBatchParseException extends Error {
     }
 }
 
-export class SPODataIdException extends Error {
-
-    constructor(public readonly data: any, msg = "Could not extract odata id in object, you may be using nometadata. Object data logged to logger.") {
-        super(msg);
-        this.name = "ODataIdException";
-        Logger.error(this);
-    }
-}
-
 export class MaxCommentLengthException extends Error {
 
     constructor(msg = "The maximum comment length is 1023 characters.") {
