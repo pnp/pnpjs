@@ -106,7 +106,7 @@ export interface MySocialQueryMethods {
      * 
      * @param types Bitwise set of SocialActorTypes to retrieve
      */
-    followed(types: SocialActorTypes): Promise<any[]>;
+    followed(types: SocialActorTypes): Promise<SocialActor[]>;
     /**
      * Gets the count of users, documents, sites, and tags that the current user is following.
      * 
