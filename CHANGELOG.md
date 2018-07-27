@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+- @pnp/sp: Updated MySocialQueryMethods followed method to return SocialActor[] instead of any[] [[PR](https://github.com/pnp/pnpjs/pull/176)]
+
+### Fixed
+
+- @pnp/sp-taxonomy: Fixed bug with getting collections and chaining from objects within array [[PR](https://github.com/pnp/pnpjs/pull/182)]
+- @pnp/sp: Fixed issue with chaining on file object returned from addChunked [[PR](https://github.com/pnp/pnpjs/pull/161)]
+
+### Removed
+
+- @pnp/sp: Removed internal method spGetEntityUrl [[PR](https://github.com/pnp/pnpjs/pull/161)]
+
 ## 1.1.2 - 2018-07-06
 
 ### Added
