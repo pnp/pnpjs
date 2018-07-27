@@ -179,7 +179,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     /**
      * Sends the request, merging the result data array with a new instances of factory
      */
-    protected sendGetCollection<DataType, FactoryType>(factory: (DataType) => FactoryType): Promise<(DataType & FactoryType)[]> {
+    protected sendGetCollection<DataType, FactoryType>(factory: (d: DataType) => FactoryType): Promise<(DataType & FactoryType)[]> {
 
         const ops = this._objectPaths.clone().appendActionToLast(opQuery([], this.getSelects()));
 
