@@ -1,4 +1,4 @@
-import { extend, getGUID, sanitizeGuid } from "@pnp/common";
+import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, setProperty } from "@pnp/sp-clientsvc";
 import { ITermGroup, TermGroup } from "./termgroup";
 import { ITerm, ITermData, ITerms, Term, Terms } from "./terms";
@@ -31,7 +31,14 @@ export class TermSets extends ClientSvcQueryable implements ITermSets {
      * Gets the termsets in this collection
      */
     public get(): Promise<(ITermSetData & ITermSet)[]> {
-        return this.sendGetCollection<ITermSetData, ITermSet>(TermSet);
+        return this.sendGetCollection<ITermSetData, ITermSet>((d: ITermSetData) => {
+            if (!stringIsNullOrEmpty(d.Name)) {
+                return this.getByName(d.Name);
+            } else if (!stringIsNullOrEmpty(d.Id)) {
+                return this.getById(d.Id);
+            }
+            throw new Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+        });
     }
 
     /**

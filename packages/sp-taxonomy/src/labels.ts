@@ -5,6 +5,7 @@ import {
     ObjectPathQueue,
     property,
 } from "@pnp/sp-clientsvc";
+import { stringIsNullOrEmpty } from "@pnp/common";
 
 /**
  * Represents a collection of labels
@@ -48,7 +49,13 @@ export class Labels extends ClientSvcQueryable implements ILabels {
      * Loads the data and merges with with the ILabel instances
      */
     public get(): Promise<(ILabel & ILabelData)[]> {
-        return this.sendGetCollection<ILabelData, ILabel>(Label);
+        return this.sendGetCollection<ILabelData, ILabel>((d: ILabelData) => {
+
+            if (!stringIsNullOrEmpty(d.Value)) {
+                return this.getByValue(d.Value);
+            }
+            throw new Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+        });
     }
 }
 

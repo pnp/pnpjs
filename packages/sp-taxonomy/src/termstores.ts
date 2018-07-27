@@ -1,4 +1,4 @@
-import { extend, getGUID, sanitizeGuid } from "@pnp/common";
+import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue, method, objConstructor, objectPath, objectProperties, opQuery, property } from "@pnp/sp-clientsvc";
 import { ITermGroup, ITermGroupData, TermGroup } from "./termgroup";
 import { ITerm, ITerms, Term, Terms } from "./terms";
@@ -31,7 +31,15 @@ export class TermStores extends ClientSvcQueryable implements ITermStores {
      * Gets the term stores
      */
     public get(): Promise<(ITermStoreData & ITermStore)[]> {
-        return this.sendGetCollection<ITermStoreData, ITermStore>(TermStore);
+        return this.sendGetCollection<ITermStoreData, ITermStore>((d: ITermStoreData): ITermStore => {
+
+            if (!stringIsNullOrEmpty(d.Name)) {
+                return this.getByName(d.Name);
+            } else if (!stringIsNullOrEmpty(d.Id)) {
+                return this.getById(d.Id);
+            }
+            throw new Error("Could not find Name or Id in TermStores.get(). You must include at least one of these in your select fields.");
+        });
     }
 
     /**
