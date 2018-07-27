@@ -1,4 +1,4 @@
-import { extend } from "@pnp/common";
+import { extend, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import {
     ClientSvcQueryable,
     IClientSvcQueryable,
@@ -9,6 +9,8 @@ import { ITermSet, TermSet, ITermSets, TermSets } from "./termsets";
 
 export interface ITerms extends IClientSvcQueryable {
     get(): Promise<(ITermData & ITerm)[]>;
+    getById(id: string): ITerm;
+    getByName(name: string): ITerm;
 }
 
 export interface ITermData {
@@ -55,7 +57,40 @@ export class Terms extends ClientSvcQueryable implements ITerms {
      * Gets the terms in this collection
      */
     public get(): Promise<(ITermData & ITerm)[]> {
-        return this.sendGetCollection<ITermData, ITerm>(Term);
+        return this.sendGetCollection<ITermData, ITerm>((d: ITermData) => {
+
+            if (!stringIsNullOrEmpty(d.Name)) {
+                return this.getByName(d.Name);
+            } else if (!stringIsNullOrEmpty(d.Id)) {
+                return this.getById(d.Id);
+            }
+            throw new Error("Could not find Name or Id in Terms.get(). You must include at least one of these in your select fields.");
+        });
+    }
+
+    /**
+     * Gets a term by id
+     * 
+     * @param id The id of the term
+     */
+    public getById(id: string): ITerm {
+        const params = MethodParams.build()
+            .string(sanitizeGuid(id));
+
+        return this.getChild(Term, "GetById", params);
+    }
+
+    /**
+     * Gets a term by name
+     * 
+     * @param name Term name
+     */
+    public getByName(name: string): ITerm {
+
+        const params = MethodParams.build()
+            .string(name);
+
+        return this.getChild(Term, "GetByName", params);
     }
 }
 
