@@ -67,3 +67,7 @@ taxonomy.setup({
 * [Term Sets](term-sets.md)
 * [Terms](terms.md)
 * [Labels](labels.md)
+
+
+## UML
+[Graphical UML diagram](../../../docs-src/img/pnpjs-sp-taxonomy-uml.svg) of @pnpjs/sp-taxonomy. Right click the diagram and open in new tab if it is too small.

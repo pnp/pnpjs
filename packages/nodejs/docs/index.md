@@ -15,5 +15,6 @@ exported functionality.
 * [AdalFetchClient](adal-fetch-client.md)
 * [SPFetchClient](sp-fetch-client.md)
 
-
+## UML
+[Graphical UML diagram](../../../docs-src/img/pnpjs-nodejs-uml.svg) of @pnpjs/nodejs. Right click the diagram and open in new tab if it is too small.
 

@@ -39,3 +39,6 @@ sp.crossDomainWeb(addInWenUrl, hostWebUrl).get().then(w => {
 
 * [SPRequestExecutorClient](sp-request-executor-client.md)
 * [SPRestAddIn](sp-rest-addin.md)
+
+## UML
+[Graphical UML diagram](../../../docs-src/img/pnpjs-sp-addinhelpers-uml.svg) of @pnpjs/sp-addinhelpers. Right click the diagram and open in new tab if it is too small.

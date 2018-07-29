@@ -29,3 +29,6 @@ console.log(Util.getGUID());
 * [netutil](netutil.md)
 * [storage](storage.md)
 * [util](util.md)
+
+## UML
+[Graphical UML diagram](../../../docs-src/img/pnpjs-common-uml.svg) of @pnpjs/common. Right click the diagram and open in new tab if it is too small.
