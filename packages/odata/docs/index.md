@@ -22,4 +22,4 @@ Install the library and required dependencies
 * [Queryable](queryable.md)
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-odata-uml.svg) of @pnpjs/odata. Right click the diagram and open in new tab if it is too small.
+[Graphical UML diagram](../../../docs-src/img/pnpjs-odata-uml.svg) of @pnp/odata. Right-click the diagram and open in new tab if it is too small.

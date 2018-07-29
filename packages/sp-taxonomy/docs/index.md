@@ -70,4 +70,4 @@ taxonomy.setup({
 
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-sp-taxonomy-uml.svg) of @pnpjs/sp-taxonomy. Right click the diagram and open in new tab if it is too small.
+[Graphical UML diagram](../../../docs-src/img/pnpjs-sp-taxonomy-uml.svg) of @pnp/sp-taxonomy. Right-click the diagram and open in new tab if it is too small.

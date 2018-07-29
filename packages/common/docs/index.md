@@ -31,4 +31,4 @@ console.log(Util.getGUID());
 * [util](util.md)
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-common-uml.svg) of @pnpjs/common. Right click the diagram and open in new tab if it is too small.
+[Graphical UML diagram](../../../docs-src/img/pnpjs-common-uml.svg) of @pnp/common. Right-click the diagram and open in new tab if it is too small.
