@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- documentation: UML class diagrams in documentation ([@fthorild](https://github.com/fthorild)) [[PR](https://github.com/pnp/pnpjs/pull/183)]
+
 ### Changed
 
 - @pnp/sp: Updated MySocialQueryMethods followed method to return SocialActor[] instead of any[] [[PR](https://github.com/pnp/pnpjs/pull/176)]
