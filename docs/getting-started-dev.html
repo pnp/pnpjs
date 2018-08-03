@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="logo">
+                <img src="img/office365-header-icon.png" alt="Logo" />
+            </div>
+            <div class="pnp-title">
+                <span id="headerText">
+                    <a href="/pnpjs">SharePoint Patterns and Practices</a>
+                </span>
+                <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+            </div>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/getting-started-dev.html">getting started dev</a>
+    </nav>
+
+    <article>
+        <h1 id="contribution-guide">Contribution Guide <a class="permalink" href="#contribution-guide" aria-hidden="true">#</a></h1>
+<p>Thank you for your interest in contributing to our work. This guide should help you get started, please let us know if you have any questions.</p>
+<h2 id="contributor-guidance">Contributor Guidance <a class="permalink" href="#contributor-guidance" aria-hidden="true">#</a></h2>
+<ul>
+<li>Target your pull requests to the <strong>dev</strong> branch</li>
+<li>Add/Update any relevant docs articles in the relevant package’s docs folder related to your changes</li>
+<li>Include a test for any new functionality and ensure all existing tests are passing by running <code>gulp test</code></li>
+<li>Ensure tslint checks pass by typing <code>gulp lint</code></li>
+<li>Keep your PRs as simple as possible and describe the changes to help the reviewer understand your work</li>
+<li>If you have an idea for a larger change to the library please <a href="https://github.com/pnp/pnpjs/issues">open an issue</a> and let’s discuss before you invest many hours - these are very welcome but want to ensure it is something we can merge before you spend the time :)</li>
+</ul>
+<h2 id="setup-your-development-environment">Setup your development environment <a class="permalink" href="#setup-your-development-environment" aria-hidden="true">#</a></h2>
+<p>These steps will help you get your environment setup for contributing to the core library.</p>
+<ol>
+<li>
+<p>Install <a href="https://code.visualstudio.com/">Visual Studio Code</a> - this is the development environment we will use. It is similar to a light-weight Visual Studio designed for each editing of client file types such as .ts and .js. (Note that if you prefer you can <a href="Use-In-Visual-Studio">use Visual Studio</a>).</p>
+</li>
+<li>
+<p>Install <a href="https://nodejs.org/en/download/">Node JS</a> - this provides two key capabilities; the first is the nodejs server which will act as our development server (think iisexpress), the second is npm a package manager (think nuget).</p>
+</li>
+<li>
+<p>On Windows: Install <a href="https://www.python.org/downloads/release/python-2710/">Python v2.7.10</a> - this is used by some of the plug-ins and build tools inside Node JS - (Python v3.x.x is not supported by those modules). If Visual Studio is not installed on the client in addition to this C++ runtime is required. Please see <a href="https://github.com/nodejs/node-gyp/blob/master/README.html">node-gyp Readme</a></p>
+</li>
+<li>
+<p>Install a console emulator of your choice, for Windows <a href="http://cmder.net/">Cmder</a> is popular. If installing Cmder choosing the full option will allow you to use git for windows. Whatever option you choose we will refer in the rest of the guide to “console” as the thing you installed in this step.</p>
+</li>
+<li>
+<p>Install the tslint extension in VS Code:</p>
+<ol>
+<li>Press Shift + Ctrl + “p” to open the command panel</li>
+<li>Begin typing “install extension” and select the command when it appears in view</li>
+<li>Begin typing “tslint” and select the package when it appears in view</li>
+<li>Restart Code after installation</li>
+</ol>
+</li>
+<li>
+<p>Install the gulp command line globally by typing the following code in your console <code>npm install -g gulp-cli</code></p>
+</li>
+<li>
+<p>Now we need to fork and clone the git repository. This can be done using your <a href="https://help.github.com/articles/fork-a-repo/">console</a> or using your preferred Git GUI tool.</p>
+</li>
+<li>
+<p>Once you have the code locally, navigate to the root of the project in your console. Type the following command:</p>
+</li>
+</ol>
+<ul>
+<li><code>npm install</code> - installs all of the npm package dependencies (may take awhile the first time)</li>
+</ul>
+<ol start="9">
+<li>
+<p>Copy settings.example.js in the root of your project to settings.js. Edit settings.js to reflect your personal environment (usename, password, siteUrl, etc.).</p>
+</li>
+<li>
+<p>Then you can follow the guidance in the <a href="debugging.html">debugging</a> article to get started testing right away!</p>
+</li>
+</ol>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: getting-started-dev.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/getting-started-dev" alt="spacer" />

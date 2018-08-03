@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="logo">
+                <img src="img/office365-header-icon.png" alt="Logo" />
+            </div>
+            <div class="pnp-title">
+                <span id="headerText">
+                    <a href="/pnpjs">SharePoint Patterns and Practices</a>
+                </span>
+                <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+            </div>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy">sp taxonomy</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy/labels.html">labels</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpsp-taxonomylabels">@pnp/sp-taxonomy/labels <a class="permalink" href="#pnpsp-taxonomylabels" aria-hidden="true">#</a></h1>
+<h2 id="load-labels">Load labels <a class="permalink" href="#load-labels" aria-hidden="true">#</a></h2>
+<p>You can load labels by accessing the labels property of a <a href="terms.html">term</a>.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ILabel, ILabelData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;see terms article <span class="hljs-keyword">for</span> loading term&gt;
+
+<span class="hljs-comment">// load the terms merged with data</span>
+<span class="hljs-keyword">const</span> labelsWithData: (ILabel &amp; ILabelData)[] = <span class="hljs-keyword">await</span> term.labels.get();
+
+
+<span class="hljs-comment">// get a label by value</span>
+<span class="hljs-keyword">const</span> label: ILabel = term.labels.getByValue(<span class="hljs-string">"term value"</span>);
+
+<span class="hljs-comment">// get a label merged with data</span>
+<span class="hljs-keyword">const</span> label2: ILabel &amp; ILabelData = term.labels.getByValue(<span class="hljs-string">"term value"</span>).get();
+</code></pre>
+<h2 id="label-properties-and-methods">Label Properties and Methods <a class="permalink" href="#label-properties-and-methods" aria-hidden="true">#</a></h2>
+<h3 id="setasdefaultforlanguage">setAsDefaultForLanguage <a class="permalink" href="#setasdefaultforlanguage" aria-hidden="true">#</a></h3>
+<p>Sets this labels as the default for the language</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ILabel, ILabelData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;see terms article <span class="hljs-keyword">for</span> loading term&gt;
+
+<span class="hljs-comment">// get a label by value</span>
+<span class="hljs-keyword">await</span> term.labels.getByValue(<span class="hljs-string">"term value"</span>).setAsDefaultForLanguage();
+</code></pre>
+<h3 id="delete">delete <a class="permalink" href="#delete" aria-hidden="true">#</a></h3>
+<p>Deletes this label</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ILabel, ILabelData, ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;see terms article <span class="hljs-keyword">for</span> loading term&gt;
+
+<span class="hljs-comment">// get a label by value</span>
+<span class="hljs-keyword">await</span> term.labels.getByValue(<span class="hljs-string">"term value"</span>).delete();
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp-taxonomy\labels.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp-taxonomy/docs/labels" alt="spacer" />

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="logo">
+                <img src="img/office365-header-icon.png" alt="Logo" />
+            </div>
+            <div class="pnp-title">
+                <span id="headerText">
+                    <a href="/pnpjs">SharePoint Patterns and Practices</a>
+                </span>
+                <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+            </div>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/social.html">social</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspsocial">@pnp/sp/social <a class="permalink" href="#pnpspsocial" aria-hidden="true">#</a></h1>
+<p>The social API allows you to track followed sites, people, and docs. Note, many of these methods only work with the context of a logged in user, and not
+with app-only permissions.</p>
+<h2 id="getfollowedsitesuri">getFollowedSitesUri <a class="permalink" href="#getfollowedsitesuri" aria-hidden="true">#</a></h2>
+<p>Gets a URI to a site that lists the current user’s followed sites.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> uri = <span class="hljs-keyword">await</span> sp.social.getFollowedSitesUri();
+</code></pre>
+<h2 id="getfolloweddocumentsuri">getFollowedDocumentsUri <a class="permalink" href="#getfolloweddocumentsuri" aria-hidden="true">#</a></h2>
+<p>Gets a URI to a site that lists the current user’s followed documents.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> uri = <span class="hljs-keyword">await</span> sp.social.getFollowedDocumentsUri();
+</code></pre>
+<h2 id="follow">follow <a class="permalink" href="#follow" aria-hidden="true">#</a></h2>
+<p>Makes the current user start following a user, document, site, or tag</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SocialActorType } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// follow a site</span>
+<span class="hljs-keyword">const</span> r1 = <span class="hljs-keyword">await</span> sp.social.follow({
+    ActorType: SocialActorType.Site,
+    ContentUri: <span class="hljs-string">"htts://tenant.sharepoint.com/sites/site"</span>,
+});
+
+<span class="hljs-comment">// follow a person</span>
+<span class="hljs-keyword">const</span> r2 = <span class="hljs-keyword">await</span> sp.social.follow({
+    AccountName: <span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>,
+    ActorType: SocialActorType.User,
+});
+
+<span class="hljs-comment">// follow a doc</span>
+<span class="hljs-keyword">const</span> r3 = <span class="hljs-keyword">await</span> sp.social.follow({
+    ActorType: SocialActorType.Document,
+    ContentUri: <span class="hljs-string">"https://tenant.sharepoint.com/sites/dev/SitePages/Test.aspx"</span>,
+});
+
+<span class="hljs-comment">// follow a tag</span>
+<span class="hljs-comment">// You need the tag GUID to start following a tag.</span>
+<span class="hljs-comment">// You can't get the GUID by using the REST service, but you can use the .NET client object model or the JavaScript object model.</span>
+<span class="hljs-comment">// See How to get a tag's GUID based on the tag's name by using the JavaScript object model.</span>
+<span class="hljs-comment">// https://docs.microsoft.com/en-us/sharepoint/dev/general-development/follow-content-in-sharepoint#bk_getTagGuid</span>
+<span class="hljs-keyword">const</span> r4 = <span class="hljs-keyword">await</span> sp.social.follow({
+    ActorType: SocialActorType.Tag,
+    TagGuid: <span class="hljs-string">"19a4a484-c1dc-4bc5-8c93-bb96245ce928"</span>,
+});
+</code></pre>
+<h2 id="isfollowed">isFollowed <a class="permalink" href="#isfollowed" aria-hidden="true">#</a></h2>
+<p>Indicates whether the current user is following a specified user, document, site, or tag</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SocialActorType } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// pass the same social actor struct as shown in follow example for each type</span>
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.isFollowed({
+    AccountName: <span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>,
+    ActorType: SocialActorType.User,
+});
+</code></pre>
+<h2 id="stopfollowing">stopFollowing <a class="permalink" href="#stopfollowing" aria-hidden="true">#</a></h2>
+<p>Makes the current user stop following a user, document, site, or tag</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SocialActorType } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// pass the same social actor struct as shown in follow example for each type</span>
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.stopFollowing({
+    AccountName: <span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>,
+    ActorType: SocialActorType.User,
+});
+</code></pre>
+<h2 id="my">my <a class="permalink" href="#my" aria-hidden="true">#</a></h2>
+<h3 id="get">get <a class="permalink" href="#get" aria-hidden="true">#</a></h3>
+<p>Gets this user’s social information</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.my.get();
+</code></pre>
+<h3 id="followed">followed <a class="permalink" href="#followed" aria-hidden="true">#</a></h3>
+<p>Gets users, documents, sites, and tags that the current user is following based on the supplied flags.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SocialActorTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// get all the followed documents</span>
+<span class="hljs-keyword">const</span> r1 = <span class="hljs-keyword">await</span> sp.social.my.followed(SocialActorTypes.Document);
+
+<span class="hljs-comment">// get all the followed documents and sites</span>
+<span class="hljs-keyword">const</span> r2 = <span class="hljs-keyword">await</span> sp.social.my.followed(SocialActorTypes.Document | SocialActorTypes.Site);
+
+<span class="hljs-comment">// get all the followed sites updated in the last 24 hours</span>
+<span class="hljs-keyword">const</span> r3 = <span class="hljs-keyword">await</span> sp.social.my.followed(SocialActorTypes.Site | SocialActorTypes.WithinLast24Hours);
+</code></pre>
+<h3 id="followedcount">followedCount <a class="permalink" href="#followedcount" aria-hidden="true">#</a></h3>
+<p>Works as followed but returns on the count of actors specifed by the query</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SocialActorTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// get the followed documents count</span>
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.my.followedCount(SocialActorTypes.Document);
+</code></pre>
+<h3 id="followers">followers <a class="permalink" href="#followers" aria-hidden="true">#</a></h3>
+<p>Gets the users who are following the current user.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// get the followed documents count</span>
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.my.followers();
+</code></pre>
+<h3 id="suggestions">suggestions <a class="permalink" href="#suggestions" aria-hidden="true">#</a></h3>
+<p>Gets users who the current user might want to follow.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// get the followed documents count</span>
+<span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> sp.social.my.suggestions();
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\social.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/social" alt="spacer" />
