@@ -1,6 +1,8 @@
+import { stringIsNullOrEmpty } from "@pnp/common";
+
 export function extractWebUrl(candidateUrl: string) {
 
-    if (candidateUrl === null) {
+    if (stringIsNullOrEmpty(candidateUrl)) {
         return "";
     }
 
