@@ -5,7 +5,7 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-      "tslib": "1.9.2"
+      "tslib": "1.9.3"
     },
     "peerDependencies": {
       "@pnp/common": "0.0.0-PLACEHOLDER",
