@@ -9,11 +9,17 @@ header {
     background-color: #2376b7;
     color: #ffffff;
     padding: 2em;
+    clear: both;
 }
 
 header > *, #breadcrumbs, article {
     max-width: 1080px;
     margin: auto;
+}
+
+header .right {
+    text-align: right;
+    float: right;
 }
 
 .logo {

@@ -7,8 +7,6 @@ const gulp = require("gulp"),
     MarkdownIt = new require("markdown-it"),
     fs = require("fs"),
     path = require("path"),
-    semver = require("semver"),
-    execSync = require('child_process').execSync,
     serverFactory = require("@pnp/dev-server"),
     sequence = require("run-sequence"),
     pkg = require(path.resolve(__dirname, "../../package.json"));
@@ -29,7 +27,7 @@ const md = new MarkdownIt({
             } catch (_) { }
         }
 
-        return ''; // use external default escaping
+        return ""; // use external default escaping
     },
     replaceLink: function (link, env) {
         if (/\.md$/i.test(link)) {
@@ -41,15 +39,18 @@ const md = new MarkdownIt({
 });
 
 // replace links plugin
-md.use(require('markdown-it-replace-link'));
+md.use(require("markdown-it-replace-link"));
+
+// image size plugin
+md.use(require("markdown-it-imsize"));
 
 // embed youtube player
-md.use(require('markdown-it-video', {
+md.use(require("markdown-it-video", {
     youtube: { width: 640, height: 390 }
 }));
 
 // anchor headers
-md.use(require('markdown-it-anchor'), {
+md.use(require("markdown-it-anchor"), {
     permalink: true,
     permalinkSymbol: "#",
     permalinkClass: "permalink",
@@ -105,6 +106,7 @@ gulp.task("docs:copyassets", ["clean-docs"], (done) => {
         gulp.src([
             "./docs-src/**/*.css",
             "./docs-src/**/*.png",
+            "./docs-src/**/*.svg",
         ], { base: "./docs-src" }),
         gulp.dest("docs",
             {

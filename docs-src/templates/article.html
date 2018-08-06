@@ -10,16 +10,21 @@
 
 <body>
     <header>
-        <div>
-            <div class="logo">
-                <img src="img/office365-header-icon.png" alt="Logo" />
-            </div>
-            <div class="pnp-title">
-                <span id="headerText">
-                    <a href="/pnpjs">SharePoint Patterns and Practices</a>
-                </span>
-                <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
-            </div>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
         </div>
     </header>
 
@@ -33,7 +38,8 @@
 
     <footer>
         <div class="brand">© Microsoft 2018</div>
-        <div class="call-to-action">Please <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: $$OriginalFilePath$$&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: $$OriginalFilePath$$&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
     </footer>
 </body>
 

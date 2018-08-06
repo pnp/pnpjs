@@ -16,5 +16,6 @@ exported functionality.
 * [SPFetchClient](sp-fetch-client.md)
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-nodejs-uml.svg) of @pnp/nodejs. Right-click the diagram and open in new tab if it is too small.
+![Graphical UML diagram](/pnpjs/img/pnpjs-nodejs-uml.svg =100%x)
 
+Graphical UML diagram of @pnp/nodejs. Right-click the diagram and open in new tab if it is too small.
