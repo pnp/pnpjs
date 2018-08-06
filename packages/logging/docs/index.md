@@ -169,4 +169,6 @@ Logger.subscribe(new MyListener());
 ```
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-logging-uml.svg) of @pnp/logging. Right-click the diagram and open in new tab if it is too small.
+![Graphical UML diagram](/pnpjs/img/pnpjs-logging-uml.svg =100%x)
+
+Graphical UML diagram of @pnp/logging. Right-click the diagram and open in new tab if it is too small.

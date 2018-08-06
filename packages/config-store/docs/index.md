@@ -16,4 +16,6 @@ See the topics below for usage:
 * [providers](providers.md)
 
 ## UML
-[Graphical UML diagram](../../../docs-src/img/pnpjs-config-store-uml.svg) of @pnp/config-store. Right-click the diagram and open in new tab if it is too small.
+![Graphical UML diagram](/pnpjs/img/pnpjs-config-store-uml.svg =100%x)
+
+Graphical UML diagram of @pnp/config-store. Right-click the diagram and open in new tab if it is too small.
