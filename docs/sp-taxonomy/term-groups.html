@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy">sp taxonomy</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy/term-groups.html">term groups</a>
+    </nav>
+
+    <article>
+        <h1 id="%40pnp%2Fsp-taxonomy%2Ftermgroups">@pnp/sp-taxonomy/termgroups <a class="permalink" href="#%40pnp%2Fsp-taxonomy%2Ftermgroups" aria-hidden="true">#</a></h1>
+<p>Term groups are used as a container for terms within a term store.</p>
+<h2 id="load-a-term-group">Load a term group <a class="permalink" href="#load-a-term-group" aria-hidden="true">#</a></h2>
+<p>Term groups are loaded from a <a href="term-stores.html">term store</a></p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermGroup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> group: ITermGroup = store.getTermGroupById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+</code></pre>
+<h2 id="term-group-methods-and-properties">Term Group methods and properties <a class="permalink" href="#term-group-methods-and-properties" aria-hidden="true">#</a></h2>
+<h3 id="addcontributor">addContributor <a class="permalink" href="#addcontributor" aria-hidden="true">#</a></h3>
+<p>Adds a contributor to the Group</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermGroup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> group: ITermGroup = store.getTermGroupById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">await</span> group.addContributor(<span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>);
+</code></pre>
+<h3 id="addgroupmanager">addGroupManager <a class="permalink" href="#addgroupmanager" aria-hidden="true">#</a></h3>
+<p>Adds a group manager to the Group</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermGroup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> group: ITermGroup = store.getTermGroupById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">await</span> group.addGroupManager(<span class="hljs-string">"i:0#.f|membership|person@tenant.com"</span>);
+</code></pre>
+<h3 id="createtermset">createTermSet <a class="permalink" href="#createtermset" aria-hidden="true">#</a></h3>
+<p>Creates a new <a href="term-sets.html">term set</a></p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermGroup, ITermSet, ITermSetData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> group: ITermGroup = store.getTermGroupById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">set</span>: ITermSet &amp; ITermSetData = <span class="hljs-keyword">await</span> group.createTermSet(<span class="hljs-string">"name"</span>, <span class="hljs-number">1031</span>);
+
+<span class="hljs-comment">// you can optionally supply the term set id, if you do not we create a new id for you</span>
+<span class="hljs-keyword">const</span> set2: ITermSet &amp; ITermSetData = <span class="hljs-keyword">await</span> group.createTermSet(<span class="hljs-string">"name"</span>, <span class="hljs-number">1031</span>, <span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+</code></pre>
+<h3 id="get">get <a class="permalink" href="#get" aria-hidden="true">#</a></h3>
+<p>Gets this term group’s data</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITermGroupData, ITermGroup } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> group: ITermGroup &amp; ITermGroupData = store.getTermGroupById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).get();
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp-taxonomy\term-groups.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp-taxonomy/docs/term-groups" alt="spacer" />

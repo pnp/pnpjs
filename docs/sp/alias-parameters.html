@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/alias-parameters.html">alias parameters</a>
+    </nav>
+
+    <article>
+        <h1 id="%40pnp%2Fsp---aliased-parameters">@pnp/sp - Aliased Parameters <a class="permalink" href="#%40pnp%2Fsp---aliased-parameters" aria-hidden="true">#</a></h1>
+<p>Within the @pnp/sp api you can alias any of the parameters so they will be written into the querystring. This is most helpful if you are hitting up against the
+url length limits when working with files and folders.</p>
+<p>To alias a parameter you include the label name, a separator (&quot;::&quot;) and the value in the string. You also need to prepend a “!” to the string to trigger the replacement. You can see this below, as well as the string that will be generated. Labels must start with a “@” followed by a letter. It is also your responsibility to ensure that the aliases you supply do not conflict, for example if you use “@p1” you should use “@p2” for a second parameter alias in the same query.</p>
+<h3 id="construct-a-parameter-alias">Construct a parameter alias <a class="permalink" href="#construct-a-parameter-alias" aria-hidden="true">#</a></h3>
+<p>Pattern: !@{label name}::{value}</p>
+<p>Example: “!@p1::\sites\dev” or “!@p2::\text.txt”</p>
+<h3 id="example-without-aliasing">Example without aliasing <a class="permalink" href="#example-without-aliasing" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// still works as expected, no aliasing</span>
+<span class="hljs-keyword">const</span> query = pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"/sites/dev/Shared Documents/"</span>).files.select(<span class="hljs-string">"Title"</span>).top(<span class="hljs-number">3</span>);
+
+<span class="hljs-built_in">console</span>.log(query.toUrl()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files</span>
+<span class="hljs-built_in">console</span>.log(query.toUrlAndQuery()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&amp;$top=3</span>
+
+query.get().then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r);
+});
+</code></pre>
+<h3 id="example-with-aliasing">Example with aliasing <a class="permalink" href="#example-with-aliasing" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// same query with aliasing</span>
+<span class="hljs-keyword">const</span> query = pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"!@p1::/sites/dev/Shared Documents/"</span>).files.select(<span class="hljs-string">"Title"</span>).top(<span class="hljs-number">3</span>);
+
+<span class="hljs-built_in">console</span>.log(query.toUrl()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files</span>
+<span class="hljs-built_in">console</span>.log(query.toUrlAndQuery()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3</span>
+
+query.get().then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r);
+});
+</code></pre>
+<h3 id="example-with-aliasing-and-batching">Example with aliasing and batching <a class="permalink" href="#example-with-aliasing-and-batching" aria-hidden="true">#</a></h3>
+<p>Aliasing is supported with batching as well:</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// same query with aliasing and batching</span>
+<span class="hljs-keyword">const</span> batch = pnp.sp.web.createBatch();
+
+<span class="hljs-keyword">const</span> query = pnp.sp.web.getFolderByServerRelativeUrl(<span class="hljs-string">"!@p1::/sites/dev/Shared Documents/"</span>).files.select(<span class="hljs-string">"Title"</span>).top(<span class="hljs-number">3</span>);
+
+<span class="hljs-built_in">console</span>.log(query.toUrl()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files</span>
+<span class="hljs-built_in">console</span>.log(query.toUrlAndQuery()); <span class="hljs-comment">// _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3</span>
+
+query.inBatch(batch).get().then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r);
+});
+
+batch.execute();
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\alias-parameters.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/alias-parameters" alt="spacer" />

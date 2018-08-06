@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/logging">logging</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/logging/index.html">index</a>
+    </nav>
+
+    <article>
+        <h1 id="%40pnp%2Flogging">@pnp/logging <a class="permalink" href="#%40pnp%2Flogging" aria-hidden="true">#</a></h1>
+<p><a href="https://badge.fury.io/js/%40pnp%2Flogging"><img src="https://badge.fury.io/js/%40pnp%2Flogging.svg" alt="npm version" /></a></p>
+<p>The logging module provides light weight subscribable and extensiable logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.</p>
+<h2 id="getting-started">Getting Started <a class="permalink" href="#getting-started" aria-hidden="true">#</a></h2>
+<p>Install the logging module, it has no other dependencies</p>
+<p><code>npm install @pnp/logging --save</code></p>
+<h2 id="understanding-the-logging-framework">Understanding the Logging Framework <a class="permalink" href="#understanding-the-logging-framework" aria-hidden="true">#</a></h2>
+<p>The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the <em>LogListener</em> interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">/**
+ * Interface that defines a log listner
+ *
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> LogListener {
+    <span class="hljs-comment">/**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */</span>
+    log(entry: LogEntry): <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-comment">/**
+ * Interface that defines a log entry
+ *
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> LogEntry {
+    <span class="hljs-comment">/**
+     * The main message to be logged
+     */</span>
+    message: <span class="hljs-built_in">string</span>;
+    <span class="hljs-comment">/**
+     * The level of information this message represents
+     */</span>
+    level: LogLevel;
+    <span class="hljs-comment">/**
+     * Any associated data that a given logging listener may choose to log or ignore
+     */</span>
+    data?: <span class="hljs-built_in">any</span>;
+}
+</code></pre>
+<h3 id="log-levels">Log Levels <a class="permalink" href="#log-levels" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">enum</span> LogLevel {
+    Verbose = <span class="hljs-number">0</span>,
+    Info = <span class="hljs-number">1</span>,
+    Warning = <span class="hljs-number">2</span>,
+    <span class="hljs-built_in">Error</span> = <span class="hljs-number">3</span>,
+    Off = <span class="hljs-number">99</span>,
+}
+</code></pre>
+<h2 id="writing-to-the-logger">Writing to the Logger <a class="permalink" href="#writing-to-the-logger" aria-hidden="true">#</a></h2>
+<p>To write information to a logger you can use either write, writeJSON, or log.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    Logger,
+    LogLevel
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-comment">// write logs a simple string as the message value of the LogEntry</span>
+Logger.write(<span class="hljs-string">"This is logging a simple string"</span>);
+
+<span class="hljs-comment">// optionally passing a level, default level is Verbose</span>
+Logger.write(<span class="hljs-string">"This is logging a simple string"</span>, LogLevel.Error);
+
+<span class="hljs-comment">// this will convert the object to a string using JSON.stringify and set the message with the result</span>
+Logger.writeJSON({ name: <span class="hljs-string">"value"</span>, name2: <span class="hljs-string">"value2"</span>});
+
+<span class="hljs-comment">// optionally passing a level, default level is Verbose</span>
+Logger.writeJSON({ name: <span class="hljs-string">"value"</span>, name2: <span class="hljs-string">"value2"</span>}, LogLevel.Warn);
+
+<span class="hljs-comment">// specify the entire LogEntry interface using log</span>
+Logger.log({
+    data: { name: <span class="hljs-string">"value"</span>, name2: <span class="hljs-string">"value2"</span>},
+    level: LogLevel.Warning,
+    message: <span class="hljs-string">"This is my message"</span>
+});
+</code></pre>
+<h2 id="log-an-error">Log an error <a class="permalink" href="#log-an-error" aria-hidden="true">#</a></h2>
+<p>There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
+instance pased in, the level will be Error, and the message will be the Error instance message.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">const</span> e = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"An Error"</span>);
+
+Logger.error(e);
+</code></pre>
+<h2 id="subscribing-a-listener">Subscribing a Listener <a class="permalink" href="#subscribing-a-listener" aria-hidden="true">#</a></h2>
+<p>By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided ConsoleListener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    Logger,
+    ConsoleListener,
+    LogLevel
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-comment">// subscribe a listener</span>
+Logger.subscribe(<span class="hljs-keyword">new</span> ConsoleListener());
+
+<span class="hljs-comment">// set the active log level</span>
+Logger.activeLogLevel = LogLevel.Info;
+</code></pre>
+<h2 id="available-listeners">Available Listeners <a class="permalink" href="#available-listeners" aria-hidden="true">#</a></h2>
+<p>There are two listeners included in the library, ConsoleListener and FunctionListener.</p>
+<h3 id="consolelistener">ConsoleListener <a class="permalink" href="#consolelistener" aria-hidden="true">#</a></h3>
+<p>This listener outputs information to the console and works in Node as well as within browsers. It takes no settings and writes to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.</p>
+<h3 id="functionlistener">FunctionListener <a class="permalink" href="#functionlistener" aria-hidden="true">#</a></h3>
+<p>The FunctionListener allows you to wrap any functionality by creating a function that takes a LogEntry as its single argument. This produces the same result as implementing the LogListener interface, but is useful if you already have a logging method or framework to which you want to pass the messages.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    Logger,
+    FunctionListener,
+    LogEntry
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-keyword">let</span> listener = <span class="hljs-keyword">new</span> FunctionListener(<span class="hljs-function">(<span class="hljs-params">entry: LogEntry</span>) =&gt;</span> {
+
+    <span class="hljs-comment">// pass all logging data to an existing framework</span>
+    MyExistingCompanyLoggingFramework.log(entry.message);
+});
+
+Logger.subscribe(listener);
+</code></pre>
+<h3 id="create-a-custom-listener">Create a Custom Listener <a class="permalink" href="#create-a-custom-listener" aria-hidden="true">#</a></h3>
+<p>If desirable for your project you can create a custom listener to perform any logging action you would like. This is done by implementing the LogListener interface.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    Logger,
+    LogListener,
+    LogEntry
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/logging"</span>;
+
+<span class="hljs-keyword">class</span> MyListener <span class="hljs-keyword">implements</span> LogListener {
+
+    log(entry: LogEntry): <span class="hljs-built_in">void</span> {
+        <span class="hljs-comment">// here you would do something with the entry</span>
+    }    
+}
+
+Logger.subscribe(<span class="hljs-keyword">new</span> MyListener());
+</code></pre>
+<h2 id="uml">UML <a class="permalink" href="#uml" aria-hidden="true">#</a></h2>
+<p><img src="/pnpjs/img/pnpjs-logging-uml.svg" alt="Graphical UML diagram" width="100%" /></p>
+<p>Graphical UML diagram of @pnp/logging. Right-click the diagram and open in new tab if it is too small.</p>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: logging\index.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/logging/docs/index" alt="spacer" />

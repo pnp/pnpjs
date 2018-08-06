@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/graph">graph</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/graph/index.html">index</a>
+    </nav>
+
+    <article>
+        <h1 id="%40pnp%2Fgraph">@pnp/graph <a class="permalink" href="#%40pnp%2Fgraph" aria-hidden="true">#</a></h1>
+<p><a href="https://badge.fury.io/js/%40pnp%2Fgraph"><img src="https://badge.fury.io/js/%40pnp%2Fgraph.svg" alt="npm version" /></a></p>
+<p>This package contains the fluent api used to call the graph rest services.</p>
+<h2 id="getting-started">Getting Started <a class="permalink" href="#getting-started" aria-hidden="true">#</a></h2>
+<p>Install the library and required dependencies</p>
+<p><code>npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph --save</code></p>
+<p>Import the library into your application and access the root sp object</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+
+    <span class="hljs-comment">// here we will load the current web's properties</span>
+    graph.v1.groups.get().then(<span class="hljs-function"><span class="hljs-params">g</span> =&gt;</span> {
+
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Groups: <span class="hljs-subst">${JSON.stringify(g, null, 4)}</span>`</span>);
+    });
+})()
+</code></pre>
+<h2 id="getting-started-with-sharepoint-framework">Getting Started with SharePoint Framework <a class="permalink" href="#getting-started-with-sharepoint-framework" aria-hidden="true">#</a></h2>
+<p>Install the library and required dependencies</p>
+<p><code>npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph --save</code></p>
+<p>Import the library into your application, update OnInit, and access the root sp object in render</p>
+<pre><code class="language-TypeScript">import { graph } from "@pnp/graph";
+
+// ...
+
+public onInit(): Promise&lt;void&gt; {
+
+  return super.onInit().then(_ =&gt; {
+
+    // other init code may be present
+
+    graph.setup({
+      spfxContext: this.context
+    });
+  });
+}
+
+// ...
+
+public render(): void {
+
+    // A simple loading message
+    this.domElement.innerHTML = `Loading...`;
+
+    // here we will load the current web's properties
+    graph.v1.groups.get().then(groups =&gt; {
+
+        this.domElement.innerHTML = `Groups: &lt;ul&gt;${groups.map(g =&gt; `&lt;li&gt;${g.displayName}&lt;/li&gt;`).join("")}&lt;/ul&gt;`;
+    });
+}
+</code></pre>
+<h2 id="getting-started-on-nodejs">Getting Started on Nodejs <a class="permalink" href="#getting-started-on-nodejs" aria-hidden="true">#</a></h2>
+<p>Install the library and required dependencies</p>
+<p><code>npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs --save</code></p>
+<p>Import the library into your application, setup the node client, make a request</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+<span class="hljs-keyword">import</span> { AdalFetchClient } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/nodejs"</span>;
+
+<span class="hljs-comment">// do this once per page load</span>
+graph.setup({
+    graph: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AdalFetchClient(<span class="hljs-string">"{tenant}.onmicrosoft.com"</span>, <span class="hljs-string">"AAD Application Id"</span>, <span class="hljs-string">"AAD Application Secret"</span>);
+        },
+    },
+});
+
+<span class="hljs-comment">// here we will load the groups information</span>
+graph.v1.groups.get().then(<span class="hljs-function"><span class="hljs-params">g</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Groups: <span class="hljs-subst">${JSON.stringify(g, null, 4)}</span>`</span>);
+});
+</code></pre>
+<h2 id="uml">UML <a class="permalink" href="#uml" aria-hidden="true">#</a></h2>
+<p><img src="/pnpjs/img/pnpjs-graph-uml.svg" alt="Graphical UML diagram" width="100%" /></p>
+<p>Graphical UML diagram of @pnp/graph. Right-click the diagram and open in new tab if it is too small.</p>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: graph\index.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/graph/docs/index" alt="spacer" />

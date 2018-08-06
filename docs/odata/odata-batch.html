@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/odata">odata</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/odata/odata-batch.html">odata batch</a>
+    </nav>
+
+    <article>
+        <h1 id="%40pnp%2Fodata%2Fodatabatch">@pnp/odata/odatabatch <a class="permalink" href="#%40pnp%2Fodata%2Fodatabatch" aria-hidden="true">#</a></h1>
+<p>This module contains an abstract class used as a base when inheriting libraries support batching.</p>
+<h2 id="odatabatchrequestinfo">ODataBatchRequestInfo <a class="permalink" href="#odatabatchrequestinfo" aria-hidden="true">#</a></h2>
+<p>This interface defines what each batch needs to know about each request. It is generic in that any library can provide the information but will
+be responsible for processing that info by implementing the abstract executeImpl method.</p>
+<h2 id="odatabatch">ODataBatch <a class="permalink" href="#odatabatch" aria-hidden="true">#</a></h2>
+<p>Base class for building batching support for a library inheriting from @pnp/odata. You can see implementations of this abstract class in the @pnp/sp
+and @pnp/graph modules.</p>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: odata\odata-batch.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/odata/docs/odata-batch" alt="spacer" />
