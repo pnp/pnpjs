@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.1.4 - 2018-08-06
+
 ### Added
 
 - documentation: Added search box, updated UML diagram display [[PR](https://github.com/pnp/pnpjs/pull/194)]
@@ -13,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - @pnp/sp: Fixed SearchResult interface's ViewsLifetime property casing [[PR](https://github.com/pnp/pnpjs/pull/192)]
-- @pnp/sp: Fixed issue with spExtractODataId parsing entity urls [[PR](https://github.com/pnp/pnpjs/pull/193)]
+- @pnp/sp: Fixed spExtractODataId to correctly parse entity urls [[PR](https://github.com/pnp/pnpjs/pull/193)]
 
 ## 1.1.3 - 2018-08-03
 
