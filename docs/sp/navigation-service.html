@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/navigation-service.html">navigation service</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspnavigation-service">@pnp/sp/navigation service <a class="permalink" href="#pnpspnavigation-service" aria-hidden="true">#</a></h1>
+<p>The global navigation service located at “_api/navigation” provides access to the SiteMapProvider instances available in a given site collection.</p>
+<h2 id="getmenustate">getMenuState <a class="permalink" href="#getmenustate" aria-hidden="true">#</a></h2>
+<p>The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site. It will return an exception if the SiteMapProvider cannot be found on the site, the SiteMapProvider does not implement the IEditableSiteMapProvider interface or the SiteMapNode key cannot be found within the provider hierarchy.</p>
+<p>The IEditableSiteMapProvider also supports Custom Properties which is an optional feature. What will be return in the custom properties is up to the IEditableSiteMapProvider implementation and can differ for for each SiteMapProvider implementation. The custom properties can be requested by providing a comma seperated string of property names like: property1,property2,property3\,containingcomma</p>
+<p>NOTE: the , seperator can be escaped using the \ as escape character as done in the example above. The string above would split like:</p>
+<ul>
+<li>property1</li>
+<li>property2</li>
+<li>property3,containingcomma</li>
+</ul>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> sp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// Will return a menu state of the default SiteMapProvider 'SPSiteMapProvider' where the dump starts a the RootNode (within the site) with a depth of 10 levels.</span>
+sp.navigation.getMenuState().then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(r, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+
+}).catch(<span class="hljs-built_in">console</span>.error);
+
+<span class="hljs-comment">// Will return the menu state of the 'SPSiteMapProvider', starting with the node with the key '1002' with a depth of 5</span>
+sp.navigation.getMenuState(<span class="hljs-string">"1002"</span>, <span class="hljs-number">5</span>).then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(r, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+
+}).catch(<span class="hljs-built_in">console</span>.error);
+
+<span class="hljs-comment">// Will return the menu state of the 'CurrentNavSiteMapProviderNoEncode' from the root node of the provider with a depth of 5</span>
+sp.navigation.getMenuState(<span class="hljs-literal">null</span>, <span class="hljs-number">5</span>, <span class="hljs-string">"CurrentNavSiteMapProviderNoEncode"</span>).then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(r, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+
+}).catch(<span class="hljs-built_in">console</span>.error);
+</code></pre>
+<h2 id="getmenunodekey">getMenuNodeKey <a class="permalink" href="#getmenunodekey" aria-hidden="true">#</a></h2>
+<p>Tries to get a SiteMapNode.Key for a given URL within a site collection. If the SiteMapNode cannot be found an Exception is returned. The method is using SiteMapProvider.FindSiteMapNodeFromKey(string rawUrl) to lookup the SiteMapNode. Depending on the actual implementation of FindSiteMapNodeFromKey the matching can differ for different SiteMapProviders.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> sp <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+sp.navigation.getMenuNodeKey(<span class="hljs-string">"/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx"</span>).then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(r, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+
+}).catch(<span class="hljs-built_in">console</span>.error);
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\navigation-service.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/navigation-service" alt="spacer" />

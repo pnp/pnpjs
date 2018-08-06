@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/comments-likes.html">comments likes</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspcomments-and-likes">@pnp/sp/comments and likes <a class="permalink" href="#pnpspcomments-and-likes" aria-hidden="true">#</a></h1>
+<p>Likes and comments in the context of modern sites are based on list items, meaning the operations branch from the Item class. To load an item you can refer to the guidance in the <a href="items.html">items article</a>. If you want to set the likes or comments on a modern page and don’t know the item id but do know the url you can first load the file and then use the getItem method to get an item instance:</p>
+<p><em>These APIs are currently in BETA and are subject to change or may not work on all tenants.</em></p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> sp.web.getFileByServerRelativeUrl(<span class="hljs-string">"/sites/dev/SitePages/Test_8q5L.aspx"</span>).getItem();
+
+<span class="hljs-comment">// as an example, or any of the below options</span>
+<span class="hljs-keyword">await</span> item.like();
+</code></pre>
+<p>The below examples use a variable named “item” which is taken to represent an instance of the Item class.</p>
+<h2 id="comments">Comments <a class="permalink" href="#comments" aria-hidden="true">#</a></h2>
+<h3 id="get-comments">Get Comments <a class="permalink" href="#get-comments" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get();
+</code></pre>
+<p>You can also get the comments merged with instances of the Comment class to immediately start accessing the properties and methods:</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+<span class="hljs-comment">// these will be Comment instances in the array</span>
+comments[<span class="hljs-number">0</span>].replies.add({ text: <span class="hljs-string">"#PnPjs is pretty ok!"</span> });
+
+<span class="hljs-comment">//load the top 20 replies and comments for an item including likedBy information</span>
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.expand(<span class="hljs-string">"replies"</span>, <span class="hljs-string">"likedBy"</span>, <span class="hljs-string">"replies/likedBy"</span>).top(<span class="hljs-number">20</span>).get();
+</code></pre>
+<h3 id="add-comment">Add Comment <a class="permalink" href="#add-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// you can add a comment as a string</span>
+item.comments.add(<span class="hljs-string">"string comment"</span>);
+
+<span class="hljs-comment">// or you can add it as an object to include mentions</span>
+item.comments.add({ text: <span class="hljs-string">"comment from object property"</span> });
+</code></pre>
+<h3 id="delete-a-comment">Delete a Comment <a class="permalink" href="#delete-a-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+<span class="hljs-comment">// these will be Comment instances in the array</span>
+comments[<span class="hljs-number">0</span>].delete()
+</code></pre>
+<h3 id="like-comment">Like Comment <a class="permalink" href="#like-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+<span class="hljs-comment">// these will be Comment instances in the array</span>
+comments[<span class="hljs-number">0</span>].like()
+</code></pre>
+<h3 id="unlike-comment">Unlike Comment <a class="permalink" href="#unlike-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+comments[<span class="hljs-number">0</span>].unlike()
+</code></pre>
+<h3 id="reply-to-a-comment">Reply to a Comment <a class="permalink" href="#reply-to-a-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+<span class="hljs-keyword">const</span> comment: Comment &amp; CommentData = <span class="hljs-keyword">await</span> comments[<span class="hljs-number">0</span>].replies.add({ text: <span class="hljs-string">"#PnPjs is pretty ok!"</span> });
+</code></pre>
+<h3 id="load-replies-to-a-comment">Load Replies to a Comment <a class="permalink" href="#load-replies-to-a-comment" aria-hidden="true">#</a></h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { spODataEntityArray, Comment, CommentData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-keyword">const</span> comments = <span class="hljs-keyword">await</span> item.comments.get(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+
+<span class="hljs-keyword">const</span> replies = <span class="hljs-keyword">await</span> comments[<span class="hljs-number">0</span>].replies.get();
+</code></pre>
+<h2 id="like">Like <a class="permalink" href="#like" aria-hidden="true">#</a></h2>
+<p>You can like items and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { LikeData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// like an item</span>
+<span class="hljs-keyword">await</span> item.like();
+
+<span class="hljs-comment">// unlike an item</span>
+<span class="hljs-keyword">await</span> item.unlike();
+
+<span class="hljs-comment">// get the liked by information</span>
+<span class="hljs-keyword">const</span> likedByData: LikeData[] = <span class="hljs-keyword">await</span> item.getLikedBy();
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\comments-likes.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/comments-likes" alt="spacer" />

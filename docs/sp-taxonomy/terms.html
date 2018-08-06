@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy">sp taxonomy</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp-taxonomy/terms.html">terms</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpsp-taxonomyterms">@pnp/sp-taxonomy/terms <a class="permalink" href="#pnpsp-taxonomyterms" aria-hidden="true">#</a></h1>
+<p>Terms are the individual entries with a term set.</p>
+<h2 id="load-terms">Load Terms <a class="permalink" href="#load-terms" aria-hidden="true">#</a></h2>
+<p>You can load a collection of terms through a <a href="term-sets.html">term set</a> or <a href="term-stores.html">term store</a>.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    taxonomy,
+    ITermStore,
+    ITerms,
+    ILabelMatchInfo,
+    ITerm,
+    ITermData
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = <span class="hljs-keyword">await</span> taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-keyword">const</span> labelMatchInfo: ILabelMatchInfo = {
+    TermLabel: <span class="hljs-string">"My Label"</span>,
+    TrimUnavailable: <span class="hljs-literal">true</span>,
+};
+
+<span class="hljs-keyword">const</span> terms: ITerms = store.getTerms(labelMatchInfo);
+
+<span class="hljs-comment">// get term instances merged with data</span>
+<span class="hljs-keyword">const</span> terms2: (ITermData &amp; ITerm)[] = <span class="hljs-keyword">await</span> store.getTerms(labelMatchInfo).get();
+
+<span class="hljs-keyword">const</span> terms3: ITerms = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).terms;
+
+<span class="hljs-comment">// get terms merged with data from a term set</span>
+<span class="hljs-keyword">const</span> terms4: (ITerm &amp; ITermData)[] = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).terms.get();
+</code></pre>
+<h2 id="load-single-term">Load Single Term <a class="permalink" href="#load-single-term" aria-hidden="true">#</a></h2>
+<p>You can get a single term a variety of ways as shown below. The “best” way will be determined by what information is available to do the lookup but ultimately will result in the same end product.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> {
+    taxonomy,
+    ITermStore,
+    ITerms,
+    ILabelMatchInfo,
+    ITerm,
+    ITermData
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> store: ITermStore = <span class="hljs-keyword">await</span> taxonomy.termStores.getByName(<span class="hljs-string">"Taxonomy_v5o/SbcTE2cegwO2dtAN9l=="</span>);
+
+<span class="hljs-comment">// get a single term by id</span>
+<span class="hljs-keyword">const</span> term: ITerm = store.getTermById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+
+<span class="hljs-comment">// get single get merged with data</span>
+<span class="hljs-keyword">const</span> term2: ITerm = store.getTermById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).get();
+
+<span class="hljs-comment">// use select to choose which fields to return</span>
+<span class="hljs-keyword">const</span> term3: ITerm = store.getTermById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).select(<span class="hljs-string">"Name"</span>).get();
+
+<span class="hljs-comment">// get a term from a term set</span>
+<span class="hljs-keyword">const</span> term4: ITerm = store.getTermSetById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>).getTermById(<span class="hljs-string">"0ba6845c-1468-4ec5-a5a8-718f1fb05431"</span>);
+</code></pre>
+<h2 id="term-methods-and-properties">Term methods and properties <a class="permalink" href="#term-methods-and-properties" aria-hidden="true">#</a></h2>
+<h3 id="labels">labels <a class="permalink" href="#labels" aria-hidden="true">#</a></h3>
+<p>Accesses the <a href="labels.html">labels</a> collection for this term</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITerm, ILabels } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-keyword">const</span> labels: ILabels = term.labels;
+
+<span class="hljs-comment">// labels merged with data</span>
+<span class="hljs-keyword">const</span> labelsWithData = term.labels.get();
+</code></pre>
+<h3 id="createlabel">createLabel <a class="permalink" href="#createlabel" aria-hidden="true">#</a></h3>
+<p>Creates a new label for this Term</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { taxonomy, ITermStore, ITerm, ILabelData, ILabel } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-keyword">const</span> label: ILabelData &amp; ILabel = term.createLabel(<span class="hljs-string">"label text"</span>, <span class="hljs-number">1031</span>);
+
+<span class="hljs-comment">// optionally specify this is the default label</span>
+<span class="hljs-keyword">const</span> label2: ILabelData &amp; ILabel = term.createLabel(<span class="hljs-string">"label text"</span>, <span class="hljs-number">1031</span>, <span class="hljs-literal">true</span>);
+</code></pre>
+<h3 id="deprecate">deprecate <a class="permalink" href="#deprecate" aria-hidden="true">#</a></h3>
+<p>Sets the deprecation flag on a term</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-keyword">await</span> term.deprecate(<span class="hljs-literal">true</span>);
+</code></pre>
+<h3 id="get">get <a class="permalink" href="#get" aria-hidden="true">#</a></h3>
+<p>Loads the term data</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ITerm, ITermData } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-comment">// load term instance merged with data</span>
+<span class="hljs-keyword">const</span> term2: ITerm &amp; ITermData = <span class="hljs-keyword">await</span> term.get();
+</code></pre>
+<h3 id="setdescription">setDescription <a class="permalink" href="#setdescription" aria-hidden="true">#</a></h3>
+<p>Sets the description</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-comment">// load term instance merged with data</span>
+<span class="hljs-keyword">await</span> term.setDescription(<span class="hljs-string">"the description"</span>, <span class="hljs-number">1031</span>);
+</code></pre>
+<h3 id="setlocalcustomproperty">setLocalCustomProperty <a class="permalink" href="#setlocalcustomproperty" aria-hidden="true">#</a></h3>
+<p>Sets a custom property on this term</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { ITerm } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp-taxonomy"</span>;
+
+<span class="hljs-keyword">const</span> term: ITerm = &lt;<span class="hljs-keyword">from</span> one of the above methods&gt;;
+
+<span class="hljs-comment">// load term instance merged with data</span>
+<span class="hljs-keyword">await</span> term.setLocalCustomProperty(<span class="hljs-string">"name"</span>, <span class="hljs-string">"value"</span>);
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp-taxonomy\terms.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp-taxonomy/docs/terms" alt="spacer" />

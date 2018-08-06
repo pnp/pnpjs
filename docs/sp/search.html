@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/search.html">search</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpspsearch">@pnp/sp/search <a class="permalink" href="#pnpspsearch" aria-hidden="true">#</a></h1>
+<p>Using search you can access content throughout your organization in a secure and consistent manner. The library provides support for searching and search suggest - as well as some interfaces and helper classes to make building your queries and processing responses easier.</p>
+<h1 id="search">Search <a class="permalink" href="#search" aria-hidden="true">#</a></h1>
+<p>Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the SearchQuery interface, or a SearchQueryBuilder instance. The first two are shown below.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SearchQuery, SearchResults } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// text search using SharePoint default values for other parameters</span>
+sp.search(<span class="hljs-string">"test"</span>).then(<span class="hljs-function">(<span class="hljs-params">r: SearchResults</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r.ElapsedTime);
+    <span class="hljs-built_in">console</span>.log(r.RowCount);
+    <span class="hljs-built_in">console</span>.log(r.PrimarySearchResults);
+});
+
+<span class="hljs-comment">// define a search query object matching the SearchQuery interface</span>
+sp.search(&lt;SearchQuery&gt;{
+    Querytext: <span class="hljs-string">"test"</span>,
+    RowLimit: <span class="hljs-number">10</span>,
+    EnableInterleaving: <span class="hljs-literal">true</span>,
+}).then(<span class="hljs-function">(<span class="hljs-params">r: SearchResults</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r.ElapsedTime);
+    <span class="hljs-built_in">console</span>.log(r.RowCount);
+    <span class="hljs-built_in">console</span>.log(r.PrimarySearchResults);
+});
+</code></pre>
+<h2 id="paging-with-searchresultsgetpage">Paging with SearchResults.getPage <a class="permalink" href="#paging-with-searchresultsgetpage" aria-hidden="true">#</a></h2>
+<p>Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SearchQueryBuilder, SearchResults } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+<span class="hljs-comment">// this will hold our current results</span>
+<span class="hljs-keyword">let</span> currentResults: SearchResults = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">let</span> page = <span class="hljs-number">1</span>;
+
+<span class="hljs-comment">// triggered on page load through some means</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onStart</span>(<span class="hljs-params"></span>) </span>{
+
+    <span class="hljs-comment">// construct our query that will be throughout the paging process, likely from user input</span>
+    <span class="hljs-keyword">const</span> q = SearchQueryBuilder.create(<span class="hljs-string">"test"</span>).rowLimit(<span class="hljs-number">5</span>);
+    sp.search(q).then(<span class="hljs-function">(<span class="hljs-params">r: SearchResults</span>) =&gt;</span> {
+
+        currentResults = r; <span class="hljs-comment">// update the current results</span>
+        page = <span class="hljs-number">1</span>; <span class="hljs-comment">// reset if needed</span>
+        <span class="hljs-comment">// update UI with data...</span>
+    });
+}
+
+<span class="hljs-comment">// triggered by an event</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">next</span>(<span class="hljs-params"></span>) </span>{
+    currentResults.getPage(++page).then(<span class="hljs-function">(<span class="hljs-params">r: SearchResults</span>) =&gt;</span> {
+
+        currentResults = r; <span class="hljs-comment">// update the current results</span>
+        <span class="hljs-comment">// update UI with data...</span>
+    });
+}
+
+<span class="hljs-comment">// triggered by an event</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">prev</span>(<span class="hljs-params"></span>) </span>{
+    currentResults.getPage(--page).then(<span class="hljs-function">(<span class="hljs-params">r: SearchResults</span>) =&gt;</span> {
+
+        currentResults = r; <span class="hljs-comment">// update the current results</span>
+        <span class="hljs-comment">// update UI with data...</span>
+    });
+}
+</code></pre>
+<h2 id="searchquerybuilder">SearchQueryBuilder <a class="permalink" href="#searchquerybuilder" aria-hidden="true">#</a></h2>
+<p>The SearchQueryBuilder allows you to build your queries in a fluent manner. It also accepts constructor arguments for query text and a base query plain object, should you have a shared configuration for queries in an application you can define them once. The methods and properties match those on the SearchQuery interface. Boolean properties add the flag to the query while methods require that you supply one or more arguments. Also arguments supplied later in the chain will overwrite previous values.</p>
+<pre><code class="language-TypeScript"><span class="hljs-comment">// basic usage</span>
+<span class="hljs-keyword">let</span> q = SearchQueryBuilder.create().text(<span class="hljs-string">"test"</span>).rowLimit(<span class="hljs-number">4</span>).enablePhonetic;
+
+sp.search(q).then(<span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> { <span class="hljs-comment">/* ... */</span> });
+
+<span class="hljs-comment">// provide a default query text in the create()</span>
+<span class="hljs-keyword">let</span> q2 = SearchQueryBuilder.create(<span class="hljs-string">"text"</span>).rowLimit(<span class="hljs-number">4</span>).enablePhonetic;
+
+sp.search(q2).then(<span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> { <span class="hljs-comment">/* ... */</span> });
+
+<span class="hljs-comment">// provide query text and a template</span>
+
+<span class="hljs-comment">// shared settings across queries</span>
+<span class="hljs-keyword">const</span> appSearchSettings: SearchQuery = {
+    EnablePhonetic: <span class="hljs-literal">true</span>,
+    HiddenConstraints: <span class="hljs-string">"reports"</span>
+};
+
+<span class="hljs-keyword">let</span> q3 = SearchQueryBuilder.create(<span class="hljs-string">"test"</span>, appSearchSettings).enableQueryRules;
+<span class="hljs-keyword">let</span> q4 = SearchQueryBuilder.create(<span class="hljs-string">"financial data"</span>, appSearchSettings).enableSorting.enableStemming;
+sp.search(q3).then(<span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> { <span class="hljs-comment">/* ... */</span> });
+sp.search(q4).then(<span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> { <span class="hljs-comment">/* ... */</span> });
+</code></pre>
+<h1 id="search-suggest">Search Suggest <a class="permalink" href="#search-suggest" aria-hidden="true">#</a></h1>
+<p>Search suggest works in much the same way as search, except against the suggest end point. It takes a string or a plain object that matches SearchSuggestQuery.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { sp, SearchSuggestQuery, SearchSuggestResult } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/sp"</span>;
+
+sp.searchSuggest(<span class="hljs-string">"test"</span>).then(<span class="hljs-function">(<span class="hljs-params">r: SearchSuggestResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r);
+});
+
+sp.searchSuggest(&lt;SearchSuggestQuery&gt;{
+    querytext: <span class="hljs-string">"test"</span>,
+    count: <span class="hljs-number">5</span>,
+}).then(<span class="hljs-function">(<span class="hljs-params">r: SearchSuggestResult</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(r);
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\search.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/search" alt="spacer" />

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp">sp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/sp/related-items.html">related items</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpsprelateditems">@pnp/sp/relateditems <a class="permalink" href="#pnpsprelateditems" aria-hidden="true">#</a></h1>
+<p>Related items are used in Task and Workflow lists (as well as others) to track items that have relationships similar to database relationships.</p>
+<p>All methods chain off the Web’s relatedItems property as shown below:</p>
+<h2 id="getrelateditems">getRelatedItems <a class="permalink" href="#getrelateditems" aria-hidden="true">#</a></h2>
+<p>Expects the named library to exist within the contextual web.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.getRelatedItems(<span class="hljs-string">"Documents"</span>, <span class="hljs-number">1</span>).then(<span class="hljs-function">(<span class="hljs-params">result: RelatedItem[]</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+});
+</code></pre>
+<h2 id="getpageonerelateditems">getPageOneRelatedItems <a class="permalink" href="#getpageonerelateditems" aria-hidden="true">#</a></h2>
+<p>Expects the named library to exist within the contextual web.</p>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.getPageOneRelatedItems(<span class="hljs-string">"Documents"</span>, <span class="hljs-number">1</span>).then(<span class="hljs-function">(<span class="hljs-params">result: RelatedItem[]</span>) =&gt;</span> {
+
+    <span class="hljs-built_in">console</span>.log(result);
+});
+</code></pre>
+<h2 id="addsinglelink">addSingleLink <a class="permalink" href="#addsinglelink" aria-hidden="true">#</a></h2>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.addSingleLink(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite"</span>, <span class="hljs-string">"RelatedItemsList2"</span>, <span class="hljs-number">1</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev"</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+
+pnp.sp.web.relatedItems.addSingleLink(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite"</span>, <span class="hljs-string">"RelatedItemsList2"</span>, <span class="hljs-number">1</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev"</span>, <span class="hljs-literal">true</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+</code></pre>
+<h2 id="addsinglelinktourl">addSingleLinkToUrl <a class="permalink" href="#addsinglelinktourl" aria-hidden="true">#</a></h2>
+<p>Adds a related item link from an item specified by list name and item id, to an item specified by url</p>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.addSingleLinkToUrl(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt"</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+
+pnp.sp.web.relatedItems.addSingleLinkToUrl(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt"</span>, <span class="hljs-literal">true</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+</code></pre>
+<h2 id="addsinglelinkfromurl">addSingleLinkFromUrl <a class="permalink" href="#addsinglelinkfromurl" aria-hidden="true">#</a></h2>
+<p>Adds a related item link from an item specified by url, to an item specified by list name and item id</p>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.addSingleLinkFromUrl(<span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt"</span>, <span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+
+pnp.sp.web.relatedItems.addSingleLinkFromUrl(<span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt"</span>, <span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-literal">true</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+</code></pre>
+<h2 id="deletesinglelink">deleteSingleLink <a class="permalink" href="#deletesinglelink" aria-hidden="true">#</a></h2>
+<pre><code class="language-TypeScript">pnp.sp.web.relatedItems.deleteSingleLink(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite"</span>, <span class="hljs-string">"RelatedItemsList2"</span>, <span class="hljs-number">1</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev"</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+
+pnp.sp.web.relatedItems.deleteSingleLink(<span class="hljs-string">"RelatedItemsList1"</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev/subsite"</span>, <span class="hljs-string">"RelatedItemsList2"</span>, <span class="hljs-number">1</span>, <span class="hljs-string">"https://site.sharepoint.com/sites/dev"</span>, <span class="hljs-literal">true</span>).then(_ =&gt; {
+
+    <span class="hljs-comment">// ... return is void</span>
+});
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: sp\related-items.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/sp/docs/related-items" alt="spacer" />

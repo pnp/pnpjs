@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@pnp - SharePoint Patterns and Practices JavaScript Libraries</title>
+    <link rel="stylesheet" href="/pnpjs/css/highlightjs-github.css">
+    <link rel="stylesheet" href="/pnpjs/css/site.css">
+</head>
+
+<body>
+    <header>
+        <div class="right">
+            <form method="get" action="http://www.bing.com/search">
+                <input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search this site..." />
+                <input type="hidden" name="q1" value="site:https://pnp.github.io/pnpjs/" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div class="logo">
+            <img src="/pnpjs/img/office365-header-icon.png" alt="Logo" />
+        </div>
+        <div class="pnp-title">
+            <span id="headerText">
+                <a href="/pnpjs">SharePoint Patterns and Practices</a>
+            </span>
+            <span id="subheaderText">PnPjs: Client Side Libraries for Microsoft 365</span>
+        </div>
+    </header>
+
+    <nav id="breadcrumbs">
+        <a href="/pnpjs">@pnp</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/common">common</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;<a href="/pnpjs/common/adalclient.html">adalclient</a>
+    </nav>
+
+    <article>
+        <h1 id="pnpcommonadalclient">@pnp/common/adalclient <a class="permalink" href="#pnpcommonadalclient" aria-hidden="true">#</a></h1>
+<p><em>Added in 1.0.4</em></p>
+<p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
+SharePoint Framework’s permissions as well.</p>
+<h2 id="configure">Configure <a class="permalink" href="#configure" aria-hidden="true">#</a></h2>
+<p>This example shows setting up and using the AdalClient to query Microsoft Graph using information you have setup. You can <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/connect-to-api-secured-with-aad">review this article</a> for more information on setting up and securing any application using AzureAD. The steps below would be the same though you would use the fetch method of the client directly.</p>
+<h3 id="setup-and-use-with-microsoft-graph">Setup and Use with Microsoft Graph <a class="permalink" href="#setup-and-use-with-microsoft-graph" aria-hidden="true">#</a></h3>
+<p>This sample uses a custom AzureAd app you have created and granted the appropriate permissions.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+
+<span class="hljs-comment">// configure the graph client</span>
+<span class="hljs-comment">// parameters are:</span>
+<span class="hljs-comment">// client id - the id of the application you created in azure ad</span>
+<span class="hljs-comment">// tenant - can be id or URL (shown)</span>
+<span class="hljs-comment">// redirect url - absolute url of a page to which your application and Azure AD app allows replies</span>
+graph.setup({
+    graph: {
+        fetchClientFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AdalClient(
+                <span class="hljs-string">"e3e9048e-ea28-423b-aca9-3ea931cc7972"</span>,
+                <span class="hljs-string">"{tenant}.onmicrosoft.com"</span>,
+                <span class="hljs-string">"https://myapp/singlesignon.aspx"</span>);
+        },
+    },
+});
+
+<span class="hljs-keyword">try</span> {
+
+    <span class="hljs-comment">// call the graph API</span>
+    <span class="hljs-keyword">const</span> groups = <span class="hljs-keyword">await</span> graph.groups.get();
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(groups, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>));
+
+} <span class="hljs-keyword">catch</span> (e) {
+    <span class="hljs-built_in">console</span>.error(e);
+}
+</code></pre>
+<h3 id="setup-and-use-inside-sharepoint-framework">Setup and Use inside SharePoint Framework <a class="permalink" href="#setup-and-use-inside-sharepoint-framework" aria-hidden="true">#</a></h3>
+<p>If you are working inside of SharePoint Framework you have two options to help you setup the client. You can always use the above setup when needed if you prefer.
+For the below setup to work your tenant must have the features <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient">descibed here</a> enabled and
+permissions granted as needed. This means having targeted release activated for everyone, not just select users.</p>
+<p>By providing the context in the onInit we can create the adal client from known information.</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">import</span> { graph } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/graph"</span>;
+<span class="hljs-keyword">import</span> { getRandomString } <span class="hljs-keyword">from</span> <span class="hljs-string">"@pnp/common"</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">public</span> onInit(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.onInit().then(_ =&gt; {
+
+    <span class="hljs-comment">// other init code may be present</span>
+
+    graph.setup({
+      spfxContext: <span class="hljs-keyword">this</span>.context
+    });
+  });
+}
+
+<span class="hljs-keyword">public</span> render(): <span class="hljs-built_in">void</span> {
+
+  <span class="hljs-comment">// here we are creating a team with a random name, required Group ReadWrite All permissions</span>
+  <span class="hljs-keyword">const</span> teamName = <span class="hljs-string">`ATeam.<span class="hljs-subst">${getRandomString(4)}</span>`</span>;
+
+  <span class="hljs-keyword">this</span>.domElement.innerHTML = <span class="hljs-string">`Hello, I am creating a team named "<span class="hljs-subst">${teamName}</span>" for you...`</span>;
+
+  graph.teams.create(teamName, <span class="hljs-string">"This is a description"</span>).then(<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> {
+    
+    <span class="hljs-keyword">this</span>.domElement.innerHTML += <span class="hljs-string">"done!"</span>;
+
+  }).catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+
+    <span class="hljs-keyword">this</span>.domElement.innerHTML = <span class="hljs-string">`Oops, I ran into a problem...<span class="hljs-subst">${JSON.stringify(e, null, 4)}</span>`</span>;
+  });
+}
+</code></pre>
+
+    </article>
+
+    <footer>
+        <div class="brand">© Microsoft 2018</div>
+        <div class="call-to-action">Please
+            <a href="https://github.com/pnp/pnpjs/issues/new?title=Documentation: common\adalclient.html&body=Please describe how we can improve the doc page:">report documentation issues/suggestions</a> to help us improve!</div>
+    </footer>
+</body>
+
+</html><img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/common/docs/adalclient" alt="spacer" />
