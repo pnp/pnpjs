@@ -66,8 +66,8 @@ export class Items extends SharePointQueryableCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
-    public getPaged(): Promise<PagedItemCollection<any>> {
-        return this.get(new PagedItemCollectionParser(this));
+    public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
+        return this.get(new PagedItemCollectionParser<T>(this));
     }
 
     /**
@@ -460,26 +460,26 @@ export class PagedItemCollection<T> {
     /**
      * Gets the next set of results, or resolves to null if no results are available
      */
-    public getNext(): Promise<PagedItemCollection<any>> {
+    public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
             const items = new Items(this.nextUrl, null).configureFrom(this.parent);
-            return items.getPaged();
+            return items.getPaged<T>();
         }
 
         return new Promise<any>(r => r(null));
     }
 }
 
-class PagedItemCollectionParser extends ODataParserBase<PagedItemCollection<any>> {
+class PagedItemCollectionParser<T> extends ODataParserBase<PagedItemCollection<T>> {
 
     constructor(private _parent: Items) {
         super();
     }
 
-    public parse(r: Response): Promise<PagedItemCollection<any>> {
+    public parse(r: Response): Promise<PagedItemCollection<T>> {
 
-        return new Promise<PagedItemCollection<any>>((resolve, reject) => {
+        return new Promise<PagedItemCollection<T>>((resolve, reject) => {
 
             if (this.handleError(r, reject)) {
                 r.json().then(json => {
