@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- @pnp/sp: ability to specify generic type with Items getPaged method
+- documentation: added section for paging to List Items page
+
 ## 1.1.4 - 2018-08-06
 
 ### Added
