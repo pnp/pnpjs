@@ -6,20 +6,36 @@ import { extractWebUrl } from "./utils/extractweburl";
 
 export function spExtractODataId(candidate: any): string {
 
-    if (candidate.hasOwnProperty("odata.metadata") && candidate.hasOwnProperty("odata.editLink")) {
-        // we are dealign with minimal metadata (default)
-        return combinePaths(extractWebUrl(candidate["odata.metadata"]), "_api", candidate["odata.editLink"]);
-    } else if (candidate.hasOwnProperty("odata.editLink")) {
-        return combinePaths("_api", candidate["odata.editLink"]);
-    } else if (candidate.hasOwnProperty("__metadata")) {
-        // we are dealing with verbose, which has an absolute uri
-        return candidate.__metadata.uri;
+    const parts: string[] = [];
+
+    if (candidate.hasOwnProperty("odata.type") && candidate["odata.type"] === "SP.Web") {
+        // webs return an absolute url in the editLink
+        if (candidate.hasOwnProperty("odata.editLink")) {
+            parts.push(candidate["odata.editLink"]);
+        } else if (candidate.hasOwnProperty("__metadata")) {
+            // we are dealing with verbose, which has an absolute uri
+            parts.push(candidate.__metadata.uri);
+        }
+
     } else {
-        // we are likely dealing with nometadata, so don't error but we won't be able to
-        // chain off these objects
+
+        if (candidate.hasOwnProperty("odata.metadata") && candidate.hasOwnProperty("odata.editLink")) {
+            // we are dealign with minimal metadata (default)
+            parts.push(extractWebUrl(candidate["odata.metadata"]), "_api", candidate["odata.editLink"]);
+        } else if (candidate.hasOwnProperty("odata.editLink")) {
+            parts.push("_api", candidate["odata.editLink"]);
+        } else if (candidate.hasOwnProperty("__metadata")) {
+            // we are dealing with verbose, which has an absolute uri
+            parts.push(candidate.__metadata.uri);
+        }
+    }
+
+    if (parts.length < 1) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", LogLevel.Warning);
         return "";
     }
+
+    return combinePaths(...parts);
 }
 
 class SPODataEntityParserImpl<T, D> extends ODataParserBase<T & D> {
