@@ -69,6 +69,6 @@ taxonomy.setup({
 * [Labels](labels.md)
 
 ## UML
-![Graphical UML diagram](/pnpjs/img/pnpjs-sp-taxonomy-uml.svg =100%x)
+![Graphical UML diagram](../../documentation/img/pnpjs-sp-taxonomy-uml.svg)
 
 Graphical UML diagram of @pnp/sp-taxonomy. Right-click the diagram and open in new tab if it is too small.

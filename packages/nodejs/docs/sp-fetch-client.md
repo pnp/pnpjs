@@ -76,7 +76,7 @@ This section outlines how to register for a client id and secret for use in the 
 
 ### Register An Add-In
 
-Before you can begin running tests you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure you farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
+Before you can begin running tests you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure your farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
 
 1. Navigation to {site url}/_layouts/appregnew.aspx
 2. Click "Generate" for both the Client Id and Secret values

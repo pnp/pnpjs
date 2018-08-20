@@ -94,6 +94,6 @@ graph.v1.groups.get().then(g => {
 ```
 
 ## UML
-![Graphical UML diagram](/pnpjs/img/pnpjs-graph-uml.svg =100%x)
+![Graphical UML diagram](../../documentation/img/pnpjs-graph-uml.svg)
 
 Graphical UML diagram of @pnp/graph. Right-click the diagram and open in new tab if it is too small.
