@@ -1,6 +1,6 @@
 site_name: PnP/PnPjs
 docs_dir: 'packages'
-pages:
+nav:
   - Home: 'index.md'
   - 'Getting Started': 'documentation/getting-started.md'
   - 'Transition Guide': 'documentation/transition-guide.md'
