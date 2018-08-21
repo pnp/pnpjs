@@ -115,6 +115,6 @@ sp.web.select("Title").get().then(w => {
 * [Comments and Likes](comments-likes.md)
 
 ## UML
-![Graphical UML diagram](/pnpjs/img/pnpjs-sp-uml.svg =100%x)
+![Graphical UML diagram](../../documentation/img/pnpjs-sp-uml.svg)
 
 Graphical UML diagram of @pnp/sp. Right-click the diagram and open in new tab if it is too small.

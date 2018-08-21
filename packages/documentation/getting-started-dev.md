@@ -15,7 +15,7 @@ Thank you for your interest in contributing to our work. This guide should help 
 
 These steps will help you get your environment setup for contributing to the core library.
 
-1. Install [Visual Studio Code](https://code.visualstudio.com/) - this is the development environment we will use. It is similar to a light-weight Visual Studio designed for each editing of client file types such as .ts and .js. (Note that if you prefer you can [use Visual Studio](Use-In-Visual-Studio)).
+1. Install [Visual Studio Code](https://code.visualstudio.com/) - this is the development environment we will use. It is similar to a light-weight Visual Studio designed for each editing of client file types such as .ts and .js. (Note that if you prefer you can use Visual Studio).
 
 2. Install [Node JS](https://nodejs.org/en/download/) - this provides two key capabilities; the first is the nodejs server which will act as our development server (think iisexpress), the second is npm a package manager (think nuget).
 

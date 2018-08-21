@@ -15,7 +15,7 @@ gulp <command> [optional pararms]
 
 ## build
 
-The build command transpiles the solution from TypeScript into JavaScript using our custom [build system](build-system.md). It is controlled by the pnp-build.js file at
+The build command transpiles the solution from TypeScript into JavaScript using our custom [build system](https://github.com/pnp/pnpjs/tree/master/tools/buildsystem). It is controlled by the pnp-build.js file at
 the project root.
 
 ### Build all of the packages
