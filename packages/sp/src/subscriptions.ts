@@ -1,30 +1,19 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
+import { jsS } from "@pnp/common";
 
 /**
  * Describes a collection of webhook subscriptions
  *
  */
+@defaultPath("subscriptions")
 export class Subscriptions extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Subscriptions class
-     *
-     * @param baseUrl - The url or SharePointQueryable which forms the parent of this webhook subscriptions collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "subscriptions") {
-        super(baseUrl, path);
-    }
 
     /**
      * Returns all the webhook subscriptions or the specified webhook subscription
      *
-     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
+     * @param id The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
      */
-    public getById(subscriptionId: string): Subscription {
-        const subscription = new Subscription(this);
-        subscription.concat(`('${subscriptionId}')`);
-        return subscription;
-    }
+    public getById = this._getById(Subscription);
 
     /**
      * Creates a new webhook subscription
@@ -35,7 +24,7 @@ export class Subscriptions extends SharePointQueryableCollection {
      */
     public add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult> {
 
-        const postBody = JSON.stringify({
+        const postBody = jsS({
             "clientState": clientState || "pnp-js-core-subscription",
             "expirationDateTime": expirationDate,
             "notificationUrl": notificationUrl,
@@ -62,7 +51,7 @@ export class Subscription extends SharePointQueryableInstance {
      */
     public update(expirationDate: string): Promise<SubscriptionUpdateResult> {
 
-        const postBody = JSON.stringify({
+        const postBody = jsS({
             "expirationDateTime": expirationDate,
         });
 

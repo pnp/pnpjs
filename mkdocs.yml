@@ -1,0 +1,111 @@
+site_name: PnP/PnPjs
+docs_dir: 'packages'
+nav:
+  - Home: 'index.md'
+  - 'Getting Started': 'documentation/getting-started.md'
+  - 'Transition Guide': 'documentation/transition-guide.md'
+  - General:
+    - 'Getting Started': 'documentation/getting-started.md'
+    - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
+    - 'Gulp Commands': 'documentation/gulp-commands.md'
+    - Debugging: 'documentation/debugging.md'
+    - Deployment: 'documentation/deployment.md'
+    - 'Install Beta Versions': 'documentation/beta-versions.md'
+    - Polyfills: 'documentation/polyfill.md'
+    - 'Package Structure': 'documentation/package-structure.md'
+    - 'SPFx On-Premises 2016': 'documentation/SPFx-On-Premesis-2016.md'
+    - 'Transition Guide': 'documentation/transition-guide.md'
+  - Packages:
+    - Packages: 'documentation/packages.md'
+    - common:
+      - common: 'common/docs/index.md'
+      - adalclient: 'common/docs/adalclient.md'
+      - blobutil: 'common/docs/blobutil.md'
+      - collections: 'common/docs/collections.md'
+      - 'Custom HttpClientImpl': 'common/docs/custom-httpclientimpl.md'
+      - decorators: 'common/docs/decorators.md'
+      - exceptions: 'common/docs/exceptions.md'
+      - libconfig: 'common/docs/libconfig.md'
+      - netutil: 'common/docs/netutil.md'
+      - storage: 'common/docs/storage.md'
+      - util: 'common/docs/util.md'
+    - config-store:
+      - config-store: 'config-store/docs/index.md'
+      - configuration: 'config-store/docs/configuration.md'
+      - providers: 'config-store/docs/providers.md'
+    - graph: 'graph/docs/index.md'
+    - logging: 'logging/docs/index.md'
+    - nodejs:
+      - nodejs: 'nodejs/docs/index.md'
+      - AdalFetchClient: 'nodejs/docs/adal-fetch-client.md'
+      - SPFetchClient: 'nodejs/docs/sp-fetch-client.md'
+    - odata:
+      - odata: 'odata/docs/index.md'
+      - caching: 'odata/docs/caching.md'
+      - core: 'odata/docs/core.md'
+      - 'OData Batching': 'odata/docs/odata-batch.md'
+      - Parsers: 'odata/docs/parsers.md'
+      - Pipeline: 'odata/docs/pipeline.md'
+      - Queryable: 'odata/docs/queryable.md'
+    - pnpjs: 'pnpjs/docs/index.md'
+    - sp:
+      - sp: 'sp/docs/index.md'
+      - 'Alias Parameters': 'sp/docs/alias-parameters.md'
+      - 'ALM api': 'sp/docs/alm.md'
+      - Attachments: 'sp/docs/attachments.md'
+      - 'Client-side Pages': 'sp/docs/client-side-pages.md'
+      - Features: 'sp/docs/features.md'
+      - Fields: 'sp/docs/fields.md'
+      - Files: 'sp/docs/files.md'
+      - 'List Items': 'sp/docs/items.md'
+      - 'Navigation Service': 'sp/docs/navigation-service.md'
+      - Permissions: 'sp/docs/permissions.md'
+      - 'Related Items': 'sp/docs/related-items.md'
+      - Search: 'sp/docs/search.md'
+      - Sharing: 'sp/docs/sharing.md'
+      - Social: 'sp/docs/social.md'
+      - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
+      - 'Tenant Properties': 'sp/docs/tenant-properties.md'
+      - Views: 'sp/docs/views.md'
+      - Webs: 'sp/docs/webs.md'
+      - 'Comments and Likes': 'sp/docs/comments-likes.md'
+    - sp-addinhelpers:
+      - sp-addinhelpers: 'sp-addinhelpers/docs/index.md'
+      - SPRequestExecutorClient:  'sp-addinhelpers/docs/sp-request-executor-client.md'
+      - SPRestAddIn: 'sp-addinhelpers/docs/sp-rest-addin.md'
+    - sp-clientsvc: 'sp-clientsvc/docs/index.md'
+    - sp-taxonomy:
+      - sp-taxonomy: 'sp-taxonomy/docs/index.md'
+      - 'Term Stores': 'sp-taxonomy/docs/term-stores.md'
+      - 'Term Groups': 'sp-taxonomy/docs/term-groups.md'
+      - 'Term Sets': 'sp-taxonomy/docs/term-sets.md'
+      - Terms: 'sp-taxonomy/docs/terms.md'
+      - Labels: 'sp-taxonomy/docs/labels.md'
+theme:
+  name: 'material'
+  palette:
+    primary: 'blue'
+  logo: 'documentation/img/Logo.png'
+  feature:
+    tabs: true
+extra_css:
+  - 'documentation/css/extra.css'
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+plugins:
+  - search
+  - markdownextradata
+extra:
+  version: '1.1.4'
+  social:
+    - type: 'twitter'
+      link: 'https://twitter.com/officedevpnp'
+    - type: 'youtube'
+      link: 'http://aka.ms/sppnp-videos'
+    - type: 'link'
+      link: 'https://aka.ms/sppnp'
+repo_url: http://github.com/pnp/pnpjs

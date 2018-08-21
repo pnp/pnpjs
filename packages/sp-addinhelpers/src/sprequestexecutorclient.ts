@@ -9,7 +9,7 @@ export class SPRequestExecutorClient implements HttpClientImpl {
      * Fetches a URL using the SP.RequestExecutor library.
      */
     public fetch(url: string, options: any): Promise<Response> {
-        if (typeof SP === "undefined" || typeof SP.RequestExecutor === "undefined") {
+        if (SP === undefined || SP.RequestExecutor === undefined) {
             throw new SPRequestExecutorUndefinedException();
         }
 
@@ -60,7 +60,7 @@ export class SPRequestExecutorClient implements HttpClientImpl {
     private convertToResponse = (spResponse: SP.ResponseInfo): Response => {
         const responseHeaders = new Headers();
 
-        if (typeof spResponse.headers !== "undefined") {
+        if (spResponse.headers !== undefined) {
             for (const h in spResponse.headers) {
                 if (spResponse.headers[h]) {
                     responseHeaders.append(h, spResponse.headers[h]);

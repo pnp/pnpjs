@@ -1,9 +1,8 @@
 import { ODataBatch } from "@pnp/odata";
-import { getGUID, isUrlAbsolute, combinePaths, mergeHeaders } from "@pnp/common";
+import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./net/sphttpclient";
 import { SPRuntimeConfig } from "./config/splibconfig";
-import { SPBatchParseException } from "./exceptions";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
@@ -38,7 +37,7 @@ export class SPBatch extends ODataBatch {
                             state = "batchHeaders";
                         } else {
                             if (line.trim() !== "") {
-                                throw new SPBatchParseException(`Invalid response, line ${i}`);
+                                throw new Error(`Invalid response, line ${i}`);
                             }
                         }
                         break;
@@ -50,7 +49,7 @@ export class SPBatch extends ODataBatch {
                     case "status":
                         const parts = statusRegExp.exec(line);
                         if (parts.length !== 3) {
-                            throw new SPBatchParseException(`Invalid status, line ${i}`);
+                            throw new Error(`Invalid status, line ${i}`);
                         }
                         status = parseInt(parts[1], 10);
                         statusText = parts[2];
@@ -68,7 +67,7 @@ export class SPBatch extends ODataBatch {
                 }
             }
             if (state !== "status") {
-                reject(new SPBatchParseException("Unexpected end of input"));
+                reject(new Error("Unexpected end of input"));
             }
             resolve(responses);
         });
@@ -131,7 +130,7 @@ export class SPBatch extends ODataBatch {
                 const headers = new Headers();
 
                 // this is the url of the individual request within the batch
-                const url = isUrlAbsolute(reqInfo.url) ? reqInfo.url : combinePaths(absoluteRequestUrl, reqInfo.url);
+                const url = isUrlAbsolute(reqInfo.url) ? reqInfo.url : combine(absoluteRequestUrl, reqInfo.url);
 
                 Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Adding request ${reqInfo.method} ${url} to batch.`, LogLevel.Verbose);
 
@@ -140,7 +139,7 @@ export class SPBatch extends ODataBatch {
                     let method = reqInfo.method;
 
                     const castHeaders: any = reqInfo.options.headers;
-                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof castHeaders["X-HTTP-Method"] !== "undefined") {
+                    if (hOP(reqInfo, "options") && hOP(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
 
                         method = castHeaders["X-HTTP-Method"];
                         delete castHeaders["X-HTTP-Method"];
@@ -205,13 +204,13 @@ export class SPBatch extends ODataBatch {
 
             Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-            return client.fetch(combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+            return client.fetch(combine(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(r => r.text())
                 .then(SPBatch.ParseResponse)
                 .then((responses: Response[]) => {
 
                     if (responses.length !== this.requests.length) {
-                        throw new SPBatchParseException("Could not properly parse responses to match requests in batch.");
+                        throw new Error("Could not properly parse responses to match requests in batch.");
                     }
 
                     Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);

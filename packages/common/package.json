@@ -5,12 +5,12 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
-    "@types/adal-angular": "1.0.1",
     "adal-angular": "1.0.17",
     "tslib": "1.9.3"
   },
-  "peerDependencies": {
-    "@pnp/logging": "0.0.0-PLACEHOLDER"
+  "peerDependencies": {},
+  "devDependencies": {
+    "@types/adal-angular": "1.0.1"
   },
   "author": {
     "name": "Microsoft and other contributors"

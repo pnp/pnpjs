@@ -1,5 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
-import { TypedHash } from "@pnp/common";
+import { TypedHash, jsS } from "@pnp/common";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 // import { Attachments } from "./attachments";
 
@@ -35,7 +35,7 @@ export class Events extends GraphQueryableCollection {
     public add(properties: Event): Promise<EventAddResult> {
 
         return this.postCore({
-            body: JSON.stringify(properties),
+            body: jsS(properties),
         }).then(r => {
             return {
                 data: r,
@@ -68,7 +68,7 @@ export class Event extends GraphQueryableInstance {
     public update(properties: TypedHash<any>): Promise<void> {
 
         return this.patchCore({
-            body: JSON.stringify(properties),
+            body: jsS(properties),
         });
     }
 

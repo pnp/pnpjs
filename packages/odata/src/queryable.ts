@@ -1,6 +1,5 @@
 import {
-    combinePaths,
-    Dictionary,
+    combine,
     RuntimeConfig,
     FetchOptions,
     ConfigOptions,
@@ -36,7 +35,7 @@ export abstract class Queryable<GetType> {
     /**
      * Tracks the query parts of the url
      */
-    protected _query: Dictionary<string>;
+    protected _query: Map<string, string>;
 
     /**
      * Tracks the url as it is built
@@ -59,7 +58,7 @@ export abstract class Queryable<GetType> {
     protected _cachingOptions: ICachingOptions | null;
 
     constructor() {
-        this._query = new Dictionary<string>();
+        this._query = new Map<string, string>();
         this._options = {};
         this._url = "";
         this._parentUrl = "";
@@ -95,7 +94,7 @@ export abstract class Queryable<GetType> {
      * Provides access to the query builder for this url
      *
      */
-    public get query(): Dictionary<string> {
+    public get query(): Map<string, string> {
         return this._query;
     }
 
@@ -127,7 +126,7 @@ export abstract class Queryable<GetType> {
     public usingCaching(options?: ICachingOptions): this {
         if (!RuntimeConfig.globalCacheDisable) {
             this._useCaching = true;
-            if (typeof options !== "undefined") {
+            if (options !== undefined) {
                 this._cachingOptions = options;
             }
         }
@@ -160,7 +159,7 @@ export abstract class Queryable<GetType> {
      * @param pathPart The string to append
      */
     protected append(pathPart: string) {
-        this._url = combinePaths(this._url, pathPart);
+        this._url = combine(this._url, pathPart);
     }
 
     /**
@@ -179,7 +178,7 @@ export abstract class Queryable<GetType> {
      */
     protected extend(parent: Queryable<any>, path?: string) {
         this._parentUrl = parent._url;
-        this._url = combinePaths(this._parentUrl, path);
+        this._url = combine(this._parentUrl, path);
         this.configureFrom(parent);
     }
 

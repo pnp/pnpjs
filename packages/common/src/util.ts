@@ -1,5 +1,4 @@
 import { TypedHash } from "./collections";
-import { deprecatedClass } from "./decorators";
 
 /**
  * Gets a callback function which will maintain context across async calls.
@@ -47,7 +46,7 @@ export function dateAdd(date: Date, interval: DateAddInterval, units: number): D
  *
  * @param paths 0 to n path parts to combine
  */
-export function combinePaths(...paths: string[]): string {
+export function combine(...paths: string[]): string {
 
     return paths
         .filter(path => !stringIsNullOrEmpty(path))
@@ -103,7 +102,7 @@ export function isFunc(cf: any): boolean {
  * @param obj Object to test
  */
 export function objectDefinedNotNull(obj: any): boolean {
-    return typeof obj !== "undefined" && obj !== null;
+    return obj !== undefined && obj !== null;
 }
 
 /**
@@ -127,7 +126,8 @@ export function isArray(array: any): boolean {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export function extend<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false, filter?: (propName: string) => boolean): T & S {
+export function extend<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false,
+    filter: (propName: string) => boolean = () => true): T & S {
 
     if (!objectDefinedNotNull(source)) {
         return <T & S>target;
@@ -136,11 +136,8 @@ export function extend<T extends TypedHash<any> = any, S extends TypedHash<any> 
     // ensure we don't overwrite things we don't want overwritten
     const check: (o: any, i: string) => Boolean = noOverwrite ? (o, i) => !(i in o) : () => true;
 
-    // allow filtering of copied properties
-    const check2: (p: string) => boolean = isFunc(filter) ? filter : () => true;
-
     // final filter we will use
-    const f = (v: string) => check(target, v) && check2(v);
+    const f = (v: string) => check(target, v) && filter(v);
 
     return Object.getOwnPropertyNames(source)
         .filter(f)
@@ -165,7 +162,7 @@ export function isUrlAbsolute(url: string): boolean {
  * @param s The string to test
  */
 export function stringIsNullOrEmpty(s: string): boolean {
-    return typeof s === "undefined" || s === null || s.length < 1;
+    return s === undefined || s === null || s.length < 1;
 }
 
 /**
@@ -200,106 +197,21 @@ export function sanitizeGuid(guid: string): string {
     return matches === null ? guid : matches[1];
 }
 
-deprecatedClass("1.1.0", "The Util class will be removed two major releases from the stated version. Please migrate to the individual exposed methods.");
-export class Util {
+/**
+ * Shorthand for oToS
+ * 
+ * @param o Any type of object
+ */
+export function jsS(o: any): string {
+    return JSON.stringify(o);
+}
 
-    /**
-     * Gets a callback function which will maintain context across async calls.
-     * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
-     *
-     * @param context The object that will be the 'this' value in the callback
-     * @param method The method to which we will apply the context and parameters
-     * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
-     */
-    public static getCtxCallback = getCtxCallback;
-
-
-    /**
-     * Adds a value to a date
-     *
-     * @param date The date to which we will add units, done in local time
-     * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
-     * @param units The amount to add to date of the given interval
-     *
-     * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
-     */
-    public static dateAdd = dateAdd;
-
-    /**
-     * Combines an arbitrary set of paths ensuring and normalizes the slashes
-     *
-     * @param paths 0 to n path parts to combine
-     */
-    public static combinePaths = combinePaths;
-
-    /**
-     * Gets a random string of chars length
-     *
-     * @param chars The length of the random string to generate
-     */
-    public static getRandomString = getRandomString;
-
-    /**
-     * Gets a random GUID value
-     *
-     * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-     */
-    public static getGUID = getGUID;
-
-    /**
-     * Determines if a given value is a function
-     *
-     * @param cf The thing to test for functionness
-     */
-    public static isFunc = isFunc;
-
-    /**
-     * Determines if an object is both defined and not null
-     * @param obj Object to test
-     */
-    public static objectDefinedNotNull = objectDefinedNotNull;
-
-    /**
-     * @returns whether the provided parameter is a JavaScript Array or not.
-    */
-    public static isArray = isArray;
-
-    /**
-     * Provides functionality to extend the given object by doing a shallow copy
-     *
-     * @param target The object to which properties will be copied
-     * @param source The source object from which properties will be copied
-     * @param noOverwrite If true existing properties on the target are not overwritten from the source
-     *
-     */
-    public static extend = extend;
-
-    /**
-     * Determines if a given url is absolute
-     *
-     * @param url The url to check to see if it is absolute
-     */
-    public static isUrlAbsolute = isUrlAbsolute;
-
-    /**
-     * Determines if a string is null or empty or undefined
-     *
-     * @param s The string to test
-     */
-    public static stringIsNullOrEmpty = stringIsNullOrEmpty;
-
-    /**
-     * Gets an attribute value from an html/xml string block
-     * 
-     * @param html HTML to search
-     * @param attrName The name of the attribute to find
-     */
-    public static getAttrValueFromString = getAttrValueFromString;
-
-    /**
-     * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
-     * 
-     * @param guid The candidate guid id
-     */
-    public static sanitizeGuid = sanitizeGuid;
+/**
+ * Shorthand for Object.hasOwnProperty
+ * 
+ * @param o Object to check for
+ * @param p Name of the property
+ */
+export function hOP(o: any, p: string): boolean {
+    return Object.hasOwnProperty.call(o, p);
 }

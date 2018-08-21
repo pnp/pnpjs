@@ -35,7 +35,7 @@ export class GraphRuntimeConfigImpl {
     public get headers(): TypedHash<string> {
 
         const graphPart = RuntimeConfig.get("graph");
-        if (graphPart !== null && typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
+        if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {
             return graphPart.headers;
         }
 
@@ -46,12 +46,12 @@ export class GraphRuntimeConfigImpl {
 
         const graphPart = RuntimeConfig.get("graph");
         // use a configured factory firt
-        if (graphPart !== null && typeof graphPart.fetchClientFactory !== "undefined") {
+        if (graphPart !== undefined && graphPart !== null && graphPart.fetchClientFactory !== undefined) {
             return graphPart.fetchClientFactory;
         }
 
         // then try and use spfx context if available
-        if (typeof RuntimeConfig.spfxContext !== "undefined") {
+        if (RuntimeConfig.spfxContext !== undefined) {
             return () => AdalClient.fromSPFxContext(RuntimeConfig.spfxContext);
         }
 

@@ -3,7 +3,7 @@ import { AuthenticationContext } from "adal-node";
 const nodeFetch = require("node-fetch").default;
 
 import {
-    combinePaths,
+    combine,
     objectDefinedNotNull,
     HttpClientImpl,
     isUrlAbsolute,
@@ -35,7 +35,7 @@ export class AdalFetchClient implements HttpClientImpl {
         private _resource = "https://graph.microsoft.com",
         private _authority = "https://login.windows.net") {
 
-        this.authContext = new AuthenticationContext(combinePaths(this._authority, this._tenant));
+        this.authContext = new AuthenticationContext(combine(this._authority, this._tenant));
     }
 
     public fetch(url: string, options: any): Promise<Response> {
@@ -51,7 +51,7 @@ export class AdalFetchClient implements HttpClientImpl {
         }
 
         if (!isUrlAbsolute(url)) {
-            url = combinePaths(this._resource, url);
+            url = combine(this._resource, url);
         }
 
         return this.acquireToken().then(token => {

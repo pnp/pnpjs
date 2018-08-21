@@ -4,29 +4,20 @@ import { ContentTypes } from "./contenttypes";
 import { Fields } from "./fields";
 import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
-import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
 import { extend, TypedHash } from "@pnp/common";
 import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters, ListItemFormUpdateValue } from "./types";
 import { UserCustomActions } from "./usercustomactions";
-import { spExtractODataId } from "./odata";
-import { NotSupportedInBatchException } from "./exceptions";
+import { odataUrlFrom } from "./odata";
 import { Folder } from "./folders";
 
 /**
  * Describes a collection of List objects
  *
  */
+@defaultPath("lists")
 export class Lists extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "lists") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a list from the collection by title
@@ -90,7 +81,7 @@ export class Lists extends SharePointQueryableCollection {
         additionalSettings: TypedHash<string | number | boolean> = {}): Promise<ListEnsureResult> {
 
         if (this.hasBatch) {
-            throw new NotSupportedInBatchException("The ensure list method");
+            throw new Error("The ensure list method is not supported for use in a batch.");
         }
 
         return new Promise((resolve, reject) => {
@@ -119,7 +110,7 @@ export class Lists extends SharePointQueryableCollection {
      */
     public ensureSiteAssetsLibrary(): Promise<List> {
         return this.clone(Lists, "ensuresiteassetslibrary").postCore().then((json) => {
-            return new List(spExtractODataId(json));
+            return new List(odataUrlFrom(json));
         });
     }
 
@@ -128,7 +119,7 @@ export class Lists extends SharePointQueryableCollection {
      */
     public ensureSitePagesLibrary(): Promise<List> {
         return this.clone(Lists, "ensuresitepageslibrary").postCore().then((json) => {
-            return new List(spExtractODataId(json));
+            return new List(odataUrlFrom(json));
         });
     }
 }
@@ -366,7 +357,7 @@ export class List extends SharePointQueryableSecurable {
     public renderListData(viewXml: string): Promise<RenderListData> {
 
         const q = this.clone(List, "renderlistdata(@viewXml)");
-        q.query.add("@viewXml", `'${viewXml}'`);
+        q.query.set("@viewXml", `'${viewXml}'`);
         return q.postCore().then(data => {
             // data will be a string, so we parse it again
             data = JSON.parse(data);

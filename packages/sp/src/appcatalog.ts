@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { File } from "./files";
-import { spExtractODataId } from "./odata";
+import { odataUrlFrom } from "./odata";
 import { extractWebUrl } from "./utils/extractweburl";
 
 /**
@@ -9,17 +9,7 @@ import { extractWebUrl } from "./utils/extractweburl";
 export class AppCatalog extends SharePointQueryableCollection {
 
     constructor(baseUrl: string | SharePointQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
-
-        // we need to handle the case of getting created from something that already has "_api/..." or does not
-        let candidateUrl = "";
-
-        if (typeof baseUrl === "string") {
-            candidateUrl = baseUrl;
-        } else if (typeof baseUrl !== "undefined") {
-            candidateUrl = (baseUrl as SharePointQueryable).toUrl();
-        }
-
-        super(extractWebUrl(candidateUrl), path);
+        super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
     }
 
     /**
@@ -48,7 +38,7 @@ export class AppCatalog extends SharePointQueryableCollection {
         }).then(r => {
             return {
                 data: r,
-                file: new File(spExtractODataId(r)),
+                file: new File(odataUrlFrom(r)),
             };
         });
     }

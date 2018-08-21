@@ -1,7 +1,7 @@
 import {
-    SharePointQueryable,
     SharePointQueryableInstance,
     SharePointQueryableCollection,
+    defaultPath,
 } from "./sharepointqueryable";
 
 import {
@@ -9,24 +9,14 @@ import {
 } from "./odata";
 
 import {
-    dateAdd,
+    dateAdd, hOP,
 } from "@pnp/common";
 
 /**
  * Describes regional settings ODada object
  */
+@defaultPath("regionalsettings")
 export class RegionalSettings extends SharePointQueryableInstance {
-
-    /**
-     * Creates a new instance of the RegionalSettings class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this regional settings collection
-     */
-
-    constructor(baseUrl: string | SharePointQueryable, path = "regionalsettings") {
-        super(baseUrl, path);
-    }
-
     /**
      * Gets the collection of languages used in a server farm.
      */
@@ -59,20 +49,14 @@ export class RegionalSettings extends SharePointQueryableInstance {
 /**
  * Describes installed languages ODada queriable collection
  */
-export class InstalledLanguages extends SharePointQueryableCollection {
-    constructor(baseUrl: string | SharePointQueryable, path = "installedlanguages") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("installedlanguages")
+export class InstalledLanguages extends SharePointQueryableCollection {}
 
 /**
  * Describes TimeZone ODada object
  */
+@defaultPath("timezone")
 export class TimeZone extends SharePointQueryableInstance {
-    constructor(baseUrl: string | SharePointQueryable, path = "timezone") {
-        super(baseUrl, path);
-    }
-
     /**
      * Gets an Local Time by UTC Time
      *
@@ -88,7 +72,7 @@ export class TimeZone extends SharePointQueryableInstance {
 
         return this.clone(TimeZone, `utctolocaltime('${dateIsoString}')`)
             .postCore()
-            .then(res => res.hasOwnProperty("UTCToLocalTime") ? res.UTCToLocalTime : res);
+            .then(res => hOP(res, "UTCToLocalTime") ? res.UTCToLocalTime : res);
     }
 
     /**
@@ -107,18 +91,15 @@ export class TimeZone extends SharePointQueryableInstance {
 
         return this.clone(TimeZone, `localtimetoutc('${dateIsoString}')`)
             .postCore()
-            .then(res => res.hasOwnProperty("LocalTimeToUTC") ? res.LocalTimeToUTC : res);
+            .then(res => hOP(res, "LocalTimeToUTC") ? res.LocalTimeToUTC : res);
     }
 }
 
 /**
  * Describes time zones queriable collection
  */
+@defaultPath("timezones")
 export class TimeZones extends SharePointQueryableCollection {
-    constructor(baseUrl: string | SharePointQueryable, path = "timezones") {
-        super(baseUrl, path);
-    }
-
     // https://msdn.microsoft.com/en-us/library/office/jj247008.aspx - timezones ids
     /**
      * Gets an TimeZone by id

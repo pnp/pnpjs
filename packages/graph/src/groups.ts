@@ -1,6 +1,6 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Members, Owners } from "./members";
-import { extend, TypedHash } from "@pnp/common";
+import { extend, TypedHash, jsS } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
@@ -69,7 +69,7 @@ export class Groups extends GraphQueryableCollection {
         }
 
         return this.postCore({
-            body: JSON.stringify(postBody),
+            body: jsS(postBody),
         }).then(r => {
             return {
                 data: r,
@@ -169,7 +169,7 @@ export class Group extends GraphQueryableInstance {
     public createTeam(properties: TeamProperties): Promise<any> {
 
         return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).putCore({
-            body: JSON.stringify(properties),
+            body: jsS(properties),
         });
     }
 
@@ -181,7 +181,7 @@ export class Group extends GraphQueryableInstance {
     public getMemberGroups(securityEnabledOnly = false): Promise<{ value: string[] }> {
 
         return this.clone(Group, "getMemberGroups").postCore({
-            body: JSON.stringify({
+            body: jsS({
                 securityEnabledOnly: securityEnabledOnly,
             }),
         });
@@ -202,7 +202,7 @@ export class Group extends GraphQueryableInstance {
     public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
 
         return this.patchCore({
-            body: JSON.stringify(properties),
+            body: jsS(properties),
         });
     }
 
@@ -246,8 +246,8 @@ export class Group extends GraphQueryableInstance {
     public getCalendarView(start: Date, end: Date): Promise<IEvent[]> {
 
         const view = this.clone(Group, "calendarView");
-        view.query.add("startDateTime", start.toISOString());
-        view.query.add("endDateTime", end.toISOString());
+        view.query.set("startDateTime", start.toISOString());
+        view.query.set("endDateTime", end.toISOString());
         return view.get();
     }
 }

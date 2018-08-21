@@ -1,9 +1,10 @@
 import {
-    SharePointQueryable,
     SharePointQueryableInstance,
+    defaultPath,
 } from "./sharepointqueryable";
 
-import { extend } from "@pnp/common";
+import { jsS, hOP } from "@pnp/common";
+import { metadata } from "./utils/metadata";
 
 export interface SocialMethods {
     my: MySocialQueryMethods;
@@ -17,16 +18,8 @@ export interface SocialMethods {
 /**
  * Exposes social following methods
  */
+@defaultPath("_api/social.following")
 export class SocialQuery extends SharePointQueryableInstance implements SocialMethods {
-
-    /**
-     * Creates a new instance of the SocialQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/social.following") {
-        super(baseUrl, path);
-    }
 
     public get my(): MySocialQueryMethods {
         return new MySocialQuery(this);
@@ -83,11 +76,10 @@ export class SocialQuery extends SharePointQueryableInstance implements SocialMe
      * @param actorInfo The actor to create request body
      */
     private createSocialActorInfoRequestBody(actorInfo: SocialActorInfo): string {
-        return JSON.stringify({
+        return jsS({
             "actor":
-                extend({
+                Object.assign(metadata("SP.Social.SocialActorInfo"), {
                     Id: null,
-                    "__metadata": { "type": "SP.Social.SocialActorInfo" },
                 }, actorInfo),
         });
     }
@@ -123,15 +115,8 @@ export interface MySocialQueryMethods {
     suggestions(): Promise<SocialActor[]>;
 }
 
+@defaultPath("my")
 export class MySocialQuery extends SharePointQueryableInstance implements MySocialQueryMethods {
-    /**
-     * Creates a new instance of the SocialQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "my") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets users, documents, sites, and tags that the current user is following.
@@ -140,7 +125,7 @@ export class MySocialQuery extends SharePointQueryableInstance implements MySoci
      */
     public followed(types: SocialActorTypes): Promise<SocialActor[]> {
         return this.clone(MySocialQuery, `followed(types=${types})`).get().then(r => {
-            return r.hasOwnProperty("Followed") ? r.Followed.results : r;
+            return hOP(r, "Followed") ? r.Followed.results : r;
         });
     }
 
@@ -160,7 +145,7 @@ export class MySocialQuery extends SharePointQueryableInstance implements MySoci
      */
     public followers(): Promise<SocialActor[]> {
         return this.clone(MySocialQuery, "followers").get().then(r => {
-            return r.hasOwnProperty("Followers") ? r.Followers.results : r;
+            return hOP(r, "Followers") ? r.Followers.results : r;
         });
     }
 
@@ -169,7 +154,7 @@ export class MySocialQuery extends SharePointQueryableInstance implements MySoci
      */
     public suggestions(): Promise<SocialActor[]> {
         return this.clone(MySocialQuery, "suggestions").get().then(r => {
-            return r.hasOwnProperty("Suggestions") ? r.Suggestions.results : r;
+            return hOP(r, "Suggestions") ? r.Suggestions.results : r;
         });
     }
 }

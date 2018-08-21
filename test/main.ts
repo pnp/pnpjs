@@ -1,5 +1,5 @@
 declare var require: (s: string) => any;
-import { Util } from "@pnp/common";
+import { getGUID, combine, extend } from "@pnp/common";
 import { graph } from "@pnp/graph";
 import { AdalFetchClient, SPFetchClient } from "@pnp/nodejs";
 import { Web, sp } from "@pnp/sp";
@@ -110,11 +110,11 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
         // create the web in which we will test
         const d = new Date();
-        const g = Util.getGUID();
+        const g = getGUID();
 
         sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g).then(() => {
 
-            const url = Util.combinePaths(ts.sp.url, g);
+            const url = combine(ts.sp.url, g);
 
             // set the testing web url so our tests have access if needed
             ts.sp.webUrl = url;
@@ -154,7 +154,7 @@ function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
     });
 }
 
-export let testSettings: ISettingsTestingPart = Util.extend(settings.testing, { webUrl: "" });
+export let testSettings: ISettingsTestingPart = extend(settings.testing, { webUrl: "" });
 
 before(function (done: MochaDone) {
 

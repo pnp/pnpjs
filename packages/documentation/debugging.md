@@ -2,7 +2,7 @@
 
 ## Debugging Library Features in Code using Node
 
-The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses the [launch.json](../blob/master/.vscode/launch.json) file to build and run the library using ./debug/launch/main.ts as the program entry. You can add any number of files to this directory and they will be ignored by git, however the debug.ts file is not, so please ensure you don't commit any login information.
+The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses the [launch.json](https://github.com/pnp/pnpjs/blob/master/.vscode/launch.json) file to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/main.ts) as the program entry. You can add any number of files to this directory and they will be ignored by git, however the debug.ts file is not, so please ensure you don't commit any login information.
 
 ### Setup settings.js
 
@@ -125,7 +125,7 @@ You can make changes to the library and immediately see them reflected in the br
 
 ## Register an Add-in
 
-Before you can begin debugging you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure you farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
+Before you can begin debugging you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure your farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
 
 1. Navigation to {site url}/_layouts/appregnew.aspx
 2. Click "Generate" for both the Client Id and Secret values

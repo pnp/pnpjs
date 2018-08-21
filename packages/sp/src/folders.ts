@@ -1,8 +1,8 @@
-import { extend, TypedHash } from "@pnp/common";
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { extend, TypedHash, jsS } from "@pnp/common";
+import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareable";
 import { Files } from "./files";
-import { spExtractODataId } from "./odata";
+import { odataUrlFrom } from "./odata";
 import { Item } from "./items";
 import { SPHttpClient } from "./net/sphttpclient";
 
@@ -10,16 +10,8 @@ import { SPHttpClient } from "./net/sphttpclient";
  * Describes a collection of Folder objects
  *
  */
+@defaultPath("folders")
 export class Folders extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Folders class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "folders") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a folder by folder name
@@ -118,23 +110,7 @@ export class Folder extends SharePointQueryableShareableFolder {
         return new SharePointQueryableCollection(this, "uniqueContentTypeOrder");
     }
 
-    public update(properties: TypedHash<string | number | boolean>): Promise<FolderUpdateResult> {
-        const postBody: string = JSON.stringify(extend({
-            "__metadata": { "type": "SP.Folder" },
-        }, properties));
-
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then((data) => {
-            return {
-                data: data,
-                folder: this,
-            };
-        });
-    }
+    public update = this._update<FolderUpdateResult, TypedHash<string | number | boolean>>("SP.Folder", data => ({ data, folder: this }));
 
     /**
     * Delete this folder
@@ -165,7 +141,7 @@ export class Folder extends SharePointQueryableShareableFolder {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(new Item(spExtractODataId(d)), d);
+            return extend(new Item(odataUrlFrom(d)), d);
         });
     }
 
@@ -181,7 +157,7 @@ export class Folder extends SharePointQueryableShareableFolder {
             const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
             const methodUrl = `${webBaseUrl}/_api/SP.MoveCopyUtil.MoveFolder()`;
             return client.post(methodUrl, {
-                body: JSON.stringify({
+                body: jsS({
                     destUrl: destUrl.indexOf("http") === 0 ? destUrl : `${hostUrl}${destUrl}`,
                     srcUrl: `${hostUrl}${srcUrl}`,
                 }),

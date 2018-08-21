@@ -1,8 +1,8 @@
-import { Search, SearchQuery, SearchResults, SearchQueryBuilder } from "./search";
+import { Search, SearchQuery, SearchResults, ISearchQueryBuilder } from "./search";
 import { SearchSuggest, SearchSuggestQuery, SearchSuggestResult } from "./searchsuggest";
 import { Site } from "./site";
 import { Web } from "./webs";
-import { ConfigOptions } from "@pnp/common";
+import { ConfigOptions, hOP } from "@pnp/common";
 import { UserProfileQuery } from "./userprofiles";
 import { INavigationService, NavigationService } from "./navigation";
 import { SPBatch } from "./batch";
@@ -70,16 +70,16 @@ export class SPRest {
      *
      * @param query The SearchQuery definition
      */
-    public search(query: string | SearchQuery | SearchQueryBuilder): Promise<SearchResults> {
+    public search(query: string | SearchQuery | ISearchQueryBuilder): Promise<SearchResults> {
 
         let finalQuery: SearchQuery;
 
         if (typeof query === "string") {
             finalQuery = { Querytext: query };
-        } else if (query instanceof SearchQueryBuilder) {
-            finalQuery = (query as SearchQueryBuilder).toSearchQuery();
+        } else if (hOP(query, "_query")) {
+            finalQuery = (query as ISearchQueryBuilder).toSearchQuery();
         } else {
-            finalQuery = query;
+            finalQuery = <SearchQuery>query;
         }
 
         return this.create(Search).execute(finalQuery);

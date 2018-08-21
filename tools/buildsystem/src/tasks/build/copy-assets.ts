@@ -21,7 +21,7 @@ export function copyAssets(ctx: BuildContext) {
             }),
         ], (err: (Error | null)) => {
 
-            if (typeof err !== "undefined") {
+            if (err !== undefined) {
                 reject(err);
             } else {
                 resolve();

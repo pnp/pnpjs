@@ -25,7 +25,7 @@ gulp.task("travis:lint", (done) => {
         gulpTslint.report({ emitError: true }),
     ], (err) => {
 
-        if (typeof err !== "undefined") {
+        if (err !== undefined) {
             done(err);
         } else {
             done();

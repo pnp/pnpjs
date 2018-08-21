@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
@@ -10,16 +10,8 @@ export interface AttachmentFileInfo {
  * Describes a collection of Item objects
  *
  */
+@defaultPath("AttachmentFiles")
 export class AttachmentFiles extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the AttachmentFiles class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this attachments collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "AttachmentFiles") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a Attachment File by filename
@@ -78,6 +70,8 @@ export class AttachmentFiles extends SharePointQueryableCollection {
  */
 export class AttachmentFile extends SharePointQueryableInstance {
 
+    public delete = this._deleteWithETag;
+
     /**
      * Gets the contents of the file as text
      *
@@ -123,19 +117,19 @@ export class AttachmentFile extends SharePointQueryableInstance {
         }).then(_ => new AttachmentFile(this));
     }
 
-    /**
-     * Delete this attachment file
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    public delete(eTag = "*"): Promise<void> {
-        return this.postCore({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    }
+    // /**
+    //  * Delete this attachment file
+    //  *
+    //  * @param eTag Value used in the IF-Match header, by default "*"
+    //  */
+    // public delete(eTag = "*"): Promise<void> {
+    //     return this.postCore({
+    //         headers: {
+    //             "IF-Match": eTag,
+    //             "X-HTTP-Method": "DELETE",
+    //         },
+    //     });
+    // }
 
     private getParsed<T>(parser: ODataParser<T>): Promise<T> {
         return this.clone(AttachmentFile, "$value", false).get(parser);

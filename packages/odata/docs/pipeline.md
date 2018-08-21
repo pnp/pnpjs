@@ -49,9 +49,9 @@ public static myPipelineMethod<T>(context: RequestContext<T>): Promise<RequestCo
 
 ## Default Pipeline
 
-1) logs the start of the request
-2) checks the cache for a value based on the context's cache settings
-3) sends the request if no value from found in the cache
-4) logs the end of the request
+1. logs the start of the request
+2. checks the cache for a value based on the context's cache settings
+3. sends the request if no value from found in the cache
+4. logs the end of the request
 
 

@@ -63,7 +63,7 @@ sp.web.lists.getByTitle("Tasks").items.top(5).orderBy("Modified").usingCaching({
 });
 ```
 
-## Using [Batching](batching.md) with Caching
+## Using [Batching](odata-batch.md) with Caching
 
 You can use batching and caching together, but remember caching is only applied to get requests. When you use them together the methods can be transposed, the below example is valid.
 

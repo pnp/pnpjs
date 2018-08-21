@@ -25,6 +25,44 @@ sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).o
 });
 ```
 
+### Get Paged Items
+
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.
+
+```TypeScript
+import sp from "@pnp/sp";
+
+// basic case to get paged items form a list
+let items = await sp.web.lists.getByTitle("BigList").items.getPaged();
+
+// you can also provide a type for the returned values instead of any
+let items = await sp.web.lists.getByTitle("BigList").items.getPaged<{Title: string}[]>();
+
+// the query also works with select to choose certain fields and top to set the page size
+let items = await sp.web.lists.getByTitle("BigList").items.select("Title", "Description").top(50).getPaged<{Title: string}[]>();
+
+// the results object will have two properties and one method:
+
+// the results property will be an array of the items returned
+if (items.results.length > 0) {
+    console.log("We got results!");
+
+    for (let i = 0; i < items.results.length; i++) {
+        // type checking works here if we specify the return type
+        console.log(items.results[i].Title);
+    }
+}
+
+// the hasNext property is used with the getNext method to handle paging
+// hasNext will be true so long as there are additional results
+if (items.hasNext) {
+
+    // this will carry over the type specified in the original query for the results array
+    items = await items.getNext();
+    console.log(items.results.length);
+}
+```
+
 ### Get All Items
 
 _Added in 1.0.2_

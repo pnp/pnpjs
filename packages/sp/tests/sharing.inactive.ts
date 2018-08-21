@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { testSettings } from "../../../test/main";
-import { Util } from "@pnp/common";
-import { File, Folder, Item, SharingLinkKind, SharingRole, Web } from "../";
+import { combine } from "@pnp/common";
+import { File, Folder, Item, SharingRole, Web } from "../";
 
 describe("Sharing", () => {
 
@@ -47,7 +47,7 @@ describe("Sharing", () => {
 
             before(() => {
 
-                folder = web.getFolderByServerRelativeUrl("/" + Util.combinePaths(webRelativeUrl, "SharingTestLib/MyTestFolder"));
+                folder = web.getFolderByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/MyTestFolder"));
             });
 
             // // these tests cover share link
@@ -141,7 +141,7 @@ describe("Sharing", () => {
 
             before(() => {
 
-                file = web.getFileByServerRelativeUrl("/" + Util.combinePaths(webRelativeUrl, "SharingTestLib/text.txt"));
+                file = web.getFileByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
             });
 
             it("Should get a sharing link with default settings.", () => {
@@ -339,7 +339,7 @@ describe("Sharing", () => {
 
             it("Should allow you to share an object by url", () => {
 
-                return expect(web.shareObject(Util.combinePaths(webAbsUrl, "SharingTestLib/test.txt"), "c:0(.s|true", SharingRole.View))
+                return expect(web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), "c:0(.s|true", SharingRole.View))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });

@@ -1,5 +1,5 @@
 import {
-    combinePaths,
+    combine,
     extend,
     isUrlAbsolute,
     FetchOptions,
@@ -39,7 +39,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
 
             const urlStr = baseUrl as string;
             this._parentUrl = urlStr;
-            this._url = combinePaths(urlStr, path);
+            this._url = combine(urlStr, path);
         } else {
             this.extend(baseUrl as GraphQueryable, path);
         }
@@ -64,10 +64,10 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
         let url = this.toUrl();
 
         if (!isUrlAbsolute(url)) {
-            url = combinePaths("https://graph.microsoft.com", url);
+            url = combine("https://graph.microsoft.com", url);
         }
 
-        return url + `?${this._query.getKeys().map(key => `${key}=${this._query.get(key)}`).join("&")}`;
+        return url += `?${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
     }
 
     /**
@@ -151,7 +151,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param filter The string representing the filter query
      */
     public filter(filter: string): this {
-        this._query.add("$filter", filter);
+        this.query.set("$filter", filter);
         return this;
     }
 
@@ -162,7 +162,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this._query.add("$select", selects.join(","));
+            this.query.set("$select", selects.join(","));
         }
         return this;
     }
@@ -174,7 +174,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this._query.add("$expand", expands.join(","));
+            this.query.set("$expand", expands.join(","));
         }
         return this;
     }
@@ -186,9 +186,10 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
     public orderBy(orderBy: string, ascending = true): this {
-        const query = this._query.getKeys().filter(k => k === "$orderby").map(k => this._query.get(k));
+        const o = "$orderby";
+        const query = this.query.has(o) ? this.query.get(o).split(",") : [];
         query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
-        this._query.add("$orderby", query.join(","));
+        this.query.set(o, query.join(","));
         return this;
     }
 
@@ -198,7 +199,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param top The query row limit
      */
     public top(top: number): this {
-        this._query.add("$top", top.toString());
+        this.query.set("$top", top.toString());
         return this;
     }
 
@@ -208,7 +209,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param num Number of items to skip
      */
     public skip(num: number): this {
-        this._query.add("$top", num.toString());
+        this.query.set("$top", num.toString());
         return this;
     }
 
@@ -216,7 +217,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * 	To request second and subsequent pages of Graph data
      */
     public skipToken(token: string): this {
-        this._query.add("$skiptoken", token);
+        this.query.set("$skiptoken", token);
         return this;
     }
 
@@ -224,7 +225,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * 	Retrieves the total count of matching resources
      */
     public get count(): this {
-        this._query.add("$count", "true");
+        this.query.set("$count", "true");
         return this;
     }
 }
@@ -235,7 +236,7 @@ export class GraphQueryableSearchableCollection extends GraphQueryableCollection
      * 	To request second and subsequent pages of Graph data
      */
     public search(query: string): this {
-        this._query.add("$search", query);
+        this.query.set("$search", query);
         return this;
     }
 }
@@ -253,7 +254,7 @@ export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetTyp
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this._query.add("$select", selects.join(","));
+            this.query.set("$select", selects.join(","));
         }
         return this;
     }
@@ -265,7 +266,7 @@ export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetTyp
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this._query.add("$expand", expands.join(","));
+            this.query.set("$expand", expands.join(","));
         }
         return this;
     }

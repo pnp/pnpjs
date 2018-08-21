@@ -1,5 +1,5 @@
 import { extend, TypedHash } from "@pnp/common";
-import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -14,7 +14,7 @@ import { extractWebUrl } from "./utils/extractweburl";
 import { ChangeQuery, StorageEntity } from "./types";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
-import { spExtractODataId } from "./odata";
+import { odataUrlFrom } from "./odata";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
@@ -26,16 +26,8 @@ import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
  * Describes a collection of webs
  *
  */
+@defaultPath("webs")
 export class Webs extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Webs class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath = "webs") {
-        super(baseUrl, webPath);
-    }
 
     /**
      * Adds a new web to the collection
@@ -74,7 +66,7 @@ export class Webs extends SharePointQueryableCollection {
         return this.clone(Webs, "add").postCore({ body: postBody }).then((data) => {
             return {
                 data: data,
-                web: new Web(spExtractODataId(data).replace(/_api\/web\/?/i, "")),
+                web: new Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
             };
         });
     }
@@ -84,32 +76,15 @@ export class Webs extends SharePointQueryableCollection {
  * Describes a collection of web infos
  *
  */
-export class WebInfos extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the WebInfos class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web infos collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath = "webinfos") {
-        super(baseUrl, webPath);
-    }
-}
+@defaultPath("webinfos")
+export class WebInfos extends SharePointQueryableCollection {}
 
 /**
  * Describes a web
  *
  */
+@defaultPath("_api/web")
 export class Web extends SharePointQueryableShareableWeb {
-
-    /**
-     * Creates a new instance of the Web class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/web") {
-        super(baseUrl, path);
-    }
 
     /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
@@ -434,7 +409,7 @@ export class Web extends SharePointQueryableShareableWeb {
 
         const q = this.clone(Web, "applywebtemplate");
         q.concat(`(@t)`);
-        q.query.add("@t", template);
+        q.query.set("@t", template);
         return q.postCore();
     }
 
@@ -451,7 +426,7 @@ export class Web extends SharePointQueryableShareableWeb {
         return this.clone(Web, "ensureuser").postCore({ body: postBody }).then((data: any) => {
             return {
                 data: data,
-                user: new SiteUser(spExtractODataId(data)),
+                user: new SiteUser(odataUrlFrom(data)),
             };
         });
     }
@@ -474,7 +449,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getCatalog(type: number): Promise<List> {
         return this.clone(Web, `getcatalog(${type})`).select("Id").get().then((data) => {
-            return new List(spExtractODataId(data));
+            return new List(odataUrlFrom(data));
         });
     }
 

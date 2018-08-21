@@ -1,11 +1,10 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser } from "@pnp/odata";
 import { extend, getGUID } from "@pnp/common";
-import { MaxCommentLengthException } from "./exceptions";
 import { LimitedWebPartManager } from "./webparts";
 import { Item } from "./items";
 import { SharePointQueryableShareableFile } from "./sharepointqueryableshareable";
-import { spExtractODataId } from "./odata";
+import { odataUrlFrom } from "./odata";
 
 export interface ChunkedFileUploadProgressData {
     uploadId: string;
@@ -21,16 +20,8 @@ export interface ChunkedFileUploadProgressData {
  * Describes a collection of File objects
  *
  */
+@defaultPath("files")
 export class Files extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Files class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "files") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a File by filename
@@ -158,7 +149,7 @@ export class File extends SharePointQueryableShareableFile {
     public checkin(comment = "", checkinType = CheckinType.Major): Promise<void> {
 
         if (comment.length > 1023) {
-            throw new MaxCommentLengthException();
+            throw new Error("The maximum comment length is 1023 characters.");
         }
 
         return this.clone(File, `checkin(comment='${comment}',checkintype=${checkinType})`).postCore();
@@ -203,7 +194,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public deny(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new MaxCommentLengthException();
+            throw new Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `deny(comment='${comment}')`).postCore();
     }
@@ -235,7 +226,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public publish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new MaxCommentLengthException();
+            throw new Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `publish(comment='${comment}')`).postCore();
     }
@@ -264,7 +255,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public unpublish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new MaxCommentLengthException();
+            throw new Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `unpublish(comment='${comment}')`).postCore();
     }
@@ -327,7 +318,7 @@ export class File extends SharePointQueryableShareableFile {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(new Item(spExtractODataId(d)), d);
+            return extend(new Item(odataUrlFrom(d)), d);
         });
     }
 
@@ -340,7 +331,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public setContentChunked(file: Blob, progress?: (data: ChunkedFileUploadProgressData) => void, chunkSize = 10485760): Promise<FileAddResult> {
 
-        if (typeof progress === "undefined") {
+        if (progress === undefined) {
             progress = () => null;
         }
 
@@ -434,7 +425,7 @@ export class File extends SharePointQueryableShareableFile {
             .then(response => {
                 return {
                     data: response,
-                    file: new File(spExtractODataId(response)),
+                    file: new File(odataUrlFrom(response)),
                 };
             });
     }
@@ -444,27 +435,10 @@ export class File extends SharePointQueryableShareableFile {
  * Describes a collection of Version objects
  *
  */
+@defaultPath("versions")
 export class Versions extends SharePointQueryableCollection {
 
-    /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "versions") {
-        super(baseUrl, path);
-    }
-
-    /**
-     * Gets a version by id
-     *
-     * @param versionId The id of the version to retrieve
-     */
-    public getById(versionId: number): Version {
-        const v = new Version(this);
-        v.concat(`(${versionId})`);
-        return v;
-    }
+    public getById = this._getById(Version);
 
     /**
      * Deletes all the file version objects in the collection.
@@ -532,14 +506,21 @@ export class Version extends SharePointQueryableInstance {
     *
     * @param eTag Value used in the IF-Match header, by default "*"
     */
-    public delete(eTag = "*"): Promise<void> {
-        return this.postCore({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    }
+    public delete = this._deleteWithETag;
+
+    // /**
+    // * Delete a specific version of a file.
+    // *
+    // * @param eTag Value used in the IF-Match header, by default "*"
+    // */
+    // public delete(eTag = "*"): Promise<void> {
+    //     return this.postCore({
+    //         headers: {
+    //             "IF-Match": eTag,
+    //             "X-HTTP-Method": "DELETE",
+    //         },
+    //     });
+    // }
 }
 
 export enum CheckinType {

@@ -1,6 +1,6 @@
 import { ODataBatch } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { beta, objectDefinedNotNull, extend } from "@pnp/common";
+import { objectDefinedNotNull, extend, jsS } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
 import { GraphHttpClient } from "./net/graphhttpclient";
 
@@ -49,7 +49,6 @@ export class GraphBatch extends ODataBatch {
         super();
     }
 
-    @beta("Graph batching functionality is in beta.")
     protected executeImpl(): Promise<void> {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
@@ -61,12 +60,12 @@ export class GraphBatch extends ODataBatch {
         };
 
         const batchOptions = {
-            "body": JSON.stringify(batchRequest),
-            "headers": {
+            body: jsS(batchRequest),
+            headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
-            "method": "POST",
+            method: "POST",
         };
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
@@ -122,20 +121,20 @@ export class GraphBatch extends ODataBatch {
             let headers = {};
 
             // merge global config headers
-            if (typeof GraphRuntimeConfig.headers !== "undefined" && GraphRuntimeConfig.headers !== null) {
+            if (GraphRuntimeConfig.headers !== undefined && GraphRuntimeConfig.headers !== null) {
 
                 headers = extend(headers, GraphRuntimeConfig.headers);
             }
 
-            if (typeof reqInfo.options !== "undefined") {
+            if (reqInfo.options !== undefined) {
 
                 // merge per request headers
-                if (typeof reqInfo.options.headers !== "undefined" && reqInfo.options.headers !== null) {
+                if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
                     headers = extend(headers, reqInfo.options.headers);
                 }
 
                 // add a request body
-                if (typeof reqInfo.options.body !== "undefined" && reqInfo.options.body !== null) {
+                if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
 
                     requestFragment = extend(requestFragment, {
                         body: reqInfo.options.body,

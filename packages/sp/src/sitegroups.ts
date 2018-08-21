@@ -1,6 +1,7 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SiteUsers } from "./siteusers";
-import { extend, TypedHash } from "@pnp/common";
+import { extend, TypedHash, jsS, hOP } from "@pnp/common";
+import { metadata } from "./utils/metadata";
 
 /**
  * Principal Type enum
@@ -38,16 +39,15 @@ export interface GroupAddResult {
  * Describes a collection of site groups
  *
  */
+@defaultPath("sitegroups")
 export class SiteGroups extends SharePointQueryableCollection {
 
     /**
-     * Creates a new instance of the SiteGroups class
+     * Gets a group from the collection by id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this group collection
+     * @param id The id of the group to retrieve
      */
-    constructor(baseUrl: string | SharePointQueryable, path = "sitegroups") {
-        super(baseUrl, path);
-    }
+    public getById = this._getById<number, SiteGroup>(SiteGroup);
 
     /**
      * Adds a new group to the site collection
@@ -55,8 +55,7 @@ export class SiteGroups extends SharePointQueryableCollection {
      * @param props The group properties object of property names and values to be set for the group
      */
     public add(properties: TypedHash<any>): Promise<GroupAddResult> {
-        const postBody = JSON.stringify(extend(
-            { "__metadata": { "type": "SP.Group" } }, properties));
+        const postBody = jsS(extend(metadata("SP.Group"), properties));
 
         return this.postCore({ body: postBody }).then((data) => {
             return {
@@ -73,17 +72,6 @@ export class SiteGroups extends SharePointQueryableCollection {
      */
     public getByName(groupName: string): SiteGroup {
         return new SiteGroup(this, `getByName('${groupName}')`);
-    }
-
-    /**
-     * Gets a group from the collection by id
-     *
-     * @param id The id of the group to retrieve
-     */
-    public getById(id: number) {
-        const sg = new SiteGroup(this);
-        sg.concat(`(${id})`);
-        return sg;
     }
 
     /**
@@ -119,36 +107,19 @@ export class SiteGroup extends SharePointQueryableInstance {
         return new SiteUsers(this, "users");
     }
 
-    /**
-    * Updates this group instance with the supplied properties
-    *
-    * @param properties A GroupWriteableProperties object of property names and values to update for the group
-    */
-    /* tslint:disable no-string-literal */
-    public update(properties: TypedHash<any>): Promise<GroupUpdateResult> {
+    public update = this._update<GroupUpdateResult, TypedHash<any>, any>("SP.Group", (d, p) => {
+        let retGroup: SiteGroup = this;
 
-        const postBody = extend({ "__metadata": { "type": "SP.Group" } }, properties);
+        if (hOP(p, "Title")) {
+            /* tslint:disable-next-line no-string-literal */
+            retGroup = this.getParent(SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
+        }
 
-        return this.postCore({
-            body: JSON.stringify(postBody),
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then((data) => {
-
-            let retGroup: SiteGroup = this;
-
-            if (properties.hasOwnProperty("Title")) {
-                retGroup = this.getParent(SiteGroup, this.parentUrl, `getByName('${properties["Title"]}')`);
-            }
-
-            return {
-                data: data,
-                group: retGroup,
-            };
-        });
-    }
-    /* tslint:enable */
+        return {
+            data: d,
+            group: retGroup,
+        };
+    });
 }
 
 export interface SiteGroupAddResult {

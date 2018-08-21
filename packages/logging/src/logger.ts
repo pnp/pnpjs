@@ -22,7 +22,7 @@ export class Logger {
     }
 
     private static get instance(): LoggerImpl {
-        if (typeof Logger._instance === "undefined" || Logger._instance === null) {
+        if (Logger._instance === undefined || Logger._instance === null) {
             Logger._instance = new LoggerImpl();
         }
         return Logger._instance;
@@ -68,7 +68,7 @@ export class Logger {
      * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
      */
     public static writeJSON(json: any, level: LogLevel = LogLevel.Info) {
-        Logger.instance.log({ level: level, message: JSON.stringify(json) });
+        this.write(JSON.stringify(json), level);
     }
 
     /**
@@ -113,7 +113,7 @@ class LoggerImpl {
     }
 
     public log(entry: LogEntry) {
-        if (typeof entry !== "undefined" && this.activeLogLevel <= entry.level) {
+        if (entry !== undefined && this.activeLogLevel <= entry.level) {
             this.subscribers.map(subscriber => subscriber.log(entry));
         }
     }

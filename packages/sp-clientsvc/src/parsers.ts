@@ -1,4 +1,4 @@
-import { getAttrValueFromString } from "@pnp/common";
+import { getAttrValueFromString, jsS, hOP } from "@pnp/common";
 import { IObjectPath } from "./objectpath";
 
 /**
@@ -31,8 +31,8 @@ export class ProcessQueryParser<T = any> {
         }).then((parsed: any[]) => {
 
             // here we need to check for an error body
-            if (parsed.length > 0 && parsed[0].hasOwnProperty("ErrorInfo") && parsed[0].ErrorInfo !== null) {
-                throw new Error(JSON.stringify(parsed[0].ErrorInfo));
+            if (parsed.length > 0 && hOP(parsed[0], "ErrorInfo") && parsed[0].ErrorInfo !== null) {
+                throw new Error(jsS(parsed[0].ErrorInfo));
             }
 
             return this.findResult(parsed);
@@ -59,7 +59,7 @@ export class ProcessQueryParser<T = any> {
             if (/^<Query/i.test(a)) {
                 const result = this.getParsedResultById(json, parseInt(getAttrValueFromString(a, "Id"), 10));
 
-                if (result && result.hasOwnProperty("_Child_Items_")) {
+                if (result && hOP(result, "_Child_Items_")) {
                     // this is a collection result
                     /* tslint:disable:no-string-literal */
                     return Promise.resolve(result["_Child_Items_"]);

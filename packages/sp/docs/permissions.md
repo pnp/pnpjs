@@ -2,7 +2,7 @@
 
 A common task is to determine if a user or the current user has a certain permission level. It is a great idea to check before performing a task such as creating a list to ensure a user can without getting back an error. This allows you to provide a better experience to the user.
 
-Permissions in SharePoint are assigned to the set of securable objects which include Site, Web, List, and List Item. These are the four level to which unique permissions can be assigned. As such @pnp/sp provides a set of methods defined in the [QueryableSecurable](queryablesecurable.md) class to handle these permissions. These examples all use the Web to get the values, however the methods work identically on all securables.
+Permissions in SharePoint are assigned to the set of securable objects which include Site, Web, List, and List Item. These are the four level to which unique permissions can be assigned. As such @pnp/sp provides a set of methods defined in the QueryableSecurable class to handle these permissions. These examples all use the Web to get the values, however the methods work identically on all securables.
 
 ## Get Role Assignments
 

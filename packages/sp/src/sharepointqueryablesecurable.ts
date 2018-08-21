@@ -1,6 +1,7 @@
 import { RoleAssignments } from "./roles";
 import { BasePermissions, PermissionKind } from "./types";
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { hOP } from "@pnp/common";
 
 export class SharePointQueryableSecurable extends SharePointQueryableInstance {
 
@@ -27,10 +28,10 @@ export class SharePointQueryableSecurable extends SharePointQueryableInstance {
      */
     public getUserEffectivePermissions(loginName: string): Promise<BasePermissions> {
         const q = this.clone(SharePointQueryable, "getUserEffectivePermissions(@user)");
-        q.query.add("@user", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@user", `'${encodeURIComponent(loginName)}'`);
         return q.get<any>().then(r => {
             // handle verbose mode
-            return r.hasOwnProperty("GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r;
+            return hOP(r, "GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r;
         });
     }
 

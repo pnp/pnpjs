@@ -13,7 +13,7 @@ export class MockFetchClient implements HttpClientImpl {
         global.Response = nodeFetch.Response;
     }
 
-    public fetch(url: string, options: FetchOptions): Promise<Response> {
+    public fetch(_0: string, options: FetchOptions): Promise<Response> {
         this.options = options;
         const response = new Response("{}", {
             status: 200,

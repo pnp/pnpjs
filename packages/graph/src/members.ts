@@ -1,4 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { jsS } from "@pnp/common";
 
 export class Members extends GraphQueryableCollection {
 
@@ -16,7 +17,7 @@ export class Members extends GraphQueryableCollection {
     public add(id: string): Promise<any> {
 
         return this.clone(Members, "$ref").postCore({
-            body: JSON.stringify({
+            body: jsS({
                 "@odata.id": id,
             }),
         });

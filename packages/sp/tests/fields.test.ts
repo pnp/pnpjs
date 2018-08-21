@@ -1,4 +1,4 @@
-import { Util } from "@pnp/common";
+import { combine } from "@pnp/common";
 import { expect } from "chai";
 import { Fields, Field } from "../src/fields";
 import { toMatchEndRegex } from "./utils";
@@ -17,21 +17,21 @@ describe("Fields", () => {
     });
 
     describe("url", () => {
-        const path: string = Util.combinePaths(basePath, "fields");
+        const path: string = combine(basePath, "fields");
         it("Should return " + path, () => {
             expect(fields.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("getByTitle", () => {
-        const path: string = Util.combinePaths(basePath, "fields/getByTitle('Title')");
+        const path: string = combine(basePath, "fields/getByTitle('Title')");
         it("Should return " + path, () => {
             expect(fields.getByTitle("Title").toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("getById", () => {
-        const path: string = Util.combinePaths(basePath, "fields('cc1322c5-376d-4b8a-87cb-1e21330c6df2')");
+        const path: string = combine(basePath, "fields('cc1322c5-376d-4b8a-87cb-1e21330c6df2')");
         it("Should return " + path, () => {
             expect(fields.getById("cc1322c5-376d-4b8a-87cb-1e21330c6df2").toUrl()).to.match(toMatchEndRegex(path));
         });

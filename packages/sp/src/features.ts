@@ -1,30 +1,19 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
+import { jsS } from "@pnp/common";
 
 /**
  * Describes a collection of List objects
  *
  */
+@defaultPath("features")
 export class Features extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "features") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a list from the collection by guid id
      *
      * @param id The Id of the feature (GUID)
      */
-    public getById(id: string): Feature {
-        const feature = new Feature(this);
-        feature.concat(`('${id}')`);
-        return feature;
-    }
+    public getById = this._getById(Feature);
 
     /**
      * Adds a new list to the collection
@@ -35,7 +24,7 @@ export class Features extends SharePointQueryableCollection {
     public add(id: string, force = false): Promise<FeatureAddResult> {
 
         return this.clone(Features, "add").postCore({
-            body: JSON.stringify({
+            body: jsS({
                 featdefScope: 0,
                 featureId: id,
                 force: force,
@@ -57,7 +46,7 @@ export class Features extends SharePointQueryableCollection {
     public remove(id: string, force = false): Promise<any> {
 
         return this.clone(Features, "remove").postCore({
-            body: JSON.stringify({
+            body: jsS({
                 featureId: id,
                 force: force,
             }),

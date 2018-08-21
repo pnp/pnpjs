@@ -1,4 +1,4 @@
-import { TypedHash, Dictionary } from "@pnp/common";
+import { TypedHash, mergeMaps, objectToMap, jsS } from "@pnp/common";
 
 /**
  * Interface for configuration providers
@@ -19,17 +19,11 @@ export interface IConfigurationProvider {
 export class Settings {
 
     /**
-     * The settings currently stored in this instance
-     */
-    private _settings: Dictionary<string>;
-
-    /**
      * Creates a new instance of the settings class
      *
      * @constructor
      */
-    constructor() {
-        this._settings = new Dictionary<string>();
+    constructor(private _settings = new Map<string, string>()) {
     }
 
     /**
@@ -39,7 +33,7 @@ export class Settings {
      * @param {string} value The setting value to store
      */
     public add(key: string, value: string) {
-        this._settings.add(key, value);
+        this._settings.set(key, value);
     }
 
     /**
@@ -49,7 +43,7 @@ export class Settings {
      * @param {any} value The setting value to store
      */
     public addJSON(key: string, value: any) {
-        this._settings.add(key, JSON.stringify(value));
+        this._settings.set(key, jsS(value));
     }
 
     /**
@@ -60,7 +54,7 @@ export class Settings {
     public apply(hash: TypedHash<any>): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             try {
-                this._settings.merge(hash);
+                this._settings = mergeMaps(this._settings, objectToMap(hash));
                 resolve();
             } catch (e) {
                 reject(e);
@@ -76,7 +70,7 @@ export class Settings {
     public load(provider: IConfigurationProvider): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             provider.getConfiguration().then((value) => {
-                this._settings.merge(value);
+                this._settings = mergeMaps(this._settings, objectToMap(value));
                 resolve();
             }).catch(reject);
         });
@@ -100,7 +94,7 @@ export class Settings {
      */
     public getJSON(key: string): any {
         const o = this.get(key);
-        if (typeof o === "undefined" || o === null) {
+        if (o === undefined || o === null) {
             return o;
         }
 

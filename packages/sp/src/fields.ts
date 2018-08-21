@@ -1,5 +1,5 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
-import { extend, TypedHash } from "@pnp/common";
+import { SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
+import { extend, TypedHash, jsS } from "@pnp/common";
 import {
     XmlSchemaFieldCreationInformation,
     DateTimeFieldFormatType,
@@ -10,21 +10,21 @@ import {
     FieldCreationProperties,
     ChoiceFieldFormatType,
 } from "./types";
+import { metadata } from "./utils/metadata";
 
 /**
  * Describes a collection of Field objects
  *
  */
+@defaultPath("fields")
 export class Fields extends SharePointQueryableCollection {
 
     /**
-     * Creates a new instance of the Fields class
+     * Gets a list from the collection by guid id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     * @param title The Id of the list
      */
-    constructor(baseUrl: string | SharePointQueryable, path = "fields") {
-        super(baseUrl, path);
-    }
+    public getById = this._getById(Field);
 
     /**
      * Gets a field from the collection by title
@@ -45,17 +45,6 @@ export class Fields extends SharePointQueryableCollection {
     }
 
     /**
-     * Gets a list from the collection by guid id
-     *
-     * @param title The Id of the list
-     */
-    public getById(id: string): Field {
-        const f: Field = new Field(this);
-        f.concat(`('${id}')`);
-        return f;
-    }
-
-    /**
      * Creates a field based on the specified schema
      */
     public createFieldAsXml(xml: string | XmlSchemaFieldCreationInformation): Promise<FieldAddResult> {
@@ -67,14 +56,9 @@ export class Fields extends SharePointQueryableCollection {
             info = xml as XmlSchemaFieldCreationInformation;
         }
 
-        const postBody: string = JSON.stringify({
+        const postBody: string = jsS({
             "parameters":
-                extend({
-                    "__metadata":
-                        {
-                            "type": "SP.XmlSchemaFieldCreationInformation",
-                        },
-                }, info),
+                extend(metadata("SP.XmlSchemaFieldCreationInformation"), info),
         });
 
         return this.clone(Fields, "createfieldasxml").postCore<{ Id: string }>({ body: postBody }).then((data) => {
@@ -94,9 +78,8 @@ export class Fields extends SharePointQueryableCollection {
      */
     public add(title: string, fieldType: string, properties: FieldCreationProperties & { FieldTypeKind: number }): Promise<FieldAddResult> {
 
-        const postBody: string = JSON.stringify(extend({
+        const postBody: string = jsS(Object.assign(metadata(fieldType), {
             "Title": title,
-            "__metadata": { "type": fieldType },
         }, properties));
 
         return this.clone(Fields, null).postCore<{ Id: string }>({ body: postBody }).then((data) => {
@@ -196,11 +179,11 @@ export class Fields extends SharePointQueryableCollection {
 
         let props: { FieldTypeKind: number } = { FieldTypeKind: 9 };
 
-        if (typeof minValue !== "undefined") {
+        if (minValue !== undefined) {
             props = extend({ MinimumValue: minValue }, props);
         }
 
-        if (typeof maxValue !== "undefined") {
+        if (maxValue !== undefined) {
             props = extend({ MaximumValue: maxValue }, props);
         }
 
@@ -228,11 +211,11 @@ export class Fields extends SharePointQueryableCollection {
             FieldTypeKind: 10,
         };
 
-        if (typeof minValue !== "undefined") {
+        if (minValue !== undefined) {
             props = extend({ MinimumValue: minValue }, props);
         }
 
-        if (typeof maxValue !== "undefined") {
+        if (maxValue !== undefined) {
             props = extend({ MaximumValue: maxValue }, props);
         }
 
@@ -323,15 +306,14 @@ export class Fields extends SharePointQueryableCollection {
         lookupFieldName: string,
         properties?: FieldCreationProperties): Promise<FieldAddResult> {
 
-        const postBody: string = JSON.stringify({
+        const postBody: string = jsS(Object.assign(metadata("SP.FieldCreationInformation"), {
             parameters: extend({
                 FieldTypeKind: 7,
                 LookupFieldName: lookupFieldName,
                 LookupListId: lookupListId,
                 Title: title,
-                "__metadata": { "type": "SP.FieldCreationInformation" },
             }, properties),
-        });
+        }));
 
         return this.clone(Fields, "addfield").postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
@@ -419,6 +401,12 @@ export class Fields extends SharePointQueryableCollection {
 export class Field extends SharePointQueryableInstance {
 
     /**
+     * Delete this fields
+     *
+     */
+    public delete = this._delete;
+
+    /**
      * Updates this field intance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
@@ -426,9 +414,7 @@ export class Field extends SharePointQueryableInstance {
      */
     public update(properties: TypedHash<string | number | boolean>, fieldType = "SP.Field"): Promise<FieldUpdateResult> {
 
-        const postBody: string = JSON.stringify(extend({
-            "__metadata": { "type": fieldType },
-        }, properties));
+        const postBody: string = jsS(extend(metadata(fieldType), properties));
 
         return this.postCore({
             body: postBody,
@@ -440,18 +426,6 @@ export class Field extends SharePointQueryableInstance {
                 data: data,
                 field: this,
             };
-        });
-    }
-
-    /**
-     * Delete this fields
-     *
-     */
-    public delete(): Promise<void> {
-        return this.postCore({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
         });
     }
 

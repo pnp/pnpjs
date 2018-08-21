@@ -1,6 +1,7 @@
-import { SharePointQueryableCollection, SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { extend } from "@pnp/common";
-import { spExtractODataId } from "..";
+import { SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
+import { extend, jsS } from "@pnp/common";
+import { odataUrlFrom } from "./odata";
+import { metadata } from "./utils/metadata";
 
 export interface CommentAuthorData {
     email: string;
@@ -43,27 +44,10 @@ export interface CommentInfo {
 /**
  * Represents a Collection of comments
  */
+@defaultPath("comments")
 export class Comments extends SharePointQueryableCollection<CommentData[]> {
 
-    /**
-     * Creates a new instance of the Comments class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "comments") {
-        super(baseUrl, path);
-    }
-
-    /**
-     * Gets a comment by id
-     * 
-     * @param id Id of the comment to load
-     */
-    public getById(id: string | number): Comment {
-        const c = new Comment(this);
-        c.concat(`(${id})`);
-        return c;
-    }
+    public getById = this._getById<string | number, Comment>(Comment);
 
     /**
      * Adds a new comment to this collection
@@ -76,10 +60,7 @@ export class Comments extends SharePointQueryableCollection<CommentData[]> {
             info = { text: info };
         }
 
-        const postBody = JSON.stringify(extend({
-            "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
-        }, info));
-
+        const postBody = jsS(extend(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
         return this.clone(Comments, null).postCore<CommentData>({ body: postBody }).then(d => {
             return extend(this.getById(d.id), d);
@@ -128,16 +109,8 @@ export class Comment extends SharePointQueryableInstance {
 /**
  * Represents a Collection of comments
  */
+@defaultPath("replies")
 export class Replies extends SharePointQueryableCollection<CommentData[]> {
-
-    /**
-     * Creates a new instance of the Comments class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "replies") {
-        super(baseUrl, path);
-    }
 
     /**
      * Adds a new reply to this collection
@@ -150,12 +123,10 @@ export class Replies extends SharePointQueryableCollection<CommentData[]> {
             info = { text: info };
         }
 
-        const postBody = JSON.stringify(extend({
-            "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
-        }, info));
+        const postBody = jsS(extend(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
         return this.clone(Replies, null).postCore<CommentData>({ body: postBody }).then(d => {
-            return extend(new Comment(spExtractODataId(d)), d);
+            return extend(new Comment(odataUrlFrom(d)), d);
         });
     }
 }

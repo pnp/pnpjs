@@ -1,5 +1,5 @@
 export {
-    spExtractODataId,
+    odataUrlFrom,
     spODataEntity,
     spODataEntityArray,
 } from "./odata";
@@ -140,6 +140,7 @@ export {
     SearchPropertyValue,
     SearchQuery,
     SearchQueryBuilder,
+    ISearchQueryBuilder,
     SearchResult,
     SearchResults,
     Sort,

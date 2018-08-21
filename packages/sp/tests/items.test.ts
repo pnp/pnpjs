@@ -1,4 +1,4 @@
-import { Util } from "@pnp/common";
+import { combine } from "@pnp/common";
 import { expect } from "chai";
 import { Items, Item } from "../";
 import { toMatchEndRegex } from "./utils";
@@ -17,13 +17,13 @@ describe("Items", () => {
     });
 
     describe("url", () => {
-        const path = Util.combinePaths(basePath, "items");
+        const path = combine(basePath, "items");
         it("Should return " + path, () => {
             expect(items.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
     describe("getById", () => {
-        const path = Util.combinePaths(basePath, "items(1)");
+        const path = combine(basePath, "items(1)");
         it("Should return " + path, () => {
             expect(items.getById(1).toUrl()).to.match(toMatchEndRegex(path));
         });
@@ -44,56 +44,56 @@ describe("Item", () => {
     });
 
     describe("attachmentFiles", () => {
-        const path = Util.combinePaths(basePath, "AttachmentFiles");
+        const path = combine(basePath, "AttachmentFiles");
         it("Should return " + path, () => {
             expect(item.attachmentFiles.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("contentType", () => {
-        const path = Util.combinePaths(basePath, "ContentType");
+        const path = combine(basePath, "ContentType");
         it("Should return " + path, () => {
             expect(item.contentType.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("effectiveBasePermissions", () => {
-        const path = Util.combinePaths(basePath, "EffectiveBasePermissions");
+        const path = combine(basePath, "EffectiveBasePermissions");
         it("Should return " + path, () => {
             expect(item.effectiveBasePermissions.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("effectiveBasePermissionsForUI", () => {
-        const path = Util.combinePaths(basePath, "EffectiveBasePermissionsForUI");
+        const path = combine(basePath, "EffectiveBasePermissionsForUI");
         it("Should return " + path, () => {
             expect(item.effectiveBasePermissionsForUI.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("fieldValuesAsHTML", () => {
-        const path = Util.combinePaths(basePath, "FieldValuesAsHTML");
+        const path = combine(basePath, "FieldValuesAsHTML");
         it("Should return " + path, () => {
             expect(item.fieldValuesAsHTML.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("fieldValuesAsText", () => {
-        const path = Util.combinePaths(basePath, "FieldValuesAsText");
+        const path = combine(basePath, "FieldValuesAsText");
         it("Should return " + path, () => {
             expect(item.fieldValuesAsText.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("fieldValuesForEdit", () => {
-        const path = Util.combinePaths(basePath, "FieldValuesForEdit");
+        const path = combine(basePath, "FieldValuesForEdit");
         it("Should return " + path, () => {
             expect(item.fieldValuesForEdit.toUrl()).to.match(toMatchEndRegex(path));
         });
     });
 
     describe("folder", () => {
-        const path = Util.combinePaths(basePath, "folder");
+        const path = combine(basePath, "folder");
         it("Should return " + path, () => {
             expect(item.folder.toUrl()).to.match(toMatchEndRegex(path));
         });

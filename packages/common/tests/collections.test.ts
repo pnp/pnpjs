@@ -1,58 +1,61 @@
 import { expect } from "chai";
-import { Dictionary } from "../";
+import { mergeMaps } from "../";
 
 describe("Collections", () => {
 
-    describe("Dictionary<T>", () => {
+    describe("mergeMaps", () => {
 
-        let dic: Dictionary<string>;
+        it("should merge to maps with unique keys", () => {
 
-        beforeEach(() => {
-            dic = new Dictionary<string>();
+            const map1 = new Map<string, string>([["key1", "value1"], ["key2", "value2"], ["key3", "value3"]]);
+            const map2 = new Map<string, string>([["2_key1", "2_value1"], ["2_key2", "2_value2"], ["2_key3", "2_value3"]]);
+            const map = mergeMaps(map1, map2);
+
+            expect(map.size).to.eq(6, "Size should be 6");
+            expect(Array.from(map)[1][0]).to.eq("key2", "Should be able to spread map");
         });
 
-        it("Should add and get the same value back", () => {
-            dic.add("test", "value");
-            const ret = dic.get("test");
-            expect(ret).to.eq("value");
+        it("should merge to maps with common keys", () => {
+
+            const map1 = new Map<string, string>([["key1", "value1"], ["key2", "value2"], ["key3", "value3"]]);
+            const map2 = new Map<string, string>([["2_key1", "2_value1"], ["2_key2", "2_value2"], ["key3", "2_value3"]]);
+            const map = mergeMaps(map1, map2);
+
+            expect(map.size).to.eq(5, "Size should be 5");
+            expect(Array.from(map)[2][1]).to.eq("2_value3", "Should overwrite the value");
+            expect(Array.from(map)[4][1]).to.eq("2_value2", "Should overwrite the value");
         });
 
-        it("Should add two values, remove one and result in a count() of 1", () => {
-            dic.add("test1", "value");
-            dic.add("test2", "value");
-            expect(dic.count).to.eq(2);
-            dic.remove("test2");
-            expect(dic.count).to.eq(1);
+        it("should merge many maps - even", () => {
+
+            const target = new Map<string, string>([["key1", "value1"], ["key2", "value2"], ["key3", "value3"]]);
+            const maps = [];
+            const sub: [string, string][] = [];
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < i + 1; j++) {
+                    sub.push([`${i}_key_${j}`, `${i}_value1_${j}`]);
+                }
+                maps.push(new Map<string, string>(sub));
+            }
+
+            const map = mergeMaps(target, ...maps);
+            expect(map.size).to.eq(58, "Size should be 58");
         });
 
-        it("Should return null for a non-existant value", () => {
-            dic.add("test", "value");
-            const ret = dic.get("test2");
-            expect(ret).to.be.null;
-        });
+        it("should merge many maps - odd", () => {
 
-        it("Should add four values, remove one and still contain the non-removed values", () => {
-            dic.add("test1", "value1");
-            dic.add("test2", "value2");
-            dic.add("test3", "value3");
-            dic.add("test4", "value4");
-            expect(dic.count).to.eq(4);
-            dic.remove("test3");
-            expect(dic.count).to.eq(3);
-            expect(dic.get("test1")).to.eq("value1");
-            expect(dic.get("test2")).to.eq("value2");
-            expect(dic.get("test4")).to.eq("value4");
-        });
+            const target = new Map<string, string>([["key1", "value1"], ["key2", "value2"], ["key3", "value3"]]);
+            const maps = [];
+            const sub: [string, string][] = [];
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < i + 1; j++) {
+                    sub.push([`${i}_key_${j}`, `${i}_value1_${j}`]);
+                }
+                maps.push(new Map<string, string>(sub));
+            }
 
-        it("Should clear the collection and result in a count of 0", () => {
-            dic.add("test1", "value1");
-            dic.add("test2", "value2");
-            dic.add("test3", "value3");
-            dic.add("test4", "value4");
-            expect(dic.count).to.eq(4);
-            dic.clear();
-            expect(dic.count).to.eq(0);
-            expect(dic.get("test1")).to.be.null;
+            const map = mergeMaps(target, ...maps);
+            expect(map.size).to.eq(9, "Size should be 9");
         });
     });
 });
