@@ -154,8 +154,9 @@ export class RoleDefinition extends SharePointQueryableInstance {
     /* tslint:disable no-string-literal */
     public update(properties: TypedHash<any>): Promise<RoleDefinitionUpdateResult> {
 
-        if (hOP(properties, "BasePermissions") !== undefined) {
-            properties["BasePermissions"] = extend({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
+        const s = ["BasePermissions"];
+        if (hOP(properties, s[0]) !== undefined) {
+            properties[s[0]] = extend({ __metadata: { type: "SP." + s[0] } }, properties[s[0]]);
         }
 
         const postBody = jsS(extend(metadata("SP.RoleDefinition"), properties));

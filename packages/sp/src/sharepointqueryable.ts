@@ -258,7 +258,11 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      */
     protected _getById<P, T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>): (id: P) => T {
         return (id: P) => {
-            return new factory(this).concat(`('${id}')`);
+            if (typeof id === "number") {
+                return (new factory(this)).concat(`(${id})`);
+            } else {
+                return (new factory(this)).concat(`('${id}')`);
+            }
         };
     }
 }
@@ -322,7 +326,7 @@ export function defaultPath(path: string) {
 
         return class extends target {
             constructor(...args: any[]) {
-                super(args[0], args[1] || path);
+                super(args[0], args.length > 1 && args[1] !== undefined ? args[1] : path);
             }
         };
     };

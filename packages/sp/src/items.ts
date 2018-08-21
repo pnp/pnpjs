@@ -120,7 +120,7 @@ export class Items extends SharePointQueryableCollection {
 
             const postBody = jsS(extend(metadata(listItemEntityType), properties));
 
-            const promise = this.clone(Items, null).postCore<{ Id: number }>({ body: postBody }).then((data) => {
+            const promise = this.clone(Items, "").postCore<{ Id: number }>({ body: postBody }).then((data) => {
                 return {
                     data: data,
                     item: this.getById(data.Id),
@@ -301,20 +301,6 @@ export class Item extends SharePointQueryableShareableItem {
         return this.clone(Item, "unlike").postCore<void>();
     }
 
-    // /**
-    //  * Delete this item
-    //  *
-    //  * @param eTag Value used in the IF-Match header, by default "*"
-    //  */
-    // public delete(eTag = "*"): Promise<void> {
-    //     return this.postCore({
-    //         headers: {
-    //             "IF-Match": eTag,
-    //             "X-HTTP-Method": "DELETE",
-    //         },
-    //     });
-    // }
-
     /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
@@ -403,19 +389,6 @@ export class ItemVersion extends SharePointQueryableInstance {
     * @param eTag Value used in the IF-Match header, by default "*"
     */
     public delete = this._deleteWithETag;
-
-    // /**
-    // * Delete a specific version of a file.
-    // *
-    // * @param eTag Value used in the IF-Match header, by default "*"
-    // */
-    // public delete(): Promise<void> {
-    //     return this.postCore({
-    //         headers: {
-    //             "X-HTTP-Method": "DELETE",
-    //         },
-    //     });
-    // }
 }
 
 /**

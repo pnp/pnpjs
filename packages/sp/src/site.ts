@@ -5,7 +5,6 @@ import { ContextInfo, DocumentLibraryInformation } from "./types";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
 import { hOP } from "@pnp/common";
-import { odataUrlFrom } from "./odata";
 
 /**
  * Describes a site collection
@@ -113,7 +112,7 @@ export class Site extends SharePointQueryableInstance {
 
         return this.clone(Site, `openWebById('${webId}')`).postCore().then(d => ({
             data: d,
-            web: Web.fromUrl(odataUrlFrom(d) || d.__metadata.uri),
+            web: Web.fromUrl(d["odata.id"] || d.__metadata.uri),
         }));
     }
 }

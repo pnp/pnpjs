@@ -6,11 +6,12 @@ import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
-import { extend, TypedHash } from "@pnp/common";
+import { extend, TypedHash, hOP, jsS } from "@pnp/common";
 import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters, ListItemFormUpdateValue } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
 import { Folder } from "./folders";
+import { metadata } from "./utils/metadata";
 
 /**
  * Describes a collection of List objects
@@ -20,23 +21,19 @@ import { Folder } from "./folders";
 export class Lists extends SharePointQueryableCollection {
 
     /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list (GUID)
+     */
+    public getById = this._getById(List);
+
+    /**
      * Gets a list from the collection by title
      *
      * @param title The title of the list
      */
     public getByTitle(title: string): List {
         return new List(this, `getByTitle('${title}')`);
-    }
-
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
-    public getById(id: string): List {
-        const list = new List(this);
-        list.concat(`('${id}')`);
-        return list;
     }
 
     /**
@@ -59,7 +56,7 @@ export class Lists extends SharePointQueryableCollection {
             "__metadata": { "type": "SP.List" },
         }, additionalSettings);
 
-        return this.postCore({ body: JSON.stringify(addSettings) }).then((data) => {
+        return this.postCore({ body: jsS(addSettings) }).then((data) => {
             return { data: data, list: this.getByTitle(addSettings.Title) };
         });
     }
@@ -251,7 +248,7 @@ export class List extends SharePointQueryableSecurable {
     /* tslint:disable no-string-literal */
     public update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<ListUpdateResult> {
 
-        const postBody = JSON.stringify(extend({
+        const postBody = jsS(extend({
             "__metadata": { "type": "SP.List" },
         }, properties));
 
@@ -265,7 +262,7 @@ export class List extends SharePointQueryableSecurable {
 
             let retList: List = this;
 
-            if (properties.hasOwnProperty("Title")) {
+            if (hOP(properties, "Title")) {
                 retList = this.getParent(List, this.parentUrl, `getByTitle('${properties["Title"]}')`);
             }
 
@@ -297,7 +294,7 @@ export class List extends SharePointQueryableSecurable {
     public getChanges(query: ChangeQuery): Promise<any> {
 
         return this.clone(List, "getchanges").postCore({
-            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+            body: jsS({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     }
 
@@ -324,7 +321,7 @@ export class List extends SharePointQueryableSecurable {
 
         const q = this.clone(List, "getitems");
         return q.expand.apply(q, expands).postCore({
-            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+            body: jsS({ "query": extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
     }
 
@@ -334,7 +331,7 @@ export class List extends SharePointQueryableSecurable {
     public getListItemChangesSinceToken(query: ChangeLogitemQuery): Promise<string> {
 
         return this.clone(List, "getlistitemchangessincetoken").postCore({
-            body: JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+            body: jsS({ "query": extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse(r) { return r.text(); } });
     }
 
@@ -343,7 +340,7 @@ export class List extends SharePointQueryableSecurable {
      */
     public recycle(): Promise<string> {
         return this.clone(List, "recycle").postCore().then(data => {
-            if (data.hasOwnProperty("Recycle")) {
+            if (hOP(data, "Recycle")) {
                 return data.Recycle;
             } else {
                 return data;
@@ -361,7 +358,7 @@ export class List extends SharePointQueryableSecurable {
         return q.postCore().then(data => {
             // data will be a string, so we parse it again
             data = JSON.parse(data);
-            if (data.hasOwnProperty("RenderListData")) {
+            if (hOP(data, "RenderListData")) {
                 return data.RenderListData;
             } else {
                 return data;
@@ -378,16 +375,12 @@ export class List extends SharePointQueryableSecurable {
     public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null): Promise<any> {
 
         const postBody = {
-            overrideParameters: extend({
-                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
-            }, overrideParameters),
-            parameters: extend({
-                "__metadata": { "type": "SP.RenderListDataParameters" },
-            }, parameters),
+            overrideParameters: extend(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
+            parameters: extend(metadata("SP.RenderListDataParameters"), parameters),
         };
 
         return this.clone(List, "RenderListDataAsStream", true).postCore({
-            body: JSON.stringify(postBody),
+            body: jsS(postBody),
         });
     }
 
@@ -398,7 +391,7 @@ export class List extends SharePointQueryableSecurable {
         return this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`).postCore().then(data => {
             // data will be a string, so we parse it again
             data = JSON.parse(data);
-            if (data.hasOwnProperty("ListData")) {
+            if (hOP(data, "ListData")) {
                 return data.ListData;
             } else {
                 return data;
@@ -411,7 +404,7 @@ export class List extends SharePointQueryableSecurable {
      */
     public reserveListItemId(): Promise<number> {
         return this.clone(List, "reservelistitemid").postCore().then(data => {
-            if (data.hasOwnProperty("ReserveListItemId")) {
+            if (hOP(data, "ReserveListItemId")) {
                 return data.ReserveListItemId;
             } else {
                 return data;
@@ -442,7 +435,7 @@ export class List extends SharePointQueryableSecurable {
         checkInComment?: string,
     ): Promise<ListItemFormUpdateValue[]> {
         return this.clone(List, "AddValidateUpdateItemUsingPath()").postCore({
-            body: JSON.stringify({
+            body: jsS({
                 bNewDocumentUpdate,
                 checkInComment,
                 formValues,

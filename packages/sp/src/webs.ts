@@ -1,4 +1,4 @@
-import { extend, TypedHash } from "@pnp/common";
+import { extend, TypedHash, jsS } from "@pnp/common";
 import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
@@ -56,7 +56,7 @@ export class Webs extends SharePointQueryableCollection {
             WebTemplate: template,
         };
 
-        const postBody = JSON.stringify({
+        const postBody = jsS({
             "parameters":
                 extend({
                     "__metadata": { "type": "SP.WebCreationInformation" },
@@ -355,7 +355,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public update(properties: TypedHash<string | number | boolean>): Promise<WebUpdateResult> {
 
-        const postBody = JSON.stringify(extend({
+        const postBody = jsS(extend({
             "__metadata": { "type": "SP.Web" },
         }, properties));
 
@@ -390,7 +390,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public applyTheme(colorPaletteUrl: string, fontSchemeUrl: string, backgroundImageUrl: string, shareGenerated: boolean): Promise<void> {
 
-        const postBody = JSON.stringify({
+        const postBody = jsS({
             backgroundImageUrl: backgroundImageUrl,
             colorPaletteUrl: colorPaletteUrl,
             fontSchemeUrl: fontSchemeUrl,
@@ -419,7 +419,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
      */
     public ensureUser(loginName: string): Promise<WebEnsureUserResult> {
-        const postBody = JSON.stringify({
+        const postBody = jsS({
             logonName: loginName,
         });
 
@@ -460,7 +460,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getChanges(query: ChangeQuery): Promise<any> {
 
-        const postBody = JSON.stringify({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        const postBody = jsS({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
         return this.clone(Web, "getchanges").postCore({ body: postBody });
     }
 
@@ -511,7 +511,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
         return this.clone(Web, `setStorageEntity`).postCore({
-            body: JSON.stringify({
+            body: jsS({
                 comments,
                 description,
                 key,
