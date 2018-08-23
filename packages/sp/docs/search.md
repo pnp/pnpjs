@@ -78,13 +78,15 @@ function prev() {
 The SearchQueryBuilder allows you to build your queries in a fluent manner. It also accepts constructor arguments for query text and a base query plain object, should you have a shared configuration for queries in an application you can define them once. The methods and properties match those on the SearchQuery interface. Boolean properties add the flag to the query while methods require that you supply one or more arguments. Also arguments supplied later in the chain will overwrite previous values.
 
 ```TypeScript
+import { SearchQueryBuilder } from "@pnp/sp";
+
 // basic usage
-let q = SearchQueryBuilder.create().text("test").rowLimit(4).enablePhonetic;
+let q = SearchQueryBuilder().text("test").rowLimit(4).enablePhonetic;
 
 sp.search(q).then(h => { /* ... */ });
 
 // provide a default query text in the create()
-let q2 = SearchQueryBuilder.create("text").rowLimit(4).enablePhonetic;
+let q2 = SearchQueryBuilder("text").rowLimit(4).enablePhonetic;
 
 sp.search(q2).then(h => { /* ... */ });
 
@@ -96,8 +98,8 @@ const appSearchSettings: SearchQuery = {
     HiddenConstraints: "reports"
 };
 
-let q3 = SearchQueryBuilder.create("test", appSearchSettings).enableQueryRules;
-let q4 = SearchQueryBuilder.create("financial data", appSearchSettings).enableSorting.enableStemming;
+let q3 = SearchQueryBuilder("test", appSearchSettings).enableQueryRules;
+let q4 = SearchQueryBuilder("financial data", appSearchSettings).enableSorting.enableStemming;
 sp.search(q3).then(h => { /* ... */ });
 sp.search(q4).then(h => { /* ... */ });
 ```

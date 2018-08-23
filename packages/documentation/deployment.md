@@ -8,7 +8,7 @@ If you have installed the library via NPM into your application solution bundler
 
 ## CDN
 
-If you have public internet access you can reference the library from cdnjs which maintains copies of all versions. This is ideal as you do not need to host the file yourself, and it is easy to update to a newer release by updating the URL in your solution. Below lists all of the library locations within cdnjs, you will need to ensure you have the full url to the file you need, such as: "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js".
+If you have public internet access you can reference the library from cdnjs which maintains copies of all versions. This is ideal as you do not need to host the file yourself, and it is easy to update to a newer release by updating the URL in your solution. Below lists all of the library locations within cdnjs, you will need to ensure you have the full url to the file you need, such as: "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js". To use the libraries with a script tag in a page it is recommended to use the *.es5.umd.min.js versions. This will add a global pnp value with each library added as pnp.{lib name} such as pnp.sp, pnp.common, etc.
 
 - [https://cdnjs.com/libraries/pnp-common](https://cdnjs.com/libraries/pnp-common)
 - [https://cdnjs.com/libraries/pnp-config-store](https://cdnjs.com/libraries/pnp-config-store)
@@ -23,9 +23,67 @@ If you have public internet access you can reference the library from cdnjs whic
 
 ### CDN and SPFx
 
-If you are developing in SPFx and install and import the PnPjs libraries the default behavior will be to bundle the library into your solution. If you are able it is recommended to reference the library as an external by updating the SPFx config/config.js to include these lines in the externals section. You may need to add additional lines following the pattern if you are using other libraries - you do not need to include lines for libraries you are not using. Find [more detail specific to SPFx here](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/basics/add-an-external-library#load-a-script-from-a-cdn).
+If you are developing in SPFx and install and import the PnPjs libraries the default behavior will be to bundle the library into your solution. You have a couple of choices on how best to work with CDNs and SPFx. Because SPFx doesn't currently respect peer dependencies it is easier to reference the pnpjs rollup package for your project. In this case you would install the package, reference it in your code, and update your config.js file externals as follows:
 
+#### Install
+
+`npm install @pnp/pnpjs --save`
+
+#### In Code
+
+```TypeScript
+import { sp } from "@pnp/pnpjs";
+
+sp.web.lists.getByTitle("BigList").get().then(r => {
+
+    this.domElement.innerHTML += r.Title;
+});
 ```
+
+#### config.js
+
+```JSON
+  "externals": {
+    "@pnp/pnpjs": {
+      "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-pnpjs/1.1.4/pnpjs.es5.umd.bundle.min.js",
+      "globalName": "pnp"
+    }
+  },
+```
+
+-----
+
+You can still work with the individual packages from the cdn, but you have a bit more work to do. First you install the modules you plan to use, update the config with the longer JSON below, and you'll need to add some blind require statements into your code. These are needed because peer dependencies are not processed so you have to "trigger" the SPFx manifest creator to include those packages.
+
+#### Install
+
+`npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp --save`
+
+#### In Code
+
+```TypeScript
+// blind require statements
+
+import { sp } from "@pnp/sp";
+
+sp.web.lists.getByTitle("BigList").get().then(r => {
+
+    this.domElement.innerHTML += r.Title;
+});
+```
+
+
+
+
+
+
+
+
+
+
+You may need to add additional lines following the pattern if you are using other libraries - you do not need to include lines for libraries you are not using. Find [more detail specific to SPFx here](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/basics/add-an-external-library#load-a-script-from-a-cdn).
+
+```JSON
 externals: {
     "@pnp/logging": "https://cdnjs.cloudflare.com/ajax/libs/pnp-logging/1.1.1/logging.es5.umd.min.js",
     "@pnp/common": "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js",

@@ -8,8 +8,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- @pnp/sp: ability to specify generic type with Items getPaged method
-- documentation: added section for paging to List Items page
+- @pnp/sp: ability to specify generic type with Items getPaged method [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- documentation: added section for paging to List Items page [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: added alias functions for jsS and hOP [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: Items.getAll now takes optional second argument for accept header [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: Added defaultPath class decorator [[PR](https://github.com/pnp/pnpjs/pull/207)]
+
+### Changed
+
+- testing: Updated tests for common [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- all: Replaced all uses of Dictionary with Map [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: spExtractODataId renamed to odataUrlFrom [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: combinePaths renamed to combine [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: spExtractODataId renamed to odataUrlFrom [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: SearchQueryBuilder create function removed [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- documentation: Updated deployment article [[PR](https://github.com/pnp/pnpjs/pull/207)]
+
+### Fixed
+
+- @pnp/sp: Fixed issue parsing odata metadata due to service change [[PR](https://github.com/pnp/pnpjs/pull/204)]
+- documentation: Fixed typo [[PR](https://github.com/pnp/pnpjs/pull/205)]
+
+### Removed
+
+- @pnp/common: Removed Util static class in favor of function exports [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: Removed readBlobAsText and readBlobAsArrayBuffer functions [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: Removed Dictionary class in favor of Map [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- all: Removed custom exceptions in favor of Error [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: Removed decorators for beta & deprecated [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: Removed dependency on @pnp/logging [[PR](https://github.com/pnp/pnpjs/pull/207)]
+
 
 ## 1.1.4 - 2018-08-06
 

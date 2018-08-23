@@ -96,6 +96,12 @@ function toCamelCase(str: string) {
         .replace(/^(.)/, ($1) => $1.toLowerCase());
 }
 
+/**
+ * Creates a new instance of the SearchQueryBuilder
+ * 
+ * @param queryText Initial query text
+ * @param _query Any initial query configuration
+ */
 export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBuilder {
 
     return new Proxy(<any>{
@@ -178,12 +184,7 @@ export class Search extends SharePointQueryableInstance {
      * @param prop property to fixup for container struct
      */
     private fixupProp(prop: any): any {
-
-        if (hOP(prop, "results")) {
-            return prop;
-        }
-
-        return { results: prop };
+        return hOP(prop, "results") ? prop : { results: prop };
     }
 }
 
