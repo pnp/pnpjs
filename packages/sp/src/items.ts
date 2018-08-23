@@ -59,7 +59,7 @@ export class Items extends SharePointQueryableCollection {
      *
      *  @param requestSize Number of items to return in each request (Default: 2000)
      */
-    public getAll(requestSize = 2000): Promise<any[]> {
+    public getAll(requestSize = 2000, acceptHeader = "application/json;odata=nometadata"): Promise<any[]> {
 
         Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", LogLevel.Warning);
 
@@ -67,7 +67,7 @@ export class Items extends SharePointQueryableCollection {
         // and we set no metadata here to try and reduce traffic
         const items = new Items(this, "").top(requestSize).configure({
             headers: {
-                "Accept": "application/json;odata=nometadata",
+                "Accept": acceptHeader,
             },
         });
 
