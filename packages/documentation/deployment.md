@@ -72,6 +72,51 @@ sp.web.lists.getByTitle("BigList").get().then(r => {
 });
 ```
 
+#### config.js
+```JSON
+"externals": {
+  "pnp.sp": {
+    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-sp/1.1.5/sp.es5.umd.min.js",
+    "globalName": "pnp.sp",
+    "globalDependencies": [
+      "pnp.logging",
+      "pnp.common",
+      "pnp.odata",
+      "tslib"
+    ]
+  },
+  "pnp.odata": {
+    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-odata/1.1.5/odata.es5.umd.min.js",
+    "globalName": "pnp.odata",
+    "globalDependencies": [
+      "pnp.common",
+      "pnp.logging",
+      "tslib"
+    ]
+  },
+  "pnp.common": {
+    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.5/common.es5.umd.min.js",
+    "globalName": "pnp.common",
+    "globalDependencies": [
+      "pnp.logging",
+      "tslib",
+      "adal-angular"
+    ]
+  },
+  "pnp.logging": {
+    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-logging/1.1.5/logging.es5.umd.min.js",
+    "globalName": "pnp.logging"
+  },
+  "tslib": {
+    "path": "https://cdnjs.cloudflare.com/ajax/libs/tslib/1.9.3/tslib.min.js",
+    "globalName": "tslib"
+  },
+  "adal-angular": {
+    "path": "https://secure.aadcdn.microsoftonline-p.com/lib/1.0.17/js/adal-angular.min.js",
+    "globalName": "angular"
+  }
+},
+```
 
 
 
