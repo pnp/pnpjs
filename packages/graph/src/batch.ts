@@ -34,15 +34,6 @@ interface GraphBatchResponse {
     nextLink?: string;
 }
 
-export class GraphBatchParseException extends Error {
-
-    constructor(msg: string) {
-        super(msg);
-        this.name = "GraphBatchParseException";
-        Logger.log({ data: {}, level: LogLevel.Error, message: `[${this.name}]::${this.message}` });
-    }
-}
-
 export class GraphBatch extends ODataBatch {
 
     constructor(private batchUrl = "https://graph.microsoft.com/beta/$batch") {
@@ -93,7 +84,7 @@ export class GraphBatch extends ODataBatch {
 
                         // do we have a next url? if no this is an error
                         if (parsedResponse.nextLink) {
-                            throw new GraphBatchParseException("Could not properly parse responses to match requests in batch.");
+                            throw new Error("Could not properly parse responses to match requests in batch.");
                         }
 
                         // nextLinkFlag = true;

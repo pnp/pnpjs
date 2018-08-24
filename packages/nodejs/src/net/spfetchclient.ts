@@ -2,10 +2,8 @@ declare var global: any;
 declare var require: (path: string) => any;
 const nodeFetch = require("node-fetch").default;
 
-
 const u: any = require("url");
 import { HttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
-import { AuthUrlException } from "../exceptions";
 
 export interface AuthToken {
     token_type: string;
@@ -138,7 +136,7 @@ export class SPFetchClient implements HttpClientImpl {
                 return eps[0].location;
             }
 
-            throw new AuthUrlException(json);
+            throw new Error("Auth URL Endpoint could not be determined from data.");
         });
     }
 

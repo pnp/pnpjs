@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: spExtractODataId renamed to odataUrlFrom [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - @pnp/sp: SearchQueryBuilder create function removed [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - documentation: Updated deployment article [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- tooling: Added plugin to rollup config for node globals [[PR](https://github.com/pnp/pnpjs/pull/207)]
 
 ### Fixed
 

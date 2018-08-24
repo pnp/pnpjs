@@ -1,18 +1,4 @@
 import { isFunc, hOP } from "@pnp/common";
-import { Logger, LogLevel } from "@pnp/logging";
-
-/**
- * Represents an exception with an HttpClient request
- *
- */
-export class ProcessHttpClientResponseException extends Error {
-
-    constructor(public readonly status: number, public readonly statusText: string, public readonly data: any) {
-        super(`Error making HttpClient request in queryable: [${status}] ${statusText}`);
-        this.name = "ProcessHttpClientResponseException";
-        Logger.log({ data: this.data, level: LogLevel.Error, message: this.message });
-    }
-}
 
 export interface ODataParser<T> {
     hydrate?: (d: any) => T;
@@ -62,10 +48,10 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
                     responseHeaders: r.headers,
                 };
 
-                reject(new ProcessHttpClientResponseException(r.status, r.statusText, data));
+                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${JSON.stringify(data)}`));
 
             }).catch(e => {
-                reject(new ProcessHttpClientResponseException(r.status, r.statusText, e));
+                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${e}`));
             });
         }
 

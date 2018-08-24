@@ -1,6 +1,5 @@
 import { IConfigurationProvider } from "../configuration";
 import { TypedHash, PnPClientStore, PnPClientStorage } from "@pnp/common";
-import { NoCacheAvailableException } from "../exceptions";
 
 /**
  * A caching provider which can wrap other non-caching providers
@@ -58,6 +57,6 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
         if ((pnpCache.session) && (pnpCache.session.enabled)) {
             return pnpCache.session;
         }
-        throw new NoCacheAvailableException();
+        throw new Error("Cannot create a caching configuration provider since cache is not available.");
     }
 }

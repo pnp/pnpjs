@@ -10,12 +10,6 @@ import {
     extend,
 } from "@pnp/common";
 
-// interface IAuthenticationContext {
-
-//     new(authorityUrl: string): IAuthenticationContext;
-//     acquireTokenWithClientCredentials(resource: string, clientId: string, clientSecret: string, callback: (err: any, token: any) => void): void;
-// }
-
 export interface AADToken {
     accessToken: string;
     expiresIn: number;

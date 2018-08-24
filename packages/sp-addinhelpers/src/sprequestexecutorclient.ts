@@ -1,5 +1,4 @@
 import { extend, HttpClientImpl } from "@pnp/common";
-import { SPRequestExecutorUndefinedException } from "./exceptions";
 
 /**
  * Makes requests using the SP.RequestExecutor library.
@@ -10,7 +9,7 @@ export class SPRequestExecutorClient implements HttpClientImpl {
      */
     public fetch(url: string, options: any): Promise<Response> {
         if (SP === undefined || SP.RequestExecutor === undefined) {
-            throw new SPRequestExecutorUndefinedException();
+            throw new Error("SP.RequestExecutor is undefined. Load the SP.RequestExecutor.js library (/_layouts/15/SP.RequestExecutor.js) before loading the PnP JS Core library.");
         }
 
         const addinWebUrl = url.substring(0, url.indexOf("/_api")),

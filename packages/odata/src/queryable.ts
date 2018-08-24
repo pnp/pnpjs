@@ -6,7 +6,6 @@ import {
     mergeOptions,
     objectDefinedNotNull,
 } from "@pnp/common";
-import { Logger } from "@pnp/logging";
 import { ODataParser, ODataDefaultParser, JSONParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
@@ -15,15 +14,6 @@ import {
     getDefaultPipeline,
     pipe,
 } from "./pipeline";
-
-export class AlreadyInBatchException extends Error {
-
-    constructor(msg = "This query is already part of a batch.") {
-        super(msg);
-        this.name = "AlreadyInBatchException";
-        Logger.error(this);
-    }
-}
 
 export abstract class Queryable<GetType> {
 
@@ -223,7 +213,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     public inBatch(batch: BatchType): this {
 
         if (this.batch !== null) {
-            throw new AlreadyInBatchException();
+            throw new Error("This query is already part of a batch.");
         }
 
         this._batch = batch;

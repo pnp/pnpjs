@@ -8,7 +8,7 @@ If you have installed the library via NPM into your application solution bundler
 
 ## CDN
 
-If you have public internet access you can reference the library from cdnjs which maintains copies of all versions. This is ideal as you do not need to host the file yourself, and it is easy to update to a newer release by updating the URL in your solution. Below lists all of the library locations within cdnjs, you will need to ensure you have the full url to the file you need, such as: "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js". To use the libraries with a script tag in a page it is recommended to use the *.es5.umd.min.js versions. This will add a global pnp value with each library added as pnp.{lib name} such as pnp.sp, pnp.common, etc.
+If you have public internet access you can reference the library from [cdnjs](https://cdnjs.com) or [unpkg](https://unpkg.com) which maintains copies of all versions. This is ideal as you do not need to host the file yourself, and it is easy to update to a newer release by updating the URL in your solution. Below lists all of the library locations within cdnjs, you will need to ensure you have the full url to the file you need, such as: "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js". To use the libraries with a script tag in a page it is recommended to use the *.es5.umd.min.js versions. This will add a global pnp value with each library added as pnp.{lib name} such as pnp.sp, pnp.common, etc.
 
 - [https://cdnjs.com/libraries/pnp-common](https://cdnjs.com/libraries/pnp-common)
 - [https://cdnjs.com/libraries/pnp-config-store](https://cdnjs.com/libraries/pnp-config-store)
@@ -53,7 +53,9 @@ sp.web.lists.getByTitle("BigList").get().then(r => {
 
 -----
 
-You can still work with the individual packages from the cdn, but you have a bit more work to do. First you install the modules you plan to use, update the config with the longer JSON below, and you'll need to add some blind require statements into your code. These are needed because peer dependencies are not processed so you have to "trigger" the SPFx manifest creator to include those packages.
+You _can_ still work with the individual packages from a cdn, but you have a bit more work to do. First install the modules you need, update the config with the JSON externals below, and add some blind require statements into your code. These are needed because peer dependencies are not processed by SPFx so you have to "trigger" the SPFx manifest creator to include those packages.
+
+> Note this approach requires using version 1.1.5 (specifically beta 1.1.5-2) or later of the libraries as we had make a few updates to how things are packaged to make this a little easier.
 
 #### Install
 
@@ -63,7 +65,10 @@ You can still work with the individual packages from the cdn, but you have a bit
 
 ```TypeScript
 // blind require statements
-
+require("tslib");
+require("@pnp/logging");
+require("@pnp/common");
+require("@pnp/odata");
 import { sp } from "@pnp/sp";
 
 sp.web.lists.getByTitle("BigList").get().then(r => {
@@ -75,65 +80,40 @@ sp.web.lists.getByTitle("BigList").get().then(r => {
 #### config.js
 ```JSON
 "externals": {
-  "pnp.sp": {
-    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-sp/1.1.5/sp.es5.umd.min.js",
+  "@pnp/sp": {
+    "path": "https://unpkg.com/@pnp/sp@1.1.5-2/dist/sp.es5.umd.min.js",
     "globalName": "pnp.sp",
     "globalDependencies": [
-      "pnp.logging",
-      "pnp.common",
-      "pnp.odata",
+      "@pnp/logging",
+      "@pnp/common",
+      "@pnp/odata",
       "tslib"
     ]
   },
-  "pnp.odata": {
-    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-odata/1.1.5/odata.es5.umd.min.js",
+  "@pnp/odata": {
+    "path": "https://unpkg.com/@pnp/odata@1.1.5-2/dist/odata.es5.umd.min.js",
     "globalName": "pnp.odata",
     "globalDependencies": [
-      "pnp.common",
-      "pnp.logging",
+      "@pnp/common",
+      "@pnp/logging",
       "tslib"
     ]
   },
-  "pnp.common": {
-    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.5/common.es5.umd.min.js",
-    "globalName": "pnp.common",
-    "globalDependencies": [
-      "pnp.logging",
-      "tslib",
-      "adal-angular"
-    ]
+  "@pnp/common": {
+    "path": "https://unpkg.com/@pnp/common@1.1.5-2/dist/common.es5.umd.bundle.min.js",
+    "globalName": "pnp.common"     
   },
-  "pnp.logging": {
-    "path": "https://cdnjs.cloudflare.com/ajax/libs/pnp-logging/1.1.5/logging.es5.umd.min.js",
-    "globalName": "pnp.logging"
+  "@pnp/logging": {
+    "path": "https://unpkg.com/@pnp/logging@1.1.5-2/dist/logging.es5.umd.min.js",
+    "globalName": "pnp.logging",
+    "globalDependencies": [
+      "tslib"
+    ]
   },
   "tslib": {
     "path": "https://cdnjs.cloudflare.com/ajax/libs/tslib/1.9.3/tslib.min.js",
     "globalName": "tslib"
-  },
-  "adal-angular": {
-    "path": "https://secure.aadcdn.microsoftonline-p.com/lib/1.0.17/js/adal-angular.min.js",
-    "globalName": "angular"
   }
-},
-```
-
-
-
-
-
-
-
-
-
-You may need to add additional lines following the pattern if you are using other libraries - you do not need to include lines for libraries you are not using. Find [more detail specific to SPFx here](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/basics/add-an-external-library#load-a-script-from-a-cdn).
-
-```JSON
-externals: {
-    "@pnp/logging": "https://cdnjs.cloudflare.com/ajax/libs/pnp-logging/1.1.1/logging.es5.umd.min.js",
-    "@pnp/common": "https://cdnjs.cloudflare.com/ajax/libs/pnp-common/1.1.1/common.es5.umd.min.js",
-    "@pnp/odata": "https://cdnjs.cloudflare.com/ajax/libs/pnp-odata/1.1.1/odata.es5.umd.min.js",
-    "@pnp/sp": "https://cdnjs.cloudflare.com/ajax/libs/pnp-sp/1.1.1/sp.es5.umd.min.js"
 }
 ```
 

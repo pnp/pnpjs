@@ -1,5 +1,5 @@
 import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP } from "@pnp/common";
-import { AlreadyInBatchException, CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
+import { CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
 import { SPHttpClient, toAbsoluteUrl } from "@pnp/sp";
 import { IObjectPathBatch } from "./batch";
 import { ObjectPathQueue } from "./objectpath";
@@ -80,7 +80,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     public inBatch(batch: IObjectPathBatch): this {
 
         if (this.batch !== null) {
-            throw new AlreadyInBatchException();
+            throw new Error("This query is already part of a batch.");
         }
 
         this._batch = batch;
