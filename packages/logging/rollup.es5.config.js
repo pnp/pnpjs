@@ -1,10 +1,11 @@
-const sourcemaps = require("rollup-plugin-sourcemaps");
+const sourcemaps = require("rollup-plugin-sourcemaps"),
+    globals = require("rollup-plugin-node-globals");
 
 const moduleName = "logging";
 
 module.exports = {
     input: `./build/packages/${moduleName}/es5/index.js`,
-    plugins: [sourcemaps()],
+    plugins: [sourcemaps(), globals()],
 
     output: [{
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.umd.js`,

@@ -42,6 +42,7 @@
     "pump": "3.0.0",
     "replace-ext": "1.0.0",
     "rollup": "0.63.5",
+    "rollup-plugin-node-globals": "^1.2.1",
     "rollup-plugin-sourcemaps": "0.4.2",
     "run-sequence": "2.2.1",
     "semver": "5.5.0",
