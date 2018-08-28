@@ -67,7 +67,12 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
             url = combine("https://graph.microsoft.com", url);
         }
 
-        return url += `?${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        if (this.query.size > 0) {
+            const char = url.indexOf("?") > -1 ? "&" : "?";
+            url += `${char}${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        }
+
+        return url;
     }
 
     /**
