@@ -84,13 +84,20 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
 
         const aliasedParams = new Map<string, string>(this.query);
 
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
-            Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
-            aliasedParams.set(labelName, `'${value}'`);
-            return labelName;
-        });
+        let url = this.toUrl();
 
-        url += `?${Array.from(aliasedParams).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        if (aliasedParams.size > 0) {
+
+            url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+                Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
+                aliasedParams.set(labelName, `'${value}'`);
+                return labelName;
+            });
+
+            const char = url.indexOf("?") > -1 ? "&" : "?";
+
+            url += `${char}${Array.from(aliasedParams).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        }
 
         return url;
     }

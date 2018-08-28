@@ -77,7 +77,7 @@ export class Items extends SharePointQueryableCollection {
         // $select - allow picking the return fields (good behavior)
         // $filter - allow setting a filter, though this may fail due for large lists
         this.query.forEach((v: string, k: string) => {
-            if (/^[\$select|\$filter|\$top|\$expand]$/i.test(k)) {
+            if (/^\$select|filter|top|expand$/i.test(k)) {
                 items.query.set(k, v);
             }
         });
