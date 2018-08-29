@@ -110,22 +110,21 @@ export class SearchSuggest extends SharePointQueryableInstance {
 }
 
 export interface SearchSuggestResult {
-    PeopleNames: string[];
-    PersonalResults: PersonalResultSuggestion[];
-    Queries: any[];
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
 }
 
-export class ESearchSuggestResult {
-
-    public PeopleNames: string[];
-    public PersonalResults: PersonalResultSuggestion[];
-    public Queries: any[];
+export interface ESearchSuggestResult {
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
 }
 
 export interface PersonalResultSuggestion {
-    HighlightedTitle?: string;
-    IsBestBet?: boolean;
-    Title?: string;
-    TypeId?: string;
-    Url?: string;
+    readonly HighlightedTitle?: string;
+    readonly IsBestBet?: boolean;
+    readonly Title?: string;
+    readonly TypeId?: string;
+    readonly Url?: string;
 }
