@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/common: added alias functions for jsS and hOP [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - @pnp/sp: Items.getAll now takes optional second argument for accept header [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - @pnp/sp: Added defaultPath class decorator [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/common: Added getHashCode to exports [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: Added searchWithCaching to root sp object [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: Search instances now support usingCaching [[PR](https://github.com/pnp/pnpjs/pull/207)]
 
 ### Changed
 

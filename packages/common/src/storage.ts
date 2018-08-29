@@ -1,4 +1,4 @@
-import { dateAdd, getCtxCallback, jsS } from "./util";
+import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util";
 import { RuntimeConfig } from "./libconfig";
 
 /**
@@ -39,7 +39,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
 
         const o = this.store.getItem(key);
 
-        if (o === undefined) {
+        if (!objectDefinedNotNull(o)) {
             return null;
         }
 
@@ -281,7 +281,7 @@ export class PnPClientStorage {
     public get local(): PnPClientStore {
 
         if (this._local === null) {
-            this._local = this.getStore(localStorage);
+            this._local = this.getStore("local");
         }
 
         return this._local;
@@ -293,13 +293,18 @@ export class PnPClientStorage {
     public get session(): PnPClientStore {
 
         if (this._session === null) {
-            this._session = this.getStore(sessionStorage);
+            this._session = this.getStore("session");
         }
 
         return this._session;
     }
 
-    private getStore(s: Storage): PnPClientStorageWrapper {
-        return  s !== undefined ? new PnPClientStorageWrapper(s) : new PnPClientStorageWrapper(new MemoryStorage());
+    private getStore(name: string): PnPClientStorageWrapper {
+
+        if (name === "local") {
+            return new PnPClientStorageWrapper(typeof(localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+        }
+
+        return new PnPClientStorageWrapper(typeof(sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
     }
 }

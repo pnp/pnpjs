@@ -30,6 +30,37 @@ sp.search(<SearchQuery>{
 });
 ```
 
+## Search Result Caching
+
+_Added in 1.1.5_
+
+As of version 1.1.5 you can also use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options
+
+```TypeScript
+import { sp, SearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp";
+
+sp.searchWithCaching(<SearchQuery>{
+    Querytext: "test",
+    RowLimit: 10,
+    EnableInterleaving: true,
+}).then((r: SearchResults) => {
+
+    console.log(r.ElapsedTime);
+    console.log(r.RowCount);
+    console.log(r.PrimarySearchResults);
+});
+
+
+const builder = SearchQueryBuilder().text("test").rowLimit(3);
+
+// supply a search query builder and caching options
+sp.searchWithCaching(builder, { key: "mykey", expiration: dateAdd(new Date(), "month", 1) }).then(r2 => {
+
+    console.log(r2.TotalRows);
+});
+```
+
+
 ## Paging with SearchResults.getPage
 
 Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.

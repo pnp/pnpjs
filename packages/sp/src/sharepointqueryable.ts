@@ -28,6 +28,8 @@ export interface SharePointQueryableConstructor<T> {
  */
 export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
 
+    protected _forceCaching: boolean;
+
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -37,6 +39,8 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      */
     constructor(baseUrl: string | SharePointQueryable, path?: string) {
         super();
+
+        this._forceCaching = false;
 
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
@@ -194,7 +198,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
                 cachingOptions: this._cachingOptions,
                 clientFactory: () => new SPHttpClient(),
                 isBatched: this.hasBatch,
-                isCached: /^get$/i.test(verb) && this._useCaching,
+                isCached: this._forceCaching || (this._useCaching && /^get$/i.test(verb)),
                 options: options,
                 parser: parser,
                 pipeline: pipeline,

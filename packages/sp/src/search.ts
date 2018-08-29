@@ -1,6 +1,7 @@
 import { SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
-import { extend, jsS, hOP } from "@pnp/common";
+import { extend, jsS, hOP, getHashCode, objectDefinedNotNull } from "@pnp/common";
 import { metadata } from "./utils/metadata";
+import { CachingOptions } from "@pnp/odata";
 
 export interface ISearchQueryBuilder {
     query: any;
@@ -88,12 +89,8 @@ const funcs = new Map<string, string>([
 
 const props = new Map<string, string>([]);
 
-// after: https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
-function toCamelCase(str: string) {
-    return str
-        .replace(/\s(.)/g, ($1) => $1.toUpperCase())
-        .replace(/\s/g, "")
-        .replace(/^(.)/, ($1) => $1.toLowerCase());
+function toPropCase(str: string) {
+    return str.replace(/^(.)/, ($1) => $1.toUpperCase());
 }
 
 /**
@@ -121,16 +118,19 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBui
                 if (funcs.has(pk)) {
                     return (...value: any[]) => {
                         const mappedPk = funcs.get(pk);
-                        self.query[mappedPk.length > 0 ? mappedPk : toCamelCase(pk)] = value.length > 1 ? value : value[0];
+                        self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
                         return proxy;
                     };
                 }
-                const propKey = props.has(pk) ? props.get(pk) : toCamelCase(pk);
+                const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
                 self.query[propKey] = true;
                 return proxy;
             },
         });
 }
+
+export type SearchQueryInit = string | SearchQuery | ISearchQueryBuilder;
+
 
 /**
  * Describes the search API
@@ -142,7 +142,9 @@ export class Search extends SharePointQueryableInstance {
     /**
      * @returns Promise
      */
-    public execute(query: SearchQuery): Promise<SearchResults> {
+    public execute(queryInit: SearchQueryInit): Promise<SearchResults> {
+
+        const query = this.parseQuery(queryInit);
 
         let formattedBody: any;
         formattedBody = query;
@@ -175,6 +177,25 @@ export class Search extends SharePointQueryableInstance {
             request: extend(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), formattedBody),
         });
 
+        // if we are using caching with this search request, then we need to handle some work upfront to enable that
+        if (this._useCaching) {
+
+            // force use of the cache for this request if .usingCaching was called
+            this._forceCaching = true;
+
+            // because all the requests use the same url they would collide in the cache we use a special key
+            const cacheKey = `PnPjs.SearchWithCaching(${getHashCode(postBody)})`;
+
+            if (objectDefinedNotNull(this._cachingOptions)) {
+                // if our key ends in the postquery url we overwrite it
+                if (/\/_api\/search\/postquery$/i.test(this._cachingOptions.key)) {
+                    this._cachingOptions.key = cacheKey;
+                }
+            } else {
+                this._cachingOptions = new CachingOptions(cacheKey);
+            }
+        }
+
         return this.postCore({ body: postBody }).then((data) => new SearchResults(data, this.toUrl(), query));
     }
 
@@ -185,6 +206,26 @@ export class Search extends SharePointQueryableInstance {
      */
     private fixupProp(prop: any): any {
         return hOP(prop, "results") ? prop : { results: prop };
+    }
+
+    /**
+     * Translates one of the query initializers into a SearchQuery instance
+     * 
+     * @param query 
+     */
+    private parseQuery(query: SearchQueryInit): SearchQuery {
+
+        let finalQuery: SearchQuery;
+
+        if (typeof query === "string") {
+            finalQuery = { Querytext: query };
+        } else if ((query as ISearchQueryBuilder).toSearchQuery) {
+            finalQuery = (query as ISearchQueryBuilder).toSearchQuery();
+        } else {
+            finalQuery = <SearchQuery>query;
+        }
+
+        return finalQuery;
     }
 }
 

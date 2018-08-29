@@ -1,4 +1,4 @@
-import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP } from "@pnp/common";
+import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP, getHashCode } from "@pnp/common";
 import { CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
 import { SPHttpClient, toAbsoluteUrl } from "@pnp/sp";
 import { IObjectPathBatch } from "./batch";
@@ -269,7 +269,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             if (this._useCaching) {
 
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${this._objectPaths.hash()})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(this._objectPaths.toBody())})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it

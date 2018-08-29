@@ -102,7 +102,7 @@ export function isFunc(cf: any): boolean {
  * @param obj Object to test
  */
 export function objectDefinedNotNull(obj: any): boolean {
-    return obj !== undefined && obj !== null;
+    return typeof obj !== "undefined" && obj !== null;
 }
 
 /**
@@ -215,3 +215,24 @@ export function jsS(o: any): string {
 export function hOP(o: any, p: string): boolean {
     return Object.hasOwnProperty.call(o, p);
 }
+
+/**
+ * Generates a ~unique hash code for this ObjectPathQueue
+ * 
+ * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+ */
+// tslint:disable:no-bitwise
+export function getHashCode(s: string): number {
+    let hash = 0;
+    if (s.length === 0) {
+        return hash;
+    }
+
+    for (let i = 0; i < s.length; i++) {
+        const chr = s.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
+// tslint:enable:no-bitwise
