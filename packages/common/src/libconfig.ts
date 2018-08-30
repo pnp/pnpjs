@@ -1,4 +1,4 @@
-import { TypedHash, Dictionary } from "./collections";
+import { TypedHash, mergeMaps, objectToMap } from "./collections";
 import { ISPFXContext } from "./spfxContextInterface";
 
 export interface LibraryConfiguration {
@@ -38,21 +38,27 @@ export function setup(config: LibraryConfiguration): void {
     RuntimeConfig.extend(config);
 }
 
+// lable mapping for known config values
+const s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+];
+
 export class RuntimeConfigImpl {
 
-    private _v: Dictionary<any>;
-
-    constructor() {
-
-        this._v = new Dictionary();
+    constructor(private _v = new Map<string, any>()) {
 
         // setup defaults
-        this._v.add("defaultCachingStore", "session");
-        this._v.add("defaultCachingTimeoutSeconds", 60);
-        this._v.add("globalCacheDisable", false);
-        this._v.add("enableCacheExpiration", false);
-        this._v.add("cacheExpirationIntervalMilliseconds", 750);
-        this._v.add("spfxContext", null);
+        this._v.set(s[0], "session");
+        this._v.set(s[1], 60);
+        this._v.set(s[2], false);
+        this._v.set(s[3], false);
+        this._v.set(s[4], 750);
+        this._v.set(s[5], null);
     }
 
     /**
@@ -60,10 +66,7 @@ export class RuntimeConfigImpl {
      * @param config The set of properties to add to the globa configuration instance
      */
     public extend(config: TypedHash<any>): void {
-
-        Object.keys(config).forEach((key: string) => {
-            this._v.add(key, config[key]);
-        });
+        this._v = mergeMaps(this._v, objectToMap(config));
     }
 
     public get(key: string): any {
@@ -71,27 +74,27 @@ export class RuntimeConfigImpl {
     }
 
     public get defaultCachingStore(): "session" | "local" {
-        return this.get("defaultCachingStore");
+        return this.get(s[0]);
     }
 
     public get defaultCachingTimeoutSeconds(): number {
-        return this.get("defaultCachingTimeoutSeconds");
+        return this.get(s[1]);
     }
 
     public get globalCacheDisable(): boolean {
-        return this.get("globalCacheDisable");
+        return this.get(s[2]);
     }
 
     public get enableCacheExpiration(): boolean {
-        return this.get("enableCacheExpiration");
+        return this.get(s[3]);
     }
 
     public get cacheExpirationIntervalMilliseconds(): number {
-        return this.get("cacheExpirationIntervalMilliseconds");
+        return this.get(s[4]);
     }
 
     public get spfxContext(): ISPFXContext {
-        return this.get("spfxContext");
+        return this.get(s[5]);
     }
 }
 

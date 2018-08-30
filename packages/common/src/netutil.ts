@@ -28,7 +28,7 @@ export interface RequestClient {
 }
 
 export function mergeHeaders(target: Headers, source: any): void {
-    if (typeof source !== "undefined" && source !== null) {
+    if ( source !== undefined && source !== null) {
         const temp = <any>new Request("", { headers: source });
         temp.headers.forEach((value: string, name: string) => {
             target.append(name, value);

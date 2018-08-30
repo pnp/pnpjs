@@ -1,4 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { jsS } from "@pnp/common";
 
 export interface OneNoteMethods {
     notebooks: Notebooks;
@@ -59,7 +60,7 @@ export class Notebooks extends GraphQueryableCollection {
         };
 
         return this.postCore({
-            body: JSON.stringify(postBody),
+            body: jsS(postBody),
         }).then(r => {
             return {
                 data: r,
@@ -114,7 +115,7 @@ export class Sections extends GraphQueryableCollection {
         };
 
         return this.postCore({
-            body: JSON.stringify(postBody),
+            body: jsS(postBody),
         }).then(r => {
             return {
                 data: r,

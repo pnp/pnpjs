@@ -1,227 +1,150 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { extend, Dictionary } from "@pnp/common";
+import { SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
+import { extend, jsS, hOP, getHashCode, objectDefinedNotNull } from "@pnp/common";
+import { metadata } from "./utils/metadata";
+import { CachingOptions } from "@pnp/odata";
+
+export interface ISearchQueryBuilder {
+    query: any;
+    readonly bypassResultTypes: this;
+    readonly enableStemming: this;
+    readonly enableInterleaving: this;
+    readonly enableFql: this;
+    readonly enableNicknames: this;
+    readonly enablePhonetic: this;
+    readonly trimDuplicates: this;
+    readonly processBestBets: this;
+    readonly enableQueryRules: this;
+    readonly enableSorting: this;
+    readonly generateBlockRankLog: this;
+    readonly processPersonalFavorites: this;
+    readonly enableOrderingHitHighlightedProperty: this;
+
+    culture(culture: number): this;
+    rowLimit(n: number): this;
+    startRow(n: number): this;
+    sourceId(id: string): this;
+    text(queryText: string): this;
+    template(template: string): this;
+    trimDuplicatesIncludeId(n: number): this;
+    rankingModelId(id: string): this;
+    rowsPerPage(n: number): this;
+    selectProperties(...properties: string[]): this;
+    timeZoneId(id: number): this;
+    refinementFilters(...filters: string[]): this;
+    refiners(refiners: string): this;
+    hiddenConstraints(constraints: string): this;
+    sortList(...sorts: Sort[]): this;
+    timeout(milliseconds: number): this;
+    hithighlightedProperties(...properties: string[]): this;
+    clientType(clientType: string): this;
+    personalizationData(data: string): this;
+    resultsURL(url: string): this;
+    queryTag(...tags: string[]): this;
+    properties(...properties: SearchProperty[]): this;
+    queryTemplatePropertiesUrl(url: string): this;
+    reorderingRules(...rules: ReorderingRule[]): this;
+    hitHighlightedMultivaluePropertyLimit(limit: number): this;
+    collapseSpecification(spec: string): this;
+    uiLanguage(lang: number): this;
+    desiredSnippetLength(len: number): this;
+    maxSnippetLength(len: number): this;
+    summaryLength(len: number): this;
+
+    /* included method */
+    toSearchQuery(): SearchQuery;
+}
+
+const funcs = new Map<string, string>([
+    ["text", "Querytext"],
+    ["template", "QueryTemplate"],
+    ["sourceId", "SourceId"],
+    ["trimDuplicatesIncludeId", ""],
+    ["startRow", ""],
+    ["rowLimit", ""],
+    ["rankingModelId", ""],
+    ["rowsPerPage", ""],
+    ["selectProperties", ""],
+    ["culture", ""],
+    ["timeZoneId", ""],
+    ["refinementFilters", ""],
+    ["refiners", ""],
+    ["hiddenConstraints", ""],
+    ["sortList", ""],
+    ["timeout", ""],
+    ["hithighlightedProperties", ""],
+    ["clientType", ""],
+    ["personalizationData", ""],
+    ["resultsURL", ""],
+    ["queryTag", ""],
+    ["properties", ""],
+    ["queryTemplatePropertiesUrl", ""],
+    ["reorderingRules", ""],
+    ["hitHighlightedMultivaluePropertyLimit", ""],
+    ["collapseSpecification", ""],
+    ["uiLanguage", ""],
+    ["desiredSnippetLength", ""],
+    ["maxSnippetLength", ""],
+    ["summaryLength", ""],
+]);
+
+const props = new Map<string, string>([]);
+
+function toPropCase(str: string) {
+    return str.replace(/^(.)/, ($1) => $1.toUpperCase());
+}
 
 /**
- * Allows for the fluent construction of search queries
+ * Creates a new instance of the SearchQueryBuilder
+ * 
+ * @param queryText Initial query text
+ * @param _query Any initial query configuration
  */
-export class SearchQueryBuilder {
+export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBuilder {
 
-    constructor(queryText = "", private _query = {}) {
+    return new Proxy(<any>{
+        query: Object.assign({
+            Querytext: queryText,
+        }, _query),
+    },
+        {
+            get(self, propertyKey, proxy) {
 
-        if (typeof queryText === "string" && queryText.length > 0) {
+                const pk = propertyKey.toString();
 
-            this.extendQuery({ Querytext: queryText });
-        }
-    }
+                if (pk === "toSearchQuery") {
+                    return () => self.query;
+                }
 
-    public static create(queryText = "", queryTemplate: SearchQuery = {}): SearchQueryBuilder {
-        return new SearchQueryBuilder(queryText, queryTemplate);
-    }
-
-    public text(queryText: string): this {
-        return this.extendQuery({ Querytext: queryText });
-    }
-
-    public template(template: string): this {
-        return this.extendQuery({ QueryTemplate: template });
-    }
-
-    public sourceId(id: string): this {
-        return this.extendQuery({ SourceId: id });
-    }
-
-    public get enableInterleaving(): this {
-        return this.extendQuery({ EnableInterleaving: true });
-    }
-
-    public get enableStemming(): this {
-        return this.extendQuery({ EnableStemming: true });
-    }
-
-    public get trimDuplicates(): this {
-        return this.extendQuery({ TrimDuplicates: true });
-    }
-
-    public trimDuplicatesIncludeId(n: number): this {
-        return this.extendQuery({ TrimDuplicatesIncludeId: n });
-    }
-
-    public get enableNicknames(): this {
-        return this.extendQuery({ EnableNicknames: true });
-    }
-
-    public get enableFql(): this {
-        return this.extendQuery({ EnableFQL: true });
-    }
-
-    public get enablePhonetic(): this {
-        return this.extendQuery({ EnablePhonetic: true });
-    }
-
-    public get bypassResultTypes(): this {
-        return this.extendQuery({ BypassResultTypes: true });
-    }
-
-    public get processBestBets(): this {
-        return this.extendQuery({ ProcessBestBets: true });
-    }
-
-    public get enableQueryRules(): this {
-        return this.extendQuery({ EnableQueryRules: true });
-    }
-
-    public get enableSorting(): this {
-        return this.extendQuery({ EnableSorting: true });
-    }
-
-    public get generateBlockRankLog(): this {
-        return this.extendQuery({ GenerateBlockRankLog: true });
-    }
-
-    public rankingModelId(id: string): this {
-        return this.extendQuery({ RankingModelId: id });
-    }
-
-    public startRow(n: number): this {
-        return this.extendQuery({ StartRow: n });
-    }
-
-    public rowLimit(n: number): this {
-        return this.extendQuery({ RowLimit: n });
-    }
-
-    public rowsPerPage(n: number): this {
-        return this.extendQuery({ RowsPerPage: n });
-    }
-
-    public selectProperties(...properties: string[]): this {
-        return this.extendQuery({ SelectProperties: properties });
-    }
-
-    public culture(culture: number): this {
-        return this.extendQuery({ Culture: culture });
-    }
-
-    public timeZoneId(id: number): this {
-        return this.extendQuery({ TimeZoneId: id });
-    }
-
-    public refinementFilters(...filters: string[]): this {
-        return this.extendQuery({ RefinementFilters: filters });
-    }
-
-    public refiners(refiners: string): this {
-        return this.extendQuery({ Refiners: refiners });
-    }
-
-    public hiddenConstraints(constraints: string): this {
-        return this.extendQuery({ HiddenConstraints: constraints });
-    }
-
-    public sortList(...sorts: Sort[]): this {
-        return this.extendQuery({ SortList: sorts });
-    }
-
-    public timeout(milliseconds: number): this {
-        return this.extendQuery({ Timeout: milliseconds });
-    }
-
-    public hithighlightedProperties(...properties: string[]): this {
-        return this.extendQuery({ HitHighlightedProperties: properties });
-    }
-
-    public clientType(clientType: string): this {
-        return this.extendQuery({ ClientType: clientType });
-    }
-
-    public personalizationData(data: string): this {
-        return this.extendQuery({ PersonalizationData: data });
-    }
-
-    public resultsURL(url: string): this {
-        return this.extendQuery({ ResultsUrl: url });
-    }
-
-    public queryTag(...tags: string[]): this {
-        return this.extendQuery({ QueryTag: tags });
-    }
-
-    public properties(...properties: SearchProperty[]): this {
-        return this.extendQuery({ Properties: properties });
-    }
-
-    public get processPersonalFavorites(): this {
-        return this.extendQuery({ ProcessPersonalFavorites: true });
-    }
-
-    public queryTemplatePropertiesUrl(url: string): this {
-        return this.extendQuery({ QueryTemplatePropertiesUrl: url });
-    }
-
-    public reorderingRules(...rules: ReorderingRule[]): this {
-        return this.extendQuery({ ReorderingRules: rules });
-    }
-
-    public hitHighlightedMultivaluePropertyLimit(limit: number): this {
-        return this.extendQuery({ HitHighlightedMultivaluePropertyLimit: limit });
-    }
-
-    public get enableOrderingHitHighlightedProperty(): this {
-        return this.extendQuery({ EnableOrderingHitHighlightedProperty: true });
-    }
-
-    public collapseSpecification(spec: string): this {
-        return this.extendQuery({ CollapseSpecification: spec });
-    }
-
-    public uiLanguage(lang: number): this {
-        return this.extendQuery({ UILanguage: lang });
-    }
-
-    public desiredSnippetLength(len: number): this {
-        return this.extendQuery({ DesiredSnippetLength: len });
-    }
-
-    public maxSnippetLength(len: number): this {
-        return this.extendQuery({ MaxSnippetLength: len });
-    }
-
-    public summaryLength(len: number): this {
-        return this.extendQuery({ SummaryLength: len });
-    }
-
-    public toSearchQuery(): SearchQuery {
-        return <SearchQuery>this._query;
-    }
-
-    private extendQuery(part: any): this {
-
-        this._query = extend(this._query, part);
-        return this;
-    }
+                if (funcs.has(pk)) {
+                    return (...value: any[]) => {
+                        const mappedPk = funcs.get(pk);
+                        self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
+                        return proxy;
+                    };
+                }
+                const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
+                self.query[propKey] = true;
+                return proxy;
+            },
+        });
 }
+
+export type SearchQueryInit = string | SearchQuery | ISearchQueryBuilder;
+
 
 /**
  * Describes the search API
  *
  */
+@defaultPath("_api/search/postquery")
 export class Search extends SharePointQueryableInstance {
 
     /**
-     * Creates a new instance of the Search class
-     *
-     * @param baseUrl The url for the search context
-     * @param query The SearchQuery object to execute
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/search/postquery") {
-        super(baseUrl, path);
-    }
-
-    /**
-     * .......
      * @returns Promise
      */
-    public execute(query: SearchQuery): Promise<SearchResults> {
+    public execute(queryInit: SearchQueryInit): Promise<SearchResults> {
+
+        const query = this.parseQuery(queryInit);
 
         let formattedBody: any;
         formattedBody = query;
@@ -250,11 +173,28 @@ export class Search extends SharePointQueryableInstance {
             formattedBody.Properties = this.fixupProp(query.Properties);
         }
 
-        const postBody = JSON.stringify({
-            request: extend({
-                "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
-            }, formattedBody),
+        const postBody = jsS({
+            request: extend(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), formattedBody),
         });
+
+        // if we are using caching with this search request, then we need to handle some work upfront to enable that
+        if (this._useCaching) {
+
+            // force use of the cache for this request if .usingCaching was called
+            this._forceCaching = true;
+
+            // because all the requests use the same url they would collide in the cache we use a special key
+            const cacheKey = `PnPjs.SearchWithCaching(${getHashCode(postBody)})`;
+
+            if (objectDefinedNotNull(this._cachingOptions)) {
+                // if our key ends in the postquery url we overwrite it
+                if (/\/_api\/search\/postquery$/i.test(this._cachingOptions.key)) {
+                    this._cachingOptions.key = cacheKey;
+                }
+            } else {
+                this._cachingOptions = new CachingOptions(cacheKey);
+            }
+        }
 
         return this.postCore({ body: postBody }).then((data) => new SearchResults(data, this.toUrl(), query));
     }
@@ -265,12 +205,27 @@ export class Search extends SharePointQueryableInstance {
      * @param prop property to fixup for container struct
      */
     private fixupProp(prop: any): any {
+        return hOP(prop, "results") ? prop : { results: prop };
+    }
 
-        if (prop.hasOwnProperty("results")) {
-            return prop;
+    /**
+     * Translates one of the query initializers into a SearchQuery instance
+     * 
+     * @param query 
+     */
+    private parseQuery(query: SearchQueryInit): SearchQuery {
+
+        let finalQuery: SearchQuery;
+
+        if (typeof query === "string") {
+            finalQuery = { Querytext: query };
+        } else if ((query as ISearchQueryBuilder).toSearchQuery) {
+            finalQuery = (query as ISearchQueryBuilder).toSearchQuery();
+        } else {
+            finalQuery = <SearchQuery>query;
         }
 
-        return { results: prop };
+        return finalQuery;
     }
 }
 
@@ -334,7 +289,7 @@ export class SearchResults {
 
         // if pageSize is supplied, then we use that regardless of any previous values
         // otherwise get the previous RowLimit or default to 10
-        const rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
+        const rows = pageSize !== undefined ? pageSize : hOP(this._query, "RowLimit") ? this._query.RowLimit : 10;
 
         const query: SearchQuery = extend(this._query, {
             RowLimit: rows,
@@ -665,7 +620,7 @@ export interface SearchResponse {
 
 export interface ResultTableCollection {
 
-    QueryErrors?: Dictionary<any>;
+    QueryErrors?: Map<string, any>;
     QueryId?: string;
     QueryRuleId?: string;
     CustomResults?: ResultTable;

@@ -1,12 +1,10 @@
 import { expect } from "chai";
 import { testSettings } from "../../../test/main";
-import { toMatchEndRegex } from "./utils";
 import { sp, Web } from "../";
-import { Util } from "@pnp/common";
+import { combine } from "@pnp/common";
 
 describe("Alias Parameters", () => {
 
-    let webAbsUrl = "";
     let webRelativeUrl = "";
     let web: Web;
 
@@ -20,7 +18,6 @@ describe("Alias Parameters", () => {
 
             // make sure we have the correct server relative url
             webRelativeUrl = u.ServerRelativeUrl;
-            webAbsUrl = u.Url;
 
             // we need a doc lib with a file and folder in it
             web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101).then(ler => {
@@ -45,17 +42,17 @@ describe("Alias Parameters", () => {
 
         it("Should allow aliasing for folders", () => {
 
-            return expect(sp.web.getFolderByServerRelativeUrl(`!@p1::/${Util.combinePaths(webRelativeUrl, "AliasTestLib/MyTestFolder")}`).get()).to.eventually.be.fulfilled;
+            return expect(sp.web.getFolderByServerRelativeUrl(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`).get()).to.eventually.be.fulfilled;
         });
 
         it("Should allow aliasing for files", () => {
 
-            return expect(sp.web.getFileByServerRelativeUrl(`!@p1::/${Util.combinePaths(webRelativeUrl, "AliasTestLib/text.txt")}`).get()).to.eventually.be.fulfilled;
+            return expect(sp.web.getFileByServerRelativeUrl(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/text.txt")}`).get()).to.eventually.be.fulfilled;
         });
 
         it("Should allow aliasing for sub-parameters", () => {
 
-            const folder = sp.web.getFolderByServerRelativeUrl(`!@p1::/${Util.combinePaths(webRelativeUrl, "AliasTestLib/MyTestFolder")}`);
+            const folder = sp.web.getFolderByServerRelativeUrl(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`);
             return expect(folder.files.add("!@p2::myfilename.txt", "new file content")).to.eventually.be.fulfilled;
         });
     }

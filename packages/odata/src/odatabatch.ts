@@ -13,14 +13,14 @@ export interface ODataBatchRequestInfo {
 
 export abstract class ODataBatch {
 
-    protected _dependencies: Promise<void>[];
-    protected _requests: ODataBatchRequestInfo[];
-    protected _resolveBatchDependencies: Promise<void>[];
+    protected _deps: Promise<void>[];
+    protected _reqs: ODataBatchRequestInfo[];
+    protected _rDeps: Promise<void>[];
 
     constructor(private _batchId = getGUID()) {
-        this._requests = [];
-        this._dependencies = [];
-        this._resolveBatchDependencies = [];
+        this._reqs = [];
+        this._deps = [];
+        this._rDeps = [];
     }
 
     public get batchId(): string {
@@ -31,7 +31,7 @@ export abstract class ODataBatch {
      * The requests contained in this batch
      */
     protected get requests(): ODataBatchRequestInfo[] {
-        return this._requests;
+        return this._reqs;
     }
 
     /**
@@ -40,11 +40,12 @@ export abstract class ODataBatch {
      * @param method Request method (GET, POST, etc)
      * @param options Any request options
      * @param parser The parser used to handle the eventual return from the query
+     * @param id An identifier used to track a request within a batch
      */
-    public add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>, requestId: string): Promise<T> {
+    public add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>, id: string): Promise<T> {
 
         const info: ODataBatchRequestInfo = {
-            id: requestId,
+            id,
             method: method.toUpperCase(),
             options,
             parser,
@@ -58,7 +59,7 @@ export abstract class ODataBatch {
             info.reject = reject;
         });
 
-        this._requests.push(info);
+        this._reqs.push(info);
 
         return p;
     }
@@ -70,11 +71,10 @@ export abstract class ODataBatch {
     public addDependency(): () => void {
 
         let resolver: () => void = () => void (0);
-        const promise = new Promise<void>((resolve) => {
-            resolver = resolve;
-        });
 
-        this._dependencies.push(promise);
+        this._deps.push(new Promise<void>((resolve) => {
+            resolver = resolve;
+        }));
 
         return resolver;
     }
@@ -85,7 +85,7 @@ export abstract class ODataBatch {
      * @param p The dependent promise
      */
     public addResolveBatchDependency(p: Promise<any>): void {
-        this._resolveBatchDependencies.push(p);
+        this._rDeps.push(p);
     }
 
     /**
@@ -97,10 +97,10 @@ export abstract class ODataBatch {
 
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
-        return Promise.all(this._dependencies)
-            .then(() => Promise.all(this._dependencies))
+        return Promise.all(this._deps)
+            .then(() => Promise.all(this._deps))
             .then(() => this.executeImpl())
-            .then(() => Promise.all(this._resolveBatchDependencies))
+            .then(() => Promise.all(this._rDeps))
             .then(() => void (0));
     }
 

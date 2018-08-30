@@ -1,13 +1,11 @@
 import {
-    combinePaths,
-    Dictionary,
+    combine,
     RuntimeConfig,
     FetchOptions,
     ConfigOptions,
     mergeOptions,
     objectDefinedNotNull,
 } from "@pnp/common";
-import { Logger } from "@pnp/logging";
 import { ODataParser, ODataDefaultParser, JSONParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
@@ -16,15 +14,6 @@ import {
     getDefaultPipeline,
     pipe,
 } from "./pipeline";
-
-export class AlreadyInBatchException extends Error {
-
-    constructor(msg = "This query is already part of a batch.") {
-        super(msg);
-        this.name = "AlreadyInBatchException";
-        Logger.error(this);
-    }
-}
 
 export abstract class Queryable<GetType> {
 
@@ -36,7 +25,7 @@ export abstract class Queryable<GetType> {
     /**
      * Tracks the query parts of the url
      */
-    protected _query: Dictionary<string>;
+    protected _query: Map<string, string>;
 
     /**
      * Tracks the url as it is built
@@ -59,7 +48,7 @@ export abstract class Queryable<GetType> {
     protected _cachingOptions: ICachingOptions | null;
 
     constructor() {
-        this._query = new Dictionary<string>();
+        this._query = new Map<string, string>();
         this._options = {};
         this._url = "";
         this._parentUrl = "";
@@ -95,7 +84,7 @@ export abstract class Queryable<GetType> {
      * Provides access to the query builder for this url
      *
      */
-    public get query(): Dictionary<string> {
+    public get query(): Map<string, string> {
         return this._query;
     }
 
@@ -127,7 +116,7 @@ export abstract class Queryable<GetType> {
     public usingCaching(options?: ICachingOptions): this {
         if (!RuntimeConfig.globalCacheDisable) {
             this._useCaching = true;
-            if (typeof options !== "undefined") {
+            if (options !== undefined) {
                 this._cachingOptions = options;
             }
         }
@@ -160,7 +149,7 @@ export abstract class Queryable<GetType> {
      * @param pathPart The string to append
      */
     protected append(pathPart: string) {
-        this._url = combinePaths(this._url, pathPart);
+        this._url = combine(this._url, pathPart);
     }
 
     /**
@@ -179,7 +168,7 @@ export abstract class Queryable<GetType> {
      */
     protected extend(parent: Queryable<any>, path?: string) {
         this._parentUrl = parent._url;
-        this._url = combinePaths(this._parentUrl, path);
+        this._url = combine(this._parentUrl, path);
         this.configureFrom(parent);
     }
 
@@ -224,7 +213,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     public inBatch(batch: BatchType): this {
 
         if (this.batch !== null) {
-            throw new AlreadyInBatchException();
+            throw new Error("This query is already part of a batch.");
         }
 
         this._batch = batch;

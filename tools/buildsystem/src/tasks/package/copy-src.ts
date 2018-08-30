@@ -22,7 +22,7 @@ export function copySrc(ctx: PackageContext) {
             }),
         ], (err: (Error | null)) => {
 
-            if (typeof err !== "undefined") {
+            if (err !== undefined) {
                 reject(err);
             } else {
                 resolve();

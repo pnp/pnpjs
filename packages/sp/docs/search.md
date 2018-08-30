@@ -30,6 +30,37 @@ sp.search(<SearchQuery>{
 });
 ```
 
+## Search Result Caching
+
+_Added in 1.1.5_
+
+As of version 1.1.5 you can also use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options
+
+```TypeScript
+import { sp, SearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp";
+
+sp.searchWithCaching(<SearchQuery>{
+    Querytext: "test",
+    RowLimit: 10,
+    EnableInterleaving: true,
+}).then((r: SearchResults) => {
+
+    console.log(r.ElapsedTime);
+    console.log(r.RowCount);
+    console.log(r.PrimarySearchResults);
+});
+
+
+const builder = SearchQueryBuilder().text("test").rowLimit(3);
+
+// supply a search query builder and caching options
+sp.searchWithCaching(builder, { key: "mykey", expiration: dateAdd(new Date(), "month", 1) }).then(r2 => {
+
+    console.log(r2.TotalRows);
+});
+```
+
+
 ## Paging with SearchResults.getPage
 
 Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.
@@ -78,13 +109,15 @@ function prev() {
 The SearchQueryBuilder allows you to build your queries in a fluent manner. It also accepts constructor arguments for query text and a base query plain object, should you have a shared configuration for queries in an application you can define them once. The methods and properties match those on the SearchQuery interface. Boolean properties add the flag to the query while methods require that you supply one or more arguments. Also arguments supplied later in the chain will overwrite previous values.
 
 ```TypeScript
+import { SearchQueryBuilder } from "@pnp/sp";
+
 // basic usage
-let q = SearchQueryBuilder.create().text("test").rowLimit(4).enablePhonetic;
+let q = SearchQueryBuilder().text("test").rowLimit(4).enablePhonetic;
 
 sp.search(q).then(h => { /* ... */ });
 
 // provide a default query text in the create()
-let q2 = SearchQueryBuilder.create("text").rowLimit(4).enablePhonetic;
+let q2 = SearchQueryBuilder("text").rowLimit(4).enablePhonetic;
 
 sp.search(q2).then(h => { /* ... */ });
 
@@ -96,8 +129,8 @@ const appSearchSettings: SearchQuery = {
     HiddenConstraints: "reports"
 };
 
-let q3 = SearchQueryBuilder.create("test", appSearchSettings).enableQueryRules;
-let q4 = SearchQueryBuilder.create("financial data", appSearchSettings).enableSorting.enableStemming;
+let q3 = SearchQueryBuilder("test", appSearchSettings).enableQueryRules;
+let q4 = SearchQueryBuilder("financial data", appSearchSettings).enableSorting.enableStemming;
 sp.search(q3).then(h => { /* ... */ });
 sp.search(q4).then(h => { /* ... */ });
 ```

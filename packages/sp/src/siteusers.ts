@@ -1,6 +1,7 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SiteGroups } from "./sitegroups";
-import { extend, TypedHash } from "@pnp/common";
+import { TypedHash, jsS, extend } from "@pnp/common";
+import { metadata } from "./utils/metadata";
 
 /**
  * Properties that provide both a getter, and a setter.
@@ -15,16 +16,15 @@ export interface UserUpdateResult {
  * Describes a collection of all site collection users
  *
  */
+@defaultPath("siteusers")
 export class SiteUsers extends SharePointQueryableCollection {
 
     /**
-     * Creates a new instance of the SiteUsers class
+     * Gets a user from the collection by id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this user collection
+     * @param id The id of the user to retrieve
      */
-    constructor(baseUrl: string | SharePointQueryable, path = "siteusers") {
-        super(baseUrl, path);
-    }
+    public getById = this._getById<number, SiteUser>(SiteUser);
 
     /**
      * Gets a user from the collection by email
@@ -36,15 +36,6 @@ export class SiteUsers extends SharePointQueryableCollection {
     }
 
     /**
-     * Gets a user from the collection by id
-     *
-     * @param id The id of the user to retrieve
-     */
-    public getById(id: number): SiteUser {
-        return new SiteUser(this, `getById(${id})`);
-    }
-
-    /**
      * Gets a user from the collection by login name
      *
      * @param loginName The login name of the user to retrieve
@@ -52,7 +43,7 @@ export class SiteUsers extends SharePointQueryableCollection {
     public getByLoginName(loginName: string): SiteUser {
         const su = new SiteUser(this);
         su.concat("(@v)");
-        su.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        su.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return su;
     }
 
@@ -72,7 +63,7 @@ export class SiteUsers extends SharePointQueryableCollection {
      */
     public removeByLoginName(loginName: string): Promise<any> {
         const o = this.clone(SiteUsers, `removeByLoginName(@v)`);
-        o.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        o.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return o.postCore();
     }
 
@@ -84,7 +75,7 @@ export class SiteUsers extends SharePointQueryableCollection {
      */
     public add(loginName: string): Promise<SiteUser> {
         return this.clone(SiteUsers, null).postCore({
-            body: JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName }),
+            body: jsS(extend(metadata("SP.User"), { LoginName: loginName })),
         }).then(() => this.getByLoginName(loginName));
     }
 }
@@ -109,45 +100,20 @@ export class SiteUser extends SharePointQueryableInstance {
     *
     * @param properties A plain object of property names and values to update for the user
     */
-    public update(properties: TypedHash<any>): Promise<UserUpdateResult> {
-
-        const postBody = extend({ "__metadata": { "type": "SP.User" } }, properties);
-
-        return this.postCore({
-            body: JSON.stringify(postBody),
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then((data) => {
-            return {
-                data: data,
-                user: this,
-            };
-        });
-    }
+    public update = this._update<UserUpdateResult, TypedHash<any>, any>("SP.User", data => ({ data, user: this }));
 
     /**
      * Delete this user
      *
      */
-    public delete(): Promise<void> {
-        return this.postCore({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    }
+    public delete = this._delete;
 }
 
 /**
  * Represents the current user
  */
-export class CurrentUser extends SharePointQueryableInstance {
-
-    constructor(baseUrl: string | SharePointQueryable, path = "currentuser") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("currentuser")
+export class CurrentUser extends SharePointQueryableInstance { }
 
 export interface SiteUserProps {
     Email: string;

@@ -1,5 +1,20 @@
 import { Logger } from "@pnp/logging";
-import { Util, PnPClientStorage } from "@pnp/common";
+import {
+    PnPClientStorage,
+    dateAdd,
+    combine,
+    getCtxCallback,
+    getRandomString,
+    getGUID,
+    isFunc,
+    objectDefinedNotNull,
+    isArray,
+    extend,
+    isUrlAbsolute,
+    stringIsNullOrEmpty,
+    getAttrValueFromString,
+    sanitizeGuid,
+} from "@pnp/common";
 import { Settings } from "@pnp/config-store";
 import { GraphRest, graph as _graph } from "@pnp/graph";
 import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
@@ -22,7 +37,21 @@ export * from "@pnp/odata";
 /**
  * Utility methods
  */
-export const util = Util;
+export const util = {
+    combine,
+    dateAdd,
+    extend,
+    getAttrValueFromString,
+    getCtxCallback,
+    getGUID,
+    getRandomString,
+    isArray,
+    isFunc,
+    isUrlAbsolute,
+    objectDefinedNotNull,
+    sanitizeGuid,
+    stringIsNullOrEmpty,
+};
 
 /**
  * Provides access to the SharePoint REST interface

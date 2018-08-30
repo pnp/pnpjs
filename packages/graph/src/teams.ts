@@ -24,7 +24,7 @@ import {
 } from "@pnp/odata";
 
 import {
-    FetchOptions,
+    FetchOptions, jsS,
 } from "@pnp/common";
 
 export class Teams {
@@ -66,7 +66,7 @@ export class Team extends GraphQueryableInstance<TeamProperties> {
     public update(properties: TeamProperties): Promise<TeamUpdateResult> {
 
         return this.clone(Team, "").setEndpoint(GraphEndpoints.Beta).patchCore({
-            body: JSON.stringify(properties),
+            body: jsS(properties),
         }).then(data => {
             return {
                 data: data,

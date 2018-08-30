@@ -114,7 +114,7 @@ gulp.task("docs:copyassets", ["clean-docs"], (done) => {
             }),
     ], (err) => {
 
-        if (typeof err !== "undefined") {
+        if (err !== undefined) {
             done(err);
         } else {
             done();
@@ -142,7 +142,7 @@ gulp.task("docs:generate", ["clean-docs"], (done) => {
             }),
         ], (err) => {
 
-            if (typeof err !== "undefined") {
+            if (err !== undefined) {
                 done(err);
             } else {
                 done();

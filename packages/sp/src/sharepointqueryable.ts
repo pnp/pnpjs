@@ -1,11 +1,11 @@
 import {
-    combinePaths,
+    combine,
     isUrlAbsolute,
-    Dictionary,
     FetchOptions,
     mergeOptions,
     extend,
     getGUID,
+    jsS,
 } from "@pnp/common";
 import {
     ODataParser,
@@ -16,6 +16,7 @@ import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
 import { SPHttpClient } from "./net/sphttpclient";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { metadata } from "./utils/metadata";
 
 export interface SharePointQueryableConstructor<T> {
     new(baseUrl: string | SharePointQueryable, path?: string): T;
@@ -27,6 +28,8 @@ export interface SharePointQueryableConstructor<T> {
  */
 export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
 
+    protected _forceCaching: boolean;
+
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -37,30 +40,32 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
     constructor(baseUrl: string | SharePointQueryable, path?: string) {
         super();
 
+        this._forceCaching = false;
+
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
 
             if (isUrlAbsolute(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
                 this._parentUrl = baseUrl;
-                this._url = combinePaths(baseUrl, path);
+                this._url = combine(baseUrl, path);
             } else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
                 const index = baseUrl.lastIndexOf("/");
                 this._parentUrl = baseUrl.slice(0, index);
-                path = combinePaths(baseUrl.slice(index), path);
-                this._url = combinePaths(this._parentUrl, path);
+                path = combine(baseUrl.slice(index), path);
+                this._url = combine(this._parentUrl, path);
             } else {
                 // .../items(19)
                 const index = baseUrl.lastIndexOf("(");
                 this._parentUrl = baseUrl.slice(0, index);
-                this._url = combinePaths(baseUrl, path);
+                this._url = combine(baseUrl, path);
             }
         } else {
             this.extend(baseUrl, path);
-            const target = baseUrl._query.get("@target");
-            if (target !== null) {
-                this._query.add("@target", target);
+            const target = baseUrl.query.get("@target");
+            if (target !== undefined) {
+                this.query.set("@target", target);
             }
         }
     }
@@ -81,22 +86,48 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      */
     public toUrlAndQuery(): string {
 
-        const aliasedParams = new Dictionary<string>();
+        const aliasedParams = new Map<string, string>(this.query);
 
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
-            Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
-            aliasedParams.add(labelName, `'${value}'`);
-            return labelName;
-        });
+        let url = this.toUrl();
 
-        // inlude our explicitly set query string params
-        aliasedParams.merge(this._query);
+        if (aliasedParams.size > 0) {
 
-        if (aliasedParams.count > 0) {
-            url += `?${aliasedParams.getKeys().map(key => `${key}=${aliasedParams.get(key)}`).join("&")}`;
+            url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+                Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
+                aliasedParams.set(labelName, `'${value}'`);
+                return labelName;
+            });
+
+            const char = url.indexOf("?") > -1 ? "&" : "?";
+
+            url += `${char}${Array.from(aliasedParams).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
         }
 
         return url;
+    }
+
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select(...selects: string[]): this {
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand(...expands: string[]): this {
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
     }
 
     /**
@@ -110,14 +141,13 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
         path?: string,
         batch?: SPBatch): T {
 
-        let parent = new factory(baseUrl, path);
-        parent.configure(this._options);
+        let parent = new factory(baseUrl, path).configure(this._options);
 
-        const target = this.query.get("@target");
-        if (target !== null) {
-            parent.query.add("@target", target);
+        const t = "@target";
+        if (this.query.has(t)) {
+            parent.query.set(t, this.query.get(t));
         }
-        if (typeof batch !== "undefined") {
+        if (batch !== undefined) {
             parent = parent.inBatch(batch);
         }
         return parent;
@@ -130,11 +160,10 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
     protected clone<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
-        let clone = new factory(this, additionalPath);
-        clone.configure(this._options);
-        const target = this.query.get("@target");
-        if (target !== null) {
-            clone.query.add("@target", target);
+        let clone = new factory(this, additionalPath).configure(this._options);
+        const t = "@target";
+        if (this.query.has(t)) {
+            clone.query.set(t, this.query.get(t));
         }
         if (includeBatch && this.hasBatch) {
             clone = clone.inBatch(this.batch);
@@ -169,7 +198,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
                 cachingOptions: this._cachingOptions,
                 clientFactory: () => new SPHttpClient(),
                 isBatched: this.hasBatch,
-                isCached: /^get$/i.test(verb) && this._useCaching,
+                isCached: this._forceCaching || (this._useCaching && /^get$/i.test(verb)),
                 options: options,
                 parser: parser,
                 pipeline: pipeline,
@@ -195,31 +224,7 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      * @param filter The string representing the filter query
      */
     public filter(filter: string): this {
-        this._query.add("$filter", filter);
-        return this;
-    }
-
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this._query.add("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this._query.add("$expand", expands.join(","));
-        }
+        this.query.set("$filter", filter);
         return this;
     }
 
@@ -230,9 +235,10 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
     public orderBy(orderBy: string, ascending = true): this {
-        const query = this._query.getKeys().filter(k => k === "$orderby").map(k => this._query.get(k));
+        const o = "$orderby";
+        const query = this.query.has(o) ? this.query.get(o).split(",") : [];
         query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
-        this._query.add("$orderby", query.join(","));
+        this.query.set(o, query.join(","));
         return this;
     }
 
@@ -242,7 +248,7 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      * @param skip The number of items to skip
      */
     public skip(skip: number): this {
-        this._query.add("$skip", skip.toString());
+        this.query.set("$skip", skip.toString());
         return this;
     }
 
@@ -252,11 +258,25 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      * @param top The query row limit
      */
     public top(top: number): this {
-        this._query.add("$top", top.toString());
+        this.query.set("$top", top.toString());
         return this;
     }
-}
 
+    /**
+     * Curries the getById function
+     * 
+     * @param factory Class to create for the id
+     */
+    protected _getById<P, T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>): (id: P) => T {
+        return (id: P) => {
+            if (typeof id === "number") {
+                return (new factory(this)).concat(`(${id})`);
+            } else {
+                return (new factory(this)).concat(`('${id}')`);
+            }
+        };
+    }
+}
 
 /**
  * Represents an instance that can be selected
@@ -265,26 +285,60 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
 export class SharePointQueryableInstance extends SharePointQueryable {
 
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
+     * Curries the update function into the common pieces
+     * 
+     * @param type 
+     * @param mapper 
      */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this._query.add("$select", selects.join(","));
-        }
-        return this;
+    protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return> {
+        return (props: any) => this.postCore({
+            body: jsS(extend(metadata(type), props)),
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then((d: Data) => mapper(d, props));
     }
 
     /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this._query.add("$expand", expands.join(","));
-        }
-        return this;
+    * Deletes this instance
+    *
+    */
+    protected _delete(): Promise<void> {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
     }
+
+    /**
+     * Deletes this instance with an etag value in the headers
+     * 
+     * @param eTag eTag to delete
+     */
+    protected _deleteWithETag(eTag = "*"): Promise<void> {
+        return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    }
+}
+
+/**
+ * Decorator used to specify the default path for SharePointQueryable objects
+ * 
+ * @param path 
+ */
+export function defaultPath(path: string) {
+
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            constructor(...args: any[]) {
+                super(args[0], args.length > 1 && args[1] !== undefined ? args[1] : path);
+            }
+        };
+    };
 }

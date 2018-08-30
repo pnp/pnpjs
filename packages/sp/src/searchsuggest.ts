@@ -1,9 +1,12 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
+import { hOP } from "@pnp/common";
 
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
 export interface SearchSuggestQuery {
+
+    [key: string]: string | number | boolean;
 
     /**
      * A string that contains the text for the search query.
@@ -66,87 +69,62 @@ export interface SearchSuggestQuery {
     prefixMatch?: boolean;
 }
 
+@defaultPath("_api/search/suggest")
 export class SearchSuggest extends SharePointQueryableInstance {
-
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/search/suggest") {
-        super(baseUrl, path);
-    }
 
     public execute(query: SearchSuggestQuery): Promise<SearchSuggestResult> {
         this.mapQueryToQueryString(query);
-        return this.get().then(response => new SearchSuggestResult(response));
+        return this.get().then(response => {
+            const mapper = hOP(response, "suggest") ? (s: string) => response.suggest[s].results : (s: string) => response[s];
+            return {
+                PeopleNames: mapper("PeopleNames"),
+                PersonalResults: mapper("PersonalResults"),
+                Queries: mapper("Queries"),
+            };
+        });
     }
 
     private mapQueryToQueryString(query: SearchSuggestQuery): void {
 
-        this.query.add("querytext", `'${query.querytext}'`);
+        const setProp = (q: SearchSuggestQuery) => (checkProp: string) => (sp: string) => {
+            if (hOP(q, checkProp)) {
+                this.query.set(sp, q[checkProp].toString());
+            }
+        };
 
-        if (query.hasOwnProperty("count")) {
-            this.query.add("inumberofquerysuggestions", query.count.toString());
-        }
+        this.query.set("querytext", `'${query.querytext}'`);
 
-        if (query.hasOwnProperty("personalCount")) {
-            this.query.add("inumberofresultsuggestions", query.personalCount.toString());
-        }
+        const querySetter = setProp(query);
 
-        if (query.hasOwnProperty("preQuery")) {
-            this.query.add("fprequerysuggestions", query.preQuery.toString());
-        }
-
-        if (query.hasOwnProperty("hitHighlighting")) {
-            this.query.add("fhithighlighting", query.hitHighlighting.toString());
-        }
-
-        if (query.hasOwnProperty("capitalize")) {
-            this.query.add("fcapitalizefirstletters", query.capitalize.toString());
-        }
-
-        if (query.hasOwnProperty("culture")) {
-            this.query.add("culture", query.culture.toString());
-        }
-
-        if (query.hasOwnProperty("stemming")) {
-            this.query.add("enablestemming", query.stemming.toString());
-        }
-
-        if (query.hasOwnProperty("includePeople")) {
-            this.query.add("showpeoplenamesuggestions", query.includePeople.toString());
-        }
-
-        if (query.hasOwnProperty("queryRules")) {
-            this.query.add("enablequeryrules", query.queryRules.toString());
-        }
-
-        if (query.hasOwnProperty("prefixMatch")) {
-            this.query.add("fprefixmatchallterms", query.prefixMatch.toString());
-        }
+        querySetter("count")("inumberofquerysuggestions");
+        querySetter("personalCount")("inumberofresultsuggestions");
+        querySetter("preQuery")("fprequerysuggestions");
+        querySetter("hitHighlighting")("fhithighlighting");
+        querySetter("capitalize")("fcapitalizefirstletters");
+        querySetter("culture")("culture");
+        querySetter("stemming")("enablestemming");
+        querySetter("includePeople")("showpeoplenamesuggestions");
+        querySetter("queryRules")("enablequeryrules");
+        querySetter("prefixMatch")("fprefixmatchallterms");
     }
 }
 
-export class SearchSuggestResult {
+export interface SearchSuggestResult {
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
+}
 
-    public PeopleNames: string[];
-    public PersonalResults: PersonalResultSuggestion[];
-    public Queries: any[];
-
-    constructor(json: any) {
-        if (json.hasOwnProperty("suggest")) {
-            // verbose
-            this.PeopleNames = json.suggest.PeopleNames.results;
-            this.PersonalResults = json.suggest.PersonalResults.results;
-            this.Queries = json.suggest.Queries.results;
-        } else {
-            this.PeopleNames = json.PeopleNames;
-            this.PersonalResults = json.PersonalResults;
-            this.Queries = json.Queries;
-        }
-    }
+export interface ESearchSuggestResult {
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
 }
 
 export interface PersonalResultSuggestion {
-    HighlightedTitle?: string;
-    IsBestBet?: boolean;
-    Title?: string;
-    TypeId?: string;
-    Url?: string;
+    readonly HighlightedTitle?: string;
+    readonly IsBestBet?: boolean;
+    readonly Title?: string;
+    readonly TypeId?: string;
+    readonly Url?: string;
 }

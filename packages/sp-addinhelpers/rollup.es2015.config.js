@@ -1,10 +1,11 @@
-const sourcemaps = require("rollup-plugin-sourcemaps");
+const sourcemaps = require("rollup-plugin-sourcemaps"),
+    globals = require("rollup-plugin-node-globals");
 
 const moduleName = "sp-addinhelpers";
 
 module.exports = {
     input: `./build/packages/${moduleName}/index.js`,
-    plugins: [sourcemaps()],
+    plugins: [sourcemaps(), globals()],
 
     output: {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.js`,

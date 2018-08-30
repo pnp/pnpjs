@@ -36,7 +36,7 @@ export class SPRuntimeConfigImpl {
     public get headers(): TypedHash<string> {
 
         const spPart = RuntimeConfig.get("sp");
-        if (spPart !== null && typeof spPart !== "undefined" && typeof spPart.headers !== "undefined") {
+        if (spPart !== undefined && spPart.headers !== undefined) {
             return spPart.headers;
         }
 
@@ -46,11 +46,11 @@ export class SPRuntimeConfigImpl {
     public get baseUrl(): string | null {
 
         const spPart = RuntimeConfig.get("sp");
-        if (spPart !== null && typeof spPart.baseUrl !== "undefined") {
+        if (spPart !== undefined && spPart.baseUrl !== undefined) {
             return spPart.baseUrl;
         }
 
-        if (RuntimeConfig.spfxContext !== null) {
+        if (RuntimeConfig.spfxContext !== undefined && RuntimeConfig.spfxContext !== null) {
             return RuntimeConfig.spfxContext.pageContext.web.absoluteUrl;
         }
 
@@ -61,7 +61,7 @@ export class SPRuntimeConfigImpl {
 
         const spPart = RuntimeConfig.get("sp");
         // use a configured factory firt
-        if (spPart !== null && typeof spPart.fetchClientFactory !== "undefined") {
+        if (spPart !== undefined && spPart.fetchClientFactory !== undefined) {
             return spPart.fetchClientFactory;
         } else {
             return () => new FetchClient();

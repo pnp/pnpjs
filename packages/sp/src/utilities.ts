@@ -1,11 +1,12 @@
 import { SharePointQueryable } from "./sharepointqueryable";
-import { extend } from "@pnp/common";
+import { extend, jsS } from "@pnp/common";
 import { EmailProperties } from "./types";
 import { SPBatch } from "./batch";
 import { ICachingOptions } from "@pnp/odata";
 import { File } from "./files";
-import { spExtractODataId } from "./odata";
+import { odataUrlFrom } from "./odata";
 import { PrincipalInfo, PrincipalType, PrincipalSource, WikiPageCreationInformation } from "./types";
+import { metadata } from "./utils/metadata";
 
 /**
  * Public interface for the utility methods to limit SharePointQueryable method exposure
@@ -66,7 +67,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
     public excute<T>(props: any): Promise<T> {
 
         return this.postCore<T>({
-            body: JSON.stringify(props),
+            body: jsS(props),
         });
     }
 
@@ -78,12 +79,11 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
     public sendEmail(props: EmailProperties): Promise<void> {
 
         const params = {
-            properties: {
+            properties: extend(metadata("SP.Utilities.EmailProperties"), {
                 Body: props.Body,
                 From: props.From,
                 Subject: props.Subject,
-                "__metadata": { "type": "SP.Utilities.EmailProperties" },
-            },
+            }),
         };
 
         if (props.To && props.To.length > 0) {
@@ -183,7 +183,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
         }).then(r => {
             return {
                 data: r,
-                file: new File(spExtractODataId(r)),
+                file: new File(odataUrlFrom(r)),
             };
         });
     }

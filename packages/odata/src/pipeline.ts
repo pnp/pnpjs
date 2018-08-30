@@ -1,4 +1,4 @@
-import { FetchOptions, RequestClient, extend, isFunc } from "@pnp/common";
+import { FetchOptions, RequestClient, extend, isFunc, hOP } from "@pnp/common";
 import { LogLevel, Logger } from "@pnp/logging";
 import { CachingOptions, CachingParserWrapper, ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
@@ -103,7 +103,7 @@ export function requestPipelineMethod(alwaysRun = false) {
         descriptor.value = function (...args: any[]) {
 
             // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && args[0].hasOwnProperty("hasResult") && args[0].hasResult) {
+            if (!alwaysRun && args.length > 0 && hOP(args[0], "hasResult") && args[0].hasResult) {
                 Logger.write(`[${args[0].requestId}] (${(new Date()).getTime()}) Skipping request pipeline method ${propertyKey}, existing result in pipeline.`, LogLevel.Verbose);
                 return Promise.resolve(args[0]);
             }
@@ -153,7 +153,7 @@ export class PipelineMethods {
                 Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Caching is enabled for request, checking cache...`, LogLevel.Info);
 
                 let cacheOptions = new CachingOptions(context.requestAbsoluteUrl.toLowerCase());
-                if (typeof context.cachingOptions !== "undefined") {
+                if (context.cachingOptions !== undefined) {
                     cacheOptions = extend(cacheOptions, context.cachingOptions);
                 }
 
@@ -172,8 +172,8 @@ export class PipelineMethods {
                             context.batchDependency();
                         }
                         // handle the case where a parser needs to take special actions with a cached result
-                        if (context.parser.hasOwnProperty("hydrate")) {
-                            data = context.parser.hydrate!(data);
+                        if (hOP(context.parser, "hydrate")) {
+                            data = context.parser.hydrate(data);
                         }
                         return setResult(context, data).then(ctx => resolve(ctx));
                     }

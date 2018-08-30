@@ -1,4 +1,4 @@
-import { combinePaths, getRandomString } from "@pnp/common";
+import { combine, getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { Web, sp } from "../";
 import { testSettings } from "../../../test/main";
@@ -178,7 +178,7 @@ describe("Web", () => {
         describe("getFolderByServerRelativeUrl", () => {
             it("should get a folder by the server relative url", function () {
                 return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
-                    const url = combinePaths(w.ServerRelativeUrl, "SitePages");
+                    const url = combine(w.ServerRelativeUrl, "SitePages");
                     return sp.web.getFolderByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
             });
@@ -187,7 +187,7 @@ describe("Web", () => {
         describe("getFileByServerRelativeUrl", () => {
             it("should get a file by the server relative url", function () {
                 return expect(sp.web.select("ServerRelativeUrl").get<{ ServerRelativeUrl: string }>().then(w => {
-                    const url = combinePaths(w.ServerRelativeUrl, "SitePages", "Home.aspx");
+                    const url = combine(w.ServerRelativeUrl, "SitePages", "Home.aspx");
                     return sp.web.getFileByServerRelativeUrl(url);
                 })).to.eventually.be.fulfilled;
             });
@@ -213,7 +213,8 @@ describe("Web", () => {
         describe("delete", () => {
             it("should create and then delete a new sub-web", function () {
                 this.ignoreTimeouts(true);
-                return expect(sp.web.webs.add("Better be deleted!", "web-delete-test").then(result => {
+                const url = getRandomString(5);
+                return expect(sp.web.webs.add("Better be deleted!", url).then(result => {
                     return result.web.delete();
                 })).to.eventually.be.fulfilled;
             });
@@ -226,8 +227,8 @@ describe("Web", () => {
                 this.ignoreTimeouts(true);
 
                 const index = testSettings.sp.url.indexOf("/sites/");
-                const colorUrl = "/" + combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-                const fontUrl = "/" + combinePaths(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+                const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+                const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
                 return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
             });

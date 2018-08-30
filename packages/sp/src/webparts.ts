@@ -1,4 +1,5 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
+import { jsS } from "@pnp/common";
 
 export class LimitedWebPartManager extends SharePointQueryable {
 
@@ -19,7 +20,7 @@ export class LimitedWebPartManager extends SharePointQueryable {
     public export(id: string): Promise<string> {
 
         return this.clone(LimitedWebPartManager, "ExportWebPart").postCore({
-            body: JSON.stringify({ webPartId: id }),
+            body: jsS({ webPartId: id }),
         });
     }
 
@@ -31,7 +32,7 @@ export class LimitedWebPartManager extends SharePointQueryable {
     public import(xml: string): Promise<any> {
 
         return this.clone(LimitedWebPartManager, "ImportWebPart").postCore({
-            body: JSON.stringify({ webPartXml: xml }),
+            body: jsS({ webPartXml: xml }),
         });
     }
 }
@@ -43,10 +44,7 @@ export class WebPartDefinitions extends SharePointQueryableCollection {
      *
      * @param id The storage ID of the SPWebPartDefinition to retrieve
      */
-    public getById(id: string): WebPartDefinition {
-
-        return new WebPartDefinition(this, `getbyid('${id}')`);
-    }
+    public getById = this._getById(WebPartDefinition);
 
     /**
      * Gets a web part definition from the collection by storage id
@@ -114,15 +112,5 @@ export class WebPartDefinition extends SharePointQueryableInstance {
     }
 }
 
-export class WebPart extends SharePointQueryableInstance {
-
-    /**
-     * Creates a new instance of the WebPart class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "webpart") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("webpart")
+export class WebPart extends SharePointQueryableInstance {}

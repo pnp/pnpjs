@@ -1,18 +1,4 @@
-import { isFunc } from "@pnp/common";
-import { Logger, LogLevel } from "@pnp/logging";
-
-/**
- * Represents an exception with an HttpClient request
- *
- */
-export class ProcessHttpClientResponseException extends Error {
-
-    constructor(public readonly status: number, public readonly statusText: string, public readonly data: any) {
-        super(`Error making HttpClient request in queryable: [${status}] ${statusText}`);
-        this.name = "ProcessHttpClientResponseException";
-        Logger.log({ data: this.data, level: LogLevel.Error, message: this.message });
-    }
-}
+import { isFunc, hOP } from "@pnp/common";
 
 export interface ODataParser<T> {
     hydrate?: (d: any) => T;
@@ -62,25 +48,10 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
                     responseHeaders: r.headers,
                 };
 
-                reject(new ProcessHttpClientResponseException(r.status, r.statusText, data));
+                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${JSON.stringify(data)}`));
 
             }).catch(e => {
-
-                // we failed to read the body - possibly it is empty. Let's report the original status that caused
-                // the request to fail and log the error without parsing the body if anyone needs it for debugging
-                Logger.log({
-                    data: e,
-                    level: LogLevel.Warning,
-                    message: "There was an error parsing the error response body. See data for details.",
-                });
-
-                // include the headers as they contain diagnostic information
-                const data = {
-                    responseBody: "[[body not available]]",
-                    responseHeaders: r.headers,
-                };
-
-                reject(new ProcessHttpClientResponseException(r.status, r.statusText, data));
+                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${e}`));
             });
         }
 
@@ -94,13 +65,13 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
      */
     protected parseODataJSON<U>(json: any): U {
         let result = json;
-        if (json.hasOwnProperty("d")) {
-            if (json.d.hasOwnProperty("results")) {
+        if (hOP(json, "d")) {
+            if (hOP(json.d, "results")) {
                 result = json.d.results;
             } else {
                 result = json.d;
             }
-        } else if (json.hasOwnProperty("value")) {
+        } else if (hOP(json, "value")) {
             result = json.value;
         }
         return result;

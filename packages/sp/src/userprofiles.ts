@@ -1,6 +1,7 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { ClientPeoplePickerQueryParameters, HashTagCollection, PeoplePickerEntity, UserProfile } from "./types";
-import { readBlobAsArrayBuffer, extend } from "@pnp/common";
+import { extend, jsS } from "@pnp/common";
+import { metadata } from "./utils/metadata";
 
 export class UserProfileQuery extends SharePointQueryableInstance {
 
@@ -40,7 +41,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public amIFollowedBy(loginName: string): Promise<boolean> {
         const q = this.clone(UserProfileQuery, "amifollowedby(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -51,7 +52,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public amIFollowing(loginName: string): Promise<boolean> {
         const q = this.clone(UserProfileQuery, "amifollowing(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -71,7 +72,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public getFollowersFor(loginName: string): Promise<any[]> {
         const q = this.clone(UserProfileQuery, "getfollowersfor(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -98,7 +99,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public getPeopleFollowedBy(loginName: string): Promise<any[]> {
         const q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -109,7 +110,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public getPropertiesFor(loginName: string): Promise<any> {
         const q = this.clone(UserProfileQuery, "getpropertiesfor(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -131,7 +132,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<string> {
         const q = this.clone(UserProfileQuery, `getuserprofilepropertyfor(accountname=@v, propertyname='${propertyName}')`);
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.get();
     }
 
@@ -142,7 +143,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      */
     public hideSuggestion(loginName: string): Promise<void> {
         const q = this.clone(UserProfileQuery, "hidesuggestion(@v)");
-        q.query.add("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return q.postCore();
     }
 
@@ -155,8 +156,8 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     public isFollowing(follower: string, followee: string): Promise<boolean> {
         const q = this.clone(UserProfileQuery, null);
         q.concat(`.isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)`);
-        q.query.add("@v", `'${encodeURIComponent(follower)}'`);
-        q.query.add("@y", `'${encodeURIComponent(followee)}'`);
+        q.query.set("@v", `'${encodeURIComponent(follower)}'`);
+        q.query.set("@y", `'${encodeURIComponent(followee)}'`);
         return q.get();
     }
 
@@ -168,12 +169,16 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     public setMyProfilePic(profilePicSource: Blob): Promise<void> {
 
         return new Promise<void>((resolve, reject) => {
-            readBlobAsArrayBuffer(profilePicSource).then((buffer) => {
-                const request = new UserProfileQuery(this, "setmyprofilepicture");
-                request.postCore({
-                    body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
-                }).then(_ => resolve());
-            }).catch(e => reject(e));
+
+            let buffer: any = null;
+            const reader = new FileReader();
+            reader.onload = (e: any) => buffer = e.target.result;
+            reader.readAsArrayBuffer(profilePicSource);
+            const request = new UserProfileQuery(this, "setmyprofilepicture");
+            request.postCore({
+                body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
+            }).then(_ => resolve()).catch(e => reject(e));
+
         });
     }
 
@@ -185,7 +190,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      * @param propertyValue Property value
      */
     public setSingleValueProfileProperty(accountName: string, propertyName: string, propertyValue: string): Promise<void> {
-        const postBody: string = JSON.stringify({
+        const postBody: string = jsS({
             accountName: accountName,
             propertyName: propertyName,
             propertyValue: propertyValue,
@@ -203,7 +208,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
      * @param propertyValues Property values
      */
     public setMultiValuedProfileProperty(accountName: string, propertyName: string, propertyValues: string[]): Promise<void> {
-        const postBody: string = JSON.stringify({
+        const postBody: string = jsS({
             accountName: accountName,
             propertyName: propertyName,
             propertyValues: propertyValues,
@@ -274,16 +279,8 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     }
 }
 
+@defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")
 class ProfileLoader extends SharePointQueryable {
-
-    /**
-   * Creates a new instance of the ProfileLoader class
-   *
-   * @param baseUrl The url or SharePointQueryable which forms the parent of this profile loader
-   */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/sp.userprofiles.profileloader.getprofileloader") {
-        super(baseUrl, path);
-    }
 
     /**
      * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only) Doesn't support batching
@@ -293,7 +290,7 @@ class ProfileLoader extends SharePointQueryable {
     public createPersonalSiteEnqueueBulk(emails: string[]): Promise<void> {
 
         return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk", false).postCore({
-            body: JSON.stringify({ "emailIDs": emails }),
+            body: jsS({ "emailIDs": emails }),
         });
     }
 
@@ -338,16 +335,8 @@ class ProfileLoader extends SharePointQueryable {
     }
 }
 
+@defaultPath("_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface")
 class ClientPeoplePickerQuery extends SharePointQueryable {
-
-    /**
-     * Creates a new instance of the PeoplePickerQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this people picker query
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface") {
-        super(baseUrl, path);
-    }
 
     /**
      * Resolves user or group using specified query parameters
@@ -395,11 +384,9 @@ class ClientPeoplePickerQuery extends SharePointQueryable {
      * @param queryParams The query parameters to create request body
      */
     private createClientPeoplePickerQueryParametersRequestBody(queryParams: ClientPeoplePickerQueryParameters): string {
-        return JSON.stringify({
+        return jsS({
             "queryParams":
-                extend({
-                    "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
-                }, queryParams),
+                extend(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams),
         });
     }
 }

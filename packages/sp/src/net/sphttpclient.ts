@@ -4,8 +4,8 @@ import {
     mergeHeaders,
     FetchOptions,
     RequestClient,
-    HttpClientImpl,
     getCtxCallback,
+    HttpClientImpl,
 } from "@pnp/common";
 import { SPRuntimeConfig } from "../config/splibconfig";
 import { extractWebUrl } from "../utils/extractweburl";
@@ -13,10 +13,8 @@ import { extractWebUrl } from "../utils/extractweburl";
 export class SPHttpClient implements RequestClient {
 
     private _digestCache: DigestCache;
-    private _impl: HttpClientImpl;
 
-    constructor() {
-        this._impl = SPRuntimeConfig.fetchClientFactory();
+    constructor(private _impl: HttpClientImpl = SPRuntimeConfig.fetchClientFactory()) {
         this._digestCache = new DigestCache(this);
     }
 

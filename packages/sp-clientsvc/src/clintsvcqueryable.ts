@@ -1,5 +1,5 @@
-import { FetchOptions, combinePaths, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull } from "@pnp/common";
-import { AlreadyInBatchException, CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
+import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP, getHashCode } from "@pnp/common";
+import { CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
 import { SPHttpClient, toAbsoluteUrl } from "@pnp/sp";
 import { IObjectPathBatch } from "./batch";
 import { ObjectPathQueue } from "./objectpath";
@@ -41,14 +41,14 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
 
             // we assume the parent here is an absolute url to a web
             this._parentUrl = parent;
-            this._url = combinePaths(parent.replace(ProcessQueryPath, ""), ProcessQueryPath);
+            this._url = combine(parent.replace(ProcessQueryPath, ""), ProcessQueryPath);
             if (!objectDefinedNotNull(this._objectPaths)) {
                 this._objectPaths = new ObjectPathQueue();
             }
 
         } else {
             this._parentUrl = parent._parentUrl;
-            this._url = combinePaths(parent._parentUrl, ProcessQueryPath);
+            this._url = combine(parent._parentUrl, ProcessQueryPath);
             if (!objectDefinedNotNull(_objectPaths)) {
                 this._objectPaths = parent._objectPaths.clone();
             }
@@ -80,7 +80,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     public inBatch(batch: IObjectPathBatch): this {
 
         if (this.batch !== null) {
-            throw new AlreadyInBatchException();
+            throw new Error("This query is already part of a batch.");
         }
 
         this._batch = batch;
@@ -93,7 +93,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      *
      */
     public toUrlAndQuery(): string {
-        return super.toUrl() + `?${this._query.getKeys().map(key => `${key}=${this._query.get(key)}`).join("&")}`;
+        return `${super.toUrl()}?${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
     }
 
     protected getSelects(): string[] {
@@ -156,7 +156,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
 
         } else {
 
-            if (!Object.hasOwnProperty("body")) {
+            if (!hOP(options, "body")) {
                 options = extend(options, {
                     body: objectPaths.toBody(),
                 });
@@ -269,7 +269,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             if (this._useCaching) {
 
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${this._objectPaths.hash()})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(this._objectPaths.toBody())})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it

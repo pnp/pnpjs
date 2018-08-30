@@ -1,7 +1,7 @@
 import { List } from "./lists";
 import { TemplateFileType, FileAddResult, File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, combinePaths, getGUID, getAttrValueFromString } from "@pnp/common";
+import { TypedHash, extend, combine, getGUID, getAttrValueFromString, jsS, hOP } from "@pnp/common";
 
 /**
  * Page promotion state
@@ -68,7 +68,7 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
 
     const blocks: T[] = [];
 
-    if (typeof html === "undefined" || html === null) {
+    if (html === undefined || html === null) {
         return blocks;
     }
 
@@ -152,9 +152,9 @@ function reindex(collection: { order: number, columns?: { order: number }[], con
 
     for (let i = 0; i < collection.length; i++) {
         collection[i].order = i + 1;
-        if (collection[i].hasOwnProperty("columns")) {
+        if (hOP(collection[i], "columns")) {
             reindex(collection[i].columns);
-        } else if (collection[i].hasOwnProperty("controls")) {
+        } else if (hOP(collection[i], "controls")) {
             reindex(collection[i].controls);
         }
     }
@@ -195,7 +195,7 @@ export class ClientSidePage extends File {
             // get our server relative path
             return library.rootFolder.select("ServerRelativePath").get().then(path => {
 
-                const pageServerRelPath = combinePaths("/", path.ServerRelativePath.DecodedUrl, pageName);
+                const pageServerRelPath = combine("/", path.ServerRelativePath.DecodedUrl, pageName);
 
                 // add the template file
                 return library.rootFolder.files.addTemplateFile(pageServerRelPath, TemplateFileType.ClientSidePage).then((far: FileAddResult) => {
@@ -238,7 +238,7 @@ export class ClientSidePage extends File {
      */
     public static jsonToEscapedString(json: any): string {
 
-        return JSON.stringify(json)
+        return jsS(json)
             .replace(/"/g, "&quot;")
             .replace(/:/g, "&#58;")
             .replace(/{/g, "&#123;")
@@ -821,7 +821,7 @@ export class ClientSideWebpart extends ClientSidePart {
         this.dataVersion = getAttrValueFromString(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
 
-        if (typeof webPartData.serverProcessedContent !== "undefined") {
+        if (webPartData.serverProcessedContent !== undefined) {
             this.serverProcessedContent = webPartData.serverProcessedContent;
         }
 
@@ -853,13 +853,13 @@ export class ClientSideWebpart extends ClientSidePart {
 
         const html: string[] = [];
 
-        if (typeof this.serverProcessedContent === "undefined" || this.serverProcessedContent === null) {
+        if (this.serverProcessedContent === undefined || this.serverProcessedContent === null) {
 
             html.push(this.htmlProperties);
 
-        } else if (typeof this.serverProcessedContent !== "undefined") {
+        } else if (this.serverProcessedContent !== undefined) {
 
-            if (typeof this.serverProcessedContent.searchablePlainTexts !== "undefined") {
+            if (this.serverProcessedContent.searchablePlainTexts !== undefined) {
 
                 const keys = Object.keys(this.serverProcessedContent.searchablePlainTexts);
                 for (let i = 0; i < keys.length; i++) {
@@ -869,7 +869,7 @@ export class ClientSideWebpart extends ClientSidePart {
                 }
             }
 
-            if (typeof this.serverProcessedContent.imageSources !== "undefined") {
+            if (this.serverProcessedContent.imageSources !== undefined) {
 
                 const keys = Object.keys(this.serverProcessedContent.imageSources);
                 for (let i = 0; i < keys.length; i++) {
@@ -877,7 +877,7 @@ export class ClientSideWebpart extends ClientSidePart {
                 }
             }
 
-            if (typeof this.serverProcessedContent.links !== "undefined") {
+            if (this.serverProcessedContent.links !== undefined) {
 
                 const keys = Object.keys(this.serverProcessedContent.links);
                 for (let i = 0; i < keys.length; i++) {
@@ -892,17 +892,17 @@ export class ClientSideWebpart extends ClientSidePart {
     protected parseJsonProperties(props: TypedHash<any>): any {
 
         // If the web part has the serverProcessedContent property then keep this one as it might be needed as input to render the web part HTML later on
-        if (typeof props.webPartData !== "undefined" && typeof props.webPartData.serverProcessedContent !== "undefined") {
+        if (props.webPartData !== undefined && props.webPartData.serverProcessedContent !== undefined) {
             this.serverProcessedContent = props.webPartData.serverProcessedContent;
-        } else if (typeof props.serverProcessedContent !== "undefined") {
+        } else if (props.serverProcessedContent !== undefined) {
             this.serverProcessedContent = props.serverProcessedContent;
         } else {
             this.serverProcessedContent = null;
         }
 
-        if (typeof props.webPartData !== "undefined" && typeof props.webPartData.properties !== "undefined") {
+        if (props.webPartData !== undefined && props.webPartData.properties !== undefined) {
             return props.webPartData.properties;
-        } else if (typeof props.properties !== "undefined") {
+        } else if (props.properties !== undefined) {
             return props.properties;
         } else {
             return props;

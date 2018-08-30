@@ -1,4 +1,5 @@
-import { SharePointQueryable } from "./sharepointqueryable";
+import { SharePointQueryable, defaultPath } from "./sharepointqueryable";
+import { jsS } from "@pnp/common";
 
 export interface RelatedItem {
     ListId: string;
@@ -52,11 +53,8 @@ export interface RelatedItemManger {
         tryDeleteReverseLink?: boolean): Promise<void>;
 }
 
+@defaultPath("_api/SP.RelatedItemManager")
 export class RelatedItemManagerImpl extends SharePointQueryable implements RelatedItemManger {
-
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/SP.RelatedItemManager") {
-        super(baseUrl, path);
-    }
 
     public static FromUrl(url: string): RelatedItemManagerImpl {
 
@@ -79,7 +77,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".GetRelatedItems");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemID: sourceItemId,
                 SourceListName: sourceListName,
             }),
@@ -92,7 +90,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".GetPageOneRelatedItems");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemID: sourceItemId,
                 SourceListName: sourceListName,
             }),
@@ -111,7 +109,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".AddSingleLink");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemID: sourceItemId,
                 SourceListName: sourceListName,
                 SourceWebUrl: sourceWebUrl,
@@ -137,7 +135,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".AddSingleLinkToUrl");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemID: sourceItemId,
                 SourceListName: sourceListName,
                 TargetItemUrl: targetItemUrl,
@@ -160,7 +158,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".AddSingleLinkFromUrl");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemUrl: sourceItemUrl,
                 TargetItemID: targetItemId,
                 TargetListName: targetListName,
@@ -181,7 +179,7 @@ export class RelatedItemManagerImpl extends SharePointQueryable implements Relat
         query.concat(".DeleteSingleLink");
 
         return query.postCore({
-            body: JSON.stringify({
+            body: jsS({
                 SourceItemID: sourceItemId,
                 SourceListName: sourceListName,
                 SourceWebUrl: sourceWebUrl,

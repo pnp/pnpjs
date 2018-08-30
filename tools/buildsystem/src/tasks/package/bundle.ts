@@ -47,6 +47,8 @@ class PnPLocalResolver {
  */
 export function bundle(ctx: PackageContext) {
 
+    const libraryName = ctx.name === "pnpjs" ? "pnp" : `pnp.${ctx.name}`;
+
     // create our webpack config
     const config = [{
         cache: true,
@@ -54,7 +56,7 @@ export function bundle(ctx: PackageContext) {
         entry: `./build/packages/${ctx.name}/es5/index.js`,
         output: {
             filename: `${ctx.name}.es5.umd.bundle.js`,
-            library: "pnp",
+            library: libraryName,
             libraryTarget: "umd",
             path: path.join(ctx.targetFolder, "dist"),
         },
@@ -76,7 +78,7 @@ export function bundle(ctx: PackageContext) {
         entry: `./build/packages/${ctx.name}/es5/index.js`,
         output: {
             filename: `${ctx.name}.es5.umd.bundle.min.js`,
-            library: "pnp",
+            library: libraryName,
             libraryTarget: "umd",
             path: path.join(ctx.targetFolder, "dist"),
         },

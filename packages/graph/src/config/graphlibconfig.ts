@@ -1,5 +1,4 @@
 import { LibraryConfiguration, TypedHash, RuntimeConfig, HttpClientImpl, AdalClient } from "@pnp/common";
-import { Logger, LogLevel } from "@pnp/logging";
 
 export interface GraphConfigurationPart {
     graph?: {
@@ -21,21 +20,12 @@ export function setup(config: GraphConfiguration): void {
     RuntimeConfig.extend(config);
 }
 
-export class NoGraphClientAvailableException extends Error {
-
-    constructor(msg = "There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.") {
-        super(msg);
-        this.name = "NoGraphClientAvailableException";
-        Logger.log({ data: null, level: LogLevel.Error, message: this.message });
-    }
-}
-
 export class GraphRuntimeConfigImpl {
 
     public get headers(): TypedHash<string> {
 
         const graphPart = RuntimeConfig.get("graph");
-        if (graphPart !== null && typeof graphPart !== "undefined" && typeof graphPart.headers !== "undefined") {
+        if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {
             return graphPart.headers;
         }
 
@@ -46,16 +36,16 @@ export class GraphRuntimeConfigImpl {
 
         const graphPart = RuntimeConfig.get("graph");
         // use a configured factory firt
-        if (graphPart !== null && typeof graphPart.fetchClientFactory !== "undefined") {
+        if (graphPart !== undefined && graphPart !== null && graphPart.fetchClientFactory !== undefined) {
             return graphPart.fetchClientFactory;
         }
 
         // then try and use spfx context if available
-        if (typeof RuntimeConfig.spfxContext !== "undefined") {
+        if (RuntimeConfig.spfxContext !== undefined) {
             return () => AdalClient.fromSPFxContext(RuntimeConfig.spfxContext);
         }
 
-        throw new NoGraphClientAvailableException();
+        throw new Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
     }
 }
 

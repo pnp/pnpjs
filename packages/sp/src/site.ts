@@ -1,25 +1,17 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { Web } from "./webs";
 import { UserCustomActions } from "./usercustomactions";
 import { ContextInfo, DocumentLibraryInformation } from "./types";
-import { spExtractODataId } from "./odata";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
+import { hOP } from "@pnp/common";
 
 /**
  * Describes a site collection
  *
  */
+@defaultPath("_api/site")
 export class Site extends SharePointQueryableInstance {
-
-    /**
-     * Creates a new instance of the Site class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this site collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "_api/site") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets the root web of the site collection
@@ -59,7 +51,7 @@ export class Site extends SharePointQueryableInstance {
     public getContextInfo(): Promise<ContextInfo> {
         const q = new Site(this.parentUrl, "_api/contextinfo");
         return q.postCore().then(data => {
-            if (data.hasOwnProperty("GetContextWebInformation")) {
+            if (hOP(data, "GetContextWebInformation")) {
                 const info = data.GetContextWebInformation;
                 info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
                 return info;
@@ -76,9 +68,9 @@ export class Site extends SharePointQueryableInstance {
      */
     public getDocumentLibraries(absoluteWebUrl: string): Promise<DocumentLibraryInformation[]> {
         const q = new SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
-        q.query.add("@v", "'" + absoluteWebUrl + "'");
+        q.query.set("@v", "'" + absoluteWebUrl + "'");
         return q.get().then(data => {
-            if (data.hasOwnProperty("GetDocumentLibraries")) {
+            if (hOP(data, "GetDocumentLibraries")) {
                 return data.GetDocumentLibraries;
             } else {
                 return data;
@@ -93,9 +85,9 @@ export class Site extends SharePointQueryableInstance {
      */
     public getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
         const q = new SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
-        q.query.add("@v", "'" + absolutePageUrl + "'");
+        q.query.set("@v", `'${absolutePageUrl}'`);
         return q.get().then(data => {
-            if (data.hasOwnProperty("GetWebUrlFromPageUrl")) {
+            if (hOP(data, "GetWebUrlFromPageUrl")) {
                 return data.GetWebUrlFromPageUrl;
             } else {
                 return data;
@@ -118,13 +110,10 @@ export class Site extends SharePointQueryableInstance {
      */
     public openWebById(webId: string): Promise<OpenWebByIdResult> {
 
-        return this.clone(Site, `openWebById('${webId}')`).postCore().then(d => {
-
-            return {
-                data: d,
-                web: Web.fromUrl(spExtractODataId(d)),
-            };
-        });
+        return this.clone(Site, `openWebById('${webId}')`).postCore().then(d => ({
+            data: d,
+            web: Web.fromUrl(d["odata.id"] || d.__metadata.uri),
+        }));
     }
 }
 

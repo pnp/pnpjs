@@ -1,16 +1,11 @@
 # @pnp/common/util
 
-This module contains utility methods that you can import either individually from the common library or in a single static class "Util". Both are shown below.
+This module contains utility methods that you can import individually from the common library.
 
 ```TypeScript
 import {
-    Util,
     getRandomString,
 } from "@pnp/common";
-
-
-// use from Util static class
-console.log(Util.getRandomString(10));
 
 // use from individual;y imported method
 console.log(getRandomString(10));
@@ -21,7 +16,7 @@ console.log(getRandomString(10));
 Gets a callback function which will maintain context across async calls.
 
 ```TypeScript
-import { Util } from "@pnp/common";
+import { getCtxCallback } from "@pnp/common";
 
 const contextThis = {
     myProp: 6,
@@ -33,7 +28,7 @@ function theFunction() {
     return this.myProp;
 }
 
-const callback = Util.getCtxCallback(contextThis, theFunction);
+const callback = getCtxCallback(contextThis, theFunction);
 
 callback(); // returns 6
 
@@ -45,7 +40,7 @@ function theFunction2(g: number) {
     return this.myProp + g;
 }
 
-const callback2 = Util.getCtxCallback(contextThis, theFunction, 4);
+const callback2 = getCtxCallback(contextThis, theFunction, 4);
 
 callback2(); // returns 10 (6 + 4)
 ```
@@ -59,13 +54,13 @@ Manipulates a date, please see the [Stackoverflow discussion](https://stackoverf
 Combines any number of paths, normalizing the slashes as required
 
 ```TypeScript
-import { Util } from "@pnp/common";
+import { combinePaths } from "@pnp/common";
 
 // "https://microsoft.com/something/more"
-const paths = Util.combinePaths("https://microsoft.com", "something", "more");
+const paths = combinePaths("https://microsoft.com", "something", "more");
 
 // "also/works/with/relative"
-const paths2 = Util.combinePaths("/also/", "/works", "with/", "/relative\\");
+const paths2 = combinePaths("/also/", "/works", "with/", "/relative\\");
 ```
 
 ## getRandomString
@@ -73,9 +68,9 @@ const paths2 = Util.combinePaths("/also/", "/works", "with/", "/relative\\");
 Gets a random string consiting of the number of characters requested.
 
 ```TypeScript
-import { Util } from "@pnp/common";
+import { getRandomString } from "@pnp/common";
 
-const randomString = Util.getRandomString(10);
+const randomString = getRandomString(10);
 ```
 
 ## getGUID
@@ -100,7 +95,7 @@ Merges a source object's own enumerable properties into a single target object. 
 properties.
 
 ```TypeScript
-import { Util } from "@pnp/common";
+import { extend } from "@pnp/common";
 
 let obj1 = {
     prop: 1,
@@ -112,10 +107,10 @@ const obj2 = {
     prop3: 9,
 };
 
-const example1 = Util.extend(obj1, obj2);
+const example1 = extend(obj1, obj2);
 // example1 = { prop: 4, prop2: 2, prop3: 9 }
 
-const example2 = Util.extend(obj1, obj2, true);
+const example2 = extend(obj1, obj2, true);
 // example2 = { prop: 1, prop2: 2, prop3: 9 }
 ```
 

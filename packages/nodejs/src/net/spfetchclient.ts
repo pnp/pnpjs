@@ -2,10 +2,8 @@ declare var global: any;
 declare var require: (path: string) => any;
 const nodeFetch = require("node-fetch").default;
 
-
 const u: any = require("url");
-import { HttpClientImpl, combinePaths, isUrlAbsolute } from "@pnp/common";
-import { AuthUrlException } from "../exceptions";
+import { HttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
 
 export interface AuthToken {
     token_type: string;
@@ -43,7 +41,7 @@ export class SPFetchClient implements HttpClientImpl {
     public fetch(url: string, options: any): Promise<Response> {
 
         if (!isUrlAbsolute(url)) {
-            url = combinePaths(this.siteUrl, url);
+            url = combine(this.siteUrl, url);
         }
 
         return this.getAddInOnlyAccessToken().then(token => {
@@ -110,7 +108,7 @@ export class SPFetchClient implements HttpClientImpl {
                 resolve(this._realm);
             }
 
-            const url = combinePaths(this.siteUrl, "_vti_bin/client.svc");
+            const url = combine(this.siteUrl, "_vti_bin/client.svc");
 
             nodeFetch(url, {
                 "headers": {
@@ -138,7 +136,7 @@ export class SPFetchClient implements HttpClientImpl {
                 return eps[0].location;
             }
 
-            throw new AuthUrlException(json);
+            throw new Error("Auth URL Endpoint could not be determined from data.");
         });
     }
 

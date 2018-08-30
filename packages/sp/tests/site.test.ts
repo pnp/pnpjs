@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { sp } from "../";
 import { testSettings } from "../../../test/main";
-import { Util } from "@pnp/common";
+import { combine } from "@pnp/common";
 
 describe("Site", () => {
 
@@ -33,7 +33,7 @@ describe("Site", () => {
 
         describe("getWebUrlFromPageUrl", () => {
             it("should get the site's url from the pages url", () => {
-                const pageUrl = Util.combinePaths(testSettings.sp.webUrl, "/SitePages/Home.aspx");
+                const pageUrl = combine(testSettings.sp.webUrl, "/SitePages/Home.aspx");
                 return expect(sp.site.getWebUrlFromPageUrl(pageUrl)).to.eventually.equal(testSettings.sp.webUrl.replace(/\/$/, ""));
             });
         });

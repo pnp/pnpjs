@@ -81,7 +81,7 @@ gulp.task("build:test", ["clean", "lint:tests"], (done) => {
                 gulp.dest("./testing"),
             ], (err) => {
 
-                if (typeof err !== "undefined") {
+                if (err !== undefined) {
                     done(err);
                 } else {
                     done();

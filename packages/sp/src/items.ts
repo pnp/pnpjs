@@ -1,41 +1,25 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableItem } from "./sharepointqueryableshareable";
 import { Folder } from "./folders";
 import { File } from "./files";
 import { ContentType } from "./contenttypes";
-import { extend, TypedHash } from "@pnp/common";
+import { extend, TypedHash, jsS, hOP } from "@pnp/common";
 import { ListItemFormUpdateValue, LikeData } from "./types";
 import { ODataParserBase } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 import { Logger, LogLevel } from "@pnp/logging";
 import { Comments } from "./comments";
+import { metadata } from "./utils/metadata";
 
 /**
  * Describes a collection of Item objects
  *
  */
+@defaultPath("items")
 export class Items extends SharePointQueryableCollection {
 
-    /**
-     * Creates a new instance of the Items class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "items") {
-        super(baseUrl, path);
-    }
-
-    /**
-     * Gets an Item by id
-     *
-     * @param id The integer id of the item to retrieve
-     */
-    public getById(id: number): Item {
-        const i = new Item(this);
-        i.concat(`(${id})`);
-        return i;
-    }
+    public getById = this._getById<number, Item>(Item);
 
     /**
      * Gets BCS Item by string id
@@ -55,9 +39,9 @@ export class Items extends SharePointQueryableCollection {
      */
     public skip(skip: number, reverse = false): this {
         if (reverse) {
-            this._query.add("$skiptoken", encodeURIComponent(`Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`));
         } else {
-            this._query.add("$skiptoken", encodeURIComponent(`Paged=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&p_ID=${skip}`));
         }
         return this;
     }
@@ -74,8 +58,9 @@ export class Items extends SharePointQueryableCollection {
      * Gets all the items in a list, regardless of count. Does not support batching or caching
      *
      *  @param requestSize Number of items to return in each request (Default: 2000)
+     *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
      */
-    public getAll(requestSize = 2000): Promise<any[]> {
+    public getAll(requestSize = 2000, acceptHeader = "application/json;odata=nometadata"): Promise<any[]> {
 
         Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", LogLevel.Warning);
 
@@ -83,7 +68,7 @@ export class Items extends SharePointQueryableCollection {
         // and we set no metadata here to try and reduce traffic
         const items = new Items(this, "").top(requestSize).configure({
             headers: {
-                "Accept": "application/json;odata=nometadata",
+                "Accept": acceptHeader,
             },
         });
 
@@ -91,12 +76,11 @@ export class Items extends SharePointQueryableCollection {
         // $top - allow setting the page size this way (override what we did above)
         // $select - allow picking the return fields (good behavior)
         // $filter - allow setting a filter, though this may fail due for large lists
-        this.query.getKeys()
-            .filter(k => /^\$select$|^\$filter$|^\$top$|^\$expand$/.test(k.toLowerCase()))
-            .reduce((i, k) => {
-                i.query.add(k, this.query.get(k));
-                return i;
-            }, items);
+        this.query.forEach((v: string, k: string) => {
+            if (/^\$select|filter|top|expand$/i.test(k)) {
+                items.query.set(k, v);
+            }
+        });
 
         // give back the promise
         return new Promise((resolve, reject) => {
@@ -135,11 +119,9 @@ export class Items extends SharePointQueryableCollection {
 
         return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(listItemEntityType => {
 
-            const postBody = JSON.stringify(extend({
-                "__metadata": { "type": listItemEntityType },
-            }, properties));
+            const postBody = jsS(extend(metadata(listItemEntityType), properties));
 
-            const promise = this.clone(Items, null).postCore<{ Id: number }>({ body: postBody }).then((data) => {
+            const promise = this.clone(Items, "").postCore<{ Id: number }>({ body: postBody }).then((data) => {
                 return {
                     data: data,
                     item: this.getById(data.Id),
@@ -170,6 +152,13 @@ export class Items extends SharePointQueryableCollection {
  *
  */
 export class Item extends SharePointQueryableShareableItem {
+
+    /**
+     * Delete this item
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    public delete = this._deleteWithETag;
 
     /**
      * Gets the set of attachments for this item
@@ -272,9 +261,7 @@ export class Item extends SharePointQueryableShareableItem {
 
             return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(listItemEntityType => {
 
-                const postBody = JSON.stringify(extend({
-                    "__metadata": { "type": listItemEntityType },
-                }, properties));
+                const postBody = jsS(extend(metadata(listItemEntityType), properties));
 
                 removeDependency();
 
@@ -316,20 +303,6 @@ export class Item extends SharePointQueryableShareableItem {
     }
 
     /**
-     * Delete this item
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    public delete(eTag = "*"): Promise<void> {
-        return this.postCore({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    }
-
-    /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     public recycle(): Promise<string> {
@@ -344,11 +317,11 @@ export class Item extends SharePointQueryableShareableItem {
      */
     public getWopiFrameUrl(action = 0): Promise<string> {
         const i = this.clone(Item, "getWOPIFrameUrl(@action)");
-        i._query.add("@action", <any>action);
+        i.query.set("@action", <any>action);
         return i.postCore().then((data: any) => {
 
             // handle verbose mode
-            if (data.hasOwnProperty("GetWOPIFrameUrl")) {
+            if (hOP(data, "GetWOPIFrameUrl")) {
                 return data.GetWOPIFrameUrl;
             }
 
@@ -364,7 +337,7 @@ export class Item extends SharePointQueryableShareableItem {
      */
     public validateUpdateListItem(formValues: ListItemFormUpdateValue[], newDocumentUpdate = false): Promise<ListItemFormUpdateValue[]> {
         return this.clone(Item, "validateupdatelistitem").postCore({
-            body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
+            body: jsS({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
         });
     }
 
@@ -399,27 +372,9 @@ export interface ItemUpdateResultData {
  * Describes a collection of Version objects
  *
  */
+@defaultPath("versions")
 export class ItemVersions extends SharePointQueryableCollection {
-
-    /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path = "versions") {
-        super(baseUrl, path);
-    }
-
-    /**
-     * Gets a version by id
-     *
-     * @param versionId The id of the version to retrieve
-     */
-    public getById(versionId: number): ItemVersion {
-        const v = new ItemVersion(this);
-        v.concat(`(${versionId})`);
-        return v;
-    }
+    public getById = this._getById<number, ItemVersion>(ItemVersion);
 }
 
 
@@ -434,13 +389,7 @@ export class ItemVersion extends SharePointQueryableInstance {
     *
     * @param eTag Value used in the IF-Match header, by default "*"
     */
-    public delete(): Promise<void> {
-        return this.postCore({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    }
+    public delete = this._deleteWithETag;
 }
 
 /**
@@ -483,7 +432,7 @@ class PagedItemCollectionParser<T> extends ODataParserBase<PagedItemCollection<T
 
             if (this.handleError(r, reject)) {
                 r.json().then(json => {
-                    const nextUrl = json.hasOwnProperty("d") && json.d.hasOwnProperty("__next") ? json.d.__next : json["odata.nextLink"];
+                    const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
                     resolve(new PagedItemCollection(this._parent, nextUrl, this.parseODataJSON(json)));
                 });
             }

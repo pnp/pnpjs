@@ -1,30 +1,30 @@
 import { SharePointQueryableConstructor } from "./sharepointqueryable";
-import { extend, combinePaths } from "@pnp/common";
+import { extend, combine, hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ODataParser, ODataParserBase } from "@pnp/odata";
 import { extractWebUrl } from "./utils/extractweburl";
 
-export function spExtractODataId(candidate: any): string {
+export function odataUrlFrom(candidate: any): string {
 
     const parts: string[] = [];
-
-    if (candidate.hasOwnProperty("odata.type") && candidate["odata.type"] === "SP.Web") {
+    const s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata"];
+    if (hOP(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
         // webs return an absolute url in the editLink
-        if (candidate.hasOwnProperty("odata.editLink")) {
-            parts.push(candidate["odata.editLink"]);
-        } else if (candidate.hasOwnProperty("__metadata")) {
+        if (hOP(candidate, s[1])) {
+            parts.push(candidate[s[1]]);
+        } else if (hOP(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
 
     } else {
 
-        if (candidate.hasOwnProperty("odata.metadata") && candidate.hasOwnProperty("odata.editLink")) {
+        if (hOP(candidate, s[3]) && hOP(candidate, s[1])) {
             // we are dealign with minimal metadata (default)
-            parts.push(extractWebUrl(candidate["odata.metadata"]), "_api", candidate["odata.editLink"]);
-        } else if (candidate.hasOwnProperty("odata.editLink")) {
-            parts.push("_api", candidate["odata.editLink"]);
-        } else if (candidate.hasOwnProperty("__metadata")) {
+            parts.push(extractWebUrl(candidate[s[3]]), "_api", candidate[s[1]]);
+        } else if (hOP(candidate, s[1])) {
+            parts.push("_api", candidate[s[1]]);
+        } else if (hOP(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
@@ -35,7 +35,7 @@ export function spExtractODataId(candidate: any): string {
         return "";
     }
 
-    return combinePaths(...parts);
+    return combine(...parts);
 }
 
 class SPODataEntityParserImpl<T, D> extends ODataParserBase<T & D> {
@@ -45,13 +45,13 @@ class SPODataEntityParserImpl<T, D> extends ODataParserBase<T & D> {
     }
 
     public hydrate = (d: D) => {
-        const o = <T>new this.factory(spExtractODataId(d), null);
+        const o = <T>new this.factory(odataUrlFrom(d), null);
         return extend(o, d);
     }
 
     public parse(r: Response): Promise<T & D> {
         return super.parse(r).then((d: any) => {
-            const o = <T>new this.factory(spExtractODataId(d), null);
+            const o = <T>new this.factory(odataUrlFrom(d), null);
             return extend<T, D>(o, d);
         });
     }
@@ -65,7 +65,7 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParserBase<(T & D)[]> {
 
     public hydrate = (d: D[]) => {
         return d.map(v => {
-            const o = <T>new this.factory(spExtractODataId(v), null);
+            const o = <T>new this.factory(odataUrlFrom(v), null);
             return extend(o, v);
         });
     }
@@ -73,7 +73,7 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParserBase<(T & D)[]> {
     public parse(r: Response): Promise<(T & D)[]> {
         return super.parse(r).then((d: D[]) => {
             return d.map(v => {
-                const o = <T>new this.factory(spExtractODataId(v), null);
+                const o = <T>new this.factory(odataUrlFrom(v), null);
                 return extend(o, v);
             });
         });

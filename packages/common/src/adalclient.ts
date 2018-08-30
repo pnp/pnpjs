@@ -1,7 +1,8 @@
-import * as AuthenticationContext from "adal-angular";
 import { BearerTokenFetchClient, FetchOptions } from "./netutil";
 import { ISPFXContext } from "./spfxContextInterface";
-import { combinePaths, isUrlAbsolute } from "./util";
+import { combine, isUrlAbsolute } from "./util";
+// @ts-ignore
+import * as adal from "adal-angular/dist/adal.min.js";
 
 /**
  * Azure AD Client for use in the browser
@@ -11,7 +12,7 @@ export class AdalClient extends BearerTokenFetchClient {
     /**
      * Our auth context
      */
-    private static _authContext: AuthenticationContext | null = null;
+    private static _authContext: adal.AuthenticationContext | null = null;
 
     /**
      * Callback used by the adal auth system
@@ -46,7 +47,7 @@ export class AdalClient extends BearerTokenFetchClient {
 
         // this "magic" client id is the one to which permissions are granted behind the scenes
         // this redirectUrl is the page as used by spfx
-        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), combinePaths(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
+        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), combine(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
     }
 
     /**
@@ -100,7 +101,7 @@ export class AdalClient extends BearerTokenFetchClient {
         return new Promise(resolve => {
 
             if (AdalClient._authContext === null) {
-                AdalClient._authContext = AuthenticationContext.inject({
+                AdalClient._authContext = adal.inject({
                     clientId: this.clientId,
                     displayCall: (url: string) => {
                         if (this._displayCallback) {

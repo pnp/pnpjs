@@ -1,4 +1,4 @@
-import { Search, SearchQuery, SearchResults, SearchQueryBuilder } from "./search";
+import { Search, SearchResults, SearchQueryInit } from "./search";
 import { SearchSuggest, SearchSuggestQuery, SearchSuggestResult } from "./searchsuggest";
 import { Site } from "./site";
 import { Web } from "./webs";
@@ -13,6 +13,7 @@ import {
     setup as _setup,
     SPConfiguration,
 } from "./config/splibconfig";
+import { ICachingOptions } from "@pnp/odata";
 
 /**
  * Root of the SharePoint REST module
@@ -70,19 +71,18 @@ export class SPRest {
      *
      * @param query The SearchQuery definition
      */
-    public search(query: string | SearchQuery | SearchQueryBuilder): Promise<SearchResults> {
+    public search(query: SearchQueryInit): Promise<SearchResults> {
+        return this.create(Search).execute(query);
+    }
 
-        let finalQuery: SearchQuery;
-
-        if (typeof query === "string") {
-            finalQuery = { Querytext: query };
-        } else if (query instanceof SearchQueryBuilder) {
-            finalQuery = (query as SearchQueryBuilder).toSearchQuery();
-        } else {
-            finalQuery = query;
-        }
-
-        return this.create(Search).execute(finalQuery);
+    /**
+     * Executes the provided search query, caching the results
+     * 
+     * @param query The SearchQuery definition
+     * @param options The set of caching options used to store the results
+     */
+    public searchWithCaching(query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults> {
+        return this.create(Search).usingCaching(options).execute(query);
     }
 
     /**

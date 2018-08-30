@@ -27,7 +27,7 @@ gulp.task("lint", (done) => {
         gulpTslint.report({ emitError: false }),
     ], (err) => {
 
-        if (typeof err !== "undefined") {
+        if (err !== undefined) {
             done(err);
         } else {
             done();
@@ -57,7 +57,7 @@ gulp.task("lint:tests", (done) => {
         gulpTslint.report({ emitError: false }),
     ], (err) => {
 
-        if (typeof err !== "undefined") {
+        if (err !== undefined) {
             done(err);
         } else {
             done();
