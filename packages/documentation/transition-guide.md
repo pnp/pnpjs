@@ -57,8 +57,7 @@ import {
 In the above example the "sp" import replaces "pnp" and is the root of your method chains. Once we have updated our imports we have a few small code changes to make,
 depending on how you have used the library in your applications. Watch this short video discussing the most common updates:
 
-@[youtube](https://www.youtube.com/watch?v=oAZX2_DFVjY)
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/oAZX2_DFVjY?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Updated settings file format
 
