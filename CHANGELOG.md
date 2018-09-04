@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.2.0 - 2018-09-04
+
 ### Added
 
 - @pnp/sp: ability to specify generic type with Items getPaged method [[PR](https://github.com/pnp/pnpjs/pull/207)]
@@ -16,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/common: Added getHashCode to exports [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - @pnp/sp: Added searchWithCaching to root sp object [[PR](https://github.com/pnp/pnpjs/pull/207)]
 - @pnp/sp: Search instances now support usingCaching [[PR](https://github.com/pnp/pnpjs/pull/207)]
+- @pnp/sp: Export SPBatch class from library [[PR](https://github.com/pnp/pnpjs/pull/221)]
 
 ### Changed
 
