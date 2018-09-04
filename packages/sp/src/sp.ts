@@ -35,6 +35,10 @@ export {
     AttachmentFileInfo,
 } from "./attachmentfiles";
 
+export {
+    SPBatch,
+} from "./batch";
+
 export * from "./clientsidepages";
 
 export * from "./comments";
