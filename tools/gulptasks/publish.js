@@ -43,9 +43,8 @@ function doPublish(configFileName) {
 /**
  * Dynamically creates and executes a script to publish things
  * 
- * @param {boolean} docsOnly If true only docs will be published, otherwise a new patch version will be published
  */
-function runPublishScript(docsOnly) {
+function runPublishScript() {
 
     const script = [];
 
@@ -58,48 +57,14 @@ function runPublishScript(docsOnly) {
         "git merge dev",
         "npm install");
 
-    if (!docsOnly) {
+    // version here to all subsequent actions have the new version available in package.json
+    script.push("npm version patch");
 
-        // version here to all subsequent actions have the new version available in package.json
-        script.push("npm version patch");
-    }
-
-    // update docs
-    script.push(
-        "git checkout master",
-        "gulp docs");
-
-    // update .gitignore so we can push docs to master
-    script.push("sed -i \"s/\\/docs/#\\/docs/\" .gitignore");
-
-    // add and commit docs
-    script.push(
-        "git add ./docs",
-        "git commit -m \"Update docs\"");
-
-    // undo edit of .gitignore
-    script.push("git checkout .gitignore");
-
-    // push the updates to master (docs and version info)
+    // push the updates to master (version info)
     script.push("git push");
 
-    if (!docsOnly) {
-
-        // package and publish to npm
-        script.push("gulp publish:packages");
-    }
-
-    // clean up docs in dev branch and merge master -> dev
-    script.push(
-        "git checkout master",
-        "git pull",
-        "git checkout dev",
-        "git pull",
-        "git merge master",
-        "rmdir /S/Q docs",
-        "git add .",
-        "git commit -m \"Clean up docs on dev branch\"",
-        "git push");
+    // package and publish to npm
+    script.push("gulp publish:packages");
 
     // always leave things on the dev branch
     script.push("git checkout dev");
@@ -139,12 +104,14 @@ gulp.task("publish-beta", (done) => {
     ]).then(done).catch(done);
 });
 
-gulp.task("publish-docs", (done) => {
-
-    runPublishScript(true).then(done).catch(done);
-});
-
 gulp.task("publish", (done) => {
 
-    runPublishScript(false).then(done).catch(done);
+    runPublishScript().then(_ => {
+
+        // update the docs site
+        exec("mkdocs gh-deploy", { stdio: "inherit" });
+
+        done();
+
+    }).catch(done);
 });
