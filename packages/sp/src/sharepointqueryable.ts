@@ -141,7 +141,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
         path?: string,
         batch?: SPBatch): T {
 
-        let parent = new factory(baseUrl, path).configure(this._options);
+        let parent = new factory(baseUrl, path).configureFrom(this);
 
         const t = "@target";
         if (this.query.has(t)) {
@@ -160,7 +160,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
     protected clone<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
-        let clone = new factory(this, additionalPath).configure(this._options);
+        let clone = new factory(this, additionalPath).configureFrom(this);
         const t = "@target";
         if (this.query.has(t)) {
             clone.query.set(t, this.query.get(t));

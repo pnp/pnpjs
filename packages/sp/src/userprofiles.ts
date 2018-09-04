@@ -16,8 +16,8 @@ export class UserProfileQuery extends SharePointQueryableInstance {
     constructor(baseUrl: string | SharePointQueryable, path = "_api/sp.userprofiles.peoplemanager") {
         super(baseUrl, path);
 
-        this.clientPeoplePickerQuery = new ClientPeoplePickerQuery(baseUrl);
-        this.profileLoader = new ProfileLoader(baseUrl);
+        this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).configureFrom(this);
+        this.profileLoader = (new ProfileLoader(baseUrl)).configureFrom(this);
     }
 
     /**
