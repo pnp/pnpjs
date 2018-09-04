@@ -1,0 +1,28 @@
+{
+  "name": "@pnp/graph",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "pnp - provides functionality to query the Microsoft Graph",
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {
+    "@microsoft/microsoft-graph-types": "1.3.0",
+    "tslib": "1.9.3"
+  },
+  "peerDependencies": {
+    "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/logging": "0.0.0-PLACEHOLDER",
+    "@pnp/odata": "0.0.0-PLACEHOLDER"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnpjs/issues"
+  },
+  "homepage": "https:github.com/pnp/pnpjs",
+  "repository": {
+    "type": "git",
+    "url": "git:github.com/pnp/pnpjs"
+  }
+}

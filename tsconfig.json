@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "es2015",
+        "declaration": true,
+        "removeComments": false,
+        "types": [],
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "rootDir": ".",
+        "baseUrl": ".",
+        "paths": {
+            "@pnp/*": [
+                "./*"
+            ]
+        },
+        "strict": true,
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "pretty": false,
+        "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
+        "inlineSources": true,
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        // TODO:: eventually we want to support this, but for now we don't for ease of code migration
+        "strictNullChecks": false,
+        "preserveConstEnums": true
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@pnp/sp-addinhelpers",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "pnp - provides functionality for working within SharePoint add-ins",
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {
+    "tslib": "1.9.3",
+    "@types/sharepoint": "2013.1.9"
+  },
+  "peerDependencies": {
+    "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/sp": "0.0.0-PLACEHOLDER"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnpjs/issues"
+  },
+  "homepage": "https:github.com/pnp/pnpjs",
+  "repository": {
+    "type": "git",
+    "url": "git:github.com/pnp/pnpjs"
+  }
+}
