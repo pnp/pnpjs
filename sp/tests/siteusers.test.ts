@@ -28,9 +28,9 @@ describe("SiteUsers", () => {
     });
 
     describe("getById", () => {
-        it("Should return _api/web/siteusers(12)", () => {
+        it("Should return _api/web/siteusers/getbyid(12)", () => {
             const user = users.getById(12);
-            expect(user.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers(12)"));
+            expect(user.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers/getbyid(12)"));
         });
     });
 
@@ -55,14 +55,14 @@ describe("SiteUser", () => {
     });
 
     describe("url", () => {
-        it("Should return _api/web/siteusers(2)", () => {
-            expect(user.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers(2)"));
+        it("Should return _api/web/siteusers/getbyid(2)", () => {
+            expect(user.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers/getbyid(2)"));
         });
     });
 
     describe("groups", () => {
-        it("Should return _api/web/siteusers(2)/groups", () => {
-            expect(user.groups.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers(2)/groups"));
+        it("Should return _api/web/siteusers/getbyid(2)/groups", () => {
+            expect(user.groups.toUrl()).to.match(toMatchEndRegex("_api/web/siteusers/getbyid(2)/groups"));
         });
     });
 });

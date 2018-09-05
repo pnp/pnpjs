@@ -19,12 +19,16 @@ import { metadata } from "./utils/metadata";
 @defaultPath("fields")
 export class Fields extends SharePointQueryableCollection {
 
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param title The Id of the list
+    /**	
+     * Gets a field from the collection by id	
+     *	
+     * @param id The Id of the list	
      */
-    public getById = this._getById(Field);
+    public getById(id: string): Field {
+        const f: Field = new Field(this);
+        f.concat(`('${id}')`);
+        return f;
+    }
 
     /**
      * Gets a field from the collection by title
@@ -129,11 +133,11 @@ export class Fields extends SharePointQueryableCollection {
             Formula: string;
             OutputType: FieldTypes;
         } = {
-                DateFormat: dateFormat,
-                FieldTypeKind: 17,
-                Formula: formula,
-                OutputType: outputType,
-            };
+            DateFormat: dateFormat,
+            FieldTypeKind: 17,
+            Formula: formula,
+            OutputType: outputType,
+        };
 
         return this.add(title, "SP.FieldCalculated", extend(props, properties));
     }

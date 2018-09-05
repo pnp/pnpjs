@@ -6,7 +6,16 @@ import { SharePointQueryableCollection, SharePointQueryableInstance, defaultPath
  */
 @defaultPath("forms")
 export class Forms extends SharePointQueryableCollection {
-    public getById = this._getById(Form);
+    /**	
+     * Gets a form by id	
+     *	
+     * @param id The guid id of the item to retrieve	
+     */
+    public getById(id: string): Form {
+        const i = new Form(this);
+        i.concat(`('${id}')`);
+        return i;
+    }
 }
 
 /**

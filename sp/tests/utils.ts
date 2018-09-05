@@ -7,5 +7,5 @@ export function toMatchEndRegex(s: string): RegExp {
     s2 = s2.replace(/\)/g, "\\)");
     s2 = s2.replace(/\?/g, "\\?");
     s2 = s2.replace(/\$/g, "\\$");
-    return new RegExp(`${s2}$`);
+    return new RegExp(`${s2}$`, "i");
 }

@@ -20,12 +20,17 @@ import { metadata } from "./utils/metadata";
 @defaultPath("lists")
 export class Lists extends SharePointQueryableCollection {
 
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
+    /**	    
+     * Gets a list from the collection by guid id	     
+     *	    
+     * @param id The Id of the list (GUID)	      
      */
-    public getById = this._getById(List);
+    public getById(id: string): List {
+        const list = new List(this);
+        list.concat(`('${id}')`);
+        return list;
+    }
+
 
     /**
      * Gets a list from the collection by title

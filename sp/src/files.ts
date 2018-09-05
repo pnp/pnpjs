@@ -438,7 +438,16 @@ export class File extends SharePointQueryableShareableFile {
 @defaultPath("versions")
 export class Versions extends SharePointQueryableCollection {
 
-    public getById = this._getById(Version);
+    /**	
+     * Gets a version by id	
+     *	
+     * @param versionId The id of the version to retrieve	
+     */
+    public getById(versionId: number): Version {
+        const v = new Version(this);
+        v.concat(`(${versionId})`);
+        return v;
+    }
 
     /**
      * Deletes all the file version objects in the collection.

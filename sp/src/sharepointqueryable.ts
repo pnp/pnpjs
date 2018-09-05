@@ -257,21 +257,6 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
         this.query.set("$top", top.toString());
         return this;
     }
-
-    /**
-     * Curries the getById function
-     * 
-     * @param factory Class to create for the id
-     */
-    protected _getById<P, T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>): (id: P) => T {
-        return (id: P) => {
-            if (typeof id === "number") {
-                return (new factory(this)).concat(`(${id})`);
-            } else {
-                return (new factory(this)).concat(`('${id}')`);
-            }
-        };
-    }
 }
 
 /**
