@@ -66,8 +66,8 @@ describe("RoleDefinitions", () => {
     });
 
     describe("getById", () => {
-        it("Should return " + baseUrl + "/roledefinitions(1)", () => {
-            expect(roleDefinitions.getById(1).toUrl()).to.match(toMatchEndRegex(baseUrl + "/roledefinitions(1)"));
+        it("Should return " + baseUrl + "/roledefinitions/getbyid(1)", () => {
+            expect(roleDefinitions.getById(1).toUrl()).to.match(toMatchEndRegex(baseUrl + "/roledefinitions/getbyid(1)"));
         });
     });
 
