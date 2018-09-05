@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - @pnp/sp: Use the Retry-After header if available for throttled requests [[PR](https://github.com/pnp/pnpjs/pull/224)]
-
+- tooling: Added --skip-web flag for gulp test command [[PR](https://github.com/pnp/pnpjs/pull/224)]
 
 ## 1.2.0 - 2018-09-04
 

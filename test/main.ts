@@ -35,12 +35,16 @@ export interface ISettings {
 let settings: ISettings = null;
 let mode = "cmd";
 let site: string = null;
+let skipWeb = false;
 process.argv.forEach((s: string) => {
-    if (/^--pnp-test-mode/.test(s)) {
+    if (/^--pnp-test-mode/i.test(s)) {
         mode = s.split("=")[1];
     }
-    if (/^--pnp-test-site/.test(s)) {
+    if (/^--pnp-test-site/i.test(s)) {
         site = s.split("=")[1];
+    }
+    if (/^--skip-web/i.test(s)) {
+        skipWeb = true;
     }
 });
 
@@ -78,6 +82,9 @@ switch (mode) {
     default:
 
         settings = require("../../settings");
+        if (skipWeb) {
+            settings.testing.enableWebTests = false;
+        }
 
         break;
 }
