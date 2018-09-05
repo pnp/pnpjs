@@ -8,12 +8,16 @@ import { extend, TypedHash, jsS } from "@pnp/common";
 @defaultPath("usercustomactions")
 export class UserCustomActions extends SharePointQueryableCollection {
 
-    /**
-     * Returns the user custom action with the specified id
-     *
-     * @param id The GUID id of the user custom action to retrieve
+    /**	   
+     * Returns the user custom action with the specified id	     
+     *	    
+     * @param id The GUID id of the user custom action to retrieve	     
      */
-    public getById = this._getById(UserCustomAction);
+    public getById(id: string): UserCustomAction {
+        const uca = new UserCustomAction(this);
+        uca.concat(`('${id}')`);
+        return uca;
+    }
 
     /**
      * Creates a user custom action

@@ -44,7 +44,9 @@ export class WebPartDefinitions extends SharePointQueryableCollection {
      *
      * @param id The storage ID of the SPWebPartDefinition to retrieve
      */
-    public getById = this._getById(WebPartDefinition);
+    public getById(id: string): WebPartDefinition {
+        return new WebPartDefinition(this, `getbyid('${id}')`);
+    }
 
     /**
      * Gets a web part definition from the collection by storage id
@@ -113,4 +115,4 @@ export class WebPartDefinition extends SharePointQueryableInstance {
 }
 
 @defaultPath("webpart")
-export class WebPart extends SharePointQueryableInstance {}
+export class WebPart extends SharePointQueryableInstance { }

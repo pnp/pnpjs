@@ -9,13 +9,6 @@ import { jsS } from "@pnp/common";
 export class Features extends SharePointQueryableCollection {
 
     /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the feature (GUID)
-     */
-    public getById = this._getById(Feature);
-
-    /**
      * Adds a new list to the collection
      *
      * @param id The Id of the feature (GUID)
@@ -35,6 +28,17 @@ export class Features extends SharePointQueryableCollection {
                 feature: this.getById(id),
             };
         });
+    }
+
+    /**	    
+     * Gets a list from the collection by guid id	     
+     *	    
+     * @param id The Id of the feature (GUID)	    
+     */
+    public getById(id: string): Feature {
+        const feature = new Feature(this);
+        feature.concat(`('${id}')`);
+        return feature;
     }
 
     /**

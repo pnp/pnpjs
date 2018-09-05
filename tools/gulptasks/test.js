@@ -62,6 +62,7 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
             timeout: 40000,
             "pnp-test-mode": "cmd",
             "pnp-test-site": siteUrl,
+            "skip-web": yargs.skipWeb,
             slow: 3000,
         }))
         .pipe(istanbul.writeReports({

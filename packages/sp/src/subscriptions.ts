@@ -8,12 +8,16 @@ import { jsS } from "@pnp/common";
 @defaultPath("subscriptions")
 export class Subscriptions extends SharePointQueryableCollection {
 
-    /**
-     * Returns all the webhook subscriptions or the specified webhook subscription
-     *
-     * @param id The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
+    /**	  
+     * Returns all the webhook subscriptions or the specified webhook subscription	    
+     *	     
+     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions	   
      */
-    public getById = this._getById(Subscription);
+    public getById(subscriptionId: string): Subscription {
+        const s = new Subscription(this);
+        s.concat(`('${subscriptionId}')`);
+        return s;
+    }
 
     /**
      * Creates a new webhook subscription

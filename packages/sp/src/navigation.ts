@@ -18,7 +18,16 @@ export interface NavigationNodeAddResult {
  */
 export class NavigationNodes extends SharePointQueryableCollection {
 
-    public getById = this._getById<number, NavigationNode>(NavigationNode);
+    /**	    
+     * Gets a navigation node by id	
+     *	
+     * @param id The id of the node	
+     */
+    public getById(id: number): NavigationNode {
+        const node = new NavigationNode(this);
+        node.concat(`(${id})`);
+        return node;
+    }
 
     /**
      * Adds a new node to the collection

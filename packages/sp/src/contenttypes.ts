@@ -9,8 +9,6 @@ import { metadata } from "./utils/metadata";
 @defaultPath("contenttypes")
 export class ContentTypes extends SharePointQueryableCollection {
 
-    public getById = this._getById(ContentType);
-
     /**
      * Adds an existing contenttype to a content type collection
      *
@@ -28,6 +26,15 @@ export class ContentTypes extends SharePointQueryableCollection {
                 data: data,
             };
         });
+    }
+
+    /**	
+     * Gets a ContentType by content type id	
+     */
+    public getById(id: string): ContentType {
+        const ct: ContentType = new ContentType(this);
+        ct.concat(`('${id}')`);
+        return ct;
     }
 
     /**
@@ -110,7 +117,16 @@ export interface ContentTypeAddResult {
  */
 @defaultPath("fieldlinks")
 export class FieldLinks extends SharePointQueryableCollection {
-    public getById = this._getById(FieldLink);
+    /**	
+     * Gets a FieldLink by GUID id	
+     *	
+     * @param id The GUID id of the field link	
+     */
+    public getById(id: string) {
+        const fl = new FieldLink(this);
+        fl.concat(`(guid'${id}')`);
+        return fl;
+    }
 }
 
 /**

@@ -19,7 +19,16 @@ import { metadata } from "./utils/metadata";
 @defaultPath("items")
 export class Items extends SharePointQueryableCollection {
 
-    public getById = this._getById<number, Item>(Item);
+    /**	
+    * Gets an Item by id	
+    *	
+    * @param id The integer id of the item to retrieve	
+    */
+    public getById(id: number): Item {
+        const i = new Item(this);
+        i.concat(`(${id})`);
+        return i;
+    }
 
     /**
      * Gets BCS Item by string id
@@ -374,7 +383,16 @@ export interface ItemUpdateResultData {
  */
 @defaultPath("versions")
 export class ItemVersions extends SharePointQueryableCollection {
-    public getById = this._getById<number, ItemVersion>(ItemVersion);
+    /**	
+     * Gets a version by id	
+     *	
+     * @param versionId The id of the version to retrieve	
+     */
+    public getById(versionId: number): ItemVersion {
+        const v = new ItemVersion(this);
+        v.concat(`(${versionId})`);
+        return v;
+    }
 }
 
 

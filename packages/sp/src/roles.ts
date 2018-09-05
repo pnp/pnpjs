@@ -11,12 +11,16 @@ import { metadata } from "./utils/metadata";
 @defaultPath("roleassignments")
 export class RoleAssignments extends SharePointQueryableCollection {
 
-    /**
-     * Gets the role assignment associated with the specified principal id from the collection.
-     *
-     * @param id The id of the role assignment
+    /**	
+     * Gets the role assignment associated with the specified principal id from the collection.	
+     *	
+     * @param id The id of the role assignment	
      */
-    public getById = this._getById<number, RoleAssignment>(RoleAssignment);
+    public getById(id: number) {
+        const ra = new RoleAssignment(this);
+        ra.concat(`(${id})`);
+        return ra;
+    }
 
     /**
      * Adds a new role assignment with the specified principal and role definitions to the collection
@@ -77,14 +81,15 @@ export class RoleAssignment extends SharePointQueryableInstance {
 @defaultPath("roledefinitions")
 export class RoleDefinitions extends SharePointQueryableCollection {
 
-    /**
-     * Gets the role definition with the specified id from the collection
-     *
-     * @param id The id of the role definition
-     *
+    /**	   
+     * Gets the role definition with the specified id from the collection	    
+     *	     
+     * @param id The id of the role definition	     
+     *	     
      */
-    public getById = this._getById<number, RoleDefinition>(RoleDefinition);
-
+    public getById(id: number): RoleDefinition {
+        return new RoleDefinition(this, `getById(${id})`);
+    }
 
     /**
      * Gets the role definition with the specified name
