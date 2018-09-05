@@ -24,7 +24,9 @@ export class SiteUsers extends SharePointQueryableCollection {
      *
      * @param id The id of the user to retrieve
      */
-    public getById = this._getById<number, SiteUser>(SiteUser);
+    public getById(id: number): SiteUser {
+        return new SiteUser(this, `getById('${id}')`);
+    }
 
     /**
      * Gets a user from the collection by email

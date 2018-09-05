@@ -47,8 +47,6 @@ export interface CommentInfo {
 @defaultPath("comments")
 export class Comments extends SharePointQueryableCollection<CommentData[]> {
 
-    public getById = this._getById<string | number, Comment>(Comment);
-
     /**
      * Adds a new comment to this collection
      * 
@@ -65,6 +63,17 @@ export class Comments extends SharePointQueryableCollection<CommentData[]> {
         return this.clone(Comments, null).postCore<CommentData>({ body: postBody }).then(d => {
             return extend(this.getById(d.id), d);
         });
+    }
+
+    /**
+     * Gets a comment by id
+     * 
+     * @param id Id of the comment to load
+     */
+    public getById(id: string | number): Comment {
+        const c = new Comment(this);
+        c.concat(`(${id})`);
+        return c;
     }
 
     /**

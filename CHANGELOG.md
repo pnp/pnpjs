@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.2.1 - 2018-09-05
+
+### Fixed
+
+- @pnp/sp: Fix issue with getting site user by id [[PR](https://github.com/pnp/pnpjs/pull/224)]
+
+### Added
+
+- @pnp/sp: Use the Retry-After header if available for throttled requests [[PR](https://github.com/pnp/pnpjs/pull/224)]
+
+
 ## 1.2.0 - 2018-09-04
 
 ### Added

@@ -9,12 +9,16 @@ import { metadata } from "./utils/metadata";
 @defaultPath("views")
 export class Views extends SharePointQueryableCollection {
 
-    /**
-     * Gets a view by guid id
-     *
-     * @param id The GUID id of the view
+    /**	  
+     * Gets a view by guid id	    
+     *	   
+     * @param id The GUID id of the view	    
      */
-    public getById = this._getById(View);
+    public getById(id: string): View {
+        const v = new View(this);
+        v.concat(`('${id}')`);
+        return v;
+    }
 
     /**
      * Gets a view by title (case-sensitive)

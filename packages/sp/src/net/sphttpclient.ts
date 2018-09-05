@@ -74,28 +74,50 @@ export class SPHttpClient implements RequestClient {
 
         const retry = (ctx: RetryContext): void => {
 
-            this._impl.fetch(url, options).then((response) => ctx.resolve(response)).catch((response) => {
+            // handles setting the proper timeout for a retry
+            const setRetry = (response: Response) => {
+                let delay;
 
-                // Check if request was throttled - http status code 429
-                // Check if request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
-                    ctx.reject(response);
+                if (response.headers.has("Retry-After")) {
+                    // if we have gotten a header, use that value as the delay value
+                    delay = parseInt(response.headers.get("Retry-After"), 10);
+                } else {
+                    // grab our current delay
+                    delay = ctx.delay;
+
+                    // Increment our counters.
+                    ctx.delay *= 2;
                 }
 
-                // grab our current delay
-                const delay = ctx.delay;
-
-                // Increment our counters.
-                ctx.delay *= 2;
                 ctx.attempts++;
 
                 // If we have exceeded the retry count, reject.
                 if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(response);
+                    ctx.reject(new Error(`Retry count exceeded (${ctx.retryCount}) for request. Response status: [${response.status}] ${response.statusText}`));
+                } else {
+                    // Set our retry timeout for {delay} milliseconds.
+                    setTimeout(getCtxCallback(this, retry, ctx), delay);
+                }
+            };
+
+            // send the actual request
+            this._impl.fetch(url, options).then((response) => {
+
+                if (response.status === 429) {
+                    // we have been throttled
+                    setRetry(response);
+                } else {
+                    ctx.resolve(response);
                 }
 
-                // Set our retry timeout for {delay} milliseconds.
-                setTimeout(getCtxCallback(this, retry, ctx), delay);
+            }).catch((response: Response) => {
+
+                if (response.status === 503) {
+                    // http status code 503, we can retry this
+                    setRetry(response);
+                } else {
+                    ctx.reject(response);
+                }
             });
         };
 

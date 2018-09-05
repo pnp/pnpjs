@@ -42,12 +42,16 @@ export interface GroupAddResult {
 @defaultPath("sitegroups")
 export class SiteGroups extends SharePointQueryableCollection {
 
-    /**
-     * Gets a group from the collection by id
-     *
-     * @param id The id of the group to retrieve
+    /**	
+     * Gets a group from the collection by id	
+     *	
+     * @param id The id of the group to retrieve	
      */
-    public getById = this._getById<number, SiteGroup>(SiteGroup);
+    public getById(id: number) {
+        const sg = new SiteGroup(this);
+        sg.concat(`(${id})`);
+        return sg;
+    }
 
     /**
      * Adds a new group to the site collection
