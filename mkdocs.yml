@@ -111,3 +111,4 @@ extra:
       link: 'https://aka.ms/sppnp'
 repo_url: http://github.com/pnp/pnpjs
 edit_uri: tree/dev/packages
+site_url: https://pnp.github.io/pnpjs/
