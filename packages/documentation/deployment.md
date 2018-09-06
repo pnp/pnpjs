@@ -40,7 +40,7 @@ sp.web.lists.getByTitle("BigList").get().then(r => {
 });
 ```
 
-#### config.js
+#### config.json
 
 ```JSON
   "externals": {
@@ -77,7 +77,7 @@ sp.web.lists.getByTitle("BigList").get().then(r => {
 });
 ```
 
-#### config.js
+#### config.json
 ```JSON
 "externals": {
   "@pnp/sp": {
