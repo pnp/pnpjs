@@ -49,18 +49,18 @@ callback2(); // returns 10 (6 + 4)
 
 Manipulates a date, please see the [Stackoverflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
 
-## combinePaths
+## combine
 
 Combines any number of paths, normalizing the slashes as required
 
 ```TypeScript
-import { combinePaths } from "@pnp/common";
+import { combine } from "@pnp/common";
 
 // "https://microsoft.com/something/more"
-const paths = combinePaths("https://microsoft.com", "something", "more");
+const paths = combine("https://microsoft.com", "something", "more");
 
 // "also/works/with/relative"
-const paths2 = combinePaths("/also/", "/works", "with/", "/relative\\");
+const paths2 = combine("/also/", "/works", "with/", "/relative\\");
 ```
 
 ## getRandomString
