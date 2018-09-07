@@ -692,8 +692,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#combinepaths" title="combinePaths" class="md-nav__link">
-    combinePaths
+  <a href="#combine" title="combine" class="md-nav__link">
+    combine
   </a>
   
 </li>
@@ -1513,8 +1513,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#combinepaths" title="combinePaths" class="md-nav__link">
-    combinePaths
+  <a href="#combine" title="combine" class="md-nav__link">
+    combine
   </a>
   
 </li>
@@ -1646,15 +1646,15 @@
 
 <h2 id="dateadd">dateAdd<a class="headerlink" href="#dateadd" title="Permanent link">&para;</a></h2>
 <p>Manipulates a date, please see the <a href="https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object">Stackoverflow discussion</a> from where this method was taken.</p>
-<h2 id="combinepaths">combinePaths<a class="headerlink" href="#combinepaths" title="Permanent link">&para;</a></h2>
+<h2 id="combine">combine<a class="headerlink" href="#combine" title="Permanent link">&para;</a></h2>
 <p>Combines any number of paths, normalizing the slashes as required</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">combinePaths</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">combine</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="c1">// &quot;https://microsoft.com/something/more&quot;</span>
-<span class="kr">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="nx">combinePaths</span><span class="p">(</span><span class="s2">&quot;https://microsoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">,</span> <span class="s2">&quot;more&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="nx">combine</span><span class="p">(</span><span class="s2">&quot;https://microsoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">,</span> <span class="s2">&quot;more&quot;</span><span class="p">);</span>
 
 <span class="c1">// &quot;also/works/with/relative&quot;</span>
-<span class="kr">const</span> <span class="nx">paths2</span> <span class="o">=</span> <span class="nx">combinePaths</span><span class="p">(</span><span class="s2">&quot;/also/&quot;</span><span class="p">,</span> <span class="s2">&quot;/works&quot;</span><span class="p">,</span> <span class="s2">&quot;with/&quot;</span><span class="p">,</span> <span class="s2">&quot;/relative\\&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">paths2</span> <span class="o">=</span> <span class="nx">combine</span><span class="p">(</span><span class="s2">&quot;/also/&quot;</span><span class="p">,</span> <span class="s2">&quot;/works&quot;</span><span class="p">,</span> <span class="s2">&quot;with/&quot;</span><span class="p">,</span> <span class="s2">&quot;/relative\\&quot;</span><span class="p">);</span>
 </pre></div>
 
 
