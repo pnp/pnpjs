@@ -4,11 +4,11 @@ PnPJS is a fluent JavaScript API for consuming SharePoint and Office 365 REST AP
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
 
-**If you are moving from sp-pnp-js please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide.html)**
+**If you are moving from sp-pnp-js please review the [transition guide](https://pnp.github.io/pnpjs/documentation/transition-guide/)**
 
 ## Getting Started
 
-Please see the [Getting Started guide](https://pnp.github.io/pnpjs/getting-started.html) in the main documentation.
+Please see the [Getting Started guide](https://pnp.github.io/pnpjs/documentation/getting-started/) in the main documentation.
 
 ## Documentation
 
