@@ -41,16 +41,14 @@ import pnp, {
 import {
   Logger,
   LogLevel,
-  FunctionListener,
+  FunctionListener
 } from "@pnp/logging";
 
-import {
-  Util,
-} from "@pnp/common";
+import * as Util from "@pnp/common";
 
 import {
   sp,
-  Web,
+  Web
 } from "@pnp/sp";
 ```
 
