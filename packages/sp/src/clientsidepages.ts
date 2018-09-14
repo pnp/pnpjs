@@ -759,7 +759,7 @@ export class ClientSideWebpart extends ClientSidePart {
         const manifest: ClientSidePageComponentManifest = JSON.parse(component.Manifest);
         this.title = manifest.preconfiguredEntries[0].title.default;
         this.description = manifest.preconfiguredEntries[0].description.default;
-        this.dataVersion = "";
+        this.dataVersion = "1.0";
         this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
     }
 
