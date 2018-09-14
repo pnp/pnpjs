@@ -133,11 +133,11 @@ export class Fields extends SharePointQueryableCollection {
             Formula: string;
             OutputType: FieldTypes;
         } = {
-            DateFormat: dateFormat,
-            FieldTypeKind: 17,
-            Formula: formula,
-            OutputType: outputType,
-        };
+                DateFormat: dateFormat,
+                FieldTypeKind: 17,
+                Formula: formula,
+                OutputType: outputType,
+            };
 
         return this.add(title, "SP.FieldCalculated", extend(props, properties));
     }
@@ -310,14 +310,17 @@ export class Fields extends SharePointQueryableCollection {
         lookupFieldName: string,
         properties?: FieldCreationProperties): Promise<FieldAddResult> {
 
-        const postBody: string = jsS(Object.assign(metadata("SP.FieldCreationInformation"), {
-            parameters: extend({
-                FieldTypeKind: 7,
-                LookupFieldName: lookupFieldName,
-                LookupListId: lookupListId,
-                Title: title,
-            }, properties),
-        }));
+        const props = extend({
+            FieldTypeKind: 7,
+            LookupFieldName: lookupFieldName,
+            LookupListId: lookupListId,
+            Title: title,
+        }, properties);
+
+        const postBody: string = jsS({
+            "parameters":
+                extend(metadata("SP.FieldCreationInformation"), props),
+        });
 
         return this.clone(Fields, "addfield").postCore<{ Id: string }>({ body: postBody }).then((data) => {
             return {
