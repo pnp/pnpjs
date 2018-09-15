@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+
+- @pnp/sp: Fix issue with adding a lookup field ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/239)]
+- @pnp/sp: Fix for missing dataVersion in client webpart import ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/242)]
+
 ## 1.2.1 - 2018-09-05
 
 ### Fixed
