@@ -1,5 +1,5 @@
 import { SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
-import { extend, jsS, hOP, getHashCode, objectDefinedNotNull } from "@pnp/common";
+import { extend, jsS, hOP, getHashCode, objectDefinedNotNull, isArray } from "@pnp/common";
 import { metadata } from "./utils/metadata";
 import { CachingOptions } from "@pnp/odata";
 
@@ -146,35 +146,20 @@ export class Search extends SharePointQueryableInstance {
 
         const query = this.parseQuery(queryInit);
 
-        let formattedBody: any;
-        formattedBody = query;
-
-        if (formattedBody.SelectProperties) {
-            formattedBody.SelectProperties = this.fixupProp(query.SelectProperties);
-        }
-
-        if (formattedBody.RefinementFilters) {
-            formattedBody.RefinementFilters = this.fixupProp(query.RefinementFilters);
-        }
-
-        if (formattedBody.SortList) {
-            formattedBody.SortList = this.fixupProp(query.SortList);
-        }
-
-        if (formattedBody.HithighlightedProperties) {
-            formattedBody.HithighlightedProperties = this.fixupProp(query.HitHighlightedProperties);
-        }
-
-        if (formattedBody.ReorderingRules) {
-            formattedBody.ReorderingRules = this.fixupProp(query.ReorderingRules);
-        }
-
-        if (formattedBody.Properties) {
-            formattedBody.Properties = this.fixupProp(query.Properties);
-        }
-
         const postBody = jsS({
-            request: extend(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), formattedBody),
+            request: extend(
+                metadata("Microsoft.Office.Server.Search.REST.SearchRequest"),
+                Object.assign(
+                    {},
+                    query,
+                    {
+                        HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
+                        Properties: this.fixArrProp(query.Properties),
+                        RefinementFilters: this.fixArrProp(query.RefinementFilters),
+                        ReorderingRules: this.fixArrProp(query.ReorderingRules),
+                        SelectProperties: this.fixArrProp(query.SelectProperties),
+                        SortList: this.fixArrProp(query.SortList),
+                    })),
         });
 
         // if we are using caching with this search request, then we need to handle some work upfront to enable that
@@ -200,11 +185,15 @@ export class Search extends SharePointQueryableInstance {
     }
 
     /**
-     * Fixes up properties that expect to consist of a "results" collection when needed
+     * Fix array property
      *
-     * @param prop property to fixup for container struct
+     * @param prop property to fix for container struct
      */
-    private fixupProp(prop: any): any {
+    private fixArrProp(prop: any): { results: any[] } {
+        if (typeof prop === "undefined") {
+            return ({ results: [] });
+        }
+        prop = isArray(prop) ? prop : [prop];
         return hOP(prop, "results") ? prop : { results: prop };
     }
 
