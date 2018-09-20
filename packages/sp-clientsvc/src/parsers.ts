@@ -18,21 +18,21 @@ export class ProcessQueryParser<T = any> {
         return r.text().then(t => {
 
             if (!r.ok) {
-                throw new Error(t);
+                throw Error(t);
             }
 
             try {
                 return JSON.parse(t);
             } catch (e) {
                 // special case in ProcessQuery where we got an error back, but it is not in json format
-                throw new Error(t);
+                throw Error(t);
             }
 
         }).then((parsed: any[]) => {
 
             // here we need to check for an error body
             if (parsed.length > 0 && hOP(parsed[0], "ErrorInfo") && parsed[0].ErrorInfo !== null) {
-                throw new Error(jsS(parsed[0].ErrorInfo));
+                throw Error(jsS(parsed[0].ErrorInfo));
             }
 
             return this.findResult(parsed);

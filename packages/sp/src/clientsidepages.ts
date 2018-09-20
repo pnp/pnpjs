@@ -132,7 +132,7 @@ function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | str
                 // this is an arbitrary cut-off but likely we will not have 1000 nested divs
                 // something has gone wrong above and we are probably stuck in our while loop
                 // let's get out of our while loop and not hang everything
-                throw new Error("getBoundedDivMarkup exceeded depth parameters.");
+                throw Error("getBoundedDivMarkup exceeded depth parameters.");
             }
         }
 
@@ -189,7 +189,7 @@ export class ClientSidePage extends File {
         return library.rootFolder.files.select("Name").filter(`Name eq '${pageName}'`).get().then((fs: any[]) => {
 
             if (fs.length > 0) {
-                throw new Error(`A file with the name '${pageName}' already exists in the library '${library.toUrl()}'.`);
+                throw Error(`A file with the name '${pageName}' already exists in the library '${library.toUrl()}'.`);
             }
 
             // get our server relative path

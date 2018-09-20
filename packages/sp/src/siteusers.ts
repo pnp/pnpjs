@@ -44,8 +44,7 @@ export class SiteUsers extends SharePointQueryableCollection {
      */
     public getByLoginName(loginName: string): SiteUser {
         const su = new SiteUser(this);
-        su.concat("(@v)");
-        su.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        su.concat(`('!@v::${encodeURIComponent(loginName)}')`);
         return su;
     }
 

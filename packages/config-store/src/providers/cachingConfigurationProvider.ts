@@ -57,6 +57,6 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
         if ((pnpCache.session) && (pnpCache.session.enabled)) {
             return pnpCache.session;
         }
-        throw new Error("Cannot create a caching configuration provider since cache is not available.");
+        throw Error("Cannot create a caching configuration provider since cache is not available.");
     }
 }

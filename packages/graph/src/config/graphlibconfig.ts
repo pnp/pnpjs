@@ -45,7 +45,7 @@ export class GraphRuntimeConfigImpl {
             return () => AdalClient.fromSPFxContext(RuntimeConfig.spfxContext);
         }
 
-        throw new Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
+        throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
     }
 }
 

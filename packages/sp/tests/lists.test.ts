@@ -300,7 +300,7 @@ describe("List", () => {
                 return expect(sp.web.lists.ensure("pnp testing list recycle").then(result => {
                     return result.list.recycle().then(recycleResponse => {
                         if (typeof recycleResponse !== "string") {
-                            throw new Error("Expected a string returned from recycle.");
+                            throw Error("Expected a string returned from recycle.");
                         }
                         return result.list.select("Title").get();
                     });

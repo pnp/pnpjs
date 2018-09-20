@@ -5,6 +5,15 @@ export interface ODataParser<T> {
     parse(r: Response): Promise<T>;
 }
 
+export class HttpRequestError extends Error {
+
+    public isHttpRequestError = true;
+
+    constructor(message: string, public response: Response, public status = response.status, public statusText = response.statusText) {
+        super(message);
+    }
+}
+
 export abstract class ODataParserBase<T> implements ODataParser<T> {
 
     public parse(r: Response): Promise<T> {
@@ -16,7 +25,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
         });
     }
 
-    protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (value?: T | PromiseLike<T>) => void): void {
+    protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: Error) => void): void {
         if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
             resolve(<T>{});
         } else {
@@ -36,23 +45,9 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
      * @param r Current response object
      * @param reject reject delegate for the surrounding promise
      */
-    protected handleError(r: Response, reject: (reason?: any) => void): boolean {
+    protected handleError(r: Response, reject: (err?: Error) => void): boolean {
         if (!r.ok) {
-
-            // read the response as text, it may not be valid json
-            r.json().then(json => {
-
-                // include the headers as they contain diagnostic information
-                const data = {
-                    responseBody: json,
-                    responseHeaders: r.headers,
-                };
-
-                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${JSON.stringify(data)}`));
-
-            }).catch(e => {
-                reject(new Error(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText} ::> ${e}`));
-            });
+            reject(new HttpRequestError(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText}`, r.clone()));
         }
 
         return r.ok;
@@ -114,11 +109,13 @@ export class BufferParser extends ODataParserBase<ArrayBuffer> {
     }
 }
 
-export class LambdaParser<T = any> implements ODataParser<T> {
+export class LambdaParser<T = any> extends ODataParserBase<T> {
 
-    constructor(private parser: (r: Response) => Promise<T>) { }
+    constructor(private parser: (r: Response) => Promise<T>) {
+        super();
+    }
 
-    public parse(r: Response): Promise<T> {
-        return this.parser(r);
+    protected parseImpl(r: Response, resolve: (value: any) => void): void {
+        this.parser(r).then(resolve);
     }
 }

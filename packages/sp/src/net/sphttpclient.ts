@@ -93,7 +93,7 @@ export class SPHttpClient implements RequestClient {
 
                 // If we have exceeded the retry count, reject.
                 if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(new Error(`Retry count exceeded (${ctx.retryCount}) for request. Response status: [${response.status}] ${response.statusText}`));
+                    ctx.reject(Error(`Retry count exceeded (${ctx.retryCount}) for request. Response status: [${response.status}] ${response.statusText}`));
                 } else {
                     // Set our retry timeout for {delay} milliseconds.
                     setTimeout(getCtxCallback(this, retry, ctx), delay);

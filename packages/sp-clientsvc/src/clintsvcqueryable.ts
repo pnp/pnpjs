@@ -80,7 +80,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     public inBatch(batch: IObjectPathBatch): this {
 
         if (this.batch !== null) {
-            throw new Error("This query is already part of a batch.");
+            throw Error("This query is already part of a batch.");
         }
 
         this._batch = batch;

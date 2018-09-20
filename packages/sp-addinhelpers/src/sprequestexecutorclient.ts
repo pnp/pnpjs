@@ -9,7 +9,7 @@ export class SPRequestExecutorClient implements HttpClientImpl {
      */
     public fetch(url: string, options: any): Promise<Response> {
         if (SP === undefined || SP.RequestExecutor === undefined) {
-            throw new Error("SP.RequestExecutor is undefined. Load the SP.RequestExecutor.js library (/_layouts/15/SP.RequestExecutor.js) before loading the PnP JS Core library.");
+            throw Error("SP.RequestExecutor is undefined. Load the SP.RequestExecutor.js library (/_layouts/15/SP.RequestExecutor.js) before loading the PnP JS Core library.");
         }
 
         const addinWebUrl = url.substring(0, url.indexOf("/_api")),

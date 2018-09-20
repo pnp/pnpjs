@@ -15,7 +15,7 @@ export function installNPMDependencies(ctx: BuildContext) {
             if (error === null) {
                 resolve();
             } else {
-                reject(new Error(stdout));
+                reject(Error(stdout));
             }
         });
     });
