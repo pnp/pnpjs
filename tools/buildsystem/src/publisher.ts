@@ -25,7 +25,7 @@ export function publisher(config: PublishSchema): Promise<void> {
 
         // gate the package names so folks don't try and run code down the line
         if (!/^[\w-]+$/i.test(pkg.name)) {
-            throw new Error(`Bad package name "${pkg.name}".`);
+            throw Error(`Bad package name "${pkg.name}".`);
         }
 
         const projectFolder = path.join(config.packageRoot, pkg.name);

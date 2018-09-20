@@ -59,7 +59,7 @@ export class AdalClient extends BearerTokenFetchClient {
     public fetch(url: string, options: FetchOptions): Promise<Response> {
 
         if (!isUrlAbsolute(url)) {
-            throw new Error("You must supply absolute urls to AdalClient.fetch.");
+            throw Error("You must supply absolute urls to AdalClient.fetch.");
         }
 
         // the url we are calling is the resource
@@ -83,7 +83,7 @@ export class AdalClient extends BearerTokenFetchClient {
                 AdalClient._authContext.acquireToken(resource, (message: string, token: string) => {
 
                     if (message) {
-                        return reject(new Error(message));
+                        return reject(Error(message));
                     }
 
                     resolve(token);
@@ -138,7 +138,7 @@ export class AdalClient extends BearerTokenFetchClient {
                 const popupWindow = window.open(url, "login", "width=483, height=600");
 
                 if (!popupWindow) {
-                    return reject(new Error("Could not open pop-up window for auth. Likely pop-ups are blocked by the browser."));
+                    return reject(Error("Could not open pop-up window for auth. Likely pop-ups are blocked by the browser."));
                 }
 
                 if (popupWindow && popupWindow.focus) {

@@ -78,7 +78,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
         return w.select("Id").filter(`RoleTypeKind eq ${roleFilter}`).get().then((def: { Id: number }[]) => {
 
             if (!Array.isArray(def) || def.length < 1) {
-                throw new Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
+                throw Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
             }
 
             let postBody = {
@@ -265,7 +265,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
                     const visitorGroup = new SharePointQueryableInstance("_api/web", "associatedvisitorgroup");
                     return visitorGroup.select("Id").get<{ Id: number }>().then(g => `group: ${g.Id}`);
                 default:
-                    throw new Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
+                    throw Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
             }
         } else {
 
@@ -274,7 +274,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
             const roleDefs = new SharePointQueryableCollection("_api/web", "roledefinitions");
             return roleDefs.select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`).get<{ Id: number }[]>().then(def => {
                 if (def.length < 1) {
-                    throw new Error("Could not locate associated role definition for supplied role. Edit and View are supported");
+                    throw Error("Could not locate associated role definition for supplied role. Edit and View are supported");
                 }
                 return `role: ${def[0].Id}`;
             });

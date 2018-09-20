@@ -84,7 +84,7 @@ export class GraphBatch extends ODataBatch {
 
                         // do we have a next url? if no this is an error
                         if (parsedResponse.nextLink) {
-                            throw new Error("Could not properly parse responses to match requests in batch.");
+                            throw Error("Could not properly parse responses to match requests in batch.");
                         }
 
                         // nextLinkFlag = true;

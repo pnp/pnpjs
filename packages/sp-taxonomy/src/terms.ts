@@ -64,7 +64,7 @@ export class Terms extends ClientSvcQueryable implements ITerms {
             } else if (!stringIsNullOrEmpty(d.Id)) {
                 return this.getById(d.Id);
             }
-            throw new Error("Could not find Name or Id in Terms.get(). You must include at least one of these in your select fields.");
+            throw Error("Could not find Name or Id in Terms.get(). You must include at least one of these in your select fields.");
         });
     }
 

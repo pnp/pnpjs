@@ -83,7 +83,7 @@ export class Lists extends SharePointQueryableCollection {
         additionalSettings: TypedHash<string | number | boolean> = {}): Promise<ListEnsureResult> {
 
         if (this.hasBatch) {
-            throw new Error("The ensure list method is not supported for use in a batch.");
+            throw Error("The ensure list method is not supported for use in a batch.");
         }
 
         return new Promise((resolve, reject) => {

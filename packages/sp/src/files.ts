@@ -149,7 +149,7 @@ export class File extends SharePointQueryableShareableFile {
     public checkin(comment = "", checkinType = CheckinType.Major): Promise<void> {
 
         if (comment.length > 1023) {
-            throw new Error("The maximum comment length is 1023 characters.");
+            throw Error("The maximum comment length is 1023 characters.");
         }
 
         return this.clone(File, `checkin(comment='${comment}',checkintype=${checkinType})`).postCore();
@@ -194,7 +194,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public deny(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new Error("The maximum comment length is 1023 characters.");
+            throw Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `deny(comment='${comment}')`).postCore();
     }
@@ -226,7 +226,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public publish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new Error("The maximum comment length is 1023 characters.");
+            throw Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `publish(comment='${comment}')`).postCore();
     }
@@ -255,7 +255,7 @@ export class File extends SharePointQueryableShareableFile {
      */
     public unpublish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
-            throw new Error("The maximum comment length is 1023 characters.");
+            throw Error("The maximum comment length is 1023 characters.");
         }
         return this.clone(File, `unpublish(comment='${comment}')`).postCore();
     }

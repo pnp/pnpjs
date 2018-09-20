@@ -37,7 +37,7 @@ export class TermSets extends ClientSvcQueryable implements ITermSets {
             } else if (!stringIsNullOrEmpty(d.Id)) {
                 return this.getById(d.Id);
             }
-            throw new Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+            throw Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
         });
     }
 

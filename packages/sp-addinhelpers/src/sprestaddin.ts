@@ -48,11 +48,11 @@ export class SPRestAddIn extends SPRest {
         urlPart: string): T {
 
         if (!isUrlAbsolute(addInWebUrl)) {
-            throw new Error("The addInWebUrl parameter must be an absolute url.");
+            throw Error("The addInWebUrl parameter must be an absolute url.");
         }
 
         if (!isUrlAbsolute(hostWebUrl)) {
-            throw new Error("The hostWebUrl parameter must be an absolute url.");
+            throw Error("The hostWebUrl parameter must be an absolute url.");
         }
 
         const url = combine(addInWebUrl, "_api/SP.AppContextSite(@target)");

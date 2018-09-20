@@ -202,7 +202,7 @@ describe("Web", () => {
 
                         sp.web.select("Title").get<{ Title: string }>().then(w2 => {
                             if (w2.Title !== newTitle) {
-                                throw new Error("Update web failed");
+                                throw Error("Update web failed");
                             }
                         });
                     });

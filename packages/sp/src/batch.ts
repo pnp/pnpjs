@@ -37,7 +37,7 @@ export class SPBatch extends ODataBatch {
                             state = "batchHeaders";
                         } else {
                             if (line.trim() !== "") {
-                                throw new Error(`Invalid response, line ${i}`);
+                                throw Error(`Invalid response, line ${i}`);
                             }
                         }
                         break;
@@ -49,7 +49,7 @@ export class SPBatch extends ODataBatch {
                     case "status":
                         const parts = statusRegExp.exec(line);
                         if (parts.length !== 3) {
-                            throw new Error(`Invalid status, line ${i}`);
+                            throw Error(`Invalid status, line ${i}`);
                         }
                         status = parseInt(parts[1], 10);
                         statusText = parts[2];
@@ -67,7 +67,7 @@ export class SPBatch extends ODataBatch {
                 }
             }
             if (state !== "status") {
-                reject(new Error("Unexpected end of input"));
+                reject(Error("Unexpected end of input"));
             }
             resolve(responses);
         });
@@ -210,7 +210,7 @@ export class SPBatch extends ODataBatch {
                 .then((responses: Response[]) => {
 
                     if (responses.length !== this.requests.length) {
-                        throw new Error("Could not properly parse responses to match requests in batch.");
+                        throw Error("Could not properly parse responses to match requests in batch.");
                     }
 
                     Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
