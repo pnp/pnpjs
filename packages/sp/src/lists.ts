@@ -390,7 +390,7 @@ export class List extends SharePointQueryableSecurable {
     public renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<ListFormData> {
         return this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`).postCore().then(data => {
             // data will be a string, so we parse it again
-            return JSON.parse(hOP(data, "ListData") ? data.ListData : data);
+            return JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data);
         });
     }
 
