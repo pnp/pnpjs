@@ -336,7 +336,7 @@ describe("List", () => {
                     return l.forms.select("Id").filter(`FormType eq ${PageType.DisplayForm}`).get().then(f => {
                         return l.renderListFormData(1, f[0].Id, ControlMode.Display);
                     });
-                })).to.eventually.have.property("Title").that.is.not.null;
+                })).to.eventually.have.property("ListData").that.is.not.null;
             });
         });
 
