@@ -9,7 +9,7 @@ export default class MockConfigurationProvider implements IConfigurationProvider
 
     public getConfiguration(): Promise<TypedHash<string>> {
         if (this.shouldThrow) {
-            throw new Error("Mocked error");
+            throw Error("Mocked error");
         }
 
         return new Promise<TypedHash<string>>((resolve, reject) => {

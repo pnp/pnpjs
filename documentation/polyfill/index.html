@@ -453,6 +453,40 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#statement-on-ie-11" title="Statement on IE 11" class="md-nav__link">
+    Statement on IE 11
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations" title="Limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#require-polyfill" title="Require Polyfill" class="md-nav__link">
+    Require Polyfill
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharepoint-framework" title="SharePoint Framework" class="md-nav__link">
+    SharePoint Framework
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#polyfill-service" title="Polyfill Service" class="md-nav__link">
     Polyfill Service
   </a>
@@ -1427,6 +1461,40 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#statement-on-ie-11" title="Statement on IE 11" class="md-nav__link">
+    Statement on IE 11
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations" title="Limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#require-polyfill" title="Require Polyfill" class="md-nav__link">
+    Require Polyfill
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharepoint-framework" title="SharePoint Framework" class="md-nav__link">
+    SharePoint Framework
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#polyfill-service" title="Polyfill Service" class="md-nav__link">
     Polyfill Service
   </a>
@@ -1460,13 +1528,39 @@
                 
                 
                 <h1 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link">&para;</a></h1>
-<p>These libraries may make use of some features not found in older browsers, mainly fetch or other es6 capabilities. This primarily affects Internet Explorer, which
-requires that we provide this missing functionality. There are two ways outlined below to accomplish this, though other are possible.</p>
+<p>These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer, which requires that we provide this missing functionality. There are several ways to include this missing functionality.</p>
+<h2 id="statement-on-ie-11">Statement on IE 11<a class="headerlink" href="#statement-on-ie-11" title="Permanent link">&para;</a></h2>
+<p>Starting with version 1.2.0 we no longer explictly support IE 11. This wasn't done to be malicious but rather we wanted take advantage of some newer features available in JavaScript, namely Proxy and Map. Proxy allows for some interesting patterns, especially when it comes to building a fluent API. Some of that work can be seen in the <a href="https://github.com/pnp/pnpjs/blob/dev/packages/sp/src/search.ts#L102">SearchQueryBuilder</a> code and we are exploring other applications. The move to Map from our custom Dictionary was to shrink the code base as well as gain some performance from the OOTB optimizations.</p>
+<p>We have since heard that this has caused some folks pain in updating to this version of the libarary. We should have communicated the change better, but it is a change we are going to stick with. </p>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<p>The following functionality does not work in IE 11:</p>
+<ul>
+<li>@pnp/sp : SearchQueryBuilder class used to build fluent queries, search continues to work as before.</li>
+<li>This is because no pollyfill is available for Proxy <a href="https://stackoverflow.com/questions/45285992/es6-proxy-polyfill-for-ie11">stackoverflow thread</a></li>
+</ul>
+<h3 id="require-polyfill">Require Polyfill<a class="headerlink" href="#require-polyfill" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Promise</li>
+<li>Fetch</li>
+<li>Array Iterator</li>
+<li>Array From</li>
+<li>Map</li>
+</ul>
+<h2 id="sharepoint-framework">SharePoint Framework<a class="headerlink" href="#sharepoint-framework" title="Permanent link">&para;</a></h2>
+<p>As <a href="https://github.com/pnp/pnpjs/issues/237#issuecomment-421059737">suggested in this issue</a> the following polyfills should fix any IE 11 related issues:</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;core-js/modules/es6.promise&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;core-js/modules/es6.array.iterator.js&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;core-js/modules/es6.array.from.js&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;whatwg-fetch&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;es6-map/implement&quot;</span>
+</pre></div>
+
+
 <h2 id="polyfill-service">Polyfill Service<a class="headerlink" href="#polyfill-service" title="Permanent link">&para;</a></h2>
 <p>If acceptable to your design and security requirements you can use a service to provide missing functionality. This loads scripts from a service outside of your and our
 control, so please ensure you understand any associated risks.</p>
 <p>To use this option you need to wrap the code in a function, here called "stuffisloaded". Then you need to add another script tag as shown below that will load what you need from the polyfill service. Note the parameter "callback" takes our function name.</p>
-<div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/pnp-pnpjs/1.1.1/pnpjs.es5.umd.bundle.min.js&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/pnp-pnpjs/1.2.1/pnpjs.es5.umd.bundle.min.js&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="c1">// this function will be executed once the polyfill is loaded.</span>
 <span class="kd">function</span> <span class="nx">stuffisloaded</span><span class="p">()</span> <span class="p">{</span>
@@ -1481,7 +1575,7 @@ control, so please ensure you understand any associated risks.</p>
 <span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="c">&lt;!-- This script tag loads the required polyfills from the service --&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.polyfill.io/v2/polyfill.min.js?callback=stuffisloaded&amp;features=es6|always|gated,fetch|always|gated&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.polyfill.io/v2/polyfill.min.js?callback=stuffisloaded&amp;features=es6,fetch,Map&amp;flags=always,gated&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </pre></div>
 
 
@@ -1490,6 +1584,7 @@ control, so please ensure you understand any associated risks.</p>
 <ol>
 <li>Download the <strong>es6-promises</strong> polyfill from https://github.com/stefanpenner/es6-promise and upload it to your style library.</li>
 <li>Download the <strong>fetch</strong> polyfill from https://github.com/github/fetch and upload it to your style library.</li>
+<li>Download the <strong>corejs</strong> polyfill from https://github.com/zloirock/core-js and upload it to your style library.</li>
 <li>Update your module loader to set these files as dependencies before the pnp library is opened.</li>
 </ol>
 <p>One issue you still may see is that you get errors that certain libraries are undefined when you try to run your code. This is because your code is running before

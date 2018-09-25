@@ -1499,7 +1499,7 @@
 <span class="p">(</span><span class="kd">function</span> <span class="nx">main() {</span>
 
     <span class="c1">// here we will load the current web&#39;s properties</span>
-    <span class="nx">graph</span><span class="p">.</span><span class="nx">v1</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Groups: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
     <span class="p">});</span>
@@ -1535,7 +1535,7 @@
     <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Loading...`</span><span class="p">;</span>
 
     <span class="c1">// here we will load the current web&#39;s properties</span>
-    <span class="nx">graph</span><span class="p">.</span><span class="nx">v1</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">groups</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">groups</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Groups: &lt;ul&gt;</span><span class="si">${</span><span class="nx">groups</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="sb">`&lt;li&gt;</span><span class="si">${</span><span class="nx">g</span><span class="p">.</span><span class="nx">displayName</span><span class="si">}</span><span class="sb">&lt;/li&gt;`</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="si">}</span><span class="sb">&lt;/ul&gt;`</span><span class="p">;</span>
     <span class="p">});</span>
@@ -1560,7 +1560,7 @@
 <span class="p">});</span>
 
 <span class="c1">// here we will load the groups information</span>
-<span class="nx">graph</span><span class="p">.</span><span class="nx">v1</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Groups: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <span class="p">});</span>

@@ -20,10 +20,10 @@ import { metadata } from "./utils/metadata";
 @defaultPath("lists")
 export class Lists extends SharePointQueryableCollection {
 
-    /**	    
-     * Gets a list from the collection by guid id	     
-     *	    
-     * @param id The Id of the list (GUID)	      
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list (GUID)
      */
     public getById(id: string): List {
         const list = new List(this);
@@ -83,7 +83,7 @@ export class Lists extends SharePointQueryableCollection {
         additionalSettings: TypedHash<string | number | boolean> = {}): Promise<ListEnsureResult> {
 
         if (this.hasBatch) {
-            throw new Error("The ensure list method is not supported for use in a batch.");
+            throw Error("The ensure list method is not supported for use in a batch.");
         }
 
         return new Promise((resolve, reject) => {
@@ -362,12 +362,7 @@ export class List extends SharePointQueryableSecurable {
         q.query.set("@viewXml", `'${viewXml}'`);
         return q.postCore().then(data => {
             // data will be a string, so we parse it again
-            data = JSON.parse(data);
-            if (hOP(data, "RenderListData")) {
-                return data.RenderListData;
-            } else {
-                return data;
-            }
+            return JSON.parse(hOP(data, "RenderListData") ? data.RenderListData : data);
         });
     }
 
@@ -395,12 +390,7 @@ export class List extends SharePointQueryableSecurable {
     public renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<ListFormData> {
         return this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`).postCore().then(data => {
             // data will be a string, so we parse it again
-            data = JSON.parse(data);
-            if (hOP(data, "ListData")) {
-                return data.ListData;
-            } else {
-                return data;
-            }
+            return JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data);
         });
     }
 

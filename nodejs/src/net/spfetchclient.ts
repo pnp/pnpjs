@@ -136,7 +136,7 @@ export class SPFetchClient implements HttpClientImpl {
                 return eps[0].location;
             }
 
-            throw new Error("Auth URL Endpoint could not be determined from data.");
+            throw Error("Auth URL Endpoint could not be determined from data.");
         });
     }
 

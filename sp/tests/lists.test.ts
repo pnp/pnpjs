@@ -300,7 +300,7 @@ describe("List", () => {
                 return expect(sp.web.lists.ensure("pnp testing list recycle").then(result => {
                     return result.list.recycle().then(recycleResponse => {
                         if (typeof recycleResponse !== "string") {
-                            throw new Error("Expected a string returned from recycle.");
+                            throw Error("Expected a string returned from recycle.");
                         }
                         return result.list.select("Title").get();
                     });
@@ -336,7 +336,7 @@ describe("List", () => {
                     return l.forms.select("Id").filter(`FormType eq ${PageType.DisplayForm}`).get().then(f => {
                         return l.renderListFormData(1, f[0].Id, ControlMode.Display);
                     });
-                })).to.eventually.have.property("Title").that.is.not.null;
+                })).to.eventually.have.property("ListData").that.is.not.null;
             });
         });
 

@@ -934,8 +934,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bufferfileparser" title="BufferFileParser" class="md-nav__link">
-    BufferFileParser
+  <a href="#bufferparser" title="BufferParser" class="md-nav__link">
+    BufferParser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lambdaparser" title="LambdaParser" class="md-nav__link">
+    LambdaParser
   </a>
   
 </li>
@@ -1478,8 +1485,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bufferfileparser" title="BufferFileParser" class="md-nav__link">
-    BufferFileParser
+  <a href="#bufferparser" title="BufferParser" class="md-nav__link">
+    BufferParser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lambdaparser" title="LambdaParser" class="md-nav__link">
+    LambdaParser
   </a>
   
 </li>
@@ -1506,15 +1520,62 @@
                 <h1 id="pnpodataparsers">@pnp/odata/parsers<a class="headerlink" href="#pnpodataparsers" title="Permanent link">&para;</a></h1>
 <p>This modules contains a set of generic parsers. These can be used or extended as needed, though it is likely in most cases the default parser will be all you need.</p>
 <h2 id="odatadefaultparser">ODataDefaultParser<a class="headerlink" href="#odatadefaultparser" title="Permanent link">&para;</a></h2>
-<p>The simplest parser used to transform a Response into its JSON representation.</p>
+<p>The simplest parser used to transform a Response into its JSON representation. The default parser will handle errors in a consistent manner throwing an HttpRequestError instance. This class extends Error and adds the response, status, and statusText properties. The response object is unread. You can use this custom error as shown below to gather more information about what went wrong in the request.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">JSONParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+
+<span class="k">try</span> <span class="p">{</span>
+
+    <span class="kr">const</span> <span class="nx">parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JSONParser</span><span class="p">();</span>
+
+    <span class="c1">// this always throws a 404 error</span>
+    <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getList</span><span class="p">(</span><span class="s2">&quot;doesn&#39;t exist&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span>
+
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// we can check for the property &quot;isHttpRequestError&quot; to see if this is an instance of our class</span>
+    <span class="c1">// this gets by all the many limitations of subclassing Error and type detection in JavaScript</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;isHttpRequestError&quot;</span><span class="p">))</span> <span class="p">{</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;e is HttpRequestError&quot;</span><span class="p">);</span>
+
+        <span class="c1">// now we can access the various properties and make use of the response object.</span>
+        <span class="c1">// at this point the body is unread</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`status: </span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`statusText: </span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">statusText</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+
+        <span class="kr">const</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">clone</span><span class="p">().</span><span class="nx">json</span><span class="p">();</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">json</span><span class="p">));</span>
+        <span class="kr">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">clone</span><span class="p">().</span><span class="nx">text</span><span class="p">();</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="kr">const</span> <span class="nx">headers</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">headers</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h2 id="textparser">TextParser<a class="headerlink" href="#textparser" title="Permanent link">&para;</a></h2>
 <p>Specialized parser used to parse the response using the .text() method with no other processing. Used primarily for files.</p>
 <h2 id="blobparser">BlobParser<a class="headerlink" href="#blobparser" title="Permanent link">&para;</a></h2>
 <p>Specialized parser used to parse the response using the .blob() method with no other processing. Used primarily for files.</p>
 <h2 id="jsonparser">JSONParser<a class="headerlink" href="#jsonparser" title="Permanent link">&para;</a></h2>
 <p>Specialized parser used to parse the response using the .json() method with no other processing. Used primarily for files. </p>
-<h2 id="bufferfileparser">BufferFileParser<a class="headerlink" href="#bufferfileparser" title="Permanent link">&para;</a></h2>
-<p>Specialized parser used to parse the response using the .arrayBuffer() [node] for .buffer() [browser] method with no other processing. Used primarily for files. </p>
+<h2 id="bufferparser">BufferParser<a class="headerlink" href="#bufferparser" title="Permanent link">&para;</a></h2>
+<p>Specialized parser used to parse the response using the .arrayBuffer() [node] for .buffer() [browser] method with no other processing. Used primarily for files.</p>
+<h2 id="lambdaparser">LambdaParser<a class="headerlink" href="#lambdaparser" title="Permanent link">&para;</a></h2>
+<p>Allows you to pass in any handler function you want, called if the request does not result in an error that ransforms the raw, unread request into the result type.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LambdaParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// here a simple parser duplicating the functionality of the JSONParser</span>
+<span class="kr">const</span> <span class="nx">parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LambdaParser</span><span class="p">((</span><span class="nx">r</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+
+<span class="kr">const</span> <span class="nx">webDataJson</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">webDataJson</span><span class="p">);</span>
+</pre></div>
                 
                   
                 
