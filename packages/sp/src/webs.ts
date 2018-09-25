@@ -299,6 +299,14 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+     * Gets the default document library for this web
+     *
+     */
+    public get defaultDocumentLibrary(): List {
+        return new List(this, "DefaultDocumentLibrary");
+    }
+
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
