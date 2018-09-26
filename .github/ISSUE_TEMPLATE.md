@@ -12,6 +12,7 @@ needs please complete the below template to ensure we have the details to help. 
 ### Version
 
 Please specify what version of the library you are using: [         ]
+Please specify what version(s) of SharePoint you are targeting: [         ]
 
 *If you are not using the latest release, please update and see if the issue is resolved before submitting an issue.*
 
