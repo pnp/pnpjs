@@ -3,9 +3,6 @@ const tasks = require("./build/tools/buildsystem").Tasks.Build,
     path = require("path");
 
 const defaultBuildPipeline = [
-
-    tasks.buildProject,
-    tasks.buildProjectES5,
     tasks.copyAssets,
     tasks.copyPackageFile,
 ];
@@ -17,6 +14,14 @@ const config = {
 
     // root location, relative
     packageRoot: path.resolve("./packages/"),
+
+    /**
+     * Single run tasks, executed in parallel
+     */
+    tasks: [
+        tasks.buildProject,
+        tasks.buildProjectES5,
+    ],
 
     // the list of packages to be built, in order
     // can be a string name or a plain object with additional settings
@@ -33,19 +38,13 @@ const config = {
         "logging",
         "common",
         "odata",
-        {
-            name: "graph",
-            buildPipeline: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
-        },
+        "graph",
         {
             name: "sp",
             buildPipeline: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
         },
         "nodejs",
-        {
-            name: "sp-addinhelpers",
-            buildPipeline: [tasks.installNPMDependencies].concat(defaultBuildPipeline.slice(0)),
-        },
+        "sp-addinhelpers",
         "config-store",
         "pnpjs",
         "sp-clientsvc",

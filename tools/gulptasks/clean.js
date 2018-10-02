@@ -19,11 +19,8 @@ gulp.task('clean', (done) => {
     }
 
     const directories = [
-        "./build",
         "./dist",
-        "./debugging",
         "./serve",
-        "./testing"
     ];
 
     log(`${colors.bgBlue(" ")} Cleaning directories: ${directories.join(", ")}.`);
@@ -31,8 +28,14 @@ gulp.task('clean', (done) => {
         log(`${colors.bgGreen(" ")} Cleaned directories: ${directories.join(", ")}.`);
         done();
     }).catch(e => {
-        log(`${colors.bgRed(" ")} Error cleaned directories: ${directories.join(", ")}.`);
+        log(`${colors.bgRed(" ")} Error cleaning directories: ${directories.join(", ")}.`);
         done(e);
+    });
+});
+
+gulp.task("clean-build", (done) => {
+    del("./build").then(() => {
+        done();
     });
 });
 

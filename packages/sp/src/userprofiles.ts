@@ -176,7 +176,7 @@ export class UserProfileQuery extends SharePointQueryableInstance {
             reader.readAsArrayBuffer(profilePicSource);
             const request = new UserProfileQuery(this, "setmyprofilepicture");
             request.postCore({
-                body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
+                body: String.fromCharCode.apply(null, <any>new Uint16Array(buffer)),
             }).then(_ => resolve()).catch(e => reject(e));
 
         });

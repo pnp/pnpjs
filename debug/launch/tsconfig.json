@@ -4,8 +4,9 @@
         "module": "commonjs",
         "baseUrl": ".",
         "rootDir": "../../",
-        "outDir": "../../debugging/",
+        "outDir": "../../build/debugging",
         "declaration": true,
+        "declarationMap": true,
         "types": [
             "sharepoint"
         ],
@@ -24,9 +25,10 @@
         "sourceMap": true,
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "strictNullChecks": false
     },
-    "include": [
+    "files": [
         "./main.ts"
     ]
 }

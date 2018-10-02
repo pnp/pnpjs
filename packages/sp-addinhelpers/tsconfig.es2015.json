@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
@@ -13,7 +13,16 @@
             ]
         }
     },
-    "files": [
-        "./index.ts"
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"        
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.es2015.json"
+        },
+        {
+            "path": "../sp/tsconfig.es2015.json"
+        }
     ]
 }

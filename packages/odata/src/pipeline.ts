@@ -29,7 +29,7 @@ export interface RequestContext<T> {
  *
  * @param context The current context
  */
-function returnResult<T>(context: RequestContext<T>): Promise<T | null> {
+function returnResult<T>(context: RequestContext<T>): Promise<T> {
 
     Logger.log({
         data: Logger.activeLogLevel === LogLevel.Verbose ? context.result : {},
@@ -37,7 +37,7 @@ function returnResult<T>(context: RequestContext<T>): Promise<T | null> {
         message: `[${context.requestId}] (${(new Date()).getTime()}) Returning result from pipeline. Set logging to verbose to see data.`,
     });
 
-    return Promise.resolve(context.result || null);
+    return Promise.resolve(context.result!);
 }
 
 /**
@@ -61,7 +61,7 @@ export function setResult<T>(context: RequestContext<T>, value: any): Promise<Re
 function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
 
     if (c.pipeline.length > 0) {
-        return c.pipeline.shift()(c);
+        return c.pipeline.shift()!(c);
     } else {
         return Promise.resolve(c);
     }
@@ -72,7 +72,7 @@ function next<T>(c: RequestContext<T>): Promise<RequestContext<T>> {
  *
  * @param context Current context
  */
-export function pipe<T>(context: RequestContext<T>): Promise<T | null> {
+export function pipe<T>(context: RequestContext<T>): Promise<T> {
 
     if (context.pipeline.length < 1) {
         Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Request pipeline contains no methods!`, LogLevel.Warning);
@@ -173,7 +173,7 @@ export class PipelineMethods {
                         }
                         // handle the case where a parser needs to take special actions with a cached result
                         if (hOP(context.parser, "hydrate")) {
-                            data = context.parser.hydrate(data);
+                            data = context.parser.hydrate!(data);
                         }
                         return setResult(context, data).then(ctx => resolve(ctx));
                     }

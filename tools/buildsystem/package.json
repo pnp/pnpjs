@@ -1,7 +1,7 @@
 {
   "name": "@pnp/buildsystem",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "pnp - the build system used within the @pnp repo",
   "main": "./index.js",
   "typings": "./index",

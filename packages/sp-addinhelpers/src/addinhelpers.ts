@@ -1,2 +1,2 @@
-export { SPRequestExecutorClient } from "./sprequestexecutorclient";
+export * from "./sprequestexecutorclient";
 export * from "./sprestaddin";

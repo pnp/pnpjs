@@ -8,7 +8,8 @@ export const Tasks = _Tasks;
 export {
     BuildContext,
     BuildSchema,
-    BuildTaskFunction,
+    BuildFunction,
+    BuildPackageFunction,
     BuildInfo,
 } from "./tasks/build";
 

@@ -21,7 +21,7 @@
 			"internalConsoleOptions": "openOnSessionStart",
 			"sourceMaps": true,
 			"outFiles": [
-				"${workspaceRoot}/debugging/**/*.js"
+				"${workspaceRoot}/build/debugging/**/*.js"
 			]
 		},
 		{

@@ -36,7 +36,7 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
 
     // we use the built *.test.js files here
     const args = cmdLine({ packages: getAllPackageFolderNames() });
-    let paths = ["./testing/test/main.js"];
+    let paths = ["./build/testing/test/main.js"];
     const siteUrl = yargs.site ? yargs.site : "";
 
     // update to only process specific packages
@@ -44,13 +44,13 @@ gulp.task("test", ["clean", "build:test", "_istanbul:hook"], () => {
 
         if (yargs.single || yargs.s) {
             // and only a single set of tests
-            paths.push(path.resolve(`./testing/packages/${args.packages[0]}/tests`, (yargs.single || yargs.s) + ".test.js"));
+            paths.push(path.resolve(`./build/testing/packages/${args.packages[0]}/tests`, (yargs.single || yargs.s) + ".test.js"));
         } else {
-            paths = args.packages.map(p => `./testing/packages/${p}/tests/*.test.js`);
+            paths = args.packages.map(p => `./build/testing/packages/${p}/tests/*.test.js`);
         }
 
     } else {
-        paths.push("./testing/**/*.test.js");
+        paths.push("./build/testing/**/*.test.js");
     }
 
     const reporter = yargs.verbose ? "spec" : "dot";

@@ -10,6 +10,13 @@ const config = {
     // root location, relative
     packageRoot: path.resolve("./debug"),
 
+    /**
+     * Single run tasks
+     */
+    tasks: [
+        tasks.buildProject,
+    ],
+
     // the list of packages to be built, in order
     // can be a string name or a plain object with additional settings
     /**
@@ -21,7 +28,10 @@ const config = {
      * }
      */
     packages: [
-        "launch",
+        {
+            name: "launch",
+            configFile: "tsconfig.json"
+        }
     ],
 
     // relative to the package folder
@@ -29,11 +39,10 @@ const config = {
 
     // the set of tasks run on each project during a build
     buildPipeline: [
-        tasks.buildProject,
         tasks.replaceDebug,
     ],
 
-    configFile: "tsconfig.json",
+    configFile: "launch/tsconfig.json",
 };
 
 module.exports = config;

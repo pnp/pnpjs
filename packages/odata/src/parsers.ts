@@ -26,7 +26,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
     }
 
     protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: Error) => void): void {
-        if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
+        if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")!) === 0) || r.status === 204) {
             resolve(<T>{});
         } else {
 

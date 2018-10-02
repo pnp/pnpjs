@@ -14,11 +14,11 @@ const gulp = require("gulp"),
 
 gulp.task("lint", (done) => {
 
-    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
+    var program = tslint.Linter.createProgram("./tsconfig.json");
 
     pump([
         gulp.src([
-            "./packages/**/*.ts",
+            "./packages/**/src/**/*.ts",
             "!./packages/**/*.test.ts",
             "!**/node_modules/**",
             "!**/*.d.ts"
@@ -37,7 +37,7 @@ gulp.task("lint", (done) => {
 
 gulp.task("lint:tests", (done) => {
 
-    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
+    var program = tslint.Linter.createProgram("./test/tsconfig.json");
 
     // we need to load and override the configuration
     let config = tslint.Configuration.loadConfigurationFromPath("./tslint.json");
