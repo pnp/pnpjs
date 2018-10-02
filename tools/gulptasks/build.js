@@ -22,9 +22,9 @@ const projectRoot = path.resolve(__dirname, "../..");
 /**
  * Builds the build system for use by sub tasks
  */
-gulp.task("bootstrap-buildsystem", ["clean"], (done) => {
+gulp.task("bootstrap-buildsystem", (done) => {
 
-    exec(`${tscPath} -p ./tools/buildsystem/tsconfig.json`, {
+    exec(`${tscPath} -b ./tools/buildsystem/tsconfig.json`, {
         cwd: path.resolve(__dirname, "../.."),
     }, (error, stdout, stderr) => {
 
@@ -42,7 +42,7 @@ gulp.task("bootstrap-buildsystem", ["clean"], (done) => {
 /**
  * Does the main build that is used by package and publish
  */
-gulp.task("build", ["clean", "lint", "bootstrap-buildsystem"], (done) => {
+gulp.task("build", ["lint", "bootstrap-buildsystem"], (done) => {
 
     // create an instance of the engine used to process builds
     const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).builder;
@@ -68,17 +68,17 @@ gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
  */
 gulp.task("build:test", ["clean", "lint:tests"], (done) => {
 
-    exec(`${tscPath} -p ./test/tsconfig.json`, {
+    exec(`${tscPath} -b ./test/tsconfig.json`, {
         cwd: projectRoot,
     }, (error, stdout, stderr) => {
 
         if (error === null) {
 
             pump([
-                gulp.src(path.join(projectRoot, "./testing") + "/**/*.js"),
+                gulp.src(path.join(projectRoot, "./build/testing") + "/**/*.js"),
                 replace("$$Version$$", pkg.version),
-                replace(/require\(['|"]@pnp\/([\w-]*?)['|"]/ig, `require("${path.resolve("./testing/packages/$1").replace(/\\/g, "/")}"`),
-                gulp.dest("./testing"),
+                replace(/require\(['|"]@pnp\/([\w-]*?)['|"]/ig, `require("${path.resolve("./build/testing/packages/$1").replace(/\\/g, "/")}"`),
+                gulp.dest("./build/testing"),
             ], (err) => {
 
                 if (err !== undefined) {

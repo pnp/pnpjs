@@ -168,7 +168,7 @@ export abstract class Queryable<GetType> {
      */
     protected extend(parent: Queryable<any>, path?: string) {
         this._parentUrl = parent._url;
-        this._url = combine(this._parentUrl, path);
+        this._url = combine(this._parentUrl, path || "");
         this.configureFrom(parent);
     }
 

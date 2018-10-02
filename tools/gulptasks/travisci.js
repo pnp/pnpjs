@@ -35,7 +35,7 @@ gulp.task("travis:lint", (done) => {
 
 gulp.task("travis:webtest", ["travis:prereqs", "build:test"], () => {
 
-    return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
+    return gulp.src(["./build/testing/test/main.js", "./build/testing/**/*.test.js"])
         .pipe(mocha({
             ui: "bdd",
             reporter: "spec",
@@ -55,7 +55,7 @@ gulp.task("travis:webtest", ["travis:prereqs", "build:test"], () => {
 
 gulp.task("travis:test", ["travis:prereqs", "build:test"], () => {
 
-    return gulp.src(["./testing/test/main.js", "./testing/**/*.test.js"])
+    return gulp.src(["./build/testing/test/main.js", "./build/testing/**/*.test.js"])
         .pipe(mocha({
             ui: "bdd",
             reporter: "spec",

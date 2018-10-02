@@ -43,7 +43,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
             return null;
         }
 
-        const persistable = JSON.parse(o);
+        const persistable = JSON.parse(o!);
 
         if (new Date(persistable.expiration) <= new Date()) {
             this.delete(key);

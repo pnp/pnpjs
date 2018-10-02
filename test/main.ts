@@ -81,7 +81,7 @@ switch (mode) {
         break;
     default:
 
-        settings = require("../../settings");
+        settings = require("../../../settings");
         if (skipWeb) {
             settings.testing.enableWebTests = false;
         }

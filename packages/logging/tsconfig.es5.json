@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.es5.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/logging/es5",
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"
+    ],
+    "references": []
+}

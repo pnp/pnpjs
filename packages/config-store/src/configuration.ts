@@ -83,7 +83,7 @@ export class Settings {
      * @return {string} string value from the configuration
      */
     public get(key: string): string | null {
-        return this._settings.get(key);
+        return this._settings.get(key) || null;
     }
 
     /**

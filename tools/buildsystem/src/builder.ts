@@ -13,10 +13,26 @@ import { BuildSchema } from "./tasks/build/schema";
  * @param config The build configuration object
  * @param callback (err?) => void
  */
-export function builder(version: string, config: BuildSchema): Promise<void> {
+export async function builder(version: string, config: BuildSchema): Promise<void> {
 
-    // it matters what order we build things as dependencies must be built first
-    // these are the folder names witin the packages directory to build
+    // log we are starting the shared build tasks
+    log(`${colors.bgBlue(" ")} Beginning shared build tasks.`);
+
+    try {
+
+        // run global tasks
+        await Promise.all(config.tasks.map(task => task(version, config)));
+
+        log(`${colors.bgGreen(" ")} Finished shared build tasks.`);
+
+    } catch (e) {
+
+        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error in shared build tasks.`))}.`);
+        log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+        throw e;
+    }
+
+    // run the per package tasks
     return config.packages.reduce((pipe: Promise<void>, pkg) => {
 
         if (typeof pkg === "string") {
@@ -29,8 +45,7 @@ export function builder(version: string, config: BuildSchema): Promise<void> {
         }
 
         const projectFolder = path.join(config.packageRoot, pkg.name);
-
-        const projectFile = path.join(projectFolder, config.configFile || "tsconfig-build.json");
+        const projectFile = path.join(projectFolder, pkg.configFile || config.configFile || "tsconfig.es2015.json");
         const tsconfigObj = require(projectFile);
 
         // establish the context that will be passed through all the build pipeline functions

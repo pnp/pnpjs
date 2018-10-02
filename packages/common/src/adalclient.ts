@@ -1,5 +1,5 @@
 import { BearerTokenFetchClient, FetchOptions } from "./netutil";
-import { ISPFXContext } from "./spfxContextInterface";
+import { ISPFXContext } from "./spfxcontextinterface";
 import { combine, isUrlAbsolute } from "./util";
 // @ts-ignore
 import * as adal from "adal-angular/dist/adal.min.js";
@@ -17,7 +17,7 @@ export class AdalClient extends BearerTokenFetchClient {
     /**
      * Callback used by the adal auth system
      */
-    private _displayCallback: (url: string) => void | null;
+    private _displayCallback: ((url: string) => void) | null;
 
     /**
      * Promise used to ensure the user is logged in
@@ -32,6 +32,8 @@ export class AdalClient extends BearerTokenFetchClient {
      */
     constructor(public clientId: string, public tenant: string, public redirectUri: string) {
         super(null);
+        this._displayCallback = null;
+        this._loginPromise = null;
     }
 
     /**
