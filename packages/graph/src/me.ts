@@ -1,5 +1,6 @@
 import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
 import { OneNote, OneNoteMethods } from "./onenote";
+import { Contacts, ContactFolders } from "./contacts";
 
 export class Me extends GraphQueryableInstance {
 
@@ -13,4 +14,19 @@ export class Me extends GraphQueryableInstance {
     public get onenote(): OneNoteMethods {
         return new OneNote(this);
     }
+
+    /**
+    * The Contacts associated with the user
+    */
+    public get contacts(): Contacts {
+        return new Contacts(this);
+    }
+
+    /**
+     * The Contact Folders associated with the user
+     */
+    public get contactFolders(): ContactFolders {
+        return new ContactFolders(this);
+    }
+
 }
