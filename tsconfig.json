@@ -13,6 +13,7 @@
         ],
         "rootDir": ".",
         "baseUrl": ".",
+        "outDir": "../../build/packages",
         "strict": true,
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
@@ -53,6 +54,9 @@
         },
         {
             "path": "./packages/odata/tsconfig.es2015.json"
+        },
+        {
+            "path": "./packages/nodejs/tsconfig.es2015.json"
         },
         {
             "path": "./packages/pnpjs/tsconfig.es2015.json"

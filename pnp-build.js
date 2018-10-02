@@ -15,6 +15,12 @@ const config = {
     // root location, relative
     packageRoot: path.resolve("./packages/"),
 
+    // allows for the override of the root package file
+    packageFile: path.resolve("./tsconfig.json"),
+
+    // allows for the override of the root package file
+    packageFileES5: path.resolve("./tsconfig.es5.json"),
+
     /**
      * Single run tasks, executed in parallel
      */

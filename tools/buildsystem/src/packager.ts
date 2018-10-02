@@ -17,7 +17,7 @@ export function packager(config: PackageSchema): Promise<void> {
 
     // it matters what order we build things as dependencies must be built first
     // these are the folder names witin the packages directory to build
-    return config.packages.reduce((pipe: Promise<void>, pkg) => {
+    return Promise.all(config.packages.map(pkg => {
 
         if (typeof pkg === "string") {
             pkg = { name: pkg };
@@ -48,7 +48,7 @@ export function packager(config: PackageSchema): Promise<void> {
         // log we have added the file
         log(`${colors.bgBlue(" ")} Adding ${colors.cyan(packageFile)} to the packaging pipeline.`);
 
-        return activePackagePipeline.reduce((subPipe, func) => subPipe.then(() => func(packageContext)), pipe).then(_ => {
+        return activePackagePipeline.reduce((chain, func) => chain.then(() => func(packageContext)), Promise.resolve()).then(_ => {
 
             log(`${colors.bgGreen(" ")} Packaged ${colors.cyan(packageFile)}.`);
 
@@ -57,6 +57,5 @@ export function packager(config: PackageSchema): Promise<void> {
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error packaging `))} ${colors.bold(colors.cyan(packageContext.projectFolder))}.`);
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
-
-    }, Promise.resolve());
+    })).then(_ => void(0));
 }

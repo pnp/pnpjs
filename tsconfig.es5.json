@@ -21,6 +21,9 @@
             "path": "./packages/odata/tsconfig.es5.json"
         },
         {
+            "path": "./packages/nodejs/tsconfig.es5.json"
+        },
+        {
             "path": "./packages/pnpjs/tsconfig.es5.json"
         },
         {

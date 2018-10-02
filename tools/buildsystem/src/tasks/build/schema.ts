@@ -18,6 +18,16 @@ export interface BuildSchema {
     packageRoot: string;
 
     /**
+     * Allows for the override of the root tsconfig path if it is not in the packageRoot
+     */
+    packageFile?: string;
+
+    /**
+     * Allows for the override of the root es5 tsconfig path if it is not in the packageRoot
+     */
+    packageFileES5?: string;
+
+    /**
      * the list of packages to be built, in order
      */
     packages: (string | BuildInfo)[];

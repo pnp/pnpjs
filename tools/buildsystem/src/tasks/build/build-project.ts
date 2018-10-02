@@ -14,7 +14,7 @@ const tscPath = path.join("./node_modules/.bin/tsc");
  */
 export function buildProject(_0: string, config: BuildSchema) {
 
-    const projectFile = path.resolve(path.join(config.packageRoot, config.configFile || "tsconfig.json"));
+    const projectFile = path.resolve(config.packageFile || path.join(config.packageRoot, config.configFile || "tsconfig.json"));
 
     return new Promise((resolve, reject) => {
         // exec a child process to run a tsc build based on the project file in each
@@ -37,7 +37,7 @@ export function buildProject(_0: string, config: BuildSchema) {
  */
 export function buildProjectES5(_0: string, config: BuildSchema) {
 
-    const projectFile = path.resolve(path.join(config.packageRoot, config.configFile || "tsconfig.es5.json"));
+    const projectFile = path.resolve(config.packageFileES5 || path.join(config.packageRoot, config.configFile || "tsconfig.es5.json"));
 
     return new Promise((resolve, reject) => {
         // exec a child process to run a tsc build based on the project file in each
