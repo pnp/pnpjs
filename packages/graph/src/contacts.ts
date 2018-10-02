@@ -23,11 +23,11 @@ export class Contacts extends GraphQueryableCollection {
      */
     public add(givenName: string, surName: string, emailAddresses: EmailAddress[], businessPhones: string[], additionalProperties: TypedHash<any> = {}): Promise<ContactAddResult> {
 
-        let postBody = extend({
+        const postBody = extend({
+            businessPhones: businessPhones,
+            emailAddresses: emailAddresses,
             givenName: givenName,
             surName: surName,
-            emailAddresses: emailAddresses,
-            businessPhones: businessPhones,
         }, additionalProperties);
 
         return this.postCore({
@@ -97,8 +97,70 @@ export class ContactFolders extends GraphQueryableCollection {
 }
 
 export class ContactFolder extends GraphQueryableInstance {
+    /**
+     * Gets the contacts in this contact folder
+     */
     public get contacts(): Contacts {
         return new Contacts(this);
+    }
+
+     /**
+     * Gets the contacts in this contact folder
+     */
+    public get childFolders(): ChildFolders {
+        return new ChildFolders(this);
+    }
+
+    /**
+     * Deletes this contact folder
+     */
+    public delete(): Promise<void> {
+        return this.deleteCore();
+    }
+
+    /**
+     * Update the properties of a contact folder
+     * 
+     * @param properties Set of properties of this contact folder to update
+     */
+    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+
+        return this.patchCore({
+            body: jsS(properties),
+        });
+    }
+}
+
+export class ChildFolders extends GraphQueryableInstance {
+    constructor(baseUrl: string | GraphQueryable, path = "childFolders") {
+        super(baseUrl, path);
+    }
+
+    public getById(id: string): ContactFolder {
+        return new ContactFolder(this, id);
+    }
+
+    /**
+     * Create a new Child Folder in Contact folder.
+     * 
+     * @param displayName The folder's display name.
+     * @param parentFolderId The ID of the folder's parent folder.
+     */
+    public add(displayName: string, parentFolderId?: string): Promise<ContactFolderAddResult> {
+
+        const postBody = {
+            displayName: displayName,
+            parentFolderId: parentFolderId,
+        };
+
+        return this.postCore({
+            body: jsS(postBody),
+        }).then(r => {
+            return {
+                contactFolder: this.getById(r.id),
+                data: r,
+            };
+        });
     }
 }
 
