@@ -42,6 +42,24 @@ export class Contacts extends GraphQueryableCollection {
 }
 
 export class Contact extends GraphQueryableInstance {
+    /**
+     * Deletes this contact
+     */
+    public delete(): Promise<void> {
+        return this.deleteCore();
+    }
+
+    /**
+     * Update the properties of a contact object
+     * 
+     * @param properties Set of properties of this contact to update
+     */
+    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+
+        return this.patchCore({
+            body: jsS(properties),
+        });
+    }
 }
 
 export class ContactFolders extends GraphQueryableCollection {
