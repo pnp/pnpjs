@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
         "rootDir": ".",
@@ -10,7 +10,9 @@
             ]
         }
     },
-    "files": [
-        "./index.ts"
-    ]
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"
+    ],
+    "references": []
 }

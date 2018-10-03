@@ -5,6 +5,7 @@ const log = require("fancy-log");
 
 import { PackageContext } from "./tasks/package/context";
 import { PackageSchema } from "./tasks/package/schema";
+import { bundle } from "./tasks/package";
 
 /**
  * Engine function to process build files
@@ -13,11 +14,9 @@ import { PackageSchema } from "./tasks/package/schema";
  * @param config The build configuration object
  * @param callback (err?) => void
  */
-export function packager(config: PackageSchema): Promise<void> {
+export async function packager(config: PackageSchema): Promise<void> {
 
-    // it matters what order we build things as dependencies must be built first
-    // these are the folder names witin the packages directory to build
-    return Promise.all(config.packages.map(pkg => {
+    return bundle().then(_ => Promise.all(config.packages.map(pkg => {
 
         if (typeof pkg === "string") {
             pkg = { name: pkg };
@@ -57,5 +56,5 @@ export function packager(config: PackageSchema): Promise<void> {
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error packaging `))} ${colors.bold(colors.cyan(packageContext.projectFolder))}.`);
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
-    })).then(_ => void(0));
+    }))).then(_ => void (0));
 }

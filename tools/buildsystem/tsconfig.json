@@ -17,6 +17,6 @@
         "moduleResolution": "node"
     },
     "include": [
-        "./index.ts"
+        "./index.ts", "../node-utils/getSubDirectorieNames.js"
     ]
 }

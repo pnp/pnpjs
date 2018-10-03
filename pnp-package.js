@@ -9,52 +9,22 @@ const defaultPackagePipeline = [
     tasks.copySrc,
     tasks.writePackageFile,
     tasks.uglify,
-    tasks.bundle,
     tasks.banner,
 ];
 
-/**
- * The configuration used to build the project
- */
 const config = {
 
-    /**
-     * The directory to which packages will be written
-     */
     outDir: path.resolve("./dist/packages/"),
 
-    // root location, relative
     packageRoot: path.resolve("./build/packages/"),
 
-    // the list of packages to be packaged, in order
-    // can be a string name or a plain object with additional settings
-    /**
-     * Plain object format
-     * {
-     *      "name": string, // required
-     *      "assets": string[], // optional, default is config.assets
-     *      "buildChain": (ctx) => Promise<void>[], // optional, default is config.buildChain
-     * }
-     *
-     */
     packages: [
         "logging",
         "common",
         "odata",
         "graph",
         "sp",
-        {
-            name: "nodejs",
-            // don't bundle for node
-            packagePipeline: [
-                tasks.packageProject,
-                tasks.copyAssets,
-                tasks.copySrc,
-                tasks.writePackageFile,
-                tasks.uglify,
-                tasks.banner,
-            ],
-        },
+        "nodejs",
         "sp-addinhelpers",
         "config-store",
         "pnpjs",
@@ -68,7 +38,6 @@ const config = {
         "**\\*.md"
     ],
 
-    // the set of tasks run on each project during a build
     packagePipeline: defaultPackagePipeline,
 };
 
