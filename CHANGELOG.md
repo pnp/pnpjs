@@ -13,16 +13,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Fixed for renderListData, renderListFormData methods result parsing in verbose OData mode [[PR](https://github.com/pnp/pnpjs/pull/243)]
 - @pnp/sp: Fixed issue with SearchQueryBuilder collection properties [[PR](https://github.com/pnp/pnpjs/pull/246)]
 - @pnp/sp: Fixed issue chaining off getByLoginName [[PR](https://github.com/pnp/pnpjs/pull/246)]
-
+- @pnp/graph: Fixed documentation issue ([@s-KaiNet](https://github.com/s-KaiNet)) [[PR](https://github.com/pnp/pnpjs/pull/252)]
 
 ### Changed
 
 - documentation: Updated article on polyfills [[PR](https://github.com/pnp/pnpjs/pull/246)]
 - @pnp/odata: Updated docs on parsers [[PR](https://github.com/pnp/pnpjs/pull/246)]
+- tooling: Updated project to use new TypeScript project references [[PR](https://github.com/pnp/pnpjs/pull/262)]
 
 ### Added
 
 - @pnp/odata: Added HttpRequestError class [[PR](https://github.com/pnp/pnpjs/pull/246)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/odata/docs/parsers.md#odatadefaultparser)]
+- @pnp/sp: Added support for /web/DefaultDocumentLibrary ([@phawrylak](https://github.com/phawrylak)) [[PR](https://github.com/pnp/pnpjs/pull/257)]
+- @pnp/graph: Expanded support for contacts and folders ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/264)]
 
 ## 1.2.1 - 2018-09-05
 

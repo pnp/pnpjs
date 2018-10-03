@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/logging"
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"
+    ],
+    "references": []
+}

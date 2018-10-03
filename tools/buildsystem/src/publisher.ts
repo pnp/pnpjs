@@ -17,7 +17,7 @@ export function publisher(config: PublishSchema): Promise<void> {
 
     // it matters what order we build things as dependencies must be built first
     // these are the folder names witin the packages directory to build
-    return config.packages.reduce((pipe: Promise<void>, pkg) => {
+    return Promise.all(config.packages.map(pkg => {
 
         if (typeof pkg === "string") {
             pkg = { name: pkg };
@@ -45,7 +45,7 @@ export function publisher(config: PublishSchema): Promise<void> {
         // log we have added the file
         log(`${colors.bgBlue(" ")} Adding ${colors.cyan(packageFile)} to the publishing pipeline.`);
 
-        return activePublishPipeline.reduce((subPipe, func) => subPipe.then(() => func(publishContext)), pipe).then(_ => {
+        return activePublishPipeline.reduce((chain, func) => chain.then(() => func(publishContext)), Promise.resolve()).then(_ => {
 
             log(`${colors.bgGreen(" ")} Published ${colors.cyan(packageFile)}.`);
 
@@ -55,5 +55,5 @@ export function publisher(config: PublishSchema): Promise<void> {
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
 
-    }, Promise.resolve());
+    })).then(_ => void(0));
 }

@@ -28,7 +28,7 @@ export interface RequestClient {
 }
 
 export function mergeHeaders(target: Headers, source: any): void {
-    if ( source !== undefined && source !== null) {
+    if (source !== undefined && source !== null) {
         const temp = <any>new Request("", { headers: source });
         temp.headers.forEach((value: string, name: string) => {
             target.append(name, value);
@@ -39,7 +39,7 @@ export function mergeHeaders(target: Headers, source: any): void {
 export function mergeOptions(target: ConfigOptions, source: ConfigOptions): void {
 
     if (objectDefinedNotNull(source)) {
-        const headers = extend(target.headers || {}, source.headers);
+        const headers = extend(target.headers || {}, source.headers!);
         target = extend(target, source);
         target.headers = headers;
     }
@@ -59,12 +59,12 @@ export class FetchClient implements HttpClientImpl {
  */
 export class BearerTokenFetchClient extends FetchClient {
 
-    constructor(private _token: string) {
+    constructor(private _token: string | null) {
         super();
     }
 
     public get token() {
-        return this._token;
+        return this._token || "";
     }
 
     public set token(token: string) {

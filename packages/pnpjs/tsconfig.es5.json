@@ -1,0 +1,40 @@
+{
+    "extends": "../../tsconfig.es5.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/packages/pnpjs/es5",
+        "paths": {
+            "@pnp/*": [
+                "../../build/packages/*/es5"
+            ]
+        }
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.es5.json"
+        },
+        {
+            "path": "../logging/tsconfig.es5.json"
+        },
+        {
+            "path": "../odata/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp/tsconfig.es5.json"
+        },
+        {
+            "path": "../graph/tsconfig.es5.json"
+        },
+        {
+            "path": "../config-store/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp-addinhelpers/tsconfig.es5.json"
+        }
+    ]
+}
