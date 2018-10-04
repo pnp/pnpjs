@@ -62,6 +62,12 @@ To clean the docs use:
 gulp clean-docs
 ```
 
+To clean the build folder. This build folder is no longer included in automatic cleaning after the move to use the TypeScript project references feature that compares previous output and doesn't rebuild unchanged files. This command will erase the entire build folder ensuring you can conduct a clean build/test/etc.
+
+```
+gulp clean-build
+```
+
 ## docs
 
 The docs command builds the html documentation from the md files located in the docs-src folder and all of the package docs folders. This is the command used to generate

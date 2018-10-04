@@ -9,7 +9,7 @@
 			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "build:debug",
+			"preLaunchTask": "build",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
 				"--nolazy"
@@ -43,12 +43,6 @@
 			},
 			"console": "internalConsole",
 			"sourceMaps": false
-		},
-		{
-			"name": "Attach",
-			"type": "node",
-			"request": "attach",
-			"port": 5858
 		}
 	]
 }
