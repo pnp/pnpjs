@@ -6,7 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "adal-node": "0.1.28",
-    "node-fetch": "2.1.2",
+    "node-fetch": "2.2.0",
     "tslib": "1.9.3"
   },
   "peerDependencies": {

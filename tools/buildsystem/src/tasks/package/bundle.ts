@@ -14,7 +14,7 @@ const webpackPath = path.join("./node_modules/.bin/webpack");
  * 
  * @param ctx The build context 
  */
-export function bundle() {
+export function bundle(): Promise<void> {
 
     return new Promise((resolve, reject) => {
         // exec a child process to run a tsc build based on the project file in each

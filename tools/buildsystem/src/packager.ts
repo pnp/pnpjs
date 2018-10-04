@@ -16,7 +16,8 @@ import { bundle } from "./tasks/package";
  */
 export async function packager(config: PackageSchema): Promise<void> {
 
-    return bundle().then(_ => Promise.all(config.packages.map(pkg => {
+    await Promise.all([bundle(),
+    ...config.packages.map(pkg => {
 
         if (typeof pkg === "string") {
             pkg = { name: pkg };
@@ -56,5 +57,5 @@ export async function packager(config: PackageSchema): Promise<void> {
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Error packaging `))} ${colors.bold(colors.cyan(packageContext.projectFolder))}.`);
             log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         });
-    }))).then(_ => void (0));
+    })]);
 }

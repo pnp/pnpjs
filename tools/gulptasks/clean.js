@@ -21,6 +21,7 @@ gulp.task('clean', (done) => {
     const directories = [
         "./dist",
         "./serve",
+        "./site",
     ];
 
     log(`${colors.bgBlue(" ")} Cleaning directories: ${directories.join(", ")}.`);
@@ -35,12 +36,6 @@ gulp.task('clean', (done) => {
 
 gulp.task("clean-build", (done) => {
     del("./build").then(() => {
-        done();
-    });
-});
-
-gulp.task("clean-docs", (done) => {
-    del("./docs").then(() => {
         done();
     });
 });

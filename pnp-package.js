@@ -1,6 +1,7 @@
 // build funcs
 const tasks = require("./build/tools/buildsystem").Tasks.Package,
-    path = require("path");
+    path = require("path"),
+    getSubDirNames = require("./tools/node-utils/getSubDirectoryNames");
 
 const defaultPackagePipeline = [
 
@@ -18,19 +19,7 @@ const config = {
 
     packageRoot: path.resolve("./build/packages/"),
 
-    packages: [
-        "logging",
-        "common",
-        "odata",
-        "graph",
-        "sp",
-        "nodejs",
-        "sp-addinhelpers",
-        "config-store",
-        "pnpjs",
-        "sp-clientsvc",
-        "sp-taxonomy",
-    ],
+    packages: getSubDirNames("./build/packages"),
 
     assets: [
         "LICENSE",

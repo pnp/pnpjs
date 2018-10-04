@@ -21,8 +21,6 @@ node_modules
 # generated folders/files
 /build
 /dist
-/debugging
-/testing
 /site
 
 # Optional npm cache directory

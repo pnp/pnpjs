@@ -12,44 +12,13 @@ const path = require("path");
 const projectRoot = path.resolve(__dirname, "../..");
 
 const gulp = require("gulp"),
-    tsc = require("gulp-typescript"),
     webpack = require('webpack'),
     server = require("webpack-dev-server"),
     cmdLine = require("./args").processConfigCmdLine,
     pkg = require(path.join(projectRoot, "package.json")),
     log = require("fancy-log"),
-    colors = require("ansi-colors");
-
-/**
- * handles mapping the @pnp paths to the local ./packages
- */
-class PnPLocalResolver {
-
-    constructor(source, target) {
-        this.source = source;
-        this.target = target;
-    }
-
-    apply(resolver) {
-
-        resolver.plugin(this.source, (info, callback) => {
-
-            if (/^@pnp\//i.test(info.request)) {
-
-                const moduleName = /^@pnp\/([\w-]*?)$/i.exec(info.request)[1];
-
-                const o = Object.assign({}, info, {
-                    request: path.resolve("./packages", moduleName),
-                });
-
-                return resolver.doResolve(this.target, o, `PnPLocalResolver :: '${info.request}' mapped to '${o.request}'.`, callback);
-
-            } else {
-                return callback();
-            }
-        });
-    }
-}
+    colors = require("ansi-colors"),
+    getSubDirNames = require("../node-utils/getSubDirectoryNames");
 
 gulp.task("serve", (done) => {
 
@@ -58,7 +27,7 @@ gulp.task("serve", (done) => {
     let entry = "./debug/serve/main.ts";
     let configFileName = "tsconfig.json";
     let library = "pnp";
-    
+
     if (args.hasOwnProperty("packages") && args.packages.length > 0) {
 
         if (args.packages.length > 1) {
@@ -71,18 +40,19 @@ gulp.task("serve", (done) => {
         entry = `./packages/${args.packages[0]}/index.ts`;
 
         // update to use the config file for build of a specific package
-        configFileName = "tsconfig-build.json";
+        configFileName = "tsconfig.es5.json";
 
         // update the library to match what would be generated
         if (args.packages[0].toLowerCase() === "pnpjs") {
             library = "$pnp";
         } else {
             library = `pnp.${args.packages[0]}`;
-        }        
+        }
     }
 
     // our webpack config
     const config = {
+        mode: "development",
         cache: true,
         entry: entry,
         output: {
@@ -94,9 +64,7 @@ gulp.task("serve", (done) => {
         },
         devtool: "source-map",
         resolve: {
-            enforceExtension: false,
-            extensions: [".ts"],
-            plugins: [new PnPLocalResolver("described-resolve", "resolve")],
+            alias: {},
         },
         module: {
             rules: [
@@ -127,6 +95,13 @@ gulp.task("serve", (done) => {
             ]
         }
     };
+
+    const packageDirs = getSubDirNames("./packages");
+
+    // we need to setup the alias values for the local packages for bundling
+    for (let i = 0; i < packageDirs.length; i++) {
+        config.resolve.alias[`@pnp/${packageDirs[i]}`] = path.resolve(`./build/packages/${packageDirs[i]}/es5`);
+    }
 
     const serverSettings = {
         publicPath: config.output.publicPath,
