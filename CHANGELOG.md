@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - documentation: Updated article on polyfills [[PR](https://github.com/pnp/pnpjs/pull/246)]
 - @pnp/odata: Updated docs on parsers [[PR](https://github.com/pnp/pnpjs/pull/246)]
 - tooling: Updated project to use new TypeScript project references [[PR](https://github.com/pnp/pnpjs/pull/262)]
+- tooling: Updated build process to improve performance, update to use webpack 4 [[PR](https://github.com/pnp/pnpjs/pull/266)]
 
 ### Added
 
