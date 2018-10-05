@@ -172,7 +172,7 @@ export function stringIsNullOrEmpty(s: string): boolean {
  * @param html HTML to search
  * @param attrName The name of the attribute to find
  */
-export function getAttrValueFromString(html: string, attrName: string): string {
+export function getAttrValueFromString(html: string, attrName: string): string | null {
 
     // make the input safe for regex
     html = html.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

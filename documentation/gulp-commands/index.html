@@ -1753,6 +1753,11 @@ This command does not remove the generated docs folder in case you are using the
 </pre></div>
 
 
+<p>To clean the build folder. This build folder is no longer included in automatic cleaning after the move to use the TypeScript project references feature that compares previous output and doesn't rebuild unchanged files. This command will erase the entire build folder ensuring you can conduct a clean build/test/etc.</p>
+<div class="codehilite"><pre><span></span>gulp clean-build
+</pre></div>
+
+
 <h2 id="docs">docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
 <p>The docs command builds the html documentation from the md files located in the docs-src folder and all of the package docs folders. This is the command used to generate
 the <a href="https://pnp.github.io/pnpjs/">website</a> for each release and can be used locally to have an easily clickable reference. The entire site will be rebuilt each time.</p>
