@@ -4,7 +4,9 @@
   "description": "pnp - <%= description %>",
   "main": "./index.js",
   "typings": "./index",
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "1.9.3"
+  },
   "author": {
     "name": "Microsoft and other contributors"
   },

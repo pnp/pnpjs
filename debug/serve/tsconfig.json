@@ -26,7 +26,7 @@
         "skipLibCheck": true,
         "experimentalDecorators": true
     },
-    "include": [
+    "files": [
         "./main.ts"
     ]
 }
