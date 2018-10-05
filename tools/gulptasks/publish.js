@@ -104,7 +104,7 @@ gulp.task("publish-beta", (done) => {
     ]).then(done).catch(done);
 });
 
-gulp.task("publish", (done) => {
+gulp.task("publish", ["clean", "clean-build"], (done) => {
 
     runPublishScript().then(_ => {
 
