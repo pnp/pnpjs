@@ -8,7 +8,7 @@
         "coverage": true,
         "build": true,
         "dist": true,
-        "site": true,
+        "site": true
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "./node_modules/typescript/lib"
