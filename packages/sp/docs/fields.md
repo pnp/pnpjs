@@ -50,6 +50,46 @@ web.fields.getByInternalNameOrTitle("MyField4").get().then(f => {
 });
 ```
 
+## Filtering Fields 
+
+Sometimes you only want a subset of fields from the collection. Below are some examples of using the filter operator with the fields collection.
+
+```TypeScript
+import { sp } from '@pnp/sp';
+
+const list = sp.web.lists.getByTitle('Custom');
+
+// Fields which can be updated
+const filter1 = `Hidden eq false and ReadOnlyField eq false`;
+list.fields.select('InternalName').filter(filter1).get().then(fields => {
+    console.log(`Can be updated: ${fields.map(f => f.InternalName).join(', ')}`);
+    // Title, ...Custom, ContentType, Attachments
+});
+    
+// Only custom field
+const filter2 = `Hidden eq false and CanBeDeleted eq true`;
+list.fields.select('InternalName').filter(filter2).get().then(fields => {
+    console.log(`Custom fields: ${fields.map(f => f.InternalName).join(', ')}`);
+    // ...Custom
+});
+
+// Application specific fields
+const includeFields = [ 'Title', 'Author', 'Editor', 'Modified', 'Created' ];
+const filter3 = `Hidden eq false and (ReadOnlyField eq false or (${
+    includeFields.map(field => `InternalName eq '${field}'`).join(' or ')
+}))`;
+list.fields.select('InternalName').filter(filter3).get().then(fields => {
+    console.log(`Application specific: ${fields.map(f => f.InternalName).join(', ')}`);
+    // Title, ...Custom, ContentType, Modified, Created, Author, Editor, Attachments
+});
+
+// Fields in a view
+list.defaultView.fields.select('Items').get().then(f => {
+    const fields = (f as any).Items.results || (f as any).Items;
+    console.log(`Fields in a view: ${fields.join(', ')}`);
+});
+```
+
 ## Add Fields
 
 You can add fields using the add, createFieldAsXml, or one of the type specific methods. Functionally there is no difference, however one method may be easier given a certain scenario.
