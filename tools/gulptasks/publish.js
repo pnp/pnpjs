@@ -73,8 +73,6 @@ function runPublishScript() {
         "git checkout dev",
         "git pull",
         "git merge master",
-        "git add .",
-        "git commit -m 'merge master -> dev after publish'",
         "git push");
 
     // always leave things on the dev branch
