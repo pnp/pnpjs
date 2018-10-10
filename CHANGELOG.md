@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+
+
+## 1.2.3 - 2018-10-10
+
+### Fixed
+
+- all: Fix for es6 code in es5 bundles [[PR](https://github.com/pnp/pnpjs/pull/271)]
+
+## 1.2.2 - 2018-10-05
+
 ### Fixed
 
 - @pnp/sp: Fix issue with adding a lookup field ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/239)]

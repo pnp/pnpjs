@@ -66,6 +66,17 @@ function runPublishScript() {
     // package and publish to npm
     script.push("gulp publish:packages");
 
+    // merge master back to dev for updated version #
+    script.push(
+        "git checkout master",
+        "git pull",
+        "git checkout dev",
+        "git pull",
+        "git merge master",
+        "git add .",
+        "git commit -m 'merge master -> dev after publish'",
+        "git push");
+
     // always leave things on the dev branch
     script.push("git checkout dev");
 
