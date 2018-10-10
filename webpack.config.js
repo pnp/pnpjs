@@ -27,7 +27,7 @@ const common = {
 
 // we need to setup the alias values for the local packages for bundling
 for (let i = 0; i < packageSources.length; i++) {
-    common.resolve.alias[`@pnp/${packageSources[i]}`] = path.resolve(buildOutputRoot, packageSources[i]);
+    common.resolve.alias[`@pnp/${packageSources[i]}`] = path.resolve(buildOutputRoot, packageSources[i], "es5");
 }
 
 const bundleTemplate = (name, targetFolder) => Object.assign({}, common, {
