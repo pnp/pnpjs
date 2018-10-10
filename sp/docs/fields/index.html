@@ -1057,6 +1057,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#filtering-fields" title="Filtering Fields" class="md-nav__link">
+    Filtering Fields
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#add-fields" title="Add Fields" class="md-nav__link">
     Add Fields
   </a>
@@ -1463,6 +1470,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#filtering-fields" title="Filtering Fields" class="md-nav__link">
+    Filtering Fields
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#add-fields" title="Add Fields" class="md-nav__link">
     Add Fields
   </a>
@@ -1560,6 +1574,44 @@
 <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;MyField4&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h2 id="filtering-fields">Filtering Fields<a class="headerlink" href="#filtering-fields" title="Permanent link">&para;</a></h2>
+<p>Sometimes you only want a subset of fields from the collection. Below are some examples of using the filter operator with the fields collection.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s1">&#39;Custom&#39;</span><span class="p">);</span>
+
+<span class="c1">// Fields which can be updated</span>
+<span class="kr">const</span> <span class="nx">filter1</span> <span class="o">=</span> <span class="sb">`Hidden eq false and ReadOnlyField eq false`</span><span class="p">;</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;InternalName&#39;</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">filter1</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">fields</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Can be updated: </span><span class="si">${</span><span class="nx">fields</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="nx">f</span><span class="p">.</span><span class="nx">InternalName</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+    <span class="c1">// Title, ...Custom, ContentType, Attachments</span>
+<span class="p">});</span>
+
+<span class="c1">// Only custom field</span>
+<span class="kr">const</span> <span class="nx">filter2</span> <span class="o">=</span> <span class="sb">`Hidden eq false and CanBeDeleted eq true`</span><span class="p">;</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;InternalName&#39;</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">filter2</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">fields</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Custom fields: </span><span class="si">${</span><span class="nx">fields</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="nx">f</span><span class="p">.</span><span class="nx">InternalName</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+    <span class="c1">// ...Custom</span>
+<span class="p">});</span>
+
+<span class="c1">// Application specific fields</span>
+<span class="kr">const</span> <span class="nx">includeFields</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="s1">&#39;Author&#39;</span><span class="p">,</span> <span class="s1">&#39;Editor&#39;</span><span class="p">,</span> <span class="s1">&#39;Modified&#39;</span><span class="p">,</span> <span class="s1">&#39;Created&#39;</span> <span class="p">];</span>
+<span class="kr">const</span> <span class="nx">filter3</span> <span class="o">=</span> <span class="sb">`Hidden eq false and (ReadOnlyField eq false or (</span><span class="si">${</span>
+    <span class="nx">includeFields</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">field</span> <span class="o">=&gt;</span> <span class="sb">`InternalName eq &#39;</span><span class="si">${</span><span class="nx">field</span><span class="si">}</span><span class="sb">&#39;`</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; or &#39;</span><span class="p">)</span>
+<span class="si">}</span><span class="sb">))`</span><span class="p">;</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;InternalName&#39;</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">filter3</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">fields</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Application specific: </span><span class="si">${</span><span class="nx">fields</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="nx">f</span><span class="p">.</span><span class="nx">InternalName</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+    <span class="c1">// Title, ...Custom, ContentType, Modified, Created, Author, Editor, Attachments</span>
+<span class="p">});</span>
+
+<span class="c1">// Fields in a view</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;Items&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">fields</span> <span class="o">=</span> <span class="p">(</span><span class="nx">f</span> <span class="kr">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">Items</span><span class="p">.</span><span class="nx">results</span> <span class="o">||</span> <span class="p">(</span><span class="nx">f</span> <span class="kr">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">Items</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Fields in a view: </span><span class="si">${</span><span class="nx">fields</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
 
