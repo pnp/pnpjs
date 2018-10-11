@@ -1,6 +1,6 @@
 /**
- * This webpack configuration file will build all of the bundles for each project.
- * It expects that everything is build prior to bundling.
+ * This webpack configuration file will create all of the bundles for each project.
+ * It expects that everything is built prior to bundling.
  */
 
 
