@@ -63,6 +63,26 @@ if (items.hasNext) {
 }
 ```
 
+### getListItemChangesSinceToken 
+
+The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.
+
+```TypeScript
+import sp from "@pnp/sp";
+
+// Using RowLimit. Enables paging
+let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({RowLimit: '5'});
+
+// Use QueryOptions to make a XML-style query.
+// Because it's XML we need to escape special characters
+// Instead of & we use &amp; in the query
+let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({QueryOptions: '<Paging ListItemCollectionPositionNext="Paged=TRUE&amp;p_ID=5" />'});
+
+// Get everything. Using null with ChangeToken gets everything
+let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({ChangeToken: null});
+
+```
+
 ### Get All Items
 
 _Added in 1.0.2_
