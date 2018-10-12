@@ -399,6 +399,31 @@ export class Fields extends SharePointQueryableCollection {
 
         return this.add(title, "SP.Field", extend(props, properties));
     }
+    
+   /**
+   * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
+   * 
+   * @param displayName The display name of the new field.
+   * @param primaryLookupFieldId The guid of the primary Lookup Field.
+   * @param showField Which field to show from the lookup list.
+   */
+    addDependentLookupField(
+        displayName: string,
+        primaryLookupFieldId: string,
+        showField: string,
+    ): Promise<FieldAddResult> {
+        return this.clone(
+            FieldsExtension,
+            `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`,
+        )
+            .postCore<{ Id: string }>({})
+            .then(data => {
+                return {
+                    data,
+                    field: this.getById(data.Id),
+                };
+            });
+    }
 }
 
 /**
