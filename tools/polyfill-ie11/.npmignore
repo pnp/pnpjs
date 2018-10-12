@@ -1,0 +1,6 @@
+*.ts
+tsconfig.json
+webpack.config.js
+.gitignore
+.npmignore
+!dist/*.*

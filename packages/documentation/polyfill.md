@@ -1,38 +1,41 @@
 # Polyfills
 
-These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer, which requires that we provide this missing functionality. There are several ways to include this missing functionality.
+These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality. There are several ways to include this missing functionality.
 
-## Statement on IE 11
+## IE 11 Polyfill package
 
-Starting with version 1.2.0 we no longer explictly support IE 11. This wasn't done to be malicious but rather we wanted take advantage of some newer features available in JavaScript, namely Proxy and Map. Proxy allows for some interesting patterns, especially when it comes to building a fluent API. Some of that work can be seen in the [SearchQueryBuilder](https://github.com/pnp/pnpjs/blob/dev/packages/sp/src/search.ts#L102) code and we are exploring other applications. The move to Map from our custom Dictionary was to shrink the code base as well as gain some performance from the OOTB optimizations.
+We created a package you can use to include the needed functionality without having to determine what polyfills are required. Also, this package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you need to support IE 11.
 
-We have since heard that this has caused some folks pain in updating to this version of the libarary. We should have communicated the change better, but it is a change we are going to stick with. 
+### Install
 
-### Limitations
+`install --save @pnp/polyfill-ie11`
 
-The following functionality does not work in IE 11:
-
-- @pnp/sp : SearchQueryBuilder class used to build fluent queries, search continues to work as before.
-  - This is because no pollyfill is available for Proxy [stackoverflow thread](https://stackoverflow.com/questions/45285992/es6-proxy-polyfill-for-ie11)
-
-### Require Polyfill
-
-- Promise
-- Fetch
-- Array Iterator
-- Array From
-- Map
-
-## SharePoint Framework
-
-As [suggested in this issue](https://github.com/pnp/pnpjs/issues/237#issuecomment-421059737) the following polyfills should fix any IE 11 related issues:
+### Use
 
 ```TypeScript
-import "core-js/modules/es6.promise"
-import "core-js/modules/es6.array.iterator.js"
-import "core-js/modules/es6.array.from.js"
-import "whatwg-fetch"
-import "es6-map/implement"
+import "@pnp/polyfill-ie11";
+import { sp } from "@pnp/sp";
+
+sp.web.lists.getByTitle("BigList").items.filter(`ID gt 6000`).get().then(r => {
+  this.domElement.innerHTML += r.map(l => `${l.Title}<br />`);
+});
+```
+
+### SearchQueryBuilder
+
+Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version for IE 11 as shown below.
+
+```TypeScript
+import "@pnp/polyfill-ie11";
+import { SearchQueryBuilder } from "@pnp/polyfill-ie11/dist/searchquerybuilder";
+import { sp, ISearchQueryBuilder } from "@pnp/sp";
+
+// works in IE11 and other browsers
+const builder: ISearchQueryBuilder = SearchQueryBuilder().text("test");
+
+sp.search(builder).then(r => {
+  this.domElement.innerHTML = JSON.stringify(r);
+});
 ```
 
 ## Polyfill Service
