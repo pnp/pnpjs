@@ -413,7 +413,7 @@ export class Fields extends SharePointQueryableCollection {
         showField: string,
     ): Promise<FieldAddResult> {
         return this.clone(
-            FieldsExtension,
+            Fields,
             `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`,
         )
             .postCore<{ Id: string }>({})
