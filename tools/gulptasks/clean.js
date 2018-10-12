@@ -39,3 +39,9 @@ gulp.task("clean-build", (done) => {
         done();
     });
 });
+
+gulp.task("clean-build-debugging", (done) => {
+    del("./build/debugging").then(() => {
+        done();
+    });
+});

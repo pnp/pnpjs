@@ -54,7 +54,7 @@ gulp.task("build", ["lint", "bootstrap-buildsystem"], (done) => {
 /**
  * Builds the files for debugging (F5 in code)
  */
-gulp.task("build:debug", ["clean", "bootstrap-buildsystem"], (done) => {
+gulp.task("build:debug", ["clean-build-debugging", "bootstrap-buildsystem"], (done) => {
 
     // create an instance of the engine used to process builds
     const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).builder;
