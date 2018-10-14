@@ -1,6 +1,7 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Contacts, ContactFolders } from "./contacts";
 import { OneNote, OneNoteMethods } from "./onenote";
+import { Drive, Drives } from "./onedrive";
 
 /**
  * Describes a collection of Users objects
@@ -37,7 +38,7 @@ export class User extends GraphQueryableInstance {
     * The Contacts associated with the user
     */
     public get contacts(): Contacts {
-       return new Contacts(this);
+        return new Contacts(this);
     }
 
     /**
@@ -45,5 +46,19 @@ export class User extends GraphQueryableInstance {
     */
     public get contactFolders(): ContactFolders {
         return new ContactFolders(this);
+    }
+
+    /**
+    * The default Drive associated with the user
+    */
+    public get drive(): Drive {
+        return new Drive(this);
+    }
+
+    /**
+    * The Drives the user has available
+    */
+    public get drives(): Drives {
+        return new Drives(this);
     }
 }
