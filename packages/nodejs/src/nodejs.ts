@@ -19,4 +19,5 @@ const NodeFetch = require("node-fetch");
 
 
 export { SPFetchClient, SPOAuthEnv } from "./net/spfetchclient";
+export { SPFetchClientRetry, IRetryData } from "./net/spfetchclientretry";
 export { AdalFetchClient, AADToken } from "./net/adalfetchclient";
