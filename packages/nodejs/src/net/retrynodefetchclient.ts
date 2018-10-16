@@ -36,7 +36,7 @@ export interface IRetryData {
 
 /**
  * Fetch client that encapsulates the node-fetch library and also adds retry logic
- * when encountering trasnient errors.
+ * when encountering transient errors.
  */
 export class RetryNodeFetchClient implements HttpClientImpl {
 
@@ -112,8 +112,6 @@ export class RetryNodeFetchClient implements HttpClientImpl {
 
     private updateRetryData(retryData: IRetryData, err: any): IRetryData {
 
-        // Initiate the retry data if it's the first retry try,
-        // else create a new object.
         const data: IRetryData = retryData || {
             error: null,
             retryCount: 0,
