@@ -43,8 +43,8 @@ export class Drive extends GraphQueryableInstance {
         return new DriveItems(this);
     }
 
-    public get list(): List {
-        return new List(this);
+    public get list(): DriveList {
+        return new DriveList(this);
     }
 
     public get recent(): Recent {
@@ -70,8 +70,8 @@ export class Root extends GraphQueryableInstance {
         return new Children(this);
     }
 
-    public search(query: string): Search {
-        return new Search(this, `search(q='${query}')`);
+    public search(query: string): DriveSearch {
+        return new DriveSearch(this, `search(q='${query}')`);
     }
 
 }
@@ -185,7 +185,7 @@ export class Children extends GraphQueryableCollection {
     }
 }
 
-export class List extends GraphQueryable {
+export class DriveList extends GraphQueryable {
     constructor(baseUrl: string | GraphQueryable, path = "list") {
         super(baseUrl, path);
     }
@@ -203,7 +203,7 @@ export class SharedWithMe extends GraphQueryableInstance {
     }
 }
 
-export class Search extends GraphQueryableInstance {
+export class DriveSearch extends GraphQueryableInstance {
     constructor(baseUrl: string | GraphQueryable, path = "search") {
         super(baseUrl, path);
     }

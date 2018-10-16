@@ -2,6 +2,7 @@ import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
 import { OneNote, OneNoteMethods } from "./onenote";
 import { Contacts, ContactFolders } from "./contacts";
 import { Drive, Drives } from "./onedrive";
+import { Tasks } from "./planner";
 
 export class Me extends GraphQueryableInstance {
 
@@ -42,6 +43,13 @@ export class Me extends GraphQueryableInstance {
     */
     public get drives(): Drives {
         return new Drives(this);
+    }
+
+    /**
+    * The Tasks the user has available
+    */
+    public get tasks(): Tasks {
+        return new Tasks(this, "planner/tasks");
     }
 
 }

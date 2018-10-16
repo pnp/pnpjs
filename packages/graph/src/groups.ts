@@ -4,7 +4,7 @@ import { extend, TypedHash, jsS } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
-import { Plans } from "./plans";
+import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
 import { GraphEndpoints, TeamProperties } from "./types";
@@ -109,7 +109,7 @@ export class Group extends GraphQueryableInstance {
      * The collection of plans for this group
      */
     public get plans(): Plans {
-        return new Plans(this);
+        return new Plans(this, "planner/plans");
     }
 
     /**
