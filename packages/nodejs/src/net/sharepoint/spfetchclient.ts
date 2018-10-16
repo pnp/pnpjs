@@ -6,6 +6,7 @@ import { BaseSPFetchClient } from "./basespfetchclient";
 const u: any = require("url");
 import { HttpClientImpl, combine } from "@pnp/common";
 
+
 export interface AuthToken {
     token_type: string;
     expires_in: string;

@@ -4,7 +4,7 @@ const nodeFetch = require("node-fetch").default;
 import { HttpClientImpl } from "@pnp/common";
 
 /**
- * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
+ * Fetch client that encapsulates the node-fetch library
  */
 export class NodeFetchClient implements HttpClientImpl {
 

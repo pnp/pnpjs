@@ -34,8 +34,19 @@ export interface IRetryData {
 
 }
 
+/**
+ * Fetch client that encapsulates the node-fetch library and also adds retry logic
+ * when encountering trasnient errors.
+ */
 export class RetryNodeFetchClient implements HttpClientImpl {
 
+    /**
+     * 
+     * @param retryCount: number - Maximum number of transient failure retries before throwing the error
+     * @param retryInterval: number - Starting interval to delay the first retry attempt
+     * @param minRetryInterval: number - Minimum retry delay boundary as retry intervals are randomly recalculated
+     * @param maxRetryInterval: number - Maximum retry delay boundary as retry intervals are radnomaly recalculated
+     */
     constructor(
         private retryCount: number = DEFAULT_CLIENT_RETRY_COUNT,
         private retryInterval: number = DEFAULT_CLIENT_RETRY_INTERVAL,
@@ -47,18 +58,23 @@ export class RetryNodeFetchClient implements HttpClientImpl {
 
     public async fetch(url: string, options?: any): Promise<Response> {
 
-        const wrapper = async (retryData: any) => {
+        const wrapper = async (retryData: any): Promise<Response> => {
 
             try {
 
+                // Try to make the request...
                 return await nodeFetch(url, options || {});
 
             } catch (err) {
 
+                // Get the latest retry information.
                 const retry = this.updateRetryData(retryData, err);
 
+                // If there is no error code, this wasn't a transient error
+                // so we throw immediately.
                 if (!err.code) { throw err; }
 
+                // Watching for specific error codes.
                 if (
                     err.code === "ETIMEDOUT" ||
                     err.code === "ESOCKETTIMEDOUT" ||
@@ -67,10 +83,12 @@ export class RetryNodeFetchClient implements HttpClientImpl {
 
                     console.log(`Attempt #${retry.retryCount} - Retrying error code: ${err.code}...`);
 
+                    // If current amount of retries is less than the max amount,
+                    // try again
                     if (this.shouldRetry(retry)) {
                         await this.delay(retry.retryInterval);
-                        wrapper(retry);
-                    } else {
+                        return await wrapper(retry);
+                    } else { // max amount of retries reached, so throw the error
                         throw err;
                     }
 
@@ -79,18 +97,23 @@ export class RetryNodeFetchClient implements HttpClientImpl {
         };
 
         return await wrapper(null);
+
     }
 
-    private delay(ms: number) {
-        return new Promise(resolve => {
+    private async delay(ms: number): Promise<any> {
+
+        return new Promise((resolve: any) => {
             setTimeout(() => {
                 resolve();
             }, ms);
         });
+
     }
 
-    private updateRetryData(retryData: IRetryData, err: any) {
+    private updateRetryData(retryData: IRetryData, err: any): IRetryData {
 
+        // Initiate the retry data if it's the first retry try,
+        // else create a new object.
         const data: IRetryData = retryData || {
             error: null,
             retryCount: 0,
@@ -99,6 +122,8 @@ export class RetryNodeFetchClient implements HttpClientImpl {
 
         const newError = err || null;
 
+        // Keep track of errors from previous retries
+        // if they exist
         if (newError) {
 
             if (data.error) {
@@ -108,7 +133,8 @@ export class RetryNodeFetchClient implements HttpClientImpl {
             data.error = newError;
 
         }
-        // Adjust retry interval
+
+        // Adjust retry interval and cap based on the min and max intervals specified
         let incrementDelta = Math.pow(2, data.retryCount) - 1;
         const boundedRandDelta = this.retryInterval * 0.8 +
             Math.floor(Math.random() * (this.retryInterval * 1.2 - this.retryInterval * 0.8));
@@ -123,7 +149,7 @@ export class RetryNodeFetchClient implements HttpClientImpl {
 
     }
 
-    private shouldRetry(retryData: IRetryData) {
+    private shouldRetry(retryData: IRetryData): boolean {
 
         if (!retryData) {
             throw new Error("ERROR: retryData cannot be null.");
