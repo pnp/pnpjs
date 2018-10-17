@@ -14,8 +14,11 @@ import {
     getDefaultPipeline,
     pipe,
 } from "./pipeline";
+import {
+    QueryableGet
+} from './queryableprop';
 
-export abstract class Queryable<GetType> {
+export abstract class Queryable<QueryableType> {
 
     /**
      * Additional options to be set before sending actual http request
@@ -123,8 +126,8 @@ export abstract class Queryable<GetType> {
         return this;
     }
 
-    protected getCore<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    protected getCore<T = QueryableType>(parser: ODataParser<QueryableGet<T>> = new JSONParser(), options: FetchOptions = {}): Promise<QueryableGet<T>> {
+        return this.toRequestContext<QueryableGet<T>>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
@@ -187,7 +190,7 @@ export abstract class Queryable<GetType> {
         pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>>;
 }
 
-export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any> extends Queryable<GetType> {
+export abstract class ODataQueryable<BatchType extends ODataBatch, QueryableType = any> extends Queryable<QueryableType> {
 
     /**
      * Tracks the batch of which this query may be part
@@ -235,12 +238,12 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      * @param parser Allows you to specify a parser to handle the result
      * @param getOptions The options used for this request
      */
-    public get<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+    public get<T = QueryableType>(parser: ODataParser<QueryableGet<T>> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<QueryableGet<T>> {
         return this.getCore(parser, options);
     }
 
-    protected getCore<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+    protected getCore<T = QueryableType>(parser: ODataParser<QueryableGet<T>> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<QueryableGet<T>> {
+        return this.toRequestContext<QueryableGet<T>>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {

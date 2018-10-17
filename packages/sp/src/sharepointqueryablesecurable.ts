@@ -3,7 +3,7 @@ import { BasePermissions, PermissionKind } from "./types";
 import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
 import { hOP } from "@pnp/common";
 
-export class SharePointQueryableSecurable extends SharePointQueryableInstance {
+export class SharePointQueryableSecurable<QueryableType = any> extends SharePointQueryableInstance<QueryableType> {
 
     /**
      * Gets the set of role assignments for this item

@@ -11,6 +11,12 @@ import {
     ODataParser,
     ODataQueryable,
     RequestContext,
+    QueryableGet,
+    QueryableSelectableKeys,
+    QueryableSelect,
+    QueryableExpandableKeys,
+    QueryableExpand,
+    QueryableOrderableKeys,
 } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
@@ -19,25 +25,24 @@ import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 import { metadata } from "./utils/metadata";
 
 export interface SharePointQueryableConstructor<T> {
-    new(baseUrl: string | SharePointQueryable, path?: string): T;
+    new(baseUrl: string | SharePointQueryableBase, path?: string): T;
 }
 
 /**
  * SharePointQueryable Base Class
  *
  */
-export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
-
+export class SharePointQueryableBase<QueryableType = any> extends ODataQueryable<SPBatch, QueryableType> {
     protected _forceCaching: boolean;
 
     /**
-     * Creates a new instance of the SharePointQueryable class
+     * Creates a new instance of the SharePointQueryableBase class
      *
      * @constructor
-     * @param baseUrl A string or SharePointQueryable that should form the base part of the url
+     * @param baseUrl A string or SharePointQueryableBase that should form the base part of the url
      *
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string) {
+    constructor(baseUrl: string | SharePointQueryableBase, path?: string) {
         super();
 
         this._forceCaching = false;
@@ -73,7 +78,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
     /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
-     * @param factory constructor for the new SharePointQueryable
+     * @param factory constructor for the new SharePointQueryableBase
      */
     public as<T>(factory: SharePointQueryableConstructor<T>): T {
         const o = <T>new factory(this._url, null);
@@ -103,37 +108,13 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
     }
 
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
-
-    /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends SharePointQueryable>(
+    protected getParent<T extends SharePointQueryableBase>(
         factory: SharePointQueryableConstructor<T>,
-        baseUrl: string | SharePointQueryable = this.parentUrl,
+        baseUrl: string | SharePointQueryableBase = this.parentUrl,
         path?: string,
         batch?: SPBatch): T {
 
@@ -150,12 +131,12 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
     }
 
     /**
-     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
+     * Clones this SharePointQueryableBase into a new SharePointQueryableBase instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
-    protected clone<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
+    protected clone<T extends SharePointQueryableBase>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
         let clone = new factory(this, additionalPath).configureFrom(this);
         const t = "@target";
         if (this.query.has(t)) {
@@ -207,12 +188,57 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
         });
     }
 }
+export class SharePointQueryable<QueryableType = any> extends SharePointQueryableBase<QueryableType> {
+
+
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select<K extends QueryableSelectableKeys<QueryableType>>(...selects: K[]): SharePointQueryable<QueryableSelect<QueryableType, K>> {
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this as any;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand<K extends QueryableExpandableKeys<QueryableType>>(...expands: K[]): SharePointQueryable<QueryableExpand<QueryableType, K>> {
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this as any;
+    }
+}
 
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class SharePointQueryableCollection<GetType = any[]> extends SharePointQueryable<GetType> {
+export class SharePointQueryableCollection<QueryableType = any[]> extends SharePointQueryable<QueryableType> {
+
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select<K extends QueryableSelectableKeys<QueryableType>>(...selects: K[]): SharePointQueryableCollection<QueryableSelect<QueryableType, K>> {
+        return super.select(...selects) as any;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand<K extends QueryableExpandableKeys<QueryableType>>(...expands: K[]): SharePointQueryableCollection<QueryableExpand<QueryableType, K>> {
+        return super.expand(...expands) as any;
+    }
 
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
@@ -230,7 +256,7 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
      * @param orderby The name of the field on which to sort
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
-    public orderBy(orderBy: string, ascending = true): this {
+    public orderBy(orderBy: QueryableOrderableKeys<QueryableType>, ascending = true): this {
         const o = "$orderby";
         const query = this.query.has(o) ? this.query.get(o).split(",") : [];
         query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
@@ -263,7 +289,7 @@ export class SharePointQueryableCollection<GetType = any[]> extends SharePointQu
  * Represents an instance that can be selected
  *
  */
-export class SharePointQueryableInstance extends SharePointQueryable {
+export class SharePointQueryableInstance<QueryableType = any> extends SharePointQueryable<QueryableType> {
 
     /**
      * Curries the update function into the common pieces
@@ -308,7 +334,7 @@ export class SharePointQueryableInstance extends SharePointQueryable {
 }
 
 /**
- * Decorator used to specify the default path for SharePointQueryable objects
+ * Decorator used to specify the default path for SharePointQueryableBase objects
  * 
  * @param path 
  */

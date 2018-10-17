@@ -25,7 +25,7 @@ import { extractWebUrl } from "./utils/extractweburl";
 /**
  * Internal helper class used to augment classes to include sharing functionality
  */
-export class SharePointQueryableShareable extends SharePointQueryable {
+export class SharePointQueryableShareable<QueryableType = any> extends SharePointQueryable<QueryableType> {
 
     /**
      * Gets a sharing link for the supplied
@@ -296,7 +296,7 @@ export class SharePointQueryableShareable extends SharePointQueryable {
     }
 }
 
-export class SharePointQueryableShareableWeb extends SharePointQueryableSecurable {
+export class SharePointQueryableShareableWeb<QueryableType = any> extends SharePointQueryableSecurable<QueryableType> {
 
     /**
      * Shares this web with the supplied users
@@ -370,7 +370,7 @@ export class SharePointQueryableShareableWeb extends SharePointQueryableSecurabl
     }
 }
 
-export class SharePointQueryableShareableItem extends SharePointQueryableSecurable {
+export class SharePointQueryableShareableItem<QueryableType = any> extends SharePointQueryableSecurable<QueryableType> {
 
     /**
      * Gets a link suitable for sharing for this item

@@ -21,6 +21,7 @@ import {
 import {
     ODataParser,
     ODataDefaultParser,
+    QueryableGet,
 } from "@pnp/odata";
 
 import {
@@ -81,7 +82,7 @@ export class Team extends GraphQueryableInstance<TeamProperties> {
      * @param parser Allows you to specify a parser to handle the result
      * @param getOptions The options used for this request
      */
-    public get<T = TeamProperties>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
+    public get<T = TeamProperties>(parser: ODataParser<QueryableGet<T>> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<QueryableGet<T>> {
         return this.clone(Team, "").setEndpoint(GraphEndpoints.Beta).getCore(parser, options);
     }
 }

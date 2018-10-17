@@ -1,5 +1,5 @@
 import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, QueryableGet } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
     name: string;
@@ -131,8 +131,8 @@ export class AttachmentFile extends SharePointQueryableInstance {
     //     });
     // }
 
-    private getParsed<T>(parser: ODataParser<T>): Promise<T> {
-        return this.clone(AttachmentFile, "$value", false).get(parser);
+    private getParsed<T>(parser: ODataParser<QueryableGet<T>>): Promise<QueryableGet<T>> {
+        return this.clone(AttachmentFile, "$value", false).get<T>(parser);
     }
 }
 
