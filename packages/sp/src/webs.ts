@@ -574,6 +574,14 @@ export class Web extends SharePointQueryableShareableWeb {
     public addClientSidePageByPath(pageName: string, listRelativePath: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
         return ClientSidePage.create(this.getList(listRelativePath), pageName, title);
     }
+
+    /**
+     * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site
+     *
+     */
+    public createDefaultAssociatedGroups(): Promise<void> {
+        return this.clone(Web, `createDefaultAssociatedGroups`).postCore();
+    }
 }
 
 /**
