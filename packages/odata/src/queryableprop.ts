@@ -37,7 +37,9 @@ type QueryableSelectableKeysImpl<T> = {
     [U in keyof T]:
         T[U] extends QueryableCompositeProp<infer _PropType, infer _ParentProp, infer _ChildProp, infer _DefaultSelected, infer _Selected, false> ?
             never :
-            U;
+            T[U] extends symbol ?
+                never :
+                U;
 }[keyof T];
 
 export type QueryableSelect<T, K extends QueryableSelectableKeys<T>> = T extends (infer A)[] ? QueryableSelectImpl<A, K & QueryableSelectableKeys<A>>[] : QueryableSelectImpl<T, K>;
@@ -59,7 +61,9 @@ type QueryableExpandableKeysImpl<T> = {
             never:
             T[U] extends QueryableCompositeProp<infer _PropType, infer _ParentProp, infer _ChildProp, infer _DefaultSelected, infer _Selected, infer _Expanded> ?
                 never :
-                U;
+                T[U] extends symbol ?
+                    never :
+                    U;
 }[keyof T];
 
 export type QueryableExpand<T, K extends QueryableExpandableKeys<T>> = T extends (infer A)[] ? QueryableExpandImpl<A, K & QueryableExpandableKeys<A>>[] : QueryableExpandImpl<T, K>;
@@ -86,7 +90,9 @@ type QueryableSelectedPropsImpl<T> = {
                     U :
                     T[U] extends QueryableCompositeProp<infer _PropType, infer _ParentProp, infer _ChildProp, infer _DefaultSelected, infer _Selected, infer _Expanded> ?
                         never :
-                        U :
+                        T[U] extends symbol ?
+                            never :
+                            U :
             never;
 }[keyof T];
 
