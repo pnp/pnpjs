@@ -1,5 +1,5 @@
 import { extend, TypedHash, jsS } from "@pnp/common";
-import { QueryableInterface, QueryableProp, QueryableCompositeProp } from "@pnp/odata";
+import { QueryableInterface, QueryableProp, QueryableCompositeProp, QueryableODataProp } from "@pnp/odata";
 import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
@@ -28,7 +28,7 @@ import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
  *
  */
 @defaultPath("webs")
-export class Webs extends SharePointQueryableCollection<WebQueryableInterface[]> {
+export class Webs<QueryableType = any[]> extends SharePointQueryableCollection<QueryableType> {
 
     /**
      * Adds a new web to the collection
@@ -85,7 +85,7 @@ export class WebInfos extends SharePointQueryableCollection {}
  *
  */
 @defaultPath("_api/web")
-export class Web extends SharePointQueryableShareableWeb<WebQueryableInterface> {
+export class Web<QueryableType = any> extends SharePointQueryableShareableWeb<QueryableType> {
 
     /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
@@ -96,6 +96,14 @@ export class Web extends SharePointQueryableShareableWeb<WebQueryableInterface> 
      */
     public static fromUrl(url: string, path?: string) {
         return new Web(extractWebUrl(url), path);
+    }
+
+    /**
+     * Provides a strongly typed version of the query methods (select, expand, get)
+     *
+     */
+    public stronglyTyped(): Web<WebQueryableInterface> {
+        return this;
     }
 
     /**
@@ -111,7 +119,7 @@ export class Web extends SharePointQueryableShareableWeb<WebQueryableInterface> 
      *
      */
     public getParentWeb(): Promise<{ data: any; web: Web }> {
-        return this.expand("ParentWeb").select("ParentWeb/Id").get()
+        return this.stronglyTyped().expand("ParentWeb").select("ParentWeb/Id").get()
             .then(({ ParentWeb }) => new Site(this.toUrlAndQuery().split("/_api")[0]).openWebById(ParentWeb.Id));
     }
 
@@ -621,116 +629,194 @@ export interface WebEnsureUserResult {
     user: SiteUser;
 }
 
-export interface WebQueryableInterface extends QueryableInterface {
-    Alerts: QueryableProp<any, true, false, false, false>;
-    AllowAutomaticASPXPageIndexing: QueryableProp<boolean, false, false, false, false>;
-    AllowCreateDeclarativeWorkflowForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllowDesignerForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllowMasterPageEditingForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllowRevertFromTemplateForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllowRssFeeds: QueryableProp<boolean, false, true, false, false>;
-    AllowSaveDeclarativeWorkflowAsTemplateForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllowSavePublishDeclarativeWorkflowForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    AllProperties: QueryableProp<any, true, false, false, false>;
-    AlternateCssUrl: QueryableProp<string, false, true, false, false>;
-    AppInstanceId: QueryableProp<string, false, true, false, false>;
-    AssociatedMemberGroup: QueryableProp<any, true, false, false, false>;
-    AssociatedOwnerGroup: QueryableProp<any, true, false, false, false>;
-    AssociatedVisitorGroup: QueryableProp<any, true, false, false, false>;
-    Author: QueryableProp<any, true, false, false, false>;
-    AvailableContentTypes: QueryableProp<any, true, false, false, false>;
-    AvailableFields: QueryableProp<any, true, false, false, false>;
-    Configuration: QueryableProp<number, false, true, false, false>;
-    ContentTypes: QueryableProp<any, true, false, false, false>;
-    Created: QueryableProp<string, false, true, false, false>;
-    CurrentChangeToken: QueryableProp<{StringValue: string}, false, true, false, false>;
-    CurrentUser: QueryableProp<{}, true, false, false, false>;
-    "CurrentUser/Email": QueryableCompositeProp<string, "CurrentUser", "Email", true, false, false>;
-    "CurrentUser/Id": QueryableCompositeProp<number, "CurrentUser", "Id", true, false, false>;
-    "CurrentUser/IsEmailAuthenticationGuestUser": QueryableCompositeProp<boolean, "CurrentUser", "IsEmailAuthenticationGuestUser", true, false, false>;
-    "CurrentUser/IsHiddenInUI": QueryableCompositeProp<boolean, "CurrentUser", "IsHiddenInUI", true, false, false>;
-    "CurrentUser/IsShareByEmailGuestUser": QueryableCompositeProp<boolean, "CurrentUser", "IsShareByEmailGuestUser", true, false, false>;
-    "CurrentUser/IsSiteAdmin": QueryableCompositeProp<boolean, "CurrentUser", "IsSiteAdmin", true, false, false>;
-    "CurrentUser/LoginName": QueryableCompositeProp<string, "CurrentUser", "LoginName", true, false, false>;
-    "CurrentUser/PrincipalType": QueryableCompositeProp<PrincipalType, "CurrentUser", "PrincipalType", true, false, false>;
-    "CurrentUser/Title": QueryableCompositeProp<string, "CurrentUser", "Title", true, false, false>;
-    "CurrentUser/UserId": QueryableCompositeProp<{ NameId: string, NameIdIssuer: string }, "CurrentUser", "UserId", true, false, false>;
-    CustomMasterUrl: QueryableProp<string, false, true, false, false>;
-    Description: QueryableProp<string, false, true, false, false>;
-    DescriptionResource: QueryableProp<any, true, false, false, false>;
-    DesignerDownloadUrlForCurrentUser: QueryableProp<string, false, false, false, false>;
-    DesignPackageId: QueryableProp<string, false, true, false, false>;
-    DocumentLibraryCalloutOfficeWebAppPreviewersDisabled: QueryableProp<boolean, false, true, false, false>;
-    EffectiveBasePermissions: QueryableProp<{High: string; Low: string}, false, false, false, false>;
-    EnableMinimalDownload: QueryableProp<boolean, false, true, false, false>;
-    EventReceivers: QueryableProp<any, true, false, false, false>;
-    ExcludeFromOfflineClient: QueryableProp<boolean, false, false, false, false>;
-    Features: QueryableProp<any, true, false, false, false>;
-    Fields: QueryableProp<any, true, false, false, false>;
-    FirstUniqueAncestorSecurableObject: QueryableProp<any, true, false, false, false>;
-    Folders: QueryableProp<any, true, false, false, false>;
-    FooterEnabled: QueryableProp<boolean, false, true, false, false>;
-    HasUniqueRoleAssignments: QueryableProp<boolean, false, false, false, false>;
-    HeaderEmphasis: QueryableProp<number, false, true, false, false>;
-    HeaderLayout: QueryableProp<number, false, true, false, false>;
-    HorizontalQuickLaunch: QueryableProp<boolean, false, true, false, false>;
-    Id: QueryableProp<string, false, true, false, false>;
-    IsMultilingual: QueryableProp<boolean, false, true, false, false>;
-    Language: QueryableProp<number, false, true, false, false>;
-    LastItemModifiedDate: QueryableProp<string, false, true, false, false>;
-    LastItemUserModifiedDate: QueryableProp<string, false, true, false, false>;
-    Lists: QueryableProp<any, true, false, false, false>;
-    ListTemplates: QueryableProp<any, true, false, false, false>;
-    MasterUrl: QueryableProp<string, false, true, false, false>;
-    MegaMenuEnabled: QueryableProp<boolean, false, true, false, false>;
-    Navigation: QueryableProp<any, true, false, false, false>;
-    NoCrawl: QueryableProp<boolean, false, true, false, false>;
-    ObjectCacheEnabled: QueryableProp<boolean, false, true, false, false>;
-    OverwriteTranslationsOnChange: QueryableProp<boolean, false, true, false, false>;
-    ParentWeb: QueryableProp<any, true, false, false, false>;
-    "ParentWeb/Configuration": QueryableCompositeProp<number, "ParentWeb", "Configuration", true, false, false>;
-    "ParentWeb/Created": QueryableCompositeProp<string, "ParentWeb", "Created", true, false, false>;
-    "ParentWeb/Description": QueryableCompositeProp<string, "ParentWeb", "Description", true, false, false>;
-    "ParentWeb/Id": QueryableCompositeProp<string, "ParentWeb", "Id", true, false, false>;
-    "ParentWeb/Language": QueryableCompositeProp<number, "ParentWeb", "Language", true, false, false>;
-    "ParentWeb/LastItemModifiedDate": QueryableCompositeProp<string, "ParentWeb", "LastItemModifiedDate", true, false, false>;
-    "ParentWeb/LastItemUserModifiedDate": QueryableCompositeProp<string, "ParentWeb", "LastItemUserModifiedDate", true, false, false>;
-    "ParentWeb/ServerRelativeUrl": QueryableCompositeProp<string, "ParentWeb", "ServerRelativeUrl", true, false, false>;
-    "ParentWeb/Title": QueryableCompositeProp<string, "ParentWeb", "Title", true, false, false>;
-    "ParentWeb/WebTemplate": QueryableCompositeProp<string, "ParentWeb", "WebTemplate", true, false, false>;
-    "ParentWeb/WebTemplateId": QueryableCompositeProp<number, "ParentWeb", "WebTemplateId", true, false, false>;
-    PushNotificationSubscribers: QueryableProp<any, true, false, false, false>;
-    QuickLaunchEnabled: QueryableProp<boolean, false, true, false, false>;
-    RecycleBin: QueryableProp<any, true, false, false, false>;
-    RecycleBinEnabled: QueryableProp<boolean, false, true, false, false>;
-    RegionalSettings: QueryableProp<any, true, false, false, false>;
-    RequestAccessEmail: QueryableProp<string, false, false, false, false>;
-    ResourcePath: QueryableProp<{DecodedUrl: string}, false, true, false, false>;
-    RoleAssignments: QueryableProp<any, true, false, false, false>;
-    RoleDefinitions: QueryableProp<any, true, false, false, false>;
-    RootFolder: QueryableProp<any, true, false, false, false>;
-    SaveSiteAsTemplateEnabled: QueryableProp<boolean, false, false, false, false>;
-    ServerRelativeUrl: QueryableProp<string, false, true, false, false>;
-    ShowUrlStructureForCurrentUser: QueryableProp<boolean, false, false, false, false>;
-    SiteGroups: QueryableProp<any, true, false, false, false>;
-    SiteLogoDescription: QueryableProp<string, false, false, false, false>;
-    SiteLogoUrl: QueryableProp<string, false, false, false, false>;
-    SiteUserInfoList: QueryableProp<any, true, false, false, false>;
-    SiteUsers: QueryableProp<any, true, false, false, false>;
-    SupportedUILanguageIds: QueryableProp<number[], false, false, false, false>;
-    SyndicationEnabled: QueryableProp<boolean, false, true, false, false>;
-    ThemedCssFolderUrl: QueryableProp<string, false, false, false, false>;
-    ThemeInfo: QueryableProp<any, true, false, false, false>;
-    Title: QueryableProp<string, false, true, false, false>;
-    TitleResource: QueryableProp<any, true, false, false, false>;
-    TreeViewEnabled: QueryableProp<boolean, false, true, false, false>;
-    UIVersion: QueryableProp<number, false, true, false, false>;
-    UIVersionConfigurationEnabled: QueryableProp<boolean, false, true, false, false>;
-    Url: QueryableProp<string, false, true, false, false>;
-    UserCustomActions: QueryableProp<any, true, false, false, false>;
-    Webs: QueryableProp<any, true, false, false, false>;
-    WebTemplate: QueryableProp<string, false, true, false, false>;
-    WelcomePage: QueryableProp<string, false, true, false, false>;
-    WorkflowAssociations: QueryableProp<any, true, false, false, false>;
-    WorkflowTemplates: QueryableProp<any, true, false, false, false>;
-}
+export type WebDefaultSelectedKeys =
+    "AllowRssFeeds" |
+    "AlternateCssUrl" |
+    "AppInstanceId" |
+    "Configuration" |
+    "Created" |
+    "CurrentChangeToken" |
+    "CurrentUser/Email" |
+    "CurrentUser/Id" |
+    "CurrentUser/IsEmailAuthenticationGuestUser" |
+    "CurrentUser/IsHiddenInUI" |
+    "CurrentUser/IsShareByEmailGuestUser" |
+    "CurrentUser/IsSiteAdmin" |
+    "CurrentUser/LoginName" |
+    "CurrentUser/PrincipalType" |
+    "CurrentUser/Title" |
+    "CurrentUser/UserId" |
+    "CurrentUser/odata.editLink" |
+    "CurrentUser/odata.id" |
+    "CurrentUser/odata.type" |
+    "CustomMasterUrl" |
+    "Description" |
+    "DesignPackageId" |
+    "DocumentLibraryCalloutOfficeWebAppPreviewersDisabled" |
+    "EnableMinimalDownload" |
+    "FooterEnabled" |
+    "HeaderEmphasis" |
+    "HeaderLayout" |
+    "HorizontalQuickLaunch" |
+    "Id" |
+    "IsMultilingual" |
+    "Language" |
+    "LastItemModifiedDate" |
+    "LastItemUserModifiedDate" |
+    "MasterUrl" |
+    "MegaMenuEnabled" |
+    "NoCrawl" |
+    "ObjectCacheEnabled" |
+    "OverwriteTranslationsOnChange" |
+    "QuickLaunchEnabled" |
+    "ParentWeb/Configuration" |
+    "ParentWeb/Created" |
+    "ParentWeb/Description" |
+    "ParentWeb/Id" |
+    "ParentWeb/Language" |
+    "ParentWeb/LastItemModifiedDate" |
+    "ParentWeb/LastItemUserModifiedDate" |
+    "ParentWeb/ServerRelativeUrl" |
+    "ParentWeb/Title" |
+    "ParentWeb/WebTemplate" |
+    "ParentWeb/WebTemplateId" |
+    "ParentWeb/odata.editLink" |
+    "ParentWeb/odata.id" |
+    "ParentWeb/odata.type" |
+    "RecycleBinEnabled" |
+    "ResourcePath" |
+    "ServerRelativeUrl" |
+    "SiteLogoUrl" |
+    "SyndicationEnabled" |
+    "Title" |
+    "TreeViewEnabled" |
+    "UIVersion" |
+    "UIVersionConfigurationEnabled" |
+    "Url" |
+    "WebTemplate" |
+    "WelcomePage";
+export type WebQueryableInterface = QueryableInterface<{
+    Alerts: QueryableProp<any, true>;
+    AllowAutomaticASPXPageIndexing: QueryableProp<boolean, false>;
+    AllowCreateDeclarativeWorkflowForCurrentUser: QueryableProp<boolean, false>;
+    AllowDesignerForCurrentUser: QueryableProp<boolean, false>;
+    AllowMasterPageEditingForCurrentUser: QueryableProp<boolean, false>;
+    AllowRevertFromTemplateForCurrentUser: QueryableProp<boolean, false>;
+    AllowRssFeeds: QueryableProp<boolean, false>;
+    AllowSaveDeclarativeWorkflowAsTemplateForCurrentUser: QueryableProp<boolean, false>;
+    AllowSavePublishDeclarativeWorkflowForCurrentUser: QueryableProp<boolean, false>;
+    AllProperties: QueryableProp<any, true>;
+    AlternateCssUrl: QueryableProp<string, false>;
+    AppInstanceId: QueryableProp<string, false>;
+    AssociatedMemberGroup: QueryableProp<any, true>;
+    AssociatedOwnerGroup: QueryableProp<any, true>;
+    AssociatedVisitorGroup: QueryableProp<any, true>;
+    Author: QueryableProp<any, true>;
+    AvailableContentTypes: QueryableProp<any, true>;
+    AvailableFields: QueryableProp<any, true>;
+    Configuration: QueryableProp<number, false>;
+    ContentTypes: QueryableProp<any, true>;
+    Created: QueryableProp<string, false>;
+    CurrentChangeToken: QueryableProp<{StringValue: string}, false>;
+    CurrentUser: QueryableProp<any, true>;
+    "CurrentUser@odata.navigationLinkUrl": QueryableODataProp<string, "CurrentUser">;
+    "CurrentUser/Email": QueryableCompositeProp<string, "CurrentUser", "Email">;
+    "CurrentUser/Id": QueryableCompositeProp<number, "CurrentUser", "Id">;
+    "CurrentUser/IsEmailAuthenticationGuestUser": QueryableCompositeProp<boolean, "CurrentUser", "IsEmailAuthenticationGuestUser">;
+    "CurrentUser/IsHiddenInUI": QueryableCompositeProp<boolean, "CurrentUser", "IsHiddenInUI">;
+    "CurrentUser/IsShareByEmailGuestUser": QueryableCompositeProp<boolean, "CurrentUser", "IsShareByEmailGuestUser">;
+    "CurrentUser/IsSiteAdmin": QueryableCompositeProp<boolean, "CurrentUser", "IsSiteAdmin">;
+    "CurrentUser/LoginName": QueryableCompositeProp<string, "CurrentUser", "LoginName">;
+    "CurrentUser/PrincipalType": QueryableCompositeProp<PrincipalType, "CurrentUser", "PrincipalType">;
+    "CurrentUser/Title": QueryableCompositeProp<string, "CurrentUser", "Title">;
+    "CurrentUser/UserId": QueryableCompositeProp<{ NameId: string, NameIdIssuer: string }, "CurrentUser", "UserId">;
+    "CurrentUser/odata.editLink": QueryableCompositeProp<QueryableODataProp<string, any>, "CurrentUser", "odata.editLink">;
+    "CurrentUser/odata.id": QueryableCompositeProp<QueryableODataProp<string, any>, "CurrentUser", "odata.id">;
+    "CurrentUser/odata.type": QueryableCompositeProp<QueryableODataProp<"SP.User", any>, "CurrentUser", "odata.type">;
+    CustomMasterUrl: QueryableProp<string, false>;
+    Description: QueryableProp<string, false>;
+    DescriptionResource: QueryableProp<any, true>;
+    DesignerDownloadUrlForCurrentUser: QueryableProp<string, false>;
+    DesignPackageId: QueryableProp<string, false>;
+    DocumentLibraryCalloutOfficeWebAppPreviewersDisabled: QueryableProp<boolean, false>;
+    EffectiveBasePermissions: QueryableProp<{High: string; Low: string}, false>;
+    EnableMinimalDownload: QueryableProp<boolean, false>;
+    EventReceivers: QueryableProp<any, true>;
+    ExcludeFromOfflineClient: QueryableProp<boolean, false>;
+    Features: QueryableProp<any, true>;
+    Fields: QueryableProp<any, true>;
+    FirstUniqueAncestorSecurableObject: QueryableProp<any, true>;
+    Folders: QueryableProp<any, true>;
+    FooterEnabled: QueryableProp<boolean, false>;
+    HasUniqueRoleAssignments: QueryableProp<boolean, false>;
+    HeaderEmphasis: QueryableProp<number, false>;
+    HeaderLayout: QueryableProp<number, false>;
+    HorizontalQuickLaunch: QueryableProp<boolean, false>;
+    Id: QueryableProp<string, false>;
+    IsMultilingual: QueryableProp<boolean, false>;
+    Language: QueryableProp<number, false>;
+    LastItemModifiedDate: QueryableProp<string, false>;
+    LastItemUserModifiedDate: QueryableProp<string, false>;
+    Lists: QueryableProp<any, true>;
+    ListTemplates: QueryableProp<any, true>;
+    MasterUrl: QueryableProp<string, false>;
+    MegaMenuEnabled: QueryableProp<boolean, false>;
+    Navigation: QueryableProp<any, true>;
+    NoCrawl: QueryableProp<boolean, false>;
+    ObjectCacheEnabled: QueryableProp<boolean, false>;
+    OverwriteTranslationsOnChange: QueryableProp<boolean, false>;
+    ParentWeb: QueryableProp<any, true>;
+    "ParentWeb@odata.navigationLinkUrl": QueryableODataProp<string, "ParentWeb">;
+    "ParentWeb/Configuration": QueryableCompositeProp<number, "ParentWeb", "Configuration">;
+    "ParentWeb/Created": QueryableCompositeProp<string, "ParentWeb", "Created">;
+    "ParentWeb/Description": QueryableCompositeProp<string, "ParentWeb", "Description">;
+    "ParentWeb/Id": QueryableCompositeProp<string, "ParentWeb", "Id">;
+    "ParentWeb/Language": QueryableCompositeProp<number, "ParentWeb", "Language">;
+    "ParentWeb/LastItemModifiedDate": QueryableCompositeProp<string, "ParentWeb", "LastItemModifiedDate">;
+    "ParentWeb/LastItemUserModifiedDate": QueryableCompositeProp<string, "ParentWeb", "LastItemUserModifiedDate">;
+    "ParentWeb/ServerRelativeUrl": QueryableCompositeProp<string, "ParentWeb", "ServerRelativeUrl">;
+    "ParentWeb/Title": QueryableCompositeProp<string, "ParentWeb", "Title">;
+    "ParentWeb/WebTemplate": QueryableCompositeProp<string, "ParentWeb", "WebTemplate">;
+    "ParentWeb/WebTemplateId": QueryableCompositeProp<number, "ParentWeb", "WebTemplateId">;
+    "ParentWeb/odata.editLink": QueryableCompositeProp<QueryableODataProp<string, any>, "ParentWeb", "odata.editLink">;
+    "ParentWeb/odata.id": QueryableCompositeProp<QueryableODataProp<string, any>, "ParentWeb", "odata.id">;
+    "ParentWeb/odata.type": QueryableCompositeProp<QueryableODataProp<"SP.WebInfo", any>, "ParentWeb", "odata.type">;
+    PushNotificationSubscribers: QueryableProp<any, true>;
+    QuickLaunchEnabled: QueryableProp<boolean, false>;
+    RecycleBin: QueryableProp<any, true>;
+    RecycleBinEnabled: QueryableProp<boolean, false>;
+    RegionalSettings: QueryableProp<any, true>;
+    RequestAccessEmail: QueryableProp<string, false>;
+    ResourcePath: QueryableProp<{DecodedUrl: string}, false>;
+    RoleAssignments: QueryableProp<any, true>;
+    RoleDefinitions: QueryableProp<any, true>;
+    RootFolder: QueryableProp<any, true>;
+    SaveSiteAsTemplateEnabled: QueryableProp<boolean, false>;
+    ServerRelativeUrl: QueryableProp<string, false>;
+    ShowUrlStructureForCurrentUser: QueryableProp<boolean, false>;
+    SiteGroups: QueryableProp<any, true>;
+    SiteLogoDescription: QueryableProp<string, false>;
+    SiteLogoUrl: QueryableProp<string, false>;
+    SiteUserInfoList: QueryableProp<any, true>;
+    SiteUsers: QueryableProp<any, true>;
+    SupportedUILanguageIds: QueryableProp<number[], false>;
+    SyndicationEnabled: QueryableProp<boolean, false>;
+    ThemedCssFolderUrl: QueryableProp<string, false>;
+    ThemeInfo: QueryableProp<any, true>;
+    Title: QueryableProp<string, false>;
+    TitleResource: QueryableProp<any, true>;
+    TreeViewEnabled: QueryableProp<boolean, false>;
+    UIVersion: QueryableProp<number, false>;
+    UIVersionConfigurationEnabled: QueryableProp<boolean, false>;
+    Url: QueryableProp<string, false>;
+    UserCustomActions: QueryableProp<any, true>;
+    Webs: QueryableProp<any, true>;
+    WebTemplate: QueryableProp<string, false>;
+    WelcomePage: QueryableProp<string, false>;
+    WorkflowAssociations: QueryableProp<any, true>;
+    WorkflowTemplates: QueryableProp<any, true>;
+    "odata.editLink": QueryableODataProp<string, any>;
+    "odata.id": QueryableODataProp<string, any>;
+    "odata.metadata": QueryableODataProp<string, any>;
+    "odata.type": QueryableODataProp<"SP.Web", any>;
+}, WebDefaultSelectedKeys, never>;
