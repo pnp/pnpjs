@@ -31,19 +31,15 @@ export interface UtilityMethods {
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
     createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
     containsInvalidFileFolderChars(input: string, onPremise?: boolean): boolean;
-    containsInvalidUrlChars(input: string, onPremise?: boolean): boolean;
     stripInvalidFileFolderChars(input: string, replacer?: string, onPremise?: boolean): string;
-    stripInvalidUrlChars(input: string, replacer?: string, onPremise?: boolean): string;
 }
 
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
  */
 export class UtilityMethod extends SharePointQueryable implements UtilityMethods {
-    private static readonly InvalidUrlCharsOnlineRegex = /[\\#%*/:<>?+|\""]/g;
-    private static readonly InvalidFileFolderNameCharsOnlineRegex = /[""#%*:<>?/\|\t\r\n]/g;
-    private static readonly InvalidUrlCharsOnPremiseRegex = /[\\~#%&*{}/:<>?+|\""]/g;
-    private static readonly InvalidFileFolderNameCharsOnPremiseRegex = /[~#%&*{}\:<>?/|""\t\r\n]/g;
+    private static readonly InvalidFileFolderNameCharsOnlineRegex = /["*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
+    private static readonly InvalidFileFolderNameCharsOnPremiseRegex = /["#%*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
 
     /**
      * Creates a new instance of the Utility method class
@@ -197,7 +193,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
     }
 
     /**
-     * Checks if file or folder contains invalid characters or not
+     * Checks if file or folder name contains invalid characters
      *
      * @param input File or folder name to check
      * @param onPremise Set to true for SharePoint On-Premise
@@ -208,21 +204,6 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             return UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex.test(input);
         } else {
             return UtilityMethod.InvalidFileFolderNameCharsOnlineRegex.test(input);
-        }
-    }
-
-    /**
-     * Checks if URL contains invalid characters or not
-     *
-     * @param input URL to check
-     * @param onPremise Set to true for SharePoint On-Premise
-     * @returns Returns true if URL contains invalid characters. Otherwise returns false.
-     */
-    public containsInvalidUrlChars(input: string, onPremise = false): boolean {
-        if (onPremise) {
-            return UtilityMethod.InvalidUrlCharsOnPremiseRegex.test(input);
-        } else {
-            return UtilityMethod.InvalidUrlCharsOnlineRegex.test(input);
         }
     }
 
@@ -239,22 +220,6 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             return input.replace(UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex, replacer);
         } else {
             return input.replace(UtilityMethod.InvalidFileFolderNameCharsOnlineRegex, replacer);
-        }
-    }
-
-    /**
-     * Removes invalid characters from URL
-     *
-     * @param input URL
-     * @param replacer Value that will replace invalid characters
-     * @param onPremise Set to true for SharePoint On-Premise
-     * @returns URL with replaced invalid characters
-     */
-    public stripInvalidUrlChars(input: string, replacer = "", onPremise = false): string {
-        if (onPremise) {
-            return input.replace(UtilityMethod.InvalidUrlCharsOnPremiseRegex, replacer);
-        } else {
-            return input.replace(UtilityMethod.InvalidUrlCharsOnlineRegex, replacer);
         }
     }
 }
