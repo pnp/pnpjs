@@ -40,6 +40,22 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, true).then((w: 
 });
 ```
 
+## Create Default Associated Groups
+
+After creating the a web, you can create its default associated groups (Members, Owners, Visitors) with the default role assigments (Contribute, Full Control, Read)
+
+```TypeScript
+import { sp, WebAddResult } from "@pnp/sp";
+
+sp.web.webs.add("title", "subweb1").then((w: WebAddResult) => {
+
+    w.web.createDefaultAssociatedGroups().then(() => {
+
+        // ...
+    });
+});
+```
+
 ## Get A Web's properties
 
 ```TypeScript
