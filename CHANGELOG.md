@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
 
+- @pnp/polyfill-ie11: New package to contain the required polyfills for IE11 [[PR](https://github.com/pnp/pnpjs/pull/283)] [[docs](https://pnp.github.io/pnpjs/documentation/polyfill/)]
+- @pnp/sp: Added 'groups' endpoint to 'currentUser' ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/274)]
+- @pnp/sp: Added Fields addDependentLookupField ([@seanmarthur](https://github.com/seanmarthur)) [[PR](https://github.com/pnp/pnpjs/pull/282)]
 
 ## 1.2.3 - 2018-10-10
 
