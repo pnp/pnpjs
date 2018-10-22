@@ -20,4 +20,4 @@ const NodeFetch = require("node-fetch");
 
 export * from "./net/sharepoint";
 export { AdalFetchClient, AADToken } from "./net/adal/adalfetchclient";
-export { RetryNodeFetchClient } from "./net/retrynodefetchclient";
+export { NodeFetchClient } from "./net/nodefetchclient";
