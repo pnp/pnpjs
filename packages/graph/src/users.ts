@@ -1,4 +1,4 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Contacts, ContactFolders } from "./contacts";
 import { OneNote, OneNoteMethods } from "./onenote";
 import { Drive, Drives } from "./onedrive";
@@ -8,12 +8,8 @@ import { Tasks } from "./planner";
  * Describes a collection of Users objects
  *
  */
+@defaultPath("users")
 export class Users extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "users") {
-        super(baseUrl, path);
-    }
-
     /**
      * Gets a user from the collection using the specified id
      * 

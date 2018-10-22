@@ -1,4 +1,4 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { DriveItem as IDriveItem } from "@microsoft/microsoft-graph-types";
 import { jsS, TypedHash, extend } from "@pnp/common";
 
@@ -10,11 +10,8 @@ export interface IDriveItemsMethods {
  * Describes a collection of Drive objects
  *
  */
+@defaultPath("drives")
 export class Drives extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "drives") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a Drive instance by id
@@ -30,10 +27,8 @@ export class Drives extends GraphQueryableCollection {
  * Describes a Drive instance
  *
  */
+@defaultPath("drive")
 export class Drive extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "drive") {
-        super(baseUrl, path);
-    }
 
     public get root(): Root {
         return new Root(this);
@@ -61,10 +56,8 @@ export class Drive extends GraphQueryableInstance {
  * Describes a Root instance
  *
  */
+@defaultPath("root")
 export class Root extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "root") {
-        super(baseUrl, path);
-    }
 
     public get children(): Children {
         return new Children(this);
@@ -80,11 +73,8 @@ export class Root extends GraphQueryableInstance {
  * Describes a collection of Drive Item objects
  *
  */
+@defaultPath("items")
 export class DriveItems extends GraphQueryableInstance implements IDriveItemsMethods {
-    constructor(baseUrl: string | GraphQueryable, path = "items") {
-        super(baseUrl, path);
-    }
-
     /**
      * Gets a Drive Item instance by id
      * 
@@ -101,9 +91,6 @@ export class DriveItems extends GraphQueryableInstance implements IDriveItemsMet
  *
  */
 export class DriveItem extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "item") {
-        super(baseUrl, path);
-    }
 
     public get children(): Children {
         return new Children(this);
@@ -157,11 +144,8 @@ export class DriveItem extends GraphQueryableInstance {
  * Return a collection of DriveItems in the children relationship of a DriveItem
  *
  */
+@defaultPath("children")
 export class Children extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path = "children") {
-        super(baseUrl, path);
-    }
-
     /**
     * Create a new folder or DriveItem in a Drive with a specified parent item or path
     * Currently only Folder or File works
@@ -185,36 +169,20 @@ export class Children extends GraphQueryableCollection {
     }
 }
 
-export class DriveList extends GraphQueryable {
-    constructor(baseUrl: string | GraphQueryable, path = "list") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("list")
+export class DriveList extends GraphQueryable { }
 
-export class Recent extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "recent") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("recent")
+export class Recent extends GraphQueryableInstance { }
 
-export class SharedWithMe extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "sharedWithMe") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("sharedWithMe")
+export class SharedWithMe extends GraphQueryableInstance { }
 
-export class DriveSearch extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "search") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("search")
+export class DriveSearch extends GraphQueryableInstance { }
 
-export class Thumbnails extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "thumbnails") {
-        super(baseUrl, path);
-    }
-
-}
+@defaultPath("thumbnails")
+export class Thumbnails extends GraphQueryableInstance { }
 
 export interface IDriveItemAddResult {
     data: IDriveItem;

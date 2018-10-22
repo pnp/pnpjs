@@ -1,4 +1,4 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Members, Owners } from "./members";
 import { extend, TypedHash, jsS } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
@@ -28,11 +28,8 @@ export enum GroupType {
  * Describes a collection of Field objects
  *
  */
+@defaultPath("groups")
 export class Groups extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "groups") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a group from the collection using the specified id

@@ -1,4 +1,4 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS, TypedHash, extend } from "@pnp/common";
 import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket as IPlannerBucket } from "@microsoft/microsoft-graph-types";
 
@@ -24,11 +24,8 @@ export interface IBucketsMethods {
     add(name: string, planId: string, orderHint?: string): Promise<BucketAddResult>;
 }
 
+@defaultPath("planner")
 export class Planner extends GraphQueryableCollection implements IPlannerMethods {
-
-    constructor(baseUrl: string | GraphQueryable, path = "planner") {
-        super(baseUrl, path);
-    }
 
     // Should Only be able to get by id, or else error occur
     public get plans(): IPlansMethods {
@@ -46,18 +43,11 @@ export class Planner extends GraphQueryableCollection implements IPlannerMethods
     }
 }
 
-export class Plans extends GraphQueryableCollection {
+@defaultPath("plans")
+export class Plans extends GraphQueryableCollection { }
 
-    constructor(baseUrl: string | GraphQueryable, path = "plans") {
-        super(baseUrl, path);
-    }
-}
-
+@defaultPath("plans")
 export class PlansNoGet extends Plans implements IPlansMethods {
-
-    constructor(baseUrl: string | GraphQueryable, path = "plans") {
-        super(baseUrl, path);
-    }
 
     public getById(id: string): Plan {
         return new Plan(this, id);
@@ -126,11 +116,8 @@ export class Plan extends GraphQueryableInstance {
     }
 }
 
-export class Tasks extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path = "tasks") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("tasks")
+export class Tasks extends GraphQueryableCollection { }
 
 export class TasksNoGet extends Tasks implements ITasksMethods {
     public getById(id: string): Task {
@@ -194,11 +181,8 @@ export class Task extends GraphQueryableInstance {
     }
 }
 
-export class Buckets extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path = "buckets") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("buckets")
+export class Buckets extends GraphQueryableCollection { }
 
 export class BucketsNoGet extends Buckets implements IBucketsMethods {
 
@@ -257,11 +241,8 @@ export class Bucket extends GraphQueryableInstance {
     }
 }
 
+@defaultPath("details")
 export class Details extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path = "details") {
-        super(baseUrl, path);
-    }
-
     /**
      * Update the Details of a Task
      * 

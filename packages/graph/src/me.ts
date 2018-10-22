@@ -1,14 +1,11 @@
-import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
+import { GraphQueryableInstance, defaultPath } from "./graphqueryable";
 import { OneNote, OneNoteMethods } from "./onenote";
 import { Contacts, ContactFolders } from "./contacts";
 import { Drive, Drives } from "./onedrive";
 import { Tasks } from "./planner";
 
+@defaultPath("me")
 export class Me extends GraphQueryableInstance {
-
-    constructor(baseUrl: string | GraphQueryable, path = "me") {
-        super(baseUrl, path);
-    }
 
     /**
     * The onenote associated with me
