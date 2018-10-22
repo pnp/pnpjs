@@ -1,31 +1,9 @@
-import {
-    graph,
-} from "./rest";
-
-import {
-    Group,
-    GroupType,
-    GroupAddResult,
-} from "./groups";
-
-import {
-    GraphQueryable,
-    GraphQueryableInstance,
-} from "./graphqueryable";
-
-import {
-    GraphEndpoints,
-    TeamProperties,
-} from "./types";
-
-import {
-    ODataParser,
-    ODataDefaultParser,
-} from "@pnp/odata";
-
-import {
-    FetchOptions, jsS,
-} from "@pnp/common";
+import { graph } from "./rest";
+import { Group, GroupType, GroupAddResult } from "./groups";
+import { GraphQueryableInstance, defaultPath } from "./graphqueryable";
+import { GraphEndpoints, TeamProperties } from "./types";
+import { ODataParser, ODataDefaultParser } from "@pnp/odata";
+import { FetchOptions, jsS } from "@pnp/common";
 
 export class Teams {
 
@@ -51,12 +29,8 @@ export class Teams {
 /**
  * Represents a Microsoft Team
  */
+@defaultPath("team")
 export class Team extends GraphQueryableInstance<TeamProperties> {
-
-    constructor(baseUrl: string | GraphQueryable, path = "team") {
-        super(baseUrl, path);
-    }
-
     /**
      * Updates this team instance's properties
      * 
