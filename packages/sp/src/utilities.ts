@@ -30,12 +30,16 @@ export interface UtilityMethods {
     createEmailBodyForInvitation(pageAddress: string): Promise<string>;
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
     createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
+    containsInvalidFileFolderChars(input: string, onPremise?: boolean): boolean;
+    stripInvalidFileFolderChars(input: string, replacer?: string, onPremise?: boolean): string;
 }
 
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
  */
 export class UtilityMethod extends SharePointQueryable implements UtilityMethods {
+    private static readonly InvalidFileFolderNameCharsOnlineRegex = /["*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
+    private static readonly InvalidFileFolderNameCharsOnPremiseRegex = /["#%*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
 
     /**
      * Creates a new instance of the Utility method class
@@ -186,6 +190,37 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
                 file: new File(odataUrlFrom(r)),
             };
         });
+    }
+
+    /**
+     * Checks if file or folder name contains invalid characters
+     *
+     * @param input File or folder name to check
+     * @param onPremise Set to true for SharePoint On-Premise
+     * @returns True if contains invalid chars, false otherwise
+     */
+    public containsInvalidFileFolderChars(input: string, onPremise = false): boolean {
+        if (onPremise) {
+            return UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex.test(input);
+        } else {
+            return UtilityMethod.InvalidFileFolderNameCharsOnlineRegex.test(input);
+        }
+    }
+
+    /**
+     * Removes invalid characters from file or folder name
+     *
+     * @param input File or folder name
+     * @param replacer Value that will replace invalid characters
+     * @param onPremise Set to true for SharePoint On-Premise
+     * @returns File or folder name with replaced invalid characters
+     */
+    public stripInvalidFileFolderChars(input: string, replacer = "", onPremise = false): string {
+        if (onPremise) {
+            return input.replace(UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex, replacer);
+        } else {
+            return input.replace(UtilityMethod.InvalidFileFolderNameCharsOnlineRegex, replacer);
+        }
     }
 }
 

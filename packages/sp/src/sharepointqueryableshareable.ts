@@ -186,10 +186,13 @@ export class SharePointQueryableShareable<QueryableType = any> extends SharePoin
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     * 
      */
-    public getSharingInformation(request: SharingInformationRequest = null): Promise<SharingInformation> {
+    public getSharingInformation(request: SharingInformationRequest = null, expands?: string[]): Promise<SharingInformation> {
 
-        return this.clone(SharePointQueryableShareable, "getSharingInformation").postCore<SharingInformation>({
+        const q = this.clone(SharePointQueryableShareable, "getSharingInformation");
+        return q.expand.apply(q, expands).postCore({
             body: jsS({
                 request: request,
             }),
@@ -408,10 +411,13 @@ export class SharePointQueryableShareableItem<QueryableType = any> extends Share
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     * 
      */
-    public getSharingInformation(request: SharingInformationRequest = null): Promise<SharingInformation> {
+    public getSharingInformation(request: SharingInformationRequest = null, expands?: string[]): Promise<SharingInformation> {
 
-        return this.clone(SharePointQueryableShareable, null).getSharingInformation(request);
+
+        return this.clone(SharePointQueryableShareable, null).getSharingInformation(request, expands);
     }
 
     /**
@@ -489,14 +495,16 @@ export class FileFolderShared extends SharePointQueryableInstance {
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     * 
      */
-    public getSharingInformation(request: SharingInformationRequest = null): Promise<SharingInformation> {
+    public getSharingInformation(request: SharingInformationRequest = null, expands?: string[]): Promise<SharingInformation> {
 
         const dependency = this.addBatchDependency();
 
         return this.getShareable().then(shareable => {
             dependency();
-            return shareable.getSharingInformation(request);
+            return shareable.getSharingInformation(request, expands);
         });
     }
 

@@ -1,14 +1,10 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { TypedHash, jsS } from "@pnp/common";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 // import { Attachments } from "./attachments";
 
-export class Calendars extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "calendars") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("calendars")
+export class Calendars extends GraphQueryableCollection {}
 
 export class Calendar extends GraphQueryableInstance {
 
@@ -17,11 +13,8 @@ export class Calendar extends GraphQueryableInstance {
     }
 }
 
+@defaultPath("events")
 export class Events extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "events") {
-        super(baseUrl, path);
-    }
 
     public getById(id: string): Event {
         return new Event(this, id);
