@@ -132,6 +132,16 @@ web.lists.getByTitle("MyList").fields.addText("MyField5", 100).then(f => {
 
     console.log(f);
 });
+
+// Create a lookup field, and a dependent lookup field
+web.lists.getByTitle("MyList").fields.addLookup("MyLookup", "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", "MyLookupTargetField").then(f => {
+    console.log(f);
+    
+    // Create the dependent lookup field
+    return web.lists.getByTitle("MyList").fields.addDependentLookupField("MyLookup_ID", f.Id, "ID");
+}).then(fDep => {
+    console.log(fDep);
+});
 ```
 
 ## Update a Field

@@ -1,12 +1,9 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS, TypedHash, extend } from "@pnp/common";
 import { Contact as IContact, ContactFolder as IContactFolder, EmailAddress } from "@microsoft/microsoft-graph-types";
 
+@defaultPath("contacts")
 export class Contacts extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "contacts") {
-        super(baseUrl, path);
-    }
 
     public getById(id: string): Contact {
         return new Contact(this, id);
@@ -62,11 +59,8 @@ export class Contact extends GraphQueryableInstance {
     }
 }
 
+@defaultPath("contactFolders")
 export class ContactFolders extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "contactFolders") {
-        super(baseUrl, path);
-    }
 
     public getById(id: string): ContactFolder {
         return new ContactFolder(this, id);
@@ -131,10 +125,8 @@ export class ContactFolder extends GraphQueryableInstance {
     }
 }
 
+@defaultPath("childFolders")
 export class ChildFolders extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path = "childFolders") {
-        super(baseUrl, path);
-    }
 
     public getById(id: string): ContactFolder {
         return new ContactFolder(this, id);
