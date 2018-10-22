@@ -69,6 +69,7 @@ describe("WebQueryableInterface", () => {
                 return expect(sp.web.stronglyTyped().get().then(web => {
                     // use 'typeof web' to check if the TS type has more properties than we selected at compile time
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -88,6 +89,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().select("Title", "Url", "WelcomePage").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -106,6 +108,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().select("AllowAutomaticASPXPageIndexing", "SaveSiteAsTemplateEnabled").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -123,6 +126,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().select("CurrentUser").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -196,6 +200,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().expand("CurrentUser").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -232,6 +237,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().expand("CurrentUser").select("Title").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
@@ -255,6 +261,7 @@ describe("WebQueryableInterface", () => {
                 };
                 return expect(sp.web.stronglyTyped().expand("CurrentUser").select("CurrentUser/Id").get().then(web => {
                     checkProps<typeof web>(expected);
+                    checkProps<typeof expected>(web);
                     extend(expected, web, false, prop => hOP(expected, prop));
                     return web;
                 })).to.eventually.deep.equal(expected);
