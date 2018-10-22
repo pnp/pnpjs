@@ -1,12 +1,9 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Attachment as IAttachment } from "@microsoft/microsoft-graph-types";
 import { jsS } from "@pnp/common";
 
+@defaultPath("attachments")
 export class Attachments extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "attachments") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a member of the group by id

@@ -142,6 +142,28 @@ pnp.sp.utility.createWikiPage({
 });
 ```
 
+## containsInvalidFileFolderChars
+
+Checks if file or folder name contains invalid characters
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const isInvalid = sp.utility.containsInvalidFileFolderChars("Filename?.txt");
+console.log(isInvalid); // true
+```
+
+## stripInvalidFileFolderChars
+
+Removes invalid characters from file or folder name
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const validName = sp.utility.stripInvalidFileFolderChars("Filename?.txt");
+console.log(validName); // Filename.txt
+```
+
 ## Call Other Methods
 
 Even if a method does not have an explicit implementation on the utility api you can still call it using the UtilityMethod class. In this example we will show calling the GetLowerCaseString method, but the technique works for any of the utility methods.

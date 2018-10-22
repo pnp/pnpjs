@@ -1,7 +1,6 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { TypedHash, jsS } from "@pnp/common";
 import { Attachments } from "./attachments";
-
 import { ConversationThread as IConversationThread, Post as IPost, Recipient as IRecipient } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -12,11 +11,8 @@ export interface PostForwardInfo {
     toRecipients: IRecipient[];
 }
 
+@defaultPath("conversations")
 export class Conversations extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "conversations") {
-        super(baseUrl, path);
-    }
 
     /**
      * Create a new conversation by including a thread and a post.
@@ -40,11 +36,8 @@ export class Conversations extends GraphQueryableCollection {
     }
 }
 
+@defaultPath("threads")
 export class Threads extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "threads") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a thread from this collection by id
@@ -69,11 +62,8 @@ export class Threads extends GraphQueryableCollection {
     }
 }
 
+@defaultPath("posts")
 export class Posts extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "posts") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a thread from this collection by id

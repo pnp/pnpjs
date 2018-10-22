@@ -1,10 +1,10 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Members, Owners } from "./members";
 import { extend, TypedHash, jsS } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
-import { Plans } from "./plans";
+import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
 import { GraphEndpoints, TeamProperties } from "./types";
@@ -28,11 +28,8 @@ export enum GroupType {
  * Describes a collection of Field objects
  *
  */
+@defaultPath("groups")
 export class Groups extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "groups") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a group from the collection using the specified id
@@ -109,7 +106,7 @@ export class Group extends GraphQueryableInstance {
      * The collection of plans for this group
      */
     public get plans(): Plans {
-        return new Plans(this);
+        return new Plans(this, "planner/plans");
     }
 
     /**
