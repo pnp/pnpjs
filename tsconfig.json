@@ -32,7 +32,7 @@
         "importHelpers": true,
         "paths": {
             "@pnp/*": [
-                "./build/packages/*"
+                "./packages/*"
             ]
         },
     },
