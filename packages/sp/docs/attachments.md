@@ -141,6 +141,8 @@ item.attachmentFiles.getByName("file2.txt").delete().then(v => {
 
 ## Recycle Attachment
 
+Added in _1.2.4_
+
 Delete the attachment and send it to recycle bin
 
 ```TypeScript
@@ -155,6 +157,8 @@ item.attachmentFiles.getByName("file2.txt").recycle().then(v => {
 ```
 
 ## Recycle Multiple Attachments
+
+Added in _1.2.4_
 
 Delete multiple attachments and send them to recycle bin
 ```TypeScript
