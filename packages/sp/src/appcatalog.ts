@@ -52,9 +52,11 @@ export class App extends SharePointQueryableInstance {
     /**
      * This method deploys an app on the app catalog.  It must be called in the context
      * of the tenant app catalog web or it will fail.
+     * 
+     * @param skipFeatureDeployment Deploy the app to the entire tenant
      */
-    public deploy(): Promise<void> {
-        return this.clone(App, "Deploy").postCore();
+    public deploy(skipFeatureDeployment = false): Promise<void> {
+        return this.clone(App, `Deploy(${skipFeatureDeployment})`).postCore();
     }
 
     /**
