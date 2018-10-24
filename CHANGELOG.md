@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Added 'createDefaultAssociatedGroups' to Web class ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/291)]
 - @pnp/sp: Added utility methods to check and strip invalid characters in file/folder url ([@phawrylak](https://github.com/phawrylak)) [[PR](https://github.com/pnp/pnpjs/pull/276)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/sp/docs/sp-utilities-utility.md#containsinvalidfilefolderchars)]
 - @pnp/graph: Added expanded support for OneDrive and associated operations ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/284)]
+- @pnp/sp: Added skipFeatureDeployment option to app deploy ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/303)]
+- @pnp/sp-taxonomy: Added getDescription method to Term [[PR](https://github.com/pnp/pnpjs/pull/301)]
 
 ### Changed
 
