@@ -120,6 +120,19 @@ const term: ITerm = <from one of the above methods>;
 const term2: ITerm & ITermData = await term.get();
 ```
 
+### getDescription
+
+Sets the description
+
+```TypeScript
+import { ITerm } from "@pnp/sp-taxonomy";
+
+const term: ITerm = <from one of the above methods>;
+
+// load term instance merged with data
+const description = await term.getDescription(1031);
+```
+
 ### setDescription
 
 Sets the description

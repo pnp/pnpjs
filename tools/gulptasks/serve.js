@@ -18,15 +18,14 @@ const gulp = require("gulp"),
     pkg = require(path.join(projectRoot, "package.json")),
     log = require("fancy-log"),
     colors = require("ansi-colors"),
-    getSubDirNames = require("../node-utils/getSubDirectoryNames");
+    getSubDirNames = require("../node-utils/getSubDirectoryNames"),
+    config = require(path.resolve("./debug/serve/webpack.config.js"));
+
 
 gulp.task("serve", (done) => {
 
     // check to see if you used a flag to serve a single package
     const args = cmdLine({});
-    let entry = "./debug/serve/main.ts";
-    let configFileName = "tsconfig.json";
-    let library = "pnp";
 
     if (args.hasOwnProperty("packages") && args.packages.length > 0) {
 
@@ -37,74 +36,21 @@ gulp.task("serve", (done) => {
         log(`Serving package: ${args.packages[0]}`);
 
         // update the entry point to be the package that was requested
-        entry = `./packages/${args.packages[0]}/index.ts`;
+        config.entry = `./packages/${args.packages[0]}/index.ts`;
 
         // update to use the config file for build of a specific package
         configFileName = "tsconfig.es5.json";
 
         // update the library to match what would be generated
         if (args.packages[0].toLowerCase() === "pnpjs") {
-            library = "$pnp";
+            library = "pnp";
         } else {
             library = `pnp.${args.packages[0]}`;
         }
     }
 
-    // our webpack config
-    const config = {
-        mode: "development",
-        cache: true,
-        entry: entry,
-        output: {
-            path: path.join(__dirname, "dist"),
-            publicPath: "/assets/",
-            filename: "pnp.js",
-            libraryTarget: "umd",
-            library: library,
-        },
-        devtool: "source-map",
-        resolve: {
-            alias: {},
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.ts$/,
-                    use: [{
-                        loader: "ts-loader",
-                        options: {
-                            compilerOptions: {
-                                rootDir: "../../",
-                                strictNullChecks: false,
-                                types: [
-                                    "sharepoint"
-                                ]
-                            },
-                            configFile: configFileName,
-                        }
-                    },
-                    {
-                        loader: "string-replace-loader",
-                        options: {
-                            search: "$$Version$$",
-                            replace: pkg.version
-                        }
-                    },
-                    ]
-                },
-            ]
-        }
-    };
-
-    const packageDirs = getSubDirNames("./packages");
-
-    // we need to setup the alias values for the local packages for bundling
-    for (let i = 0; i < packageDirs.length; i++) {
-        config.resolve.alias[`@pnp/${packageDirs[i]}`] = path.resolve(`./build/packages/${packageDirs[i]}/es5`);
-    }
-
     const serverSettings = {
-        publicPath: config.output.publicPath,
+        publicPath: "/assets/",
         stats: {
             colors: true
         },
@@ -115,7 +61,7 @@ gulp.task("serve", (done) => {
     new server(webpack(config), serverSettings).listen(8080, "localhost", (err) => {
 
         if (err) {
-            throw new gutil.PluginError("serve", err);
+            return done(new gutil.PluginError("serve", err));
         }
 
         log("File will be served from:", colors.bgBlue(colors.white("https://localhost:8080/assets/pnp.js")));

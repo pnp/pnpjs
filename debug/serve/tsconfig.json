@@ -5,7 +5,8 @@
         "baseUrl": ".",
         "rootDir": "../../",
         "outDir": "../../serve/",
-        "declaration": false,
+        "declaration": true,
+        "declarationMap": true,
         "types": [
             "sharepoint"
         ],
