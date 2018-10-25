@@ -44,7 +44,7 @@ export class AttachmentFiles extends SharePointQueryableCollection {
     /**
      * Adds multiple new attachment to the collection. Not supported for batching.
      *
-     * @param files name The collection of files to add
+     * @param files The collection of files to add
      */
     public addMultiple(files: AttachmentFileInfo[]): Promise<void> {
 
@@ -57,7 +57,7 @@ export class AttachmentFiles extends SharePointQueryableCollection {
     /**
      * Delete multiple attachments from the collection. Not supported for batching.
      *
-     * @param files name The collection of files to delete
+     * @param files The collection of files to delete
      */
     public deleteMultiple(...files: string[]): Promise<void> {
         return files.reduce((chain, file) => chain.then(() => this.getByName(file).delete()), Promise.resolve());
@@ -66,7 +66,7 @@ export class AttachmentFiles extends SharePointQueryableCollection {
     /**
      * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
      *
-     * @param files name The collection of files to be deleted and sent to recycle bin
+     * @param files The collection of files to be deleted and sent to recycle bin
      */
     public recycleMultiple(...files: string[]): Promise<void> {
         return files.reduce((chain, file) => chain.then(() => this.getByName(file).recycle()), Promise.resolve());
