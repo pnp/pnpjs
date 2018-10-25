@@ -46,6 +46,7 @@ export interface ITerm extends IClientSvcQueryable {
     createLabel(name: string, lcid: number, isDefault?: boolean): Promise<ILabelData & ILabel>;
     deprecate(doDeprecate: boolean): Promise<void>;
     get(): Promise<(ITermData & ITerm)>;
+    getDescription(lcid: number): Promise<string>;
     setDescription(description: string, lcid: number): Promise<void>;
     setLocalCustomProperty(name: string, value: string): Promise<void>;
     update(properties: { Name: string }): Promise<ITermData & ITerm>;
@@ -162,6 +163,17 @@ export class Term extends ClientSvcQueryable implements ITerm {
      */
     public get(): Promise<(ITermData & ITerm)> {
         return this.sendGet<ITermData, ITerm>(Term);
+    }
+
+    /**
+     * Gets the appropriate description for a term
+     * 
+     * @param lcid Language code
+     */
+    public getDescription(lcid: number): Promise<string> {
+
+        const params = MethodParams.build().number(lcid);
+        return this.invokeMethodAction<string>("GetDescription", params);
     }
 
     /**

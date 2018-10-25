@@ -145,7 +145,7 @@ export class ObjectPathQueue {
      * @param action 
      */
     public appendActionToLast(action: string): this {
-        this.dirty();
+
         return this.appendAction(this.last, action);
     }
 

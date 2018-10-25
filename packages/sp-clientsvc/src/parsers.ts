@@ -43,11 +43,12 @@ export class ProcessQueryParser<T = any> {
 
         for (let i = 0; i < this.op.actions.length; i++) {
 
+
             const a = this.op.actions[i];
 
             // let's see if the result is null based on the ObjectPath action, if it exists
             // <ObjectPath Id="8" ObjectPathId="7" />
-            if (/^<ObjectPath/i.test(a)) {
+            if (/^<ObjectPath /i.test(a)) {
                 const result = this.getParsedResultById<{ IsNull: boolean }>(json, parseInt(getAttrValueFromString(a, "Id"), 10));
                 if (!result || (result && result.IsNull)) {
                     return Promise.resolve(null);
@@ -56,7 +57,7 @@ export class ProcessQueryParser<T = any> {
 
             // let's see if we have a query result
             // <Query Id="5" ObjectPathId = "3" >
-            if (/^<Query/i.test(a)) {
+            if (/^<Query /i.test(a)) {
                 const result = this.getParsedResultById(json, parseInt(getAttrValueFromString(a, "Id"), 10));
 
                 if (result && hOP(result, "_Child_Items_")) {
@@ -68,6 +69,11 @@ export class ProcessQueryParser<T = any> {
                     // this is an instance result
                     return Promise.resolve(result);
                 }
+            }
+
+            // this is an invokeMethodAction so the last method action corresponds to our result
+            if (i === (this.op.actions.length - 1) && /^<Method /i.test(a)) {
+                return Promise.resolve(this.getParsedResultById(json, parseInt(getAttrValueFromString(a, "Id"), 10)));
             }
         }
 
