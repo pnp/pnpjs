@@ -584,7 +584,11 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
      */
     public createDefaultAssociatedGroups(siteOwner?: string, siteOwner2?: string, groupNameSeed?: string): Promise<void> {
-        return this.clone(Web, `createDefaultAssociatedGroups(userLogin='${siteOwner || ""}',userLogin2='${siteOwner2 || ""}',groupNameSeed='${groupNameSeed || ""}')`).postCore();
+        const q = this.clone(Web, `createDefaultAssociatedGroups(userLogin=@u,userLogin2=@v,groupNameSeed=@s)`);
+        q.query.set("@u", `'${encodeURIComponent(siteOwner || "")}'`);
+        q.query.set("@v", `'${encodeURIComponent(siteOwner2 || "")}'`);
+        q.query.set("@s", `'${encodeURIComponent(groupNameSeed || "")}'`);
+        return q.postCore();
     }
 }
 
