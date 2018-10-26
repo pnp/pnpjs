@@ -6,8 +6,8 @@
         "lib": true,
         "**/node_modules": true,
         "coverage": true,
-        "build": true,
-        "dist": true,
+        "build": false,
+        "dist": false,
         "site": true
     },
     "typescript.validate.enable": true,

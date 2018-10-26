@@ -1,18 +1,17 @@
 /**
  * This webpack configuration file will create all of the bundles for each project.
- * It expects that everything is built prior to bundling.
+ * It expects that everything is built prior to bundling. (gulp build)
  */
-
-
 const path = require("path"),
     getSubDirNames = require("./tools/node-utils/getSubDirectoryNames"),
     publishConfig = require("./pnp-publish");
 
 // static values
-const buildOutputRoot = "./build/packages/";
+// we always bundle the es5 output
+const buildOutputRoot = "./build/packages-es5/";
 
-// get all the packages, but filter nodejs as we don't bundle that as it is never used in the browser
-const packageSources = getSubDirNames("./build/packages").filter(name => name !== "nodejs");
+// get all the packages, but filter nodejs & documentation as we don't bundle that as it is never used in the browser
+const packageSources = getSubDirNames(buildOutputRoot).filter(name => name !== "nodejs" && name !== "documentation");
 const getDistFolder = (name) => path.join(publishConfig.packageRoot, name);
 const libraryNameGen = (name) => name === "pnpjs" ? "pnp" : `pnp.${name}`;
 
@@ -27,12 +26,12 @@ const common = {
 
 // we need to setup the alias values for the local packages for bundling
 for (let i = 0; i < packageSources.length; i++) {
-    common.resolve.alias[`@pnp/${packageSources[i]}`] = path.resolve(buildOutputRoot, packageSources[i], "es5");
+    common.resolve.alias[`@pnp/${packageSources[i]}`] = path.resolve(buildOutputRoot, packageSources[i]);
 }
 
 const bundleTemplate = (name, targetFolder) => Object.assign({}, common, {
     mode: "development",
-    entry: `./build/packages/${name}/es5/index.js`,
+    entry: path.resolve(buildOutputRoot, `${name}/index.js`),
     output: {
         filename: `${name}.es5.umd.bundle.js`,
         library: libraryNameGen(name),
@@ -43,7 +42,7 @@ const bundleTemplate = (name, targetFolder) => Object.assign({}, common, {
 
 const bundleTemplateMin = (name, targetFolder) => Object.assign({}, common, {
     mode: "production",
-    entry: `./build/packages/${name}/es5/index.js`,
+    entry: path.resolve(buildOutputRoot, `${name}/index.js`),
     output: {
         filename: `${name}.es5.umd.bundle.min.js`,
         library: libraryNameGen(name),

@@ -6,6 +6,7 @@
         "rootDir": ".",
         "outDir": "../../build/tools/buildsystem",
         "declaration": true,
+        "declarationMap": true,
         "types": [
             "node"
         ],
@@ -17,6 +18,8 @@
         "moduleResolution": "node"
     },
     "include": [
-        "./index.ts", "../node-utils/getSubDirectorieNames.js"
+        "./index.ts", 
+        "../node-utils/getSubDirectorieNames.js", 
+        "./**/*.ts"
     ]
 }

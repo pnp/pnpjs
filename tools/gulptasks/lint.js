@@ -12,9 +12,13 @@ const gulp = require("gulp"),
     tslint = require("tslint"),
     pump = require("pump");
 
+// const tscPath = path.join("./node_modules/.bin/tsc");
+
 gulp.task("lint", (done) => {
 
-    var program = tslint.Linter.createProgram("./tsconfig.json");
+    return done();
+
+    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
 
     pump([
         gulp.src([

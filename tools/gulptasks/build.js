@@ -24,7 +24,7 @@ const projectRoot = path.resolve(__dirname, "../..");
  */
 gulp.task("bootstrap-buildsystem", (done) => {
 
-    exec(`${tscPath} -b ./tools/buildsystem/tsconfig.json`, {
+    exec(`${tscPath} -b ./tools/buildsystem/tsconfig.json --force`, {
         cwd: path.resolve(__dirname, "../.."),
     }, (error, stdout, stderr) => {
 

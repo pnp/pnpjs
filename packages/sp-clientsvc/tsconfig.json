@@ -1,11 +1,8 @@
 {
-    "extends": "../tsconfig.es5.json",
+    "extends": "../tsconfig.json",
     "compilerOptions": {
         "strictNullChecks": false
     },
-    "types": [
-        "adal"
-    ],
     "include": [
         "./index.ts",
         "./src/**/*.ts",
@@ -14,17 +11,22 @@
         "../logging/index.ts",
         "../logging/src/**/*.ts",
         "../odata/index.ts",
-        "../odata/src/**/*.ts"
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts"
     ],
     "references": [
         {
-            "path": "../common/tsconfig.es5.json"
+            "path": "../common"
         },
         {
-            "path": "../logging/tsconfig.es5.json"
+            "path": "../logging"
         },
         {
-            "path": "../odata/tsconfig.es5.json"
+            "path": "../odata"
+        },
+        {
+            "path": "../sp"
         }
     ]
 }

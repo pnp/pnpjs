@@ -6,18 +6,17 @@ export const Tasks = _Tasks;
 
 // we need to hoist these so they are exported as interfaces at the top level
 export {
-    BuildContext,
     BuildSchema,
     BuildFunction,
-    BuildPackageFunction,
-    BuildInfo,
+    BuildTask,
+    BuildTaskScoped,
 } from "./tasks/build";
 
 export {
-    PackageContext,
-    PackageInfo,
+    PackageFunction,
+    PackageTask,
     PackageSchema,
-    PackageTaskFunction,
+    PackageTaskScoped,
 } from "./tasks/package";
 
 export {

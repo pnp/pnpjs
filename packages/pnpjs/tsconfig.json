@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.es5.json",
+    "extends": "../tsconfig.json",
     "compilerOptions": {
         "types": [
             "sharepoint"
@@ -25,25 +25,25 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.es5.json"
+            "path": "../common"
         },
         {
-            "path": "../logging/tsconfig.es5.json"
+            "path": "../logging"
         },
         {
-            "path": "../odata/tsconfig.es5.json"
+            "path": "../odata"
         },
         {
-            "path": "../sp/tsconfig.es5.json"
+            "path": "../sp"
         },
         {
-            "path": "../graph/tsconfig.es5.json"
+            "path": "../graph"
         },
         {
-            "path": "../config-store/tsconfig.es5.json"
+            "path": "../config-store"
         },
         {
-            "path": "../sp-addinhelpers/tsconfig.es5.json"
+            "path": "../sp-addinhelpers"
         }
     ]
 }

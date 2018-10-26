@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.es5.json",
+    "extends": "../tsconfig.json",
     "include": [
         "./index.ts",
         "./src/**/*.ts",
@@ -10,10 +10,10 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.es5.json"
+            "path": "../common"
         },
         {
-            "path": "../logging/tsconfig.es5.json"
+            "path": "../logging"
         }
     ]
 }
