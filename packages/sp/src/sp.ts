@@ -223,3 +223,20 @@ export {
     GetCatalogResult,
     WebEnsureUserResult,
 } from "./webs";
+
+export {
+    SiteScripts,
+    SiteScriptUtilityMethods,
+    SiteScriptInfo,
+    SiteScriptUpdateInfo,
+} from "./sitescripts";
+
+export {
+    SiteDesigns,
+    SiteDesignsUtilityMethods,
+    SiteDesignCreationInfo,
+    SiteDesignUpdateInfo,
+    SiteDesignInfo,
+    SiteDesignPrincipals,
+} from "./sitedesigns";
+

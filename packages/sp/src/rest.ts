@@ -7,6 +7,8 @@ import { UserProfileQuery } from "./userprofiles";
 import { INavigationService, NavigationService } from "./navigation";
 import { SPBatch } from "./batch";
 import { SocialQuery, SocialMethods } from "./social";
+import { SiteScripts, SiteScriptUtilityMethods } from "./sitescripts";
+import { SiteDesigns, SiteDesignsUtilityMethods } from "./sitedesigns";
 import { UtilityMethod, UtilityMethods } from "./utilities";
 import { SharePointQueryableConstructor, SharePointQueryable } from "./sharepointqueryable";
 import {
@@ -136,6 +138,20 @@ export class SPRest {
      */
     public get utility(): UtilityMethods {
         return this.create(UtilityMethod, "");
+    }
+
+    /**
+     * Access to sitescripts methods
+     */
+    public get siteScripts(): SiteScriptUtilityMethods {
+        return this.create(SiteScripts, "");
+    }
+
+    /**
+     * Access to sitedesigns methods
+     */
+    public get siteDesigns(): SiteDesignsUtilityMethods {
+        return this.create(SiteDesigns, "");
     }
 
     /**
