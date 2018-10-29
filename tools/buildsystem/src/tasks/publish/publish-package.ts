@@ -23,7 +23,7 @@ export function publishPackage(version: string, config: PublishSchema) {
 
             const packagePath = path.resolve(publishRoot, packageFolders[i]);
 
-            log(`${colors.bgBlue(" ")} Publishing ${packagePath}.`);
+            log(`${colors.bgBlue(" ")} Publishing ${packagePath}`);
 
             exec("npm publish --access public",
                 {
@@ -31,7 +31,7 @@ export function publishPackage(version: string, config: PublishSchema) {
                 }, (error, stdout, stderr) => {
 
                     if (error === null) {
-                        log(`${colors.bgGreen(" ")} Published ${packagePath}.`);
+                        log(`${colors.bgGreen(" ")} Published ${packagePath}`);
                         resolve();
                     } else {
 

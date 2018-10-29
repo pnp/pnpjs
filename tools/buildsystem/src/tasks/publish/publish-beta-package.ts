@@ -23,7 +23,7 @@ export function publishBetaPackage(version: string, config: PublishSchema) {
 
             const packagePath = path.resolve(publishRoot, packageFolders[i]);
 
-            log(`${colors.bgBlue(" ")} Publishing BETA ${packagePath}.`);
+            log(`${colors.bgBlue(" ")} Publishing BETA ${packagePath}`);
 
             exec("npm publish --tag beta --access public",
                 {
@@ -31,7 +31,7 @@ export function publishBetaPackage(version: string, config: PublishSchema) {
                 }, (error, stdout, stderr) => {
 
                     if (error === null) {
-                        log(`${colors.bgGreen(" ")} Published BETA ${packagePath}.`);
+                        log(`${colors.bgGreen(" ")} Published BETA ${packagePath}`);
                         resolve();
                     } else {
 
