@@ -146,7 +146,7 @@ Now that we have created an add-in registration we need to tell SharePoint what 
 
 ```XML
   <AppPermissionRequests AllowAppOnlyPolicy="true">
-    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
     <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="FullControl" />
     <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
   </AppPermissionRequests>

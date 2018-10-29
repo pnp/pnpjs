@@ -157,3 +157,20 @@ await page.enableComments();
 // disable comments
 await page.disableComments();
 ```
+
+## Like/Unlike Client-side page, get like information about page
+
+Added in _1.2.4_
+
+You can like or unlike a modern page. You can also get information about the likes (i.e like Count and which users liked the page)
+
+```TypeScript
+// Like a Client-side page (Added in _1.2.4_)
+await page.like();
+
+// Unlike a Client-side page
+await page.unlike();
+
+// Get liked by information such as like count and user's who liked the page
+await page.getLikedByInformation();
+```
