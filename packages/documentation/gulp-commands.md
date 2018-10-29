@@ -50,16 +50,9 @@ gulp build --p sp --nc
 ## clean
 
 The clean command removes all of the generated folders from the project and is generally used automatically before other commands to ensure there is a clean workspace.
-This command does not remove the generated docs folder in case you are using them for reference you don't have to continually generate them.
 
 ```
 gulp clean
-```
-
-To clean the docs use:
-
-```
-gulp clean-docs
 ```
 
 To clean the build folder. This build folder is no longer included in automatic cleaning after the move to use the TypeScript project references feature that compares previous output and doesn't rebuild unchanged files. This command will erase the entire build folder ensuring you can conduct a clean build/test/etc.
@@ -67,26 +60,6 @@ To clean the build folder. This build folder is no longer included in automatic 
 ```
 gulp clean-build
 ```
-
-## docs
-
-Documentation is built using MkDocs. You will need to latest version of Python (tested on version 3.7.1) and pip. If you're on the Windows operating system, make sure you have added Python to your [Path environment variable](https://docs.python.org/3/using/windows.html).
-
-When executing the pip module on Windows you can prefix it with **python -m**. 
-For example: 
-```
-python -m pip install mkdocs-material
-```
-
-- [Install MkDocs](https://www.mkdocs.org/#installation)
-    - pip install mkdocs
-- Install the Material theme
-    - pip install mkdocs-material
-- install the mkdocs-markdownextradata-plugin - this is used for the version variable
-    - pip install mkdocs-markdownextradata-plugin (doesn't work on Python v2.7)
-- Serve it up
-    - mkdocs serve
-    - Open a browser to http://127.0.0.1:8000/
 
 ## lint
 
