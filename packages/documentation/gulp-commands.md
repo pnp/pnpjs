@@ -70,19 +70,23 @@ gulp clean-build
 
 ## docs
 
-The docs command builds the html documentation from the md files located in the docs-src folder and all of the package docs folders. This is the command used to generate
-the [website](https://pnp.github.io/pnpjs/) for each release and can be used locally to have an easily clickable reference. The entire site will be rebuilt each time.
+Documentation is built using MkDocs. You will need to latest version of Python (tested on version 3.7.1) and pip. If you're on the Windows operating system, make sure you have added Python to your [Path environment variable](https://docs.python.org/3/using/windows.html).
 
+When executing the pip module on Windows you can prefix it with **python -m**. 
+For example: 
 ```
-gulp docs
+python -m pip install mkdocs-material
 ```
 
-To aid in creating docs you can also run a command to watch, compile, and serve the docs allowing you to see your edits in real time. This will also enable live reload in
-the browser.
-
-```
-gulp docs-serve
-```
+- [Install MkDocs](https://www.mkdocs.org/#installation)
+    - pip install mkdocs
+- Install the Material theme
+    - pip install mkdocs-material
+- install the mkdocs-markdownextradata-plugin - this is used for the version variable
+    - pip install mkdocs-markdownextradata-plugin (doesn't work on Python v2.7)
+- Serve it up
+    - mkdocs serve
+    - Open a browser to http://127.0.0.1:8000/
 
 ## lint
 
