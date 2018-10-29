@@ -16,8 +16,6 @@ module.exports = {
     packageTasks: [
         tasks.webpack,
         tasks.rollup,
-
-        // banner
     ],
 
     postPackageTasks: [

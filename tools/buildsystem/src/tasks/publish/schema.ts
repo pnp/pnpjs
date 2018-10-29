@@ -1,26 +1,19 @@
-import { PublishContext } from "./context";
+export type PublishFunction = (version: string, config: PublishSchema, packages?: string[]) => Promise<void>;
 
-export type PublishTaskFunction = (ctx: PublishContext) => Promise<void>;
-
-export interface PublishInfo {
-    name: string;
-    publishPipeline?: PublishTaskFunction[];
+export interface PublishTaskScoped {
+    packages: string[];
+    task: PublishFunction;
 }
+
+export type PublishTask = PublishFunction | PublishTaskScoped;
 
 export interface PublishSchema {
 
-    /**
-     * The path to the package root
-     */
     packageRoot: string;
 
-    /**
-     * the list of packages to be built, in order
-     */
-    packages: (string | PublishInfo)[];
+    prePublishTasks: PublishTask[];
 
-    /**
-     * the set of tasks run on each project during a build, in order
-     */
-    publishPipeline: PublishTaskFunction[];
+    publishTasks: PublishTask[];
+
+    postPublishTasks: PublishTask[];
 }

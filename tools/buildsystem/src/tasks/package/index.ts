@@ -1,6 +1,3 @@
-// export * from "./banner";
-// static assets
-
 export * from "./copy-defs";
 export * from "./copy-docs";
 export * from "./copy-static-assets";

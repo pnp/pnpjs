@@ -1,13 +1,13 @@
-// build funcs
 const tasks = require("./build/tools/buildsystem").Tasks.Publish,
     path = require("path");
-    basePublishConfig = require("./pnp-publish");
 
-const defaultPublishBetaPipeline = [
+module.exports = {
 
-    tasks.publishBetaPackage,
-];
+    packageRoot: path.resolve("./dist/packages"),
 
-basePublishConfig.publishPipeline = defaultPublishBetaPipeline;
+    prePublishTasks: [],
 
-module.exports = basePublishConfig;
+    publishTasks: [tasks.publishBetaPackage],
+
+    postPublishTasks: [],
+}

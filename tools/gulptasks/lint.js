@@ -16,9 +16,7 @@ const gulp = require("gulp"),
 
 gulp.task("lint", (done) => {
 
-    return done();
-
-    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
+    const config = tslint.Configuration.loadConfigurationFromPath("./tslint.json");
 
     pump([
         gulp.src([
@@ -27,7 +25,7 @@ gulp.task("lint", (done) => {
             "!**/node_modules/**",
             "!**/*.d.ts"
         ]),
-        gulpTslint({ formatter: "prose", program }),
+        gulpTslint({ configuration: config, formatter: "prose" }),
         gulpTslint.report({ emitError: false }),
     ], (err) => {
 
@@ -44,7 +42,7 @@ gulp.task("lint:tests", (done) => {
     var program = tslint.Linter.createProgram("./test/tsconfig.json");
 
     // we need to load and override the configuration
-    let config = tslint.Configuration.loadConfigurationFromPath("./tslint.json");
+    const config = tslint.Configuration.loadConfigurationFromPath("./tslint.json");
     config.rules.set("no-unused-expression", { ruleSeverity: "off" });
 
     pump([
@@ -56,7 +54,7 @@ gulp.task("lint:tests", (done) => {
         gulpTslint({
             configuration: config,
             formatter: "prose",
-            program: program,
+            program,
         }),
         gulpTslint.report({ emitError: false }),
     ], (err) => {

@@ -3,7 +3,8 @@ const getSubDirNames = require("./tools/node-utils/getSubDirectoryNames"),
     sourcemaps = require("rollup-plugin-sourcemaps"),
     uglify = require("rollup-plugin-uglify"),
     globals = require("rollup-plugin-node-globals"),
-    nodeResolve = require("rollup-plugin-node-resolve");
+    nodeResolve = require("rollup-plugin-node-resolve"),
+    banner = require("./banner");
 
 const packageSources = getSubDirNames("./build/packages/");
 const packageSourcesEs5 = getSubDirNames("./build/packages-es5/");
@@ -16,8 +17,8 @@ const globalPackageRefs = packageSources.reduce((o, c) => {
 }, {});
 
 const sharedPlugins = [
-    sourcemaps(), 
-    globals(), 
+    sourcemaps(),
+    globals(),
     nodeResolve({
         only: ["tslib"],
     }),
@@ -34,6 +35,7 @@ const es2015ConfigGen = (moduleName) => Object.assign({}, {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.js`,
         format: "es",
         sourcemap: true,
+        banner,
     }
 });
 
@@ -48,18 +50,24 @@ const es5ConfigGen = (moduleName) => Object.assign({}, {
         name: libraryNameGen(moduleName),
         sourcemap: true,
         globals: globalPackageRefs,
+        banner,
     },
     {
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.js`,
         format: "es",
         sourcemap: true,
+        banner,
     }]
 });
 
 const es5MinConfigGen = (moduleName) => Object.assign({}, {
 
     input: `./build/packages-es5/${moduleName}/index.js`,
-    plugins: [...sharedPlugins, uglify.uglify()],
+    plugins: [...sharedPlugins, uglify.uglify({
+        output: {
+            comments: (node, comment) => comment.type === "comment2" ? /@license/i.test(comment.value) : false,
+        }
+    })],
     external: externals,
     output: [{
         file: `./dist/packages/${moduleName}/dist/${moduleName}.es5.umd.min.js`,
@@ -67,6 +75,7 @@ const es5MinConfigGen = (moduleName) => Object.assign({}, {
         name: libraryNameGen(moduleName),
         sourcemap: true,
         globals: globalPackageRefs,
+        banner,
     }]
 });
 

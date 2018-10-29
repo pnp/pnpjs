@@ -1,26 +1,42 @@
-import { PublishContext } from "./context";
 import { exec } from "child_process";
+import { PublishSchema } from "./schema";
+import * as path from "path";
+import getSubDirNames from "../../lib/getSubDirectoryNames";
 
 /**
  * Minifies the files created in es5 format into the target dist folder
  * 
  * @param ctx The build context 
  */
-export function publishBetaPackage(ctx: PublishContext) {
+export function publishBetaPackage(version: string, config: PublishSchema) {
 
-    return new Promise((resolve, reject) => {
+    const promises: Promise<void>[] = [];
 
-        exec("npm publish --tag beta --access public",
-            {
-                cwd: ctx.packageFolder,
-            }, (error, stdout, stderr) => {
+    const publishRoot = path.resolve(config.packageRoot);
+    const packageFolders = getSubDirNames(publishRoot);
 
-                if (error === null) {
-                    resolve();
-                } else {
+    for (let i = 0; i < packageFolders.length; i++) {
 
-                    reject(stdout);
-                }
-            });
-    });
+        promises.push(new Promise((resolve, reject) => {
+
+            console.log("Would publish " + path.resolve(publishRoot, packageFolders[i]));
+
+            // exec("npm publish --tag beta --access public",
+            //     {
+            //         cwd: path.resolve(publishRoot, packageFolders[i]),
+            //     }, (error, stdout, stderr) => {
+
+            //         if (error === null) {
+            //             resolve();
+            //         } else {
+
+            //             reject(stdout);
+            //         }
+            //     });
+
+            resolve();
+        }));
+    }
+
+    return Promise.all(promises);
 }

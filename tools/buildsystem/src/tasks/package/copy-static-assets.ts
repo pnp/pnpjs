@@ -17,8 +17,6 @@ export function copyStaticAssets(version: string, config: PackageSchema) {
     const licensePath = path.resolve(projectRoot, "LICENSE");
     const readmePath = path.resolve(projectRoot, "./packages/readme.md");
 
-    const promises: Promise<void>[] = [];
-
     for (let i = 0; i < config.packageTargets.length; i++) {
 
         const packageTarget = config.packageTargets[i];
@@ -36,31 +34,6 @@ export function copyStaticAssets(version: string, config: PackageSchema) {
             fs.createReadStream(licensePath).pipe(fs.createWriteStream(path.join(dest, "LICENSE")));
             fs.createReadStream(readmePath).pipe(fs.createWriteStream(path.join(dest, "readme.md")));
         }
-
-
-        // all static assets (at least right this moment as I write this) are copied to the root of each package's folder in dist
-
-
-
-
-
-
-
-        // promises.push(new Promise((resolve, reject) => {
-
-
-        //     
-
-        //     fs.writeFile(path.resolve(packageTarget.outDir, builtFolders[j], "package.json"), JSON.stringify(pkg, null, 4), (err) => {
-
-        //         if (err) {
-        //             reject(err);
-        //         } else {
-        //             resolve();
-        //         }
-        //     });
-
-        // }));
     }
 
     return Promise.resolve();

@@ -1,19 +1,13 @@
 const tasks = require("./build/tools/buildsystem").Tasks.Publish,
-    path = require("path"),
-    getSubDirNames = require("./tools/node-utils/getSubDirectoryNames");
+    path = require("path");
 
-const defaultPublishPipeline = [
+module.exports = {
 
-    tasks.publishPackage,
-];
+    packageRoot: path.resolve("./dist/packages"),
 
-const config = {
+    prePublishTasks: [],
 
-    packageRoot: path.resolve("./dist/packages/"),
+    publishTasks: [tasks.publishPackage],
 
-    packages: getSubDirNames("./build/packages"),
-
-    publishPipeline: defaultPublishPipeline,
-};
-
-module.exports = config;
+    postPublishTasks: [],
+}

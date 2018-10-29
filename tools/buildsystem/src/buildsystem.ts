@@ -20,8 +20,8 @@ export {
 } from "./tasks/package";
 
 export {
-    PublishContext,
-    PublishInfo,
+    PublishFunction,
     PublishSchema,
-    PublishTaskFunction,
+    PublishTask,
+    PublishTaskScoped,
 } from "./tasks/publish";

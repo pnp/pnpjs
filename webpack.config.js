@@ -4,7 +4,9 @@
  */
 const path = require("path"),
     getSubDirNames = require("./tools/node-utils/getSubDirectoryNames"),
-    publishConfig = require("./pnp-publish");
+    publishConfig = require("./pnp-publish"),
+    banner = require("./banner"),
+    webpack = require("webpack");
 
 // static values
 // we always bundle the es5 output
@@ -22,6 +24,12 @@ const common = {
     resolve: {
         alias: {},
     },
+    plugins: [
+        new webpack.BannerPlugin({
+            banner,
+            raw: true,
+        }),
+      ]
 };
 
 // we need to setup the alias values for the local packages for bundling
