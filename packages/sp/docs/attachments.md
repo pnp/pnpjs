@@ -5,9 +5,9 @@ The ability to attach file to list items allows users to track documents outside
 ## Get attachments
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let item = pnp.sp.web.lists.getByTitle("MyList").items.getById(1);
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 // get all the attachments
 item.attachmentFiles.get().then(v => {
@@ -33,9 +33,9 @@ item.attachmentFiles.select("ServerRelativeUrl").get().then(v => {
 You can add an attachment to a list item using the add method. This method takes either a string, Blob, or ArrayBuffer.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let item = pnp.sp.web.lists.getByTitle("MyList").items.getById(1);
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 item.attachmentFiles.add("file2.txt", "Here is my content").then(v => {
 
@@ -48,7 +48,7 @@ item.attachmentFiles.add("file2.txt", "Here is my content").then(v => {
 This method allows you to pass an array of AttachmentFileInfo plain objects that will be added one at a time as attachments. Essentially automating the promise chaining.
 
 ```TypeScript
-const list = pnp.sp.web.lists.getByTitle("MyList");
+const list = sp.web.lists.getByTitle("MyList");
 
 var fileInfos: AttachmentFileInfo[] = [];
 
@@ -71,7 +71,7 @@ list.items.getById(2).attachmentFiles.addMultiple(fileInfos).then(r => {
 ## Delete Multiple
 
 ```TypeScript
-const list = pnp.sp.web.lists.getByTitle("MyList");
+const list = sp.web.lists.getByTitle("MyList");
 
 list.items.getById(2).attachmentFiles.deleteMultiple("1.txt","2.txt").then(r => {
     console.log(r);
@@ -83,9 +83,9 @@ list.items.getById(2).attachmentFiles.deleteMultiple("1.txt","2.txt").then(r => 
 You can read the content of an attachment as a string, Blob, ArrayBuffer, or json using the methods supplied.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let item = pnp.sp.web.lists.getByTitle("MyList").items.getById(1);
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 item.attachmentFiles.getByName("file.txt").getText().then(v => {
 
@@ -116,9 +116,9 @@ item.attachmentFiles.getByName("file.json").getJSON().then(v => {
 You can also update the content of an attachment. This API is limited compared to the full file API - so if you need to upload large files consider using a document library.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let item = pnp.sp.web.lists.getByTitle("MyList").items.getById(1);
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!").then(v => {
 
@@ -129,12 +129,45 @@ item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!").then
 ## Delete Attachment
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let item = pnp.sp.web.lists.getByTitle("MyList").items.getById(1);
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 item.attachmentFiles.getByName("file2.txt").delete().then(v => {
 
     console.log(v);
+});
+```
+
+## Recycle Attachment
+
+Added in _1.2.4_
+
+Delete the attachment and send it to recycle bin
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+
+item.attachmentFiles.getByName("file2.txt").recycle().then(v => {
+
+    console.log(v);
+});
+```
+
+## Recycle Multiple Attachments
+
+Added in _1.2.4_
+
+Delete multiple attachments and send them to recycle bin
+```TypeScript
+
+import { sp } from "@pnp/sp";
+
+const list = sp.web.lists.getByTitle("MyList");
+
+list.items.getById(2).attachmentFiles.recycleMultiple("1.txt","2.txt").then(r => {
+    console.log(r);
 });
 ```
