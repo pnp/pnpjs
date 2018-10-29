@@ -1,18 +1,27 @@
 {
-    "extends": "../../tsconfig.es5.json",
+    "extends": "../tsconfig.es5.json",
     "compilerOptions": {
-        "baseUrl": ".",
-        "rootDir": ".",
-        "outDir": "../../build/packages/pnpjs/es5",
-        "paths": {
-            "@pnp/*": [
-                "../../build/packages/*/es5"
-            ]
-        }
+        "types": [
+            "sharepoint"
+        ]
     },
     "include": [
         "./index.ts",
-        "./src/**/*.ts"
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts",
+        "../graph/index.ts",
+        "../graph/src/**/*.ts",
+        "../config-store/index.ts",
+        "../config-store/src/**/*.ts",
+        "../sp-addinhelpers/index.ts",
+        "../sp-addinhelpers/src/**/*.ts"
     ],
     "references": [
         {

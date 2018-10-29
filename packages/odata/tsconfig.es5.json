@@ -1,15 +1,5 @@
 {
-    "extends": "../../tsconfig.es5.json",
-    "compilerOptions": {
-        "rootDir": ".",
-        "baseUrl": ".",
-        "outDir": "../../build/packages/odata/es5",
-        "paths": {
-            "@pnp/*": [
-                "../../build/packages/*/es5"
-            ]
-        },
-    },
+    "extends": "../tsconfig.es5.json",
     "include": [
         "./index.ts",
         "./src/**/*.ts"

@@ -12,8 +12,6 @@ const gulp = require("gulp"),
 
 gulp.task("travis:lint", (done) => {
 
-    var program = tslint.Linter.createProgram("./packages/tsconfig.json");
-
     pump([
         gulp.src([
             "./packages/**/*.ts",
@@ -21,7 +19,7 @@ gulp.task("travis:lint", (done) => {
             "!**/node_modules/**",
             "!**/*.d.ts"
         ]),
-        gulpTslint({ formatter: "prose", program }),
+        gulpTslint({ formatter: "prose" }),
         gulpTslint.report({ emitError: true }),
     ], (err) => {
 
@@ -72,7 +70,7 @@ gulp.task("travis:test", ["travis:prereqs", "build:test"], () => {
         });
 });
 
-gulp.task("travis:prereqs"); //, ["clean", "travis:lint", "package"]);
+gulp.task("travis:prereqs", ["travis:lint", "package"]);
 
 // runs when someone executes a PR from a fork
 gulp.task("travis:pull-request", ["travis:prereqs", "travis:test"]);

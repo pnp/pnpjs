@@ -1,15 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "baseUrl": ".",
-        "rootDir": ".",
-        "outDir": "../../build/packages/<%= name %>",
-        "paths": {
-            "@pnp/*": [
-                "../../build/packages/*"
-            ]
-        }
-    },
+    "extends": "../tsconfig.json",
     "include": [
         "./index.ts",
         "./src/**/*.ts"

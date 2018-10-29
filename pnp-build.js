@@ -1,49 +1,24 @@
 const tasks = require("./build/tools/buildsystem").Tasks.Build,
     path = require("path");
 
-const defaultBuildPipeline = [
-    tasks.copyAssets,
-    tasks.copyPackageFile,
-];
-
-const config = {
+module.exports = {
 
     packageRoot: path.resolve("./packages/"),
 
-    packageFile: path.resolve("./tsconfig.json"),
+    exclude: ["documentation"],
 
-    packageFileES5: path.resolve("./tsconfig.es5.json"),
-
-    tasks: [
-        tasks.buildProject,
-        tasks.buildProjectES5,
+    preBuildTasks: [
+        // function OR { packages: [], task: function }
     ],
 
-    packages: [
-        "logging",
-        "common",
-        "odata",
-        "graph",
-        {
-            name: "sp",
-            buildPipeline: defaultBuildPipeline.slice(0).concat([tasks.replaceSPHttpVersion]),
-        },
-        "nodejs",
-        "sp-addinhelpers",
-        "config-store",
-        "pnpjs",
-        "sp-clientsvc",
-        "sp-taxonomy",
+    // these tsconfig files will all be transpiled per the settings in the file
+    buildTargets: [
+        path.resolve("./packages/tsconfig.json"),
+        path.resolve("./packages/tsconfig.es5.json"),
     ],
 
-    assets: [
-        "../../LICENSE",
-        "../readme.md",
-        "rollup.*.config.js",
-        "**/*.md"
+    postBuildTasks: [
+        // this task is scoped to the sp files within the task
+        tasks.replaceSPHttpVersion,
     ],
-
-    buildPipeline: defaultBuildPipeline,
 };
-
-module.exports = config;

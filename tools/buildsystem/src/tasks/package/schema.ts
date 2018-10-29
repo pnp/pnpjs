@@ -1,37 +1,24 @@
-import { PackageContext } from "./context";
+export type PackageFunction = (version: string, config: PackageSchema, packages?: string[]) => Promise<void>;
 
-export type PackageTaskFunction = (ctx: PackageContext) => Promise<void>;
-
-export interface PackageInfo {
-    name: string;
-    packagePipeline?: PackageTaskFunction[];
-    assets?: string[];
+export interface PackageTaskScoped {
+    packages: string[];
+    task: PackageFunction;
 }
+
+export interface PackageTargetMap {
+    packageTarget: string;
+    outDir: string;
+}
+
+export type PackageTask = PackageFunction | PackageTaskScoped;
 
 export interface PackageSchema {
 
-    /**
-     * The directory to which packages will be written
-     */
-    outDir: string;
+    packageTargets: PackageTargetMap[];
 
-    /**
-     * The path to the package root
-     */
-    packageRoot: string;
+    prePackageTasks: PackageTask[];
 
-    /**
-     * the list of packages to be built, in order
-     */
-    packages: (string | PackageInfo)[];
+    packageTasks: PackageTask[];
 
-    /**
-     * List of file paths relative to the packageRoot to be copied
-     */
-    assets: string[];
-
-    /**
-     * the set of tasks run on each project during a build, in order
-     */
-    packagePipeline: PackageTaskFunction[];
+    postPackageTasks: PackageTask[];
 }
