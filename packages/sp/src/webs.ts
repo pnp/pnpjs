@@ -576,11 +576,19 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
-     * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site
+     * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
+     * The target site must have unique permissions and no associated members / owners / visitors groups
      *
+     * @param siteOwner The user login name to be added to the site Owners group. Default is the current user
+     * @param siteOwner2 The second user login name to be added to the site Owners group. Default is empty
+     * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
      */
-    public createDefaultAssociatedGroups(): Promise<void> {
-        return this.clone(Web, `createDefaultAssociatedGroups`).postCore();
+    public createDefaultAssociatedGroups(siteOwner?: string, siteOwner2?: string, groupNameSeed?: string): Promise<void> {
+        const q = this.clone(Web, `createDefaultAssociatedGroups(userLogin=@u,userLogin2=@v,groupNameSeed=@s)`);
+        q.query.set("@u", `'${encodeURIComponent(siteOwner || "")}'`);
+        q.query.set("@v", `'${encodeURIComponent(siteOwner2 || "")}'`);
+        q.query.set("@s", `'${encodeURIComponent(groupNameSeed || "")}'`);
+        return q.postCore();
     }
 }
 
