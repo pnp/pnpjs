@@ -1,7 +1,9 @@
 import { exec } from "child_process";
 import { PublishSchema } from "./schema";
+const colors = require("ansi-colors");
 import * as path from "path";
 import getSubDirNames from "../../lib/getSubDirectoryNames";
+const log = require("fancy-log");
 
 /**
  * Minifies the files created in es5 format into the target dist folder
@@ -19,22 +21,23 @@ export function publishBetaPackage(version: string, config: PublishSchema) {
 
         promises.push(new Promise((resolve, reject) => {
 
-            console.log("Would publish " + path.resolve(publishRoot, packageFolders[i]));
+            const packagePath = path.resolve(publishRoot, packageFolders[i]);
 
-            // exec("npm publish --tag beta --access public",
-            //     {
-            //         cwd: path.resolve(publishRoot, packageFolders[i]),
-            //     }, (error, stdout, stderr) => {
+            log(`${colors.bgBlue(" ")} Publishing BETA ${packagePath}.`);
 
-            //         if (error === null) {
-            //             resolve();
-            //         } else {
+            exec("npm publish --tag beta --access public",
+                {
+                    cwd: path.resolve(publishRoot, packageFolders[i]),
+                }, (error, stdout, stderr) => {
 
-            //             reject(stdout);
-            //         }
-            //     });
+                    if (error === null) {
+                        log(`${colors.bgGreen(" ")} Published BETA ${packagePath}.`);
+                        resolve();
+                    } else {
 
-            resolve();
+                        reject(stdout);
+                    }
+                });
         }));
     }
 
