@@ -60,7 +60,6 @@ export class SPRuntimeConfigImpl {
     public get fetchClientFactory(): () => HttpClientImpl {
 
         const spPart = RuntimeConfig.get("sp");
-        // use a configured factory firt
         if (spPart !== undefined && spPart.fetchClientFactory !== undefined) {
             return spPart.fetchClientFactory;
         } else {
