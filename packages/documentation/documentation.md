@@ -1,4 +1,6 @@
-# Documentation
+# Building the Documentation
+
+Building the documentation locally can help you visualize change you are making to the docs. What you see locally should be what you see online.
 
 ## Building
 Documentation is built using MkDocs. You will need to latest version of Python (tested on version 3.7.1) and pip. If you're on the Windows operating system, make sure you have added Python to your [Path environment variable](https://docs.python.org/3/using/windows.html).

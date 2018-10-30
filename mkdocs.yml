@@ -7,9 +7,9 @@ nav:
   - General:
     - 'Getting Started': 'documentation/getting-started.md'
     - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
-    - 'Documentation': 'documentation/documentation.md'
     - 'Gulp Commands': 'documentation/gulp-commands.md'
     - Debugging: 'documentation/debugging.md'
+    - 'Building Docs': 'documentation/documentation.md'
     - Deployment: 'documentation/deployment.md'
     - 'Install Beta Versions': 'documentation/beta-versions.md'
     - Polyfills: 'documentation/polyfill.md'
