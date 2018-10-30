@@ -7,7 +7,7 @@ Getting items from a list is one of the basic actions that most applications req
 ### Basic Get
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 // get all the items from a list
 sp.web.lists.getByTitle("My List").items.get().then((items: any[]) => {
@@ -30,7 +30,7 @@ sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).o
 Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 // basic case to get paged items form a list
 let items = await sp.web.lists.getByTitle("BigList").items.getPaged();
@@ -68,7 +68,7 @@ if (items.hasNext) {
 The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 // Using RowLimit. Enables paging
 let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({RowLimit: '5'});
@@ -91,6 +91,7 @@ Using the items collection's getAll method you can get all of the items in a lis
 be used.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // basic usage
 sp.web.lists.getByTitle("BigList").items.getAll().then((allItems: any[]) => {
 
@@ -125,6 +126,8 @@ sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'
 When working with lookup fields you need to use the expand operator along with select to get the related fields from the lookup column. This works for both the items collection and item instances.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((items: any[]) => {
     console.log(items);
 });
@@ -186,6 +189,8 @@ sp.web.lists.getByTitle("My List").items.add({
 You can also set the content type id when you create an item as shown in the example below:
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
     Title: "Test 1",
     ContentTypeId: "0x01030058FD86C279252341AB303852303E4DAF"
@@ -199,6 +204,8 @@ There are two types of user fields, those that allow a single value and those th
 Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an object with a "results" property and an array. Examples for both are shown below.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 sp.web.lists.getByTitle("PeopleFields").items.add({
     Title: Util.getGUID(),
     User1Id: 9, // allows a single user
@@ -213,6 +220,8 @@ sp.web.lists.getByTitle("PeopleFields").items.add({
 If you want to update or add user field values when using **validateUpdateListItem** you need to use the form shown below. You can specify multiple values in the array.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 const result = await sp.web.lists.getByTitle("UserFieldList").items.getById(1).validateUpdateListItem([{
     FieldName: "UserField",
     FieldValue: JSON.stringify([{ "Key": "i:0#.f|membership|person@tenant.com" }]),
@@ -233,6 +242,8 @@ What is said for User Fields is, in general, relevant to Lookup Fields:
 - Numeric Ids for lookups' items should be passed as values
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 sp.web.lists.getByTitle("LookupFields").items.add({
     Title: Util.getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
@@ -245,7 +256,7 @@ sp.web.lists.getByTitle("LookupFields").items.add({
 ### Add Multiple Items
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 let list = sp.web.lists.getByTitle("rapidadd");
 
@@ -270,7 +281,7 @@ list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 The update method is very similar to the add method in that it takes a plain object representing the fields to update. The property names are the internal names of the fields. If you aren't sure you can always do a get request for an item in the list and see the field names that come back - you would use these same names to update the item.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 let list = sp.web.lists.getByTitle("MyList");
 
@@ -285,13 +296,13 @@ list.items.getById(1).update({
 ### Getting and updating a collection using filter
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 // you are getting back a collection here
 sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get().then((items: any[]) => {
     // see if we got something
     if (items.length > 0) {
-        pnp.sp.web.lists.getByTitle("MyList").items.getById(items[0].Id).update({
+        sp.web.lists.getByTitle("MyList").items.getById(items[0].Id).update({
             Title: "Updated Title",
         }).then(result => {
             // here you will have updated the item
@@ -306,7 +317,7 @@ sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get(
 This approach avoids multiple calls for the same list's entity type name.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 let list = sp.web.lists.getByTitle("rapidupdate");
 
@@ -332,7 +343,7 @@ list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 let list = sp.web.lists.getByTitle("MyList");
 
@@ -347,6 +358,8 @@ Field's `EntityPropertyName` value should be used.
 The easiest way to get know EntityPropertyName is to use the following snippet:
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 sp.web.lists
   .getByTitle('[Lists_Title]')
   .fields
