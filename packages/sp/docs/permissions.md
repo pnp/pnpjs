@@ -9,7 +9,10 @@ Permissions in SharePoint are assigned to the set of securable objects which inc
 This gets a collection of all the role assignments on a given securable. The property returns a RoleAssignments collection which supports the OData collection operators.
 
 ```TypeScript
-pnp.sp.web.roleAssignments.get().then(roles => {
+import { sp } from "@pnp/sp";
+import { Logger } from "@pnp/logging";
+
+sp.web.roleAssignments.get().then(roles => {
 
     Logger.writeJSON(roles);
 });
@@ -20,7 +23,10 @@ pnp.sp.web.roleAssignments.get().then(roles => {
 This method can be used to find the securable parent up the hierarchy that has unique permissions. If everything inherits permissions this will be the Site. If a sub web has unique permissions it will be the web, and so on.
 
 ```TypeScript
-pnp.sp.web.firstUniqueAncestorSecurableObject.get().then(obj => {
+import { sp } from "@pnp/sp";
+import { Logger } from "@pnp/logging";
+
+sp.web.firstUniqueAncestorSecurableObject.get().then(obj => {
 
     Logger.writeJSON(obj);
 });
@@ -31,12 +37,15 @@ pnp.sp.web.firstUniqueAncestorSecurableObject.get().then(obj => {
 This method returns the BasePermissions for a given user or the current user. This value contains the High and Low values for a user on the securable you have queried.
 
 ```TypeScript
-pnp.sp.web.getUserEffectivePermissions("i:0#.f|membership|user@site.com").then(perms => {
+import { sp } from "@pnp/sp";
+import { Logger } from "@pnp/logging";
+
+sp.web.getUserEffectivePermissions("i:0#.f|membership|user@site.com").then(perms => {
 
     Logger.writeJSON(perms);
 });
 
-pnp.sp.web.getCurrentUserEffectivePermissions().then(perms => {
+sp.web.getCurrentUserEffectivePermissions().then(perms => {
 
     Logger.writeJSON(perms);
 });
@@ -47,12 +56,14 @@ pnp.sp.web.getCurrentUserEffectivePermissions().then(perms => {
 Because the High and Low values in the BasePermission don't obviously mean anything you can use these methods along with the PermissionKind enumeration to check actual rights on the securable.
 
 ```TypeScript
-pnp.sp.web.userHasPermissions("i:0#.f|membership|user@site.com", PermissionKind.ApproveItems).then(perms => {
+import { sp, PermissionKind } from "@pnp/sp";
+
+sp.web.userHasPermissions("i:0#.f|membership|user@site.com", PermissionKind.ApproveItems).then(perms => {
 
     console.log(perms);
 });
 
-pnp.sp.web.currentUserHasPermissions(PermissionKind.ApproveItems).then(perms => {
+sp.web.currentUserHasPermissions(PermissionKind.ApproveItems).then(perms => {
 
     console.log(perms);
 });
@@ -63,10 +74,11 @@ pnp.sp.web.currentUserHasPermissions(PermissionKind.ApproveItems).then(perms => 
 If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below. 
 
 ```TypeScript
-pnp.sp.web.getCurrentUserEffectivePermissions().then(perms => {
+import { sp, PermissionKind } from "@pnp/sp";
 
-    if (pnp.sp.web.hasPermissions(perms, PermissionKind.AddListItems) && pnp.sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {
+sp.web.getCurrentUserEffectivePermissions().then(perms => {
 
+    if (sp.web.hasPermissions(perms, PermissionKind.AddListItems) && sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {
         // ...
     }
 });

@@ -11,15 +11,17 @@ One of the newer abilities in SharePoint is the ability to share webs, files, or
 Creates a sharing link for the given resource with an optional expiration.
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView).then(result: ShareLinkResponse => {
+import { sp , SharingLinkKind, ShareLinkResponse } from "@pnp/sp";
+import { dateAdd } from "@pnp/common";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView).then(((result: ShareLinkResponse) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView, Util.dateAdd(new Date(), "day", 5)).then(result: ShareLinkResponse => {
-
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)).then((result: ShareLinkResponse) => {
     console.log(result);
 }).catch(e => {
     console.error(e);
@@ -33,42 +35,44 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").g
 Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the loginnames parameter or an array of loginnames. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.
 
 ```TypeScript
-pnp.sp.web.shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
+import { sp , SharingResult, SharingRole } from "@pnp/sp";
+
+sp.web.shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit).then((result: SharingResult) => {
+sp.web.shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit).then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit, true, true).then((result: SharingResult) => {
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit, true, true).then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
+sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").shareWith("i:0#.f|membership|user@site.com").then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit).then((result: SharingResult) => {
+sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").shareWith("i:0#.f|membership|user@site.com", SharingRole.Edit).then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
@@ -83,14 +87,16 @@ pnp.sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").sh
 Allows you to share any shareable object in a web by providing the appropriate parameters. These two methods differ in that shareObject will try and fix up your query based on the supplied parameters where shareObjectRaw will send your supplied json object directly to the server. The later method is provided for the greatest amount of flexibility.
 
 ```TypeScript
-pnp.sp.web.shareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt", "i:0#.f|membership|user@site.com", SharingRole.View).then((result: SharingResult) => {
+import { sp , SharingResult, SharingRole } from "@pnp/sp";
+
+sp.web.shareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt", "i:0#.f|membership|user@site.com", SharingRole.View).then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.shareObjectRaw({
+sp.web.shareObjectRaw({
     url: "https://mysite.sharepoint.com/sites/dev/Docs/test.txt",
     peoplePickerInput: [{ Key: "i:0#.f|membership|user@site.com" }],
     roleValue: "role: 1973741327",
@@ -109,7 +115,9 @@ pnp.sp.web.shareObjectRaw({
 **Applies to: Web**
 
 ```TypeScript
-pnp.sp.web.unshareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt").then((result: SharingResult) => {
+import { sp , SharingResult } from "@pnp/sp";
+
+sp.web.unshareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt").then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
@@ -124,7 +132,9 @@ pnp.sp.web.unshareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt"
 Checks Permissions on the list of Users and returns back role the users have on the Item.
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").checkSharingPermissions([{ alias: "i:0#.f|membership|user@site.com" }]).then((result: SharingEntityPermissions[]) => {
+import { sp , SharingEntityPermission } from "@pnp/sp";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").checkSharingPermissions([{ alias: "i:0#.f|membership|user@site.com" }]).then((result: SharingEntityPermission[]) => {
 
     console.log(result);
 }).catch(e => {
@@ -139,8 +149,9 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").chec
 Get Sharing Information.
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation().then((result: SharingInformation) => {
+import { sp , SharingInformation } from "@pnp/sp";
 
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation().then((result: SharingInformation) => {
     console.log(result);
 }).catch(e => {
     console.error(e);
@@ -154,7 +165,9 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getS
 Gets the sharing settings
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getObjectSharingSettings().then((result: ObjectSharingSettings) => {
+import { sp , ObjectSharingSettings } from "@pnp/sp";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getObjectSharingSettings().then((result: ObjectSharingSettings) => {
 
     console.log(result);
 }).catch(e => {
@@ -169,7 +182,9 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getO
 Unshares a given resource
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshare().then((result: SharingResult) => {
+import { sp , SharingResult } from "@pnp/sp";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshare().then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
@@ -182,7 +197,9 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unsh
 **Applies to: Item, Folder, File**
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit).then((result: SharingResult) => {
+import { sp , SharingLinkKind, SharingResult } from "@pnp/sp";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit).then((result: SharingResult) => {
 
     console.log(result);
 }).catch(e => {
@@ -195,14 +212,16 @@ pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").dele
 **Applies to: Item, Folder, File**
 
 ```TypeScript
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit).then(_ => {
+import { sp , SharingLinkKind } from "@pnp/sp";
+
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit).then(_ => {
 
     console.log("done");
 }).catch(e => {
     console.error(e);
 });
 
-pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit, "12345").then(_ => {
+sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit, "12345").then(_ => {
 
     console.log("done");
 }).catch(e => {

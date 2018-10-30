@@ -11,21 +11,23 @@ Before you begin provisioning applications it is important to understand the rel
 There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // get the curren't context web's app catalog
-const catalog = pnp.sp.web.getAppCatalog();
+const catalog = sp.web.getAppCatalog();
 
 // you can also chain off the app catalog
 pnp.sp.web.getAppCatalog().get().then(console.log);
 ```
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // you can get the tenant app catalog (or any app catalog) by passing in a url
 
 // get the tenant app catalog
-const tenantCatalog = pnp.sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog");
+const tenantCatalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog");
 
 // get a different app catalog
-const catalog = pnp.sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite");
+const catalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite");
 ```
 
 ```TypeScript

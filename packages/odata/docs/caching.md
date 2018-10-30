@@ -52,10 +52,10 @@ export interface ICachingOptions {
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { Util } from "@pnp/common";
+import { dateAdd } from "@pnp/common";
 
 sp.web.lists.getByTitle("Tasks").items.top(5).orderBy("Modified").usingCaching({
-    expiration: Util.dateAdd(new Date(), "minute", 20),
+    expiration: dateAdd(new Date(), "minute", 20),
     key: "My Key",
     storeName: "local"
 }).get().then(r => {
