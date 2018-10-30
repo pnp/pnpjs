@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Added like/unlike support and likedByInformation for modern pages ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/305)]
 - @pnp/sp: Added support to send list item attachments to recycle bin (soft delete) ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/306)]
 - @pnp/sp: Added support for site designs and site scripts ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/312)]
+- documentation: Added article on [how to build the docs locally](https://github.com/pnp/pnpjs/blob/dev/packages/documentation/documentation.md). ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/315)]
 
 ### Changed
 
