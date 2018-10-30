@@ -70,7 +70,7 @@ sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update({
 ## Delete a View
 
 ```TypeScript
-import { sp, ViewUpdateResult } from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").delete().then(_ => {
 
