@@ -7,6 +7,7 @@ nav:
   - General:
     - 'Getting Started': 'documentation/getting-started.md'
     - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
+    - 'Documentation': 'documentation/documentation.md'
     - 'Gulp Commands': 'documentation/gulp-commands.md'
     - Debugging: 'documentation/debugging.md'
     - Deployment: 'documentation/deployment.md'
@@ -63,6 +64,7 @@ nav:
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
+      - Site Designs: 'sp/docs/sitedesigns.md'
       - Social: 'sp/docs/social.md'
       - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
       - 'Tenant Properties': 'sp/docs/tenant-properties.md'

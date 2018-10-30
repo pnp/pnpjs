@@ -50,38 +50,15 @@ gulp build --p sp --nc
 ## clean
 
 The clean command removes all of the generated folders from the project and is generally used automatically before other commands to ensure there is a clean workspace.
-This command does not remove the generated docs folder in case you are using them for reference you don't have to continually generate them.
 
 ```
 gulp clean
-```
-
-To clean the docs use:
-
-```
-gulp clean-docs
 ```
 
 To clean the build folder. This build folder is no longer included in automatic cleaning after the move to use the TypeScript project references feature that compares previous output and doesn't rebuild unchanged files. This command will erase the entire build folder ensuring you can conduct a clean build/test/etc.
 
 ```
 gulp clean-build
-```
-
-## docs
-
-The docs command builds the html documentation from the md files located in the docs-src folder and all of the package docs folders. This is the command used to generate
-the [website](https://pnp.github.io/pnpjs/) for each release and can be used locally to have an easily clickable reference. The entire site will be rebuilt each time.
-
-```
-gulp docs
-```
-
-To aid in creating docs you can also run a command to watch, compile, and serve the docs allowing you to see your edits in real time. This will also enable live reload in
-the browser.
-
-```
-gulp docs-serve
 ```
 
 ## lint
