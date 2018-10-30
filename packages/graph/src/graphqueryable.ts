@@ -14,7 +14,6 @@ import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
 import { GraphEndpoints } from "./types";
 
-
 export interface GraphQueryableConstructor<T> {
     new(baseUrl: string | GraphQueryable, path?: string): T;
 }

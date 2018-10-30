@@ -198,7 +198,7 @@ export function sanitizeGuid(guid: string): string {
 }
 
 /**
- * Shorthand for oToS
+ * Shorthand for JSON.stringify
  * 
  * @param o Any type of object
  */
@@ -217,7 +217,7 @@ export function hOP(o: any, p: string): boolean {
 }
 
 /**
- * Generates a ~unique hash code for this ObjectPathQueue
+ * Generates a ~unique hash code
  * 
  * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
