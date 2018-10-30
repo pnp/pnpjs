@@ -4,6 +4,12 @@ export interface ISPFXGraphHttpClient {
 
 export interface ISPFXContext {
 
+    aadTokenProviderFactory: {
+        getTokenProvider(): Promise<{
+            getToken(resource: string): Promise<string>;
+        }>;
+    };
+
     graphHttpClient: ISPFXGraphHttpClient;
 
     pageContext: {
