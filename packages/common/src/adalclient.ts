@@ -207,13 +207,17 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
      */
     public fetch(url: string, options: FetchOptions): Promise<Response> {
 
-        // return this.getto
-        this.getToken(getResource(url)).then(token => {
+        return this.getToken(getResource(url)).then(token => {
             this.token = token;
             return super.fetch(url, options);
         });
     }
 
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     * 
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
     public getToken(resource: string): Promise<string> {
 
         return this.context.aadTokenProviderFactory.getTokenProvider().then(provider => {
