@@ -205,9 +205,10 @@ Next, you need to remember there are two types of user fields, those that take a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { getGUID } from "@pnp/common";
 
 sp.web.lists.getByTitle("PeopleFields").items.add({
-    Title: Util.getGUID(),
+    Title: getGUID(),
     User1Id: 9, // allows a single user
     User2Id: { 
         results: [ 16, 45 ] // allows multiple users
@@ -243,9 +244,10 @@ What is said for User Fields is, in general, relevant to Lookup Fields:
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { getGUID } from "@pnp/common";
 
 sp.web.lists.getByTitle("LookupFields").items.add({
-    Title: Util.getGUID(),
+    Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
     MuptiLookupFieldId: { 
         results: [ 1, 56 ]  // allows multiple lookup value
