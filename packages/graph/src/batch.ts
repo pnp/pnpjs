@@ -1,6 +1,6 @@
 import { ODataBatch } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { objectDefinedNotNull, extend, jsS } from "@pnp/common";
+import { extend, jsS, isUrlAbsolute } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
 import { GraphHttpClient } from "./net/graphhttpclient";
 
@@ -21,6 +21,7 @@ interface GraphBatchRequest {
 interface GraphBatchResponseFragment {
     id: string;
     status: number;
+    statusText?: string;
     method: string;
     url: string;
     headers?: string[][] | {
@@ -36,13 +37,18 @@ interface GraphBatchResponse {
 
 export class GraphBatch extends ODataBatch {
 
-    constructor(private batchUrl = "https://graph.microsoft.com/beta/$batch") {
+    constructor(private batchUrl = "https://graph.microsoft.com/v1.0/$batch") {
         super();
     }
 
     protected executeImpl(): Promise<void> {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
+
+        if (this.requests.length < 1) {
+            Logger.write(`Resolving empty batch.`, LogLevel.Info);
+            return Promise.resolve();
+        }
 
         const client = new GraphHttpClient();
 
@@ -61,11 +67,9 @@ export class GraphBatch extends ODataBatch {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-        // let nextLinkFlag = false;
-
         return client.fetch(this.batchUrl, batchOptions)
             .then(r => r.json())
-            .then(this._parseResponse)
+            .then((j) => this._parseResponse(j))
             .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
 
                 Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
@@ -74,29 +78,44 @@ export class GraphBatch extends ODataBatch {
 
                     const request = this.requests[index];
 
-                    if (objectDefinedNotNull(request)) {
+                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
 
-                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
-
-                        return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
-
-                    } else {
-
-                        // do we have a next url? if no this is an error
-                        if (parsedResponse.nextLink) {
-                            throw Error("Could not properly parse responses to match requests in batch.");
-                        }
-
-                        // nextLinkFlag = true;
-                        // keep the chain moving, but don't add anything for this request yet
-                        // here we need to process the next link - so what do we do?
-                        // need to append a .then()
-                        // TODO::
-                        return chain;
-                    }
+                    return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
 
                 }, Promise.resolve());
             });
+    }
+
+    /**
+     * Urls come to the batch absolute, but the processor expects relative
+     * @param url Url to ensure is relative
+     */
+    private makeUrlRelative(url: string): string {
+
+        if (!isUrlAbsolute(url)) {
+            // already not absolute, just give it back
+            return url;
+        }
+
+        let index = url.indexOf(".com/v1.0/");
+
+        if (index < 0) {
+
+            index = url.indexOf(".com/beta/");
+
+            if (index > -1) {
+
+                // beta url
+                return url.substr(index + 10);
+            }
+
+        } else {
+            // v1.0 url
+            return url.substr(index + 9);
+        }
+
+        // no idea
+        return url;
     }
 
     private formatRequests(): GraphBatchRequestFragment[] {
@@ -106,7 +125,7 @@ export class GraphBatch extends ODataBatch {
             let requestFragment: GraphBatchRequestFragment = {
                 id: `${++index}`,
                 method: reqInfo.method,
-                url: reqInfo.url,
+                url: this.makeUrlRelative(reqInfo.url),
             };
 
             let headers = {};
@@ -159,10 +178,7 @@ export class GraphBatch extends ODataBatch {
                     parsedResponses[responseId] = new Response();
                 } else {
 
-                    parsedResponses[responseId] = new Response(null, {
-                        headers: response.headers,
-                        status: response.status,
-                    });
+                    parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
                 }
             }
 
