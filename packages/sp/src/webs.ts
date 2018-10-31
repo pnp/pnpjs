@@ -77,7 +77,7 @@ export class Webs extends SharePointQueryableCollection {
  *
  */
 @defaultPath("webinfos")
-export class WebInfos extends SharePointQueryableCollection {}
+export class WebInfos extends SharePointQueryableCollection { }
 
 /**
  * Describes a web
@@ -589,6 +589,24 @@ export class Web extends SharePointQueryableShareableWeb {
         q.query.set("@v", `'${encodeURIComponent(siteOwner2 || "")}'`);
         q.query.set("@s", `'${encodeURIComponent(groupNameSeed || "")}'`);
         return q.postCore();
+    }
+
+    /**
+     * Gets hub site data for the current web.
+     * 
+     * @param forceRefresh Default value is false. When false, the data is returned from the server's cache. 
+     * When true, the cache is refreshed with the latest updates and then returned. 
+     * Use this if you just made changes and need to see those changes right away.
+     */
+    public hubSiteData(forceRefresh = false): Promise<void> {
+        return this.clone(Web, `hubSiteData(${forceRefresh})`).get();
+    }
+
+    /**
+     * Applies theme updates from the parent hub site collection.
+     */
+    public syncHubSiteTheme(): Promise<void> {
+        return this.clone(Web, `syncHubSiteTheme`).postCore();
     }
 }
 
