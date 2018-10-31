@@ -662,7 +662,7 @@ export interface SearchProperty {
 export interface SearchPropertyValue {
     StrVal?: string;
     BoolVal?: boolean;
-    Intval?: number;
+    IntVal?: number;
     StrArray?: string[];
     QueryPropertyValueTypeIndex: QueryPropertyValueType;
 }
