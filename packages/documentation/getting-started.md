@@ -17,12 +17,12 @@ Next we can import and use the functionality within our application. The below i
 for more details.
 
 ```TypeScript
-import { Util } from "@pnp/common";
+import { getRandomString } from "@pnp/common";
 
 (function() {
 
   // get and log a random string
-  console.log(Util.getRandomString(20));
+  console.log(getRandomString(20));
 
 })()
 ```

@@ -4,51 +4,32 @@ import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket
 
 // Should not be able to use the planner.get()
 export interface IPlannerMethods {
-    plans: IPlansMethods;
-    tasks: ITasksMethods;
-    buckets: IBucketsMethods;
-}
-
-export interface IPlansMethods {
-    getById(id: string): Plan;
-    add(owner: string, title: string): Promise<PlanAddResult>;
-}
-
-export interface ITasksMethods {
-    getById(id: string): Task;
-    add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<TaskAddResult>;
-}
-
-export interface IBucketsMethods {
-    getById(id: string): Bucket;
-    add(name: string, planId: string, orderHint?: string): Promise<BucketAddResult>;
+    plans: Plans;
+    tasks: Tasks;
+    buckets: Buckets;
 }
 
 @defaultPath("planner")
 export class Planner extends GraphQueryableCollection implements IPlannerMethods {
 
     // Should Only be able to get by id, or else error occur
-    public get plans(): IPlansMethods {
-        return new PlansNoGet(this);
+    public get plans(): Plans {
+        return new Plans(this);
     }
 
     // Should Only be able to get by id, or else error occur
-    public get tasks(): ITasksMethods {
-        return new TasksNoGet(this);
+    public get tasks(): Tasks {
+        return new Tasks(this);
     }
 
     // Should Only be able to get by id, or else error occur
-    public get buckets(): IBucketsMethods {
-        return new BucketsNoGet(this);
+    public get buckets(): Buckets {
+        return new Buckets(this);
     }
 }
 
 @defaultPath("plans")
-export class Plans extends GraphQueryableCollection { }
-
-@defaultPath("plans")
-export class PlansNoGet extends Plans implements IPlansMethods {
-
+export class Plans extends GraphQueryableCollection {
     public getById(id: string): Plan {
         return new Plan(this, id);
     }
@@ -117,9 +98,7 @@ export class Plan extends GraphQueryableInstance {
 }
 
 @defaultPath("tasks")
-export class Tasks extends GraphQueryableCollection { }
-
-export class TasksNoGet extends Tasks implements ITasksMethods {
+export class Tasks extends GraphQueryableCollection {
     public getById(id: string): Task {
         return new Task(this, id);
     }
@@ -154,6 +133,7 @@ export class TasksNoGet extends Tasks implements ITasksMethods {
             };
         });
     }
+
 }
 
 export class Task extends GraphQueryableInstance {
@@ -182,10 +162,7 @@ export class Task extends GraphQueryableInstance {
 }
 
 @defaultPath("buckets")
-export class Buckets extends GraphQueryableCollection { }
-
-export class BucketsNoGet extends Buckets implements IBucketsMethods {
-
+export class Buckets extends GraphQueryableCollection {
     /**
      * Create a new Bucket.
      * 
@@ -214,6 +191,7 @@ export class BucketsNoGet extends Buckets implements IBucketsMethods {
     public getById(id: string): Bucket {
         return new Bucket(this, id);
     }
+
 }
 
 export class Bucket extends GraphQueryableInstance {

@@ -14,8 +14,9 @@ Example: "!@p1::\sites\dev" or "!@p2::\text.txt"
 ### Example without aliasing
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // still works as expected, no aliasing
-const query = pnp.sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
+const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&$top=3
@@ -29,8 +30,9 @@ query.get().then(r => {
 ### Example with aliasing
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // same query with aliasing
-const query = pnp.sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
+const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
@@ -46,10 +48,11 @@ query.get().then(r => {
 Aliasing is supported with batching as well:
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // same query with aliasing and batching
-const batch = pnp.sp.web.createBatch();
+const batch = sp.web.createBatch();
 
-const query = pnp.sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
+const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
