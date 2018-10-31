@@ -47,6 +47,16 @@ export abstract class Queryable<GetType> {
      */
     protected _cachingOptions: ICachingOptions | null;
 
+    /**
+     * Flag used to indicate if the object from which this was cloned's _usingCaching flag was true
+     */
+    protected _cloneParentWasCaching: boolean;
+
+    /**
+     * The cache options from the clone parent if it was caching
+     */
+    protected _cloneParentCacheOptions: ICachingOptions | null;
+
     constructor() {
         this._query = new Map<string, string>();
         this._options = {};
@@ -54,6 +64,8 @@ export abstract class Queryable<GetType> {
         this._parentUrl = "";
         this._useCaching = false;
         this._cachingOptions = null;
+        this._cloneParentWasCaching = false;
+        this._cloneParentCacheOptions = null;
     }
 
     /**
@@ -124,6 +136,14 @@ export abstract class Queryable<GetType> {
     }
 
     protected getCore<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
+        // Fix for #304 - when we clone objects we in some cases then execute a get request
+        // in these cases the caching settings were getting dropped from the request
+        // this tracks if the object from which this was clones was caching and applies that to an immediate get request
+        // does not affect objects cloned from this as we are using different fields to track the settings so it won't
+        // be triggered
+        if (this._cloneParentWasCaching) {
+            this.usingCaching(this._cloneParentCacheOptions);
+        }
         return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
     }
 
@@ -170,6 +190,23 @@ export abstract class Queryable<GetType> {
         this._parentUrl = parent._url;
         this._url = combine(this._parentUrl, path || "");
         this.configureFrom(parent);
+    }
+
+    /**
+     * Configures a cloned object from this instance
+     * 
+     * @param clone
+     */
+    protected _clone(clone: Queryable<any>, _0: any): any {
+
+        clone.configureFrom(this);
+
+        if (this._useCaching) {
+            clone._cloneParentWasCaching = true;
+            clone._cloneParentCacheOptions = this._cachingOptions;
+        }
+
+        return clone;
     }
 
     /**
@@ -240,23 +277,23 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
     }
 
     protected getCore<T = GetType>(parser: ODataParser<T> = new ODataDefaultParser(), options: FetchOptions = {}): Promise<T> {
-        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return super.getCore<T>(parser, options);
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext<T>("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return super.postCore<T>(options, parser);
     }
 
     protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext<T>("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return super.patchCore<T>(options, parser);
     }
 
     protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext<T>("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return super.deleteCore<T>(options, parser);
     }
 
     protected putCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
-        return this.toRequestContext<T>("PUT", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return super.putCore<T>(options, parser);
     }
 
     /**
@@ -284,5 +321,21 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      */
     protected get batch(): BatchType | null {
         return this.hasBatch ? this._batch : null;
+    }
+
+    /**
+     * Configures a cloned object from this instance
+     * 
+     * @param clone 
+     */
+    protected _clone(clone: ODataQueryable<any, any>, cloneSettings: { includeBatch: boolean}): any {
+
+        clone = super._clone(clone, cloneSettings);
+
+        if (cloneSettings.includeBatch) {
+            clone = clone.inBatch(this._batch);
+        }
+
+        return clone;
     }
 }
