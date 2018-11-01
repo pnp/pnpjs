@@ -17,7 +17,7 @@ graph.setup({
 });
 
 // execute a library request as normal
-graph.v1.groups.get().then(g => {
+graph.groups.get().then(g => {
 
     console.log(JSON.stringify(g, null, 4));
 

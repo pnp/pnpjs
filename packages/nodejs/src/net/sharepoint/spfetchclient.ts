@@ -41,7 +41,6 @@ export class SPFetchClient extends BaseSPFetchClient {
         _fetchClient: HttpClientImpl = new NodeFetchClient()) {
 
         super(siteUrl, _fetchClient);
-
     }
 
     public async fetch(url: string, options: any): Promise<Response> {
@@ -50,7 +49,6 @@ export class SPFetchClient extends BaseSPFetchClient {
 
         options.headers.set("Authorization", `Bearer ${token.access_token}`);
         return super.fetch(url, options);
-
     }
 
     /**
@@ -86,7 +84,6 @@ export class SPFetchClient extends BaseSPFetchClient {
         const tok: AuthToken = await r.json();
         this.token = tok;
         return this.token;
-
     }
 
     public getAuthHostUrl(env: SPOAuthEnv): string {
@@ -119,7 +116,6 @@ export class SPFetchClient extends BaseSPFetchClient {
         const index = data.indexOf("Bearer realm=\"");
         this._realm = data.substring(index + 14, index + 50);
         return this._realm;
-
     }
 
     private async getAuthUrl(realm: string): Promise<string> {
