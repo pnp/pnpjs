@@ -9,7 +9,9 @@ All methods chain off the Web's relatedItems property as shown below:
 Expects the named library to exist within the contextual web.
 
 ```TypeScript
-pnp.sp.web.relatedItems.getRelatedItems("Documents", 1).then((result: RelatedItem[]) => {
+import { sp, RelatedItem } from "@pnp/sp";
+
+sp.web.relatedItems.getRelatedItems("Documents", 1).then((result: RelatedItem[]) => {
 
     console.log(result);
 });
@@ -20,7 +22,9 @@ pnp.sp.web.relatedItems.getRelatedItems("Documents", 1).then((result: RelatedIte
 Expects the named library to exist within the contextual web.
 
 ```TypeScript
-pnp.sp.web.relatedItems.getPageOneRelatedItems("Documents", 1).then((result: RelatedItem[]) => {
+import { sp, RelatedItem } from "@pnp/sp";
+
+sp.web.relatedItems.getPageOneRelatedItems("Documents", 1).then((result: RelatedItem[]) => {
 
     console.log(result);
 });
@@ -28,12 +32,14 @@ pnp.sp.web.relatedItems.getPageOneRelatedItems("Documents", 1).then((result: Rel
 ## addSingleLink
 
 ```TypeScript
-pnp.sp.web.relatedItems.addSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev").then(_ => {
+import { sp } from "@pnp/sp";
+
+sp.web.relatedItems.addSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev").then(_ => {
 
     // ... return is void
 });
 
-pnp.sp.web.relatedItems.addSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev", true).then(_ => {
+sp.web.relatedItems.addSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev", true).then(_ => {
 
     // ... return is void
 });
@@ -44,13 +50,14 @@ pnp.sp.web.relatedItems.addSingleLink("RelatedItemsList1", 2, "https://site.shar
 Adds a related item link from an item specified by list name and item id, to an item specified by url
 
 ```TypeScript
-pnp.sp.web.relatedItems.addSingleLinkToUrl("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt").then(_ => {
+import { sp } from "@pnp/sp";
+
+sp.web.relatedItems.addSingleLinkToUrl("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt").then(_ => {
 
     // ... return is void
 });
 
-pnp.sp.web.relatedItems.addSingleLinkToUrl("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", true).then(_ => {
-
+sp.web.relatedItems.addSingleLinkToUrl("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", true).then(_ => {
     // ... return is void
 });
 ```
@@ -60,12 +67,13 @@ pnp.sp.web.relatedItems.addSingleLinkToUrl("RelatedItemsList1", 2, "https://site
 Adds a related item link from an item specified by url, to an item specified by list name and item id
 
 ```TypeScript
-pnp.sp.web.relatedItems.addSingleLinkFromUrl("https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", "RelatedItemsList1", 2).then(_ => {
+import { sp } from "@pnp/sp";
 
+sp.web.relatedItems.addSingleLinkFromUrl("https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", "RelatedItemsList1", 2).then(_ => {
     // ... return is void
 });
 
-pnp.sp.web.relatedItems.addSingleLinkFromUrl("https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", "RelatedItemsList1", 2, true).then(_ => {
+sp.web.relatedItems.addSingleLinkFromUrl("https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt", "RelatedItemsList1", 2, true).then(_ => {
 
     // ... return is void
 });
@@ -74,12 +82,14 @@ pnp.sp.web.relatedItems.addSingleLinkFromUrl("https://site.sharepoint.com/sites/
 ## deleteSingleLink
 
 ```TypeScript
-pnp.sp.web.relatedItems.deleteSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev").then(_ => {
+import { sp } from "@pnp/sp";
+
+sp.web.relatedItems.deleteSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev").then(_ => {
 
     // ... return is void
 });
 
-pnp.sp.web.relatedItems.deleteSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev", true).then(_ => {
+sp.web.relatedItems.deleteSingleLink("RelatedItemsList1", 2, "https://site.sharepoint.com/sites/dev/subsite", "RelatedItemsList2", 1, "https://site.sharepoint.com/sites/dev", true).then(_ => {
 
     // ... return is void
 });

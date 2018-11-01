@@ -20,11 +20,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Added support to send list item attachments to recycle bin (soft delete) ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/306)]
 - @pnp/sp: Added support for site designs and site scripts ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/312)]
 - documentation: Added article on [how to build the docs locally](https://github.com/pnp/pnpjs/blob/dev/packages/documentation/documentation.md). ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/315)]
+- @pnp/sp: Added support for Hub site APIs ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/329)]
+- @pnp/graph: Added support to automatically handle the requests/batch limit [[PR](https://github.com/pnp/pnpjs/pull/333)]
+
 
 ### Changed
 
 - @pnp/nodejs: NodeFetchClient updated to handle transient errors ([@kcasamento](https://github.com/kcasamento)) [[PR](https://github.com/pnp/pnpjs/pull/289)]
 - documentation: Update issue AppPermissionRequest XML debugging.md ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/311)]
+- @pnp/common: Updated ADALClient to make use of SPFx 1.6 AADTokenProvider [[PR](https://github.com/pnp/pnpjs/pull/316)]
+
+### Fixed
+
+- @pnp/sp: Fixed search query tag issue ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/326)]
+- @pnp/sp: Fixed typo in SearchPropertyValue interface (Intval -> IntVal) ([@luismanez](https://github.com/luismanez)) [[PR](https://github.com/pnp/pnpjs/pull/328)]
+- @pnp/odata: Fixed caching settings loss during clone  [[PR](https://github.com/pnp/pnpjs/pull/330)]
+- @pnp/graph: Fixed batching which should now work with GA [[PR](https://github.com/pnp/pnpjs/pull/323)]
+- @pnp/graph: Fixed issue with using skip operator in collections [[PR](https://github.com/pnp/pnpjs/pull/333)]
 
 ## 1.2.3 - 2018-10-10
 
