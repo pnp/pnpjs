@@ -1,4 +1,4 @@
-import { ODataBatch } from "@pnp/odata";
+import { ODataBatch, ODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { extend, jsS, isUrlAbsolute } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
@@ -37,60 +37,15 @@ interface GraphBatchResponse {
 
 export class GraphBatch extends ODataBatch {
 
-    constructor(private batchUrl = "https://graph.microsoft.com/v1.0/$batch") {
+    constructor(private batchUrl = "https://graph.microsoft.com/v1.0/$batch", private maxRequests = 20) {
         super();
-    }
-
-    protected executeImpl(): Promise<void> {
-
-        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
-
-        if (this.requests.length < 1) {
-            Logger.write(`Resolving empty batch.`, LogLevel.Info);
-            return Promise.resolve();
-        }
-
-        const client = new GraphHttpClient();
-
-        const batchRequest: GraphBatchRequest = {
-            requests: this.formatRequests(),
-        };
-
-        const batchOptions = {
-            body: jsS(batchRequest),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-        };
-
-        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
-
-        return client.fetch(this.batchUrl, batchOptions)
-            .then(r => r.json())
-            .then((j) => this._parseResponse(j))
-            .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
-
-                Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
-
-                return parsedResponse.responses.reduce((chain, response, index) => {
-
-                    const request = this.requests[index];
-
-                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
-
-                    return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
-
-                }, Promise.resolve());
-            });
     }
 
     /**
      * Urls come to the batch absolute, but the processor expects relative
      * @param url Url to ensure is relative
      */
-    private makeUrlRelative(url: string): string {
+    private static makeUrlRelative(url: string): string {
 
         if (!isUrlAbsolute(url)) {
             // already not absolute, just give it back
@@ -118,9 +73,9 @@ export class GraphBatch extends ODataBatch {
         return url;
     }
 
-    private formatRequests(): GraphBatchRequestFragment[] {
+    private static formatRequests(requests: ODataBatchRequestInfo[]): GraphBatchRequestFragment[] {
 
-        return this.requests.map((reqInfo, index) => {
+        return requests.map((reqInfo, index) => {
 
             let requestFragment: GraphBatchRequestFragment = {
                 id: `${++index}`,
@@ -160,11 +115,11 @@ export class GraphBatch extends ODataBatch {
         });
     }
 
-    private _parseResponse(graphResponse: GraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
+    private static parseResponse(requests: ODataBatchRequestInfo[], graphResponse: GraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
 
         return new Promise((resolve) => {
 
-            const parsedResponses: Response[] = new Array(this.requests.length).fill(null);
+            const parsedResponses: Response[] = new Array(requests.length).fill(null);
 
             for (let i = 0; i < graphResponse.responses.length; ++i) {
 
@@ -188,5 +143,62 @@ export class GraphBatch extends ODataBatch {
             });
         });
     }
-}
 
+    protected executeImpl(): Promise<void> {
+
+        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
+
+        if (this.requests.length < 1) {
+            Logger.write(`Resolving empty batch.`, LogLevel.Info);
+            return Promise.resolve();
+        }
+
+        const client = new GraphHttpClient();
+
+        // create a working copy of our requests
+        const requests = this.requests.slice();
+
+        // this is the root of our promise chain
+        const promise = Promise.resolve();
+
+        while (requests.length > 0) {
+
+            const requestsChunk = requests.splice(0, this.maxRequests);
+
+            const batchRequest: GraphBatchRequest = {
+                requests: GraphBatch.formatRequests(requestsChunk),
+            };
+
+            const batchOptions = {
+                body: jsS(batchRequest),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            };
+
+            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
+
+            client.fetch(this.batchUrl, batchOptions)
+                .then(r => r.json())
+                .then((j) => GraphBatch.parseResponse(requestsChunk, j))
+                .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
+
+                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
+
+                    parsedResponse.responses.reduce((chain, response, index) => {
+
+                        const request = requestsChunk[index];
+
+                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
+
+                        return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
+
+                    }, promise);
+                });
+        }
+
+        return promise;
+    }
+}

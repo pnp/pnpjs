@@ -14,38 +14,20 @@ export function Example(settings: any) {
         },
     });
 
-    const batch = graph.createBatch();
-
-    graph.groups.inBatch(batch).get().then(g => {
+    graph.groups.get().then(g => {
 
         Logger.log({
             data: g,
             level: LogLevel.Info,
-            message: "graph.planner.plans",
+            message: "List of Groups",
         });
+
+        process.exit(0);
 
     }).catch(e => {
 
         // logging results to the Logger
         Logger.error(e);
-    });
-
-    graph.groups.select("mailNickname").inBatch(batch).get().then(g => {
-
-        Logger.log({
-            data: g,
-            level: LogLevel.Info,
-            message: "graph.planner.tasks.",
-        });
-
-    }).catch(e => {
-
-        // logging results to the Logger
-        Logger.error(e);
-    });
-
-    batch.execute().catch(e => {
-        console.log("here");
-        console.error(e);
+        process.exit(1);
     });
 }
