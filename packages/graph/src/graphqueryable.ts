@@ -45,6 +45,30 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
     }
 
     /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select(...selects: string[]): this {
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand(...expands: string[]): this {
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
+    }
+
+    /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
      * @param factory constructor for the new queryable
@@ -152,30 +176,6 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
     }
 
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
-
-    /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
@@ -205,7 +205,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param num Number of items to skip
      */
     public skip(num: number): this {
-        this.query.set("$top", num.toString());
+        this.query.set("$skip", num.toString());
         return this;
     }
 
@@ -241,32 +241,7 @@ export class GraphQueryableSearchableCollection extends GraphQueryableCollection
  * Represents an instance that can be selected
  *
  */
-export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
-
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
-}
+export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> { }
 
 /**
  * Decorator used to specify the default path for Queryable objects
