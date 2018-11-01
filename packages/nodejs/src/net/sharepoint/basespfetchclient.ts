@@ -13,16 +13,12 @@ export class BaseSPFetchClient implements HttpClientImpl {
      * @param siteUrl: string - Root site url to make requests against
      * @param _fetchClient: HttpClientImpl - Overrides the default fetch client
      */
-    constructor(
-        public siteUrl: string,
-        protected _fetchClient: HttpClientImpl,
-    ) {
+    constructor(public siteUrl: string, protected _fetchClient: HttpClientImpl) {
 
         // Here we set the globals for page context info to help when building absolute urls
         global._spPageContextInfo = {
             webAbsoluteUrl: siteUrl,
         };
-
     }
 
     public async fetch(url: string, options?: any): Promise<Response> {
@@ -31,7 +27,5 @@ export class BaseSPFetchClient implements HttpClientImpl {
         const uri = !isUrlAbsolute(url) ? combine(this.siteUrl, url) : url;
 
         return await this._fetchClient.fetch(uri, options || {});
-
     }
-
 }
