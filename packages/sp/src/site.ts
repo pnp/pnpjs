@@ -115,6 +115,31 @@ export class Site extends SharePointQueryableInstance {
             web: Web.fromUrl(d["odata.id"] || d.__metadata.uri),
         }));
     }
+
+    /**
+     * Associates a site collection to a hub site.
+     * 
+     * @param siteId Id of the hub site collection you want to join.
+     * If you want to disassociate the site collection from hub site, then
+     * pass the siteId as 00000000-0000-0000-0000-000000000000
+     */
+    public joinHubSite(siteId: string): Promise<void> {
+        return this.clone(Site, `joinHubSite('${siteId}')`).postCore();
+    }
+
+    /**
+     * Registers the current site collection as hub site collection
+     */
+    public registerHubSite(): Promise<void> {
+        return this.clone(Site, `registerHubSite`).postCore();
+    }
+
+    /**
+     * Unregisters the current site collection as hub site collection.
+     */
+    public unRegisterHubSite(): Promise<void> {
+        return this.clone(Site, `unRegisterHubSite`).postCore();
+    }
 }
 
 /**

@@ -1,41 +1,37 @@
 declare var require: (s: string) => any;
-import { BuildContext } from "./context";
-const pump = require("pump");
-import { src, dest } from "gulp";
-const replace = require("gulp-replace");
+const path = require("path");
+import { BuildSchema } from "./schema";
+import * as replace from "replace-in-file";
+
+interface TSConfig {
+    compilerOptions: {
+        outDir: string;
+    };
+}
 
 /**
  * Replaces the $$Version$$ string in the SharePoint HttpClient
  * 
+ * @param version The version number
  * @param ctx The build context 
  */
-export function replaceSPHttpVersion(ctx: BuildContext) {
+export function replaceSPHttpVersion(version: string, config: BuildSchema) {
 
-    return new Promise((resolve, reject) => {
+    const options = {
+        files: [],
+        from: /\$\$Version\$\$/ig,
+        to: version,
+    };
 
-        const sources = [
-            "./src/net/sphttpclient.js",
-            "./src/batch.js",
-            "./es5/src/net/sphttpclient.js",
-            "./es5/src/batch.js",
-        ];
+    for (let i = 0; i < config.buildTargets.length; i++) {
 
-        pump([
-            src(sources, {
-                base: ".",
-                cwd: ctx.targetFolder,
-            }),
-            replace("$$Version$$", ctx.version),
-            dest(".", {
-                overwrite: true,
-            }),
-        ], (err: (Error | null)) => {
+        // read our outDir from the build target (which will be a tsconfig file)
+        const buildConfig: TSConfig = require(config.buildTargets[i]);
+        const buildRoot = path.resolve(path.dirname(config.buildTargets[i]));
 
-            if (err !== undefined) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
+        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/net/sphttpclient.js"));
+        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/batch.js"));
+    }
+
+    return replace(options);
 }

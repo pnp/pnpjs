@@ -26,7 +26,7 @@ export interface EmailProperties {
 You must define the To, Subject, and Body values - the remaining are optional.
 
 ```TypeScript
-import pnp, { EmailProperties } from "@pnp/sp";
+import { sp, EmailProperties } from "@pnp/sp";
 
 const emailProps: EmailProperties = {
     To: ["user@site.com"],
@@ -35,7 +35,7 @@ const emailProps: EmailProperties = {
     Body: "Here is the body. <b>It supports html</b>",
 };
 
-pnp.sp.utility.sendEmail(emailProps).then(_ => {
+sp.utility.sendEmail(emailProps).then(_ => {
 
     console.log("Email Sent!");
 });
@@ -46,9 +46,9 @@ pnp.sp.utility.sendEmail(emailProps).then(_ => {
 This method returns the current user's email addresses known to SharePoint.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-pnp.sp.utility.getCurrentUserEmailAddresses().then((addressString: string) => {
+sp.utility.getCurrentUserEmailAddresses().then((addressString: string) => {
 
     console.log(addressString);
 });
@@ -59,9 +59,9 @@ pnp.sp.utility.getCurrentUserEmailAddresses().then((addressString: string) => {
 Gets information about a principal that matches the specified Search criteria
 
 ```TypeScript
-import pnp, { PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
+import { sp , PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
 
-pnp.sp.utility.resolvePrincipal("user@site.com",
+sp.utility.resolvePrincipal("user@site.com",
     PrincipalType.User,
     PrincipalSource.All,
     true,
@@ -77,9 +77,9 @@ pnp.sp.utility.resolvePrincipal("user@site.com",
 Gets information about the principals that match the specified Search criteria.
 
 ```TypeScript
-import pnp, { PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
+import { sp , PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
 
-pnp.sp.utility.searchPrincipals("john",
+sp.utility.searchPrincipals("john",
     PrincipalType.User,
     PrincipalSource.All,
     "",
@@ -94,9 +94,9 @@ pnp.sp.utility.searchPrincipals("john",
 Gets the external (outside the firewall) URL to a document or resource in a site.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-pnp.sp.utility.createEmailBodyForInvitation("https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx").then((r: string) => {
+sp.utility.createEmailBodyForInvitation("https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx").then((r: string) => {
 
     console.log(r);
 });
@@ -107,15 +107,15 @@ pnp.sp.utility.createEmailBodyForInvitation("https://contoso.sharepoint.com/site
 Resolves the principals contained within the supplied groups
 
 ```TypeScript
-import pnp, { PrincipalInfo } from "@pnp/sp";
+import { sp , PrincipalInfo } from "@pnp/sp";
 
-pnp.sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"]).then((principals: PrincipalInfo[]) => {
+sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"]).then((principals: PrincipalInfo[]) => {
 
     console.log(principals);
 });
 
 // optionally supply a max results count. Default is 30.
-pnp.sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"], 10).then((principals: PrincipalInfo[]) => {
+sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"], 10).then((principals: PrincipalInfo[]) => {
 
     console.log(principals);
 });
@@ -124,9 +124,9 @@ pnp.sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"], 10).then(
 ## createWikiPage
 
 ```TypeScript
-import pnp, { CreateWikiPageResult } from "@pnp/sp";
+import { sp , CreateWikiPageResult } from "@pnp/sp";
 
-pnp.sp.utility.createWikiPage({
+sp.utility.createWikiPage({
     ServerRelativeUrl: "/sites/dev/SitePages/mynewpage.aspx",
     WikiHtmlContent: "This is my <b>page</b> content. It supports rich html.",
 }).then((result: CreateWikiPageResult) => {
@@ -169,7 +169,7 @@ console.log(validName); // Filename.txt
 Even if a method does not have an explicit implementation on the utility api you can still call it using the UtilityMethod class. In this example we will show calling the GetLowerCaseString method, but the technique works for any of the utility methods.
 
 ```TypeScript
-import pnp, { UtilityMethod } from "@pnp/sp";
+import { UtilityMethod } from "@pnp/sp";
 
 // the first parameter is the web url. You can use an empty string for the current web,
 // or specify it to call other web's. The second parameter is the method name.

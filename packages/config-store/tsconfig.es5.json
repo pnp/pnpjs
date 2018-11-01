@@ -1,18 +1,16 @@
 {
-    "extends": "../../tsconfig.es5.json",
-    "compilerOptions": {
-        "baseUrl": ".",
-        "rootDir": ".",
-        "outDir": "../../build/packages/config-store/es5",
-        "paths": {
-            "@pnp/*": [
-                "../../build/packages/*/es5"
-            ]
-        }
-    },
+    "extends": "../tsconfig.es5.json",
     "include": [
         "./index.ts",
-        "./src/**/*.ts"
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts"
     ],
     "references": [
         {
@@ -20,6 +18,9 @@
         },
         {
             "path": "../logging/tsconfig.es5.json"
+        },
+        {
+            "path": "../odata/tsconfig.es5.json"
         },
         {
             "path": "../sp/tsconfig.es5.json"

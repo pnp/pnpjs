@@ -6,6 +6,7 @@
 //******************************************************************************
 const gulp = require("gulp"),
     path = require("path"),
+    pkg = require("../../package.json"),
     cmdLine = require("./args").processConfigCmdLine;
 
 // give outselves a single reference to the projectRoot
@@ -28,5 +29,5 @@ gulp.task("package", ["bootstrap-buildsystem", "build"], (done) => {
     const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).packager;
     const config = cmdLine(require(path.join(projectRoot, "./pnp-package.js")));
 
-    engine(config).then(done).catch(e => done(e));
+    engine(pkg.version, config).then(done).catch(e => done(e));
 });

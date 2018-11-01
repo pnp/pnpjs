@@ -351,6 +351,13 @@ export class Item extends SharePointQueryableShareableItem {
     }
 
     /**
+     * Get the like by information for a modern site page     
+     */
+    public getLikedByInformation(): Promise<void> {
+        return this.clone(Item, "likedByInformation").expand("likedby").getCore<void>();
+    }
+
+    /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
      * @param candidatelistItemEntityTypeFullName The potential type name

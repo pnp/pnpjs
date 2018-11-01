@@ -42,7 +42,7 @@ export class SharePointQueryableSecurable extends SharePointQueryableInstance {
 
         // remove need to reference Web here, which created a circular build issue
         const w = new SharePointQueryableInstance("_api/web", "currentuser");
-        return w.select("LoginName").get<{ LoginName: string }>().then(user => {
+        return w.configureFrom(this).select("LoginName").get<{ LoginName: string }>().then(user => {
 
             return this.getUserEffectivePermissions(user.LoginName);
         });

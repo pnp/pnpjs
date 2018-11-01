@@ -1,4 +1,11 @@
 {
+  "linterOptions": {
+    "exclude": [
+      "/**/node_modules/**",
+      "/**/*.d.ts",
+      "/**/*.test.ts"
+    ]
+  },
   "rules": {
     "class-name": true,
     "comment-format": [

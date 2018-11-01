@@ -14,7 +14,7 @@ NOTE: the , seperator can be escaped using the \ as escape character as done in 
 * property3,containingcomma
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 // Will return a menu state of the default SiteMapProvider 'SPSiteMapProvider' where the dump starts a the RootNode (within the site) with a depth of 10 levels.
 sp.navigation.getMenuState().then(r => {
@@ -43,7 +43,7 @@ sp.navigation.getMenuState(null, 5, "CurrentNavSiteMapProviderNoEncode").then(r 
 Tries to get a SiteMapNode.Key for a given URL within a site collection. If the SiteMapNode cannot be found an Exception is returned. The method is using SiteMapProvider.FindSiteMapNodeFromKey(string rawUrl) to lookup the SiteMapNode. Depending on the actual implementation of FindSiteMapNodeFromKey the matching can differ for different SiteMapProviders.
 
 ```TypeScript
-import sp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
 sp.navigation.getMenuNodeKey("/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx").then(r => {
 

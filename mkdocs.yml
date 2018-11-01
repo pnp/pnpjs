@@ -9,6 +9,7 @@ nav:
     - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
     - 'Gulp Commands': 'documentation/gulp-commands.md'
     - Debugging: 'documentation/debugging.md'
+    - 'Building Docs': 'documentation/documentation.md'
     - Deployment: 'documentation/deployment.md'
     - 'Install Beta Versions': 'documentation/beta-versions.md'
     - Polyfills: 'documentation/polyfill.md'
@@ -39,6 +40,7 @@ nav:
       - nodejs: 'nodejs/docs/index.md'
       - AdalFetchClient: 'nodejs/docs/adal-fetch-client.md'
       - SPFetchClient: 'nodejs/docs/sp-fetch-client.md'
+      - BearerTokenFetchClient: 'nodejs/docs/bearer-token-fetch-client.md'
     - odata:
       - odata: 'odata/docs/index.md'
       - caching: 'odata/docs/caching.md'
@@ -63,6 +65,7 @@ nav:
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
+      - Site Designs: 'sp/docs/sitedesigns.md'
       - Social: 'sp/docs/social.md'
       - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
       - 'Tenant Properties': 'sp/docs/tenant-properties.md'

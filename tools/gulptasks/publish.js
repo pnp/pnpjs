@@ -8,6 +8,7 @@
 
 const gulp = require("gulp"),
     path = require("path"),
+    pkg = require("../../package.json"),
     cmdLine = require("./args").processConfigCmdLine,
     exec = require("child_process").execSync,
     log = require("fancy-log");
@@ -37,7 +38,7 @@ function doPublish(configFileName) {
     const engine = require(path.join(projectRoot, "./build/tools/buildsystem")).publisher;
     const config = cmdLine(require(path.join(projectRoot, configFileName)));
 
-    return engine(config);
+    return engine(pkg.version, config);
 }
 
 /**

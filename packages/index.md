@@ -11,6 +11,7 @@ These articles provide general guidance for working with the libraries. If you a
 
 * **[Getting Started](documentation/getting-started.md)**
 * [Getting Started Contributing](documentation/getting-started-dev.md)
+* [Documentation](documentation/documentation.md)
 * [Gulp Commands](documentation/gulp-commands.md)
 * [Debugging](documentation/debugging.md)
 * [Deployment](documentation/deployment.md)

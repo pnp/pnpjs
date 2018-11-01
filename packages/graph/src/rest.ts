@@ -9,6 +9,7 @@ import { Me } from "./me";
 import { Teams } from "./teams";
 import { Users } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
+import { GraphBatch } from "./batch";
 
 export class GraphRest extends GraphQueryable {
 
@@ -34,6 +35,10 @@ export class GraphRest extends GraphQueryable {
 
     public get users(): Users {
         return new Users(this);
+    }
+
+    public createBatch(): GraphBatch {
+        return new GraphBatch();
     }
 
     public setup(config: GraphConfiguration) {

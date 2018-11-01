@@ -1,6 +1,7 @@
 declare var require: (path: string) => any;
 
 import { HttpClientImpl } from "@pnp/common";
+import { Logger, LogLevel } from "@pnp/logging";
 const nodeFetch = require("node-fetch").default;
 
 /**
@@ -48,7 +49,7 @@ export class NodeFetchClient implements HttpClientImpl {
                 // Watching for specific error codes.
                 if (["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) > -1) {
 
-                    console.log(`Attempt #${retry.retryCount} - Retrying error code: ${err.code}...`);
+                    Logger.write(`Attempt #${retry.retryCount} - Retrying error code: ${err.code}...`, LogLevel.Verbose);
 
                     // If current amount of retries is less than the max amount,
                     // try again
