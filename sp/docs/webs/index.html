@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1119,6 +1143,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1196,6 +1232,13 @@
         <li class="md-nav__item">
   <a href="#add-a-web" title="Add a Web" class="md-nav__link">
     Add a Web
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-default-associated-groups" title="Create Default Associated Groups" class="md-nav__link">
+    Create Default Associated Groups
   </a>
   
 </li>
@@ -1471,6 +1514,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#create-default-associated-groups" title="Create Default Associated Groups" class="md-nav__link">
+    Create Default Associated Groups
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-a-webs-properties" title="Get A Web's properties" class="md-nav__link">
     Get A Web's properties
   </a>
@@ -1564,6 +1614,20 @@
 
         <span class="c1">// show our title</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h2 id="create-default-associated-groups">Create Default Associated Groups<a class="headerlink" href="#create-default-associated-groups" title="Permanent link">&para;</a></h2>
+<p>If you create a web that doesn't inherit permissions from the parent web, you can create its default associated groups (Members, Owners, Visitors) with the default role assigments (Contribute, Full Control, Read)</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">WebAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">webs</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;subweb1&quot;</span><span class="p">,</span> <span class="s2">&quot;a wiki web&quot;</span><span class="p">,</span> <span class="s2">&quot;WIKI#0&quot;</span><span class="p">,</span> <span class="mi">1031</span><span class="p">,</span> <span class="kc">false</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">w</span>: <span class="kt">WebAddResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="nx">w</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">createDefaultAssociatedGroups</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+        <span class="c1">// ...</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </pre></div>

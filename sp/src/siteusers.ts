@@ -83,10 +83,10 @@ export class SiteUsers extends SharePointQueryableCollection {
 
 
 /**
- * Describes a single user
- *
+ * Base class for a user
+ * 
  */
-export class SiteUser extends SharePointQueryableInstance {
+export class UserBase extends SharePointQueryableInstance {
 
     /**
      * Gets the groups for this user
@@ -95,6 +95,13 @@ export class SiteUser extends SharePointQueryableInstance {
     public get groups() {
         return new SiteGroups(this, "groups");
     }
+}
+
+/**
+ * Describes a single user
+ *
+ */
+export class SiteUser extends UserBase {
 
     /**
     * Updates this user instance with the supplied properties
@@ -114,7 +121,7 @@ export class SiteUser extends SharePointQueryableInstance {
  * Represents the current user
  */
 @defaultPath("currentuser")
-export class CurrentUser extends SharePointQueryableInstance { }
+export class CurrentUser extends UserBase { }
 
 export interface SiteUserProps {
     Email: string;

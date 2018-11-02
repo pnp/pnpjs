@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1185,6 +1209,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1508,7 +1544,10 @@
 <p>Permissions in SharePoint are assigned to the set of securable objects which include Site, Web, List, and List Item. These are the four level to which unique permissions can be assigned. As such @pnp/sp provides a set of methods defined in the QueryableSecurable class to handle these permissions. These examples all use the Web to get the values, however the methods work identically on all securables.</p>
 <h2 id="get-role-assignments">Get Role Assignments<a class="headerlink" href="#get-role-assignments" title="Permanent link">&para;</a></h2>
 <p>This gets a collection of all the role assignments on a given securable. The property returns a RoleAssignments collection which supports the OData collection operators.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">roles</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">roles</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">roles</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1517,7 +1556,10 @@
 
 <h2 id="first-unique-ancestor-securable-object">First Unique Ancestor Securable Object<a class="headerlink" href="#first-unique-ancestor-securable-object" title="Permanent link">&para;</a></h2>
 <p>This method can be used to find the securable parent up the hierarchy that has unique permissions. If everything inherits permissions this will be the Site. If a sub web has unique permissions it will be the web, and so on.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">firstUniqueAncestorSecurableObject</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">obj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">firstUniqueAncestorSecurableObject</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">obj</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1526,12 +1568,15 @@
 
 <h2 id="user-effective-permissions">User Effective Permissions<a class="headerlink" href="#user-effective-permissions" title="Permanent link">&para;</a></h2>
 <p>This method returns the BasePermissions for a given user or the current user. This value contains the High and Low values for a user on the securable you have queried.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getUserEffectivePermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getUserEffectivePermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1540,12 +1585,14 @@
 
 <h2 id="user-has-permissions">User Has Permissions<a class="headerlink" href="#user-has-permissions" title="Permanent link">&para;</a></h2>
 <p>Because the High and Low values in the BasePermission don't obviously mean anything you can use these methods along with the PermissionKind enumeration to check actual rights on the securable.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userHasPermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userHasPermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUserHasPermissions</span><span class="p">(</span><span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUserHasPermissions</span><span class="p">(</span><span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1554,10 +1601,11 @@
 
 <h2 id="has-permissions">Has Permissions<a class="headerlink" href="#has-permissions" title="Permanent link">&para;</a></h2>
 <p>If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below. </p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">AddListItems</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">DeleteVersions</span><span class="p">))</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
+    <span class="k">if</span> <span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">AddListItems</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">DeleteVersions</span><span class="p">))</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 <span class="p">});</span>

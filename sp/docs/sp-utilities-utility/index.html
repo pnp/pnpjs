@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1119,6 +1143,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1222,6 +1258,20 @@
         <li class="md-nav__item">
   <a href="#createwikipage" title="createWikiPage" class="md-nav__link">
     createWikiPage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#containsinvalidfilefolderchars" title="containsInvalidFileFolderChars" class="md-nav__link">
+    containsInvalidFileFolderChars
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stripinvalidfilefolderchars" title="stripInvalidFileFolderChars" class="md-nav__link">
+    stripInvalidFileFolderChars
   </a>
   
 </li>
@@ -1560,6 +1610,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#containsinvalidfilefolderchars" title="containsInvalidFileFolderChars" class="md-nav__link">
+    containsInvalidFileFolderChars
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stripinvalidfilefolderchars" title="stripInvalidFileFolderChars" class="md-nav__link">
+    stripInvalidFileFolderChars
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#call-other-methods" title="Call Other Methods" class="md-nav__link">
     Call Other Methods
   </a>
@@ -1605,7 +1669,7 @@
 
 <h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
 <p>You must define the To, Subject, and Body values - the remaining are optional.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">EmailProperties</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">EmailProperties</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">emailProps</span>: <span class="kt">EmailProperties</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">To</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">],</span>
@@ -1614,7 +1678,7 @@
     <span class="nx">Body</span><span class="o">:</span> <span class="s2">&quot;Here is the body. &lt;b&gt;It supports html&lt;/b&gt;&quot;</span><span class="p">,</span>
 <span class="p">};</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">sendEmail</span><span class="p">(</span><span class="nx">emailProps</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">sendEmail</span><span class="p">(</span><span class="nx">emailProps</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Email Sent!&quot;</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1623,9 +1687,9 @@
 
 <h2 id="getcurrentuseremailaddresses">getCurrentUserEmailAddresses<a class="headerlink" href="#getcurrentuseremailaddresses" title="Permanent link">&para;</a></h2>
 <p>This method returns the current user's email addresses known to SharePoint.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">getCurrentUserEmailAddresses</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">addressString</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">getCurrentUserEmailAddresses</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">addressString</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">addressString</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1634,9 +1698,9 @@
 
 <h2 id="resolveprincipal">resolvePrincipal<a class="headerlink" href="#resolveprincipal" title="Permanent link">&para;</a></h2>
 <p>Gets information about a principal that matches the specified Search criteria</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">,</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">,</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">resolvePrincipal</span><span class="p">(</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">,</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">resolvePrincipal</span><span class="p">(</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">,</span>
     <span class="nx">PrincipalType</span><span class="p">.</span><span class="nx">User</span><span class="p">,</span>
     <span class="nx">PrincipalSource</span><span class="p">.</span><span class="nx">All</span><span class="p">,</span>
     <span class="kc">true</span><span class="p">,</span>
@@ -1650,9 +1714,9 @@
 
 <h2 id="searchprincipals">searchPrincipals<a class="headerlink" href="#searchprincipals" title="Permanent link">&para;</a></h2>
 <p>Gets information about the principals that match the specified Search criteria.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">,</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">,</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">searchPrincipals</span><span class="p">(</span><span class="s2">&quot;john&quot;</span><span class="p">,</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">searchPrincipals</span><span class="p">(</span><span class="s2">&quot;john&quot;</span><span class="p">,</span>
     <span class="nx">PrincipalType</span><span class="p">.</span><span class="nx">User</span><span class="p">,</span>
     <span class="nx">PrincipalSource</span><span class="p">.</span><span class="nx">All</span><span class="p">,</span>
     <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -1665,9 +1729,9 @@
 
 <h2 id="createemailbodyforinvitation">createEmailBodyForInvitation<a class="headerlink" href="#createemailbodyforinvitation" title="Permanent link">&para;</a></h2>
 <p>Gets the external (outside the firewall) URL to a document or resource in a site.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createEmailBodyForInvitation</span><span class="p">(</span><span class="s2">&quot;https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">r</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createEmailBodyForInvitation</span><span class="p">(</span><span class="s2">&quot;https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">r</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1676,15 +1740,15 @@
 
 <h2 id="expandgroupstoprincipals">expandGroupsToPrincipals<a class="headerlink" href="#expandgroupstoprincipals" title="Permanent link">&para;</a></h2>
 <p>Resolves the principals contained within the supplied groups</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">PrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">principals</span>: <span class="kt">PrincipalInfo</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">principals</span>: <span class="kt">PrincipalInfo</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principals</span><span class="p">);</span>
 <span class="p">});</span>
 
 <span class="c1">// optionally supply a max results count. Default is 30.</span>
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">principals</span>: <span class="kt">PrincipalInfo</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">principals</span>: <span class="kt">PrincipalInfo</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principals</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1692,9 +1756,9 @@
 
 
 <h2 id="createwikipage">createWikiPage<a class="headerlink" href="#createwikipage" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">CreateWikiPageResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">CreateWikiPageResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createWikiPage</span><span class="p">({</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createWikiPage</span><span class="p">({</span>
     <span class="nx">ServerRelativeUrl</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/SitePages/mynewpage.aspx&quot;</span><span class="p">,</span>
     <span class="nx">WikiHtmlContent</span><span class="o">:</span> <span class="s2">&quot;This is my &lt;b&gt;page&lt;/b&gt; content. It supports rich html.&quot;</span><span class="p">,</span>
 <span class="p">}).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">CreateWikiPageResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1711,9 +1775,27 @@
 </pre></div>
 
 
+<h2 id="containsinvalidfilefolderchars">containsInvalidFileFolderChars<a class="headerlink" href="#containsinvalidfilefolderchars" title="Permanent link">&para;</a></h2>
+<p>Checks if file or folder name contains invalid characters</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">isInvalid</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">containsInvalidFileFolderChars</span><span class="p">(</span><span class="s2">&quot;Filename?.txt&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">isInvalid</span><span class="p">);</span> <span class="c1">// true</span>
+</pre></div>
+
+
+<h2 id="stripinvalidfilefolderchars">stripInvalidFileFolderChars<a class="headerlink" href="#stripinvalidfilefolderchars" title="Permanent link">&para;</a></h2>
+<p>Removes invalid characters from file or folder name</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">validName</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">stripInvalidFileFolderChars</span><span class="p">(</span><span class="s2">&quot;Filename?.txt&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">validName</span><span class="p">);</span> <span class="c1">// Filename.txt</span>
+</pre></div>
+
+
 <h2 id="call-other-methods">Call Other Methods<a class="headerlink" href="#call-other-methods" title="Permanent link">&para;</a></h2>
 <p>Even if a method does not have an explicit implementation on the utility api you can still call it using the UtilityMethod class. In this example we will show calling the GetLowerCaseString method, but the technique works for any of the utility methods.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span><span class="p">,</span> <span class="p">{</span> <span class="nx">UtilityMethod</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">UtilityMethod</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="c1">// the first parameter is the web url. You can use an empty string for the current web,</span>
 <span class="c1">// or specify it to call other web&#39;s. The second parameter is the method name.</span>

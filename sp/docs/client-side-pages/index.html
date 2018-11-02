@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1067,6 +1091,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#likeunlike-client-side-page-get-like-information-about-page" title="Like/Unlike Client-side page, get like information about page" class="md-nav__link">
+    Like/Unlike Client-side page, get like information about page
+  </a>
+  
+</li>
+      
       
       
       
@@ -1182,6 +1213,18 @@
   <li class="md-nav__item">
     <a href="../sharing/" title="Sharing" class="md-nav__link">
       Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
     </a>
   </li>
 
@@ -1498,6 +1541,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#likeunlike-client-side-page-get-like-information-about-page" title="Like/Unlike Client-side page, get like information about page" class="md-nav__link">
+    Like/Unlike Client-side page, get like information about page
+  </a>
+  
+</li>
+      
       
       
       
@@ -1656,6 +1706,20 @@ whose's id is "490d7c76-1824-45b2-9de3-676421c997fa" (at least in one farm, your
 
 <span class="c1">// disable comments</span>
 <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">disableComments</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="likeunlike-client-side-page-get-like-information-about-page">Like/Unlike Client-side page, get like information about page<a class="headerlink" href="#likeunlike-client-side-page-get-like-information-about-page" title="Permanent link">&para;</a></h2>
+<p>Added in <em>1.2.4</em></p>
+<p>You can like or unlike a modern page. You can also get information about the likes (i.e like Count and which users liked the page)</p>
+<div class="codehilite"><pre><span></span><span class="c1">// Like a Client-side page (Added in _1.2.4_)</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
+
+<span class="c1">// Unlike a Client-side page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">unlike</span><span class="p">();</span>
+
+<span class="c1">// Get liked by information such as like count and user&#39;s who liked the page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getLikedByInformation</span><span class="p">();</span>
 </pre></div>
                 
                   

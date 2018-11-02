@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -795,6 +807,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
       SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
     </a>
   </li>
 
@@ -1198,6 +1222,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1532,9 +1568,9 @@
                 <h1 id="pnpspfields">@pnp/sp/fields<a class="headerlink" href="#pnpspfields" title="Permanent link">&para;</a></h1>
 <p>Fields allow you to store typed information within a SharePoint list. There are many types of fields and the library seeks to simplify working with the most common types. Fields exist in both site collections (site columns) or lists (list columns) and you can add/modify/delete them at either of these levels.</p>
 <h2 id="get-fields">Get Fields<a class="headerlink" href="#get-fields" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="c1">// get all the fields in a web</span>
 <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1618,9 +1654,9 @@
 
 <h2 id="add-fields">Add Fields<a class="headerlink" href="#add-fields" title="Permanent link">&para;</a></h2>
 <p>You can add fields using the add, createFieldAsXml, or one of the type specific methods. Functionally there is no difference, however one method may be easier given a certain scenario.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="c1">// if you use add you _must_ include the correct FieldTypeKind in the extended properties</span>
 <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;MyField1&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> 
@@ -1655,14 +1691,24 @@
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
 <span class="p">});</span>
+
+<span class="c1">// Create a lookup field, and a dependent lookup field</span>
+<span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLookup</span><span class="p">(</span><span class="s2">&quot;MyLookup&quot;</span><span class="p">,</span> <span class="s2">&quot;xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s2">&quot;MyLookupTargetField&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+    <span class="c1">// Create the dependent lookup field</span>
+    <span class="k">return</span> <span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDependentLookupField</span><span class="p">(</span><span class="s2">&quot;MyLookup_ID&quot;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="s2">&quot;ID&quot;</span><span class="p">);</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">fDep</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fDep</span><span class="p">);</span>
+<span class="p">});</span>
 </pre></div>
 
 
 <h2 id="update-a-field">Update a Field<a class="headerlink" href="#update-a-field" title="Permanent link">&para;</a></h2>
 <p>You can also update the properties of a field in both webs and lists, but not all properties are able to be updated after creation. You can review <a href="https://msdn.microsoft.com/en-us/library/office/dn600182.aspx#bk_FieldProperties">this list</a> for details.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyField4&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> 
     <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;A new description&quot;</span><span class="p">,</span>
@@ -1675,7 +1721,9 @@
 
 <h3 id="update-a-urlpicture-field">Update a Url/Picture Field<a class="headerlink" href="#update-a-urlpicture-field" title="Permanent link">&para;</a></h3>
 <p>When updating a URL or Picture field you need to include the __metadata descriptor as shown below.</p>
-<div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;My_Field_Name&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;__metadata&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;SP.FieldUrlValue&quot;</span> <span class="p">},</span>
         <span class="s2">&quot;Description&quot;</span><span class="o">:</span> <span class="s2">&quot;A Pretty picture&quot;</span><span class="p">,</span>
@@ -1688,9 +1736,9 @@
 
 
 <h2 id="delete-a-field">Delete a Field<a class="headerlink" href="#delete-a-field" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyField4&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
 

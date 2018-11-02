@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -795,6 +807,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
       SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
     </a>
   </li>
 
@@ -1220,6 +1244,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1579,15 +1615,17 @@
 <h2 id="getsharelink">getShareLink<a class="headerlink" href="#getsharelink" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Creates a sharing link for the given resource with an optional expiration.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span>: <span class="kt">ShareLinkResponse</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingLinkKind</span><span class="p">,</span> <span class="nx">ShareLinkResponse</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">).</span><span class="nx">then</span><span class="p">(((</span><span class="nx">result</span>: <span class="kt">ShareLinkResponse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">,</span> <span class="nx">Util</span><span class="p">.</span><span class="nx">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span>: <span class="kt">ShareLinkResponse</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">,</span> <span class="nx">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">ShareLinkResponse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
@@ -1598,42 +1636,44 @@
 <h2 id="sharewith">shareWith<a class="headerlink" href="#sharewith" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File, Web</strong></p>
 <p>Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the loginnames parameter or an array of loginnames. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingResult</span><span class="p">,</span> <span class="nx">SharingRole</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1645,14 +1685,16 @@
 <h2 id="shareobject-shareobjectraw">shareObject &amp; shareObjectRaw<a class="headerlink" href="#shareobject-shareobjectraw" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Web</strong></p>
 <p>Allows you to share any shareable object in a web by providing the appropriate parameters. These two methods differ in that shareObject will try and fix up your query based on the supplied parameters where shareObjectRaw will send your supplied json object directly to the server. The later method is provided for the greatest amount of flexibility.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">View</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingResult</span><span class="p">,</span> <span class="nx">SharingRole</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">View</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObjectRaw</span><span class="p">({</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObjectRaw</span><span class="p">({</span>
     <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">,</span>
     <span class="nx">peoplePickerInput</span><span class="o">:</span> <span class="p">[{</span> <span class="nx">Key</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span> <span class="p">}],</span>
     <span class="nx">roleValue</span><span class="o">:</span> <span class="s2">&quot;role: 1973741327&quot;</span><span class="p">,</span>
@@ -1669,7 +1711,9 @@
 
 <h2 id="unshareobject">unshareObject<a class="headerlink" href="#unshareobject" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Web</strong></p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">unshareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">unshareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1681,7 +1725,9 @@
 <h2 id="checksharingpermissions">checkSharingPermissions<a class="headerlink" href="#checksharingpermissions" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Checks Permissions on the list of Users and returns back role the users have on the Item.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">checkSharingPermissions</span><span class="p">([{</span> <span class="nx">alias</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span> <span class="p">}]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingEntityPermissions</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingEntityPermission</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">checkSharingPermissions</span><span class="p">([{</span> <span class="nx">alias</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span> <span class="p">}]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingEntityPermission</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1693,8 +1739,9 @@
 <h2 id="getsharinginformation">getSharingInformation<a class="headerlink" href="#getsharinginformation" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Get Sharing Information.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getSharingInformation</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingInformation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getSharingInformation</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingInformation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
@@ -1705,7 +1752,9 @@
 <h2 id="getobjectsharingsettings">getObjectSharingSettings<a class="headerlink" href="#getobjectsharingsettings" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Gets the sharing settings</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getObjectSharingSettings</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">ObjectSharingSettings</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">ObjectSharingSettings</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getObjectSharingSettings</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">ObjectSharingSettings</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1717,7 +1766,9 @@
 <h2 id="unshare">unshare<a class="headerlink" href="#unshare" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Unshares a given resource</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshare</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshare</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1728,7 +1779,9 @@
 
 <h2 id="deletesharinglinkbykind">deleteSharingLinkByKind<a class="headerlink" href="#deletesharinglinkbykind" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">deleteSharingLinkByKind</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingLinkKind</span><span class="p">,</span> <span class="nx">SharingResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">deleteSharingLinkByKind</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">SharingResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1739,14 +1792,16 @@
 
 <h2 id="unsharelink">unshareLink<a class="headerlink" href="#unsharelink" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingLinkKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">,</span> <span class="s2">&quot;12345&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">,</span> <span class="s2">&quot;12345&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">);</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1788,13 +1843,13 @@
           </a>
         
         
-          <a href="../social/" title="Social" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../sitedesigns/" title="Site Designs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Social
+                Site Designs
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

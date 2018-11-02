@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -570,8 +582,42 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configure" title="Configure" class="md-nav__link">
-    Configure
+  <a href="#setup-and-use-inside-sharepoint-framework" title="Setup and Use inside SharePoint Framework" class="md-nav__link">
+    Setup and Use inside SharePoint Framework
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-graph-api" title="Calling the graph api" class="md-nav__link">
+    Calling the graph api
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-sharepoint-api" title="Calling the SharePoint API" class="md-nav__link">
+    Calling the SharePoint API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-any-api" title="Calling the any API" class="md-nav__link">
+    Calling the any API
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manually-configure" title="Manually Configure" class="md-nav__link">
+    Manually Configure
   </a>
   
     <nav class="md-nav">
@@ -584,15 +630,15 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#setup-and-use-inside-sharepoint-framework" title="Setup and Use inside SharePoint Framework" class="md-nav__link">
-    Setup and Use inside SharePoint Framework
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nodejs-applications" title="Nodejs Applications" class="md-nav__link">
+    Nodejs Applications
+  </a>
   
 </li>
       
@@ -855,6 +901,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
       SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
     </a>
   </li>
 
@@ -1177,6 +1235,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1442,8 +1512,42 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configure" title="Configure" class="md-nav__link">
-    Configure
+  <a href="#setup-and-use-inside-sharepoint-framework" title="Setup and Use inside SharePoint Framework" class="md-nav__link">
+    Setup and Use inside SharePoint Framework
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-graph-api" title="Calling the graph api" class="md-nav__link">
+    Calling the graph api
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-sharepoint-api" title="Calling the SharePoint API" class="md-nav__link">
+    Calling the SharePoint API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-the-any-api" title="Calling the any API" class="md-nav__link">
+    Calling the any API
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manually-configure" title="Manually Configure" class="md-nav__link">
+    Manually Configure
   </a>
   
     <nav class="md-nav">
@@ -1456,15 +1560,15 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#setup-and-use-inside-sharepoint-framework" title="Setup and Use inside SharePoint Framework" class="md-nav__link">
-    Setup and Use inside SharePoint Framework
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nodejs-applications" title="Nodejs Applications" class="md-nav__link">
+    Nodejs Applications
+  </a>
   
 </li>
       
@@ -1490,12 +1594,124 @@
                 <h1 id="pnpcommonadalclient">@pnp/common/adalclient<a class="headerlink" href="#pnpcommonadalclient" title="Permanent link">&para;</a></h1>
 <p><em>Added in 1.0.4</em></p>
 <p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
-SharePoint Framework's permissions as well.</p>
-<h2 id="configure">Configure<a class="headerlink" href="#configure" title="Permanent link">&para;</a></h2>
-<p>This example shows setting up and using the AdalClient to query Microsoft Graph using information you have setup. You can <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/connect-to-api-secured-with-aad">review this article</a> for more information on setting up and securing any application using AzureAD. The steps below would be the same though you would use the fetch method of the client directly.</p>
+SharePoint Framework's permissions.</p>
+<h2 id="setup-and-use-inside-sharepoint-framework">Setup and Use inside SharePoint Framework<a class="headerlink" href="#setup-and-use-inside-sharepoint-framework" title="Permanent link">&para;</a></h2>
+<p>Using the SharePoint Framework is the prefered way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on yoru behalf. You can also read more about how this process works and the necessary SPFx configurations in the <a href="https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi">SharePoint Framework 1.6 release notes</a>. This method only work for SharePoint Framework &gt;= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.</p>
+<h4 id="calling-the-graph-api">Calling the graph api<a class="headerlink" href="#calling-the-graph-api" title="Permanent link">&para;</a></h4>
+<p>By providing the context in the onInit we can create the adal client from known information.  </p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="kr">public</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
+
+  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// other init code may be present</span>
+    <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kr">public</span> <span class="nx">render</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+
+  <span class="c1">// here we are creating a team with a random name, required Group ReadWrite All permissions</span>
+  <span class="kr">const</span> <span class="nx">teamName</span> <span class="o">=</span> <span class="sb">`ATeam.</span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Hello, I am creating a team named &quot;</span><span class="si">${</span><span class="nx">teamName</span><span class="si">}</span><span class="sb">&quot; for you...`</span><span class="p">;</span>
+
+  <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">teamName</span><span class="p">,</span> <span class="s2">&quot;This is a description&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="s2">&quot;done!&quot;</span><span class="p">;</span>
+
+  <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Oops, I ran into a problem...</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="calling-the-sharepoint-api">Calling the SharePoint API<a class="headerlink" href="#calling-the-sharepoint-api" title="Permanent link">&para;</a></h4>
+<p>This example shows how to use the ADALClient with the @pnp/sp library to call </p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="kr">public</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
+
+  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// other init code may be present</span>
+    <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span>
+      <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">});</span>
+
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kr">public</span> <span class="nx">render</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+
+  <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+  <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="calling-the-any-api">Calling the any API<a class="headerlink" href="#calling-the-any-api" title="Permanent link">&para;</a></h4>
+<p>You can also use the AdalClient to execute AAD authenticated requests to any API which is properly configured to accept the incoming tokens. This approach will only work within SharePoint Framework &gt;= 1.6. Here we call the SharePoint REST API without the sp library as an example.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span><span class="p">,</span> <span class="nx">FetchOptions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ODataDefaultParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="kr">public</span> <span class="nx">render</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+
+  <span class="c1">// create an ADAL Client</span>
+  <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="nx">AdalClient</span><span class="p">.</span><span class="nx">fromSPFxContext</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+
+  <span class="c1">// setup the request options</span>
+  <span class="kr">const</span> <span class="nx">opts</span>: <span class="kt">FetchOptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Accept&quot;</span><span class="o">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">};</span>
+
+  <span class="c1">// execute the request</span>
+  <span class="nx">client</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;https://318studios.sharepoint.com/_api/web&quot;</span><span class="p">,</span> <span class="nx">opts</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// create a parser to convert the response into JSON.</span>
+    <span class="c1">// You can create your own, at this point you have a fetch Response to work with</span>
+    <span class="kr">const</span> <span class="nx">parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ODataDefaultParser</span><span class="p">();</span>
+
+    <span class="nx">parser</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">response</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">json</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span>
+    <span class="p">});</span>
+
+  <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">});</span>
+
+<span class="p">}</span>
+</pre></div>
+
+
+<h2 id="manually-configure">Manually Configure<a class="headerlink" href="#manually-configure" title="Permanent link">&para;</a></h2>
+<p>This example shows setting up and using the AdalClient to make queries using information you have setup. You can <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/connect-to-api-secured-with-aad">review this article</a> for more information on setting up and securing any application using AzureAD.</p>
 <h3 id="setup-and-use-with-microsoft-graph">Setup and Use with Microsoft Graph<a class="headerlink" href="#setup-and-use-with-microsoft-graph" title="Permanent link">&para;</a></h3>
 <p>This sample uses a custom AzureAd app you have created and granted the appropriate permissions.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="c1">// configure the graph client</span>
 <span class="c1">// parameters are:</span>
@@ -1526,45 +1742,8 @@ SharePoint Framework's permissions as well.</p>
 </pre></div>
 
 
-<h3 id="setup-and-use-inside-sharepoint-framework">Setup and Use inside SharePoint Framework<a class="headerlink" href="#setup-and-use-inside-sharepoint-framework" title="Permanent link">&para;</a></h3>
-<p>If you are working inside of SharePoint Framework you have two options to help you setup the client. You can always use the above setup when needed if you prefer.
-For the below setup to work your tenant must have the features <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient">descibed here</a> enabled and
-permissions granted as needed. This means having targeted release activated for everyone, not just select users.</p>
-<p>By providing the context in the onInit we can create the adal client from known information.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
-
-<span class="c1">// ...</span>
-
-<span class="kr">public</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
-
-  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-    <span class="c1">// other init code may be present</span>
-
-    <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
-      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">}</span>
-
-<span class="kr">public</span> <span class="nx">render</span><span class="p">()</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
-
-  <span class="c1">// here we are creating a team with a random name, required Group ReadWrite All permissions</span>
-  <span class="kr">const</span> <span class="nx">teamName</span> <span class="o">=</span> <span class="sb">`ATeam.</span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
-
-  <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Hello, I am creating a team named &quot;</span><span class="si">${</span><span class="nx">teamName</span><span class="si">}</span><span class="sb">&quot; for you...`</span><span class="p">;</span>
-
-  <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">teamName</span><span class="p">,</span> <span class="s2">&quot;This is a description&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="s2">&quot;done!&quot;</span><span class="p">;</span>
-
-  <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-    <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Oops, I ran into a problem...</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">}</span>
-</pre></div>
+<h2 id="nodejs-applications">Nodejs Applications<a class="headerlink" href="#nodejs-applications" title="Permanent link">&para;</a></h2>
+<p><a href="https://pnp.github.io/pnpjs/nodejs/docs/adal-fetch-client/">We have a dedicated node client in @pnp/nodejs.</a></p>
                 
                   
                 

@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -795,6 +807,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
       SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
     </a>
   </li>
 
@@ -1199,6 +1223,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1537,21 +1573,23 @@
 <p>Before you begin provisioning applications it is important to understand the relationship between a local web catalog and the tenant app catalog. Some of the methods described below only work within the context of the tenant app catalog web, such as adding an app to the catalog and the app actions retract, remove, and deploy. You can install, uninstall, and upgrade an app in any web. <a href="https://docs.microsoft.com/en-us/sharepoint/dev/apis/alm-api-for-spfx-add-ins">Read more in the official documentation</a>.</p>
 <h2 id="reference-an-app-catalog">Reference an App Catalog<a class="headerlink" href="#reference-an-app-catalog" title="Permanent link">&para;</a></h2>
 <p>There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.</p>
-<div class="codehilite"><pre><span></span><span class="c1">// get the curren&#39;t context web&#39;s app catalog</span>
-<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">();</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// get the curren&#39;t context web&#39;s app catalog</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">();</span>
 
 <span class="c1">// you can also chain off the app catalog</span>
 <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">().</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">);</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span><span class="c1">// you can get the tenant app catalog (or any app catalog) by passing in a url</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// you can get the tenant app catalog (or any app catalog) by passing in a url</span>
 
 <span class="c1">// get the tenant app catalog</span>
-<span class="kr">const</span> <span class="nx">tenantCatalog</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/appcatalog&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">tenantCatalog</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/appcatalog&quot;</span><span class="p">);</span>
 
 <span class="c1">// get a different app catalog</span>
-<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/anothersite&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/anothersite&quot;</span><span class="p">);</span>
 </pre></div>
 
 

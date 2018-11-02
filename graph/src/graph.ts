@@ -29,3 +29,9 @@ export * from "./teams";
 export * from "./types";
 
 export * from "./onenote";
+
+export * from "./contacts";
+
+export * from "./onedrive";
+
+export * from "./planner";

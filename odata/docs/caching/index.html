@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1178,6 +1202,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1533,10 +1569,10 @@
 
 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Util</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">({</span>
-    <span class="nx">expiration</span>: <span class="kt">Util.dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="nx">expiration</span>: <span class="kt">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
     <span class="nx">key</span><span class="o">:</span> <span class="s2">&quot;My Key&quot;</span><span class="p">,</span>
     <span class="nx">storeName</span><span class="o">:</span> <span class="s2">&quot;local&quot;</span>
 <span class="p">}).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>

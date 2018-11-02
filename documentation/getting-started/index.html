@@ -652,6 +652,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -1049,6 +1061,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1357,6 +1381,18 @@
   <li class="md-nav__item">
     <a href="../../sp/docs/sharing/" title="Sharing" class="md-nav__link">
       Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
     </a>
   </li>
 
@@ -1756,12 +1792,12 @@ environment or project.</p>
 <p><code>npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/graph --save</code></p>
 <p>Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
 for more details.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">Util</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
   <span class="c1">// get and log a random string</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Util</span><span class="p">.</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">20</span><span class="p">));</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">20</span><span class="p">));</span>
 
 <span class="p">})()</span>
 </pre></div>

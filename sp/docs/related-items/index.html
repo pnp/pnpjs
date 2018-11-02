@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1192,6 +1216,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1522,7 +1558,9 @@
 <p>All methods chain off the Web's relatedItems property as shown below:</p>
 <h2 id="getrelateditems">getRelatedItems<a class="headerlink" href="#getrelateditems" title="Permanent link">&para;</a></h2>
 <p>Expects the named library to exist within the contextual web.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">getRelatedItems</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">RelatedItem</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">RelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">getRelatedItems</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">RelatedItem</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1531,7 +1569,9 @@
 
 <h2 id="getpageonerelateditems">getPageOneRelatedItems<a class="headerlink" href="#getpageonerelateditems" title="Permanent link">&para;</a></h2>
 <p>Expects the named library to exist within the contextual web.</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">getPageOneRelatedItems</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">RelatedItem</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">RelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">getPageOneRelatedItems</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span>: <span class="kt">RelatedItem</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1539,12 +1579,14 @@
 
 
 <h2 id="addsinglelink">addSingleLink<a class="headerlink" href="#addsinglelink" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
@@ -1553,13 +1595,14 @@
 
 <h2 id="addsinglelinktourl">addSingleLinkToUrl<a class="headerlink" href="#addsinglelinktourl" title="Permanent link">&para;</a></h2>
 <p>Adds a related item link from an item specified by list name and item id, to an item specified by url</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkToUrl</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkToUrl</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkToUrl</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkToUrl</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
 </pre></div>
@@ -1567,12 +1610,13 @@
 
 <h2 id="addsinglelinkfromurl">addSingleLinkFromUrl<a class="headerlink" href="#addsinglelinkfromurl" title="Permanent link">&para;</a></h2>
 <p>Adds a related item link from an item specified by url, to an item specified by list name and item id</p>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkFromUrl</span><span class="p">(</span><span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkFromUrl</span><span class="p">(</span><span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkFromUrl</span><span class="p">(</span><span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">addSingleLinkFromUrl</span><span class="p">(</span><span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite/Documents/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
@@ -1580,12 +1624,14 @@
 
 
 <h2 id="deletesinglelink">deleteSingleLink<a class="headerlink" href="#deletesinglelink" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">deleteSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">deleteSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>
 
-<span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">deleteSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">relatedItems</span><span class="p">.</span><span class="nx">deleteSingleLink</span><span class="p">(</span><span class="s2">&quot;RelatedItemsList1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev/subsite&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedItemsList2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;https://site.sharepoint.com/sites/dev&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// ... return is void</span>
 <span class="p">});</span>

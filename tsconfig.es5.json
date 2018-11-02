@@ -1,0 +1,43 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "target": "es5",
+        "outDir": "../build/packages-es5"
+    },
+    "include": [],
+    "references": [
+        {
+            "path": "./common/tsconfig.es5.json"
+        },
+        {
+            "path": "./config-store/tsconfig.es5.json"
+        },
+        {
+            "path": "./graph/tsconfig.es5.json"
+        },
+        {
+            "path": "./logging/tsconfig.es5.json"
+        },
+        {
+            "path": "./nodejs/tsconfig.es5.json"
+        },
+        {
+            "path": "./odata/tsconfig.es5.json"
+        },
+        {
+            "path": "./pnpjs/tsconfig.es5.json"
+        },
+        {
+            "path": "./sp/tsconfig.es5.json"
+        },
+        {
+            "path": "./sp-addinhelpers/tsconfig.es5.json"
+        },
+        {
+            "path": "./sp-clientsvc/tsconfig.es5.json"
+        },
+        {
+            "path": "./sp-taxonomy/tsconfig.es5.json"
+        }
+    ]
+}

@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1171,6 +1195,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1478,9 +1514,9 @@
                 <h1 id="pnpspfeatures">@pnp/sp/features<a class="headerlink" href="#pnpspfeatures" title="Permanent link">&para;</a></h1>
 <p>Features are used by SharePoint to package a set of functionality and either enable (activate) or disable (deactivate) that functionality based on requirements for a specific site. You can manage feature activation using the library as shown below. Note that the features collection only contains <em>active</em> features.</p>
 <h2 id="list-all-features">List all Features<a class="headerlink" href="#list-all-features" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="c1">// get all the active features</span>
 <span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1510,9 +1546,9 @@
 
 <h2 id="activate-a-feature">Activate a Feature<a class="headerlink" href="#activate-a-feature" title="Permanent link">&para;</a></h2>
 <p>To activate a feature you must know the feature id. You can optionally force activation - if you aren't sure don't use force.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="c1">// activate the minimum download strategy feature</span>
 <span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;87294c72-f260-42f3-a41b-981a2ffce37a&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1523,9 +1559,9 @@
 
 
 <h2 id="deactivate-a-feature">Deactivate a Feature<a class="headerlink" href="#deactivate-a-feature" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">pnp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
 <span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s2">&quot;87294c72-f260-42f3-a41b-981a2ffce37a&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
 

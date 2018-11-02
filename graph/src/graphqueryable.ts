@@ -14,7 +14,6 @@ import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
 import { GraphEndpoints } from "./types";
 
-
 export interface GraphQueryableConstructor<T> {
     new(baseUrl: string | GraphQueryable, path?: string): T;
 }
@@ -43,6 +42,30 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
         } else {
             this.extend(baseUrl as GraphQueryable, path);
         }
+    }
+
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select(...selects: string[]): this {
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand(...expands: string[]): this {
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
     }
 
     /**
@@ -96,15 +119,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
      */
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
 
-        let clone = new factory(this, additionalPath);
-        clone.configure(this._options);
-
-        // TODO:: include batching info in clone
-        if (includeBatch) {
-            clone = clone.inBatch(this._batch);
-        }
-
-        return clone;
+        return <T>super._clone(new factory(this, additionalPath), { includeBatch });
     }
 
     protected setEndpoint(endpoint: string): this {
@@ -161,30 +176,6 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
     }
 
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
-
-    /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
@@ -214,7 +205,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param num Number of items to skip
      */
     public skip(num: number): this {
-        this.query.set("$top", num.toString());
+        this.query.set("$skip", num.toString());
         return this;
     }
 
@@ -250,29 +241,21 @@ export class GraphQueryableSearchableCollection extends GraphQueryableCollection
  * Represents an instance that can be selected
  *
  */
-export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
+export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> { }
 
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
+/**
+ * Decorator used to specify the default path for Queryable objects
+ * 
+ * @param path 
+ */
+export function defaultPath(path: string) {
 
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            constructor(...args: any[]) {
+                super(args[0], args.length > 1 && args[1] !== undefined ? args[1] : path);
+            }
+        };
+    };
 }

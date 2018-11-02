@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1117,6 +1141,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/social/" title="Social" class="md-nav__link">
       Social
     </a>
@@ -1412,6 +1448,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#getdescription" title="getDescription" class="md-nav__link">
+    getDescription
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setdescription" title="setDescription" class="md-nav__link">
     setDescription
   </a>
@@ -1529,6 +1572,13 @@
           <li class="md-nav__item">
   <a href="#get" title="get" class="md-nav__link">
     get
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdescription" title="getDescription" class="md-nav__link">
+    getDescription
   </a>
   
 </li>
@@ -1675,6 +1725,17 @@
 
 <span class="c1">// load term instance merged with data</span>
 <span class="kr">const</span> <span class="nx">term2</span>: <span class="kt">ITerm</span> <span class="o">&amp;</span> <span class="nx">ITermData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">term</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</pre></div>
+
+
+<h3 id="getdescription">getDescription<a class="headerlink" href="#getdescription" title="Permanent link">&para;</a></h3>
+<p>Sets the description</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ITerm</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-taxonomy&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">term</span>: <span class="kt">ITerm</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">from</span> <span class="nx">one</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">above</span> <span class="nx">methods</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="c1">// load term instance merged with data</span>
+<span class="kr">const</span> <span class="nx">description</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">term</span><span class="p">.</span><span class="nx">getDescription</span><span class="p">(</span><span class="mi">1031</span><span class="p">);</span>
 </pre></div>
 
 

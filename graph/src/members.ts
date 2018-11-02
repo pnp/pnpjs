@@ -1,11 +1,8 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS } from "@pnp/common";
 
+@defaultPath("members")
 export class Members extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "members") {
-        super(baseUrl, path);
-    }
 
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
@@ -33,12 +30,7 @@ export class Members extends GraphQueryableCollection {
     }
 }
 
-export class Member extends GraphQueryableInstance {
+export class Member extends GraphQueryableInstance { }
 
-}
-
-export class Owners extends Members {
-    constructor(baseUrl: string | GraphQueryable, path = "owners") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("owners")
+export class Owners extends Members { }

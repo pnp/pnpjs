@@ -8,6 +8,8 @@ import { Groups } from "./groups";
 import { Me } from "./me";
 import { Teams } from "./teams";
 import { Users } from "./users";
+import { Planner, IPlannerMethods } from "./planner";
+import { GraphBatch } from "./batch";
 
 export class GraphRest extends GraphQueryable {
 
@@ -27,8 +29,16 @@ export class GraphRest extends GraphQueryable {
         return new Me(this);
     }
 
+    public get planner(): IPlannerMethods {
+        return new Planner(this);
+    }
+
     public get users(): Users {
         return new Users(this);
+    }
+
+    public createBatch(): GraphBatch {
+        return new GraphBatch();
     }
 
     public setup(config: GraphConfiguration) {

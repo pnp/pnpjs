@@ -1,4 +1,4 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS } from "@pnp/common";
 
 export interface OneNoteMethods {
@@ -10,11 +10,8 @@ export interface OneNoteMethods {
 /**
  * Represents a onenote entity
  */
+@defaultPath("onenote")
 export class OneNote extends GraphQueryableInstance implements OneNoteMethods {
-
-    constructor(baseUrl: string | GraphQueryable, path = "onenote") {
-        super(baseUrl, path);
-    }
 
     public get notebooks(): Notebooks {
         return new Notebooks(this);
@@ -33,11 +30,8 @@ export class OneNote extends GraphQueryableInstance implements OneNoteMethods {
  * Describes a collection of Notebook objects
  *
  */
+@defaultPath("notebooks")
 export class Notebooks extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "notebooks") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a notebook instance by id
@@ -88,11 +82,8 @@ export class Notebook extends GraphQueryableInstance {
  * Describes a collection of Sections objects
  *
  */
+@defaultPath("sections")
 export class Sections extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "sections") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets a section instance by id
@@ -139,12 +130,8 @@ export class Section extends GraphQueryableInstance {
  * Describes a collection of Pages objects
  *
  */
-export class Pages extends GraphQueryableCollection {
-
-    constructor(baseUrl: string | GraphQueryable, path = "pages") {
-        super(baseUrl, path);
-    }
-}
+@defaultPath("pages")
+export class Pages extends GraphQueryableCollection { }
 
 export interface NotebookAddResult {
     data: any;

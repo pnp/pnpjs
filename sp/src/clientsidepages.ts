@@ -417,6 +417,33 @@ export class ClientSidePage extends File {
     }
 
     /**
+     * Like the modern site page
+     */
+    public like(): Promise<void> {
+        return this.getItem().then(i => {
+            return i.like();
+        });
+    }
+
+    /**
+     * Unlike the modern site page
+     */
+    public unlike(): Promise<void> {
+        return this.getItem().then(i => {
+            return i.unlike();
+        });
+    }
+
+    /**
+     * Get the liked by information for a modern site page     
+     */
+    public getLikedByInformation(): Promise<void> {
+        return this.getItem().then(i => {
+            return i.getLikedByInformation();
+        });
+    }
+
+    /**
      * Sets the comments flag for a page
      * 
      * @param on If true comments are enabled, false they are disabled

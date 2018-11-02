@@ -1,11 +1,8 @@
-import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
+import { GraphQueryableInstance, defaultPath } from "./graphqueryable";
 import { BlobParser, BufferParser } from "@pnp/odata";
 
+@defaultPath("photo")
 export class Photo extends GraphQueryableInstance {
-
-    constructor(baseUrl: string | GraphQueryable, path = "photo") {
-        super(baseUrl, path);
-    }
 
     /**
      * Gets the image bytes as a blob (browser)

@@ -400,6 +400,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
       Deployment
     </a>
@@ -799,6 +811,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1096,6 +1120,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#getlistitemchangessincetoken" title="getListItemChangesSinceToken" class="md-nav__link">
+    getListItemChangesSinceToken
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get-all-items" title="Get All Items" class="md-nav__link">
     Get All Items
   </a>
@@ -1270,6 +1301,18 @@
   <li class="md-nav__item">
     <a href="../sharing/" title="Sharing" class="md-nav__link">
       Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
     </a>
   </li>
 
@@ -1567,6 +1610,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#getlistitemchangessincetoken" title="getListItemChangesSinceToken" class="md-nav__link">
+    getListItemChangesSinceToken
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get-all-items" title="Get All Items" class="md-nav__link">
     Get All Items
   </a>
@@ -1697,7 +1747,7 @@
 <h2 id="get">GET<a class="headerlink" href="#get" title="Permanent link">&para;</a></h2>
 <p>Getting items from a list is one of the basic actions that most applications require. This is made easy through the library and the following examples demonstrate these actions.</p>
 <h3 id="basic-get">Basic Get<a class="headerlink" href="#basic-get" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="c1">// get all the items from a list</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">items</span>: <span class="kt">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1718,7 +1768,7 @@
 
 <h3 id="get-paged-items">Get Paged Items<a class="headerlink" href="#get-paged-items" title="Permanent link">&para;</a></h3>
 <p>Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="c1">// basic case to get paged items form a list</span>
 <span class="kd">let</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getPaged</span><span class="p">();</span>
@@ -1752,11 +1802,29 @@
 </pre></div>
 
 
+<h3 id="getlistitemchangessincetoken">getListItemChangesSinceToken<a class="headerlink" href="#getlistitemchangessincetoken" title="Permanent link">&para;</a></h3>
+<p>The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// Using RowLimit. Enables paging</span>
+<span class="kd">let</span> <span class="nx">changes</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">getListItemChangesSinceToken</span><span class="p">({</span><span class="nx">RowLimit</span><span class="o">:</span> <span class="s1">&#39;5&#39;</span><span class="p">});</span>
+
+<span class="c1">// Use QueryOptions to make a XML-style query.</span>
+<span class="c1">// Because it&#39;s XML we need to escape special characters</span>
+<span class="c1">// Instead of &amp; we use &amp;amp; in the query</span>
+<span class="kd">let</span> <span class="nx">changes</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">getListItemChangesSinceToken</span><span class="p">({</span><span class="nx">QueryOptions</span><span class="o">:</span> <span class="s1">&#39;&lt;Paging ListItemCollectionPositionNext=&quot;Paged=TRUE&amp;amp;p_ID=5&quot; /&gt;&#39;</span><span class="p">});</span>
+
+<span class="c1">// Get everything. Using null with ChangeToken gets everything</span>
+<span class="kd">let</span> <span class="nx">changes</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">getListItemChangesSinceToken</span><span class="p">({</span><span class="nx">ChangeToken</span>: <span class="kt">null</span><span class="p">});</span>
+</pre></div>
+
+
 <h3 id="get-all-items">Get All Items<a class="headerlink" href="#get-all-items" title="Permanent link">&para;</a></h3>
 <p><em>Added in 1.0.2</em></p>
 <p>Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
 be used.</p>
-<div class="codehilite"><pre><span></span><span class="c1">// basic usage</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// basic usage</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getAll</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">allItems</span>: <span class="kt">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// how many did we get</span>
@@ -1788,7 +1856,9 @@ be used.</p>
 
 <h3 id="retrieving-lookup-fields">Retrieving Lookup Fields<a class="headerlink" href="#retrieving-lookup-fields" title="Permanent link">&para;</a></h3>
 <p>When working with lookup fields you need to use the expand operator along with select to get the related fields from the lookup column. This works for both the items collection and item instances.</p>
-<div class="codehilite"><pre><span></span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Lookup/Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Lookup/ID&quot;</span><span class="p">).</span><span class="nx">expand</span><span class="p">(</span><span class="s2">&quot;Lookup&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">items</span>: <span class="kt">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Lookup/Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Lookup/ID&quot;</span><span class="p">).</span><span class="nx">expand</span><span class="p">(</span><span class="s2">&quot;Lookup&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">items</span>: <span class="kt">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
 <span class="p">});</span>
 
@@ -1843,7 +1913,9 @@ be used.</p>
 
 <h3 id="content-type">Content Type<a class="headerlink" href="#content-type" title="Permanent link">&para;</a></h3>
 <p>You can also set the content type id when you create an item as shown in the example below:</p>
-<div class="codehilite"><pre><span></span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;4D5A36EA-6E84-4160-8458-65C436DB765C&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;4D5A36EA-6E84-4160-8458-65C436DB765C&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
     <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;Test 1&quot;</span><span class="p">,</span>
     <span class="nx">ContentTypeId</span><span class="o">:</span> <span class="s2">&quot;0x01030058FD86C279252341AB303852303E4DAF&quot;</span>
 <span class="p">});</span>
@@ -1853,8 +1925,11 @@ be used.</p>
 <h3 id="user-fields">User Fields<a class="headerlink" href="#user-fields" title="Permanent link">&para;</a></h3>
 <p>There are two types of user fields, those that allow a single value and those that allow multiple. For both types, you first need to determine the Id field name, which you can do by doing a GET REST request on an existing item. Typically the value will be the user field internal name with "Id" appended. So in our example, we have two fields User1 and User2 so the Id fields are User1Id and User2Id.</p>
 <p>Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an object with a "results" property and an array. Examples for both are shown below.</p>
-<div class="codehilite"><pre><span></span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;PeopleFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
-    <span class="nx">Title</span>: <span class="kt">Util.getGUID</span><span class="p">(),</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">getGUID</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;PeopleFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
+    <span class="nx">Title</span>: <span class="kt">getGUID</span><span class="p">(),</span>
     <span class="nx">User1Id</span>: <span class="kt">9</span><span class="p">,</span> <span class="c1">// allows a single user</span>
     <span class="nx">User2Id</span><span class="o">:</span> <span class="p">{</span> 
         <span class="nx">results</span><span class="o">:</span> <span class="p">[</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">45</span> <span class="p">]</span> <span class="c1">// allows multiple users</span>
@@ -1866,7 +1941,9 @@ be used.</p>
 
 
 <p>If you want to update or add user field values when using <strong>validateUpdateListItem</strong> you need to use the form shown below. You can specify multiple values in the array.</p>
-<div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;UserFieldList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">validateUpdateListItem</span><span class="p">([{</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;UserFieldList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">validateUpdateListItem</span><span class="p">([{</span>
     <span class="nx">FieldName</span><span class="o">:</span> <span class="s2">&quot;UserField&quot;</span><span class="p">,</span>
     <span class="nx">FieldValue</span>: <span class="kt">JSON.stringify</span><span class="p">([{</span> <span class="s2">&quot;Key&quot;</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|person@tenant.com&quot;</span> <span class="p">}]),</span>
 <span class="p">},</span>
@@ -1884,8 +1961,11 @@ be used.</p>
   - Multiple-valued lookup
 - <code>Id</code> suffix should be appended to the end of lookup's <code>EntityPropertyName</code> in payloads
 - Numeric Ids for lookups' items should be passed as values</p>
-<div class="codehilite"><pre><span></span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
-    <span class="nx">Title</span>: <span class="kt">Util.getGUID</span><span class="p">(),</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">getGUID</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
+    <span class="nx">Title</span>: <span class="kt">getGUID</span><span class="p">(),</span>
     <span class="nx">LookupFieldId</span>: <span class="kt">2</span><span class="p">,</span>       <span class="c1">// allows a single lookup value</span>
     <span class="nx">MuptiLookupFieldId</span><span class="o">:</span> <span class="p">{</span> 
         <span class="nx">results</span><span class="o">:</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">56</span> <span class="p">]</span>  <span class="c1">// allows multiple lookup value</span>
@@ -1895,7 +1975,7 @@ be used.</p>
 
 
 <h3 id="add-multiple-items">Add Multiple Items<a class="headerlink" href="#add-multiple-items" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;rapidadd&quot;</span><span class="p">);</span>
 
@@ -1918,7 +1998,7 @@ be used.</p>
 
 <h2 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h2>
 <p>The update method is very similar to the add method in that it takes a plain object representing the fields to update. The property names are the internal names of the fields. If you aren't sure you can always do a get request for an item in the list and see the field names that come back - you would use these same names to update the item.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
 
@@ -1932,13 +2012,13 @@ be used.</p>
 
 
 <h3 id="getting-and-updating-a-collection-using-filter">Getting and updating a collection using filter<a class="headerlink" href="#getting-and-updating-a-collection-using-filter" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="c1">// you are getting back a collection here</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&quot;Title eq &#39;A Title&#39;&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">items</span>: <span class="kt">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// see if we got something</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">Id</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+        <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">Id</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
             <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;Updated Title&quot;</span><span class="p">,</span>
         <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="c1">// here you will have updated the item</span>
@@ -1951,7 +2031,7 @@ be used.</p>
 
 <h3 id="update-multiple-items">Update Multiple Items<a class="headerlink" href="#update-multiple-items" title="Permanent link">&para;</a></h3>
 <p>This approach avoids multiple calls for the same list's entity type name.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;rapidupdate&quot;</span><span class="p">);</span>
 
@@ -1975,7 +2055,7 @@ be used.</p>
 
 <h2 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h2>
 <p>Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">sp</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
 
@@ -1987,7 +2067,9 @@ be used.</p>
 <p>It's a very common mistake trying wrong field names in the requests.
 Field's <code>EntityPropertyName</code> value should be used.</p>
 <p>The easiest way to get know EntityPropertyName is to use the following snippet:</p>
-<div class="codehilite"><pre><span></span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span>
   <span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s1">&#39;[Lists_Title]&#39;</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">fields</span>
   <span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;Title, EntityPropertyName&#39;</span><span class="p">)</span>
