@@ -20,7 +20,7 @@ export function copyDocs(version: string, config: PackageSchema) {
                 src(["./**/*.md"], {
                     cwd: sourceRoot,
                 }),
-                dest(path.resolve(packageTarget.outDir), {
+                dest(path.resolve(packageTarget.outDir), <any>{
                     overwrite: true,
                 }),
             ], (err: (Error | null)) => {
