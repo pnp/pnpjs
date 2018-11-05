@@ -56,6 +56,7 @@ nav:
       - 'ALM api': 'sp/docs/alm.md'
       - Attachments: 'sp/docs/attachments.md'
       - 'Client-side Pages': 'sp/docs/client-side-pages.md'
+      - 'Entity Merging': 'sp/docs/entity-merging.md'
       - Features: 'sp/docs/features.md'
       - Fields: 'sp/docs/fields.md'
       - Files: 'sp/docs/files.md'
