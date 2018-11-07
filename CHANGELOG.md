@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.2.4 - 2018-11-02
+
 ### Added
 
 - @pnp/polyfill-ie11: New package to contain the required polyfills for IE11 [[PR](https://github.com/pnp/pnpjs/pull/283)] [[docs](https://pnp.github.io/pnpjs/documentation/polyfill/)]
