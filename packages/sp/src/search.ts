@@ -39,7 +39,7 @@ export interface ISearchQueryBuilder {
     clientType(clientType: string): this;
     personalizationData(data: string): this;
     resultsURL(url: string): this;
-    queryTag(...tags: string[]): this;
+    queryTag(tags: string): this;
     properties(...properties: SearchProperty[]): this;
     queryTemplatePropertiesUrl(url: string): this;
     reorderingRules(...rules: ReorderingRule[]): this;
@@ -154,8 +154,7 @@ export class Search extends SharePointQueryableInstance {
                     query,
                     {
                         HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
-                        Properties: this.fixArrProp(query.Properties),
-                        QueryTag: this.fixArrProp(query.QueryTag),
+                        Properties: this.fixArrProp(query.Properties),                        
                         RefinementFilters: this.fixArrProp(query.RefinementFilters),
                         ReorderingRules: this.fixArrProp(query.ReorderingRules),
                         SelectProperties: this.fixArrProp(query.SelectProperties),
@@ -488,7 +487,7 @@ export interface SearchQuery {
     /**
      * Custom tags that identify the query. You can specify multiple query tags
      */
-    QueryTag?: string[];
+    QueryTag?: string;
 
     /**
      * Properties to be used to configure the search query
