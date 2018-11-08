@@ -154,7 +154,7 @@ export class Search extends SharePointQueryableInstance {
                     query,
                     {
                         HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
-                        Properties: this.fixArrProp(query.Properties),                        
+                        Properties: this.fixArrProp(query.Properties),
                         RefinementFilters: this.fixArrProp(query.RefinementFilters),
                         ReorderingRules: this.fixArrProp(query.ReorderingRules),
                         SelectProperties: this.fixArrProp(query.SelectProperties),
