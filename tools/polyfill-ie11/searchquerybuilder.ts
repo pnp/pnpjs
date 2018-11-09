@@ -145,7 +145,7 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ ResultsUrl: url });
     }
 
-    public queryTag(...tags: string[]): this {
+    public queryTag(tags: string): this {
         return this.extendQuery({ QueryTag: tags });
     }
 
