@@ -10,7 +10,7 @@ const log = require("fancy-log");
  * 
  * @param ctx The build context 
  */
-export function publishBetaPackage(version: string, config: PublishSchema) {
+export function publishBetaPackage(version: string, config: PublishSchema): Promise<any> {
 
     const promises: Promise<void>[] = [];
 

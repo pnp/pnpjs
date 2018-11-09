@@ -15,19 +15,20 @@ export async function packager(version: string, config: PackageSchema): Promise<
 
     try {
 
-        // run any pre-build tasks
+        // run any pre-package tasks
         await runTasks("pre-package", version, config.prePackageTasks || [], config);
 
         // run any package tasks
         await runTasks("package", version, config.packageTasks || [], config);
 
-        // run any post-build tasks
+        // run any post-package tasks
         await runTasks("post-package", version, config.postPackageTasks || [], config);
 
     } catch (e) {
 
-        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Build error`))}.`);
+        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Packaging error`))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+        console.error(e);
         throw e;
     }
 }
