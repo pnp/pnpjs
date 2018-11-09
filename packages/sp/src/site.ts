@@ -234,7 +234,7 @@ export class Site extends SharePointQueryableInstance {
                 },
                 Description: description,
                 Owners: {
-                    "results": owners,
+                    "results": owners ? owners : [],
                 },
             },
         });
