@@ -32,6 +32,7 @@ export async function builder(version: string, config: BuildSchema): Promise<voi
 
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Build error`))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+        console.error(e);
         throw e;
     }
 }

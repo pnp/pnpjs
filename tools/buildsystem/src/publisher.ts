@@ -5,9 +5,9 @@ const log = require("fancy-log");
 import { PublishSchema, PublishTask } from "./tasks/publish/schema";
 
 /**
- * Engine function to process build files
+ * Engine function to process publish files
  * 
- * @param version The version to be written into all the build packages
+ * @param version The version to be written into all the published packages
  * @param config The build configuration object
  * @param callback (err?) => void
  */
@@ -16,19 +16,20 @@ export async function publisher(version: string, config: PublishSchema): Promise
 
     try {
 
-        // run any pre-build tasks
+        // run any pre-publish tasks
         await runTasks("pre-publish", version, config.prePublishTasks || [], config);
 
-        // run any package tasks
+        // run any publish tasks
         await runTasks("publish", version, config.publishTasks || [], config);
 
-        // run any post-build tasks
+        // run any post-publish tasks
         await runTasks("post-publish", version, config.postPublishTasks || [], config);
 
     } catch (e) {
 
-        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Build error`))}.`);
+        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Publishing error`))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
+        console.error(e);
         throw e;
     }
 }
