@@ -4,7 +4,8 @@ import { UserCustomActions } from "./usercustomactions";
 import { ContextInfo, DocumentLibraryInformation } from "./types";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
-import { hOP } from "@pnp/common";
+import { hOP, jsS, extend } from "@pnp/common";
+import { SPHttpClient } from "./net/sphttpclient";
 
 /**
  * Describes a site collection
@@ -139,6 +140,117 @@ export class Site extends SharePointQueryableInstance {
      */
     public unRegisterHubSite(): Promise<void> {
         return this.clone(Site, `unRegisterHubSite`).postCore();
+    }
+
+    /**
+     * Creates a Modern communication site.
+     * 
+     * @param title The title of the site to create
+     * @param lcid The language to use for the site. If not specified will default to 1033 (English).
+     * @param shareByEmailEnabled If set to true, it will enable sharing files via Email. By default it is set to false
+     * @param url The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param description The description of the communication site.
+     * @param siteDesignId The Guid of the site design to be used.
+     *                     You can use the below default OOTB GUIDs:
+     *                     Topic: null
+     *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
+     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
+     */
+
+    public async createCommunicationSite(
+        title: string,
+        lcid = 1033,
+        shareByEmailEnabled = false,
+        url: string,
+        classification?: "",
+        description?: "",
+        siteDesignId?: string,
+    ): Promise<void> {
+
+        const props = {
+            Classification: classification,
+            Description: description,
+            Lcid: lcid,
+            ShareByEmailEnabled: shareByEmailEnabled,
+            SiteDesignId: siteDesignId,
+            Title: title,
+            Url: url,
+            WebTemplate: "SITEPAGEPUBLISHING#0",
+            WebTemplateExtensionId: "00000000-0000-0000-0000-000000000000",
+        };
+
+        const postBody = jsS({
+            "request":
+                extend({
+                    "__metadata": { "type": "Microsoft.SharePoint.Portal.SPSiteCreationRequest" },
+                }, props),
+        });
+
+        return this.getRootWeb().then(async (d: any) => {
+
+            const client = new SPHttpClient();
+            const methodUrl = `${d.parentUrl}/_api/SPSiteManager/Create`;
+            return client.post(methodUrl, {
+                body: postBody,
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                },
+            }).then(r => r.json());
+        });
+    }
+
+    /**
+     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
+     * 
+     * @param displayName The title or display name of the Modern team site to be created
+     * @param alias Alias of the underlying Office 365 Group
+     * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
+     * @param lcid The language to use for the site. If not specified will default to English (1033).
+     * @param description The description of the site to be created.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param owners The Owner of the site to be created     
+     */
+
+    public async createModernTeamSite(
+        displayName: string,
+        alias: string,
+        isPublic = true,
+        lcid = 1033,
+        description?: "",
+        classification?: "",
+        owners?: string[],
+    ): Promise<void> {
+
+        const postBody = jsS({
+            alias: alias,
+            displayName: displayName,
+            isPublic: isPublic,
+            optionalParams: {
+                Classification: classification,
+                CreationOptions: {
+                    "results": [`SPSiteLanguage:${lcid}`],
+                },
+                Description: description,
+                Owners: {
+                    "results": owners ? owners : [],
+                },
+            },
+        });
+
+        return this.getRootWeb().then(async (d: any) => {
+
+            const client = new SPHttpClient();
+            const methodUrl = `${d.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
+            return client.post(methodUrl, {
+                body: postBody,
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                },
+            }).then(r => r.json());
+        });
     }
 }
 
