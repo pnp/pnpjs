@@ -49,7 +49,7 @@ const tokenCache: ITokenCacheManager = new MapCacheManager();
 
 export async function validateProviderHostedRequestToken(requestToken: string, clientSecret: string): Promise<JwtPayload> {
     return new Promise<JwtPayload>((resolve, reject) => {
-        jwt.verify(requestToken, Buffer.from(clientSecret, "base64"), (err, decoded) => err ? reject(err) : resolve(decoded));
+        jwt.verify(requestToken, Buffer.from(clientSecret, "base64"), (err: jwt.VerifyErrors, decoded: object | string) => err ? reject(err) : resolve(decoded as JwtPayload));
     });
 }
 
