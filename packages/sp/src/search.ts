@@ -618,12 +618,16 @@ export interface ResultTableCollection {
     SpecialTermResults?: ResultTable;
 }
 
+export interface IRefiner {
+    Name: string;
+    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; };
+}
 export interface ResultTable {
     GroupTemplateId?: string;
     ItemTemplateId?: string;
     Properties?: { Key: string, Value: any, ValueType: string }[];
     Table?: { Rows: { Cells: { Key: string, Value: any, ValueType: string }[] }[] };
-    Refiners?: { Name: string; Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[]; }[];
+    Refiners?: IRefiner[];
     ResultTitle?: string;
     ResultTitleUrl?: string;
     RowCount?: number;

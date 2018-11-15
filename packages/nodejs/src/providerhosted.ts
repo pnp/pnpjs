@@ -1,4 +1,3 @@
-import { SPRest, Web } from "@pnp/sp";
 import { AuthToken, validateProviderHostedRequestToken, getAddInOnlyAccessToken, getUserAccessToken } from "./token";
 
 export async function getProviderHostedRequestContext(siteUrl: string, clientId: string, clientSecret: string, spAppToken: string) {
@@ -11,32 +10,13 @@ export class ProviderHostedRequestContext {
     constructor(private siteUrl: string, private clientId: string, private clientSecret: string,
         private realm: string, private refreshToken: string, private stsUri: string, private cacheKey: string) {}
 
-    public async getAddinOnlySP() {
-        return this.getSPRest(await this.getAddInOnlyToken());
+    public async getAddInOnlyConfig() {
+        return this.getConfigOptions(await getAddInOnlyAccessToken(this.siteUrl, this.clientId, this.clientSecret, this.realm, this.stsUri));
     }
-    public async getAddinOnlyWeb(webAbsoluteUrl: string) {
-        return this.getWeb(webAbsoluteUrl, await this.getAddInOnlyToken());
-    }
-    public async getUserSP() {
-        return this.getSPRest(await this.getUserToken());
-    }
-    public async getUserWeb(webAbsoluteUrl: string) {
-        return this.getWeb(webAbsoluteUrl, await this.getUserToken());
+    public async getUserConfig() {
+        return this.getConfigOptions(await getUserAccessToken(this.siteUrl, this.clientId, this.clientSecret, this.refreshToken, this.realm, this.stsUri, this.cacheKey));
     }
 
-    private getAddInOnlyToken() {
-        return getAddInOnlyAccessToken(this.siteUrl, this.clientId, this.clientSecret, this.realm, this.stsUri);
-    }
-    private getUserToken() {
-        return getUserAccessToken(this.siteUrl, this.clientId, this.clientSecret, this.refreshToken, this.realm, this.stsUri, this.cacheKey);
-    }
-
-    private getSPRest(token: AuthToken) {
-        return new SPRest(this.getConfigOptions(token), this.siteUrl);
-    }
-    private getWeb(webAbsoluteUrl: string, token: AuthToken) {
-        return new Web(webAbsoluteUrl).configure(this.getConfigOptions(token));
-    }
     private getConfigOptions(token: AuthToken) {
         return {
             headers: {

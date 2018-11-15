@@ -7,7 +7,7 @@ import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./sp";
+import { test } from "./providerhosted";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -23,7 +23,7 @@ Logger.subscribe(new ConsoleListener());
 // change this to LogLevel.Verbose for more details about the request
 Logger.activeLogLevel = LogLevel.Info;
 
-Example(settings);
+test(settings);
 
 // you can also set break points inside the src folder to examine how things are working
 // within the library while debugging
