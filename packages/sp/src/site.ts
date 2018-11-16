@@ -149,8 +149,8 @@ export class Site extends SharePointQueryableInstance {
      * @param lcid The language to use for the site. If not specified will default to 1033 (English).
      * @param shareByEmailEnabled If set to true, it will enable sharing files via Email. By default it is set to false
      * @param url The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site.
-     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param description The description of the communication site.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param siteDesignId The Guid of the site design to be used.
      *                     You can use the below default OOTB GUIDs:
      *                     Topic: null
@@ -163,9 +163,9 @@ export class Site extends SharePointQueryableInstance {
         lcid = 1033,
         shareByEmailEnabled = false,
         url: string,
-        classification?: "",
         description?: "",
-        siteDesignId?: string,
+        classification?: "",
+        siteDesignId?: "",
     ): Promise<void> {
 
         const props = {
@@ -210,7 +210,7 @@ export class Site extends SharePointQueryableInstance {
      * @param lcid The language to use for the site. If not specified will default to English (1033).
      * @param description The description of the site to be created.
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-     * @param owners The Owner of the site to be created     
+     * @param owners The Owners of the site to be created     
      */
 
     public async createModernTeamSite(
@@ -218,8 +218,8 @@ export class Site extends SharePointQueryableInstance {
         alias: string,
         isPublic = true,
         lcid = 1033,
-        description?: "",
-        classification?: "",
+        description = "",
+        classification = "",
         owners?: string[],
     ): Promise<void> {
 

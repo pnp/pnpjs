@@ -66,6 +66,7 @@ nav:
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
+      - Sites: 'sp/docs/sites.md'
       - Site Designs: 'sp/docs/sitedesigns.md'
       - Social: 'sp/docs/social.md'
       - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
