@@ -158,7 +158,7 @@ export class Site extends SharePointQueryableInstance {
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
      */
 
-    public async createCommunicationSite(
+    public createCommunicationSite(
         title: string,
         lcid = 1033,
         shareByEmailEnabled = false,
@@ -213,7 +213,7 @@ export class Site extends SharePointQueryableInstance {
      * @param owners The Owners of the site to be created     
      */
 
-    public async createModernTeamSite(
+    public createModernTeamSite(
         displayName: string,
         alias: string,
         isPublic = true,
