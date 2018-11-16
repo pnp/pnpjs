@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.2.6 - 2018-11-16
+
+### Added
+
+- @pnp/sp-taxonomy: Adds support for the getTermsById to TermStore [[PR](https://github.com/pnp/pnpjs/pull/370)]
+- @pnp/sp: Added list property to item which is the parent list [[PR](https://github.com/pnp/pnpjs/pull/368)]
+- @pnp/sp-taxonomy: Adds setItemMetaDataField and setItemMetaDataMultiField utility methods [[PR](https://github.com/pnp/pnpjs/pull/368)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/sp-taxonomy/docs/utilities.md)]
+- @pnp/sp: Adds support for the setViewXml method to the View object [[PR](https://github.com/pnp/pnpjs/pull/367)]
+- @pnp/sp: Added IRefiner interface over ResultTable.Refiners ([@pljfdi](https://github.com/pljfdi)) [[PR](https://github.com/pnp/pnpjs/pull/352)]
+- @pnp/sp: Added support to create Modern communication and team(O365 backed) sites ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/351)]
+- @pnp/graph: Added update and delete methods to user
+- documentation: Added article on [merging entities](https://pnp.github.io/pnpjs/sp/docs/entity-merging/) in sp library
+
+### Changed
+
+- @pnp/odata: Enhanced error message for pipeline http errors
+
 ## 1.2.5 - 2018-11-09
 
 ### Fixed
