@@ -10,4 +10,4 @@ export * from "./terms";
 export * from "./termsets";
 export * from "./termstores";
 export * from "./types";
-
+export * from "./utilities";

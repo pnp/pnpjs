@@ -1,6 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { MenuNodeCollection } from "./types";
-import { jsS, extend } from "@pnp/common";
+import { jsS, extend, TypedHash } from "@pnp/common";
 import { metadata } from "./utils/metadata";
 
 /**
@@ -88,8 +88,36 @@ export class NavigationNode extends SharePointQueryableInstance {
     public delete(): Promise<void> {
         return super.deleteCore();
     }
+
+    /**
+     * Updates this node
+     * 
+     * @param properties Properties used to update this node
+     */
+    public update(properties: TypedHash<string | number | boolean>): Promise<NavNodeUpdateResult> {
+
+        const postBody = jsS(extend({
+            "__metadata": { "type": "SP.NavigationNode" },
+        }, properties));
+
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then((data) => {
+            return {
+                data: data,
+                node: this,
+            };
+        });
+    }
 }
 
+export interface NavNodeUpdateResult {
+    data: any;
+    node: NavigationNode;
+}
 
 /**
  * Exposes the navigation components

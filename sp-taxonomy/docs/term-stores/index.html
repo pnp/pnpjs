@@ -1153,6 +1153,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/sites/" title="Sites" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
       Site Designs
     </a>
@@ -1424,6 +1436,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gettermsbyid" title="getTermsById" class="md-nav__link">
+    getTermsById
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gettermgroupbyid" title="getTermGroupById" class="md-nav__link">
     getTermGroupById
   </a>
@@ -1536,6 +1555,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../utilities/" title="Utilities" class="md-nav__link">
+      Utilities
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1612,6 +1643,13 @@
           <li class="md-nav__item">
   <a href="#gettermbyid" title="getTermById" class="md-nav__link">
     getTermById
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gettermsbyid" title="getTermsById" class="md-nav__link">
+    getTermsById
   </a>
   
 </li>
@@ -1765,6 +1803,17 @@
 
 <span class="kr">const</span> <span class="nx">term</span>: <span class="kt">ITerm</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getTermById</span><span class="p">(</span><span class="s2">&quot;0ba6845c-1468-4ec5-a5a8-718f1fb05431&quot;</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">termWithData</span>: <span class="kt">ITerm</span> <span class="o">&amp;</span> <span class="nx">ITermData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">term</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</pre></div>
+
+
+<h3 id="gettermsbyid">getTermsById<a class="headerlink" href="#gettermsbyid" title="Permanent link">&para;</a></h3>
+<p><em>Added in 1.2.6</em></p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">taxonomy</span><span class="p">,</span> <span class="nx">ITermStore</span><span class="p">,</span> <span class="nx">ITerms</span><span class="p">,</span> <span class="nx">ITermData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-taxonomy&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">store</span>: <span class="kt">ITermStore</span> <span class="o">=</span> <span class="nx">taxonomy</span><span class="p">.</span><span class="nx">termStores</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;Taxonomy_v5o/SbcTE2cegwO2dtAN9l==&quot;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">terms</span>: <span class="kt">ITerms</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getTermsById</span><span class="p">(</span><span class="s2">&quot;0ba6845c-1468-4ec5-a5a8-718f1fb05431&quot;</span><span class="p">,</span> <span class="s2">&quot;0ba6845c-1468-4ec5-a5a8-718f1fb05432&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">termWithData</span><span class="o">:</span> <span class="p">(</span><span class="nx">ITerm</span> <span class="o">&amp;</span> <span class="nx">ITermData</span><span class="p">)[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">term</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 </pre></div>
 
 

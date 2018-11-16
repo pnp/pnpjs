@@ -1155,6 +1155,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sites/" title="Sites" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
       Site Designs
     </a>
@@ -1246,6 +1258,13 @@
         <li class="md-nav__item">
   <a href="#update-a-view" title="Update a View" class="md-nav__link">
     Update a View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-view-xml" title="Set View XML" class="md-nav__link">
+    Set View XML
   </a>
   
 </li>
@@ -1460,6 +1479,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/utilities/" title="Utilities" class="md-nav__link">
+      Utilities
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1507,6 +1538,13 @@
         <li class="md-nav__item">
   <a href="#update-a-view" title="Update a View" class="md-nav__link">
     Update a View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-view-xml" title="Set View XML" class="md-nav__link">
+    Set View XML
   </a>
   
 </li>
@@ -1596,6 +1634,16 @@
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
 <span class="p">});</span>
+</pre></div>
+
+
+<h2 id="set-view-xml">Set View XML<a class="headerlink" href="#set-view-xml" title="Permanent link">&para;</a></h2>
+<p><em>Added in 1.2.6</em></p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">viewXml</span>: <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span><span class="p">;</span>
+
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">views</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My New View&quot;</span><span class="p">).</span><span class="nx">setViewXml</span><span class="p">(</span><span class="nx">viewXml</span><span class="p">);</span>
 </pre></div>
 
 

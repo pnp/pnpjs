@@ -5,9 +5,8 @@ import {
 } from "./config/graphlibconfig";
 
 import { Groups } from "./groups";
-import { Me } from "./me";
 import { Teams } from "./teams";
-import { Users } from "./users";
+import { Users, User } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
 
@@ -25,8 +24,8 @@ export class GraphRest extends GraphQueryable {
         return new Teams();
     }
 
-    public get me(): Me {
-        return new Me(this);
+    public get me(): User {
+        return new User(this, "me");
     }
 
     public get planner(): IPlannerMethods {
