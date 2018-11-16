@@ -21,6 +21,7 @@ export interface IMethodParamsBuilder {
     string(value: string): this;
     number(value: number): this;
     boolean(value: boolean): this;
+    strArray(values: string[]): this;
     objectPath(inputIndex: number): this;
     toArray(): { type: PropertyType, value: string }[];
 }
@@ -48,6 +49,10 @@ export class MethodParams implements IMethodParamsBuilder {
 
     public boolean(value: boolean): this {
         return this.a("Boolean", value.toString());
+    }
+
+    public strArray(values: string[]): this {
+        return this.a("Array", values.map(v => `<Object Type="String">${v}</Object>`).join(""));
     }
 
     public objectPath(inputIndex: number): this {
