@@ -85,6 +85,7 @@ nav:
       - 'Term Sets': 'sp-taxonomy/docs/term-sets.md'
       - Terms: 'sp-taxonomy/docs/terms.md'
       - Labels: 'sp-taxonomy/docs/labels.md'
+      - Utilities: 'sp-taxonomy/docs/utilities.md'
 theme:
   name: 'material'
   custom_dir: 'packages/documentation/theme'
