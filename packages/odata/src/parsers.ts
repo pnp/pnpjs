@@ -12,6 +12,13 @@ export class HttpRequestError extends Error {
     constructor(message: string, public response: Response, public status = response.status, public statusText = response.statusText) {
         super(message);
     }
+
+    public static init(r: Response): Promise<HttpRequestError> {
+
+        return r.clone().text().then(t => {
+            return new HttpRequestError(`Error making HttpClient request in queryable [${r.status}] ${r.statusText} ::> ${t}`, r.clone());
+        });
+    }
 }
 
 export abstract class ODataParserBase<T> implements ODataParser<T> {
@@ -47,7 +54,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
      */
     protected handleError(r: Response, reject: (err?: Error) => void): boolean {
         if (!r.ok) {
-            reject(new HttpRequestError(`Error making HttpClient request in queryable: [${r.status}] ${r.statusText}`, r.clone()));
+            HttpRequestError.init(r).then(reject);
         }
 
         return r.ok;

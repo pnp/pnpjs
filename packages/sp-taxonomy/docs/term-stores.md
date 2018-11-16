@@ -93,6 +93,19 @@ const term: ITerm = store.getTermById("0ba6845c-1468-4ec5-a5a8-718f1fb05431");
 const termWithData: ITerm & ITermData = await term.get();
 ```
 
+### getTermsById
+
+_Added in 1.2.6_
+
+```TypeScript
+import { taxonomy, ITermStore, ITerms, ITermData } from "@pnp/sp-taxonomy";
+
+const store: ITermStore = taxonomy.termStores.getByName("Taxonomy_v5o/SbcTE2cegwO2dtAN9l==");
+
+const terms: ITerms = store.getTermsById("0ba6845c-1468-4ec5-a5a8-718f1fb05431", "0ba6845c-1468-4ec5-a5a8-718f1fb05432");
+const termWithData: (ITerm & ITermData)[] = await term.get();
+```
+
 ### getTermGroupById
 
 Gets a [term group](term-groups.md) by id

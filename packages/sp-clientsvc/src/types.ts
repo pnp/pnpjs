@@ -1,1 +1,1 @@
-export type PropertyType = "Boolean" | "String" | "Number" | "ObjectPath";
+export type PropertyType = "Boolean" | "String" | "Number" | "ObjectPath" | "Array";
