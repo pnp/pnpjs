@@ -51,3 +51,16 @@ export interface TeamProperties {
         "allowCustomMemes"?: boolean;
     };
 }
+
+export interface TabsConfiguration {
+
+    configuration: {
+        "entityId": string;
+        "contentUrl": string;
+        "websiteUrl": string;
+        "removeUrl": string;
+
+    };
+
+}
+
