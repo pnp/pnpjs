@@ -15,7 +15,7 @@ export function publishPackage(version: string, config: PublishSchema): Promise<
     const promises: Promise<void>[] = [];
 
     const publishRoot = path.resolve(config.packageRoot);
-    const packageFolders = getSubDirNames(publishRoot);
+    const packageFolders = getSubDirNames(publishRoot).filter(name !== "documentation");
 
     for (let i = 0; i < packageFolders.length; i++) {
 
