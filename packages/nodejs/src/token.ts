@@ -17,14 +17,6 @@ export interface AuthToken {
     access_token: string;
 }
 
-export enum SPOAuthEnv {
-    SPO,
-    China,
-    Germany,
-    USDef,
-    USGov,
-}
-
 interface ITokenCacheManager {
     getAccessToken(realm: string, cacheKey: string): AuthToken;
     setAccessToken(realm: string, cacheKey: string, token: AuthToken): void;

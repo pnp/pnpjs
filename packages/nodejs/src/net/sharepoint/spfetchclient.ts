@@ -1,20 +1,9 @@
-declare var require: (path: string) => any;
-
 import { NodeFetchClient } from "../nodefetchclient";
+import { AuthToken, getAddInOnlyAccessToken } from "../../token";
 import { BaseSPFetchClient } from "./basespfetchclient";
 
-const u: any = require("url");
 import { HttpClientImpl, combine } from "@pnp/common";
 
-
-export interface AuthToken {
-    token_type: string;
-    expires_in: string;
-    not_before: string;
-    expires_on: string;
-    resource: string;
-    access_token: string;
-}
 
 export enum SPOAuthEnv {
     SPO,
@@ -45,45 +34,12 @@ export class SPFetchClient extends BaseSPFetchClient {
 
     public async fetch(url: string, options: any): Promise<Response> {
 
-        const token = await this.getAddInOnlyAccessToken();
+        const realm = await this.getRealm();
+        const authUrl = await this.getAuthUrl(realm);
+        const token = await getAddInOnlyAccessToken(this.siteUrl, this._clientId, this._clientSecret, realm, authUrl);
 
         options.headers.set("Authorization", `Bearer ${token.access_token}`);
         return super.fetch(url, options);
-    }
-
-    /**
-     * Gets an add-in only authentication token based on the supplied site url, client id and secret
-     */
-    public async getAddInOnlyAccessToken(): Promise<AuthToken> {
-
-        if (this.token !== null && new Date() < this.toDate(this.token.expires_on)) {
-            return Promise.resolve(this.token);
-        }
-
-        const realm = await this.getRealm();
-
-        const resource = this.getFormattedPrincipal(SPFetchClient.SharePointServicePrincipal, u.parse(this.siteUrl).hostname, realm);
-        const formattedClientId = this.getFormattedPrincipal(this._clientId, "", realm);
-
-        const authUrl = await this.getAuthUrl(realm);
-
-        const body: string[] = [];
-        body.push("grant_type=client_credentials");
-        body.push(`client_id=${formattedClientId}`);
-        body.push(`client_secret=${encodeURIComponent(this._clientSecret)}`);
-        body.push(`resource=${resource}`);
-
-        const r = await super.fetch(authUrl, {
-            body: body.join("&"),
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            method: "POST",
-        });
-
-        const tok: AuthToken = await r.json();
-        this.token = tok;
-        return this.token;
     }
 
     public getAuthHostUrl(env: SPOAuthEnv): string {
@@ -131,24 +87,5 @@ export class SPFetchClient extends BaseSPFetchClient {
         }
 
         throw Error("Auth URL Endpoint could not be determined from data.");
-    }
-
-    private getFormattedPrincipal(principalName: string, hostName: string, realm: string): string {
-        let resource = principalName;
-        if (hostName !== null && hostName !== "") {
-            resource += "/" + hostName;
-        }
-        resource += "@" + realm;
-        return resource;
-    }
-
-    private toDate(epoch: string): Date {
-        let tmp = parseInt(epoch, 10);
-        if (tmp < 10000000000) {
-            tmp *= 1000;
-        }
-        const d = new Date();
-        d.setTime(tmp);
-        return d;
     }
 }
