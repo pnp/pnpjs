@@ -7,7 +7,7 @@ import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
-import { GraphEndpoints, TeamProperties } from "./types";
+import { TeamProperties } from "./types";
 
 export enum GroupType {
     /**
@@ -165,7 +165,7 @@ export class Group extends GraphQueryableInstance {
      */
     public createTeam(properties: TeamProperties): Promise<any> {
 
-        return this.clone(Group, "team").setEndpoint(GraphEndpoints.Beta).putCore({
+        return this.clone(Group, "team").putCore({
             body: jsS(properties),
         });
     }
