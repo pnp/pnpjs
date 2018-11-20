@@ -1,15 +1,9 @@
 declare var require: (path: string) => any;
-declare var Buffer: any;
 const u: any = require("url");
 const nodeFetch = require("node-fetch").default;
 import * as jwt from "jsonwebtoken";
 import { TypedHash } from "@pnp/common";
-import { AuthToken, SharePointServicePrincipal } from "./types";
-
-interface ITokenCacheManager {
-    getAccessToken(realm: string, cacheKey: string): AuthToken;
-    setAccessToken(realm: string, cacheKey: string, token: AuthToken): void;
-}
+import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types";
 
 class MapCacheManager implements ITokenCacheManager {
 

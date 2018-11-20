@@ -31,3 +31,8 @@ export interface ProviderHostedConfigurationOptions {
         Authorization: string;
     };
 }
+
+export interface ITokenCacheManager {
+    getAccessToken(realm: string, cacheKey: string): AuthToken;
+    setAccessToken(realm: string, cacheKey: string, token: AuthToken): void;
+}

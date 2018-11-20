@@ -2,7 +2,6 @@ declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
 const nodeFetch = require("node-fetch").default;
 import { AADToken } from "../types";
-
 import {
     combine,
     objectDefinedNotNull,

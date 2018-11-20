@@ -1,5 +1,5 @@
 import { AuthToken, ProviderHostedConfigurationOptions } from "./types";
-import { validateProviderHostedRequestToken, getAddInOnlyAccessToken, getUserAccessToken } from "./token";
+import { validateProviderHostedRequestToken, getAddInOnlyAccessToken, getUserAccessToken } from "./sptokenutils";
 
 export class ProviderHostedRequestContext {
 

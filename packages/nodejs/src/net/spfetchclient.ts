@@ -1,7 +1,7 @@
 declare var global: any;
 import { HttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
 import { NodeFetchClient } from "./nodefetchclient";
-import { getAddInOnlyAccessToken } from "../token";
+import { getAddInOnlyAccessToken } from "../sptokenutils";
 import { SPOAuthEnv, AuthToken } from "../types";
 
 /**
