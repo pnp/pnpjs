@@ -17,8 +17,6 @@ const NodeFetch = require("node-fetch");
 
 })(global);
 
-
-export * from "./net/sharepoint/index";
-export { AdalFetchClient, AADToken } from "./net/adal/adalfetchclient";
-export { NodeFetchClient } from "./net/nodefetchclient";
-export { BearerTokenFetchClient } from "./net/BearerTokenFetchClient";
+export { AADToken, SPOAuthEnv } from "./types";
+export { ProviderHostedRequestContext } from "./providerhosted";
+export * from "./net/index";
