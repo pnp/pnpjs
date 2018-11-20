@@ -67,6 +67,18 @@ sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update({
 });
 ```
 
+## Set View XML
+
+_Added in 1.2.6_
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const viewXml: string = "...";
+
+await sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").setViewXml(viewXml);
+```
+
 ## Delete a View
 
 ```TypeScript

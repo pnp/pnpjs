@@ -41,6 +41,7 @@ nav:
       - AdalFetchClient: 'nodejs/docs/adal-fetch-client.md'
       - SPFetchClient: 'nodejs/docs/sp-fetch-client.md'
       - BearerTokenFetchClient: 'nodejs/docs/bearer-token-fetch-client.md'
+      - ProviderHostedRequestContext: 'nodejs/docs/provider-hosted-app.md'
     - odata:
       - odata: 'odata/docs/index.md'
       - caching: 'odata/docs/caching.md'
@@ -66,6 +67,7 @@ nav:
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
+      - Sites: 'sp/docs/sites.md'
       - Site Designs: 'sp/docs/sitedesigns.md'
       - Social: 'sp/docs/social.md'
       - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
@@ -85,6 +87,7 @@ nav:
       - 'Term Sets': 'sp-taxonomy/docs/term-sets.md'
       - Terms: 'sp-taxonomy/docs/terms.md'
       - Labels: 'sp-taxonomy/docs/labels.md'
+      - Utilities: 'sp-taxonomy/docs/utilities.md'
 theme:
   name: 'material'
   custom_dir: 'packages/documentation/theme'

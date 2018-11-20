@@ -80,6 +80,7 @@ export interface ITermStore extends IClientSvcQueryable {
     getTermInTermSet(termId: string, termSetId: string): ITerm;
     getTermGroupById(id: string): ITermGroup;
     getTerms(info: ILabelMatchInfo): ITerms;
+    getTermsById(...ids: string[]): any;
     getTermSetById(id: string): ITermSet;
     getTermSetsByName(name: string, lcid: number): ITermSets;
     rollbackAll(): Promise<void>;
@@ -170,6 +171,17 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
 
         const params = MethodParams.build().string(sanitizeGuid(id));
         return this.getChild(Term, "GetTerm", params);
+    }
+
+    /**
+     * Provides access to an ITermSet by id
+     * 
+     * @param id 
+     */
+    public getTermsById(...ids: string[]): ITerms {
+
+        const params = MethodParams.build().strArray(ids.map(id => sanitizeGuid(id)));
+        return this.getChild(Terms, "GetTermsById", params);
     }
 
     /**
