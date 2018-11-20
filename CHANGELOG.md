@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - @pnp/nodejs: Added support for enhanced usage in provider hosted applications ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/339)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/nodejs/docs/provider-hosted-app.md)]
+- @pnp/graph: Added support for Teams methods now in GA ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/373)]
 
 ## 1.2.6 - 2018-11-16
 
