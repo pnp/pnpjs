@@ -7,7 +7,7 @@ const nodeFetch = require("node-fetch").default;
 /**
  * Payload from transient errors
  */
-export interface IRetryData {
+interface IRetryData {
     retryCount: number;
     error: any;
     retryInterval: number;

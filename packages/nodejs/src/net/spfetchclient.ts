@@ -1,45 +1,40 @@
-import { NodeFetchClient } from "../nodefetchclient";
-import { AuthToken, getAddInOnlyAccessToken } from "../../token";
-import { BaseSPFetchClient } from "./basespfetchclient";
-
-import { HttpClientImpl, combine } from "@pnp/common";
-
-
-export enum SPOAuthEnv {
-    SPO,
-    China,
-    Germany,
-    USDef,
-    USGov,
-}
+declare var global: any;
+import { HttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
+import { NodeFetchClient } from "./nodefetchclient";
+import { getAddInOnlyAccessToken } from "../token";
+import { SPOAuthEnv, AuthToken } from "../types";
 
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
  */
-export class SPFetchClient extends BaseSPFetchClient {
+export class SPFetchClient  implements HttpClientImpl  {
 
-    protected static SharePointServicePrincipal = "00000003-0000-0ff1-ce00-000000000000";
     protected token: AuthToken | null = null;
 
     constructor(
-        siteUrl: string,
+        public siteUrl: string,
         protected _clientId: string,
         protected _clientSecret: string,
         public authEnv: SPOAuthEnv = SPOAuthEnv.SPO,
         protected _realm = "",
-        _fetchClient: HttpClientImpl = new NodeFetchClient()) {
+        protected _fetchClient: HttpClientImpl = new NodeFetchClient()) {
 
-        super(siteUrl, _fetchClient);
+        global._spPageContextInfo = {
+            webAbsoluteUrl: siteUrl,
+        };
     }
 
-    public async fetch(url: string, options: any): Promise<Response> {
+    public async fetch(url: string, options: any = {}): Promise<Response> {
 
         const realm = await this.getRealm();
         const authUrl = await this.getAuthUrl(realm);
         const token = await getAddInOnlyAccessToken(this.siteUrl, this._clientId, this._clientSecret, realm, authUrl);
 
         options.headers.set("Authorization", `Bearer ${token.access_token}`);
-        return super.fetch(url, options);
+
+        const uri = !isUrlAbsolute(url) ? combine(this.siteUrl, url) : url;
+
+        return this._fetchClient.fetch(uri, options);
     }
 
     public getAuthHostUrl(env: SPOAuthEnv): string {
@@ -61,7 +56,7 @@ export class SPFetchClient extends BaseSPFetchClient {
 
         const url = combine(this.siteUrl, "_vti_bin/client.svc");
 
-        const r = await super.fetch(url, {
+        const r = await this._fetchClient.fetch(url, {
             "headers": {
                 "Authorization": "Bearer ",
             },
@@ -78,7 +73,7 @@ export class SPFetchClient extends BaseSPFetchClient {
 
         const url = `https://${this.getAuthHostUrl(this.authEnv)}/metadata/json/1?realm=${realm}`;
 
-        const r = await super.fetch(url);
+        const r = await this._fetchClient.fetch(url, { method: "GET"});
         const json: { endpoints: { protocol: string, location: string }[] } = await r.json();
 
         const eps = json.endpoints.filter(ep => ep.protocol === "OAuth2");
