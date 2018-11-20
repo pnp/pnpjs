@@ -21,7 +21,7 @@ export class GraphRest extends GraphQueryable {
     }
 
     public get teams(): Teams {
-        return new Teams();
+        return new Teams(this);
     }
 
     public get me(): User {

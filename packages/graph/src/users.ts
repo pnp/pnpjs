@@ -4,6 +4,8 @@ import { Contacts, ContactFolders } from "./contacts";
 import { OneNote, OneNoteMethods } from "./onenote";
 import { Drive, Drives } from "./onedrive";
 import { Tasks } from "./planner";
+import { Teams } from "./teams";
+
 
 
 /**
@@ -40,6 +42,9 @@ export class User extends GraphQueryableInstance {
         return new Contacts(this);
     }
 
+    public get joinedTeams(): Teams {
+        return new Teams(this, "joinedTeams");
+    }
     /**
     * The Contact Folders associated with the user
     */
