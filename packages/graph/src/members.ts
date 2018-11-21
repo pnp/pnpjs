@@ -1,8 +1,9 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS } from "@pnp/common";
+import { User as IMember } from "@microsoft/microsoft-graph-types";
 
 @defaultPath("members")
-export class Members extends GraphQueryableCollection {
+export class Members extends GraphQueryableCollection<IMember[]> {
 
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
@@ -30,7 +31,7 @@ export class Members extends GraphQueryableCollection {
     }
 }
 
-export class Member extends GraphQueryableInstance { }
+export class Member extends GraphQueryableInstance<IMember> { }
 
 @defaultPath("owners")
 export class Owners extends Members { }

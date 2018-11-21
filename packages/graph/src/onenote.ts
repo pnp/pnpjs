@@ -1,5 +1,6 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS } from "@pnp/common";
+import { Notebook as INotebook, Onenote as IOnenote, OnenoteSection as ISection } from "@microsoft/microsoft-graph-types";
 
 export interface OneNoteMethods {
     notebooks: Notebooks;
@@ -11,7 +12,7 @@ export interface OneNoteMethods {
  * Represents a onenote entity
  */
 @defaultPath("onenote")
-export class OneNote extends GraphQueryableInstance implements OneNoteMethods {
+export class OneNote extends GraphQueryableInstance<IOnenote> implements OneNoteMethods {
 
     public get notebooks(): Notebooks {
         return new Notebooks(this);
@@ -31,7 +32,7 @@ export class OneNote extends GraphQueryableInstance implements OneNoteMethods {
  *
  */
 @defaultPath("notebooks")
-export class Notebooks extends GraphQueryableCollection {
+export class Notebooks extends GraphQueryableCollection<INotebook[]> {
 
     /**
      * Gets a notebook instance by id
@@ -68,7 +69,7 @@ export class Notebooks extends GraphQueryableCollection {
  * Describes a notebook instance
  *
  */
-export class Notebook extends GraphQueryableInstance {
+export class Notebook extends GraphQueryableInstance<INotebook> {
     constructor(baseUrl: string | GraphQueryable, path?: string) {
         super(baseUrl, path);
     }
@@ -83,7 +84,7 @@ export class Notebook extends GraphQueryableInstance {
  *
  */
 @defaultPath("sections")
-export class Sections extends GraphQueryableCollection {
+export class Sections extends GraphQueryableCollection<ISection[]> {
 
     /**
      * Gets a section instance by id
@@ -120,7 +121,7 @@ export class Sections extends GraphQueryableCollection {
  * Describes a sections instance
  *
  */
-export class Section extends GraphQueryableInstance {
+export class Section extends GraphQueryableInstance<ISection> {
     constructor(baseUrl: string | GraphQueryable, path?: string) {
         super(baseUrl, path);
     }

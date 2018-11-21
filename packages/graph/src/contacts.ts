@@ -1,23 +1,27 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS, TypedHash, extend } from "@pnp/common";
-import { Contact as IContact, ContactFolder as IContactFolder, EmailAddress } from "@microsoft/microsoft-graph-types";
+import {
+    Contact as IContact,
+    ContactFolder as IContactFolder,
+    EmailAddress,
+} from "@microsoft/microsoft-graph-types";
 
 @defaultPath("contacts")
-export class Contacts extends GraphQueryableCollection {
+export class Contacts extends GraphQueryableCollection<IContact[]> {
 
     public getById(id: string): Contact {
         return new Contact(this, id);
     }
 
-     /**
-     * Create a new Contact for the user.
-     * 
-     * @param givenName The contact's given name.
-     * @param surName The contact's surname.
-     * @param emailAddresses The contact's email addresses.
-     * @param businessPhones The contact's business phone numbers.
-     * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
-     */
+    /**
+    * Create a new Contact for the user.
+    * 
+    * @param givenName The contact's given name.
+    * @param surName The contact's surname.
+    * @param emailAddresses The contact's email addresses.
+    * @param businessPhones The contact's business phone numbers.
+    * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
+    */
     public add(givenName: string, surName: string, emailAddresses: EmailAddress[], businessPhones: string[], additionalProperties: TypedHash<any> = {}): Promise<ContactAddResult> {
 
         const postBody = extend({
@@ -38,7 +42,7 @@ export class Contacts extends GraphQueryableCollection {
     }
 }
 
-export class Contact extends GraphQueryableInstance {
+export class Contact extends GraphQueryableInstance<IContact> {
     /**
      * Deletes this contact
      */
@@ -60,7 +64,7 @@ export class Contact extends GraphQueryableInstance {
 }
 
 @defaultPath("contactFolders")
-export class ContactFolders extends GraphQueryableCollection {
+export class ContactFolders extends GraphQueryableCollection<IContactFolder[]> {
 
     public getById(id: string): ContactFolder {
         return new ContactFolder(this, id);
@@ -90,7 +94,7 @@ export class ContactFolders extends GraphQueryableCollection {
     }
 }
 
-export class ContactFolder extends GraphQueryableInstance {
+export class ContactFolder extends GraphQueryableInstance<IContactFolder> {
     /**
      * Gets the contacts in this contact folder
      */
@@ -98,11 +102,11 @@ export class ContactFolder extends GraphQueryableInstance {
         return new Contacts(this);
     }
 
-     /**
-     * Gets the contacts in this contact folder
-     */
-    public get childFolders(): ChildFolders {
-        return new ChildFolders(this);
+    /**
+    * Gets the contacts in this contact folder
+    */
+    public get childFolders(): ContactFolders {
+        return new ContactFolders(this, "childFolders");
     }
 
     /**
@@ -117,41 +121,10 @@ export class ContactFolder extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this contact folder to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IContactFolder): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
-        });
-    }
-}
-
-@defaultPath("childFolders")
-export class ChildFolders extends GraphQueryableInstance {
-
-    public getById(id: string): ContactFolder {
-        return new ContactFolder(this, id);
-    }
-
-    /**
-     * Create a new Child Folder in Contact folder.
-     * 
-     * @param displayName The folder's display name.
-     * @param parentFolderId The ID of the folder's parent folder.
-     */
-    public add(displayName: string, parentFolderId?: string): Promise<ContactFolderAddResult> {
-
-        const postBody = {
-            displayName: displayName,
-            parentFolderId: parentFolderId,
-        };
-
-        return this.postCore({
-            body: jsS(postBody),
-        }).then(r => {
-            return {
-                contactFolder: this.getById(r.id),
-                data: r,
-            };
         });
     }
 }
