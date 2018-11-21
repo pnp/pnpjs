@@ -9,11 +9,17 @@ import { Teams } from "./teams";
 import { Users, User } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
+import { DirectoryObjects } from "./directoryobjects";
+
 
 export class GraphRest extends GraphQueryable {
 
     constructor(baseUrl: string | GraphQueryable, path?: string) {
         super(baseUrl, path);
+    }
+
+    public get directoryObjects(): DirectoryObjects {
+        return new DirectoryObjects(this);
     }
 
     public get groups(): Groups {

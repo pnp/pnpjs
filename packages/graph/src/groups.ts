@@ -170,6 +170,20 @@ export class Group extends GraphQueryableInstance {
         });
     }
 
+
+    /**
+     * Returns all the groups and directory roles that the specified group is a member of. The check is transitive
+     * 
+     * @param securityEnabledOnly 
+     */
+    public getMemberObjects(securityEnabledOnly = false): Promise<{ value: string[] }> {
+        return this.clone(Group, "getMemberObjects").postCore({
+            body: jsS({
+                securityEnabledOnly: securityEnabledOnly,
+            }),
+        });
+    }
+
     /**
      * Return all the groups that the specified group is a member of. The check is transitive
      * 
@@ -180,6 +194,19 @@ export class Group extends GraphQueryableInstance {
         return this.clone(Group, "getMemberGroups").postCore({
             body: jsS({
                 securityEnabledOnly: securityEnabledOnly,
+            }),
+        });
+    }
+
+    /**
+     * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member. 
+     * This function is transitive.
+     * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
+     */
+    public checkMemberGroups(groupIds: String[]): Promise<{ value: string[] }> {
+        return this.clone(Group, "checkMemberGroups").postCore({
+            body: jsS({
+                groupIds: groupIds,
             }),
         });
     }
