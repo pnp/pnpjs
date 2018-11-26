@@ -619,7 +619,7 @@ export interface ResultTableCollection {
 
 export interface IRefiner {
     Name: string;
-    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; };
+    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[];
 }
 export interface ResultTable {
     GroupTemplateId?: string;
