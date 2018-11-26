@@ -43,7 +43,6 @@ export class ProcessQueryParser<T = any> {
 
         for (let i = 0; i < this.op.actions.length; i++) {
 
-
             const a = this.op.actions[i];
 
             // let's see if the result is null based on the ObjectPath action, if it exists

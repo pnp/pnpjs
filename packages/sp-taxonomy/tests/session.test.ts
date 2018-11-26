@@ -34,7 +34,6 @@ describe("Taxonomy", () => {
             });
         });
 
-
         describe("termstores", () => {
 
             it("Should load termstores data", () => {

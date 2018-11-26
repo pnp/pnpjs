@@ -101,7 +101,6 @@ export interface ITermStoreData {
     WorkingLanguage?: number;
 }
 
-
 export type TermStoreUpdateProps = {
     DefaultLanguage?: number,
     WorkingLanguage?: number,

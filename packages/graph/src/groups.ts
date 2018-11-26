@@ -170,7 +170,6 @@ export class Group extends GraphQueryableInstance<IGroup> {
         });
     }
 
-
     /**
      * Returns all the groups and directory roles that the specified group is a member of. The check is transitive
      * 

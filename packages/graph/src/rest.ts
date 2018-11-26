@@ -11,7 +11,6 @@ import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 
-
 export class GraphRest extends GraphQueryable {
 
     constructor(baseUrl: string | GraphQueryable, path?: string) {

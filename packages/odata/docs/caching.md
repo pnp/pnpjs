@@ -82,3 +82,81 @@ sp.web.lists.getByTitle("Tasks").items.usingCaching().inBatch(batch).get().then(
 
 batch.execute().then(() => console.log("All done!"));
 ```
+
+## Implement Custom Caching
+
+You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achive this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern [as discussed here](https://github.com/pnp/pnpjs/issues/371).
+
+### Implement caching helper method:
+
+We create a map to act as our cache storage and a function to wrap the request caching logic
+
+```TypeScript
+const map = new Map<string, any>();
+
+async function staleWhileRevalidate<T>(key: string, p: Promise<T>): Promise<T> {
+
+    if (map.has(key)) {
+
+        // In Cache
+        p.then(u => {
+            // Update Cache once we have a result
+            map.set(key, u);
+        });
+
+        // Return from Cache
+        return map.get(key);
+    }
+
+    // Not In Cache so we need to wait for the value
+    const r = await p;
+
+    // Set Cache
+    map.set(key, r);
+
+    // Return from Promise
+    return r;
+}
+```
+
+### Usage
+
+> Don't call usingCaching just apply the helper method
+
+```TypeScript
+// this one will wait for the request to finish
+const r1 = await staleWhileRevalidate("test1", sp.web.select("Title", "Description").get());
+
+console.log(JSON.stringify(r1, null, 2));
+
+// this one will return the result from cache and then update the cache in the background
+const r2 = await staleWhileRevalidate("test1", sp.web.select("Title", "Description").get());
+
+console.log(JSON.stringify(r2, null, 2));
+```
+
+### Wrapper Function
+
+You can wrap this call into a single function you can reuse within your application each time you need the web data for example. You can update the select and interface to match your needs as well.
+
+```TypeScript
+interface WebData {
+    Title: string;
+}
+
+function getWebData(): Promise<WebData> {
+
+    return staleWhileRevalidate("test1", sp.web.select("Title", "Description").get());
+}
+
+
+// this one will wait for the request to finish
+const r1 = await getWebData();
+
+console.log(JSON.stringify(r1, null, 2));
+
+// this one will return the result from cache and then update the cache in the background
+const r2 = await getWebData();
+
+console.log(JSON.stringify(r2, null, 2));
+```

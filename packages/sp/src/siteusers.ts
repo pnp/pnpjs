@@ -81,7 +81,6 @@ export class SiteUsers extends SharePointQueryableCollection {
     }
 }
 
-
 /**
  * Base class for a user
  * 

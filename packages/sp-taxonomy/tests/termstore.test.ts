@@ -95,7 +95,6 @@ describe("TermStore", () => {
             return expect(p).to.eventually.be.fulfilled;
         });
 
-
         it("Should get a termset by name", () => {
 
             const p = taxonomy.getDefaultSiteCollectionTermStore().getTermSetsByName(termSetName, 1033).get();

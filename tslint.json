@@ -7,6 +7,7 @@
     ]
   },
   "rules": {
+    "no-consecutive-blank-lines": true,
     "class-name": true,
     "comment-format": [
       true,

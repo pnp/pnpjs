@@ -52,7 +52,6 @@ export class Views extends SharePointQueryableCollection {
     }
 }
 
-
 /**
  * Describes a single View instance
  *
@@ -155,4 +154,3 @@ export interface ViewUpdateResult {
     view: View;
     data: any;
 }
-

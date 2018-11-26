@@ -5,6 +5,7 @@ import {
     ConfigOptions,
     mergeOptions,
     objectDefinedNotNull,
+    isArray,
 } from "@pnp/common";
 import { ODataParser, ODataDefaultParser, JSONParser } from "./parsers";
 import { ICachingOptions } from "./caching";
@@ -13,6 +14,7 @@ import {
     RequestContext,
     getDefaultPipeline,
     pipe,
+    PipelineMethod,
 } from "./pipeline";
 
 export abstract class Queryable<GetType> {
@@ -57,6 +59,11 @@ export abstract class Queryable<GetType> {
      */
     protected _cloneParentCacheOptions: ICachingOptions | null;
 
+    /**
+     * If a specific request pipeline is set, it will be used
+     */
+    protected _requestPipeline: PipelineMethod<any>[] | null;
+
     constructor() {
         this._query = new Map<string, string>();
         this._options = {};
@@ -66,6 +73,7 @@ export abstract class Queryable<GetType> {
         this._cachingOptions = null;
         this._cloneParentWasCaching = false;
         this._cloneParentCacheOptions = null;
+        this._requestPipeline = null;
     }
 
     /**
@@ -135,32 +143,48 @@ export abstract class Queryable<GetType> {
         return this;
     }
 
+    /**
+     * Allows you to set a request specific processing pipeline
+     * 
+     * @param pipeline The set of methods, in order, to execute a given request
+     */
+    public withPipeline(pipeline: PipelineMethod<any>[]): this {
+        this._requestPipeline = pipeline.slice(0);
+        return this;
+    }
+
     protected getCore<T = GetType>(parser: ODataParser<T> = new JSONParser(), options: FetchOptions = {}): Promise<T> {
         // Fix for #304 - when we clone objects we in some cases then execute a get request
         // in these cases the caching settings were getting dropped from the request
-        // this tracks if the object from which this was clones was caching and applies that to an immediate get request
+        // this tracks if the object from which this was cloned was caching and applies that to an immediate get request
         // does not affect objects cloned from this as we are using different fields to track the settings so it won't
         // be triggered
         if (this._cloneParentWasCaching) {
             this.usingCaching(this._cloneParentCacheOptions);
         }
-        return this.toRequestContext<T>("GET", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.reqImpl("GET", options, parser);
     }
 
     protected postCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
-        return this.toRequestContext<T>("POST", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.reqImpl("POST", options, parser);
     }
 
     protected patchCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
-        return this.toRequestContext<T>("PATCH", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.reqImpl("PATCH", options, parser);
     }
 
     protected deleteCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
-        return this.toRequestContext<T>("DELETE", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.reqImpl("DELETE", options, parser);
     }
 
     protected putCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new JSONParser()): Promise<T> {
-        return this.toRequestContext<T>("PUT", options, parser, getDefaultPipeline()).then(context => pipe(context));
+        return this.reqImpl("PUT", options, parser);
+    }
+
+    protected reqImpl<T>(method: string, options: FetchOptions = {}, parser: ODataParser<T>): Promise<T> {
+        return this.getRequestPipeline<T>(method, options, parser)
+            .then(pipeline => this.toRequestContext<T>(method, options, parser, pipeline))
+            .then(context => pipe(context));
     }
 
     /**
@@ -207,6 +231,23 @@ export abstract class Queryable<GetType> {
         }
 
         return clone;
+    }
+
+    /**
+     * Handles getting the request pipeline to run for a given request
+     */
+    // @ts-ignore
+    // justified because we want to show that all these arguments are passed to the method so folks inheriting and potentially overriding
+    // clearly see how the method is invoked inside the class
+    protected getRequestPipeline<T>(method: string, options: FetchOptions = {}, parser: ODataParser<T>): Promise<PipelineMethod<T>[]> {
+
+        return new Promise(resolve => {
+            if (objectDefinedNotNull(this._requestPipeline) && isArray(this._requestPipeline)) {
+                resolve(this._requestPipeline);
+            } else {
+                resolve(getDefaultPipeline());
+            }
+        });
     }
 
     /**
@@ -328,7 +369,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      * 
      * @param clone 
      */
-    protected _clone(clone: ODataQueryable<any, any>, cloneSettings: { includeBatch: boolean}): any {
+    protected _clone(clone: ODataQueryable<any, any>, cloneSettings: { includeBatch: boolean }): any {
 
         clone = super._clone(clone, cloneSettings);
 

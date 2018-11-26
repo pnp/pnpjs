@@ -131,7 +131,6 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBui
 
 export type SearchQueryInit = string | SearchQuery | ISearchQueryBuilder;
 
-
 /**
  * Describes the search API
  *

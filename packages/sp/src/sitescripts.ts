@@ -112,4 +112,3 @@ export class SiteScripts extends SharePointQueryable implements SiteScriptUtilit
         return await this.clone(SiteScripts, "UpdateSiteScript").execute<SiteScriptInfo>({ updateInfo: siteScriptUpdateInfo });
     }
 }
-
