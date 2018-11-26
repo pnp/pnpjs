@@ -234,8 +234,11 @@ export abstract class Queryable<GetType> {
     }
 
     /**
-     * Handles getting the request pipelien to run for a given request
+     * Handles getting the request pipeline to run for a given request
      */
+    // @ts-ignore
+    // justified because we want to show that all these arguments are passed to the method so folks inheriting and potentially overriding
+    // clearly see how the method is invoked inside the class
     protected getRequestPipeline<T>(method: string, options: FetchOptions = {}, parser: ODataParser<T>): Promise<PipelineMethod<T>[]> {
 
         return new Promise(resolve => {
