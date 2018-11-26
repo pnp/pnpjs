@@ -61,6 +61,4 @@ export interface TabsConfiguration {
         "removeUrl": string;
 
     };
-
 }
-

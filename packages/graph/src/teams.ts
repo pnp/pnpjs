@@ -131,7 +131,6 @@ export class Team extends GraphQueryableInstance<TeamProperties> {
             visibility: visibility,
         };
 
-
         return this.clone(Team, "clone").postCore({
             body: jsS(postBody),
         }).then(data => {
@@ -141,7 +140,6 @@ export class Team extends GraphQueryableInstance<TeamProperties> {
             };
         });
     }
-
 
     /**
      * Executes the currently built request

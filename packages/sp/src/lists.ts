@@ -31,7 +31,6 @@ export class Lists extends SharePointQueryableCollection {
         return list;
     }
 
-
     /**
      * Gets a list from the collection by title
      *
@@ -125,7 +124,6 @@ export class Lists extends SharePointQueryableCollection {
         });
     }
 }
-
 
 /**
  * Describes a single List instance

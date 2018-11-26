@@ -18,7 +18,6 @@ export interface SearchSuggestQuery {
      */
     count?: number;
 
-
     /**
      * The number of personal results to retrieve. Must be greater than zero (0). The default value is 5.
      */

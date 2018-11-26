@@ -72,4 +72,3 @@ export class Event extends GraphQueryableInstance<IEvent> {
         return this.deleteCore();
     }
 }
-

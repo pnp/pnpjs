@@ -406,7 +406,6 @@ export class ItemVersions extends SharePointQueryableCollection {
     }
 }
 
-
 /**
  * Describes a single Version instance
  *
@@ -482,4 +481,3 @@ class ItemUpdatedParser extends ODataParserBase<ItemUpdateResultData> {
         });
     }
 }
-

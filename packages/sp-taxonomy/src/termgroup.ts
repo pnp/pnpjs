@@ -142,5 +142,3 @@ export class TermGroup extends ClientSvcQueryable implements ITermGroup {
         return this.invokeUpdate<ITermGroupData, ITermGroup>(properties, TermGroup);
     }
 }
-
-

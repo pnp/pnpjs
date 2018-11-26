@@ -7,7 +7,6 @@ import { methodAction, objectPath, objectProperties, opQuery } from "./opactionb
 import { IMethodParamsBuilder, method, property } from "./opbuilders";
 import { ProcessQueryParser } from "./parsers";
 
-
 export interface IClientSvcQueryable {
     select(...selects: string[]): this;
     usingCaching(options?: ICachingOptions): this;
