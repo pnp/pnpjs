@@ -142,6 +142,7 @@ You can wrap this call into a single function you can reuse within your applicat
 ```TypeScript
 interface WebData {
     Title: string;
+    Description: string;
 }
 
 function getWebData(): Promise<WebData> {
