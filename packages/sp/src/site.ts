@@ -153,7 +153,7 @@ export class Site extends SharePointQueryableInstance {
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param siteDesignId The Guid of the site design to be used.
      *                     You can use the below default OOTB GUIDs:
-     *                     Topic: null
+     *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
      */
@@ -163,9 +163,9 @@ export class Site extends SharePointQueryableInstance {
         lcid = 1033,
         shareByEmailEnabled = false,
         url: string,
-        description?: "",
-        classification?: "",
-        siteDesignId?: "",
+        description = "",
+        classification = "",
+        siteDesignId = "00000000-0000-0000-0000-000000000000",
     ): Promise<void> {
 
         const props = {
