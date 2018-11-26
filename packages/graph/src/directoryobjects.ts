@@ -1,5 +1,6 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS } from "@pnp/common";
+import { DirectoryObject as IDirectoryObject } from "@microsoft/microsoft-graph-types";
 
 export enum DirectoryObjectType {
     /**
@@ -24,10 +25,8 @@ export enum DirectoryObjectType {
  * Describes a collection of Directory Objects
  *
  */
-export class DirectoryObjects extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path = "directoryObjects") {
-        super(baseUrl, path);
-    }
+@defaultPath("directoryObjects")
+export class DirectoryObjects extends GraphQueryableCollection<IDirectoryObject[]> {
 
     /**
      * Gets a directoryObject from the collection using the specified id
@@ -38,26 +37,28 @@ export class DirectoryObjects extends GraphQueryableCollection {
         return new DirectoryObject(this, id);
     }
 
-     /**
-     * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties. 
-     * The $select query option is not available for this operation.
-     * 
-     * @param ids A collection of ids for which to return objects. You can specify up to 1000 ids.
-     * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
-     */
+    /**
+    * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties. 
+    * The $select query option is not available for this operation.
+    * 
+    * @param ids A collection of ids for which to return objects. You can specify up to 1000 ids.
+    * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
+    */
     public getByIds(ids: string[], type: DirectoryObjectType = DirectoryObjectType.directoryObject): Promise<DirectoryObject[]> {
         return this.clone(DirectoryObjects, "getByIds").postCore({
             body: jsS({
-                ids: ids,
-                type: type,
+                ids,
+                type,
             }),
         });
-    }}
+    }
+}
 
 /**
  * Represents a Directory Object entity
  */
-export class DirectoryObject extends GraphQueryableInstance {
+export class DirectoryObject extends GraphQueryableInstance<IDirectoryObject> {
+
     /**
      * Deletes this group
      */
@@ -73,7 +74,7 @@ export class DirectoryObject extends GraphQueryableInstance {
     public getMemberObjects(securityEnabledOnly = false): Promise<{ value: string[] }> {
         return this.clone(DirectoryObject, "getMemberObjects").postCore({
             body: jsS({
-                securityEnabledOnly: securityEnabledOnly,
+                securityEnabledOnly,
             }),
         });
     }
@@ -87,7 +88,7 @@ export class DirectoryObject extends GraphQueryableInstance {
 
         return this.clone(DirectoryObject, "getMemberGroups").postCore({
             body: jsS({
-                securityEnabledOnly: securityEnabledOnly,
+                securityEnabledOnly,
             }),
         });
     }
@@ -100,7 +101,7 @@ export class DirectoryObject extends GraphQueryableInstance {
     public checkMemberGroups(groupIds: String[]): Promise<{ value: string[] }> {
         return this.clone(DirectoryObject, "checkMemberGroups").postCore({
             body: jsS({
-                groupIds: groupIds,
+                groupIds,
             }),
         });
     }

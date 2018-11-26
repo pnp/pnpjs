@@ -1,4 +1,4 @@
-import { TypedHash, jsS } from "@pnp/common";
+import { jsS } from "@pnp/common";
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Contacts, ContactFolders } from "./contacts";
 import { OneNote, OneNoteMethods } from "./onenote";
@@ -6,16 +6,14 @@ import { Drive, Drives } from "./onedrive";
 import { Tasks } from "./planner";
 import { Teams } from "./teams";
 import { DirectoryObjects } from "./directoryobjects";
-
-
-
+import { User as IUser } from "@microsoft/microsoft-graph-types";
 
 /**
  * Describes a collection of Users objects
  *
  */
 @defaultPath("users")
-export class Users extends GraphQueryableCollection {
+export class Users extends GraphQueryableCollection<IUser[]> {
     /**
      * Gets a user from the collection using the specified id
      * 
@@ -29,7 +27,7 @@ export class Users extends GraphQueryableCollection {
 /**
  * Represents a user entity
  */
-export class User extends GraphQueryableInstance {
+export class User extends GraphQueryableInstance<IUser> {
     /**
     * The onenote associated with me
     */
@@ -130,7 +128,7 @@ export class User extends GraphQueryableInstance {
      * 
      * @param properties Properties used to update this user
      */
-    public update(properties: TypedHash<any>): Promise<void> {
+    public update(properties: IUser): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),

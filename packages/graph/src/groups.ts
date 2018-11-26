@@ -3,7 +3,7 @@ import { Members, Owners } from "./members";
 import { extend, TypedHash, jsS } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
-import { Event as IEvent } from "@microsoft/microsoft-graph-types";
+import { Event as IEvent, Group as IGroup } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
@@ -29,7 +29,7 @@ export enum GroupType {
  *
  */
 @defaultPath("groups")
-export class Groups extends GraphQueryableCollection {
+export class Groups extends GraphQueryableCollection<IGroup[]> {
 
     /**
      * Gets a group from the collection using the specified id
@@ -79,7 +79,7 @@ export class Groups extends GraphQueryableCollection {
 /**
  * Represents a group entity
  */
-export class Group extends GraphQueryableInstance {
+export class Group extends GraphQueryableInstance<IGroup> {
 
     /**
      * The calendar associated with this group
@@ -223,7 +223,7 @@ export class Group extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this group to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IGroup): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
