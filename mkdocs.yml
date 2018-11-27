@@ -35,6 +35,11 @@ nav:
       - configuration: 'config-store/docs/configuration.md'
       - providers: 'config-store/docs/providers.md'
     - graph: 'graph/docs/index.md'
+      - contacts: 'graph/docs/contacts.md'
+      - 'directory objects': 'graph/docs/directoryobjects.md'
+      - onedrive: 'graph/docs/onedrive.md'
+      - planner: 'graph/docs/planner.md'
+      - teams: 'graph/docs/teams.md'
     - logging: 'logging/docs/index.md'
     - nodejs:
       - nodejs: 'nodejs/docs/index.md'
