@@ -25,7 +25,7 @@ This method can be used from any web to retrieve values previsouly set.
 ```TypeScript
 import { sp, StorageEntity } from "@pnp/sp";
 
-const prop: StorageEntity = await sp.getStorageEntity("Test1");
+const prop: StorageEntity = await sp.web.getStorageEntity("Test1");
 
 console.log(prop.Value);
 ```
