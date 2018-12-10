@@ -15,6 +15,7 @@ export function rollup() {
             if (error === null) {
                 resolve();
             } else {
+                console.error(error);
                 reject(stdout);
             }
         });

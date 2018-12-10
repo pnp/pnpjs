@@ -29,7 +29,6 @@ export async function publisher(version: string, config: PublishSchema): Promise
 
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Publishing error`))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
-        console.error(e);
         throw e;
     }
 }

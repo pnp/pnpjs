@@ -34,7 +34,7 @@ export function publishBetaPackage(version: string, config: PublishSchema): Prom
                         log(`${colors.bgGreen(" ")} Published BETA ${packagePath}`);
                         resolve();
                     } else {
-
+                        console.error(error);
                         reject(stdout);
                     }
                 });

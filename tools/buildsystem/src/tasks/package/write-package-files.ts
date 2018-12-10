@@ -64,6 +64,7 @@ export function writePackageFiles(version: string, config: PackageSchema) {
                 fs.writeFile(path.resolve(packageTarget.outDir, builtFolders[j], "package.json"), JSON.stringify(pkg, null, 4), (err) => {
 
                     if (err) {
+                        console.error(err);
                         reject(err);
                     } else {
                         resolve();

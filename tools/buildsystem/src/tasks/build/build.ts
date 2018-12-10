@@ -24,6 +24,7 @@ export function build(_0: string, config: BuildSchema) {
             if (error === null) {
                 resolve();
             } else {
+                console.error(error);
                 reject(stdout);
             }
         });

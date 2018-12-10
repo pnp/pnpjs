@@ -34,9 +34,6 @@ export function publishPackage(version: string, config: PublishSchema): Promise<
                         log(`${colors.bgGreen(" ")} Published ${packagePath}`);
                         resolve();
                     } else {
-
-                        console.error(`stdout: ${stdout}`);
-                        console.error(`stderr: ${stderr}`);
                         console.error(error);
                         reject(error);
                     }

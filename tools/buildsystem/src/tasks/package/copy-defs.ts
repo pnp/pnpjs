@@ -35,6 +35,7 @@ export function copyDefs(version: string, config: PackageSchema) {
             ], (err: (Error | null)) => {
 
                 if (err !== undefined) {
+                    console.error(err);
                     reject(err);
                 } else {
                     resolve();

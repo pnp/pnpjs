@@ -28,7 +28,6 @@ export async function packager(version: string, config: PackageSchema): Promise<
 
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Packaging error`))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
-        console.error(e);
         throw e;
     }
 }
@@ -51,4 +50,3 @@ async function runTasks(name: string, version: string, tasks: PackageTask[], con
     }
     log(`${colors.bgGreen(" ")} Finished ${name} tasks.`);
 }
-
