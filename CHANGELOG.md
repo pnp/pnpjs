@@ -6,10 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.2.7 - 2018-12-10
+
 ### Added
 
+- @pnp/graph: Added support for messages, mailFolders, and mailboxSettings on user [[PR](https://github.com/pnp/pnpjs/pull/379)]
+- @pnp/graph: Added support for directory objects and new methods in groups and docs updates ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/378)]
 - @pnp/nodejs: Added support for enhanced usage in provider hosted applications ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/339)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/nodejs/docs/provider-hosted-app.md)]
 - @pnp/graph: Added support for Teams methods now in GA ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/373)]
+
+### Changed
+
+-@pnp/common: Update in getGuid to prevent collisions ([@AustinBreslinDev](https://github.com/AustinBreslinDev)) [[PR](https://github.com/pnp/pnpjs/pull/399)]
+
+### Fixed
+
+- @pnp/sp: Expanded typings for userCustomActions.add [[PR](https://github.com/pnp/pnpjs/pull/377)]
+- @pnp/sp: Fixed comm site creation issue ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/380)]
+- @pnp/sp: Fixed IRefiner.Entries as array ([@cslecours](https://github.com/cslecours)) [[PR](https://github.com/pnp/pnpjs/pull/386)]
+- @pnp/sp: Expanded folder.update allowed types [[PR](https://github.com/pnp/pnpjs/pull/393)]
 
 ## 1.2.6 - 2018-11-16
 
