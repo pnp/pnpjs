@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
--@pnp/common: Update in getGuid to prevent collisions ([@AustinBreslinDev](https://github.com/AustinBreslinDev)) [[PR](https://github.com/pnp/pnpjs/pull/399)]
+- @pnp/common: Update in getGuid to prevent collisions ([@AustinBreslinDev](https://github.com/AustinBreslinDev)) [[PR](https://github.com/pnp/pnpjs/pull/399)]
 
 ### Fixed
 
