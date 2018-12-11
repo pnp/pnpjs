@@ -1,8 +1,9 @@
-import { extend, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
+import { extend, sanitizeGuid, stringIsNullOrEmpty, getGUID } from "@pnp/common";
 import {
     ClientSvcQueryable,
     IClientSvcQueryable,
     MethodParams,
+    setProperty,
 } from "@pnp/sp-clientsvc";
 import { ILabelData, ILabel, ILabels, Labels } from "./labels";
 import { ITermSet, TermSet, ITermSets, TermSets } from "./termsets";
@@ -41,11 +42,13 @@ export interface ITerm extends IClientSvcQueryable {
     readonly pinSourceTermSet: ITermSet;
     readonly reusedTerms: ITerms;
     readonly sourceTerm: ITerm;
+    readonly terms: ITerms;
     readonly termSet: ITermSet;
     readonly termSets: ITermSets;
     createLabel(name: string, lcid: number, isDefault?: boolean): Promise<ILabelData & ILabel>;
     deprecate(doDeprecate: boolean): Promise<void>;
     get(): Promise<(ITermData & ITerm)>;
+    addTerm(name: string, lcid: number, isAvailableForTagging?: boolean, id?: string): Promise<ITerm & ITermData>;
     getDescription(lcid: number): Promise<string>;
     setDescription(description: string, lcid: number): Promise<void>;
     setLocalCustomProperty(name: string, value: string): Promise<void>;
@@ -99,6 +102,23 @@ export class Terms extends ClientSvcQueryable implements ITerms {
  * Represents the operations available on a given term
  */
 export class Term extends ClientSvcQueryable implements ITerm {
+
+    public addTerm(name: string, lcid: number, isAvailableForTagging = true, id = getGUID()): Promise<ITerm & ITermData> {
+
+        const params = MethodParams.build()
+            .string(name)
+            .number(lcid)
+            .string(sanitizeGuid(id));
+
+        this._useCaching = false;
+        return this.invokeMethod<ITermData>("CreateTerm", params,
+            setProperty("IsAvailableForTagging", "Boolean", `${isAvailableForTagging}`))
+            .then(r => extend(this.termSet.getTermById(r.Id), r));
+    }
+
+    public get terms(): ITerms {
+        return this.getChildProperty(Terms, "Terms");
+    }
 
     public get labels(): ILabels {
         return new Labels(this);
