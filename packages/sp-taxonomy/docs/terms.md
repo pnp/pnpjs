@@ -158,3 +158,19 @@ const term: ITerm = <from one of the above methods>;
 // load term instance merged with data
 await term.setLocalCustomProperty("name", "value");
 ```
+
+### addTerm
+
+_Added in 1.2.8_
+
+Adds a child term to an existing term instance.
+
+```TypeScript
+import { ITerm } from "@pnp/sp-taxonomy";
+
+const parentTerm: ITerm = <from one of the above methods>;
+
+await parentTerm.addTerm("child 1", 1033);
+
+await parentTerm.addTerm("child 2", 1033);
+```
