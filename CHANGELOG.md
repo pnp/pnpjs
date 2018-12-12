@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- @pnp/sp-taxonomy: Add support for add new term from term ([@siata13](https://github.com/siata13)) [[PR](https://github.com/pnp/pnpjs/pull/411)]
+- @pnp/sp: Added support for new location column creation ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/413)]
+
+### Fixed
+
+- @pnp/sp: Fix for parsing html for ClientSidePages [[PR](https://github.com/pnp/pnpjs/pull/412)]
+
 ## 1.2.7 - 2018-12-10
 
 ### Added
