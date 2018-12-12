@@ -424,6 +424,21 @@ export class Fields extends SharePointQueryableCollection {
                 };
             });
     }
+
+    /**
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    public addLocation(
+        title: string,
+        properties?: FieldCreationProperties): Promise<FieldAddResult> {
+
+        const props: { FieldTypeKind: number } = { FieldTypeKind: 33 };
+
+        return this.add(title, "SP.FieldLocation", extend(props, properties));
+    }
 }
 
 /**
