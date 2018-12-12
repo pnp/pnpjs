@@ -469,15 +469,15 @@ export class ClientSidePage extends File {
         let zoneIndex = 0;
 
         // handle case where we don't have position data
-        if (hOP(column.controlData, "position")) {
-            if (hOP(column.controlData.position, "zoneIndex")) {
-                zoneIndex = column.controlData.position.zoneIndex;
+        if (hOP(control.controlData, "position")) {
+            if (hOP(control.controlData.position, "zoneIndex")) {
+                zoneIndex = control.controlData.position.zoneIndex;
             }
-            if (hOP(column.controlData.position, "sectionIndex")) {
-                sectionIndex = column.controlData.position.sectionIndex;
+            if (hOP(control.controlData.position, "sectionIndex")) {
+                sectionIndex = control.controlData.position.sectionIndex;
             }
-            if (hOP(column.controlData.position, "sectionFactor")) {
-                sectionFactor = column.controlData.position.sectionFactor;
+            if (hOP(control.controlData.position, "sectionFactor")) {
+                sectionFactor = control.controlData.position.sectionFactor;
             }
         }
 
