@@ -1,6 +1,6 @@
 import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue, method, objConstructor, objectPath, objectProperties, opQuery, property } from "@pnp/sp-clientsvc";
-import { ITermGroup, ITermGroupData, TermGroup } from "./termgroup";
+import { ITermGroup, ITermGroupData, TermGroup, ITermGroups, TermGroups } from "./termgroup";
 import { ITerm, ITerms, Term, Terms } from "./terms";
 import { ITermSet, ITermSets, TermSet, TermSets } from "./termsets";
 import { ChangeInformation, ChangedItem, ILabelMatchInfo } from "./types";
@@ -69,6 +69,7 @@ export interface ITermStore extends IClientSvcQueryable {
     readonly keywordsTermSet: ITermSet;
     readonly orphanedTermsTermSet: ITermSet;
     readonly systemGroup: ITermGroup;
+    readonly groups: ITermGroups;
     addGroup(name: string, id?: string): Promise<ITermGroup & ITermGroupData>;
     addLanguage(lcid: number): Promise<void>;
     commitAll(): Promise<void>;
@@ -126,6 +127,10 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
 
     public get systemGroup(): ITermGroup {
         return this.getChildProperty(TermGroup, "SystemGroup");
+    }
+
+    public get groups(): ITermGroups {
+        return this.getChildProperty(TermGroups, "Groups");
     }
 
     /**

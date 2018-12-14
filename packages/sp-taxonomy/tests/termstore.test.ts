@@ -65,6 +65,13 @@ describe("TermStore", () => {
             return expect(p).to.eventually.be.fulfilled;
         });
 
+        it("Should get groups", () => {
+
+            const p = taxonomy.getDefaultSiteCollectionTermStore().groups.get();
+
+            return expect(p).to.eventually.be.fulfilled;
+        });
+
         it("Should get a term by id", () => {
 
             if (termId !== null) {
