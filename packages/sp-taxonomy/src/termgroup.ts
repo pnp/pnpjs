@@ -67,9 +67,12 @@ export type TermGroupUpdateProps = {
     Description?: string,
 };
 
+/**
+ * Term Groups collection in Term Store
+ */
 export class TermGroups extends ClientSvcQueryable implements ITermGroups {
     /**
-     * Gets the termsets in this collection
+     * Gets the groups in this collection
      */
     public get(): Promise<(ITermGroupData & ITermGroup)[]> {
         return this.sendGetCollection<ITermGroupData, ITermGroup>((d: ITermGroupData) => {
@@ -78,14 +81,14 @@ export class TermGroups extends ClientSvcQueryable implements ITermGroups {
             } else if (!stringIsNullOrEmpty(d.Id)) {
                 return this.getById(d.Id);
             }
-            throw Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+            throw Error("Could not find Name or Id in TermGroups.get(). You must include at least one of these in your select fields.");
         });
     }
 
     /**
-     * Gets a TermSet from this collection by id
+     * Gets a TermGroup from this collection by id
      * 
-     * @param id TermSet id
+     * @param id TermGroup id
      */
     public getById(id: string): ITermGroup {
 
@@ -96,9 +99,9 @@ export class TermGroups extends ClientSvcQueryable implements ITermGroups {
     }
 
     /**
-     * Gets a TermSet from this collection by name
+     * Gets a TermGroup from this collection by name
      * 
-     * @param name TermSet name
+     * @param name TErmGroup name
      */
     public getByName(name: string): ITermGroup {
 
