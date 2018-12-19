@@ -24,7 +24,7 @@ export class Subscriptions extends SharePointQueryableCollection {
      *
      * @param notificationUrl The url to receive the notifications
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
-     * @param clientState A client specific string (defaults to pnp-js-core-subscription when omitted)
+     * @param clientState A client specific string (optional)
      */
     public add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult> {
 
