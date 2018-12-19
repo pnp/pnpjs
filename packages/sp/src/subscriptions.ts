@@ -28,14 +28,17 @@ export class Subscriptions extends SharePointQueryableCollection {
      */
     public add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult> {
 
-        const postBody = jsS({
-            "clientState": clientState || "pnp-js-core-subscription",
+        const postBody = {
             "expirationDateTime": expirationDate,
             "notificationUrl": notificationUrl,
             "resource": this.toUrl(),
-        });
+        };
 
-        return this.postCore({ body: postBody, headers: { "Content-Type": "application/json" } }).then(result => {
+        if (clientState) {
+            (postBody as any).clientState = clientState;
+        }
+        
+        return this.postCore({ body: jsS(postBody), headers: { "Content-Type": "application/json" } }).then(result => {
 
             return { data: result, subscription: this.getById(result.id) };
         });
