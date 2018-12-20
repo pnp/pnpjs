@@ -51,7 +51,7 @@ export class Subscription extends SharePointQueryableInstance {
     /**
      * Renews this webhook subscription
      *
-     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months, optional)
      * @param notificationUrl The url to receive the notifications (optional)
      * @param clientState A client specific string (optional)
      */
