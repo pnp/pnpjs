@@ -8,10 +8,10 @@ import { jsS } from "@pnp/common";
 @defaultPath("subscriptions")
 export class Subscriptions extends SharePointQueryableCollection {
 
-    /**	  
-     * Returns all the webhook subscriptions or the specified webhook subscription	    
-     *	     
-     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions	   
+    /**
+     * Returns all the webhook subscriptions or the specified webhook subscription
+     *
+     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
      */
     public getById(subscriptionId: string): Subscription {
         const s = new Subscription(this);
@@ -52,17 +52,30 @@ export class Subscription extends SharePointQueryableInstance {
      * Renews this webhook subscription
      *
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+     * @param notificationUrl The url to receive the notifications (optional)
+     * @param clientState A client specific string (optional)
      */
-    public update(expirationDate: string): Promise<SubscriptionUpdateResult> {
+    public update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<SubscriptionUpdateResult> {
 
-        const postBody = jsS({
-            "expirationDateTime": expirationDate,
-        });
+      const postBody: any = {
+      };
 
-        return this.patchCore({ body: postBody, headers: { "Content-Type": "application/json" } }).then(data => {
-            return { data: data, subscription: this };
-        });
-    }
+      if (expirationDate) {
+        postBody.expirationDate = expirationDate;
+      }
+
+      if (notificationUrl) {
+        postBody.notificationUrl = notificationUrl;
+      }
+
+      if (clientState) {
+        postBody.clientState = clientState;
+      }
+
+      return this.patchCore({ body: jsS(postBody), headers: { "Content-Type": "application/json" } }).then(data => {
+          return { data: data, subscription: this };
+      });
+  }
 
     /**
      * Removes this webhook subscription
