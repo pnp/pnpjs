@@ -75,13 +75,6 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     /**
      * Adds this query to the supplied batch
      *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
      */
     public inBatch(batch: IObjectPathBatch): this {
 
@@ -89,8 +82,10 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             throw Error("This query is already part of a batch.");
         }
 
-        this._batch = batch;
-        this._batchDependency = batch.addDependency();
+        if (objectDefinedNotNull(batch)) {
+            this._batch = batch;
+            this._batchDependency = batch.addDependency();
+        }
 
         return this;
     }
