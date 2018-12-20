@@ -300,8 +300,10 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
             throw Error("This query is already part of a batch.");
         }
 
-        this._batch = batch;
-        this._batchDependency = batch.addDependency();
+        if (objectDefinedNotNull(batch)) {
+            this._batch = batch;
+            this._batchDependency = batch.addDependency();
+        }
 
         return this;
     }
