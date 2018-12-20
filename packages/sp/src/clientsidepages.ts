@@ -245,6 +245,8 @@ export class ClientSidePage extends File {
             .replace(/}/g, "&#125;")
             .replace(/\[/g, "\[")
             .replace(/\]/g, "\]")
+            .replace(/\*/g, "\*")
+            .replace(/\$/g, "\$")
             .replace(/\./g, "\.");
     }
 
@@ -258,7 +260,8 @@ export class ClientSidePage extends File {
             const mapDict = [
                 [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
                 [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
-                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"], [/\\\*/g, "*"],
+                [/\\\$/g, "$"],
             ];
             return mapDict.reduce((r, m) => r.replace(m[0], m[1] as string), escaped);
         };
