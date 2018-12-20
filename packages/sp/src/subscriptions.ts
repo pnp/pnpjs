@@ -8,10 +8,10 @@ import { jsS } from "@pnp/common";
 @defaultPath("subscriptions")
 export class Subscriptions extends SharePointQueryableCollection {
 
-    /**	  
-     * Returns all the webhook subscriptions or the specified webhook subscription	    
-     *	     
-     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions	   
+    /**
+     * Returns all the webhook subscriptions or the specified webhook subscription
+     *
+     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
      */
     public getById(subscriptionId: string): Subscription {
         const s = new Subscription(this);
@@ -24,18 +24,21 @@ export class Subscriptions extends SharePointQueryableCollection {
      *
      * @param notificationUrl The url to receive the notifications
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
-     * @param clientState A client specific string (defaults to pnp-js-core-subscription when omitted)
+     * @param clientState A client specific string (optional)
      */
     public add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult> {
 
-        const postBody = jsS({
-            "clientState": clientState || "pnp-js-core-subscription",
+        const postBody: any = {
             "expirationDateTime": expirationDate,
             "notificationUrl": notificationUrl,
             "resource": this.toUrl(),
-        });
+        };
 
-        return this.postCore({ body: postBody, headers: { "Content-Type": "application/json" } }).then(result => {
+        if (clientState) {
+            postBody.clientState = clientState;
+        }
+
+        return this.postCore({ body: jsS(postBody), headers: { "Content-Type": "application/json" } }).then(result => {
 
             return { data: result, subscription: this.getById(result.id) };
         });
