@@ -272,9 +272,15 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
      */
     protected _batch: BatchType | null;
 
+    /**
+     * Allows us to properly block batch execution until everything is loaded
+     */
+    protected _batchDependency: () => void | null;
+
     constructor() {
         super();
         this._batch = null;
+        this._batchDependency = null;
     }
 
     /**
@@ -295,6 +301,7 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
         }
 
         this._batch = batch;
+        this._batchDependency = batch.addDependency();
 
         return this;
     }

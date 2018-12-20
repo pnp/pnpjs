@@ -29,12 +29,19 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     /**
      * Tracks the batch of which this query may be part
      */
-    protected _batch: IObjectPathBatch;
+    protected _batch: IObjectPathBatch | null;
+
+    /**
+     * Allows us to properly block batch execution until everything is loaded
+     */
+    protected _batchDependency: () => void | null;
 
     constructor(parent: ClientSvcQueryable | string = "", protected _objectPaths: ObjectPathQueue | null = null) {
         super();
 
         this._selects = [];
+        this._batch = null;
+        this._batchDependency = null;
 
         if (typeof parent === "string") {
 
@@ -83,6 +90,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
         }
 
         this._batch = batch;
+        this._batchDependency = batch.addDependency();
 
         return this;
     }
@@ -291,7 +299,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
                 }
             }
 
-            const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
+            const dependencyDispose = this.hasBatch ? this._batchDependency : () => { return; };
 
             // build our request context
             const context: RequestContext<T> = {
