@@ -61,7 +61,7 @@ export class Subscription extends SharePointQueryableInstance {
       };
 
       if (expirationDate) {
-        postBody.expirationDate = expirationDate;
+        postBody.expirationDateTime = expirationDate;
       }
 
       if (notificationUrl) {
