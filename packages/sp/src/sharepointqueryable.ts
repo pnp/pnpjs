@@ -182,7 +182,7 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
         parser: ODataParser<T>,
         pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>> {
 
-        const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
+        const dependencyDispose = this.hasBatch ? this._batchDependency : () => { return; };
 
         return toAbsoluteUrl(this.toUrlAndQuery()).then(url => {
 
