@@ -8,10 +8,10 @@ import { jsS } from "@pnp/common";
 @defaultPath("subscriptions")
 export class Subscriptions extends SharePointQueryableCollection {
 
-    /**	  
-     * Returns all the webhook subscriptions or the specified webhook subscription	    
-     *	     
-     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions	   
+    /**
+     * Returns all the webhook subscriptions or the specified webhook subscription
+     *
+     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
      */
     public getById(subscriptionId: string): Subscription {
         const s = new Subscription(this);
@@ -37,7 +37,7 @@ export class Subscriptions extends SharePointQueryableCollection {
         if (clientState) {
             (postBody as any).clientState = clientState;
         }
-        
+
         return this.postCore({ body: jsS(postBody), headers: { "Content-Type": "application/json" } }).then(result => {
 
             return { data: result, subscription: this.getById(result.id) };
