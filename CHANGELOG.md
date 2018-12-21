@@ -10,10 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - @pnp/sp-taxonomy: Add support for add new term from term ([@siata13](https://github.com/siata13)) [[PR](https://github.com/pnp/pnpjs/pull/411)]
 - @pnp/sp: Added support for new location column creation ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/413)]
+- @pnp/sp-taxonomy: Adds groups property to TermStore object in sp-taxonomy ([@AJIXuMuK](https://github.com/AJIXuMuK)) [[PR](https://github.com/pnp/pnpjs/pull/421)]
+
+### Changed
+
+- @pnp/sp: Changes clientstate to be optional when creating subscriptions ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/431)]
+- @pnp/sp: Updates parameters when updating a subscription ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/434)]
 
 ### Fixed
 
 - @pnp/sp: Fix for parsing html for ClientSidePages [[PR](https://github.com/pnp/pnpjs/pull/412)]
+- @pnp/logging: Fix to ensure logging never throws an exception [[PR](https://github.com/pnp/pnpjs/pull/416)]
+- @pnp/odata: Fix for how batches are prepared to remove timing errors [[PR](https://github.com/pnp/pnpjs/pull/432)]
+- @pnp/sp: Fix for ClientSidePages encoding of * and $ chars [[PR](https://github.com/pnp/pnpjs/pull/436)]
 
 ## 1.2.7 - 2018-12-10
 
