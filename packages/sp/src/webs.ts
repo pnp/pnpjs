@@ -111,7 +111,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getParentWeb(): Promise<{ data: any; web: Web }> {
         return this.select("ParentWeb/Id").expand("ParentWeb").get()
-            .then(({ ParentWeb }) => new Site(this.toUrlAndQuery().split("/_api")[0]).openWebById(ParentWeb.Id));
+            .then(({ ParentWeb }) => ParentWeb ? new Site("").openWebById(ParentWeb.Id) : null);
     }
 
     /**
@@ -593,9 +593,9 @@ export class Web extends SharePointQueryableShareableWeb {
 
     /**
      * Gets hub site data for the current web.
-     * 
-     * @param forceRefresh Default value is false. When false, the data is returned from the server's cache. 
-     * When true, the cache is refreshed with the latest updates and then returned. 
+     *
+     * @param forceRefresh Default value is false. When false, the data is returned from the server's cache.
+     * When true, the cache is refreshed with the latest updates and then returned.
      * Use this if you just made changes and need to see those changes right away.
      */
     public hubSiteData(forceRefresh = false): Promise<void> {
