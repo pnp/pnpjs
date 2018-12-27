@@ -111,7 +111,7 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getParentWeb(): Promise<{ data: any; web: Web }> {
         return this.select("ParentWeb/Id").expand("ParentWeb").get()
-            .then(({ ParentWeb }) => ParentWeb ? new Site("").openWebById(ParentWeb.Id) : null);
+            .then(({ ParentWeb }) => ParentWeb ? new Site(this.parentUrl).openWebById(ParentWeb.Id) : null);
     }
 
     /**
