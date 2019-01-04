@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp-taxonomy: Add support for add new term from term ([@siata13](https://github.com/siata13)) [[PR](https://github.com/pnp/pnpjs/pull/411)]
 - @pnp/sp: Added support for new location column creation ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/413)]
 - @pnp/sp-taxonomy: Adds groups property to TermStore object in sp-taxonomy ([@AJIXuMuK](https://github.com/AJIXuMuK)) [[PR](https://github.com/pnp/pnpjs/pull/421)]
+- documentation: @pnp/sp profiles packages functions docs ([@sympmarc](https://github.com/sympmarc)) [[PR](https://github.com/pnp/pnpjs/pull/438)]
+- @pnp/graph: Added invitations create method ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/443)]
 
 ### Changed
 
@@ -23,6 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/logging: Fix to ensure logging never throws an exception [[PR](https://github.com/pnp/pnpjs/pull/416)]
 - @pnp/odata: Fix for how batches are prepared to remove timing errors [[PR](https://github.com/pnp/pnpjs/pull/432)]
 - @pnp/sp: Fix for ClientSidePages encoding of * and $ chars [[PR](https://github.com/pnp/pnpjs/pull/436)]
+- @pnp/sp: Fix getParentWeb method ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/442)]
+- documentation: Fix polyfill docs bug ([@laskewitz](https://github.com/Laskewitz)) [[PR](https://github.com/pnp/pnpjs/pull/444)]
 
 ## 1.2.7 - 2018-12-10
 
