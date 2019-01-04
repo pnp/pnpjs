@@ -1,9 +1,14 @@
 import { jsS, TypedHash, extend } from "@pnp/common";
-import { GraphQueryableInstance, defaultPath } from "./graphqueryable";
+import { GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { Invitation as IInvitation } from "@microsoft/microsoft-graph-types";
 
+// Should not be able to use the invitations.get()
+export interface IInvitationsMethods {
+    create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any>): Promise<InvitationAddResult>;
+}
+
 @defaultPath("invitations")
-export class Invitations extends GraphQueryableInstance<IInvitation[]> {
+export class Invitations extends GraphQueryableCollection<IInvitation[]> {
 
     /**
      * Create a new Invitation via invitation manager.

@@ -10,7 +10,7 @@ import { Users, User } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
-import { Invitations } from "./invitations";
+import { Invitations, IInvitationsMethods } from "./invitations";
 
 export class GraphRest extends GraphQueryable {
 
@@ -42,7 +42,7 @@ export class GraphRest extends GraphQueryable {
         return new Users(this);
     }
 
-    public get invitations(): Invitations {
+    public get invitations(): IInvitationsMethods {
         return new Invitations(this);
     }
 
