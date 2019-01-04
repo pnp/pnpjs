@@ -71,6 +71,7 @@ nav:
       - 'List Items': 'sp/docs/items.md'
       - 'Navigation Service': 'sp/docs/navigation-service.md'
       - Permissions: 'sp/docs/permissions.md'
+      - Profiles: 'sp/docs/profiles.md'
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
