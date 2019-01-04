@@ -142,10 +142,11 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
         parser: ODataParser<T>,
         pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>> {
 
-        // TODO:: add batch support
+        const dependencyDispose = this.hasBatch ? this._batchDependency : () => { return; };
+
         return Promise.resolve({
             batch: this.batch,
-            batchDependency: () => void (0),
+            batchDependency: dependencyDispose,
             cachingOptions: this._cachingOptions,
             clientFactory: () => new GraphHttpClient(),
             isBatched: this.hasBatch,

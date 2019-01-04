@@ -1,6 +1,12 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS, TypedHash, extend } from "@pnp/common";
-import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket as IPlannerBucket } from "@microsoft/microsoft-graph-types";
+import {
+    PlannerPlan as IPlannerPlan,
+    PlannerTask as IPlannerTask,
+    PlannerBucket as IPlannerBucket,
+    Planner as IPlanner,
+    PlannerPlanDetails as IPlannerPlanDetails,
+} from "@microsoft/microsoft-graph-types";
 
 // Should not be able to use the planner.get()
 export interface IPlannerMethods {
@@ -10,7 +16,7 @@ export interface IPlannerMethods {
 }
 
 @defaultPath("planner")
-export class Planner extends GraphQueryableCollection implements IPlannerMethods {
+export class Planner extends GraphQueryableInstance<IPlanner> implements IPlannerMethods {
 
     // Should Only be able to get by id, or else error occur
     public get plans(): Plans {
@@ -29,7 +35,7 @@ export class Planner extends GraphQueryableCollection implements IPlannerMethods
 }
 
 @defaultPath("plans")
-export class Plans extends GraphQueryableCollection {
+export class Plans extends GraphQueryableCollection<IPlannerPlan[]> {
     public getById(id: string): Plan {
         return new Plan(this, id);
     }
@@ -63,7 +69,7 @@ export class Plans extends GraphQueryableCollection {
  * Should not be able to get by Id
  */
 
-export class Plan extends GraphQueryableInstance {
+export class Plan extends GraphQueryableInstance<IPlannerPlan> {
 
     public get tasks(): Tasks {
         return new Tasks(this);
@@ -89,7 +95,7 @@ export class Plan extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Plan to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlanner): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -98,7 +104,7 @@ export class Plan extends GraphQueryableInstance {
 }
 
 @defaultPath("tasks")
-export class Tasks extends GraphQueryableCollection {
+export class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
     public getById(id: string): Task {
         return new Task(this, id);
     }
@@ -136,7 +142,7 @@ export class Tasks extends GraphQueryableCollection {
 
 }
 
-export class Task extends GraphQueryableInstance {
+export class Task extends GraphQueryableInstance<IPlannerTask> {
     /**
      * Deletes this Task
      */
@@ -149,7 +155,7 @@ export class Task extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Task to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlannerTask): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -162,7 +168,7 @@ export class Task extends GraphQueryableInstance {
 }
 
 @defaultPath("buckets")
-export class Buckets extends GraphQueryableCollection {
+export class Buckets extends GraphQueryableCollection<IPlannerBucket[]> {
     /**
      * Create a new Bucket.
      * 
@@ -194,7 +200,7 @@ export class Buckets extends GraphQueryableCollection {
 
 }
 
-export class Bucket extends GraphQueryableInstance {
+export class Bucket extends GraphQueryableInstance<IPlannerBucket> {
     /**
      * Deletes this Bucket
      */
@@ -207,7 +213,7 @@ export class Bucket extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Bucket to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlannerBucket): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -220,19 +226,7 @@ export class Bucket extends GraphQueryableInstance {
 }
 
 @defaultPath("details")
-export class Details extends GraphQueryableCollection {
-    /**
-     * Update the Details of a Task
-     * 
-     * @param properties Set of properties of this Details to update
-     */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
-
-        return this.patchCore({
-            body: jsS(properties),
-        });
-    }
-}
+export class Details extends GraphQueryableCollection<IPlannerPlanDetails> {}
 
 export interface BucketAddResult {
     data: IPlannerBucket;

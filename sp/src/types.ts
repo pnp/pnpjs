@@ -1428,7 +1428,6 @@ export interface WikiPageCreationInformation {
      */
     ServerRelativeUrl: string;
 
-
     /**
      * The wiki content to be set in the wiki page.
      */

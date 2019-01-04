@@ -1,7 +1,13 @@
-import { extend, getGUID, sanitizeGuid } from "@pnp/common";
+import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue } from "@pnp/sp-clientsvc";
 import { ITermSet, ITermSetData, ITermSets, TermSets } from "./termsets";
 import { ITermStore, TermStore } from "./termstores";
+
+export interface ITermGroups extends IClientSvcQueryable {
+    get(): Promise<(ITermGroupData & ITermGroup)[]>;
+    getById(id: string): ITermGroup;
+    getByName(name: string): ITermGroup;
+}
 
 export interface ITermGroupData {
     CreatedDate?: string;
@@ -60,6 +66,51 @@ export interface ITermGroup extends IClientSvcQueryable {
 export type TermGroupUpdateProps = {
     Description?: string,
 };
+
+/**
+ * Term Groups collection in Term Store
+ */
+export class TermGroups extends ClientSvcQueryable implements ITermGroups {
+    /**
+     * Gets the groups in this collection
+     */
+    public get(): Promise<(ITermGroupData & ITermGroup)[]> {
+        return this.sendGetCollection<ITermGroupData, ITermGroup>((d: ITermGroupData) => {
+            if (!stringIsNullOrEmpty(d.Name)) {
+                return this.getByName(d.Name);
+            } else if (!stringIsNullOrEmpty(d.Id)) {
+                return this.getById(d.Id);
+            }
+            throw Error("Could not find Name or Id in TermGroups.get(). You must include at least one of these in your select fields.");
+        });
+    }
+
+    /**
+     * Gets a TermGroup from this collection by id
+     * 
+     * @param id TermGroup id
+     */
+    public getById(id: string): ITermGroup {
+
+        const params = MethodParams.build()
+            .string(sanitizeGuid(id));
+
+        return this.getChild(TermGroup, "GetById", params);
+    }
+
+    /**
+     * Gets a TermGroup from this collection by name
+     * 
+     * @param name TErmGroup name
+     */
+    public getByName(name: string): ITermGroup {
+
+        const params = MethodParams.build()
+            .string(name);
+
+        return this.getChild(TermGroup, "GetByName", params);
+    }
+}
 
 /**
  * Represents a group in the taxonomy heirarchy
@@ -142,5 +193,3 @@ export class TermGroup extends ClientSvcQueryable implements ITermGroup {
         return this.invokeUpdate<ITermGroupData, ITermGroup>(properties, TermGroup);
     }
 }
-
-

@@ -503,7 +503,6 @@ export class Versions extends SharePointQueryableCollection {
     }
 }
 
-
 /**
  * Describes a single Version instance
  *

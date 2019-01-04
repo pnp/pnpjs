@@ -38,7 +38,7 @@
     
     
       
-        <title>@pnp/graph/contacts - PnP/PnPjs</title>
+        <title>contacts - PnP/PnPjs</title>
       
     
     
@@ -128,7 +128,7 @@
                 PnP/PnPjs
               </span>
               <span class="md-header-nav__topic">
-                @pnp/graph/contacts
+                contacts
               </span>
             
           
@@ -200,14 +200,16 @@
       
         
 
-<nav class="md-tabs" data-md-component="tabs">
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
   <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
       
         
   <li class="md-tabs__item">
     
-      <a href="../../.." title="Home" class="md-tabs__link md-tabs__link--active">
+      <a href="../../.." title="Home" class="md-tabs__link">
         Home
       </a>
     
@@ -236,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../../documentation/packages/" title="Packages" class="md-tabs__link">
+        <a href="../../../documentation/packages/" title="Packages" class="md-tabs__link md-tabs__link--active">
           Packages
         </a>
       
@@ -485,10 +487,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
     <label class="md-nav__link" for="nav-5">
       Packages
@@ -732,11 +736,245 @@
           
           
 
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-4" type="checkbox" id="nav-5-4" checked>
+    
+    <label class="md-nav__link" for="nav-5-4">
+      graph
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-4">
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
 
   <li class="md-nav__item">
     <a href="../" title="graph" class="md-nav__link">
       graph
     </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        contacts
+      </label>
+    
+    <a href="./" title="contacts" class="md-nav__link md-nav__link--active">
+      contacts
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-all-of-the-contacts" title="Get all of the Contacts" class="md-nav__link">
+    Get all of the Contacts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-contact" title="Add a new Contact" class="md-nav__link">
+    Add a new Contact
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-contact-by-id" title="Get Contact by Id" class="md-nav__link">
+    Get Contact by Id
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-a-contact" title="Delete a Contact" class="md-nav__link">
+    Delete a Contact
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-a-contact" title="Update a Contact" class="md-nav__link">
+    Update a Contact
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-all-of-the-contact-folders" title="Get all of the Contact Folders" class="md-nav__link">
+    Get all of the Contact Folders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-contact-folder" title="Add a new Contact Folder" class="md-nav__link">
+    Add a new Contact Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-contact-folder-by-id" title="Get Contact Folder by Id" class="md-nav__link">
+    Get Contact Folder by Id
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-a-contact-folder" title="Delete a Contact Folder" class="md-nav__link">
+    Delete a Contact Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-a-contact-folder" title="Update a Contact Folder" class="md-nav__link">
+    Update a Contact Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-all-of-the-contacts-from-the-contact-folder" title="Get all of the Contacts from the Contact Folder" class="md-nav__link">
+    Get all of the Contacts from the Contact Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-child-folders-of-the-contact-folder" title="Get Child Folders of the Contact Folder" class="md-nav__link">
+    Get Child Folders of the Contact Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-new-child-folder" title="Add a new Child Folder" class="md-nav__link">
+    Add a new Child Folder
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-child-folder-by-id" title="Get Child Folder by Id" class="md-nav__link">
+    Get Child Folder by Id
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-contact-in-child-folder-of-contact-folder" title="Add Contact in Child Folder of Contact Folder" class="md-nav__link">
+    Add Contact in Child Folder of Contact Folder
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../directoryobjects/" title="directory objects" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../invitations/" title="invitations" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../onedrive/" title="onedrive" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../planner/" title="planner" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../teams/" title="teams" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -815,6 +1053,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
       BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/provider-hosted-app/" title="ProviderHostedRequestContext" class="md-nav__link">
+      ProviderHostedRequestContext
     </a>
   </li>
 
@@ -1029,6 +1279,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/content-types/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/entity-merging/" title="Entity Merging" class="md-nav__link">
       Entity Merging
     </a>
@@ -1103,6 +1365,18 @@
   <li class="md-nav__item">
     <a href="../../../sp/docs/permissions/" title="Permissions" class="md-nav__link">
       Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/profiles/" title="Profiles" class="md-nav__link">
+      Profiles
     </a>
   </li>
 
@@ -1740,6 +2014,41 @@ you can add and edit both contacts and folders in a users Outlook.</p>
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="graph" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                graph
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../directoryobjects/" title="directory objects" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                directory objects
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

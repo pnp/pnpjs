@@ -34,7 +34,6 @@ export interface GroupAddResult {
     data: any;
 }
 
-
 /**
  * Describes a collection of site groups
  *

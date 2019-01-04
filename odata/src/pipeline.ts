@@ -4,6 +4,8 @@ import { CachingOptions, CachingParserWrapper, ICachingOptions } from "./caching
 import { ODataBatch } from "./odatabatch";
 import { ODataParser } from "./parsers";
 
+export type PipelineMethod<T> = (c: RequestContext<T>) => Promise<RequestContext<T>>;
+
 /**
  * Defines the context for a given request to be processed in the pipeline
  */
@@ -16,7 +18,7 @@ export interface RequestContext<T> {
     isCached: boolean;
     options: FetchOptions;
     parser: ODataParser<T>;
-    pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>;
+    pipeline: PipelineMethod<T>[];
     requestAbsoluteUrl: string;
     requestId: string;
     result?: T;
@@ -173,7 +175,7 @@ export class PipelineMethods {
                         }
                         // handle the case where a parser needs to take special actions with a cached result
                         if (hOP(context.parser, "hydrate")) {
-                            data = context.parser.hydrate!(data);
+                            data = context.parser.hydrate(data);
                         }
                         return setResult(context, data).then(ctx => resolve(ctx));
                     }

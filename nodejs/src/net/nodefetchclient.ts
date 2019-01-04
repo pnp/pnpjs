@@ -1,5 +1,4 @@
 declare var require: (path: string) => any;
-
 import { HttpClientImpl } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 const nodeFetch = require("node-fetch").default;
@@ -7,7 +6,7 @@ const nodeFetch = require("node-fetch").default;
 /**
  * Payload from transient errors
  */
-export interface IRetryData {
+interface IRetryData {
     retryCount: number;
     error: any;
     retryInterval: number;

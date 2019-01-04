@@ -1,8 +1,9 @@
 import { GraphQueryableInstance, defaultPath } from "./graphqueryable";
 import { BlobParser, BufferParser } from "@pnp/odata";
+import { Photo as IPhoto } from "@microsoft/microsoft-graph-types";
 
 @defaultPath("photo")
-export class Photo extends GraphQueryableInstance {
+export class Photo extends GraphQueryableInstance<IPhoto> {
 
     /**
      * Gets the image bytes as a blob (browser)

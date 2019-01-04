@@ -1,12 +1,12 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { TypedHash, jsS } from "@pnp/common";
-import { Event as IEvent } from "@microsoft/microsoft-graph-types";
+import { Event as IEvent, Calendar as ICalendar } from "@microsoft/microsoft-graph-types";
 // import { Attachments } from "./attachments";
 
 @defaultPath("calendars")
-export class Calendars extends GraphQueryableCollection {}
+export class Calendars extends GraphQueryableCollection<ICalendar[]> {}
 
-export class Calendar extends GraphQueryableInstance {
+export class Calendar extends GraphQueryableInstance<ICalendar> {
 
     public get events(): Events {
         return new Events(this);
@@ -14,7 +14,7 @@ export class Calendar extends GraphQueryableInstance {
 }
 
 @defaultPath("events")
-export class Events extends GraphQueryableCollection {
+export class Events extends GraphQueryableCollection<IEvent[]> {
 
     public getById(id: string): Event {
         return new Event(this, id);
@@ -43,7 +43,7 @@ export interface EventAddResult {
     event: Event;
 }
 
-export class Event extends GraphQueryableInstance {
+export class Event extends GraphQueryableInstance<IEvent> {
 
     // TODO:: when supported
     // /**
@@ -72,4 +72,3 @@ export class Event extends GraphQueryableInstance {
         return this.deleteCore();
     }
 }
-

@@ -56,4 +56,3 @@ export class DigestCache {
         this._digests.clear();
     }
 }
-

@@ -1,5 +1,5 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
-import { DriveItem as IDriveItem } from "@microsoft/microsoft-graph-types";
+import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
+import { DriveItem as IDriveItem, Drive as IDrive } from "@microsoft/microsoft-graph-types";
 import { jsS, TypedHash, extend } from "@pnp/common";
 
 export interface IDriveItemsMethods {
@@ -11,7 +11,7 @@ export interface IDriveItemsMethods {
  *
  */
 @defaultPath("drives")
-export class Drives extends GraphQueryableCollection {
+export class Drives extends GraphQueryableCollection<IDrive[]> {
 
     /**
      * Gets a Drive instance by id
@@ -28,7 +28,7 @@ export class Drives extends GraphQueryableCollection {
  *
  */
 @defaultPath("drive")
-export class Drive extends GraphQueryableInstance {
+export class Drive extends GraphQueryableInstance<IDrive> {
 
     public get root(): Root {
         return new Root(this);
@@ -57,7 +57,7 @@ export class Drive extends GraphQueryableInstance {
  *
  */
 @defaultPath("root")
-export class Root extends GraphQueryableInstance {
+export class Root extends GraphQueryableInstance<IDrive> {
 
     public get children(): Children {
         return new Children(this);
@@ -66,7 +66,6 @@ export class Root extends GraphQueryableInstance {
     public search(query: string): DriveSearch {
         return new DriveSearch(this, `search(q='${query}')`);
     }
-
 }
 
 /**
@@ -74,7 +73,7 @@ export class Root extends GraphQueryableInstance {
  *
  */
 @defaultPath("items")
-export class DriveItems extends GraphQueryableInstance implements IDriveItemsMethods {
+export class DriveItems extends GraphQueryableCollection implements IDriveItemsMethods {
     /**
      * Gets a Drive Item instance by id
      * 
@@ -83,14 +82,13 @@ export class DriveItems extends GraphQueryableInstance implements IDriveItemsMet
     public getById(id: string): DriveItem {
         return new DriveItem(this, id);
     }
-
 }
 
 /**
  * Describes a Drive Item instance
  *
  */
-export class DriveItem extends GraphQueryableInstance {
+export class DriveItem extends GraphQueryableInstance<IDriveItem> {
 
     public get children(): Children {
         return new Children(this);
@@ -170,7 +168,7 @@ export class Children extends GraphQueryableCollection {
 }
 
 @defaultPath("list")
-export class DriveList extends GraphQueryable { }
+export class DriveList extends GraphQueryableCollection { }
 
 @defaultPath("recent")
 export class Recent extends GraphQueryableInstance { }

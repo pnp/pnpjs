@@ -252,4 +252,3 @@ export class SiteDesigns extends SharePointQueryable implements SiteDesignsUtili
             });
     }
 }
-

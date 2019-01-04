@@ -9,6 +9,8 @@ import { Teams } from "./teams";
 import { Users, User } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
+import { DirectoryObjects } from "./directoryobjects";
+import { Invitations, IInvitationsMethods } from "./invitations";
 
 export class GraphRest extends GraphQueryable {
 
@@ -16,12 +18,16 @@ export class GraphRest extends GraphQueryable {
         super(baseUrl, path);
     }
 
+    public get directoryObjects(): DirectoryObjects {
+        return new DirectoryObjects(this);
+    }
+
     public get groups(): Groups {
         return new Groups(this);
     }
 
     public get teams(): Teams {
-        return new Teams();
+        return new Teams(this);
     }
 
     public get me(): User {
@@ -34,6 +40,10 @@ export class GraphRest extends GraphQueryable {
 
     public get users(): Users {
         return new Users(this);
+    }
+
+    public get invitations(): IInvitationsMethods {
+        return new Invitations(this);
     }
 
     public createBatch(): GraphBatch {

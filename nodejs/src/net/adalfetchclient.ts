@@ -1,7 +1,7 @@
 declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
 const nodeFetch = require("node-fetch").default;
-
+import { AADToken } from "../types";
 import {
     combine,
     objectDefinedNotNull,
@@ -9,15 +9,6 @@ import {
     isUrlAbsolute,
     extend,
 } from "@pnp/common";
-
-export interface AADToken {
-    accessToken: string;
-    expiresIn: number;
-    expiresOn: string | Date;
-    isMRRT?: boolean;
-    resource: string;
-    tokenType: string;
-}
 
 export class AdalFetchClient implements HttpClientImpl {
 

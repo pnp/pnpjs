@@ -737,10 +737,106 @@
           
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-4" type="checkbox" id="nav-5-4">
+    
+    <label class="md-nav__link" for="nav-5-4">
+      graph
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-4">
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
     <a href="../../../graph/docs/" title="graph" class="md-nav__link">
       graph
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/contacts/" title="contacts" class="md-nav__link">
+      contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/directoryobjects/" title="directory objects" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/invitations/" title="invitations" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/onedrive/" title="onedrive" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/planner/" title="planner" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/teams/" title="teams" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -819,6 +915,18 @@
   <li class="md-nav__item">
     <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
       BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/provider-hosted-app/" title="ProviderHostedRequestContext" class="md-nav__link">
+      ProviderHostedRequestContext
     </a>
   </li>
 
@@ -918,6 +1026,40 @@
   <a href="#using-batching-with-caching" title="Using Batching with Caching" class="md-nav__link">
     Using Batching with Caching
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implement-custom-caching" title="Implement Custom Caching" class="md-nav__link">
+    Implement Custom Caching
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implement-caching-helper-method" title="Implement caching helper method:" class="md-nav__link">
+    Implement caching helper method:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function" title="Wrapper Function" class="md-nav__link">
+    Wrapper Function
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1094,6 +1236,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../sp/docs/content-types/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../sp/docs/entity-merging/" title="Entity Merging" class="md-nav__link">
       Entity Merging
     </a>
@@ -1168,6 +1322,18 @@
   <li class="md-nav__item">
     <a href="../../../sp/docs/permissions/" title="Permissions" class="md-nav__link">
       Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/profiles/" title="Profiles" class="md-nav__link">
+      Profiles
     </a>
   </li>
 
@@ -1542,6 +1708,40 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#implement-custom-caching" title="Implement Custom Caching" class="md-nav__link">
+    Implement Custom Caching
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implement-caching-helper-method" title="Implement caching helper method:" class="md-nav__link">
+    Implement caching helper method:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function" title="Wrapper Function" class="md-nav__link">
+    Wrapper Function
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -1632,6 +1832,79 @@
 <span class="p">});</span>
 
 <span class="nx">batch</span><span class="p">.</span><span class="nx">execute</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;All done!&quot;</span><span class="p">));</span>
+</pre></div>
+
+
+<h2 id="implement-custom-caching">Implement Custom Caching<a class="headerlink" href="#implement-custom-caching" title="Permanent link">&para;</a></h2>
+<p>You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achive this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern <a href="https://github.com/pnp/pnpjs/issues/371">as discussed here</a>.</p>
+<h3 id="implement-caching-helper-method">Implement caching helper method:<a class="headerlink" href="#implement-caching-helper-method" title="Permanent link">&para;</a></h3>
+<p>We create a map to act as our cache storage and a function to wrap the request caching logic</p>
+<div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">staleWhileRevalidate</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">key</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">p</span>: <span class="kt">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+
+        <span class="c1">// In Cache</span>
+        <span class="nx">p</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// Update Cache once we have a result</span>
+            <span class="nx">map</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">u</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="c1">// Return from Cache</span>
+        <span class="k">return</span> <span class="nx">map</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Not In Cache so we need to wait for the value</span>
+    <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">p</span><span class="p">;</span>
+
+    <span class="c1">// Set Cache</span>
+    <span class="nx">map</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">r</span><span class="p">);</span>
+
+    <span class="c1">// Return from Promise</span>
+    <span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Don't call usingCaching just apply the helper method</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><span class="c1">// this one will wait for the request to finish</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+
+<span class="c1">// this one will return the result from cache and then update the cache in the background</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</pre></div>
+
+
+<h3 id="wrapper-function">Wrapper Function<a class="headerlink" href="#wrapper-function" title="Permanent link">&para;</a></h3>
+<p>You can wrap this call into a single function you can reuse within your application each time you need the web data for example. You can update the select and interface to match your needs as well.</p>
+<div class="codehilite"><pre><span></span><span class="kr">interface</span> <span class="nx">WebData</span> <span class="p">{</span>
+    <span class="nx">Title</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">Description</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getWebData</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">WebData</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="k">return</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
+<span class="p">}</span>
+
+
+<span class="c1">// this one will wait for the request to finish</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWebData</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+
+<span class="c1">// this one will return the result from cache and then update the cache in the background</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWebData</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 </pre></div>
                 
                   

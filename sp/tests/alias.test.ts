@@ -37,7 +37,6 @@ describe("Alias Parameters", () => {
         });
     });
 
-
     if (testSettings.enableWebTests) {
 
         it("Should allow aliasing for folders", () => {
