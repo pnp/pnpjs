@@ -29,6 +29,8 @@ node_modules
 # Optional npm cache directory
 .npm
 
+.idea
+
 # allow folks to add things to the debug /launch and /serve folder, but don't include them in git
 debug/launch/*
 !debug/launch/main.ts

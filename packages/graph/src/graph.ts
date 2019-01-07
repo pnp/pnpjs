@@ -37,3 +37,5 @@ export * from "./onedrive";
 export * from "./planner";
 
 export * from "./directoryobjects";
+
+export * from "./invitations";

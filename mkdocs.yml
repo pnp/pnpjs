@@ -38,6 +38,7 @@ nav:
       - graph: 'graph/docs/index.md'
       - contacts: 'graph/docs/contacts.md'
       - 'directory objects': 'graph/docs/directoryobjects.md'
+      - invitations: 'graph/docs/invitations.md'
       - onedrive: 'graph/docs/onedrive.md'
       - planner: 'graph/docs/planner.md'
       - teams: 'graph/docs/teams.md'
