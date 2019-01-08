@@ -56,7 +56,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             this._parentUrl = parent._parentUrl;
             this._url = combine(parent._parentUrl, ProcessQueryPath);
             if (!objectDefinedNotNull(_objectPaths)) {
-                this._objectPaths = parent._objectPaths.clone();
+                this._objectPaths = parent._objectPaths.copy();
             }
             this.configureFrom(parent);
         }
@@ -111,7 +111,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChild<T>(factory: ClientSvcQueryableConstructor<T>, methodName: string, params: IMethodParamsBuilder | null): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(method(methodName, params,
             // actions
@@ -128,7 +128,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChildProperty<T>(factory: ClientSvcQueryableConstructor<T>, propertyName: string): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(property(propertyName));
 
@@ -144,23 +144,29 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected send<T = any>(objectPaths: ObjectPathQueue, options: FetchOptions = {}, parser: ODataParser<T> = null): Promise<T> {
 
+        // here we need to create a clone because all the string indexes and references
+        // will be updated and all need to relate for this operation being sent. The parser
+        // and the postCore method need to share an independent value of the objectPaths
+        // See for https://github.com/pnp/pnpjs/issues/419 for details
+        const clonedOps = objectPaths.clone();
+
         if (!objectDefinedNotNull(parser)) {
             // we assume here that we want to return for this index path
-            parser = new ProcessQueryParser(objectPaths.last);
+            parser = new ProcessQueryParser(clonedOps.last);
         }
 
         if (this.hasBatch) {
 
             // this is using the options variable to pass some extra information downstream to the batch
             options = extend(options, {
-                clientsvc_ObjectPaths: objectPaths.clone(),
+                clientsvc_ObjectPaths: clonedOps,
             });
 
         } else {
 
             if (!hOP(options, "body")) {
                 options = extend(options, {
-                    body: objectPaths.toBody(),
+                    body: clonedOps.toBody(),
                 });
             }
         }
@@ -173,7 +179,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGet<DataType, FactoryType>(factory: ClientSvcQueryableConstructor<FactoryType>): Promise<(DataType & FactoryType)> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery(this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery(this.getSelects()));
 
         return this.send<DataType>(ops).then(r => extend(new factory(this), r));
     }
@@ -183,7 +189,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGetCollection<DataType, FactoryType>(factory: (d: DataType) => FactoryType): Promise<(DataType & FactoryType)[]> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery([], this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery([], this.getSelects()));
 
         return this.send<DataType[]>(ops).then(r => r.map(d => extend(factory(d), d)));
     }
@@ -242,7 +248,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected invokeUpdate<DataType, FactoryType>(properties: any, factory: ClientSvcQueryableConstructor<FactoryType>): Promise<DataType & FactoryType> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
         // append setting all the properties to this instance
         objectProperties(properties).map(a => ops.appendActionToLast(a));
         ops.appendActionToLast(opQuery([], null));
@@ -352,7 +358,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     private invokeMethodImpl<T>(methodName: string, params: IMethodParamsBuilder | null, actions: string[], queryAction: string, isAction = false): Promise<T> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
 
         if (isAction) {
             ops.appendActionToLast(methodAction(methodName, params));

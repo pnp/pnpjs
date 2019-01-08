@@ -220,7 +220,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getTerms(info: ILabelMatchInfo): ITerms {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         // this will be the parent of the GetTerms call, but we need to create the input param first
         const parentIndex = objectPaths.lastIndex;
@@ -256,7 +256,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getSiteCollectionGroup(createIfMissing = false): ITermGroup {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
         const siteIndex = objectPaths.siteIndex;
 
@@ -347,7 +347,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public updateUsedTermsOnSite(): Promise<void> {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
         const siteIndex = objectPaths.siteIndex;
 
@@ -368,7 +368,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getChanges(info: ChangeInformation): Promise<ChangedItem[]> {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
 
         const inputIndex = objectPaths.add(objConstructor("{1f849fb0-4fcb-4a54-9b01-9152b9e482d3}",
