@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Fix for ClientSidePages encoding of * and $ chars [[PR](https://github.com/pnp/pnpjs/pull/436)]
 - @pnp/sp: Fix getParentWeb method ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/442)]
 - documentation: Fix polyfill docs bug ([@laskewitz](https://github.com/Laskewitz)) [[PR](https://github.com/pnp/pnpjs/pull/444)]
+- @pnp/sp-taxonomy: Fix for batching when reusing object instances [[PR](https://github.com/pnp/pnpjs/pull/446)]
 
 ## 1.2.7 - 2018-12-10
 
