@@ -150,10 +150,21 @@ export class ObjectPathQueue {
     }
 
     /**
-     * Creates a copy of this ObjectPathQueue
+     * Creates a linked copy of this ObjectPathQueue
+     */
+    public copy(): ObjectPathQueue {
+        const copy = new ObjectPathQueue(this.toArray(), extend({}, this._relationships));
+        copy._contextIndex = this._contextIndex;
+        copy._siteIndex = this._siteIndex;
+        copy._webIndex = this._webIndex;
+        return copy;
+    }
+
+    /**
+     * Creates an independent clone of this ObjectPathQueue
      */
     public clone(): ObjectPathQueue {
-        const clone = new ObjectPathQueue(this.toArray(), extend({}, this._relationships));
+        const clone = new ObjectPathQueue(this.toArray().map(p => Object.assign({}, p)), extend({}, this._relationships));
         clone._contextIndex = this._contextIndex;
         clone._siteIndex = this._siteIndex;
         clone._webIndex = this._webIndex;
