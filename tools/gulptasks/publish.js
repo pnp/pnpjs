@@ -11,7 +11,8 @@ const gulp = require("gulp"),
     pkg = require("../../package.json"),
     cmdLine = require("./args").processConfigCmdLine,
     exec = require("child_process").execSync,
-    log = require("fancy-log");
+    log = require("fancy-log"),
+    replace = require("replace-in-file");
 
 
 // give outselves a single reference to the projectRoot
@@ -117,6 +118,16 @@ gulp.task("publish-beta", (done) => {
 gulp.task("publish", ["clean", "clean-build"], (done) => {
 
     runPublishScript().then(_ => {
+
+        // now the version number will be updated in this package
+        const updatedPkg = require("../../package.json");
+
+        // here we need to update the version in the mkdocs.yml file
+        replace({
+            files: [path.resolve("../../mkdocs.yml")],
+            from: /version: '[0-9\.-]+'/ig,
+            to: `version: '${updatedPkg.version}'`,
+        });
 
         // update the docs site
         exec("mkdocs gh-deploy", { stdio: "inherit" });
