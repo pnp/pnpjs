@@ -56,7 +56,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             this._parentUrl = parent._parentUrl;
             this._url = combine(parent._parentUrl, ProcessQueryPath);
             if (!objectDefinedNotNull(_objectPaths)) {
-                this._objectPaths = parent._objectPaths.copy();
+                this._objectPaths = parent._objectPaths.clone();
             }
             this.configureFrom(parent);
         }
@@ -288,7 +288,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             if (this._useCaching) {
 
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(this._objectPaths.toBody())})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(options.body)})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it
