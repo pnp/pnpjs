@@ -1,4 +1,15 @@
-import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP, getHashCode } from "@pnp/common";
+import {
+    FetchOptions,
+    combine,
+    extend,
+    getGUID,
+    mergeHeaders,
+    mergeOptions,
+    objectDefinedNotNull,
+    hOP,
+    getHashCode,
+    stringIsNullOrEmpty,
+} from "@pnp/common";
 import { CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
 import { SPHttpClient, toAbsoluteUrl } from "@pnp/sp";
 import { IObjectPathBatch } from "./batch";
@@ -287,8 +298,23 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             // we need to do some special cache handling to ensure we have a good key
             if (this._useCaching) {
 
+                let keyStr = options.body;
+
+                if (stringIsNullOrEmpty(keyStr)) {
+
+                    if (hOP(options, "clientsvc_ObjectPaths")) {
+                        // if we are using caching and batching together we need to create our string from the paths stored for the
+                        // batching operation (see: https://github.com/pnp/pnpjs/issues/449) but not update the ones passed to
+                        // the batch as they will be indexed during the batch creation process
+                        keyStr = (<{ clientsvc_ObjectPaths: ObjectPathQueue }>options).clientsvc_ObjectPaths.clone().toBody();
+                    } else {
+                        // this case shouldn't happen
+                        keyStr = "";
+                    }
+                }
+
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(options.body)})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(keyStr)})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it
