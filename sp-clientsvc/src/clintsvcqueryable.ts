@@ -1,4 +1,15 @@
-import { FetchOptions, combine, extend, getGUID, mergeHeaders, mergeOptions, objectDefinedNotNull, hOP, getHashCode } from "@pnp/common";
+import {
+    FetchOptions,
+    combine,
+    extend,
+    getGUID,
+    mergeHeaders,
+    mergeOptions,
+    objectDefinedNotNull,
+    hOP,
+    getHashCode,
+    stringIsNullOrEmpty,
+} from "@pnp/common";
 import { CachingOptions, ICachingOptions, ODataParser, Queryable, RequestContext } from "@pnp/odata";
 import { SPHttpClient, toAbsoluteUrl } from "@pnp/sp";
 import { IObjectPathBatch } from "./batch";
@@ -111,7 +122,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChild<T>(factory: ClientSvcQueryableConstructor<T>, methodName: string, params: IMethodParamsBuilder | null): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(method(methodName, params,
             // actions
@@ -128,7 +139,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChildProperty<T>(factory: ClientSvcQueryableConstructor<T>, propertyName: string): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(property(propertyName));
 
@@ -144,23 +155,29 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected send<T = any>(objectPaths: ObjectPathQueue, options: FetchOptions = {}, parser: ODataParser<T> = null): Promise<T> {
 
+        // here we need to create a clone because all the string indexes and references
+        // will be updated and all need to relate for this operation being sent. The parser
+        // and the postCore method need to share an independent value of the objectPaths
+        // See for https://github.com/pnp/pnpjs/issues/419 for details
+        const clonedOps = objectPaths.clone();
+
         if (!objectDefinedNotNull(parser)) {
             // we assume here that we want to return for this index path
-            parser = new ProcessQueryParser(objectPaths.last);
+            parser = new ProcessQueryParser(clonedOps.last);
         }
 
         if (this.hasBatch) {
 
             // this is using the options variable to pass some extra information downstream to the batch
             options = extend(options, {
-                clientsvc_ObjectPaths: objectPaths.clone(),
+                clientsvc_ObjectPaths: clonedOps,
             });
 
         } else {
 
             if (!hOP(options, "body")) {
                 options = extend(options, {
-                    body: objectPaths.toBody(),
+                    body: clonedOps.toBody(),
                 });
             }
         }
@@ -173,7 +190,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGet<DataType, FactoryType>(factory: ClientSvcQueryableConstructor<FactoryType>): Promise<(DataType & FactoryType)> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery(this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery(this.getSelects()));
 
         return this.send<DataType>(ops).then(r => extend(new factory(this), r));
     }
@@ -183,7 +200,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGetCollection<DataType, FactoryType>(factory: (d: DataType) => FactoryType): Promise<(DataType & FactoryType)[]> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery([], this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery([], this.getSelects()));
 
         return this.send<DataType[]>(ops).then(r => r.map(d => extend(factory(d), d)));
     }
@@ -242,7 +259,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected invokeUpdate<DataType, FactoryType>(properties: any, factory: ClientSvcQueryableConstructor<FactoryType>): Promise<DataType & FactoryType> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
         // append setting all the properties to this instance
         objectProperties(properties).map(a => ops.appendActionToLast(a));
         ops.appendActionToLast(opQuery([], null));
@@ -281,8 +298,23 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             // we need to do some special cache handling to ensure we have a good key
             if (this._useCaching) {
 
+                let keyStr = options.body;
+
+                if (stringIsNullOrEmpty(keyStr)) {
+
+                    if (hOP(options, "clientsvc_ObjectPaths")) {
+                        // if we are using caching and batching together we need to create our string from the paths stored for the
+                        // batching operation (see: https://github.com/pnp/pnpjs/issues/449) but not update the ones passed to
+                        // the batch as they will be indexed during the batch creation process
+                        keyStr = (<{ clientsvc_ObjectPaths: ObjectPathQueue }>options).clientsvc_ObjectPaths.clone().toBody();
+                    } else {
+                        // this case shouldn't happen
+                        keyStr = "";
+                    }
+                }
+
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(this._objectPaths.toBody())})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(keyStr)})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it
@@ -352,7 +384,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     private invokeMethodImpl<T>(methodName: string, params: IMethodParamsBuilder | null, actions: string[], queryAction: string, isAction = false): Promise<T> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
 
         if (isAction) {
             ops.appendActionToLast(methodAction(methodName, params));
