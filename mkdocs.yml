@@ -117,7 +117,7 @@ plugins:
   - search
   - markdownextradata
 extra:
-  version: '1.2.7'
+  version: '1.2.8'
   social:
     - type: 'twitter'
       link: 'https://twitter.com/officedevpnp'
