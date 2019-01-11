@@ -1,0 +1,49 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "sharepoint"
+        ]
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts",
+        "../graph/index.ts",
+        "../graph/src/**/*.ts",
+        "../config-store/index.ts",
+        "../config-store/src/**/*.ts",
+        "../sp-addinhelpers/index.ts",
+        "../sp-addinhelpers/src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../logging"
+        },
+        {
+            "path": "../odata"
+        },
+        {
+            "path": "../sp"
+        },
+        {
+            "path": "../graph"
+        },
+        {
+            "path": "../config-store"
+        },
+        {
+            "path": "../sp-addinhelpers"
+        }
+    ]
+}

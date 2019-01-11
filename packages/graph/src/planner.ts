@@ -1,54 +1,41 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { jsS, TypedHash, extend } from "@pnp/common";
-import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket as IPlannerBucket } from "@microsoft/microsoft-graph-types";
+import {
+    PlannerPlan as IPlannerPlan,
+    PlannerTask as IPlannerTask,
+    PlannerBucket as IPlannerBucket,
+    Planner as IPlanner,
+    PlannerPlanDetails as IPlannerPlanDetails,
+} from "@microsoft/microsoft-graph-types";
 
 // Should not be able to use the planner.get()
 export interface IPlannerMethods {
-    plans: IPlansMethods;
-    tasks: ITasksMethods;
-    buckets: IBucketsMethods;
-}
-
-export interface IPlansMethods {
-    getById(id: string): Plan;
-    add(owner: string, title: string): Promise<PlanAddResult>;
-}
-
-export interface ITasksMethods {
-    getById(id: string): Task;
-    add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<TaskAddResult>;
-}
-
-export interface IBucketsMethods {
-    getById(id: string): Bucket;
-    add(name: string, planId: string, orderHint?: string): Promise<BucketAddResult>;
+    plans: Plans;
+    tasks: Tasks;
+    buckets: Buckets;
 }
 
 @defaultPath("planner")
-export class Planner extends GraphQueryableCollection implements IPlannerMethods {
+export class Planner extends GraphQueryableInstance<IPlanner> implements IPlannerMethods {
 
     // Should Only be able to get by id, or else error occur
-    public get plans(): IPlansMethods {
-        return new PlansNoGet(this);
+    public get plans(): Plans {
+        return new Plans(this);
     }
 
     // Should Only be able to get by id, or else error occur
-    public get tasks(): ITasksMethods {
-        return new TasksNoGet(this);
+    public get tasks(): Tasks {
+        return new Tasks(this);
     }
 
     // Should Only be able to get by id, or else error occur
-    public get buckets(): IBucketsMethods {
-        return new BucketsNoGet(this);
+    public get buckets(): Buckets {
+        return new Buckets(this);
     }
 }
 
 @defaultPath("plans")
-export class Plans extends GraphQueryableCollection { }
-
-@defaultPath("plans")
-export class PlansNoGet extends Plans implements IPlansMethods {
-
+export class Plans extends GraphQueryableCollection<IPlannerPlan[]> {
     public getById(id: string): Plan {
         return new Plan(this, id);
     }
@@ -82,7 +69,7 @@ export class PlansNoGet extends Plans implements IPlansMethods {
  * Should not be able to get by Id
  */
 
-export class Plan extends GraphQueryableInstance {
+export class Plan extends GraphQueryableInstance<IPlannerPlan> {
 
     public get tasks(): Tasks {
         return new Tasks(this);
@@ -108,7 +95,7 @@ export class Plan extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Plan to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlanner): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -117,9 +104,7 @@ export class Plan extends GraphQueryableInstance {
 }
 
 @defaultPath("tasks")
-export class Tasks extends GraphQueryableCollection { }
-
-export class TasksNoGet extends Tasks implements ITasksMethods {
+export class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
     public getById(id: string): Task {
         return new Task(this, id);
     }
@@ -154,9 +139,10 @@ export class TasksNoGet extends Tasks implements ITasksMethods {
             };
         });
     }
+
 }
 
-export class Task extends GraphQueryableInstance {
+export class Task extends GraphQueryableInstance<IPlannerTask> {
     /**
      * Deletes this Task
      */
@@ -169,7 +155,7 @@ export class Task extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Task to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlannerTask): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -182,10 +168,7 @@ export class Task extends GraphQueryableInstance {
 }
 
 @defaultPath("buckets")
-export class Buckets extends GraphQueryableCollection { }
-
-export class BucketsNoGet extends Buckets implements IBucketsMethods {
-
+export class Buckets extends GraphQueryableCollection<IPlannerBucket[]> {
     /**
      * Create a new Bucket.
      * 
@@ -214,9 +197,10 @@ export class BucketsNoGet extends Buckets implements IBucketsMethods {
     public getById(id: string): Bucket {
         return new Bucket(this, id);
     }
+
 }
 
-export class Bucket extends GraphQueryableInstance {
+export class Bucket extends GraphQueryableInstance<IPlannerBucket> {
     /**
      * Deletes this Bucket
      */
@@ -229,7 +213,7 @@ export class Bucket extends GraphQueryableInstance {
      * 
      * @param properties Set of properties of this Bucket to update
      */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
+    public update(properties: IPlannerBucket): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
@@ -242,19 +226,7 @@ export class Bucket extends GraphQueryableInstance {
 }
 
 @defaultPath("details")
-export class Details extends GraphQueryableCollection {
-    /**
-     * Update the Details of a Task
-     * 
-     * @param properties Set of properties of this Details to update
-     */
-    public update(properties: TypedHash<string | number | boolean | string[]>): Promise<void> {
-
-        return this.patchCore({
-            body: jsS(properties),
-        });
-    }
-}
+export class Details extends GraphQueryableCollection<IPlannerPlanDetails> {}
 
 export interface BucketAddResult {
     data: IPlannerBucket;

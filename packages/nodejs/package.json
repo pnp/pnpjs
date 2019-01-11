@@ -6,6 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "adal-node": "0.1.28",
+    "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
     "tslib": "1.9.3"
   },
@@ -20,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/pnp/pnpjs/issues"
   },
-  "homepage": "https:github.com/pnp/pnpjs",
+  "homepage": "https://github.com/pnp/pnpjs",
   "repository": {
     "type": "git",
     "url": "git:github.com/pnp/pnpjs"

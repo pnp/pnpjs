@@ -39,7 +39,7 @@ export interface ISearchQueryBuilder {
     clientType(clientType: string): this;
     personalizationData(data: string): this;
     resultsURL(url: string): this;
-    queryTag(...tags: string[]): this;
+    queryTag(tags: string): this;
     properties(...properties: SearchProperty[]): this;
     queryTemplatePropertiesUrl(url: string): this;
     reorderingRules(...rules: ReorderingRule[]): this;
@@ -130,7 +130,6 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBui
 }
 
 export type SearchQueryInit = string | SearchQuery | ISearchQueryBuilder;
-
 
 /**
  * Describes the search API
@@ -487,7 +486,7 @@ export interface SearchQuery {
     /**
      * Custom tags that identify the query. You can specify multiple query tags
      */
-    QueryTag?: string[];
+    QueryTag?: string;
 
     /**
      * Properties to be used to configure the search query
@@ -618,12 +617,16 @@ export interface ResultTableCollection {
     SpecialTermResults?: ResultTable;
 }
 
+export interface IRefiner {
+    Name: string;
+    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[];
+}
 export interface ResultTable {
     GroupTemplateId?: string;
     ItemTemplateId?: string;
     Properties?: { Key: string, Value: any, ValueType: string }[];
     Table?: { Rows: { Cells: { Key: string, Value: any, ValueType: string }[] }[] };
-    Refiners?: { Name: string; Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[]; }[];
+    Refiners?: IRefiner[];
     ResultTitle?: string;
     ResultTitleUrl?: string;
     RowCount?: number;
@@ -662,7 +665,7 @@ export interface SearchProperty {
 export interface SearchPropertyValue {
     StrVal?: string;
     BoolVal?: boolean;
-    Intval?: number;
+    IntVal?: number;
     StrArray?: string[];
     QueryPropertyValueTypeIndex: QueryPropertyValueType;
 }

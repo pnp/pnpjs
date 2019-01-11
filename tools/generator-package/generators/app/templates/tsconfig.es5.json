@@ -1,14 +1,8 @@
 {
-    "extends": "../../tsconfig.es5.json",
+    "extends": "../tsconfig.es5.json",
     "compilerOptions": {
-        "baseUrl": ".",
         "rootDir": ".",
         "outDir": "../../build/packages/<%= name %>/es5",
-        "paths": {
-            "@pnp/*": [
-                "../../build/packages/*/es5"
-            ]
-        }
     },
     "include": [
         "./index.ts",

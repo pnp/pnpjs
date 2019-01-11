@@ -9,6 +9,8 @@ pids
 *.pid
 *.seed
 
+.idea/
+
 # Coverage directory used by tools like istanbul
 coverage
 
@@ -26,6 +28,8 @@ node_modules
 
 # Optional npm cache directory
 .npm
+
+.idea
 
 # allow folks to add things to the debug /launch and /serve folder, but don't include them in git
 debug/launch/*

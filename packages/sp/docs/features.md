@@ -5,9 +5,9 @@ Features are used by SharePoint to package a set of functionality and either ena
 ## List all Features
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 // get all the active features
 web.features.get().then(f => {
@@ -39,9 +39,9 @@ web.features.filter("DisplayName eq 'MDSFeature'").get().then(f => {
 To activate a feature you must know the feature id. You can optionally force activation - if you aren't sure don't use force.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 // activate the minimum download strategy feature
 web.features.add("87294c72-f260-42f3-a41b-981a2ffce37a").then(f => {
@@ -53,9 +53,9 @@ web.features.add("87294c72-f260-42f3-a41b-981a2ffce37a").then(f => {
 ## Deactivate a Feature
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 web.features.remove("87294c72-f260-42f3-a41b-981a2ffce37a").then(f => {
 

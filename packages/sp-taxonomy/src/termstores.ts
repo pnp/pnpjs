@@ -1,6 +1,6 @@
 import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue, method, objConstructor, objectPath, objectProperties, opQuery, property } from "@pnp/sp-clientsvc";
-import { ITermGroup, ITermGroupData, TermGroup } from "./termgroup";
+import { ITermGroup, ITermGroupData, TermGroup, ITermGroups, TermGroups } from "./termgroup";
 import { ITerm, ITerms, Term, Terms } from "./terms";
 import { ITermSet, ITermSets, TermSet, TermSets } from "./termsets";
 import { ChangeInformation, ChangedItem, ILabelMatchInfo } from "./types";
@@ -69,6 +69,7 @@ export interface ITermStore extends IClientSvcQueryable {
     readonly keywordsTermSet: ITermSet;
     readonly orphanedTermsTermSet: ITermSet;
     readonly systemGroup: ITermGroup;
+    readonly groups: ITermGroups;
     addGroup(name: string, id?: string): Promise<ITermGroup & ITermGroupData>;
     addLanguage(lcid: number): Promise<void>;
     commitAll(): Promise<void>;
@@ -80,6 +81,7 @@ export interface ITermStore extends IClientSvcQueryable {
     getTermInTermSet(termId: string, termSetId: string): ITerm;
     getTermGroupById(id: string): ITermGroup;
     getTerms(info: ILabelMatchInfo): ITerms;
+    getTermsById(...ids: string[]): any;
     getTermSetById(id: string): ITermSet;
     getTermSetsByName(name: string, lcid: number): ITermSets;
     rollbackAll(): Promise<void>;
@@ -99,7 +101,6 @@ export interface ITermStoreData {
     Name?: string;
     WorkingLanguage?: number;
 }
-
 
 export type TermStoreUpdateProps = {
     DefaultLanguage?: number,
@@ -126,6 +127,10 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
 
     public get systemGroup(): ITermGroup {
         return this.getChildProperty(TermGroup, "SystemGroup");
+    }
+
+    public get groups(): ITermGroups {
+        return this.getChildProperty(TermGroups, "Groups");
     }
 
     /**
@@ -173,6 +178,17 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
     }
 
     /**
+     * Provides access to an ITermSet by id
+     * 
+     * @param id 
+     */
+    public getTermsById(...ids: string[]): ITerms {
+
+        const params = MethodParams.build().strArray(ids.map(id => sanitizeGuid(id)));
+        return this.getChild(Terms, "GetTermsById", params);
+    }
+
+    /**
      * Gets a term from a term set based on the supplied ids
      * 
      * @param termId Term Id
@@ -204,7 +220,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getTerms(info: ILabelMatchInfo): ITerms {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         // this will be the parent of the GetTerms call, but we need to create the input param first
         const parentIndex = objectPaths.lastIndex;
@@ -240,7 +256,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getSiteCollectionGroup(createIfMissing = false): ITermGroup {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
         const siteIndex = objectPaths.siteIndex;
 
@@ -331,7 +347,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public updateUsedTermsOnSite(): Promise<void> {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
         const siteIndex = objectPaths.siteIndex;
 
@@ -352,7 +368,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
      */
     public getChanges(info: ChangeInformation): Promise<ChangedItem[]> {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
         const methodParent = objectPaths.lastIndex;
 
         const inputIndex = objectPaths.add(objConstructor("{1f849fb0-4fcb-4a54-9b01-9152b9e482d3}",

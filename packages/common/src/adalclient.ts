@@ -1,8 +1,20 @@
 import { BearerTokenFetchClient, FetchOptions } from "./netutil";
 import { ISPFXContext } from "./spfxcontextinterface";
-import { combine, isUrlAbsolute } from "./util";
+import { isUrlAbsolute } from "./util";
 // @ts-ignore
 import * as adal from "adal-angular/dist/adal.min.js";
+
+/**
+ * Parses out the root of the request url to use as the resource when getting the token
+ * 
+ * After: https://gist.github.com/jlong/2428561
+ * @param url The url to parse
+ */
+function getResource(url: string): string {
+    const parser = <HTMLAnchorElement>document.createElement("a");
+    parser.href = url;
+    return `${parser.protocol}//${parser.hostname}`;
+}
 
 /**
  * Azure AD Client for use in the browser
@@ -37,19 +49,15 @@ export class AdalClient extends BearerTokenFetchClient {
     }
 
     /**
-     * Creates a new AdalClient using the values of the supplied SPFx context
+     * Creates a new AdalClient using the values of the supplied SPFx context (requires SPFx >= 1.6)
      * 
      * @param spfxContext Current SPFx context
-     * @param clientId Optional client id to use instead of the built-in SPFx id
-     * @description Using this method and the default clientId requires that the features described in
-     * this article https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant. If not you can
-     * creat your own app, grant permissions and use that clientId here along with the SPFx context
+     * @description Using this method requires that the features described in this article
+     * https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant.
      */
-    public static fromSPFxContext(spfxContext: ISPFXContext | any, cliendId = "c58637bb-e2e1-4312-8a00-04b5ffcd3403"): AdalClient {
+    public static fromSPFxContext(spfxContext: ISPFXContext | any): SPFxAdalClient {
 
-        // this "magic" client id is the one to which permissions are granted behind the scenes
-        // this redirectUrl is the page as used by spfx
-        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), combine(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
+        return new SPFxAdalClient(spfxContext);
     }
 
     /**
@@ -65,7 +73,7 @@ export class AdalClient extends BearerTokenFetchClient {
         }
 
         // the url we are calling is the resource
-        return this.getToken(this.getResource(url)).then(token => {
+        return this.getToken(getResource(url)).then(token => {
             this.token = token;
             return super.fetch(url, options);
         });
@@ -176,16 +184,45 @@ export class AdalClient extends BearerTokenFetchClient {
 
         return this._loginPromise;
     }
+}
+
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+export class SPFxAdalClient extends BearerTokenFetchClient {
 
     /**
-     * Parses out the root of the request url to use as the resource when getting the token
      * 
-     * After: https://gist.github.com/jlong/2428561
-     * @param url The url to parse
+     * @param context provide the appropriate SPFx Context object
      */
-    private getResource(url: string): string {
-        const parser = <HTMLAnchorElement>document.createElement("a");
-        parser.href = url;
-        return `${parser.protocol}//${parser.hostname}`;
+    constructor(private context: ISPFXContext) {
+        super(null);
+    }
+
+    /**
+     * Executes a fetch request using the supplied url and options
+     * 
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    public fetch(url: string, options: FetchOptions): Promise<Response> {
+
+        return this.getToken(getResource(url)).then(token => {
+            this.token = token;
+            return super.fetch(url, options);
+        });
+    }
+
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     * 
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    public getToken(resource: string): Promise<string> {
+
+        return this.context.aadTokenProviderFactory.getTokenProvider().then(provider => {
+
+            return provider.getToken(resource);
+        });
     }
 }

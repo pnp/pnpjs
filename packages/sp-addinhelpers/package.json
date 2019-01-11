@@ -6,7 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "tslib": "1.9.3",
-    "@types/sharepoint": "2013.1.9"
+    "@types/sharepoint": "2016.1.2"
   },
   "peerDependencies": {
     "@pnp/common": "0.0.0-PLACEHOLDER",
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/pnp/pnpjs/issues"
   },
-  "homepage": "https:github.com/pnp/pnpjs",
+  "homepage": "https://github.com/pnp/pnpjs",
   "repository": {
     "type": "git",
     "url": "git:github.com/pnp/pnpjs"

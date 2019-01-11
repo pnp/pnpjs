@@ -1,28 +1,22 @@
 const tasks = require("./build/tools/buildsystem").Tasks.Build,
     path = require("path");
 
-const config = {
+module.exports = {
 
-    packageRoot: path.resolve("./debug"),
+    packageRoot: path.resolve("./debug/"),
 
-    tasks: [
-        tasks.buildProject,
+    exclude: [],
+
+    preBuildTasks: [
+        // function OR { packages: [], task: function }
     ],
 
-    packages: [
-        {
-            name: "launch",
-            configFile: "tsconfig.json"
-        }
+    // these tsconfig files will all be transpiled per the settings in the file
+    buildTargets: [
+        path.resolve("./debug/launch/tsconfig.json"),
     ],
 
-    assets: [],
-
-    buildPipeline: [
+    postBuildTasks: [
         tasks.replaceDebug,
     ],
-
-    configFile: "launch/tsconfig.json",
 };
-
-module.exports = config;

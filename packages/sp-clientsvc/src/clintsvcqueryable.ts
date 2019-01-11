@@ -7,7 +7,6 @@ import { methodAction, objectPath, objectProperties, opQuery } from "./opactionb
 import { IMethodParamsBuilder, method, property } from "./opbuilders";
 import { ProcessQueryParser } from "./parsers";
 
-
 export interface IClientSvcQueryable {
     select(...selects: string[]): this;
     usingCaching(options?: ICachingOptions): this;
@@ -30,12 +29,19 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     /**
      * Tracks the batch of which this query may be part
      */
-    protected _batch: IObjectPathBatch;
+    protected _batch: IObjectPathBatch | null;
+
+    /**
+     * Allows us to properly block batch execution until everything is loaded
+     */
+    protected _batchDependency: () => void | null;
 
     constructor(parent: ClientSvcQueryable | string = "", protected _objectPaths: ObjectPathQueue | null = null) {
         super();
 
         this._selects = [];
+        this._batch = null;
+        this._batchDependency = null;
 
         if (typeof parent === "string") {
 
@@ -69,13 +75,6 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
     /**
      * Adds this query to the supplied batch
      *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
      */
     public inBatch(batch: IObjectPathBatch): this {
 
@@ -83,7 +82,10 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             throw Error("This query is already part of a batch.");
         }
 
-        this._batch = batch;
+        if (objectDefinedNotNull(batch)) {
+            this._batch = batch;
+            this._batchDependency = batch.addDependency();
+        }
 
         return this;
     }
@@ -109,7 +111,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChild<T>(factory: ClientSvcQueryableConstructor<T>, methodName: string, params: IMethodParamsBuilder | null): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(method(methodName, params,
             // actions
@@ -126,7 +128,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected getChildProperty<T>(factory: ClientSvcQueryableConstructor<T>, propertyName: string): T {
 
-        const objectPaths = this._objectPaths.clone();
+        const objectPaths = this._objectPaths.copy();
 
         objectPaths.add(property(propertyName));
 
@@ -142,23 +144,29 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected send<T = any>(objectPaths: ObjectPathQueue, options: FetchOptions = {}, parser: ODataParser<T> = null): Promise<T> {
 
+        // here we need to create a clone because all the string indexes and references
+        // will be updated and all need to relate for this operation being sent. The parser
+        // and the postCore method need to share an independent value of the objectPaths
+        // See for https://github.com/pnp/pnpjs/issues/419 for details
+        const clonedOps = objectPaths.clone();
+
         if (!objectDefinedNotNull(parser)) {
             // we assume here that we want to return for this index path
-            parser = new ProcessQueryParser(objectPaths.last);
+            parser = new ProcessQueryParser(clonedOps.last);
         }
 
         if (this.hasBatch) {
 
             // this is using the options variable to pass some extra information downstream to the batch
             options = extend(options, {
-                clientsvc_ObjectPaths: objectPaths.clone(),
+                clientsvc_ObjectPaths: clonedOps,
             });
 
         } else {
 
             if (!hOP(options, "body")) {
                 options = extend(options, {
-                    body: objectPaths.toBody(),
+                    body: clonedOps.toBody(),
                 });
             }
         }
@@ -171,7 +179,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGet<DataType, FactoryType>(factory: ClientSvcQueryableConstructor<FactoryType>): Promise<(DataType & FactoryType)> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery(this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery(this.getSelects()));
 
         return this.send<DataType>(ops).then(r => extend(new factory(this), r));
     }
@@ -181,7 +189,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected sendGetCollection<DataType, FactoryType>(factory: (d: DataType) => FactoryType): Promise<(DataType & FactoryType)[]> {
 
-        const ops = this._objectPaths.clone().appendActionToLast(opQuery([], this.getSelects()));
+        const ops = this._objectPaths.copy().appendActionToLast(opQuery([], this.getSelects()));
 
         return this.send<DataType[]>(ops).then(r => r.map(d => extend(factory(d), d)));
     }
@@ -240,7 +248,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     protected invokeUpdate<DataType, FactoryType>(properties: any, factory: ClientSvcQueryableConstructor<FactoryType>): Promise<DataType & FactoryType> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
         // append setting all the properties to this instance
         objectProperties(properties).map(a => ops.appendActionToLast(a));
         ops.appendActionToLast(opQuery([], null));
@@ -280,7 +288,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
             if (this._useCaching) {
 
                 // because all the requests use the same url they would collide in the cache we use a special key
-                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(this._objectPaths.toBody())})`;
+                const cacheKey = `PnPjs.ProcessQueryClient(${getHashCode(options.body)})`;
 
                 if (objectDefinedNotNull(this._cachingOptions)) {
                     // if our key ends in the ProcessQuery url we overwrite it
@@ -292,7 +300,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
                 }
             }
 
-            const dependencyDispose = this.hasBatch ? this.addBatchDependency() : () => { return; };
+            const dependencyDispose = this.hasBatch ? this._batchDependency : () => { return; };
 
             // build our request context
             const context: RequestContext<T> = {
@@ -350,7 +358,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      */
     private invokeMethodImpl<T>(methodName: string, params: IMethodParamsBuilder | null, actions: string[], queryAction: string, isAction = false): Promise<T> {
 
-        const ops = this._objectPaths.clone();
+        const ops = this._objectPaths.copy();
 
         if (isAction) {
             ops.appendActionToLast(methodAction(methodName, params));

@@ -110,7 +110,7 @@ export class Folder extends SharePointQueryableShareableFolder {
         return new SharePointQueryableCollection(this, "uniqueContentTypeOrder");
     }
 
-    public update = this._update<FolderUpdateResult, TypedHash<string | number | boolean>>("SP.Folder", data => ({ data, folder: this }));
+    public update = this._update<FolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: this }));
 
     /**
     * Delete this folder

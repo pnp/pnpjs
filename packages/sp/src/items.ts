@@ -255,6 +255,10 @@ export class Item extends SharePointQueryableShareableItem {
         return new ItemVersions(this);
     }
 
+    public get list(): List {
+        return this.getParent(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+    }
+
     /**
      * Updates this list intance with the supplied properties
      *
@@ -366,7 +370,7 @@ export class Item extends SharePointQueryableShareableItem {
 
         return candidatelistItemEntityTypeFullName ?
             Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/"))).getListItemEntityTypeFullName();
+            this.list.getListItemEntityTypeFullName();
     }
 }
 
@@ -401,7 +405,6 @@ export class ItemVersions extends SharePointQueryableCollection {
         return v;
     }
 }
-
 
 /**
  * Describes a single Version instance
@@ -478,4 +481,3 @@ class ItemUpdatedParser extends ODataParserBase<ItemUpdateResultData> {
         });
     }
 }
-

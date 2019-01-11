@@ -98,7 +98,6 @@ export abstract class ODataBatch {
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
         return Promise.all(this._deps)
-            .then(() => Promise.all(this._deps))
             .then(() => this.executeImpl())
             .then(() => Promise.all(this._rDeps))
             .then(() => void (0));

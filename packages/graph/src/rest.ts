@@ -5,10 +5,12 @@ import {
 } from "./config/graphlibconfig";
 
 import { Groups } from "./groups";
-import { Me } from "./me";
 import { Teams } from "./teams";
-import { Users } from "./users";
+import { Users, User } from "./users";
 import { Planner, IPlannerMethods } from "./planner";
+import { GraphBatch } from "./batch";
+import { DirectoryObjects } from "./directoryobjects";
+import { Invitations, IInvitationsMethods } from "./invitations";
 
 export class GraphRest extends GraphQueryable {
 
@@ -16,16 +18,20 @@ export class GraphRest extends GraphQueryable {
         super(baseUrl, path);
     }
 
+    public get directoryObjects(): DirectoryObjects {
+        return new DirectoryObjects(this);
+    }
+
     public get groups(): Groups {
         return new Groups(this);
     }
 
     public get teams(): Teams {
-        return new Teams();
+        return new Teams(this);
     }
 
-    public get me(): Me {
-        return new Me(this);
+    public get me(): User {
+        return new User(this, "me");
     }
 
     public get planner(): IPlannerMethods {
@@ -34,6 +40,14 @@ export class GraphRest extends GraphQueryable {
 
     public get users(): Users {
         return new Users(this);
+    }
+
+    public get invitations(): IInvitationsMethods {
+        return new Invitations(this);
+    }
+
+    public createBatch(): GraphBatch {
+        return new GraphBatch();
     }
 
     public setup(config: GraphConfiguration) {

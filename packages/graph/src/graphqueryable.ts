@@ -14,7 +14,6 @@ import { GraphHttpClient } from "./net/graphhttpclient";
 import { GraphBatch } from "./batch";
 import { GraphEndpoints } from "./types";
 
-
 export interface GraphQueryableConstructor<T> {
     new(baseUrl: string | GraphQueryable, path?: string): T;
 }
@@ -43,6 +42,30 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
         } else {
             this.extend(baseUrl as GraphQueryable, path);
         }
+    }
+
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    public select(...selects: string[]): this {
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    }
+
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    public expand(...expands: string[]): this {
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
     }
 
     /**
@@ -96,15 +119,7 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
      */
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
 
-        let clone = new factory(this, additionalPath);
-        clone.configure(this._options);
-
-        // TODO:: include batching info in clone
-        if (includeBatch) {
-            clone = clone.inBatch(this._batch);
-        }
-
-        return clone;
+        return <T>super._clone(new factory(this, additionalPath), { includeBatch });
     }
 
     protected setEndpoint(endpoint: string): this {
@@ -127,10 +142,11 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
         parser: ODataParser<T>,
         pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>> {
 
-        // TODO:: add batch support
+        const dependencyDispose = this.hasBatch ? this._batchDependency : () => { return; };
+
         return Promise.resolve({
             batch: this.batch,
-            batchDependency: () => void (0),
+            batchDependency: dependencyDispose,
             cachingOptions: this._cachingOptions,
             clientFactory: () => new GraphHttpClient(),
             isBatched: this.hasBatch,
@@ -157,30 +173,6 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      */
     public filter(filter: string): this {
         this.query.set("$filter", filter);
-        return this;
-    }
-
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
         return this;
     }
 
@@ -214,7 +206,7 @@ export class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<Ge
      * @param num Number of items to skip
      */
     public skip(num: number): this {
-        this.query.set("$top", num.toString());
+        this.query.set("$skip", num.toString());
         return this;
     }
 
@@ -250,32 +242,7 @@ export class GraphQueryableSearchableCollection extends GraphQueryableCollection
  * Represents an instance that can be selected
  *
  */
-export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
-
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    public select(...selects: string[]): this {
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    }
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    public expand(...expands: string[]): this {
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    }
-}
+export class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> { }
 
 /**
  * Decorator used to specify the default path for Queryable objects

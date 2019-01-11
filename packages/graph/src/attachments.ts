@@ -3,7 +3,7 @@ import { Attachment as IAttachment } from "@microsoft/microsoft-graph-types";
 import { jsS } from "@pnp/common";
 
 @defaultPath("attachments")
-export class Attachments extends GraphQueryableCollection {
+export class Attachments extends GraphQueryableCollection<IAttachment[]> {
 
     /**
      * Gets a member of the group by id
@@ -32,5 +32,5 @@ export class Attachments extends GraphQueryableCollection {
     }
 }
 
-export class Attachment extends GraphQueryableInstance {
+export class Attachment extends GraphQueryableInstance<IAttachment> {
 }

@@ -75,10 +75,14 @@ export function getRandomString(chars: number): string {
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 /* tslint:disable no-bitwise */
 export function getGUID(): string {
-    let d = new Date().getTime();
+    let d = Date.now();
+    if (typeof performance !== "undefined" && typeof performance.now === "function") {
+        d += performance.now(); // use high-precision timer if available
+    }
     const guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         const r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
@@ -198,7 +202,7 @@ export function sanitizeGuid(guid: string): string {
 }
 
 /**
- * Shorthand for oToS
+ * Shorthand for JSON.stringify
  * 
  * @param o Any type of object
  */
@@ -217,7 +221,7 @@ export function hOP(o: any, p: string): boolean {
 }
 
 /**
- * Generates a ~unique hash code for this ObjectPathQueue
+ * Generates a ~unique hash code
  * 
  * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */

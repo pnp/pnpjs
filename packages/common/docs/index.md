@@ -21,12 +21,12 @@ console.log(getGUID());
 ## Exports
 
 * [adalclient](adalclient.md)
-* [blobutil](blobutil.md)
 * [collections](collections.md)
 * [libconfig](libconfig.md)
 * [netutil](netutil.md)
 * [storage](storage.md)
 * [util](util.md)
+* [Custom HttpClient](custom-httpclientimpl.md)
 
 ## UML
 ![Graphical UML diagram](../../documentation/img/pnpjs-common-uml.svg)

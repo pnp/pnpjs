@@ -416,7 +416,6 @@ export class SharePointQueryableShareableItem extends SharePointQueryableSecurab
      */
     public getSharingInformation(request: SharingInformationRequest = null, expands?: string[]): Promise<SharingInformation> {
 
-
         return this.clone(SharePointQueryableShareable, null).getSharingInformation(request, expands);
     }
 

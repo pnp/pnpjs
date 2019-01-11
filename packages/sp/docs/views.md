@@ -7,14 +7,15 @@ Views define the columns, ordering, and other details we see when we look at a l
 To get a views properties you need to know it's id or title. You can use the standard OData operators as expected to select properties. For a list of the properties, please see [this article](https://msdn.microsoft.com/en-us/library/office/dn531433.aspx#bk_View).
 
 ```TypeScript
+import { sp } from "@pnp/sp";
 // know a view's GUID id
-pnp.sp.web.lists.getByTitle("Documents").getView("2B382C69-DF64-49C4-85F1-70FB9CECACFE").select("Title").get().then(v => {
+sp.web.lists.getByTitle("Documents").getView("2B382C69-DF64-49C4-85F1-70FB9CECACFE").select("Title").get().then(v => {
 
     console.log(v);
 });
 
 // get by the display title of the view
-pnp.sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").select("Title").get().then(v => {
+sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").select("Title").get().then(v => {
 
     console.log(v);
 });
@@ -25,14 +26,15 @@ pnp.sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").selec
 To add a view you use the add method of the views collection. You must supply a title and can supply other parameters as well.
 
 ```TypeScript
+import { sp, ViewAddResult } from "@pnp/sp";
 // create a new view with default fields and properties
-pnp.sp.web.lists.getByTitle("Documents").views.add("My New View").then(v => {
+sp.web.lists.getByTitle("Documents").views.add("My New View").then(v => {
 
     console.log(v);
 });
 
 // create a new view with specific properties
-pnp.sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
+sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
 
     RowLimit: 10,
     ViewQuery: "<OrderBy><FieldRef Name='Modified' Ascending='False' /></OrderBy>",
@@ -55,7 +57,9 @@ pnp.sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
 ## Update a View
 
 ```TypeScript
-pnp.sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update({
+import { sp, ViewUpdateResult } from "@pnp/sp";
+
+sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update({
     RowLimit: 20,
 }).then((v: ViewUpdateResult) => {
 
@@ -63,10 +67,24 @@ pnp.sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update(
 });
 ```
 
+## Set View XML
+
+_Added in 1.2.6_
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const viewXml: string = "...";
+
+await sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").setViewXml(viewXml);
+```
+
 ## Delete a View
 
 ```TypeScript
-pnp.sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").delete().then(_ => {
+import { sp } from "@pnp/sp";
+
+sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").delete().then(_ => {
 
     console.log("View deleted");
 });

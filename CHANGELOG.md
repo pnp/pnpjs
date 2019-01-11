@@ -8,6 +8,74 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- @pnp/sp-taxonomy: Add support for add new term from term ([@siata13](https://github.com/siata13)) [[PR](https://github.com/pnp/pnpjs/pull/411)]
+- @pnp/sp: Added support for new location column creation ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/413)]
+- @pnp/sp-taxonomy: Adds groups property to TermStore object in sp-taxonomy ([@AJIXuMuK](https://github.com/AJIXuMuK)) [[PR](https://github.com/pnp/pnpjs/pull/421)]
+- documentation: @pnp/sp profiles packages functions docs ([@sympmarc](https://github.com/sympmarc)) [[PR](https://github.com/pnp/pnpjs/pull/438)]
+- @pnp/graph: Added invitations create method ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/443)]
+
+### Changed
+
+- @pnp/sp: Changes clientstate to be optional when creating subscriptions ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/431)]
+- @pnp/sp: Updates parameters when updating a subscription ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/434)]
+
+### Fixed
+
+- @pnp/sp: Fix for parsing html for ClientSidePages [[PR](https://github.com/pnp/pnpjs/pull/412)]
+- @pnp/logging: Fix to ensure logging never throws an exception [[PR](https://github.com/pnp/pnpjs/pull/416)]
+- @pnp/odata: Fix for how batches are prepared to remove timing errors [[PR](https://github.com/pnp/pnpjs/pull/432)]
+- @pnp/sp: Fix for ClientSidePages encoding of * and $ chars [[PR](https://github.com/pnp/pnpjs/pull/436)]
+- @pnp/sp: Fix getParentWeb method ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/442)]
+- documentation: Fix polyfill docs bug ([@laskewitz](https://github.com/Laskewitz)) [[PR](https://github.com/pnp/pnpjs/pull/444)]
+- @pnp/sp-taxonomy: Fix for batching when reusing object instances [[PR](https://github.com/pnp/pnpjs/pull/446)]
+
+## 1.2.7 - 2018-12-10
+
+### Added
+
+- @pnp/graph: Added support for messages, mailFolders, and mailboxSettings on user [[PR](https://github.com/pnp/pnpjs/pull/379)]
+- @pnp/graph: Added support for directory objects and new methods in groups and docs updates ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/378)]
+- @pnp/nodejs: Added support for enhanced usage in provider hosted applications ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/339)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/nodejs/docs/provider-hosted-app.md)]
+- @pnp/graph: Added support for Teams methods now in GA ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/373)]
+
+### Changed
+
+- @pnp/common: Update in getGuid to prevent collisions ([@AustinBreslinDev](https://github.com/AustinBreslinDev)) [[PR](https://github.com/pnp/pnpjs/pull/399)]
+
+### Fixed
+
+- @pnp/sp: Expanded typings for userCustomActions.add [[PR](https://github.com/pnp/pnpjs/pull/377)]
+- @pnp/sp: Fixed comm site creation issue ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/380)]
+- @pnp/sp: Fixed IRefiner.Entries as array ([@cslecours](https://github.com/cslecours)) [[PR](https://github.com/pnp/pnpjs/pull/386)]
+- @pnp/sp: Expanded folder.update allowed types [[PR](https://github.com/pnp/pnpjs/pull/393)]
+
+## 1.2.6 - 2018-11-16
+
+### Added
+
+- @pnp/sp-taxonomy: Adds support for the getTermsById to TermStore [[PR](https://github.com/pnp/pnpjs/pull/370)]
+- @pnp/sp: Added list property to item which is the parent list [[PR](https://github.com/pnp/pnpjs/pull/368)]
+- @pnp/sp-taxonomy: Adds setItemMetaDataField and setItemMetaDataMultiField utility methods [[PR](https://github.com/pnp/pnpjs/pull/368)] [[docs](https://github.com/pnp/pnpjs/blob/dev/packages/sp-taxonomy/docs/utilities.md)]
+- @pnp/sp: Adds support for the setViewXml method to the View object [[PR](https://github.com/pnp/pnpjs/pull/367)]
+- @pnp/sp: Added IRefiner interface over ResultTable.Refiners ([@pljfdi](https://github.com/pljfdi)) [[PR](https://github.com/pnp/pnpjs/pull/352)]
+- @pnp/sp: Added support to create Modern communication and team(O365 backed) sites ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/351)]
+- @pnp/graph: Added update and delete methods to user
+- documentation: Added article on [merging entities](https://pnp.github.io/pnpjs/sp/docs/entity-merging/) in sp library
+
+### Changed
+
+- @pnp/odata: Enhanced error message for pipeline http errors
+
+## 1.2.5 - 2018-11-09
+
+### Fixed
+
+- @pnp/sp: Fixed regression in search ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/353)]
+
+## 1.2.4 - 2018-11-02
+
+### Added
+
 - @pnp/polyfill-ie11: New package to contain the required polyfills for IE11 [[PR](https://github.com/pnp/pnpjs/pull/283)] [[docs](https://pnp.github.io/pnpjs/documentation/polyfill/)]
 - @pnp/sp: Added 'groups' endpoint to 'currentUser' ([@pedro-pedrosa](https://github.com/pedro-pedrosa)) [[PR](https://github.com/pnp/pnpjs/pull/274)]
 - @pnp/sp: Added Fields addDependentLookupField ([@seanmarthur](https://github.com/seanmarthur)) [[PR](https://github.com/pnp/pnpjs/pull/282)]
@@ -19,11 +87,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/sp: Added like/unlike support and likedByInformation for modern pages ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/305)]
 - @pnp/sp: Added support to send list item attachments to recycle bin (soft delete) ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/306)]
 - @pnp/sp: Added support for site designs and site scripts ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/312)]
+- documentation: Added article on [how to build the docs locally](https://github.com/pnp/pnpjs/blob/dev/packages/documentation/documentation.md). ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/315)]
+- @pnp/sp: Added support for Hub site APIs ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/329)]
+- @pnp/graph: Added support to automatically handle the requests/batch limit [[PR](https://github.com/pnp/pnpjs/pull/333)]
+
 
 ### Changed
 
 - @pnp/nodejs: NodeFetchClient updated to handle transient errors ([@kcasamento](https://github.com/kcasamento)) [[PR](https://github.com/pnp/pnpjs/pull/289)]
 - documentation: Update issue AppPermissionRequest XML debugging.md ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/311)]
+- @pnp/common: Updated ADALClient to make use of SPFx 1.6 AADTokenProvider [[PR](https://github.com/pnp/pnpjs/pull/316)]
+
+### Fixed
+
+- @pnp/sp: Fixed search query tag issue ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/326)]
+- @pnp/sp: Fixed typo in SearchPropertyValue interface (Intval -> IntVal) ([@luismanez](https://github.com/luismanez)) [[PR](https://github.com/pnp/pnpjs/pull/328)]
+- @pnp/odata: Fixed caching settings loss during clone  [[PR](https://github.com/pnp/pnpjs/pull/330)]
+- @pnp/graph: Fixed batching which should now work with GA [[PR](https://github.com/pnp/pnpjs/pull/323)]
+- @pnp/graph: Fixed issue with using skip operator in collections [[PR](https://github.com/pnp/pnpjs/pull/333)]
 
 ## 1.2.3 - 2018-10-10
 

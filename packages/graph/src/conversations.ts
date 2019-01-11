@@ -1,7 +1,13 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
 import { TypedHash, jsS } from "@pnp/common";
 import { Attachments } from "./attachments";
-import { ConversationThread as IConversationThread, Post as IPost, Recipient as IRecipient } from "@microsoft/microsoft-graph-types";
+import {
+    ConversationThread as IConversationThread,
+    Post as IPost,
+    Recipient as IRecipient,
+    Conversation as IConversation,
+    User as IUser,
+} from "@microsoft/microsoft-graph-types";
 
 /**
  * Information used to forward a post
@@ -12,7 +18,7 @@ export interface PostForwardInfo {
 }
 
 @defaultPath("conversations")
-export class Conversations extends GraphQueryableCollection {
+export class Conversations extends GraphQueryableCollection<IConversation[]> {
 
     /**
      * Create a new conversation by including a thread and a post.
@@ -37,7 +43,7 @@ export class Conversations extends GraphQueryableCollection {
 }
 
 @defaultPath("threads")
-export class Threads extends GraphQueryableCollection {
+export class Threads extends GraphQueryableCollection<IConversationThread[]> {
 
     /**
      * Gets a thread from this collection by id
@@ -63,7 +69,7 @@ export class Threads extends GraphQueryableCollection {
 }
 
 @defaultPath("posts")
-export class Posts extends GraphQueryableCollection {
+export class Posts extends GraphQueryableCollection<IPost[]> {
 
     /**
      * Gets a thread from this collection by id
@@ -88,7 +94,7 @@ export class Posts extends GraphQueryableCollection {
     }
 }
 
-export class Conversation extends GraphQueryableInstance {
+export class Conversation extends GraphQueryableInstance<IConversation> {
 
     /**
      * Get all the threads in a group conversation.
@@ -146,7 +152,7 @@ export class Thread extends GraphQueryableInstance {
     }
 }
 
-export class Post extends GraphQueryableInstance {
+export class Post extends GraphQueryableInstance<IPost> {
 
     public get attachments(): Attachments {
         return new Attachments(this);
@@ -183,7 +189,7 @@ export class Post extends GraphQueryableInstance {
     }
 }
 
-export class Senders extends GraphQueryableCollection {
+export class Senders extends GraphQueryableCollection<IUser[]> {
 
     constructor(baseUrl: string | GraphQueryable, path?: string) {
         super(baseUrl, path);

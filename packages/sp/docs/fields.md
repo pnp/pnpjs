@@ -5,9 +5,9 @@ Fields allow you to store typed information within a SharePoint list. There are 
 ## Get Fields
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 // get all the fields in a web
 web.fields.get().then(f => {
@@ -95,9 +95,9 @@ list.defaultView.fields.select('Items').get().then(f => {
 You can add fields using the add, createFieldAsXml, or one of the type specific methods. Functionally there is no difference, however one method may be easier given a certain scenario.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 // if you use add you _must_ include the correct FieldTypeKind in the extended properties
 web.fields.add("MyField1", "SP.FieldText", { 
@@ -149,9 +149,9 @@ web.lists.getByTitle("MyList").fields.addLookup("MyLookup", "xxxxxxxx-xxxx-4xxx-
 You can also update the properties of a field in both webs and lists, but not all properties are able to be updated after creation. You can review [this list](https://msdn.microsoft.com/en-us/library/office/dn600182.aspx#bk_FieldProperties) for details.
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 web.fields.getByTitle("MyField4").update({ 
     Description: "A new description",
@@ -166,6 +166,8 @@ web.fields.getByTitle("MyField4").update({
 When updating a URL or Picture field you need to include the __metadata descriptor as shown below.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+
 const data = {
     "My_Field_Name": {
         "__metadata": { "type": "SP.FieldUrlValue" },
@@ -180,9 +182,9 @@ await sp.web.lists.getByTitle("MyListTitle").items.getById(1).update(data);
 ## Delete a Field
 
 ```TypeScript
-import pnp from "@pnp/sp";
+import { sp } from "@pnp/sp";
 
-let web = pnp.sp.web;
+let web = sp.web;
 
 web.fields.getByTitle("MyField4").delete().then(f => {
 

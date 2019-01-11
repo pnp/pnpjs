@@ -8,7 +8,7 @@ We created a package you can use to include the needed functionality without hav
 
 ### Install
 
-`install --save @pnp/polyfill-ie11`
+`npm install --save @pnp/polyfill-ie11`
 
 ### Use
 

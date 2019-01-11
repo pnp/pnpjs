@@ -1,7 +1,7 @@
 import { List } from "./lists";
 import { TemplateFileType, FileAddResult, File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, combine, getGUID, getAttrValueFromString, jsS, hOP } from "@pnp/common";
+import { TypedHash, extend, combine, getGUID, getAttrValueFromString, jsS, hOP, objectDefinedNotNull } from "@pnp/common";
 
 /**
  * Page promotion state
@@ -245,6 +245,8 @@ export class ClientSidePage extends File {
             .replace(/}/g, "&#125;")
             .replace(/\[/g, "\[")
             .replace(/\]/g, "\]")
+            .replace(/\*/g, "\*")
+            .replace(/\$/g, "\$")
             .replace(/\./g, "\.");
     }
 
@@ -258,12 +260,13 @@ export class ClientSidePage extends File {
             const mapDict = [
                 [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
                 [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
-                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"], [/\\\*/g, "*"],
+                [/\\\$/g, "$"],
             ];
             return mapDict.reduce((r, m) => r.replace(m[0], m[1] as string), escaped);
         };
 
-        return JSON.parse(unespace(escapedString));
+        return objectDefinedNotNull(escapedString) ? JSON.parse(unespace(escapedString)) : null;
     }
 
     /**
@@ -464,18 +467,34 @@ export class ClientSidePage extends File {
 
         let section: CanvasSection = null;
         let column: CanvasColumn = null;
+        let sectionFactor: CanvasColumnFactorType = 12;
+        let sectionIndex = 0;
+        let zoneIndex = 0;
 
-        const sections = this.sections.filter(s => s.order === control.controlData.position.zoneIndex);
+        // handle case where we don't have position data
+        if (hOP(control.controlData, "position")) {
+            if (hOP(control.controlData.position, "zoneIndex")) {
+                zoneIndex = control.controlData.position.zoneIndex;
+            }
+            if (hOP(control.controlData.position, "sectionIndex")) {
+                sectionIndex = control.controlData.position.sectionIndex;
+            }
+            if (hOP(control.controlData.position, "sectionFactor")) {
+                sectionFactor = control.controlData.position.sectionFactor;
+            }
+        }
+
+        const sections = this.sections.filter(s => s.order === zoneIndex);
         if (sections.length < 1) {
-            section = new CanvasSection(this, control.controlData.position.zoneIndex);
+            section = new CanvasSection(this, zoneIndex);
             this.sections.push(section);
         } else {
             section = sections[0];
         }
 
-        const columns = section.columns.filter(c => c.order === control.controlData.position.sectionIndex);
+        const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
-            column = new CanvasColumn(section, control.controlData.position.sectionIndex, control.controlData.position.sectionFactor);
+            column = new CanvasColumn(section, sectionIndex, sectionFactor);
             section.columns.push(column);
         } else {
             column = columns[0];
@@ -493,11 +512,12 @@ export class ClientSidePage extends File {
      */
     private mergeColumnToTree(column: CanvasColumn): void {
 
+        const order = hOP(column.controlData, "position") && hOP(column.controlData.position, "zoneIndex") ? column.controlData.position.zoneIndex : 0;
         let section: CanvasSection = null;
-        const sections = this.sections.filter(s => s.order === column.controlData.position.zoneIndex);
+        const sections = this.sections.filter(s => s.order === order);
 
         if (sections.length < 1) {
-            section = new CanvasSection(this, column.controlData.position.zoneIndex);
+            section = new CanvasSection(this, order);
             this.sections.push(section);
         } else {
             section = sections[0];
@@ -652,8 +672,14 @@ export class CanvasColumn extends CanvasControl {
         super.fromHtml(html);
 
         this.controlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(html, "data-sp-controldata"));
-        this.factor = this.controlData.position.sectionFactor;
-        this.order = this.controlData.position.sectionIndex;
+        if (hOP(this.controlData, "position")) {
+            if (hOP(this.controlData.position, "sectionFactor")) {
+                this.factor = this.controlData.position.sectionFactor;
+            }
+            if (hOP(this.controlData.position, "sectionIndex")) {
+                this.order = this.controlData.position.sectionIndex;
+            }
+        }
     }
 
     public getControlData(): ClientSideControlData {

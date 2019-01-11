@@ -9,6 +9,7 @@ nav:
     - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
     - 'Gulp Commands': 'documentation/gulp-commands.md'
     - Debugging: 'documentation/debugging.md'
+    - 'Building Docs': 'documentation/documentation.md'
     - Deployment: 'documentation/deployment.md'
     - 'Install Beta Versions': 'documentation/beta-versions.md'
     - Polyfills: 'documentation/polyfill.md'
@@ -33,12 +34,21 @@ nav:
       - config-store: 'config-store/docs/index.md'
       - configuration: 'config-store/docs/configuration.md'
       - providers: 'config-store/docs/providers.md'
-    - graph: 'graph/docs/index.md'
+    - graph: 
+      - graph: 'graph/docs/index.md'
+      - contacts: 'graph/docs/contacts.md'
+      - 'directory objects': 'graph/docs/directoryobjects.md'
+      - invitations: 'graph/docs/invitations.md'
+      - onedrive: 'graph/docs/onedrive.md'
+      - planner: 'graph/docs/planner.md'
+      - teams: 'graph/docs/teams.md'
     - logging: 'logging/docs/index.md'
     - nodejs:
       - nodejs: 'nodejs/docs/index.md'
       - AdalFetchClient: 'nodejs/docs/adal-fetch-client.md'
       - SPFetchClient: 'nodejs/docs/sp-fetch-client.md'
+      - BearerTokenFetchClient: 'nodejs/docs/bearer-token-fetch-client.md'
+      - ProviderHostedRequestContext: 'nodejs/docs/provider-hosted-app.md'
     - odata:
       - odata: 'odata/docs/index.md'
       - caching: 'odata/docs/caching.md'
@@ -54,15 +64,20 @@ nav:
       - 'ALM api': 'sp/docs/alm.md'
       - Attachments: 'sp/docs/attachments.md'
       - 'Client-side Pages': 'sp/docs/client-side-pages.md'
+      - 'Content Types': 'sp/docs/content-types.md'
+      - 'Entity Merging': 'sp/docs/entity-merging.md'
       - Features: 'sp/docs/features.md'
       - Fields: 'sp/docs/fields.md'
       - Files: 'sp/docs/files.md'
       - 'List Items': 'sp/docs/items.md'
       - 'Navigation Service': 'sp/docs/navigation-service.md'
       - Permissions: 'sp/docs/permissions.md'
+      - Profiles: 'sp/docs/profiles.md'
       - 'Related Items': 'sp/docs/related-items.md'
       - Search: 'sp/docs/search.md'
       - Sharing: 'sp/docs/sharing.md'
+      - Sites: 'sp/docs/sites.md'
+      - Site Designs: 'sp/docs/sitedesigns.md'
       - Social: 'sp/docs/social.md'
       - 'SP.Utilities.Utility': 'sp/docs/sp-utilities-utility.md'
       - 'Tenant Properties': 'sp/docs/tenant-properties.md'
@@ -81,6 +96,7 @@ nav:
       - 'Term Sets': 'sp-taxonomy/docs/term-sets.md'
       - Terms: 'sp-taxonomy/docs/terms.md'
       - Labels: 'sp-taxonomy/docs/labels.md'
+      - Utilities: 'sp-taxonomy/docs/utilities.md'
 theme:
   name: 'material'
   custom_dir: 'packages/documentation/theme'
@@ -101,7 +117,7 @@ plugins:
   - search
   - markdownextradata
 extra:
-  version: '1.2.3'
+  version: '1.2.7'
   social:
     - type: 'twitter'
       link: 'https://twitter.com/officedevpnp'

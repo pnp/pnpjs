@@ -52,7 +52,6 @@ export class Views extends SharePointQueryableCollection {
     }
 }
 
-
 /**
  * Describes a single View instance
  *
@@ -82,6 +81,20 @@ export class View extends SharePointQueryableInstance {
      */
     public renderAsHtml(): Promise<string> {
         return this.clone(SharePointQueryable, "renderashtml").get();
+    }
+
+    /**
+     * Sets the view schema
+     * 
+     * @param viewXml The view XML to set
+     */
+    public setViewXml(viewXml: string): Promise<void> {
+
+        return this.clone(View, "SetViewXml").postCore({
+            body: jsS({
+                viewXml,
+            }),
+        });
     }
 }
 
@@ -141,4 +154,3 @@ export interface ViewUpdateResult {
     view: View;
     data: any;
 }
-

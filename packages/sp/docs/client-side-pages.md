@@ -174,3 +174,47 @@ await page.unlike();
 // Get liked by information such as like count and user's who liked the page
 await page.getLikedByInformation();
 ```
+
+## Sample
+
+The below sample shows the process to add a Yammer feed webpart to the page. The properties required as well as the data version are found by adding the part using the UI and reviewing the values. Some or all of these may be discoverable using [Yammer APIs](https://developer.microsoft.com/en-us/yammer/docs). An identical process can be used to add web parts of any type by adjusting the definition, data version, and properties appropriately.
+
+```TypeScript
+// get webpart defs
+const defs = await sp.web.getClientSideWebParts();
+
+// this is the id of the definition in my farm
+const yammerPartDef = defs.filter(d => d.Id === "31e9537e-f9dc-40a4-8834-0e3b7df418bc")[0];
+
+// page file
+const file = sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Testing_kVKF.aspx");
+
+// create page instance
+const page = await ClientSidePage.fromFile(file);
+
+// create part instance from definition
+const part = ClientSideWebpart.fromComponentDef(yammerPartDef);
+
+// update data version
+part.dataVersion = "1.5";
+
+// set the properties required
+part.setProperties({
+    feedType: 0,
+    isSuiteConnected: false,
+    mode: 2,
+    networkId: 9999999,
+    yammerEmbedContainerHeight: 400,
+    yammerFeedURL: "",
+    yammerGroupId: -1,
+    yammerGroupMugshotUrl: "https://mug0.assets-yammer.com/mugshot/images/{width}x{height}/all_company.png",
+    yammerGroupName: "All Company",
+    yammerGroupUrl: "https://www.yammer.com/{tenant}/#/threads/company?type=general",
+});
+
+// add to the section/column you want
+page.sections[0].addControl(part);
+
+// persist changes
+page.save();
+```
