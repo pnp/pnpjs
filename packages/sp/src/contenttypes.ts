@@ -40,7 +40,6 @@ export class ContentTypes extends SharePointQueryableCollection {
     /**
      * Adds a new content type to the collection
      *
-     * @param id The desired content type id for the new content type (also determines the parent content type)
      * @param name The name of the content type
      * @param description The description of the content type
      * @param group The group in which to add the content type
@@ -48,7 +47,6 @@ export class ContentTypes extends SharePointQueryableCollection {
      *
      */
     public add(
-        id: string,
         name: string,
         description = "",
         group = "Custom Content Types",
@@ -57,7 +55,6 @@ export class ContentTypes extends SharePointQueryableCollection {
         const postBody = jsS(Object.assign(metadata("SP.ContentType"), {
             "Description": description,
             "Group": group,
-            "Id": { "StringValue": id },
             "Name": name,
         }, additionalSettings));
 
