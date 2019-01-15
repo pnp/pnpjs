@@ -1,5 +1,6 @@
-export * from "core-js/modules/es6.promise";
-export * from "core-js/modules/es6.array.iterator.js";
-export * from "core-js/modules/es6.array.from.js";
-export * from "whatwg-fetch";
-export * from "es6-map/implement";
+import "core-js/modules/es6.promise";
+import "core-js/modules/es6.array.iterator.js";
+import "core-js/modules/es6.array.from.js";
+import "core-js/modules/es6.array.fill.js";
+import "es6-map/implement";
+import "whatwg-fetch";
