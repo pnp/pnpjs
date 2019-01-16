@@ -32,8 +32,8 @@ a suggestion or asking a question delete this section.*
 ### Submission Guidelines
 *Delete this section after reading*
 * All suggestions, questions and issues are welcome, please let us know what's on your mind.
-* If you have a general question [gitter](https://gitter.im/OfficeDev/PnP-JS-Core) may be a better forum.
 * Remember to include sufficient details and context.
+* Please check back occasionally on your issue as we may have follow up questions.
 * If you have multiple suggestions, questions, or bugs please submit them in seperate issues so we can track resolution.
 
 Thank you for your feedback!
