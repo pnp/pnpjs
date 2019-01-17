@@ -319,6 +319,12 @@ export enum DateTimeFieldFormatType {
     DateTime = 1,
 }
 
+export enum DateTimeFieldFriendlyFormatType {
+    Unspecified = 0,
+    Disabled = 1,
+    Relative = 2,
+}
+
 /**
  * Specifies the control settings while adding a field.
  */

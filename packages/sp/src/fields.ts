@@ -3,6 +3,7 @@ import { extend, TypedHash, jsS } from "@pnp/common";
 import {
     XmlSchemaFieldCreationInformation,
     DateTimeFieldFormatType,
+    DateTimeFieldFriendlyFormatType,
     FieldTypes,
     CalendarType,
     UrlFieldFormatType,
@@ -148,13 +149,14 @@ export class Fields extends SharePointQueryableCollection {
      * @param title The field title
      * @param displayFormat The format of the date and time that is displayed in the field.
      * @param calendarType Specifies the calendar type of the field.
+     * @param friendlyDisplayFormat The type of friendly display format that is used in the field.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     public addDateTime(
         title: string,
         displayFormat: DateTimeFieldFormatType = DateTimeFieldFormatType.DateOnly,
         calendarType: CalendarType = CalendarType.Gregorian,
-        friendlyDisplayFormat = 0,
+        friendlyDisplayFormat: DateTimeFieldFriendlyFormatType = DateTimeFieldFriendlyFormatType.Disabled,
         properties?: FieldCreationProperties): Promise<FieldAddResult> {
 
         const props = {
