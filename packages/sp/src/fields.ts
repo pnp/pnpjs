@@ -156,7 +156,7 @@ export class Fields extends SharePointQueryableCollection {
         title: string,
         displayFormat: DateTimeFieldFormatType = DateTimeFieldFormatType.DateOnly,
         calendarType: CalendarType = CalendarType.Gregorian,
-        friendlyDisplayFormat: DateTimeFieldFriendlyFormatType = DateTimeFieldFriendlyFormatType.Disabled,
+        friendlyDisplayFormat: DateTimeFieldFriendlyFormatType = DateTimeFieldFriendlyFormatType.Unspecified,
         properties?: FieldCreationProperties): Promise<FieldAddResult> {
 
         const props = {
