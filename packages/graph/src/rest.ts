@@ -11,7 +11,7 @@ import { Planner, IPlannerMethods } from "./planner";
 import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 import { Invitations, IInvitationsMethods } from "./invitations";
-import { Subscriptions } from './subscriptions';
+import { Subscriptions } from "./subscriptions";
 
 export class GraphRest extends GraphQueryable {
 

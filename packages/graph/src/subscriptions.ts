@@ -19,7 +19,7 @@ export class Subscriptions extends GraphQueryableCollection<ISubscription[]> {
      * 
      */
     public add(changeType: string, notificationUrl: string, resource: string, expirationDateTime: string,
-        additionalProperties: TypedHash<any> = {}): Promise<SubscriptionAddResult> {
+        additionalProperties: TypedHash<any> = {}): Promise<SubAddResult> {
 
         const postBody = extend({
             changeType: changeType,
@@ -62,7 +62,7 @@ export class Subscription extends GraphQueryableInstance<ISubscription> {
     }
 }
 
-export interface SubscriptionAddResult {
+ export interface SubAddResult {
     data: ISubscription;
     subscription: Subscription;
 }
