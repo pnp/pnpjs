@@ -4,7 +4,7 @@ import { SPFetchClient, SPOAuthEnv } from "@pnp/nodejs";
 
 declare var process: { exit(code?: number): void };
 
-export function Example(settings: any) {
+export async function Example(settings: any) {
 
     // configure your node options
     sp.setup({
@@ -15,20 +15,23 @@ export function Example(settings: any) {
         },
     });
 
-    // run some debugging
-    sp.web.select("Title", "Description").get().then(w => {
+    await sp.web.lists.getByTitle("issue461").fields.addMultilineText("Multiline1", 6, true, false, false, true);
 
-        // logging results to the Logger
-        Logger.log({
-            data: w,
-            level: LogLevel.Info,
-            message: "Web's Title",
-        });
 
-        process.exit(0);
-    }).catch(e => {
+    // // run some debugging
+    // sp.web.select("Title", "Description").get().then(w => {
 
-        Logger.error(e);
-        process.exit(1);
-    });
+    //     // logging results to the Logger
+    //     Logger.log({
+    //         data: w,
+    //         level: LogLevel.Info,
+    //         message: "Web's Title",
+    //     });
+
+    //     process.exit(0);
+    // }).catch(e => {
+
+    //     Logger.error(e);
+    //     process.exit(1);
+    // });
 }

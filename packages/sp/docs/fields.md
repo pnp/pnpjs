@@ -144,6 +144,18 @@ web.lists.getByTitle("MyList").fields.addLookup("MyLookup", "xxxxxxxx-xxxx-4xxx-
 });
 ```
 
+### Adding Multiline Text Fields with FullHtml
+
+Because the RichTextMode property is not exposed to the clients we cannot set this value via the API directly. The work around is to use the createFieldAsXml method as shown below
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+let web = sp.web;
+
+const fieldAddResult = await web.fields.createFieldAsXml(`<Field Type="Note" Name="Content" DisplayName="Content" Required="{TRUE|FALSE}" RichText="TRUE" RichTextMode="FullHtml" />`);
+```
+
 ## Update a Field
 
 You can also update the properties of a field in both webs and lists, but not all properties are able to be updated after creation. You can review [this list](https://msdn.microsoft.com/en-us/library/office/dn600182.aspx#bk_FieldProperties) for details.
