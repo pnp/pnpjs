@@ -130,7 +130,19 @@ export class Items extends SharePointQueryableCollection {
 
             const postBody = jsS(extend(metadata(listItemEntityType), properties));
 
-            const promise = this.clone(Items, "").postCore<{ Id: number }>({ body: postBody }).then((data) => {
+            // we need to create a compound dependency clearing function to clear both the batch dependency assigned to this object
+            // and the one created during the clone. See https://github.com/pnp/pnpjs/issues/468 for details.
+            const clonedReq = this.clone(Items, "");
+            if (clonedReq.hasBatch) {
+                const r = clonedReq._batchDependency;
+                const compoundDep = () => {
+                    this._batchDependency();
+                    r();
+                };
+                clonedReq._batchDependency = compoundDep;
+            }
+
+            const promise = clonedReq.postCore<{ Id: number }>({ body: postBody }).then((data) => {
                 return {
                     data: data,
                     item: this.getById(data.Id),

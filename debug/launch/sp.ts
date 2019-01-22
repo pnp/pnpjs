@@ -4,7 +4,7 @@ import { SPFetchClient, SPOAuthEnv } from "@pnp/nodejs";
 
 declare var process: { exit(code?: number): void };
 
-export function Example(settings: any) {
+export async function Example(settings: any) {
 
     // configure your node options
     sp.setup({
