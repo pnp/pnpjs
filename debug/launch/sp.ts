@@ -15,23 +15,20 @@ export async function Example(settings: any) {
         },
     });
 
-    await sp.web.lists.getByTitle("issue461").fields.addMultilineText("Multiline1", 6, true, false, false, true);
+    // run some debugging
+    sp.web.select("Title", "Description").get().then(w => {
 
+        // logging results to the Logger
+        Logger.log({
+            data: w,
+            level: LogLevel.Info,
+            message: "Web's Title",
+        });
 
-    // // run some debugging
-    // sp.web.select("Title", "Description").get().then(w => {
+        process.exit(0);
+    }).catch(e => {
 
-    //     // logging results to the Logger
-    //     Logger.log({
-    //         data: w,
-    //         level: LogLevel.Info,
-    //         message: "Web's Title",
-    //     });
-
-    //     process.exit(0);
-    // }).catch(e => {
-
-    //     Logger.error(e);
-    //     process.exit(1);
-    // });
+        Logger.error(e);
+        process.exit(1);
+    });
 }
