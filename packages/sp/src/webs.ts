@@ -1,5 +1,5 @@
 import { extend, TypedHash, jsS } from "@pnp/common";
-import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -127,8 +127,8 @@ export class Web extends SharePointQueryableShareableWeb {
     /**
      * Allows access to the web's all properties collection
      */
-    public get allProperties(): SharePointQueryableCollection {
-        return this.clone(SharePointQueryableCollection, "allproperties");
+    public get allProperties(): SharePointQueryableInstance {
+        return this.clone(SharePointQueryableInstance, "allproperties");
     }
 
     /**
