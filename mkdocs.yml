@@ -41,6 +41,7 @@ nav:
       - invitations: 'graph/docs/invitations.md'
       - onedrive: 'graph/docs/onedrive.md'
       - planner: 'graph/docs/planner.md'
+      - subscriptions: 'graph/docs/subscriptions.md'
       - teams: 'graph/docs/teams.md'
     - logging: 'logging/docs/index.md'
     - nodejs:
