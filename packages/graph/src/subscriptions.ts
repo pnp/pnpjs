@@ -4,6 +4,7 @@ import { Subscription as ISubscription } from "@microsoft/microsoft-graph-types"
 
 @defaultPath("subscriptions")
 export class Subscriptions extends GraphQueryableCollection<ISubscription[]> {
+
     public getById(id: string): Subscription {
         return new Subscription(this, id);
     }
@@ -37,7 +38,6 @@ export class Subscriptions extends GraphQueryableCollection<ISubscription[]> {
             };
         });
     }
-
 }
 
 export class Subscription extends GraphQueryableInstance<ISubscription> {
@@ -62,7 +62,7 @@ export class Subscription extends GraphQueryableInstance<ISubscription> {
     }
 }
 
- export interface SubAddResult {
+export interface SubAddResult {
     data: ISubscription;
     subscription: Subscription;
 }
