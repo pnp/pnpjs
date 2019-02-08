@@ -829,6 +829,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../../graph/docs/subscriptions/" title="subscriptions" class="md-nav__link">
+      subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../../graph/docs/teams/" title="teams" class="md-nav__link">
       teams
     </a>
@@ -1223,6 +1235,19 @@
   <a href="#add-fields" title="Add Fields" class="md-nav__link">
     Add Fields
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-multiline-text-fields-with-fullhtml" title="Adding Multiline Text Fields with FullHtml" class="md-nav__link">
+    Adding Multiline Text Fields with FullHtml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1685,6 +1710,19 @@
     Add Fields
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-multiline-text-fields-with-fullhtml" title="Adding Multiline Text Fields with FullHtml" class="md-nav__link">
+    Adding Multiline Text Fields with FullHtml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1869,6 +1907,16 @@
 <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">fDep</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fDep</span><span class="p">);</span>
 <span class="p">});</span>
+</pre></div>
+
+
+<h3 id="adding-multiline-text-fields-with-fullhtml">Adding Multiline Text Fields with FullHtml<a class="headerlink" href="#adding-multiline-text-fields-with-fullhtml" title="Permanent link">&para;</a></h3>
+<p>Because the RichTextMode property is not exposed to the clients we cannot set this value via the API directly. The work around is to use the createFieldAsXml method as shown below</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">fieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="sb">`&lt;Field Type=&quot;Note&quot; Name=&quot;Content&quot; DisplayName=&quot;Content&quot; Required=&quot;{TRUE|FALSE}&quot; RichText=&quot;TRUE&quot; RichTextMode=&quot;FullHtml&quot; /&gt;`</span><span class="p">);</span>
 </pre></div>
 
 

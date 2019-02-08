@@ -1,5 +1,5 @@
 import { extend, TypedHash, jsS } from "@pnp/common";
-import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -11,7 +11,7 @@ import { ContentTypes } from "./contenttypes";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
 import { extractWebUrl } from "./utils/extractweburl";
-import { ChangeQuery, StorageEntity } from "./types";
+import { ChangeQuery, StorageEntity, HubSiteData as IHubSiteData } from "./types";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
@@ -127,8 +127,8 @@ export class Web extends SharePointQueryableShareableWeb {
     /**
      * Allows access to the web's all properties collection
      */
-    public get allProperties(): SharePointQueryableCollection {
-        return this.clone(SharePointQueryableCollection, "allproperties");
+    public get allProperties(): SharePointQueryableInstance {
+        return this.clone(SharePointQueryableInstance, "allproperties");
     }
 
     /**
@@ -598,7 +598,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * When true, the cache is refreshed with the latest updates and then returned.
      * Use this if you just made changes and need to see those changes right away.
      */
-    public hubSiteData(forceRefresh = false): Promise<void> {
+    public hubSiteData(forceRefresh = false): Promise<IHubSiteData> {
         return this.clone(Web, `hubSiteData(${forceRefresh})`).get();
     }
 

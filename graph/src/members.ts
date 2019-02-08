@@ -31,7 +31,14 @@ export class Members extends GraphQueryableCollection<IMember[]> {
     }
 }
 
-export class Member extends GraphQueryableInstance<IMember> { }
+export class Member extends GraphQueryableInstance<IMember> {
+    /**
+     * Removes this Member
+     */
+    public remove(): Promise<void> {
+        return this.clone(Member, "$ref").deleteCore();
+    }
+}
 
 @defaultPath("owners")
 export class Owners extends Members { }
