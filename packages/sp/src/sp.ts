@@ -247,3 +247,8 @@ export {
     SiteDesignInfo,
     SiteDesignPrincipals,
 } from "./sitedesigns";
+
+export {
+    HubSite,
+    HubSites,
+} from "./hubsites";

@@ -16,6 +16,7 @@ import {
     SPConfiguration,
 } from "./config/splibconfig";
 import { ICachingOptions } from "@pnp/odata";
+import { HubSites } from "./hubsites";
 
 /**
  * Root of the SharePoint REST module
@@ -152,6 +153,13 @@ export class SPRest {
      */
     public get siteDesigns(): SiteDesignsUtilityMethods {
         return this.create(SiteDesigns, "");
+    }
+
+    /**
+     * Access to Hub Site methods
+     */
+    public get hubSites(): HubSites {
+        return this.create(HubSites);
     }
 
     /**
