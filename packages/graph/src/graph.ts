@@ -41,3 +41,5 @@ export * from "./directoryobjects";
 export * from "./invitations";
 
 export * from "./subscriptions";
+
+export * from "./sharepoint";
