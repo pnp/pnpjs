@@ -12,6 +12,7 @@ import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 import { Invitations, IInvitationsMethods } from "./invitations";
 import { Subscriptions } from "./subscriptions";
+import { ISecurityMethods, Security } from "./security";
 
 export class GraphRest extends GraphQueryable {
 
@@ -57,6 +58,10 @@ export class GraphRest extends GraphQueryable {
 
     public setup(config: GraphConfiguration) {
         _setup(config);
+    }
+
+    public get security(): ISecurityMethods {
+        return new Security(this);
     }
 }
 
