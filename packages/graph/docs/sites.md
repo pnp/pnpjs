@@ -105,6 +105,16 @@ const list = await graph.sites.getById('contoso.sharepoint.com').lists.getById('
 
 ```
 
+## Create a Lists in a Site
+
+Using the lists.create() you can create a list in a site. 
+
+```TypeScript
+import { graph } from "@pnp/graph";
+
+const newLists = await graph.sites.getById('contoso.sharepoint.com').lists.create('DisplayName', {contentTypesEnabled: true, hidden: false, template: "genericList"})
+```
+
 ---
 
 ## Get the default drive
@@ -213,9 +223,56 @@ const itemsFromList = await graph.sites.getById('contoso.sharepoint.com').lists.
 Using the getById().get() you can get a specific Item from a List
 
 ```TypeScript
+
 import { graph } from "@pnp/graph";
 
 const itemFromList = await graph.sites.getById('contoso.sharepoint.com').lists.getById('listId').items.getById('itemId').get();
+
+```
+
+## Create Item
+
+Using the items.create() you can create an Item in a List. 
+
+```TypeScript
+
+import { graph } from "@pnp/graph";
+
+const newItem = await graph.sites.getById('contoso.sharepoint.com').lists.getById('listId').items.create({
+"fields": {
+    "Title": "Widget",
+    "Color": "Purple",
+    "Weight": 32
+  }
+})
+
+```
+
+## Update Item
+
+Using the update() you can update an Item in a List. 
+
+```TypeScript
+
+import { graph } from "@pnp/graph";
+
+const Item = await graph.sites.getById('contoso.sharepoint.com').lists.getById('listId').items.getById('itemId').update({
+{
+    "Color": "Fuchsia"
+}
+})
+
+```
+
+## Delete Item
+
+Using the delete() you can delete an Item in a List. 
+
+```TypeScript
+
+import { graph } from "@pnp/graph";
+
+const Item = await graph.sites.getById('contoso.sharepoint.com').lists.getById('listId').items.getById('itemId').delete()
 
 ```
 
