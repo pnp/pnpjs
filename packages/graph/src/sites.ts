@@ -19,7 +19,7 @@ import {
 
 export interface ISitesMethods {
     root: GraphSite;
-    getById(hostName: string, relativeUrl?: string): GraphSite;
+    getById(baseUrl: string, relativeUrl?: string): GraphSite;
 }
 
 export interface IItemMethods {
