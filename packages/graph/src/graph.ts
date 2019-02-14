@@ -42,4 +42,4 @@ export * from "./invitations";
 
 export * from "./subscriptions";
 
-export * from "./sharepoint";
+export * from "./sites";

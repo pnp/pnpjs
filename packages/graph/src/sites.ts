@@ -18,13 +18,13 @@ import {
 } from "./onedrive";
 
 export interface ISitesMethods {
-    root: SPSite;
-    getByServerRelativeUrl(hostName: string, relativeUrl?: string): SPSite;
+    root: GraphSite;
+    getById(hostName: string, relativeUrl?: string): GraphSite;
 }
 
 export interface IItemMethods {
-    root: SPSite;
-    getById(id: string): SPSite;
+    root: GraphSite;
+    getById(id: string): GraphSite;
 }
 
 /**
@@ -33,33 +33,59 @@ export interface IItemMethods {
 @defaultPath("sites")
 export class Sites extends GraphQueryableInstance<ISite> implements ISitesMethods {
 
-    public get root(): SPSite {
-        return new SPSite(this, "root");
+    public get root(): GraphSite {
+        return new GraphSite(this, "root");
     }
 
     /**
      * Gets a Site instance by id
      * 
-     * @param id Site id
+     * @param baseUrl Base url ex: contoso.sharepoint.com
+     * @param relativeUrl Optional relative url ex: /sites/site
      */
-    public getByServerRelativeUrl(hostName: string, relativeUrl?: string): SPSite {
-        let siteUrl = hostName;
+    public getById(baseUrl: string, relativeUrl?: string): GraphSite {
+        let siteUrl = baseUrl;
+
+        // If a relative URL combine url with : at the right places
         if (relativeUrl) {
-            siteUrl += `:${relativeUrl}:`; 
+            siteUrl = this._urlCombine(baseUrl, relativeUrl);
         }
 
-        return new SPSite(this, siteUrl);
+        return new GraphSite(this, siteUrl);
+    }
+
+    /**
+     * Method to make sure the url is encoded as it should with :
+     * 
+     */
+    private _urlCombine(baseUrl: string, relativeUrl: string): string {
+        // remove last '/' of base if exists
+        if (baseUrl.lastIndexOf("/") === baseUrl.length - 1) {
+            baseUrl = baseUrl.substring(0, baseUrl.length - 1);
+        }
+
+        // remove '/' at 0
+        if (relativeUrl.charAt(0) === "/") {
+            relativeUrl = relativeUrl.substring(1, relativeUrl.length);
+        }
+
+        // remove last '/' of next if exists
+        if (relativeUrl.lastIndexOf("/") === relativeUrl.length - 1) {
+            relativeUrl = relativeUrl.substring(0, relativeUrl.length - 1);
+        }
+
+        return `${baseUrl}:/${relativeUrl}:`;
     }
 }
 
-export class SPSite extends GraphQueryableInstance<ISite> {
+export class GraphSite extends GraphQueryableInstance<ISite> {
 
-    public get columns(): Columns {
-        return new Columns(this);
+    public get columns(): GraphColumns {
+        return new GraphColumns(this);
     }
 
-    public get contentTypes(): SPContentTypes {
-        return new SPContentTypes(this);
+    public get contentTypes(): GraphContentTypes {
+        return new GraphContentTypes(this);
     }
 
     public get drive(): Drive {
@@ -70,8 +96,8 @@ export class SPSite extends GraphQueryableInstance<ISite> {
         return new Drives(this);
     }
 
-    public get lists(): SPLists {
-        return new SPLists(this);
+    public get lists(): GraphLists {
+        return new GraphLists(this);
     }
 
     public get sites(): Sites {
@@ -84,20 +110,20 @@ export class SPSite extends GraphQueryableInstance<ISite> {
 *
 */
 @defaultPath("contenttypes")
-export class SPContentTypes extends GraphQueryableCollection<IContentType[]> {
+export class GraphContentTypes extends GraphQueryableCollection<IContentType[]> {
 
     /**
      * Gets a Content Type instance by id
      * 
      * @param id Content Type id
      */
-    public getById(id: string): SPContentType {
-        return new SPContentType(this, id);
+    public getById(id: string): GraphContentType {
+        return new GraphContentType(this, id);
     }
 
 }
 
-export class SPContentType extends GraphQueryableInstance<IContentType> {
+export class GraphContentType extends GraphQueryableInstance<IContentType> {
 
 }
 
@@ -106,50 +132,50 @@ export class SPContentType extends GraphQueryableInstance<IContentType> {
  *
  */
 @defaultPath("columns")
-export class Columns extends GraphQueryableCollection<IColumnDefinition[]> {
+export class GraphColumns extends GraphQueryableCollection<IColumnDefinition[]> {
     /**
      * Gets a Column instance by id
      * 
      * @param id Column id
      */
-    public getById(id: string): Column {
-        return new Column(this, id);
+    public getById(id: string): GraphColumn {
+        return new GraphColumn(this, id);
     }
 }
 
-export class Column extends GraphQueryableInstance<IColumnDefinition> {
+export class GraphColumn extends GraphQueryableInstance<IColumnDefinition> {
 
-    public get columnLinks(): ColumnLinks {
-        return new ColumnLinks(this);
+    public get columnLinks(): GraphColumnLinks {
+        return new GraphColumnLinks(this);
     }
 }
 
 @defaultPath("columnlinks")
-export class ColumnLinks extends GraphQueryableCollection<IColumnLink[]> {
+export class GraphColumnLinks extends GraphQueryableCollection<IColumnLink[]> {
     /**
      * Gets a Column link instance by id
      * 
      * @param id Column link id
      */
-    public getById(id: string): ColumnLink {
-        return new ColumnLink(this, id);
+    public getById(id: string): GraphColumnLink {
+        return new GraphColumnLink(this, id);
     }
 }
 
-export class ColumnLink extends GraphQueryableInstance<IColumnLink> { }
+export class GraphColumnLink extends GraphQueryableInstance<IColumnLink> { }
 
 /**
 * Describes a collection of Column definitions objects
 */
 @defaultPath("lists")
-export class SPLists extends GraphQueryableCollection<IList[]> {
+export class GraphLists extends GraphQueryableCollection<IList[]> {
     /**
      * Gets a List instance by id
      * 
      * @param id List id
      */
-    public getById(id: string): SPList {
-        return new SPList(this, id);
+    public getById(id: string): GraphList {
+        return new GraphList(this, id);
     }
 
     /**
@@ -171,41 +197,41 @@ export class SPLists extends GraphQueryableCollection<IList[]> {
         }).then(r => {
             return {
                 data: r,
-                list: new SPList(this, r.id),
+                list: new GraphList(this, r.id),
             };
         });
     }
 }
 
-export class SPList extends GraphQueryableInstance<IList> {
+export class GraphList extends GraphQueryableInstance<IList> {
 
-    public get columns(): Columns {
-        return new Columns(this);
+    public get columns(): GraphColumns {
+        return new GraphColumns(this);
     }
 
-    public get contentTypes(): SPContentTypes {
-        return new SPContentTypes(this);
+    public get contentTypes(): GraphContentTypes {
+        return new GraphContentTypes(this);
     }
 
     public get drive(): Drive {
         return new Drive(this);
     }
 
-    public get items(): SPItems {
-        return new SPItems(this);
+    public get items(): GraphItems {
+        return new GraphItems(this);
     }
 
 }
 
 @defaultPath("items")
-export class SPItems extends GraphQueryableCollection<IListItem[]> {
+export class GraphItems extends GraphQueryableCollection<IListItem[]> {
     /**
      * Gets a List Item instance by id
      * 
      * @param id List item id
      */
-    public getById(id: string): SPItem {
-        return new SPItem(this, id);
+    public getById(id: string): GraphItem {
+        return new GraphItem(this, id);
     }
 
     /**
@@ -226,24 +252,24 @@ export class SPItems extends GraphQueryableCollection<IListItem[]> {
         }).then(r => {
             return {
                 data: r,
-                item: new SPItem(this, r.id),
+                item: new GraphItem(this, r.id),
             };
         });
     }
 }
 
-export class SPItem extends GraphQueryableInstance<IListItem> {
+export class GraphItem extends GraphQueryableInstance<IListItem> {
 
     public get driveItem(): DriveItem {
         return new DriveItem(this);
     }
 
-    public get fields(): SPFields {
-        return new SPFields(this);
+    public get fields(): GraphFields {
+        return new GraphFields(this);
     }
 
-    public get versions(): Versions {
-        return new Versions(this);
+    public get versions(): GraphVersions {
+        return new GraphVersions(this);
     }
 
     /**
@@ -268,10 +294,10 @@ export class SPItem extends GraphQueryableInstance<IListItem> {
 }
 
 @defaultPath("fields")
-export class SPFields extends GraphQueryableCollection<IFieldValueSet[]> { }
+export class GraphFields extends GraphQueryableCollection<IFieldValueSet[]> { }
 
 @defaultPath("versions")
-export class Versions extends GraphQueryableCollection<IListItemVersion[]> {
+export class GraphVersions extends GraphQueryableCollection<IListItemVersion[]> {
 
     /**
     * Gets a Version instance by id
@@ -287,10 +313,10 @@ export class Version extends GraphQueryableInstance<IListItemVersion> { }
 
 export interface IListCreationResult {
     data: IList;
-    list: SPList;
+    list: GraphList;
 }
 
 export interface IItemCreationResult {
     data: IListItem;
-    item: SPItem;
+    item: GraphItem;
 }

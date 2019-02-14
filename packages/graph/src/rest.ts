@@ -12,7 +12,7 @@ import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 import { Invitations, IInvitationsMethods } from "./invitations";
 import { Subscriptions } from "./subscriptions";
-import { ISitesMethods, Sites } from "./sharepoint";
+import { ISitesMethods, Sites } from "./sites";
 
 export class GraphRest extends GraphQueryable {
 
