@@ -22,17 +22,15 @@ export interface ISitesMethods {
     getById(baseUrl: string, relativeUrl?: string): GraphSite;
 }
 
-export interface IItemMethods {
-    root: GraphSite;
-    getById(id: string): GraphSite;
-}
-
 /**
  * Represents a Sites entity
  */
 @defaultPath("sites")
 export class Sites extends GraphQueryableInstance<ISite> implements ISitesMethods {
 
+    /**
+     * Gets the root site collection of the tenant
+     */
     public get root(): GraphSite {
         return new GraphSite(this, "root");
     }
@@ -78,6 +76,10 @@ export class Sites extends GraphQueryableInstance<ISite> implements ISitesMethod
     }
 }
 
+/**
+ * Describes a Site object
+ *
+ */
 export class GraphSite extends GraphQueryableInstance<ISite> {
 
     public get columns(): GraphColumns {
@@ -123,12 +125,16 @@ export class GraphContentTypes extends GraphQueryableCollection<IContentType[]> 
 
 }
 
+/**
+ * Describes a Content Type object
+ *
+ */
 export class GraphContentType extends GraphQueryableInstance<IContentType> {
 
 }
 
 /**
- * Describes a collection of Column definitions objects
+ * Describes a collection of Column Definition objects
  *
  */
 @defaultPath("columns")
@@ -143,6 +149,10 @@ export class GraphColumns extends GraphQueryableCollection<IColumnDefinition[]> 
     }
 }
 
+/**
+ * Describes a Column Definition object
+ *
+ */
 export class GraphColumn extends GraphQueryableInstance<IColumnDefinition> {
 
     public get columnLinks(): GraphColumnLinks {
@@ -150,10 +160,14 @@ export class GraphColumn extends GraphQueryableInstance<IColumnDefinition> {
     }
 }
 
+/**
+ * Describes a collection of Column Link objects
+ *
+ */
 @defaultPath("columnlinks")
 export class GraphColumnLinks extends GraphQueryableCollection<IColumnLink[]> {
     /**
-     * Gets a Column link instance by id
+     * Gets a Column Link instance by id
      * 
      * @param id Column link id
      */
@@ -162,6 +176,10 @@ export class GraphColumnLinks extends GraphQueryableCollection<IColumnLink[]> {
     }
 }
 
+/**
+ * Describes a Column Link object
+ *
+ */
 export class GraphColumnLink extends GraphQueryableInstance<IColumnLink> { }
 
 /**
@@ -203,6 +221,10 @@ export class GraphLists extends GraphQueryableCollection<IList[]> {
     }
 }
 
+/**
+ * Describes a List object
+ *
+ */
 export class GraphList extends GraphQueryableInstance<IList> {
 
     public get columns(): GraphColumns {
@@ -223,6 +245,9 @@ export class GraphList extends GraphQueryableInstance<IList> {
 
 }
 
+/**
+* Describes a collection of Item objects
+*/
 @defaultPath("items")
 export class GraphItems extends GraphQueryableCollection<IListItem[]> {
     /**
@@ -258,6 +283,10 @@ export class GraphItems extends GraphQueryableCollection<IListItem[]> {
     }
 }
 
+/**
+ * Describes an Item object
+ *
+ */
 export class GraphItem extends GraphQueryableInstance<IListItem> {
 
     public get driveItem(): DriveItem {
@@ -293,9 +322,17 @@ export class GraphItem extends GraphQueryableInstance<IListItem> {
 
 }
 
+/**
+ * Describes a collection of Field objects
+ *
+ */
 @defaultPath("fields")
 export class GraphFields extends GraphQueryableCollection<IFieldValueSet[]> { }
 
+/**
+ * Describes a collection of Version objects
+ *
+ */
 @defaultPath("versions")
 export class GraphVersions extends GraphQueryableCollection<IListItemVersion[]> {
 
@@ -309,6 +346,10 @@ export class GraphVersions extends GraphQueryableCollection<IListItemVersion[]> 
     }
 }
 
+/**
+ * Describes a Version object
+ *
+ */
 export class Version extends GraphQueryableInstance<IListItemVersion> { }
 
 export interface IListCreationResult {
