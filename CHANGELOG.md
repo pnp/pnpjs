@@ -6,7 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
-## 1.2.8 - 2019-11-1
+## 1.2.9 - 2019-08-02
+
+### Added
+
+- @pnp/graph: Added subscriptions + documentation ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/465)]
+- @pnp/graph: Added remove to members and owners ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/488)]
+- @pnp/sp: Added HubSite functionality and Types ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/490)]
+- @pnp/sp: Added DateTimeFieldFriendlyFormatType enum ([@tsekityam](https://github.com/tsekityam)) [[PR](https://github.com/pnp/pnpjs/pull/462)]
+
+### Changed
+
+- @pnp/sp: web.allproperties now returns SharePointQueryableInstance [[PR](https://github.com/pnp/pnpjs/pull/484)]
+
+### Fixed
+
+- @pnp/sp: Fixed batching issue when using items.add [[PR](https://github.com/pnp/pnpjs/pull/474)]
+
+## 1.2.8 - 2019-11-01
 
 ### Added
 
