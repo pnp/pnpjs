@@ -4,7 +4,7 @@ The Queryable class is the base class for all of the libraries building fluent r
 
 ## abstract class ODataQueryable<BatchType extends ODataBatch>
 
-This class takes a single type parameter represnting the type of the batch implementation object. If your api will not support batching 
+This class takes a single type parameter representing the type of the batch implementation object. If your api will not support batching 
 you can create a dummy class here and simply not use the batching calls.
 
 ## properties
@@ -17,7 +17,7 @@ Provides access to the query string builder for this url
 
 ### concat
 
-Directly concatonates the supplied string to the current url, not normalizing "/" chars
+Directly concatenates the supplied string to the current url, not normalizing "/" chars
 
 ### configure
 
