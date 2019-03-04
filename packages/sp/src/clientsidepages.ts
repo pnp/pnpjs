@@ -255,7 +255,7 @@ export class ClientSidePage extends File {
      * 
      * @param escapedString 
      */
-    public static escapedStringToJson<T = any>(escapedString: string): T {
+    public static escapedStringToJson<T = any>(escapedString: string, noParse = false): T {
         const unespace = (escaped: string): string => {
             const mapDict = [
                 [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
@@ -266,7 +266,12 @@ export class ClientSidePage extends File {
             return mapDict.reduce((r, m) => r.replace(m[0], m[1] as string), escaped);
         };
 
-        return objectDefinedNotNull(escapedString) ? JSON.parse(unespace(escapedString)) : null;
+        const v = objectDefinedNotNull(escapedString) ? unespace(escapedString) : null;
+        if (noParse) {
+            return <any>v;
+        } else {
+            return JSON.parse(v);
+        }
     }
 
     /**
@@ -323,10 +328,19 @@ export class ClientSidePage extends File {
 
             switch (controlType) {
                 case 0:
-                    // empty canvas column
-                    control = new CanvasColumn(null, 0);
-                    control.fromHtml(markup);
-                    this.mergeColumnToTree(<CanvasColumn>control);
+                    // empty canvas column or page settings
+
+                    const tempControlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(markup, "data-sp-controldata"));
+                    if (hOP(tempControlData, "pageSettingsSlice")) {
+                        // handle the case where we have a page settings slice "column"
+                        control = new PageSettingsColumn(tempControlData.pageSettingsSlice);
+                        this.mergePageSettingsColumnToTree(<PageSettingsColumn>control);
+                    } else {
+                        control = new CanvasColumn(null, 0);
+                        control.fromHtml(markup);
+                        this.mergeColumnToTree(<CanvasColumn>control);
+                    }
+
                     break;
                 case 3:
                     // client side webpart
@@ -528,6 +542,19 @@ export class ClientSidePage extends File {
     }
 
     /**
+ * Merges the supplied column into the tree
+ * 
+ * @param column Column to merge
+ * @param position The position data for the column
+ */
+    private mergePageSettingsColumnToTree(column: PageSettingsColumn): void {
+
+        const section = new CanvasSection(this, this.sections.length);
+        this.sections.push(section);
+        section.columns.push(<any>column);
+    }
+
+    /**
      * Updates the properties of the underlying ListItem associated with this ClientSidePage
      * 
      * @param properties Set of properties to update
@@ -609,7 +636,8 @@ export abstract class CanvasControl {
         public column: CanvasColumn = null,
         public order = 1,
         public id: string = getGUID(),
-        public controlData: ClientSideControlData = null) { }
+        public controlData: ClientSideControlData = null,
+        public zoneEmphasis = 0) { }
 
     /**
      * Value of the control's "data-sp-controldata" attribute
@@ -622,12 +650,36 @@ export abstract class CanvasControl {
 
     public fromHtml(html: string): void {
         this.controlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(html, "data-sp-controldata"));
-        this.dataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion");
+        this.dataVersion = ClientSidePage.escapedStringToJson<string>(getAttrValueFromString(html, "data-sp-canvasdataversion"), true);
         this.controlType = this.controlData.controlType;
+        this.zoneEmphasis = this.controlData.emphasis ? this.controlData.emphasis.zoneEmphasis || 0 : 0;
         this.id = this.controlData.id;
     }
 
     protected abstract getControlData(): ClientSideControlData;
+}
+
+export class PageSettingsColumn extends CanvasControl {
+    constructor(private data: PageSettingsSlice, dataVersion = "1.0") {
+        super(0, dataVersion);
+    }
+
+    public getControlData(): ClientSideControlData {
+        return {
+            controlType: this.controlType,
+            pageSettingsSlice: {
+                isDefaultDescription: this.data.isDefaultDescription || true,
+                isDefaultThumbnail: this.data.isDefaultThumbnail || true,
+            },
+        };
+    }
+
+    public toHtml(index: number): string {
+        const html = [`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.dataVersion}"`];
+        html.push(` data-sp-controldata="${ClientSidePage.jsonToEscapedString(this.getControlData())}">`);
+        html.push("</div>");
+        return html.join("");
+    }
 }
 
 export class CanvasColumn extends CanvasControl {
@@ -670,7 +722,6 @@ export class CanvasColumn extends CanvasControl {
 
     public fromHtml(html: string): void {
         super.fromHtml(html);
-
         this.controlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(html, "data-sp-controldata"));
         if (hOP(this.controlData, "position")) {
             if (hOP(this.controlData.position, "sectionFactor")) {
@@ -747,6 +798,7 @@ export class ClientSideText extends ClientSidePart {
         return {
             controlType: this.controlType,
             editorType: "CKEditor",
+            emphasis: { zoneEmphasis: this.zoneEmphasis },
             id: this.id,
             position: {
                 controlIndex: this.order,
@@ -834,6 +886,7 @@ export class ClientSideWebpart extends ClientSidePart {
         const data = {
             dataVersion: this.dataVersion,
             description: this.description,
+            emphasis: { zoneEmphasis: this.zoneEmphasis },
             id: this.webPartId,
             instanceId: this.id,
             properties: this.propertieJson,
@@ -890,6 +943,7 @@ export class ClientSideWebpart extends ClientSidePart {
 
         return {
             controlType: this.controlType,
+            emphasis: { zoneEmphasis: this.zoneEmphasis },
             id: this.id,
             position: {
                 controlIndex: this.order,
@@ -1038,9 +1092,21 @@ export interface ClientSideControlData {
     controlType?: number;
     id?: string;
     editorType?: string;
-    position: ClientSideControlPosition;
+    position?: ClientSideControlPosition;
     webPartId?: string;
     displayMode?: number;
+    emphasis?: ClientControlEmphasis;
+    pageSettingsSlice?: PageSettingsSlice;
+}
+
+export interface PageSettingsSlice {
+    isDefaultDescription?: boolean;
+    isDefaultThumbnail?: boolean;
+}
+
+export interface ClientControlEmphasis {
+    id?: string;
+    zoneEmphasis?: number;
 }
 
 export interface ClientSideWebpartData {
