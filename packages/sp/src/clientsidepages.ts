@@ -2,6 +2,8 @@ import { List } from "./lists";
 import { TemplateFileType, FileAddResult, File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
 import { TypedHash, extend, combine, getGUID, getAttrValueFromString, jsS, hOP, objectDefinedNotNull } from "@pnp/common";
+import { SharePointQueryable } from "./sharepointqueryable";
+import { metadata } from "./utils/metadata";
 
 /**
  * Page promotion state
@@ -29,7 +31,7 @@ export type ClientSidePageLayoutType = "Article" | "Home";
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
  */
-export type CanvasColumnFactorType = 0 | 2 | 4 | 6 | 8 | 12;
+export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
 /**
  * Gets the next order value 1 based for the provided collection
@@ -43,104 +45,6 @@ function getNextOrder(collection: { order: number }[]): number {
     }
 
     return Math.max.apply(null, collection.map(i => i.order)) + 1;
-}
-
-/**
- * After https://stackoverflow.com/questions/273789/is-there-a-version-of-javascripts-string-indexof-that-allows-for-regular-expr/274094#274094
- * 
- * @param this Types the called context this to a string in which the search will be conducted
- * @param regex A regex or string to match
- * @param startpos A starting position from which the search will begin
- */
-function regexIndexOf(this: string, regex: RegExp | string, startpos = 0) {
-    const indexOf = this.substring(startpos).search(regex);
-    return (indexOf >= 0) ? (indexOf + (startpos)) : indexOf;
-}
-
-/**
- * Finds bounded blocks of markup bounded by divs, ensuring to match the ending div even with nested divs in the interstitial markup
- * 
- * @param html HTML to search
- * @param boundaryStartPattern The starting pattern to find, typically a div with attribute
- * @param collector A func to take the found block and provide a way to form it into a useful return that is added into the return array
- */
-function getBoundedDivMarkup<T>(html: string, boundaryStartPattern: RegExp | string, collector: (s: string) => T): T[] {
-
-    const blocks: T[] = [];
-
-    if (html === undefined || html === null) {
-        return blocks;
-    }
-
-    // remove some extra whitespace if present
-    const cleanedHtml = html.replace(/[\t\r\n]/g, "");
-
-    // find the first div
-    let startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern);
-
-    if (startIndex < 0) {
-        // we found no blocks in the supplied html
-        return blocks;
-    }
-
-    // this loop finds each of the blocks
-    while (startIndex > -1) {
-
-        // we have one open div counting from the one found above using boundaryStartPattern so we need to ensure we find it's close
-        let openCounter = 1;
-        let searchIndex = startIndex + 1;
-        let nextDivOpen = -1;
-        let nextCloseDiv = -1;
-
-        // this loop finds the </div> tag that matches the opening of the control
-        while (true) {
-
-            // find both the next opening and closing div tags from our current searching index
-            nextDivOpen = regexIndexOf.call(cleanedHtml, /<div[^>]*>/i, searchIndex);
-            nextCloseDiv = regexIndexOf.call(cleanedHtml, /<\/div>/i, searchIndex);
-
-            if (nextDivOpen < 0) {
-                // we have no more opening divs, just set this to simplify checks below
-                nextDivOpen = cleanedHtml.length + 1;
-            }
-
-            // determine which we found first, then increment or decrement our counter
-            // and set the location to begin searching again
-            if (nextDivOpen < nextCloseDiv) {
-                openCounter++;
-                searchIndex = nextDivOpen + 1;
-            } else if (nextCloseDiv < nextDivOpen) {
-                openCounter--;
-                searchIndex = nextCloseDiv + 1;
-            }
-
-            // once we have no open divs back to the level of the opening control div
-            // meaning we have all of the markup we intended to find
-            if (openCounter === 0) {
-
-                // get the bounded markup, +6 is the size of the ending </div> tag
-                const markup = cleanedHtml.substring(startIndex, nextCloseDiv + 6).trim();
-
-                // save the control data we found to the array
-                blocks.push(collector(markup));
-
-                // get out of our while loop
-                break;
-            }
-
-            if (openCounter > 1000 || openCounter < 0) {
-                // this is an arbitrary cut-off but likely we will not have 1000 nested divs
-                // something has gone wrong above and we are probably stuck in our while loop
-                // let's get out of our while loop and not hang everything
-                throw Error("getBoundedDivMarkup exceeded depth parameters.");
-            }
-        }
-
-        // get the start of the next control
-        startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern, nextCloseDiv);
-    }
-
-    return blocks;
 }
 
 /**
@@ -165,14 +69,19 @@ function reindex(collection: { order: number, columns?: { order: number }[], con
  */
 export class ClientSidePage extends File {
 
+    private _id: number | null;
+    private _pageJson: IPageData;
+    private _pageSettings: IClientSidePageSettingsSlice;
+
     /**
      * Creates a new instance of the ClientSidePage class
      *
      * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
      * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
      */
-    constructor(file: File, public sections: CanvasSection[] = [], public commentsDisabled = false) {
+    constructor(file: File, public commentsDisabled = false, public sections: CanvasSection[] = []) {
         super(file);
+        this._id = null;
     }
 
     /**
@@ -208,13 +117,12 @@ export class ClientSidePage extends File {
                             BannerImageUrl: {
                                 Url: "/_layouts/15/images/sitepagethumbnail.png",
                             },
-                            CanvasContent1: "",
                             ClientSideApplicationId: "b6917cb1-93a0-4b97-a84d-7cf49975d4ec",
                             ContentTypeId: "0x0101009D1CB255DA76424F860D91F20E6C4118",
                             PageLayoutType: pageLayoutType,
                             PromotedState: PromotedState.NotPromoted,
                             Title: title,
-                        }).then((iar: ItemUpdateResult) => new ClientSidePage(iar.item.file, (<any>iar.item).CommentsDisabled));
+                        }).then((iar: ItemUpdateResult) => ClientSidePage.fromFile(iar.item.file));
                     });
                 });
             });
@@ -278,87 +186,45 @@ export class ClientSidePage extends File {
      * Add a section to this page
      */
     public addSection(): CanvasSection {
-
         const section = new CanvasSection(this, getNextOrder(this.sections));
         this.sections.push(section);
         return section;
     }
 
-    /**
-     * Converts this page's content to html markup
-     */
-    public toHtml(): string {
+    public fromJSON(pageData: IPageData): this {
+        this._pageJson = pageData;
 
-        // trigger reindex of the entire tree
-        reindex(this.sections);
+        const canvasControls: IClientSideControlBaseData[] = JSON.parse(pageData.CanvasContent1);
 
-        const html: string[] = [];
+        if (canvasControls && canvasControls.length) {
 
-        html.push("<div>");
+            for (let i = 0; i < canvasControls.length; i++) {
 
-        for (let i = 0; i < this.sections.length; i++) {
-            html.push(this.sections[i].toHtml());
-        }
+                // if no control type is present this is a column which we give type 0 to let us process it
+                const controlType = hOP(canvasControls[i], "controlType") ? canvasControls[i].controlType : 0;
 
-        html.push("</div>");
+                switch (controlType) {
 
-        return html.join("");
-    }
-
-    /**
-     * Loads this page instance's content from the supplied html
-     * 
-     * @param html html string representing the page's content
-     */
-    public fromHtml(html: string): this {
-
-        // reset sections
-        this.sections = [];
-
-        // gather our controls from the supplied html
-        getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, markup => {
-
-            // get the control type
-            const ct = /controlType&quot;&#58;(\d*?),/i.exec(markup);
-
-            // if no control type is present this is a column which we give type 0 to let us process it
-            const controlType = ct == null || ct.length < 2 ? 0 : parseInt(ct[1], 10);
-
-            let control: CanvasControl = null;
-
-            switch (controlType) {
-                case 0:
-                    // empty canvas column or page settings
-
-                    const tempControlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(markup, "data-sp-controldata"));
-                    if (hOP(tempControlData, "pageSettingsSlice")) {
-                        // handle the case where we have a page settings slice "column"
-                        control = new PageSettingsColumn(tempControlData.pageSettingsSlice);
-                        this.mergePageSettingsColumnToTree(<PageSettingsColumn>control);
-                    } else {
-                        control = new CanvasColumn(null, 0);
-                        control.fromHtml(markup);
-                        this.mergeColumnToTree(<CanvasColumn>control);
-                    }
-
-                    break;
-                case 3:
-                    // client side webpart
-                    control = new ClientSideWebpart("");
-                    control.fromHtml(markup);
-                    this.mergePartToTree(<ClientSidePart>control);
-                    break;
-                case 4:
-                    // client side text
-                    control = new ClientSideText();
-                    control.fromHtml(markup);
-                    this.mergePartToTree(<ClientSidePart>control);
-                    break;
+                    case 0:
+                        // empty canvas column or page settings
+                        if (hOP(canvasControls[i], "pageSettingsSlice")) {
+                            this._pageSettings = <IClientSidePageSettingsSlice>canvasControls[i];
+                        } else {
+                            // we have an empty column
+                            this.mergeColumnToTree(new CanvasColumn(<IClientSidePageColumnData>canvasControls[i]));
+                        }
+                        break;
+                    case 3:
+                        const part = new ClientSideWebpart(<IClientSideWebPartData>canvasControls[i]);
+                        this.mergePartToTree(part, part.data.position);
+                        break;
+                    case 4:
+                        const text = new ClientSideText(<IClientSideTextData>canvasControls[i]);
+                        this.mergePartToTree(text, text.data.position);
+                        break;
+                }
             }
-        });
-
-        // refresh all the orders within the tree
-        reindex(this.sections);
+        }
 
         return this;
     }
@@ -366,18 +232,54 @@ export class ClientSidePage extends File {
     /**
      * Loads this page's content from the server
      */
-    public load(): Promise<void> {
-        return this.getItem<{ CanvasContent1: string, CommentsDisabled: boolean }>("CanvasContent1", "CommentsDisabled").then(item => {
-            this.fromHtml(item.CanvasContent1);
-            this.commentsDisabled = item.CommentsDisabled;
+    public async load(): Promise<ClientSidePage> {
+
+        // load item id, then load page data from new pages api
+        return this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled").then(item => {
+            return (new SharePointQueryable(`_api/sitepages/pages(${item.Id})`)).get<IPageData>().then(pageData => {
+                this.commentsDisabled = item.CommentsDisabled;
+                this._id = item.Id;
+                return this.fromJSON(pageData);
+            });
         });
     }
 
     /**
-     * Persists the content changes (sections, columns, and controls)
+     * Persists the content changes (sections, columns, and controls) [does not work with batching]
+     * 
+     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published
      */
-    public save(): Promise<ItemUpdateResult> {
-        return this.updateProperties({ CanvasContent1: this.toHtml() });
+    public save(publish = true): Promise<boolean> {
+
+        if (this._id === null) {
+            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
+        }
+
+        let promise = Promise.resolve<any>({});
+        let existingJson = this._pageJson;
+
+        // we try and check out the page for the user
+        if (!this._pageJson.IsPageCheckedOutToCurrentUser) {
+            promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/checkoutpage`)).postCore<IPageData>().then(d => {
+                existingJson = d;
+            }));
+        }
+
+        promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/savepage`)).postCore<boolean>({
+            body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
+                AuthorByline: existingJson.AuthorByline,
+                BannerImageUrl: existingJson.BannerImageUrl,
+                CanvasContent1: this.getCancasContent1(),
+                LayoutWebpartsContent: existingJson.LayoutWebpartsContent,
+                TopicHeader: existingJson.TopicHeader,
+            })),
+        }));
+
+        if (publish) {
+            promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/publish`)).postCore<boolean>());
+        }
+
+        return promise;
     }
 
     /**
@@ -402,19 +304,19 @@ export class ClientSidePage extends File {
 
     /**
      * Finds a control by the specified instance id
-     * 
+     *
      * @param id Instance id of the control to find
      */
-    public findControlById<T extends ClientSidePart = ClientSidePart>(id: string): T {
+    public findControlById<T extends ColumnControl<any> = ColumnControl<any>>(id: string): T {
         return this.findControl((c) => c.id === id);
     }
 
     /**
      * Finds a control within this page's control tree using the supplied predicate
-     * 
+     *
      * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
      */
-    public findControl<T extends ClientSidePart = ClientSidePart>(predicate: (c: ClientSidePart) => boolean): T {
+    public findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T {
         // check all sections
         for (let i = 0; i < this.sections.length; i++) {
             // check all columns
@@ -460,6 +362,35 @@ export class ClientSidePage extends File {
         });
     }
 
+    protected getCancasContent1(): string {
+
+        // reindex things
+        reindex(this.sections);
+
+        // rollup the control changes
+        const canvasData: any[] = [];
+
+        this.sections.forEach(section => {
+            section.columns.forEach(column => {
+                if (column.controls.length < 1) {
+                    canvasData.push({
+                        displayMode: column.data.displayMode,
+                        emphasis: column.data.emphasis,
+                        position: column.data.position,
+                    });
+                } else {
+                    column.controls.forEach(control => canvasData.push(control.data));
+                }
+            });
+        });
+
+        return JSON.stringify(canvasData);
+    }
+
+    private getPoster(url: string): ClientSidePage {
+        return new ClientSidePage(new File(url));
+    }
+
     /**
      * Sets the comments flag for a page
      * 
@@ -477,24 +408,24 @@ export class ClientSidePage extends File {
      * 
      * @param control The control to merge
      */
-    private mergePartToTree(control: ClientSidePart): void {
+    private mergePartToTree(control: any, positionData: IClientSideControlPositionData): void {
 
         let section: CanvasSection = null;
         let column: CanvasColumn = null;
-        let sectionFactor: CanvasColumnFactorType = 12;
+        let sectionFactor: CanvasColumnFactor = 12;
         let sectionIndex = 0;
         let zoneIndex = 0;
 
-        // handle case where we don't have position data
-        if (hOP(control.controlData, "position")) {
-            if (hOP(control.controlData.position, "zoneIndex")) {
-                zoneIndex = control.controlData.position.zoneIndex;
+        // handle case where we don't have position data (shouldn't happen?)
+        if (positionData) {
+            if (hOP(positionData, "zoneIndex")) {
+                zoneIndex = positionData.zoneIndex;
             }
-            if (hOP(control.controlData.position, "sectionIndex")) {
-                sectionIndex = control.controlData.position.sectionIndex;
+            if (hOP(positionData, "sectionIndex")) {
+                sectionIndex = positionData.sectionIndex;
             }
-            if (hOP(control.controlData.position, "sectionFactor")) {
-                sectionFactor = control.controlData.position.sectionFactor;
+            if (hOP(positionData, "sectionFactor")) {
+                sectionFactor = positionData.sectionFactor;
             }
         }
 
@@ -508,7 +439,18 @@ export class ClientSidePage extends File {
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
-            column = new CanvasColumn(section, sectionIndex, sectionFactor);
+            // create empty column
+            column = new CanvasColumn({
+                controlType: 0,
+                displayMode: 2,
+                emphasis: {},
+                position: {
+                    layoutIndex: 1,
+                    sectionFactor: sectionFactor,
+                    sectionIndex: sectionIndex,
+                    zoneIndex: zoneIndex,
+                },
+            });
             section.columns.push(column);
         } else {
             column = columns[0];
@@ -526,7 +468,7 @@ export class ClientSidePage extends File {
      */
     private mergeColumnToTree(column: CanvasColumn): void {
 
-        const order = hOP(column.controlData, "position") && hOP(column.controlData.position, "zoneIndex") ? column.controlData.position.zoneIndex : 0;
+        const order = hOP(column.data, "position") && hOP(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
         let section: CanvasSection = null;
         const sections = this.sections.filter(s => s.order === order);
 
@@ -540,28 +482,22 @@ export class ClientSidePage extends File {
         column.section = section;
         section.columns.push(column);
     }
+}
 
-    /**
- * Merges the supplied column into the tree
- * 
- * @param column Column to merge
- * @param position The position data for the column
- */
-    private mergePageSettingsColumnToTree(column: PageSettingsColumn): void {
+export abstract class CanvasControl<PayloadType extends ICanvasControlBaseData> {
 
-        const section = new CanvasSection(this, this.sections.length);
-        this.sections.push(section);
-        section.columns.push(<any>column);
+    constructor(protected json: PayloadType) { }
+
+    public get id(): string {
+        return this.json.id;
     }
 
-    /**
-     * Updates the properties of the underlying ListItem associated with this ClientSidePage
-     * 
-     * @param properties Set of properties to update
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    private updateProperties(properties: TypedHash<any>, eTag = "*"): Promise<ItemUpdateResult> {
-        return this.getItem().then(i => i.update(properties, eTag));
+    public get data(): PayloadType {
+        return this.json;
+    }
+
+    protected setData(data: PayloadType) {
+        this.json = data;
     }
 }
 
@@ -591,32 +527,22 @@ export class CanvasSection {
     /**
      * Adds a new column to this section
      */
-    public addColumn(factor: CanvasColumnFactorType): CanvasColumn {
-
-        const column = new CanvasColumn(this, getNextOrder(this.columns), factor);
+    public addColumn(factor: CanvasColumnFactor): CanvasColumn {
+        const column = new CanvasColumn();
+        column.order = getNextOrder(this.columns);
+        column.factor = factor;
         this.columns.push(column);
         return column;
     }
 
     /**
      * Adds a control to the default column for this section
-     * 
+     *
      * @param control Control to add to the default column
      */
-    public addControl(control: ClientSidePart): this {
+    public addControl(control: ColumnControl<any>): this {
         this.defaultColumn.addControl(control);
         return this;
-    }
-
-    public toHtml(): string {
-
-        const html = [];
-
-        for (let i = 0; i < this.columns.length; i++) {
-            html.push(this.columns[i].toHtml());
-        }
-
-        return html.join("");
     }
 
     /**
@@ -624,397 +550,301 @@ export class CanvasSection {
      */
     public remove(): void {
         this.page.sections = this.page.sections.filter(section => section._memId !== this._memId);
-        reindex(this.page.sections);
+        // TODO::
+        // reindex(this.page.sections);
     }
 }
 
-export abstract class CanvasControl {
+export class CanvasColumn {
 
-    constructor(
-        protected controlType: number,
-        public dataVersion: string,
-        public column: CanvasColumn = null,
-        public order = 1,
-        public id: string = getGUID(),
-        public controlData: ClientSideControlData = null,
-        public zoneEmphasis = 0) { }
+    public static Default: IClientSidePageColumnData = {
+        controlType: 0,
+        displayMode: 2,
+        emphasis: {},
+        position: {
+            layoutIndex: 1,
+            sectionFactor: 12,
+            sectionIndex: 1,
+            zoneIndex: 1,
+        },
+    };
 
-    /**
-     * Value of the control's "data-sp-controldata" attribute
-     */
-    public get jsonData(): string {
-        return ClientSidePage.jsonToEscapedString(this.getControlData());
+    private _section: CanvasSection | null;
+
+    constructor(protected json: IClientSidePageColumnData = CanvasColumn.Default, public controls: ColumnControl<any>[] = []) {
+        this._section = null;
     }
 
-    public abstract toHtml(index: number): string;
-
-    public fromHtml(html: string): void {
-        this.controlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(html, "data-sp-controldata"));
-        this.dataVersion = ClientSidePage.escapedStringToJson<string>(getAttrValueFromString(html, "data-sp-canvasdataversion"), true);
-        this.controlType = this.controlData.controlType;
-        this.zoneEmphasis = this.controlData.emphasis ? this.controlData.emphasis.zoneEmphasis || 0 : 0;
-        this.id = this.controlData.id;
+    public get data(): IClientSidePageColumnData {
+        return this.json;
     }
 
-    protected abstract getControlData(): ClientSideControlData;
-}
-
-export class PageSettingsColumn extends CanvasControl {
-    constructor(private data: PageSettingsSlice, dataVersion = "1.0") {
-        super(0, dataVersion);
+    public get section(): CanvasSection {
+        return this._section;
     }
 
-    public getControlData(): ClientSideControlData {
-        return {
-            controlType: this.controlType,
-            pageSettingsSlice: {
-                isDefaultDescription: this.data.isDefaultDescription || true,
-                isDefaultThumbnail: this.data.isDefaultThumbnail || true,
-            },
-        };
+    public set section(section: CanvasSection) {
+        this._section = section;
     }
 
-    public toHtml(index: number): string {
-        const html = [`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.dataVersion}"`];
-        html.push(` data-sp-controldata="${ClientSidePage.jsonToEscapedString(this.getControlData())}">`);
-        html.push("</div>");
-        return html.join("");
-    }
-}
-
-export class CanvasColumn extends CanvasControl {
-
-    constructor(
-        public section: CanvasSection,
-        public order: number,
-        public factor: CanvasColumnFactorType = 12,
-        public controls: ClientSidePart[] = [],
-        dataVersion = "1.0") {
-        super(0, dataVersion);
+    public get order(): number {
+        return this.data.position.sectionIndex;
     }
 
-    public addControl(control: ClientSidePart): this {
+    public set order(value: number) {
+        this.data.position.sectionIndex = value;
+    }
+
+    public get factor(): CanvasColumnFactor {
+        return this.data.position.sectionFactor;
+    }
+
+    public set factor(value: CanvasColumnFactor) {
+        this.data.position.sectionFactor = value;
+    }
+
+    public addControl(control: ColumnControl<any>): this {
         control.column = this;
         this.controls.push(control);
         return this;
     }
 
-    public getControl<T extends ClientSidePart>(index: number): T {
+    public getControl<T extends ColumnControl<any>>(index: number): T {
         return <T>this.controls[index];
     }
 
-    public toHtml(): string {
-        const html = [];
+    // add to section
+    // remove
+    // setFactor
+    // reorder is done with array methods and reindex on save
+}
 
-        if (this.controls.length < 1) {
+export abstract class ColumnControl<T extends ICanvasControlBaseData> extends CanvasControl<T> {
 
-            html.push(`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.dataVersion}" data-sp-controldata="${this.jsonData}"></div>`);
+    private _column: CanvasColumn | null;
 
-        } else {
+    protected abstract onColumnChange(col: CanvasColumn): void;
 
-            for (let i = 0; i < this.controls.length; i++) {
-                html.push(this.controls[i].toHtml(i + 1));
-            }
-        }
+    public abstract get order(): number;
+    public abstract set order(value: number);
 
-        return html.join("");
+    public get column(): CanvasColumn | null {
+        return this._column;
     }
 
-    public fromHtml(html: string): void {
-        super.fromHtml(html);
-        this.controlData = ClientSidePage.escapedStringToJson<ClientSideControlData>(getAttrValueFromString(html, "data-sp-controldata"));
-        if (hOP(this.controlData, "position")) {
-            if (hOP(this.controlData.position, "sectionFactor")) {
-                this.factor = this.controlData.position.sectionFactor;
-            }
-            if (hOP(this.controlData.position, "sectionIndex")) {
-                this.order = this.controlData.position.sectionIndex;
-            }
-        }
+    public set column(value: CanvasColumn) {
+        this._column = value;
+        this.onColumnChange(this._column);
     }
+}
 
-    public getControlData(): ClientSideControlData {
-        return {
+export class ClientSideText extends ColumnControl<IClientSideTextData> {
+
+    public static fromText(text: string) {
+
+        const o = new ClientSideText({
+            addedFromPersistedData: false,
+            anchorComponentId: "",
+            controlType: 4,
             displayMode: 2,
-            position: {
-                sectionFactor: this.factor,
-                sectionIndex: this.order,
-                zoneIndex: this.section.order,
-            },
-        };
-    }
-
-    /**
-     * Removes this column and all contained controls from the collection
-     */
-    public remove(): void {
-        this.section.columns = this.section.columns.filter(column => column.id !== this.id);
-        reindex(this.column.controls);
-    }
-}
-
-/**
- * Abstract class with shared functionality for parts
- */
-export abstract class ClientSidePart extends CanvasControl {
-
-    /**
-     * Removes this column and all contained controls from the collection
-     */
-    public remove(): void {
-        this.column.controls = this.column.controls.filter(control => control.id !== this.id);
-        reindex(this.column.controls);
-    }
-}
-
-export class ClientSideText extends ClientSidePart {
-
-    private _text: string;
-
-    constructor(text = "") {
-        super(4, "1.0");
-
-        this.text = text;
-    }
-
-    /**
-     * The text markup of this control
-     */
-    public get text(): string {
-        return this._text;
-    }
-
-    public set text(text: string) {
-
-        if (!text.startsWith("<p>")) {
-            text = `<p>${text}</p>`;
-        }
-
-        this._text = text;
-    }
-
-    public getControlData(): ClientSideControlData {
-
-        return {
-            controlType: this.controlType,
             editorType: "CKEditor",
-            emphasis: { zoneEmphasis: this.zoneEmphasis },
-            id: this.id,
+            emphasis: {},
+            id: "",
+            innerHTML: "",
             position: {
-                controlIndex: this.order,
-                sectionFactor: this.column.factor,
-                sectionIndex: this.column.order,
-                zoneIndex: this.column.section.order,
+                controlIndex: 1,
+                layoutIndex: 1,
+                sectionFactor: 12,
+                sectionIndex: 1,
+                zoneIndex: 1,
             },
-        };
-    }
-
-    public toHtml(index: number): string {
-
-        // set our order to the value passed in
-        this.order = index;
-
-        const html: string[] = [];
-
-        html.push(`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.dataVersion}" data-sp-controldata="${this.jsonData}">`);
-        html.push("<div data-sp-rte=\"\">");
-        html.push(`${this.text}`);
-        html.push("</div>");
-        html.push("</div>");
-
-        return html.join("");
-    }
-
-    public fromHtml(html: string): void {
-
-        super.fromHtml(html);
-
-        this.text = "";
-
-        getBoundedDivMarkup(html, /<div[^>]*data-sp-rte[^>]*>/i, (s: string) => {
-
-            // now we need to grab the inner text between the divs
-            const match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(s);
-
-            this.text = match.length > 1 ? match[1] : "";
         });
+
+        o.text = text;
+        return o;
     }
+
+    public get text(): string {
+        return this.data.innerHTML;
+    }
+
+    public set text(value: string) {
+        if (!value.startsWith("<p>")) {
+            value = `<p>${value}</p>`;
+        }
+        this.data.innerHTML = value;
+    }
+
+    public get order(): number {
+        return this.data.position.controlIndex;
+    }
+
+    public set order(value: number) {
+        this.data.position.controlIndex = value;
+    }
+
+    protected onColumnChange(col: CanvasColumn): void {
+        this.data.position.sectionFactor = col.factor;
+        this.data.position.controlIndex = getNextOrder(col.controls);
+        this.data.position.zoneIndex = col.data.position.zoneIndex;
+        this.data.position.sectionIndex = col.data.position.sectionIndex;
+    }
+
+    // add to column
+    // remove
+    // reorder is done with array methods and reindex on save
 }
 
-export class ClientSideWebpart extends ClientSidePart {
+export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
 
-    constructor(public title: string,
-        public description = "",
-        public propertieJson: TypedHash<any> = {},
-        public webPartId = "",
-        protected htmlProperties = "",
-        protected serverProcessedContent: ServerProcessedContent = null,
-        protected canvasDataVersion = "1.0") {
-        super(3, "1.0");
+    public static Default: IClientSideWebPartData = {
+        addedFromPersistedData: false,
+        controlType: 3,
+        displayMode: 2,
+        emphasis: {},
+        id: null,
+        position: {
+            controlIndex: 1,
+            sectionFactor: 12,
+            sectionIndex: 1,
+            zoneIndex: 1,
+        },
+        reservedHeight: 500,
+        reservedWidth: 500,
+        webPartData: null,
+        webPartId: null,
+    };
+
+    constructor(json: IClientSideWebPartData = ClientSideWebpart.Default) {
+        super(json);
     }
 
     public static fromComponentDef(definition: ClientSidePageComponent): ClientSideWebpart {
-        const part = new ClientSideWebpart("");
+        const part = new ClientSideWebpart();
         part.import(definition);
         return part;
     }
 
-    public import(component: ClientSidePageComponent): void {
-        this.webPartId = component.Id.replace(/^\{|\}$/g, "").toLowerCase();
-        const manifest: ClientSidePageComponentManifest = JSON.parse(component.Manifest);
-        this.title = manifest.preconfiguredEntries[0].title.default;
-        this.description = manifest.preconfiguredEntries[0].description.default;
-        this.dataVersion = "1.0";
-        this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
+    public get title(): string {
+        return this.data.webPartData.title;
+    }
+
+    public set title(value: string) {
+        this.data.webPartData.title = value;
+    }
+
+    public get description(): string {
+        return this.data.webPartData.description;
+    }
+
+    public set description(value: string) {
+        this.data.webPartData.description = value;
+    }
+
+    public get order(): number {
+        return this.data.position.controlIndex;
+    }
+
+    public set order(value: number) {
+        this.data.position.controlIndex = value;
+    }
+
+    public get height(): number {
+        return this.data.reservedHeight;
+    }
+
+    public set height(value: number) {
+        this.data.reservedHeight = value;
+    }
+
+    public get width(): number {
+        return this.data.reservedWidth;
+    }
+
+    public set width(value: number) {
+        this.data.reservedWidth = value;
+    }
+
+    public get dataVersion(): string {
+        return this.data.webPartData.dataVersion;
+    }
+
+    public set dataVersion(value: string) {
+        this.data.webPartData.dataVersion = value;
     }
 
     public setProperties<T = any>(properties: T): this {
-        this.propertieJson = extend(this.propertieJson, properties);
+        this.data.webPartData.properties = extend(this.data.webPartData.properties, properties);
         return this;
     }
 
     public getProperties<T = any>(): T {
-        return <T>this.propertieJson;
+        return <T>this.data.webPartData.properties;
     }
 
-    public toHtml(index: number): string {
-
-        // set our order to the value passed in
-        this.order = index;
-
-        // will form the value of the data-sp-webpartdata attribute
-        const data = {
-            dataVersion: this.dataVersion,
-            description: this.description,
-            emphasis: { zoneEmphasis: this.zoneEmphasis },
-            id: this.webPartId,
-            instanceId: this.id,
-            properties: this.propertieJson,
-            serverProcessedContent: this.serverProcessedContent,
-            title: this.title,
-        };
-
-        const html: string[] = [];
-
-        html.push(`<div data-sp-canvascontrol="" data-sp-canvasdataversion="${this.canvasDataVersion}" data-sp-controldata="${this.jsonData}">`);
-
-        html.push(`<div data-sp-webpart="" data-sp-webpartdataversion="${this.dataVersion}" data-sp-webpartdata="${ClientSidePage.jsonToEscapedString(data)}">`);
-
-        html.push(`<div data-sp-componentid>`);
-        html.push(this.webPartId);
-        html.push("</div>");
-
-        html.push(`<div data-sp-htmlproperties="">`);
-        html.push(this.renderHtmlProperties());
-        html.push("</div>");
-
-        html.push("</div>");
-        html.push("</div>");
-
-        return html.join("");
+    protected onColumnChange(col: CanvasColumn): void {
+        this.data.position.sectionFactor = col.factor;
+        this.data.position.controlIndex = getNextOrder(col.controls);
+        this.data.position.zoneIndex = col.data.position.zoneIndex;
+        this.data.position.sectionIndex = col.data.position.sectionIndex;
     }
 
-    public fromHtml(html: string): void {
+    protected import(component: ClientSidePageComponent): void {
 
-        super.fromHtml(html);
+        const id = getGUID();
+        const componendId = component.Id.replace(/^\{|\}$/g, "").toLowerCase();
+        const manifest: IClientSidePageComponentManifest = JSON.parse(component.Manifest);
+        const preconfiguredEntries = manifest.preconfiguredEntries[0];
 
-        const webPartData = ClientSidePage.escapedStringToJson<ClientSideWebpartData>(getAttrValueFromString(html, "data-sp-webpartdata"));
-
-        this.title = webPartData.title;
-        this.description = webPartData.description;
-        this.webPartId = webPartData.id;
-        this.canvasDataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
-        this.dataVersion = getAttrValueFromString(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
-        this.setProperties(webPartData.properties);
-
-        if (webPartData.serverProcessedContent !== undefined) {
-            this.serverProcessedContent = webPartData.serverProcessedContent;
-        }
-
-        // get our html properties
-        const htmlProps = getBoundedDivMarkup(html, /<div\b[^>]*data-sp-htmlproperties[^>]*?>/i, markup => {
-            return markup.replace(/^<div\b[^>]*data-sp-htmlproperties[^>]*?>/i, "").replace(/<\/div>$/i, "");
-        });
-
-        this.htmlProperties = htmlProps.length > 0 ? htmlProps[0] : "";
-    }
-
-    public getControlData(): ClientSideControlData {
-
-        return {
-            controlType: this.controlType,
-            emphasis: { zoneEmphasis: this.zoneEmphasis },
-            id: this.id,
-            position: {
-                controlIndex: this.order,
-                sectionFactor: this.column.factor,
-                sectionIndex: this.column.order,
-                zoneIndex: this.column.section.order,
+        this.setData(Object.assign({}, this.data, <IClientSideWebPartData>{
+            id,
+            webPartData: {
+                dataVersion: "1.0",
+                description: preconfiguredEntries.description.default,
+                id: componendId,
+                instanceId: id,
+                properties: preconfiguredEntries.properties,
+                title: preconfiguredEntries.title.default,
             },
-            webPartId: this.webPartId,
-        };
-
+            webPartId: componendId,
+        }));
     }
+}
 
-    protected renderHtmlProperties(): string {
-
-        const html: string[] = [];
-
-        if (this.serverProcessedContent === undefined || this.serverProcessedContent === null) {
-
-            html.push(this.htmlProperties);
-
-        } else if (this.serverProcessedContent !== undefined) {
-
-            if (this.serverProcessedContent.searchablePlainTexts !== undefined) {
-
-                const keys = Object.keys(this.serverProcessedContent.searchablePlainTexts);
-                for (let i = 0; i < keys.length; i++) {
-                    html.push(`<div data-sp-prop-name="${keys[i]}" data-sp-searchableplaintext="true">`);
-                    html.push(this.serverProcessedContent.searchablePlainTexts[keys[i]]);
-                    html.push("</div>");
-                }
-            }
-
-            if (this.serverProcessedContent.imageSources !== undefined) {
-
-                const keys = Object.keys(this.serverProcessedContent.imageSources);
-                for (let i = 0; i < keys.length; i++) {
-                    html.push(`<img data-sp-prop-name="${keys[i]}" src="${this.serverProcessedContent.imageSources[keys[i]]}" />`);
-                }
-            }
-
-            if (this.serverProcessedContent.links !== undefined) {
-
-                const keys = Object.keys(this.serverProcessedContent.links);
-                for (let i = 0; i < keys.length; i++) {
-                    html.push(`<a data-sp-prop-name="${keys[i]}" href="${this.serverProcessedContent.links[keys[i]]}"></a>`);
-                }
-            }
-        }
-
-        return html.join("");
-    }
-
-    protected parseJsonProperties(props: TypedHash<any>): any {
-
-        // If the web part has the serverProcessedContent property then keep this one as it might be needed as input to render the web part HTML later on
-        if (props.webPartData !== undefined && props.webPartData.serverProcessedContent !== undefined) {
-            this.serverProcessedContent = props.webPartData.serverProcessedContent;
-        } else if (props.serverProcessedContent !== undefined) {
-            this.serverProcessedContent = props.serverProcessedContent;
-        } else {
-            this.serverProcessedContent = null;
-        }
-
-        if (props.webPartData !== undefined && props.webPartData.properties !== undefined) {
-            return props.webPartData.properties;
-        } else if (props.properties !== undefined) {
-            return props.properties;
-        } else {
-            return props;
-        }
-    }
+export interface IPageData {
+    "odata.metadata": string;
+    "odata.type": "SP.Publishing.SitePage";
+    "odata.id": string;
+    "odata.editLink": string;
+    "AbsoluteUrl": string;
+    "AuthorByline": string | null;
+    "BannerImageUrl": string;
+    "ContentTypeId": null | string;
+    "Description": string;
+    "DoesUserHaveEditPermission": boolean;
+    "FileName": string;
+    "FirstPublished": string;
+    "Id": number;
+    "IsPageCheckedOutToCurrentUser": boolean;
+    "IsWebWelcomePage": boolean;
+    "Modified": string;
+    "PageLayoutType": ClientSidePageLayoutType;
+    "Path": {
+        "DecodedUrl": string;
+    };
+    "PromotedState": number;
+    "Title": string;
+    "TopicHeader": null | string;
+    "UniqueId": string;
+    "Url": string;
+    "Version": string;
+    "VersionInfo": {
+        "LastVersionCreated": string;
+        "LastVersionCreatedBy": string;
+    };
+    "AlternativeUrlMap": string;
+    "CanvasContent1": string;
+    "LayoutWebpartsContent": string;
 }
 
 /**
@@ -1047,7 +877,7 @@ export interface ClientSidePageComponent {
     Status: number;
 }
 
-interface ClientSidePageComponentManifest {
+interface IClientSidePageComponentManifest {
     alias: string;
     componentType: "WebPart" | "" | null;
     disabledOnClassicSharepoint: boolean;
@@ -1075,48 +905,85 @@ interface ClientSidePageComponentManifest {
     version: string;
 }
 
-export interface ServerProcessedContent {
-    searchablePlainTexts: TypedHash<string>;
-    imageSources: TypedHash<string>;
-    links: TypedHash<string>;
+export interface IClientSideControlBaseData {
+    controlType: number;
+    emphasis: IClientControlEmphasis;
+    displayMode: number;
 }
 
-export interface ClientSideControlPosition {
-    controlIndex?: number;
-    sectionFactor: CanvasColumnFactorType;
-    sectionIndex: number;
-    zoneIndex: number;
-}
-
-export interface ClientSideControlData {
-    controlType?: number;
-    id?: string;
-    editorType?: string;
-    position?: ClientSideControlPosition;
-    webPartId?: string;
-    displayMode?: number;
-    emphasis?: ClientControlEmphasis;
-    pageSettingsSlice?: PageSettingsSlice;
-}
-
-export interface PageSettingsSlice {
-    isDefaultDescription?: boolean;
-    isDefaultThumbnail?: boolean;
-}
-
-export interface ClientControlEmphasis {
-    id?: string;
-    zoneEmphasis?: number;
-}
-
-export interface ClientSideWebpartData {
-    dataVersion: string;
-    description: string;
+export interface ICanvasControlBaseData extends IClientSideControlBaseData {
     id: string;
-    instanceId: string;
-    properties: any;
-    title: string;
-    serverProcessedContent?: ServerProcessedContent;
+}
+
+export interface IClientSidePageSettingsSlice extends IClientSideControlBaseData {
+    pageSettingsSlice: {
+        "isDefaultDescription": boolean;
+        "isDefaultThumbnail": boolean;
+    };
+}
+
+export interface IClientSidePageColumnData extends IClientSideControlBaseData {
+    controlType: 0;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        sectionFactor: CanvasColumnFactor;
+        layoutIndex: number;
+    };
+}
+
+interface IClientSideControlPositionData {
+    zoneIndex: number;
+    sectionIndex: number;
+    controlIndex: number;
+    sectionFactor?: CanvasColumnFactor;
+}
+
+export interface IClientSideTextData extends ICanvasControlBaseData {
+    controlType: 4;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        controlIndex: number;
+        sectionFactor?: CanvasColumnFactor;
+        layoutIndex: number;
+    };
+    anchorComponentId: string;
+    editorType: "CKEditor";
+    addedFromPersistedData: boolean;
+    innerHTML: string;
+}
+
+export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasControlBaseData {
+    controlType: 3;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        controlIndex: number;
+        sectionFactor?: CanvasColumnFactor;
+    };
+    webPartId: string;
+    reservedHeight: number;
+    reservedWidth: number;
+    addedFromPersistedData: boolean;
+    webPartData: {
+        id: string;
+        instanceId: string;
+        title: string;
+        description: string;
+        serverProcessedContent?: {
+            "htmlStrings": TypedHash<string>;
+            "searchablePlainTexts": TypedHash<string>;
+            "imageSources": TypedHash<string>;
+            "links": TypedHash<string>;
+        };
+        dataVersion: string;
+        properties: PropertiesType;
+    };
+}
+
+export interface IClientControlEmphasis {
+    zoneEmphasis?: number;
 }
 
 export module ClientSideWebpartPropertyTypes {

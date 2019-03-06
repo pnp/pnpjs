@@ -1,0 +1,148 @@
+// save page
+{
+    "__metadata": {
+        "type": "SP.Publishing.SitePage"
+    },
+    "AuthorByline": [],
+    "TopicHeader": "",
+    "CanvasContent1": "[{\"controlType\":4,\"displayMode\":2,\"id\":\"aef77035-68bd-4829-8473-db6129dabf4d\",\"position\":{\"zoneIndex\":1,\"sectionIndex\":1,\"controlIndex\":1},\"emphasis\":{},\"anchorComponentId\":\"aef77035-68bd-4829-8473-db6129dabf4d\",\"editorType\":\"CKEditor\",\"addedFromPersistedData\":true,\"innerHTML\":\"<p>I changed.</p>\\n\"},{\"controlType\":3,\"displayMode\":2,\"id\":\"79183bd5-c595-4992-9f1a-bea52d5e2dc1\",\"position\":{\"zoneIndex\":2,\"sectionIndex\":1,\"controlIndex\":1},\"webPartId\":\"868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823\",\"emphasis\":{},\"reservedHeight\":126,\"reservedWidth\":1188,\"webPartData\":{\"id\":\"868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823\",\"instanceId\":\"79183bd5-c595-4992-9f1a-bea52d5e2dc1\",\"title\":\"Weather\",\"description\":\"Show current weather conditions on your page\",\"serverProcessedContent\":{\"htmlStrings\":{},\"searchablePlainTexts\":{},\"imageSources\":{},\"links\":{}},\"dataVersion\":\"1.1\",\"properties\":{\"temperatureUnit\":\"F\",\"locations\":[{\"latitude\":39.184,\"longitude\":-78.164,\"name\":\"Winchester, United States\",\"shouldCustomizeDisplayName\":false}]}},\"addedFromPersistedData\":true},{\"controlType\":0,\"pageSettingsSlice\":{\"isDefaultDescription\":true,\"isDefaultThumbnail\":true}}]",
+    "BannerImageUrl": "/_layouts/15/images/sitepagethumbnail.png",
+    "LayoutWebpartsContent": "[{\"id\":\"cbe7b0a9-3504-44dd-a3a3-0e5cacd07788\",\"instanceId\":\"cbe7b0a9-3504-44dd-a3a3-0e5cacd07788\",\"title\":\"Title area\",\"description\":\"Title Region Description\",\"serverProcessedContent\":{\"htmlStrings\":{},\"searchablePlainTexts\":{},\"imageSources\":{},\"links\":{}},\"dataVersion\":\"1.4\",\"properties\":{\"title\":\"/sites/dev/SitePages\",\"imageSourceType\":4,\"layoutType\":\"FullWidthImage\",\"textAlignment\":\"Left\",\"showTopicHeader\":false,\"showPublishDate\":false,\"topicHeader\":\"\",\"authorByline\":[],\"authors\":[]}}]"
+}
+// checkout page
+{
+    "odata.metadata": "https://318studios.sharepoint.com/sites/dev/_api/$metadata#SP.ApiData.SitePageMetadatas/@Element",
+    "odata.type": "SP.Publishing.SitePage",
+    "odata.id": "https://318studios.sharepoint.com/sites/dev/_api/sitepages/pages(85)/checkoutpage",
+    "odata.editLink": "sitepages/pages(85)/checkoutpage",
+    "AbsoluteUrl": "https://318studios.sharepoint.com/sites/dev/SitePages/7W9yL11H.aspx",
+    "AuthorByline": null,
+    "BannerImageUrl": "https://318studios.sharepoint.com/_layouts/15/images/sitepagethumbnail.png",
+    "ContentTypeId": null,
+    "Description": "I changed.",
+    "DoesUserHaveEditPermission": true,
+    "FileName": "7W9yL11H.aspx",
+    "FirstPublished": "0001-01-01T00:00:00",
+    "Id": 85,
+    "IsPageCheckedOutToCurrentUser": true,
+    "IsWebWelcomePage": false,
+    "Modified": "2019-03-05T13:40:07Z",
+    "PageLayoutType": "Article",
+    "Path": {
+        "DecodedUrl": "SitePages/7W9yL11H.aspx"
+    },
+    "PromotedState": 0,
+    "Title": "/sites/dev/SitePages",
+    "TopicHeader": null,
+    "UniqueId": "ed01b46d-4158-4dc0-99af-419cd902850f",
+    "Url": "SitePages/7W9yL11H.aspx",
+    "Version": "17.0",
+    "VersionInfo": {
+        "LastVersionCreated": "2019-03-05T13:40:08",
+        "LastVersionCreatedBy": "Patrick"
+    },
+    "AlternativeUrlMap": "{\"MediaTAThumbnailUrl\":\"https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat={.fileType}&cs={.callerStack}&docid={.spItemUrl}&{.driveAccessToken}\",\"GetPreviewGuidUrl\":\"{.spHostandPath}/_layouts/15/getpreview.ashx?resolution={resolution}&guidSite={siteId}&guidWeb={webId}&guidFile={uniqueId}&clientType=modernWebPart\",\"GetPreviewPathUrl\":\"{.spHostandPath}/_layouts/15/getpreview.ashx?resolution={resolution}&path={path}&clientType=modernWebPart\",\"MediaTAThumbnailGuidUrl\":\"https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat={.fileType}&cs=UEFHRVN8U1BP&docid={.spHost}/_api/v2.0/sites/{DomainName},{SPSite.Id},{SPWeb.Id}/lists/{SPList.Id}/items/{SPListItem.UniqueId}/driveItem&w={.widthValue}&oauth_token=bearer%20{.oauthToken}\",\"MediaTAThumbnailPathUrl\":\"https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat={.fileType}&cs=UEFHRVN8U1BP&docid={.spHost}/_api/v2.0/sharePoint:{.resourceUrl}:/driveItem&w={.widthValue}&oauth_token=bearer%20{.oauthToken}\"}",
+    "CanvasContent1": "[{\"controlType\":4,\"displayMode\":2,\"id\":\"aef77035-68bd-4829-8473-db6129dabf4d\",\"position\":{\"zoneIndex\":1,\"sectionIndex\":1,\"controlIndex\":1},\"emphasis\":{},\"anchorComponentId\":\"aef77035-68bd-4829-8473-db6129dabf4d\",\"editorType\":\"CKEditor\",\"addedFromPersistedData\":true,\"innerHTML\":\"<p>I changed.</p>\"},{\"controlType\":3,\"displayMode\":2,\"id\":\"79183bd5-c595-4992-9f1a-bea52d5e2dc1\",\"position\":{\"zoneIndex\":2,\"sectionIndex\":1,\"controlIndex\":1},\"webPartId\":\"868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823\",\"emphasis\":{},\"reservedHeight\":126,\"reservedWidth\":1188,\"addedFromPersistedData\":true,\"webPartData\":{\"id\":\"868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823\",\"instanceId\":\"79183bd5-c595-4992-9f1a-bea52d5e2dc1\",\"title\":\"Weather\",\"description\":\"Show current weather conditions on your page\",\"serverProcessedContent\":{\"htmlStrings\":{},\"searchablePlainTexts\":{},\"imageSources\":{},\"links\":{}},\"dataVersion\":\"1.1\",\"properties\":{\"temperatureUnit\":\"F\",\"locations\":[{\"latitude\":39.184,\"longitude\":-78.164,\"name\":\"Winchester, United States\",\"shouldCustomizeDisplayName\":false}]}}},{\"controlType\":0,\"pageSettingsSlice\":{\"isDefaultDescription\":true,\"isDefaultThumbnail\":true}}]",
+    "LayoutWebpartsContent": "[{\"id\":\"cbe7b0a9-3504-44dd-a3a3-0e5cacd07788\",\"instanceId\":\"cbe7b0a9-3504-44dd-a3a3-0e5cacd07788\",\"title\":\"Title area\",\"description\":\"Title Region Description\",\"serverProcessedContent\":{\"htmlStrings\":{},\"searchablePlainTexts\":{},\"imageSources\":{},\"links\":{}},\"dataVersion\":\"1.4\",\"properties\":{\"title\":\"/sites/dev/SitePages\",\"imageSourceType\":4,\"layoutType\":\"FullWidthImage\",\"textAlignment\":\"Left\",\"showTopicHeader\":false,\"showPublishDate\":false,\"topicHeader\":\"\",\"authorByline\":[],\"authors\":[]}}]"
+}
+// canvas content 1
+[
+    {
+        "displayMode": 2,
+        "position": {
+            "zoneIndex": 0.5,
+            "sectionIndex": 1,
+            "sectionFactor": 6,
+            "layoutIndex": 1
+        },
+        "emphasis": {
+            "zoneEmphasis": 3
+        }
+    },
+    {
+        "controlType": 4,
+        "displayMode": 2,
+        "id": "8730c4ca-7e54-47da-a9e6-a35f90c6f700",
+        "position": {
+            "zoneIndex": 0.5,
+            "sectionIndex": 2,
+            "controlIndex": 1,
+            "sectionFactor": 6,
+            "layoutIndex": 1
+        },
+        "emphasis": {
+            "zoneEmphasis": 3
+        },
+        "anchorComponentId": "8730c4ca-7e54-47da-a9e6-a35f90c6f700",
+        "editorType": "CKEditor",
+        "addedFromPersistedData": true,
+        "innerHTML": "<p>I am in column 2, section 1</p>"
+    },
+    {
+        "controlType": 4,
+        "displayMode": 2,
+        "id": "aef77035-68bd-4829-8473-db6129dabf4d",
+        "position": {
+            "zoneIndex": 1,
+            "sectionIndex": 1,
+            "controlIndex": 1
+        },
+        "emphasis": {},
+        "anchorComponentId": "aef77035-68bd-4829-8473-db6129dabf4d",
+        "editorType": "CKEditor",
+        "addedFromPersistedData": true,
+        "innerHTML": "<p>I changed.</p>"
+    },
+    {
+        "controlType": 3,
+        "displayMode": 2,
+        "id": "79183bd5-c595-4992-9f1a-bea52d5e2dc1",
+        "position": {
+            "zoneIndex": 2,
+            "sectionIndex": 1,
+            "controlIndex": 1
+        },
+        "webPartId": "868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823",
+        "emphasis": {},
+        "reservedHeight": 126,
+        "reservedWidth": 1188,
+        "addedFromPersistedData": true,
+        "webPartData": {
+            "id": "868ac3c3-cad7-4bd6-9a1c-14dc5cc8e823",
+            "instanceId": "79183bd5-c595-4992-9f1a-bea52d5e2dc1",
+            "title": "Weather",
+            "description": "Show current weather conditions on your page",
+            "serverProcessedContent": {
+                "htmlStrings": {},
+                "searchablePlainTexts": {},
+                "imageSources": {},
+                "links": {}
+            },
+            "dataVersion": "1.1",
+            "properties": {
+                "temperatureUnit": "F",
+                "locations": [
+                    {
+                        "latitude": 39.184,
+                        "longitude": -78.164,
+                        "name": "Winchester, United States",
+                        "shouldCustomizeDisplayName": false
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "controlType": 0,
+        "pageSettingsSlice": {
+            "isDefaultDescription": true,
+            "isDefaultThumbnail": true
+        }
+    }
+]
+// publish
+{
+    "__metadata": {
+        "type": "SP.Publishing.SitePage"
+    }
+}
