@@ -1,9 +1,10 @@
-import { List } from "./lists";
-import { TemplateFileType, FileAddResult, File } from "./files";
+import { File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, combine, getGUID, getAttrValueFromString, jsS, hOP, objectDefinedNotNull } from "@pnp/common";
+import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty } from "@pnp/common";
 import { SharePointQueryable } from "./sharepointqueryable";
 import { metadata } from "./utils/metadata";
+import { List } from "./lists";
+import { odataUrlFrom } from "./odata";
 
 /**
  * Page promotion state
@@ -67,66 +68,64 @@ function reindex(collection: { order: number, columns?: { order: number }[], con
 /**
  * Represents the data and methods associated with client side "modern" pages
  */
-export class ClientSidePage extends File {
+export class ClientSidePage extends SharePointQueryable {
 
-    private _id: number | null;
-    private _pageJson: IPageData;
     private _pageSettings: IClientSidePageSettingsSlice;
+    private _layoutPart: ILayoutPartsContent;
 
     /**
-     * Creates a new instance of the ClientSidePage class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
-     * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
+     * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
+     * 
+     * @param baseUrl 
+     * @param json 
+     * @param commentsDisabled 
+     * @param sections 
      */
-    constructor(file: File, public commentsDisabled = false, public sections: CanvasSection[] = []) {
-        super(file);
-        this._id = null;
+    constructor(baseUrl: string | SharePointQueryable, private json?: Partial<IPageData>, noInit = false, public sections: CanvasSection[] = [], public commentsDisabled = false) {
+        super(baseUrl);
+
+        // set a default page settings slice
+        this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
+
+        // set a default layout part
+        this._layoutPart = ClientSidePage.getDefaultLayoutPart();
+
+        if (typeof json !== "undefined" && !noInit) {
+            this.fromJSON(json);
+        }
     }
 
     /**
-     * Creates a new blank page within the supplied library
+     * Creates a new blank page within the supplied library [does not work with batching]
      * 
-     * @param library The library in which to create the page
+     * @param library NOT NEEDED
      * @param pageName Filename of the page, such as "page.aspx"
      * @param title The display title of the page
      * @param pageLayoutType Layout type of the page to use
      */
-    public static create(library: List, pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<ClientSidePage> {
+    public static async create(pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<ClientSidePage> {
 
-        // see if file exists, if not create it
-        return library.rootFolder.files.select("Name").filter(`Name eq '${pageName}'`).get().then((fs: any[]) => {
+        // patched because previously we used the full page name with the .aspx at the end
+        // this allows folk's existing code to work after the re-write to the new API
+        pageName = pageName.replace(/\.aspx$/i, "");
 
-            if (fs.length > 0) {
-                throw Error(`A file with the name '${pageName}' already exists in the library '${library.toUrl()}'.`);
-            }
+        // this is the user data we will use to init the author field
+        // const currentUserLogin = await ClientSidePage.getPoster("/_api/web/currentuser").select("UserPrincipalName").get<{ UserPrincipalName: string }>();
 
-            // get our server relative path
-            return library.rootFolder.select("ServerRelativePath").get().then(path => {
-
-                const pageServerRelPath = combine("/", path.ServerRelativePath.DecodedUrl, pageName);
-
-                // add the template file
-                return library.rootFolder.files.addTemplateFile(pageServerRelPath, TemplateFileType.ClientSidePage).then((far: FileAddResult) => {
-
-                    // get the item associated with the file
-                    return far.file.getItem().then((i: Item) => {
-
-                        // update the item to have the correct values to create the client side page
-                        return i.update({
-                            BannerImageUrl: {
-                                Url: "/_layouts/15/images/sitepagethumbnail.png",
-                            },
-                            ClientSideApplicationId: "b6917cb1-93a0-4b97-a84d-7cf49975d4ec",
-                            ContentTypeId: "0x0101009D1CB255DA76424F860D91F20E6C4118",
-                            PageLayoutType: pageLayoutType,
-                            PromotedState: PromotedState.NotPromoted,
-                            Title: title,
-                        }).then((iar: ItemUpdateResult) => ClientSidePage.fromFile(iar.item.file));
-                    });
-                });
-            });
+        // initialize the page, at this point a checked-out page with a junk filename will be created.
+        const pageInitData = await ClientSidePage.getPoster("_api/sitepages/pages").postCore<IPageData>({
+            body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
+                PageLayoutType: pageLayoutType,
+            })),
         });
+
+        // now we can init our page with the save data
+        const newPage = new ClientSidePage("", pageInitData);
+        // newPage.authors = [currentUserLogin.UserPrincipalName];
+        newPage.title = pageName;
+        await newPage.save(false);
+        newPage.title = title;
+        return newPage;
     }
 
     /**
@@ -135,51 +134,116 @@ export class ClientSidePage extends File {
      * @param html HTML markup representing the page
      */
     public static fromFile(file: File): Promise<ClientSidePage> {
-        const page = new ClientSidePage(file);
-        return page.load().then(_ => page);
+
+        return file.getItem<{ Id: number }>().then(i => {
+            const page = new ClientSidePage(file, { Id: i.Id }, true);
+            return page.load();
+        });
     }
 
-    /**
-     * Converts a json object to an escaped string appropriate for use in attributes when storing client-side controls
-     * 
-     * @param json The json object to encode into a string
-     */
-    public static jsonToEscapedString(json: any): string {
-
-        return jsS(json)
-            .replace(/"/g, "&quot;")
-            .replace(/:/g, "&#58;")
-            .replace(/{/g, "&#123;")
-            .replace(/}/g, "&#125;")
-            .replace(/\[/g, "\[")
-            .replace(/\]/g, "\]")
-            .replace(/\*/g, "\*")
-            .replace(/\$/g, "\$")
-            .replace(/\./g, "\.");
-    }
-
-    /**
-     * Converts an escaped string from a client-side control attribute to a json object
-     * 
-     * @param escapedString 
-     */
-    public static escapedStringToJson<T = any>(escapedString: string, noParse = false): T {
-        const unespace = (escaped: string): string => {
-            const mapDict = [
-                [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
-                [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
-                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"], [/\\\*/g, "*"],
-                [/\\\$/g, "$"],
-            ];
-            return mapDict.reduce((r, m) => r.replace(m[0], m[1] as string), escaped);
+    private static getDefaultLayoutPart(): ILayoutPartsContent {
+        const layoutId = getGUID();
+        return {
+            dataVersion: "1.4",
+            description: "Title Region Description",
+            id: layoutId,
+            instanceId: layoutId,
+            properties: {
+                authorByline: [],
+                authors: [],
+                layoutType: "FullWidthImage",
+                showPublishDate: false,
+                showTopicHeader: false,
+                textAlignment: "Left",
+                title: "",
+                topicHeader: "",
+            },
+            serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
+            title: "Title area",
         };
+    }
 
-        const v = objectDefinedNotNull(escapedString) ? unespace(escapedString) : null;
-        if (noParse) {
-            return <any>v;
-        } else {
-            return JSON.parse(v);
+    private static getPoster(url: string): ClientSidePage {
+        return new ClientSidePage(url);
+    }
+
+    public get bannerImageUrl(): string {
+        return this.json.BannerImageUrl;
+    }
+
+    public set bannerImageUrl(value: string) {
+        this.json.BannerImageUrl = value;
+    }
+
+    public get bannerImageSourceType(): number {
+        return this._layoutPart.properties.imageSourceType;
+    }
+
+    public set bannerImageSourceType(value: number) {
+        this._layoutPart.properties.imageSourceType = value;
+    }
+
+    public get topicHeader(): string {
+        return this.json.TopicHeader;
+    }
+
+    public set topicHeader(value: string) {
+        this.json.TopicHeader = value;
+        this._layoutPart.properties.topicHeader = value;
+        if (stringIsNullOrEmpty(value)) {
+            this.showTopicHeader = false;
         }
+    }
+
+    public get authors(): string[] {
+        return this._layoutPart.properties.authorByline;
+    }
+
+    public set authors(value: string[]) {
+        this.json.AuthorByline = value;
+        this._layoutPart.properties.authorByline = value;
+        this._layoutPart.properties.authors = null;
+    }
+
+    public get title(): string {
+        return this._layoutPart.properties.title;
+    }
+
+    public set title(value: string) {
+        this.json.Title = value;
+        this._layoutPart.properties.title = value;
+    }
+
+    public get layoutType(): LayoutType {
+        return this._layoutPart.properties.layoutType;
+    }
+
+    public set layoutType(value: LayoutType) {
+        this._layoutPart.properties.layoutType = value;
+    }
+
+    public get headerTextAlignment(): TextAlignment {
+        return this._layoutPart.properties.textAlignment;
+    }
+
+    public set headerTextAlignment(value: TextAlignment) {
+        this._layoutPart.properties.textAlignment = value;
+    }
+
+    public get showTopicHeader(): boolean {
+        return this._layoutPart.properties.showTopicHeader;
+    }
+
+    public set showTopicHeader(value: boolean) {
+        this._layoutPart.properties.showTopicHeader = value;
+    }
+
+    public get showPublishDate(): boolean {
+        return this._layoutPart.properties.showPublishDate;
+    }
+
+    public set showPublishDate(value: boolean) {
+        this._layoutPart.properties.showPublishDate = value;
     }
 
     /**
@@ -191,10 +255,16 @@ export class ClientSidePage extends File {
         return section;
     }
 
-    public fromJSON(pageData: IPageData): this {
-        this._pageJson = pageData;
+    public fromJSON(pageData: Partial<IPageData>): this {
+
+        this.json = pageData;
 
         const canvasControls: IClientSideControlBaseData[] = JSON.parse(pageData.CanvasContent1);
+
+        const layouts = <ILayoutPartsContent[]>JSON.parse(pageData.LayoutWebpartsContent);
+        if (layouts && layouts.length > 0) {
+            this._layoutPart = layouts[0];
+        }
 
         if (canvasControls && canvasControls.length) {
 
@@ -219,7 +289,8 @@ export class ClientSidePage extends File {
                         this.mergePartToTree(part, part.data.position);
                         break;
                     case 4:
-                        const text = new ClientSideText(<IClientSideTextData>canvasControls[i]);
+                        const textData = <IClientSideTextData>canvasControls[i];
+                        const text = new ClientSideText(textData.innerHTML, textData);
                         this.mergePartToTree(text, text.data.position);
                         break;
                 }
@@ -232,13 +303,12 @@ export class ClientSidePage extends File {
     /**
      * Loads this page's content from the server
      */
-    public async load(): Promise<ClientSidePage> {
+    public load(): Promise<ClientSidePage> {
 
         // load item id, then load page data from new pages api
         return this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled").then(item => {
             return (new SharePointQueryable(`_api/sitepages/pages(${item.Id})`)).get<IPageData>().then(pageData => {
                 this.commentsDisabled = item.CommentsDisabled;
-                this._id = item.Id;
                 return this.fromJSON(pageData);
             });
         });
@@ -251,35 +321,84 @@ export class ClientSidePage extends File {
      */
     public save(publish = true): Promise<boolean> {
 
-        if (this._id === null) {
+        if (this.json.Id === null) {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
+        // we will chain our work on this promise
         let promise = Promise.resolve<any>({});
-        let existingJson = this._pageJson;
+
+        // we need to update our authors if they have changed
+        // if (this._layoutPart.properties.authors === null && this._layoutPart.properties.authorByline.length > 0) {
+
+        //     promise = promise.then(_ => new Promise(resolve => {
+
+        //         const collector: any[] = [];
+        //         const userResolver = ClientSidePage.getPoster("/_api/SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.ClientPeoplePickerResolveUser");
+
+        //         this._layoutPart.properties.authorByline.forEach(async author => {
+        //             const userData = await userResolver.postCore({
+        //                 body: jsS({
+        //                     queryParams: {
+        //                         AllowEmailAddresses: false,
+        //                         MaximumEntitySuggestions: 1,
+        //                         PrincipalSource: 15,
+        //                         PrincipalType: 1,
+        //                         QueryString: author,
+        //                         SharePointGroupID: 0,
+        //                     },
+        //                 }),
+        //             });
+
+        //             collector.push({
+        //                 email: userData.EntityData.Email,
+        //                 id: userData.Key,
+        //                 name: userData.DisplayName,
+        //                 role: "",
+        //                 upn: userData.EntityData.Email,
+        //             });
+        //         });
+
+        //         this._layoutPart.properties.authors = collector;
+
+        //         resolve();
+        //     }));
+        // }
 
         // we try and check out the page for the user
-        if (!this._pageJson.IsPageCheckedOutToCurrentUser) {
-            promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/checkoutpage`)).postCore<IPageData>().then(d => {
-                existingJson = d;
-            }));
+        if (!this.json.IsPageCheckedOutToCurrentUser) {
+            promise = promise.then(_ => (ClientSidePage.getPoster(`_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
         }
 
-        promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/savepage`)).postCore<boolean>({
+        promise = promise.then(_ => (ClientSidePage.getPoster(`_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
-                AuthorByline: existingJson.AuthorByline,
-                BannerImageUrl: existingJson.BannerImageUrl,
+                AuthorByline: this.json.AuthorByline,
+                BannerImageUrl: this.json.BannerImageUrl,
                 CanvasContent1: this.getCancasContent1(),
-                LayoutWebpartsContent: existingJson.LayoutWebpartsContent,
-                TopicHeader: existingJson.TopicHeader,
+                LayoutWebpartsContent: this.getLayoutWebpartsContent(),
+                Title: this.json.Title,
+                TopicHeader: this.json.TopicHeader,
             })),
         }));
 
         if (publish) {
-            promise = promise.then(_ => (this.getPoster(`_api/sitepages/pages(${this._id})/publish`)).postCore<boolean>());
+            promise = promise.then(_ => (ClientSidePage.getPoster(`_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>());
         }
 
         return promise;
+    }
+
+    public discardPageCheckout(): Promise<void> {
+
+        if (this.json.Id === null) {
+            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
+        }
+
+        return ClientSidePage.getPoster(`_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
+            body: jsS(metadata("SP.Publishing.SitePage")),
+        }).then(d => {
+            this.fromJSON(d);
+        });
     }
 
     /**
@@ -356,7 +475,7 @@ export class ClientSidePage extends File {
     /**
      * Get the liked by information for a modern site page     
      */
-    public getLikedByInformation(): Promise<void> {
+    public getLikedByInformation(): Promise<any> {
         return this.getItem().then(i => {
             return i.getLikedByInformation();
         });
@@ -384,11 +503,16 @@ export class ClientSidePage extends File {
             });
         });
 
+        canvasData.push(this._pageSettings);
         return JSON.stringify(canvasData);
     }
 
-    private getPoster(url: string): ClientSidePage {
-        return new ClientSidePage(new File(url));
+    protected getLayoutWebpartsContent(): string {
+        if (this._layoutPart) {
+            return JSON.stringify([this._layoutPart]);
+        } else {
+            return JSON.stringify(null);
+        }
     }
 
     /**
@@ -440,17 +564,9 @@ export class ClientSidePage extends File {
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
             // create empty column
-            column = new CanvasColumn({
-                controlType: 0,
-                displayMode: 2,
-                emphasis: {},
-                position: {
-                    layoutIndex: 1,
-                    sectionFactor: sectionFactor,
-                    sectionIndex: sectionIndex,
-                    zoneIndex: zoneIndex,
-                },
-            });
+            column = new CanvasColumn();
+            column.order = sectionIndex;
+            column.factor = sectionFactor;
             section.columns.push(column);
         } else {
             column = columns[0];
@@ -481,6 +597,18 @@ export class ClientSidePage extends File {
 
         column.section = section;
         section.columns.push(column);
+    }
+
+    private getItem<T>(...selects: string[]): Promise<Item & T> {
+
+        const initer = ClientSidePage.getPoster("/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        return initer.postCore<{ Id: string, "odata.id": string }>().then(listData => {
+            const item = (new List(listData["odata.id"])).items.getById(this.json.Id);
+
+            return item.select.apply(item, selects).get().then((d: T) => {
+                return extend(new Item(odataUrlFrom(d)), d);
+            });
+        });
     }
 }
 
@@ -550,8 +678,7 @@ export class CanvasSection {
      */
     public remove(): void {
         this.page.sections = this.page.sections.filter(section => section._memId !== this._memId);
-        // TODO::
-        // reindex(this.page.sections);
+        reindex(this.page.sections);
     }
 }
 
@@ -570,9 +697,11 @@ export class CanvasColumn {
     };
 
     private _section: CanvasSection | null;
+    private _memId: string;
 
     constructor(protected json: IClientSidePageColumnData = CanvasColumn.Default, public controls: ColumnControl<any>[] = []) {
         this._section = null;
+        this._memId = getGUID();
     }
 
     public get data(): IClientSidePageColumnData {
@@ -613,17 +742,15 @@ export class CanvasColumn {
         return <T>this.controls[index];
     }
 
-    // add to section
-    // remove
-    // setFactor
-    // reorder is done with array methods and reindex on save
+    public remove(): void {
+        this.section.columns = this.section.columns.filter(column => column._memId !== this._memId);
+        reindex(this.section.columns);
+    }
 }
 
 export abstract class ColumnControl<T extends ICanvasControlBaseData> extends CanvasControl<T> {
 
     private _column: CanvasColumn | null;
-
-    protected abstract onColumnChange(col: CanvasColumn): void;
 
     public abstract get order(): number;
     public abstract set order(value: number);
@@ -636,32 +763,38 @@ export abstract class ColumnControl<T extends ICanvasControlBaseData> extends Ca
         this._column = value;
         this.onColumnChange(this._column);
     }
+
+    public remove(): void {
+        this.column.controls = this.column.controls.filter(control => control.id !== this.id);
+        reindex(this.column.controls);
+    }
+
+    protected abstract onColumnChange(col: CanvasColumn): void;
 }
 
 export class ClientSideText extends ColumnControl<IClientSideTextData> {
 
-    public static fromText(text: string) {
+    public static Default: IClientSideTextData = {
+        addedFromPersistedData: false,
+        anchorComponentId: "",
+        controlType: 4,
+        displayMode: 2,
+        editorType: "CKEditor",
+        emphasis: {},
+        id: "",
+        innerHTML: "",
+        position: {
+            controlIndex: 1,
+            layoutIndex: 1,
+            sectionFactor: 12,
+            sectionIndex: 1,
+            zoneIndex: 1,
+        },
+    };
 
-        const o = new ClientSideText({
-            addedFromPersistedData: false,
-            anchorComponentId: "",
-            controlType: 4,
-            displayMode: 2,
-            editorType: "CKEditor",
-            emphasis: {},
-            id: "",
-            innerHTML: "",
-            position: {
-                controlIndex: 1,
-                layoutIndex: 1,
-                sectionFactor: 12,
-                sectionIndex: 1,
-                zoneIndex: 1,
-            },
-        });
-
-        o.text = text;
-        return o;
+    constructor(text: string, json: IClientSideTextData = ClientSideText.Default) {
+        super(json);
+        this.text = text;
     }
 
     public get text(): string {
@@ -689,10 +822,6 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         this.data.position.zoneIndex = col.data.position.zoneIndex;
         this.data.position.sectionIndex = col.data.position.sectionIndex;
     }
-
-    // add to column
-    // remove
-    // reorder is done with array methods and reindex on save
 }
 
 export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
@@ -812,39 +941,39 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
 }
 
 export interface IPageData {
-    "odata.metadata": string;
-    "odata.type": "SP.Publishing.SitePage";
-    "odata.id": string;
-    "odata.editLink": string;
-    "AbsoluteUrl": string;
-    "AuthorByline": string | null;
-    "BannerImageUrl": string;
-    "ContentTypeId": null | string;
-    "Description": string;
-    "DoesUserHaveEditPermission": boolean;
-    "FileName": string;
-    "FirstPublished": string;
-    "Id": number;
-    "IsPageCheckedOutToCurrentUser": boolean;
-    "IsWebWelcomePage": boolean;
-    "Modified": string;
-    "PageLayoutType": ClientSidePageLayoutType;
-    "Path": {
-        "DecodedUrl": string;
+    readonly "odata.metadata": string;
+    readonly "odata.type": "SP.Publishing.SitePage";
+    readonly "odata.id": string;
+    readonly "odata.editLink": string;
+    AbsoluteUrl: string;
+    AuthorByline: string[] | null;
+    BannerImageUrl: string;
+    ContentTypeId: null | string;
+    Description: string;
+    DoesUserHaveEditPermission: boolean;
+    FileName: string;
+    readonly FirstPublished: string;
+    readonly Id: number;
+    readonly IsPageCheckedOutToCurrentUser: boolean;
+    IsWebWelcomePage: boolean;
+    readonly Modified: string;
+    PageLayoutType: ClientSidePageLayoutType;
+    Path: {
+        DecodedUrl: string;
     };
-    "PromotedState": number;
-    "Title": string;
-    "TopicHeader": null | string;
-    "UniqueId": string;
-    "Url": string;
-    "Version": string;
-    "VersionInfo": {
-        "LastVersionCreated": string;
-        "LastVersionCreatedBy": string;
+    PromotedState: number;
+    Title: string;
+    TopicHeader: null | string;
+    readonly UniqueId: string;
+    Url: string;
+    readonly Version: string;
+    readonly VersionInfo: {
+        readonly LastVersionCreated: string;
+        readonly LastVersionCreatedBy: string;
     };
-    "AlternativeUrlMap": string;
-    "CanvasContent1": string;
-    "LayoutWebpartsContent": string;
+    AlternativeUrlMap: string;
+    CanvasContent1: string;
+    LayoutWebpartsContent: string;
 }
 
 /**
@@ -907,12 +1036,12 @@ interface IClientSidePageComponentManifest {
 
 export interface IClientSideControlBaseData {
     controlType: number;
-    emphasis: IClientControlEmphasis;
-    displayMode: number;
 }
 
 export interface ICanvasControlBaseData extends IClientSideControlBaseData {
     id: string;
+    emphasis: IClientControlEmphasis;
+    displayMode: number;
 }
 
 export interface IClientSidePageSettingsSlice extends IClientSideControlBaseData {
@@ -924,6 +1053,8 @@ export interface IClientSidePageSettingsSlice extends IClientSideControlBaseData
 
 export interface IClientSidePageColumnData extends IClientSideControlBaseData {
     controlType: 0;
+    displayMode: number;
+    emphasis: IClientControlEmphasis;
     position: {
         zoneIndex: number;
         sectionIndex: number;
@@ -1025,4 +1156,38 @@ export module ClientSideWebpartPropertyTypes {
         shouldShowPushPinTitle?: boolean;
         zoomLevel?: number;
     }
+}
+
+export type LayoutType = "FullWidthImage" | "NoImage" | "ColorBlock" | "CutInShape";
+export type TextAlignment = "Left" | "Center";
+
+interface ILayoutPartsContent {
+    id: string;
+    instanceId: string;
+    title: string;
+    description: string;
+    serverProcessedContent: {
+        "htmlStrings": TypedHash<string>;
+        "searchablePlainTexts": TypedHash<string>;
+        "imageSources": TypedHash<string>;
+        "links": TypedHash<string>;
+    };
+    dataVersion: string;
+    properties: {
+        title: string;
+        imageSourceType?: number;
+        layoutType: LayoutType;
+        textAlignment: TextAlignment;
+        showTopicHeader: boolean;
+        showPublishDate: boolean;
+        topicHeader: string;
+        authorByline: string[];
+        authors: {
+            id: string,
+            email: string;
+            upn: string;
+            name: string;
+            role: string;
+        }[];
+    };
 }

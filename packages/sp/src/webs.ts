@@ -560,8 +560,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
-    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
+    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(pageName, title);
     }
 
     /**
@@ -571,8 +571,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param listRelativePath The server relative path to the list's root folder (including /sites/ if applicable)
      * @param title Display title of the new page
      */
-    public addClientSidePageByPath(pageName: string, listRelativePath: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.getList(listRelativePath), pageName, title);
+    public addClientSidePageByPath(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(pageName, title);
     }
 
     /**
