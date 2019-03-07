@@ -167,6 +167,14 @@ export class ClientSidePage extends SharePointQueryable {
         return new ClientSidePage(url);
     }
 
+    public get pageLayout(): ClientSidePageLayoutType {
+        return this.json.PageLayoutType;
+    }
+
+    public set pageLayout(value: ClientSidePageLayoutType) {
+        this.json.PageLayoutType = value;
+    }
+
     public get bannerImageUrl(): string {
         return this.json.BannerImageUrl;
     }
