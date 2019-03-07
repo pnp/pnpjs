@@ -98,12 +98,12 @@ export class ClientSidePage extends SharePointQueryable {
     /**
      * Creates a new blank page within the supplied library [does not work with batching]
      * 
-     * @param library NOT NEEDED
-     * @param pageName Filename of the page, such as "page.aspx"
+     * @param library NOT NEEDED, you can pass null
+     * @param pageName Filename of the page, such as "page"
      * @param title The display title of the page
      * @param pageLayoutType Layout type of the page to use
      */
-    public static async create(pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<ClientSidePage> {
+    public static async create(_library: any = null, pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<ClientSidePage> {
 
         // patched because previously we used the full page name with the .aspx at the end
         // this allows folk's existing code to work after the re-write to the new API
