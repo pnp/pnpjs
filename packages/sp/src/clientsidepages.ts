@@ -615,8 +615,8 @@ export class ClientSidePage extends SharePointQueryable {
         if (columns.length < 1) {
             // create empty column
             column = new CanvasColumn();
-            column.order = sectionIndex;
-            column.factor = sectionFactor;
+            column.data.position.sectionIndex = sectionIndex;
+            column.data.position.sectionFactor = sectionFactor;
             section.columns.push(column);
         } else {
             column = columns[0];
@@ -662,23 +662,6 @@ export class ClientSidePage extends SharePointQueryable {
     }
 }
 
-export abstract class CanvasControl<PayloadType extends ICanvasControlBaseData> {
-
-    constructor(protected json: PayloadType) { }
-
-    public get id(): string {
-        return this.json.id;
-    }
-
-    public get data(): PayloadType {
-        return this.json;
-    }
-
-    protected setData(data: PayloadType) {
-        this.json = data;
-    }
-}
-
 export class CanvasSection {
 
     /**
@@ -686,7 +669,7 @@ export class CanvasSection {
      */
     private _memId: string;
 
-    constructor(public page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
+    constructor(protected page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
         this._memId = getGUID();
     }
 
@@ -707,8 +690,10 @@ export class CanvasSection {
      */
     public addColumn(factor: CanvasColumnFactor): CanvasColumn {
         const column = new CanvasColumn();
-        column.order = getNextOrder(this.columns);
-        column.factor = factor;
+        column.section = this;
+        column.data.position.zoneIndex = this.order;
+        column.data.position.sectionFactor = factor;
+        column.data.position.sectionIndex = getNextOrder(this.columns);
         this.columns.push(column);
         return column;
     }
@@ -749,7 +734,7 @@ export class CanvasColumn {
     private _section: CanvasSection | null;
     private _memId: string;
 
-    constructor(protected json: IClientSidePageColumnData = CanvasColumn.Default, public controls: ColumnControl<any>[] = []) {
+    constructor(protected json: IClientSidePageColumnData = JSON.parse(JSON.stringify(CanvasColumn.Default)), public controls: ColumnControl<any>[] = []) {
         this._section = null;
         this._memId = getGUID();
     }
@@ -798,12 +783,22 @@ export class CanvasColumn {
     }
 }
 
-export abstract class ColumnControl<T extends ICanvasControlBaseData> extends CanvasControl<T> {
+export abstract class ColumnControl<T extends ICanvasControlBaseData> {
 
     private _column: CanvasColumn | null;
 
+    constructor(protected json: T) { }
+
     public abstract get order(): number;
     public abstract set order(value: number);
+
+    public get id(): string {
+        return this.json.id;
+    }
+
+    public get data(): T {
+        return this.json;
+    }
 
     public get column(): CanvasColumn | null {
         return this._column;
@@ -817,6 +812,10 @@ export abstract class ColumnControl<T extends ICanvasControlBaseData> extends Ca
     public remove(): void {
         this.column.controls = this.column.controls.filter(control => control.id !== this.id);
         reindex(this.column.controls);
+    }
+
+    protected setData(data: T) {
+        this.json = data;
     }
 
     protected abstract onColumnChange(col: CanvasColumn): void;
@@ -842,7 +841,7 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         },
     };
 
-    constructor(text: string, json: IClientSideTextData = ClientSideText.Default) {
+    constructor(text: string, json: IClientSideTextData = JSON.parse(JSON.stringify(ClientSideText.Default))) {
         super(json);
         this.text = text;
     }
@@ -862,15 +861,11 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         return this.data.position.controlIndex;
     }
 
-    public set order(value: number) {
-        this.data.position.controlIndex = value;
-    }
-
     protected onColumnChange(col: CanvasColumn): void {
         this.data.position.sectionFactor = col.factor;
         this.data.position.controlIndex = getNextOrder(col.controls);
         this.data.position.zoneIndex = col.data.position.zoneIndex;
-        this.data.position.sectionIndex = col.data.position.sectionIndex;
+        this.data.position.sectionIndex = col.order;
     }
 }
 
@@ -894,7 +889,7 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
         webPartId: null,
     };
 
-    constructor(json: IClientSideWebPartData = ClientSideWebpart.Default) {
+    constructor(json: IClientSideWebPartData = JSON.parse(JSON.stringify(ClientSideWebpart.Default))) {
         super(json);
     }
 
@@ -922,10 +917,6 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
 
     public get order(): number {
         return this.data.position.controlIndex;
-    }
-
-    public set order(value: number) {
-        this.data.position.controlIndex = value;
     }
 
     public get height(): number {
