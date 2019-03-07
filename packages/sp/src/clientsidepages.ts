@@ -140,7 +140,7 @@ export class ClientSidePage extends SharePointQueryable {
     public static fromFile(file: File): Promise<ClientSidePage> {
 
         return file.getItem<{ Id: number }>().then(i => {
-            const page = new ClientSidePage(file, "", { Id: i.Id }, true);
+            const page = new ClientSidePage(extractWebUrl(file.toUrl()), "", { Id: i.Id }, true);
             return page.load();
         });
     }
@@ -283,36 +283,7 @@ export class ClientSidePage extends SharePointQueryable {
             this._layoutPart = layouts[0];
         }
 
-        if (canvasControls && canvasControls.length) {
-
-            for (let i = 0; i < canvasControls.length; i++) {
-
-                // if no control type is present this is a column which we give type 0 to let us process it
-                const controlType = hOP(canvasControls[i], "controlType") ? canvasControls[i].controlType : 0;
-
-                switch (controlType) {
-
-                    case 0:
-                        // empty canvas column or page settings
-                        if (hOP(canvasControls[i], "pageSettingsSlice")) {
-                            this._pageSettings = <IClientSidePageSettingsSlice>canvasControls[i];
-                        } else {
-                            // we have an empty column
-                            this.mergeColumnToTree(new CanvasColumn(<IClientSidePageColumnData>canvasControls[i]));
-                        }
-                        break;
-                    case 3:
-                        const part = new ClientSideWebpart(<IClientSideWebPartData>canvasControls[i]);
-                        this.mergePartToTree(part, part.data.position);
-                        break;
-                    case 4:
-                        const textData = <IClientSideTextData>canvasControls[i];
-                        const text = new ClientSideText(textData.innerHTML, textData);
-                        this.mergePartToTree(text, text.data.position);
-                        break;
-                }
-            }
-        }
+        this.setControls(canvasControls);
 
         return this;
     }
@@ -391,7 +362,7 @@ export class ClientSidePage extends SharePointQueryable {
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 AuthorByline: this.json.AuthorByline,
                 BannerImageUrl: this.json.BannerImageUrl,
-                CanvasContent1: this.getCancasContent1(),
+                CanvasContent1: this.getCanvasContent1(),
                 LayoutWebpartsContent: this.getLayoutWebpartsContent(),
                 Title: this.json.Title,
                 TopicHeader: this.json.TopicHeader,
@@ -399,7 +370,11 @@ export class ClientSidePage extends SharePointQueryable {
         }));
 
         if (publish) {
-            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>());
+            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
+                if (r) {
+                    this.json.IsPageCheckedOutToCurrentUser = false;
+                }
+            });
         }
 
         return promise;
@@ -498,7 +473,72 @@ export class ClientSidePage extends SharePointQueryable {
         });
     }
 
-    protected getCancasContent1(): string {
+    /**
+     * Creates a copy of this page
+     * 
+     * @param web The web where we will create the copy
+     * @param pageName The file name of the new page
+     * @param title The title of the new page
+     * @param publish If true the page will be published
+     */
+    public async copyPage(web: Web | List, pageName: string, title: string, publish = true): Promise<ClientSidePage> {
+
+        const page = await ClientSidePage.create(web, pageName, title, this.pageLayout);
+
+        page.setControls(this.getControls());
+
+        await page.save(publish);
+
+        return page;
+    }
+
+    protected getCanvasContent1(): string {
+        return JSON.stringify(this.getControls());
+    }
+
+    protected getLayoutWebpartsContent(): string {
+        if (this._layoutPart) {
+            return JSON.stringify([this._layoutPart]);
+        } else {
+            return JSON.stringify(null);
+        }
+    }
+
+    protected setControls(controls: IClientSideControlBaseData[]): void {
+
+        if (controls && controls.length) {
+
+            for (let i = 0; i < controls.length; i++) {
+
+                // if no control type is present this is a column which we give type 0 to let us process it
+                const controlType = hOP(controls[i], "controlType") ? controls[i].controlType : 0;
+
+                switch (controlType) {
+
+                    case 0:
+                        // empty canvas column or page settings
+                        if (hOP(controls[i], "pageSettingsSlice")) {
+                            this._pageSettings = <IClientSidePageSettingsSlice>controls[i];
+                        } else {
+                            // we have an empty column
+                            this.mergeColumnToTree(new CanvasColumn(<IClientSidePageColumnData>controls[i]));
+                        }
+                        break;
+                    case 3:
+                        const part = new ClientSideWebpart(<IClientSideWebPartData>controls[i]);
+                        this.mergePartToTree(part, part.data.position);
+                        break;
+                    case 4:
+                        const textData = <IClientSideTextData>controls[i];
+                        const text = new ClientSideText(textData.innerHTML, textData);
+                        this.mergePartToTree(text, text.data.position);
+                        break;
+                }
+            }
+        }
+    }
+
+    protected getControls(): IClientSideControlBaseData[] {
 
         // reindex things
         reindex(this.sections);
@@ -521,15 +561,8 @@ export class ClientSidePage extends SharePointQueryable {
         });
 
         canvasData.push(this._pageSettings);
-        return JSON.stringify(canvasData);
-    }
 
-    protected getLayoutWebpartsContent(): string {
-        if (this._layoutPart) {
-            return JSON.stringify([this._layoutPart]);
-        } else {
-            return JSON.stringify(null);
-        }
+        return canvasData;
     }
 
     /**
@@ -971,7 +1004,7 @@ export interface IPageData {
     FileName: string;
     readonly FirstPublished: string;
     readonly Id: number;
-    readonly IsPageCheckedOutToCurrentUser: boolean;
+    IsPageCheckedOutToCurrentUser: boolean;
     IsWebWelcomePage: boolean;
     readonly Modified: string;
     PageLayoutType: ClientSidePageLayoutType;
