@@ -561,7 +561,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
     public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
-        return ClientSidePage.create(pageName, title);
+        return ClientSidePage.create(null, pageName, title);
     }
 
     /**
@@ -572,7 +572,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      */
     public addClientSidePageByPath(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
-        return ClientSidePage.create(pageName, title);
+        return ClientSidePage.create(null, pageName, title);
     }
 
     /**
