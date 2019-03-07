@@ -861,6 +861,10 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         return this.data.position.controlIndex;
     }
 
+    public set order(value: number) {
+        this.data.position.controlIndex = value;
+    }
+
     protected onColumnChange(col: CanvasColumn): void {
         this.data.position.sectionFactor = col.factor;
         this.data.position.controlIndex = getNextOrder(col.controls);
@@ -917,6 +921,10 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
 
     public get order(): number {
         return this.data.position.controlIndex;
+    }
+
+    public set order(value: number) {
+        this.data.position.controlIndex = value;
     }
 
     public get height(): number {
