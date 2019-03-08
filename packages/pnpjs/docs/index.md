@@ -8,7 +8,7 @@ individual libraries](../../documentation/transition-guide.md)**.
 
 ## Getting Started
 
-There are two approaches to using this libary: the first is to import, the second is to manually extract the bundled file for use in your project.
+There are two approaches to using this library: the first is to import, the second is to manually extract the bundled file for use in your project.
 
 ### Install
 
@@ -39,7 +39,7 @@ For example you could paste the following into a script editor web part:
 
 ```HTML
 <p>Script Editor is on page.</p>
-<script src="https://mysite/site assests/pnpjs.es5.umd.bundle.min.js" type="text/javascript"></script>
+<script src="https://mysite/site_assets/pnpjs.es5.umd.bundle.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
     pnp.Logger.subscribe(new pnp.ConsoleListener());

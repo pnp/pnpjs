@@ -68,7 +68,7 @@ Adds this query to the supplied batch
 
 ### toUrl
 
-Gets the currentl url
+Gets the current url
 
 ### abstract toUrlAndQuery()
 
@@ -76,4 +76,4 @@ When implemented by an inheriting class will build the full url with appropriate
 
 ## get
 
-Execute the current request. Takes an optional type parameter allowing for the typing of the value or the user of parsers that will create specific object intances.
+Execute the current request. Takes an optional type parameter allowing for the typing of the value or the user of parsers that will create specific object instances.

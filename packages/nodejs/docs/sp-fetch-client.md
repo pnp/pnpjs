@@ -1,6 +1,6 @@
 # @pnp/nodejs/spfetchclient
 
-The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret in nodejs. Remember it is not a good practive to expose client ids and secrets on the client and use of this class is intended for nodejs exclusively.
+The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret in nodejs. Remember it is not a good practice to expose client ids and secrets on the client and use of this class is intended for nodejs exclusively.
 
 ```TypeScript
 import { SPFetchClient } from "@pnp/nodejs";
@@ -29,7 +29,7 @@ sp.web.get().then(w => {
 
 _Added in 1.1.2_
 
-For some areas such as Germany, China, and US Gov clouds you need to specifiy a different authentication url to the service. This is done by specifying the correct SPOAuthEnv enumeration to the SPFetchClient constructor. The options are listed below. If you are not sure which option to specify the default is likely OK.
+For some areas such as Germany, China, and US Gov clouds you need to specify a different authentication url to the service. This is done by specifying the correct SPOAuthEnv enumeration to the SPFetchClient constructor. The options are listed below. If you are not sure which option to specify the default is likely OK.
 
 - SPO : (default) for all *.sharepoint.com urls
 - China: for China hosted cloud
