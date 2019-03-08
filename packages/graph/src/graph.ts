@@ -43,3 +43,5 @@ export * from "./invitations";
 export * from "./subscriptions";
 
 export * from "./sites";
+
+export * from "./insights";
