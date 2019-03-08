@@ -538,12 +538,21 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
-     * Gets the app catalog for this web
+     * Gets the tenant app catalog for this web
      *
      * @param url Optional url or web containing the app catalog (default: current web)
      */
     public getAppCatalog(url?: string | Web) {
         return new AppCatalog(url || this);
+    }
+
+    /**
+     * Gets the site collection app catalog for this web
+     *
+     * @param url Optional url or web containing the app catalog (default: current web)
+     */
+    public getSiteCollectionAppCatalog(url?: string | Web) {
+        return new AppCatalog(url || this, "_api/web/sitecollectionappcatalog/AvailableApps");
     }
 
     /**
@@ -560,8 +569,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
-    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
+    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(this, pageName, title);
     }
 
     /**
@@ -571,8 +580,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param listRelativePath The server relative path to the list's root folder (including /sites/ if applicable)
      * @param title Display title of the new page
      */
-    public addClientSidePageByPath(pageName: string, listRelativePath: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.getList(listRelativePath), pageName, title);
+    public addClientSidePageByPath(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(this, pageName, title);
     }
 
     /**

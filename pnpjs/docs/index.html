@@ -1707,7 +1707,7 @@
 in scenarios where a single file is being imported via a script tag. <strong>It is recommended to not use this rollup library where possible and <a href="../../documentation/transition-guide/">migrate to the 
 individual libraries</a></strong>.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>There are two approaches to using this libary: the first is to import, the second is to manually extract the bundled file for use in your project.</p>
+<p>There are two approaches to using this library: the first is to import, the second is to manually extract the bundled file for use in your project.</p>
 <h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
 <p><code>npm install @pnp/pnpjs --save</code></p>
 <p>You can then make use of the pnpjs rollup library within your application. It's structure matches sp-pnp-js, though some things may have changed based on the rolled-up dependencies.</p>
@@ -1727,7 +1727,7 @@ individual libraries</a></strong>.</p>
 <p>Browse to <em>./node_modules/@pnp/pnpjs/dist</em> and grab either <em>pnpjs.es5.umd.bundle.js</em> or <em>pnpjs.es5.umd.bundle.min.js</em> depending on your needs. You can then add a script tag referencing this file and you will have a global variable "pnp".</p>
 <p>For example you could paste the following into a script editor web part:</p>
 <div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Script Editor is on page.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://mysite/site assests/pnpjs.es5.umd.bundle.min.js&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://mysite/site_assets/pnpjs.es5.umd.bundle.min.js&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
 
     <span class="nx">pnp</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">new</span> <span class="nx">pnp</span><span class="p">.</span><span class="nx">ConsoleListener</span><span class="p">());</span>

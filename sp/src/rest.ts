@@ -123,7 +123,7 @@ export class SPRest {
      * Access to the site collection level navigation service
      */
     public get navigation(): INavigationService {
-        return new NavigationService();
+        return this.create(NavigationService);
     }
 
     /**

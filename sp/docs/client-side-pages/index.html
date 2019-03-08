@@ -1768,14 +1768,18 @@ you can add and edit "modern" pages in SharePoint sites.</p>
 <p>Using the addClientSidePage you can add a new client side page to a site, specifying the filename.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePage</span><span class="p">(</span><span class="sb">`MyFirstPage.aspx`</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePage</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">);</span>
+
+<span class="c1">// OR</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePage</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">,</span> <span class="sb">`Page Display Title`</span><span class="p">);</span>
 </pre></div>
 
 
 <p>Added in 1.0.5 you can also add a client side page using the list path. This gets around potential language issues with list title. You must specify the list path when calling this method in addition to the new page's filename.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePageByPath</span><span class="p">(</span><span class="sb">`MyFirstPage.aspx`</span><span class="p">,</span> <span class="s2">&quot;/sites/dev/SitePages&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePageByPath</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">,</span> <span class="s2">&quot;/sites/dev/SitePages&quot;</span><span class="p">);</span>
 </pre></div>
 
 
