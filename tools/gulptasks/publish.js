@@ -60,7 +60,7 @@ function runPublishScript() {
         "npm install");
 
     // version here to all subsequent actions have the new version available in package.json
-    script.push("npm version patch");
+    script.push("npm version 1.3.0");
 
     // push the updates to master (version info)
     script.push("git push");
