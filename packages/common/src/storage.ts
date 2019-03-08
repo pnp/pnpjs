@@ -99,7 +99,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
                 return d;
             });
         } else {
-            return o;
+            return Promise.resolve(o);
         }
     }
 
