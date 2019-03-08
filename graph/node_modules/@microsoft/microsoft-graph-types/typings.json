@@ -1,8 +1,0 @@
-{
-  "dependencies": {},
-  "devDependencies": {},
-  "main" : "microsoft-graph.d.ts",
-  "name":"microsoft-graph",
-  "version": "0.2.1",
-  "homepage": "https://github.com/microsoftgraph/msgraph-typescript-typings"
-}
