@@ -75,7 +75,7 @@ const v = RuntimeConfig.get("myKey1"); // "value 1"
 ## Using RuntimeConfig within your Application
 
 If you have a set of properties you will access very frequently it may be desirable to implement your own configuration object and expose those values as properties. To
-do so you will need to create an interface for your configration (optional) and a wrapper class for RuntimeConfig to expose your properties
+do so you will need to create an interface for your configuration (optional) and a wrapper class for RuntimeConfig to expose your properties
 
 ```TypeScript
 import { LibraryConfiguration, RuntimeConfig } from "@pnp/common";
@@ -118,7 +118,7 @@ class MyRuntimeConfigImpl {
         return {};
     }
 
-    // exposing a root level proeprty
+    // exposing a root level property
     public get myProp1(): string | null {
 
         let myProp1 = RuntimeConfig.get("myProp1");
