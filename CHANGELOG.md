@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.3.0 - 2019-08-03
+
+### Added
+
+- @pnp/graph: Added support for SharePoint sites, lists, columns, items and more endpoints ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/503)]
+- @pnp/graph: Added support for insights ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/511)]
+- @pnp/sp: Added copyPage method to ClientSidePage [[PR](https://github.com/pnp/pnpjs/pull/533)]
+- @pnp/sp: Added getSiteCollectionAppCatalog to Web [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+### Changed
+
+- @pnp/sp: Changed NavigationService contructor to allow specifying site [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+### Fixed
+
+- documentation: Fixed spelling errors in docs ([@michaelmaillot](https://github.com/michaelmaillot)) [[PR](https://github.com/pnp/pnpjs/pull/516)]
+- documentation: Fixed spelling errors docs ([@0xflotus](https://github.com/michaelmaillot)) [[PR](https://github.com/pnp/pnpjs/pull/543)]
+- @pnp/sp: Fixed client side page management [[PR](https://github.com/pnp/pnpjs/pull/533)]
+- @pnp/sp: Fixed return types for verbose json in utility methods [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+
 ## 1.2.9 - 2019-08-02
 
 ### Added
