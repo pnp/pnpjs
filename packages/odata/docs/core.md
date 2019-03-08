@@ -8,7 +8,7 @@ The exception thrown when a response is returned and cannot be processed.
 
 ## interface ODataParser<T>
 
-Base interface used to descibe a class that that will parse incoming responses. It takes a single type parameter representing the type of the
+Base interface used to describe a class that that will parse incoming responses. It takes a single type parameter representing the type of the
 value to be returned. It has two methods, one is optional:
 
 * parse(r: Response): Promise<T> - main method use to parse a response and return a Promise resolving to an object of type T
