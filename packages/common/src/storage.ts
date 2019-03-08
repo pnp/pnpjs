@@ -90,7 +90,7 @@ export class PnPClientStorageWrapper implements PnPClientStore {
         if (!this.enabled) {
             return getter();
         }
-        
+
         const o = this.get<T>(key);
 
         if (o == null) {
