@@ -297,7 +297,7 @@ export class List extends SharePointQueryableSecurable {
     public getChanges(query: ChangeQuery): Promise<any> {
 
         return this.clone(List, "getchanges").postCore({
-            body: jsS({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+            body: jsS({ "query": extend(metadata("SP.ChangeQuery"), query) }),
         });
     }
 

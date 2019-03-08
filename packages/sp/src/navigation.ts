@@ -153,8 +153,8 @@ export interface INavigationService {
  */
 export class NavigationService extends SharePointQueryable implements INavigationService {
 
-    constructor(path: string = null) {
-        super("_api/navigation", path);
+    constructor(baseUrl: string | SharePointQueryable, path: string = null) {
+        super(baseUrl, path);
     }
 
     /**
@@ -167,7 +167,7 @@ export class NavigationService extends SharePointQueryable implements INavigatio
      */
     public getMenuState(menuNodeKey: string = null, depth = 10, mapProviderName: string = null, customProperties: string = null): Promise<MenuNodeCollection> {
 
-        return (new NavigationService("MenuState")).postCore({
+        return (new NavigationService(this, "_api/navigation/MenuState")).postCore({
             body: jsS({
                 customProperties: customProperties,
                 depth: depth,
@@ -185,7 +185,7 @@ export class NavigationService extends SharePointQueryable implements INavigatio
      */
     public getMenuNodeKey(currentUrl: string, mapProviderName: string = null): Promise<string> {
 
-        return (new NavigationService("MenuNodeKey")).postCore({
+        return (new NavigationService(this, "_api/navigation/MenuNodeKey")).postCore({
             body: jsS({
                 currentUrl: currentUrl,
                 mapProviderName: mapProviderName,
