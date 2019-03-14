@@ -29,7 +29,7 @@ export const enum PromotedState {
 /**
  * Type describing the available page layout types for client side "modern" pages
  */
-export type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage";
+export type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage" | "RepostPage";
 
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
