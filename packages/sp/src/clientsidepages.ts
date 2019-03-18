@@ -549,13 +549,17 @@ export class ClientSidePage extends SharePointQueryable {
         this.sections.forEach(section => {
             section.columns.forEach(column => {
                 if (column.controls.length < 1) {
+                    // empty column
                     canvasData.push({
                         displayMode: column.data.displayMode,
-                        emphasis: column.data.emphasis,
+                        emphasis: this.getEmphasisObj(section.emphasis),
                         position: column.data.position,
                     });
                 } else {
-                    column.controls.forEach(control => canvasData.push(control.data));
+                    column.controls.forEach(control => {
+                        control.data.emphasis = this.getEmphasisObj(section.emphasis);
+                        canvasData.push(control.data);
+                    });
                 }
             });
         });
@@ -563,6 +567,14 @@ export class ClientSidePage extends SharePointQueryable {
         canvasData.push(this._pageSettings);
 
         return canvasData;
+    }
+
+    private getEmphasisObj(value: 0 | 1 | 2 | 3): IClientControlEmphasis {
+        if (value < 1 || value > 3) {
+            return {};
+        }
+
+        return { zoneEmphasis: value };
     }
 
     /**
@@ -611,6 +623,8 @@ export class ClientSidePage extends SharePointQueryable {
             section = sections[0];
         }
 
+        section.emphasis = control.data.emphasis.zoneEmphasis || 0;
+
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
             // create empty column
@@ -640,6 +654,7 @@ export class ClientSidePage extends SharePointQueryable {
 
         if (sections.length < 1) {
             section = new CanvasSection(this, order);
+            section.emphasis = column.data.emphasis.zoneEmphasis || 0;
             this.sections.push(section);
         } else {
             section = sections[0];
@@ -669,7 +684,7 @@ export class CanvasSection {
      */
     private _memId: string;
 
-    constructor(protected page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
+    constructor(protected page: ClientSidePage, public order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
         this._memId = getGUID();
     }
 
@@ -706,6 +721,14 @@ export class CanvasSection {
     public addControl(control: ColumnControl<any>): this {
         this.defaultColumn.addControl(control);
         return this;
+    }
+
+    public get emphasis(): 0 | 1 | 2 | 3 {
+        return this._emphasis;
+    }
+
+    public set emphasis(value: 0 | 1 | 2 | 3) {
+        this._emphasis = value;
     }
 
     /**
@@ -1163,7 +1186,7 @@ export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasCon
 }
 
 export interface IClientControlEmphasis {
-    zoneEmphasis?: number;
+    zoneEmphasis?: 0 | 1 | 2 | 3;
 }
 
 export module ClientSideWebpartPropertyTypes {
