@@ -1,6 +1,6 @@
 import { File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty } from "@pnp/common";
+import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull } from "@pnp/common";
 import { SharePointQueryable } from "./sharepointqueryable";
 import { metadata } from "./utils/metadata";
 import { List } from "./lists";
@@ -189,6 +189,12 @@ export class ClientSidePage extends SharePointQueryable {
     }
 
     public set bannerImageUrl(value: string) {
+        delete this._layoutPart.serverProcessedContent.customMetadata.imageSource;
+        delete this._layoutPart.properties.webId;
+        delete this._layoutPart.properties.siteId;
+        delete this._layoutPart.properties.listId;
+        delete this._layoutPart.properties.uniqueId;
+        this._layoutPart.serverProcessedContent.imageSources = { imageSource: value };
         this.json.BannerImageUrl = value;
     }
 
@@ -364,8 +370,8 @@ export class ClientSidePage extends SharePointQueryable {
                 BannerImageUrl: this.json.BannerImageUrl,
                 CanvasContent1: this.getCanvasContent1(),
                 LayoutWebpartsContent: this.getLayoutWebpartsContent(),
-                Title: this.json.Title,
-                TopicHeader: this.json.TopicHeader,
+                Title: this.title,
+                TopicHeader: this.topicHeader,
             })),
         }));
 
@@ -490,6 +496,39 @@ export class ClientSidePage extends SharePointQueryable {
         await page.save(publish);
 
         return page;
+    }
+
+    /**
+     * Sets the modern page banner image
+     * 
+     * @param url Url of the image to display
+     * @param altText Alt text to describe the image
+     * @param bannerProps Additional properties to control display of the banner
+     */
+    public setBannerImage(url: string, props?: {
+        altText?: string;
+        imageSourceType?: number;
+        translateX?: number;
+        translateY?: number;
+    }): void {
+
+        this.bannerImageUrl = url;
+        this.bannerImageSourceType = 2; // this seems to always be true, so default?
+
+        if (objectDefinedNotNull(props)) {
+            if (hOP(props, "translateX")) {
+                this._layoutPart.properties.translateX = props.translateX;
+            }
+            if (hOP(props, "translateY")) {
+                this._layoutPart.properties.translateY = props.translateY;
+            }
+            if (hOP(props, "imageSourceType")) {
+                this.bannerImageSourceType = props.imageSourceType;
+            }
+            if (hOP(props, "altText")) {
+                this._layoutPart.properties.altText = props.altText;
+            }
+        }
     }
 
     protected getCanvasContent1(): string {
@@ -865,7 +904,12 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
     };
 
     constructor(text: string, json: IClientSideTextData = JSON.parse(JSON.stringify(ClientSideText.Default))) {
+        if (stringIsNullOrEmpty(json.id)) {
+            json.id = getGUID();
+            json.anchorComponentId = json.id;
+        }
         super(json);
+
         this.text = text;
     }
 
@@ -1239,10 +1283,18 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        "htmlStrings": TypedHash<string>;
-        "searchablePlainTexts": TypedHash<string>;
-        "imageSources": TypedHash<string>;
-        "links": TypedHash<string>;
+        htmlStrings: TypedHash<string>;
+        searchablePlainTexts: TypedHash<string>;
+        imageSources: TypedHash<string>;
+        links: TypedHash<string>;
+        customMetadata?: {
+            imageSource?: {
+                siteId: string;
+                webId: string;
+                listId: string;
+                uniqueId: string;
+            },
+        }
     };
     dataVersion: string;
     properties: {
@@ -1261,5 +1313,12 @@ interface ILayoutPartsContent {
             name: string;
             role: string;
         }[];
+        webId?: string;
+        siteId?: string;
+        listId?: string;
+        uniqueId?: string;
+        translateX?: number;
+        translateY?: number;
+        altText?: string;
     };
 }
