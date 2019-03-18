@@ -574,6 +574,8 @@ export class ClientSidePage extends SharePointQueryable {
                         break;
                 }
             }
+
+            reindex(this.sections);
         }
     }
 
@@ -666,11 +668,7 @@ export class ClientSidePage extends SharePointQueryable {
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
-            // create empty column
-            column = new CanvasColumn();
-            column.data.position.sectionIndex = sectionIndex;
-            column.data.position.sectionFactor = sectionFactor;
-            section.columns.push(column);
+            column = section.addColumn(sectionFactor);
         } else {
             column = columns[0];
         }
@@ -723,8 +721,22 @@ export class CanvasSection {
      */
     private _memId: string;
 
-    constructor(protected page: ClientSidePage, public order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
+    private _order: number;
+
+    constructor(protected page: ClientSidePage, order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
         this._memId = getGUID();
+        this._order = order;
+    }
+
+    public get order(): number {
+        return this._order;
+    }
+
+    public set order(value: number) {
+        this._order = value;
+        for (let i = 0; i < this.columns.length; i++) {
+            this.columns[i].data.position.zoneIndex = value;
+        }
     }
 
     /**
@@ -747,7 +759,7 @@ export class CanvasSection {
         column.section = this;
         column.data.position.zoneIndex = this.order;
         column.data.position.sectionFactor = factor;
-        column.data.position.sectionIndex = getNextOrder(this.columns);
+        column.order = getNextOrder(this.columns);
         this.columns.push(column);
         return column;
     }
@@ -819,6 +831,10 @@ export class CanvasColumn {
 
     public set order(value: number) {
         this.data.position.sectionIndex = value;
+        for (let i = 0; i < this.controls.length; i++) {
+            this.controls[i].data.position.zoneIndex = this.data.position.zoneIndex;
+            this.controls[i].data.position.sectionIndex = value;
+        }
     }
 
     public get factor(): CanvasColumnFactor {
