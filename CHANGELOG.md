@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- @pnp/sp: Added ability to set section emphasis for modern pages [[PR]()]
+
 ## 1.3.0 - 2019-08-03
 
 ### Added
