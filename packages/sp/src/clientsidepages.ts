@@ -141,7 +141,7 @@ export class ClientSidePage extends SharePointQueryable {
 
         return file.getItem<{ Id: number }>().then(i => {
             const page = new ClientSidePage(extractWebUrl(file.toUrl()), "", { Id: i.Id }, true);
-            return page.load();
+            return page.configureFrom(file).load();
         });
     }
 
@@ -167,13 +167,9 @@ export class ClientSidePage extends SharePointQueryable {
         };
     }
 
-    private static getPoster(baseUrl: string | SharePointQueryable, url: string): ClientSidePage {
+    private static getPoster(parentInstance: SharePointQueryable, url: string): ClientSidePage {
 
-        if (typeof baseUrl !== "string") {
-            baseUrl = extractWebUrl(baseUrl.toUrl());
-        }
-
-        return new ClientSidePage(baseUrl, url);
+        return (new ClientSidePage(parentInstance, url)).configureFrom(parentInstance);
     }
 
     public get pageLayout(): ClientSidePageLayoutType {
@@ -705,10 +701,10 @@ export class ClientSidePage extends SharePointQueryable {
 
         const initer = ClientSidePage.getPoster(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         return initer.postCore<{ Id: string, "odata.id": string }>().then(listData => {
-            const item = (new List(listData["odata.id"])).items.getById(this.json.Id);
+            const item = (new List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
 
             return item.select.apply(item, selects).get().then((d: T) => {
-                return extend(new Item(odataUrlFrom(d)), d);
+                return extend((new Item(odataUrlFrom(d))).configureFrom(this), d);
             });
         });
     }
