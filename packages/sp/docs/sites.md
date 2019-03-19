@@ -166,6 +166,7 @@ Creates a modern communication site.
 ||||                               Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
 ||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
 ||||
+| hubSiteId | string | no | The Guid of the already existing Hub site
 
 ```TypeScript
 
@@ -178,7 +179,8 @@ sp.site.createCommunicationSite(
             "https://tenant.sharepoint.com/sites/commSite",
             "Description",
             "HBI",
-            "f6cc5403-0d63-442e-96c0-285923709ffc").then(d => {
+            "f6cc5403-0d63-442e-96c0-285923709ffc",
+            "a00ec589-ea9f-4dba-a34e-67e78d41e509").then(d => {
                 console.log(d);
             });
 
@@ -201,7 +203,7 @@ Creates a modern team site backed by O365 group.
 | description | string | no | The description of the modern team site. |
 | classification | string | no | The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
 | owners | string array (string[]) | no | The Owners of the site to be created
-
+| hubSiteId | string | no | The Guid of the already existing Hub site
 
 ```TypeScript
 
@@ -214,7 +216,8 @@ sp.site.createModernTeamSite(
         1033,
         "description",
         "HBI",
-        ["user1@tenant.onmicrosoft.com","user2@tenant.onmicrosoft.com","user3@tenant.onmicrosoft.com"])
+        ["user1@tenant.onmicrosoft.com","user2@tenant.onmicrosoft.com","user3@tenant.onmicrosoft.com"],
+        "a00ec589-ea9f-4dba-a34e-67e78d41e509")
         .then(d => {
             console.log(d);
         });
