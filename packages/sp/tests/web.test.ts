@@ -73,6 +73,13 @@ describe("Web", () => {
         });
     });
 
+    describe("getFolderById", () => {
+      it("should return _api/web/getFolderById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')", () => {
+        expect(web.getFolderById("6a48ec7d-2c3a-470d-936f-c56032d23dbe").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFolderById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')"));
+      });
+    });
+
     describe("getFolderByServerRelativeUrl", () => {
         it("should return _api/web/getFolderByServerRelativeUrl('/sites/dev/shared documents/folder')", () => {
             expect(web.getFolderByServerRelativeUrl("/sites/dev/shared documents/folder").toUrl())
@@ -80,11 +87,18 @@ describe("Web", () => {
         });
     });
 
+    describe("getFileById", () => {
+      it("should return _api/web/getFileById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')", () => {
+        expect(web.getFileById("6a48ec7d-2c3a-470d-936f-c56032d23dbe").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFileById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')"));
+      });
+    });
+
     describe("getFileByServerRelativeUrl", () => {
-        it("should return _api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')", () => {
-            expect(web.getFileByServerRelativeUrl("/sites/dev/shared documents/folder/doc.docx").toUrl())
-                .to.match(toMatchEndRegex("_api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')"));
-        });
+      it("should return _api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')", () => {
+        expect(web.getFileByServerRelativeUrl("/sites/dev/shared documents/folder/doc.docx").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')"));
+      });
     });
 
     describe("getList", () => {
