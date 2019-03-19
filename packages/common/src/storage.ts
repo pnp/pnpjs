@@ -91,19 +91,16 @@ export class PnPClientStorageWrapper implements PnPClientStore {
             return getter();
         }
 
-        return new Promise((resolve) => {
+        const o = this.get<T>(key);
 
-            const o = this.get<T>(key);
-
-            if (o == null) {
-                getter().then((d) => {
-                    this.put(key, d, expire);
-                    resolve(d);
-                });
-            } else {
-                resolve(o);
-            }
-        });
+        if (o == null) {
+            return getter().then((d) => {
+                this.put(key, d, expire);
+                return d;
+            });
+        } else {
+            return Promise.resolve(o);
+        }
     }
 
     /**
