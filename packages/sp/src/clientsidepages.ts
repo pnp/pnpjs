@@ -1,6 +1,6 @@
 import { File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull } from "@pnp/common";
+import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine } from "@pnp/common";
 import { SharePointQueryable } from "./sharepointqueryable";
 import { metadata } from "./utils/metadata";
 import { List } from "./lists";
@@ -86,7 +86,16 @@ export class ClientSidePage extends SharePointQueryable {
         noInit = false,
         public sections: CanvasSection[] = [],
         public commentsDisabled = false) {
+
         super(baseUrl, path);
+
+        // ensure we have a good url to build on for the pages api
+        if (typeof baseUrl === "string") {
+            this._parentUrl = "";
+            this._url = combine(extractWebUrl(baseUrl), path);
+        } else {
+            this.extend(ClientSidePage.initFrom(baseUrl, null), path);
+        }
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
@@ -117,7 +126,7 @@ export class ClientSidePage extends SharePointQueryable {
         // const currentUserLogin = await ClientSidePage.getPoster("/_api/web/currentuser").select("UserPrincipalName").get<{ UserPrincipalName: string }>();
 
         // initialize the page, at this point a checked-out page with a junk filename will be created.
-        const pageInitData = await ClientSidePage.getPoster(web, "_api/sitepages/pages").postCore<IPageData>({
+        const pageInitData = await ClientSidePage.initFrom(web, "_api/sitepages/pages").postCore<IPageData>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 PageLayoutType: pageLayoutType,
             })),
@@ -167,9 +176,8 @@ export class ClientSidePage extends SharePointQueryable {
         };
     }
 
-    private static getPoster(parentInstance: SharePointQueryable, url: string): ClientSidePage {
-
-        return (new ClientSidePage(parentInstance, url)).configureFrom(parentInstance);
+    private static initFrom(o: SharePointQueryable, url: string): ClientSidePage {
+        return (new ClientSidePage(extractWebUrl(o.toUrl()), url)).configureFrom(o);
     }
 
     public get pageLayout(): ClientSidePageLayoutType {
@@ -357,10 +365,10 @@ export class ClientSidePage extends SharePointQueryable {
 
         // we try and check out the page for the user
         if (!this.json.IsPageCheckedOutToCurrentUser) {
-            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
+            promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
         }
 
-        promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
+        promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 AuthorByline: this.json.AuthorByline,
                 BannerImageUrl: this.json.BannerImageUrl,
@@ -372,7 +380,7 @@ export class ClientSidePage extends SharePointQueryable {
         }));
 
         if (publish) {
-            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
+            promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
                 if (r) {
                     this.json.IsPageCheckedOutToCurrentUser = false;
                 }
@@ -388,7 +396,7 @@ export class ClientSidePage extends SharePointQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        return ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
+        return ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
             body: jsS(metadata("SP.Publishing.SitePage")),
         }).then(d => {
             this.fromJSON(d);
@@ -699,7 +707,7 @@ export class ClientSidePage extends SharePointQueryable {
 
     private getItem<T>(...selects: string[]): Promise<Item & T> {
 
-        const initer = ClientSidePage.getPoster(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        const initer = ClientSidePage.initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         return initer.postCore<{ Id: string, "odata.id": string }>().then(listData => {
             const item = (new List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
 
