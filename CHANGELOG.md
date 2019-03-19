@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- @pnp/sp: Added ability to set section emphasis for modern pages [[PR]()]
+- @pnp/sp: Added ability to set section emphasis for modern pages [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/sp: Added setBannerImage method to ClientSidePage [[PR](https://github.com/pnp/pnpjs/pull/561)] 
+- @pnp/sp: Added support for HubSiteId while creating modern sites ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/553)]
+- @pnp/sp: Added support for "SingleWebPartAppPage" & "RepostPage" modern page types ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/554)]
+- @pnp/sp: Added getFileById and getFolderById methods to Web ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/562)]
 
 ### Fixed
 
-- @pnp/sp: Fixed code to set id and anchorComponentId for new text webparts [[PR]()]
+- @pnp/sp: Fixed code to set id and anchorComponentId for new text webparts [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/sp: Fixed ClientSidePage to respect configureFrom settings [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/common: updated storage to not hang if getter throws an exception ([@cslecours](https://github.com/cslecours)) [[PR](https://github.com/pnp/pnpjs/pull/546)]
 
 ## 1.3.0 - 2019-08-03
 
