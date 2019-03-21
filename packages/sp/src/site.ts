@@ -166,11 +166,13 @@ export class Site extends SharePointQueryableInstance {
         description = "",
         classification = "",
         siteDesignId = "00000000-0000-0000-0000-000000000000",
+        hubSiteId = "00000000-0000-0000-0000-000000000000",
     ): Promise<void> {
 
         const props = {
             Classification: classification,
             Description: description,
+            HubSiteId: hubSiteId,
             Lcid: lcid,
             ShareByEmailEnabled: shareByEmailEnabled,
             SiteDesignId: siteDesignId,
@@ -221,6 +223,7 @@ export class Site extends SharePointQueryableInstance {
         description = "",
         classification = "",
         owners?: string[],
+        hubSiteId = "00000000-0000-0000-0000-000000000000",
     ): Promise<void> {
 
         const postBody = jsS({
@@ -230,7 +233,7 @@ export class Site extends SharePointQueryableInstance {
             optionalParams: {
                 Classification: classification,
                 CreationOptions: {
-                    "results": [`SPSiteLanguage:${lcid}`],
+                    "results": [`SPSiteLanguage:${lcid}`, `HubSiteId:${hubSiteId}`],
                 },
                 Description: description,
                 Owners: {

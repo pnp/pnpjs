@@ -481,7 +481,7 @@ class PagedItemCollectionParser<T> extends ODataParserBase<PagedItemCollection<T
 }
 
 class ItemUpdatedParser extends ODataParserBase<ItemUpdateResultData> {
-    public parse(r: Response): Promise<ItemUpdateResultData> {
+    public async parse(r: Response): Promise<ItemUpdateResultData> {
 
         return new Promise<ItemUpdateResultData>((resolve, reject) => {
 
