@@ -64,7 +64,7 @@ export class GraphRest extends GraphQueryable {
     public get security(): ISecurityMethods {
         return new Security(this);
     }
-    
+
     public get sites(): ISitesMethods {
         return new Sites(this);
     }
