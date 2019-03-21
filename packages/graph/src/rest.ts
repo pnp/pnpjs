@@ -12,6 +12,7 @@ import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 import { Invitations, IInvitationsMethods } from "./invitations";
 import { Subscriptions } from "./subscriptions";
+import { ISitesMethods, Sites } from "./sites";
 
 export class GraphRest extends GraphQueryable {
 
@@ -58,6 +59,11 @@ export class GraphRest extends GraphQueryable {
     public setup(config: GraphConfiguration) {
         _setup(config);
     }
+
+    public get sites(): ISitesMethods {
+        return new Sites(this);
+    }
+
 }
 
 export let graph = new GraphRest("v1.0");

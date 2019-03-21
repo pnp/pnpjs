@@ -13,6 +13,8 @@ import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
 import { People } from "./people";
 
+import { InsightsMethods, Insights } from "./insights";
+
 /**
  * Describes a collection of Users objects
  *
@@ -183,4 +185,12 @@ export class User extends GraphQueryableInstance<IUser> {
     public get people(): People {
         return new People(this);
     }
+
+    /**
+    * The Insights associated with me
+    */
+    public get insights(): InsightsMethods {
+        return new Insights(this);
+    }
+
 }

@@ -30,8 +30,10 @@ export class AppCatalog extends SharePointQueryableCollection {
      */
     public add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<AppAddResult> {
 
+        const catalog = this.toUrl().indexOf("tenantappcatalog") > 0 ? "tenantappcatalog" : "sitecollectionappcatalog";
+
         // you don't add to the availableapps collection
-        const adder = new AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
+        const adder = new AppCatalog(extractWebUrl(this.toUrl()), `_api/web/${catalog}/add(overwrite=${shouldOverWrite},url='${filename}')`);
 
         return adder.postCore({
             body: content,
