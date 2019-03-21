@@ -91,19 +91,16 @@ export class PnPClientStorageWrapper implements PnPClientStore {
             return getter();
         }
 
-        return new Promise((resolve) => {
+        const o = this.get<T>(key);
 
-            const o = this.get<T>(key);
+        if (o === null) {
+            return getter().then((d) => {
+                this.put(key, d, expire);
+                return d;
+            });
+        }
 
-            if (o == null) {
-                getter().then((d) => {
-                    this.put(key, d, expire);
-                    resolve(d);
-                });
-            } else {
-                resolve(o);
-            }
-        });
+        return Promise.resolve(o);
     }
 
     /**
@@ -302,9 +299,9 @@ export class PnPClientStorage {
     private getStore(name: string): PnPClientStorageWrapper {
 
         if (name === "local") {
-            return new PnPClientStorageWrapper(typeof(localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+            return new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
         }
 
-        return new PnPClientStorageWrapper(typeof(sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
+        return new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
     }
 }

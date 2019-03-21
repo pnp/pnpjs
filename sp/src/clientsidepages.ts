@@ -1,6 +1,6 @@
 import { File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty } from "@pnp/common";
+import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine } from "@pnp/common";
 import { SharePointQueryable } from "./sharepointqueryable";
 import { metadata } from "./utils/metadata";
 import { List } from "./lists";
@@ -29,7 +29,7 @@ export const enum PromotedState {
 /**
  * Type describing the available page layout types for client side "modern" pages
  */
-export type ClientSidePageLayoutType = "Article" | "Home";
+export type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage" | "RepostPage";
 
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
@@ -86,7 +86,16 @@ export class ClientSidePage extends SharePointQueryable {
         noInit = false,
         public sections: CanvasSection[] = [],
         public commentsDisabled = false) {
+
         super(baseUrl, path);
+
+        // ensure we have a good url to build on for the pages api
+        if (typeof baseUrl === "string") {
+            this._parentUrl = "";
+            this._url = combine(extractWebUrl(baseUrl), path);
+        } else {
+            this.extend(ClientSidePage.initFrom(baseUrl, null), path);
+        }
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
@@ -117,7 +126,7 @@ export class ClientSidePage extends SharePointQueryable {
         // const currentUserLogin = await ClientSidePage.getPoster("/_api/web/currentuser").select("UserPrincipalName").get<{ UserPrincipalName: string }>();
 
         // initialize the page, at this point a checked-out page with a junk filename will be created.
-        const pageInitData = await ClientSidePage.getPoster(web, "_api/sitepages/pages").postCore<IPageData>({
+        const pageInitData = await ClientSidePage.initFrom(web, "_api/sitepages/pages").postCore<IPageData>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 PageLayoutType: pageLayoutType,
             })),
@@ -141,7 +150,7 @@ export class ClientSidePage extends SharePointQueryable {
 
         return file.getItem<{ Id: number }>().then(i => {
             const page = new ClientSidePage(extractWebUrl(file.toUrl()), "", { Id: i.Id }, true);
-            return page.load();
+            return page.configureFrom(file).load();
         });
     }
 
@@ -167,13 +176,8 @@ export class ClientSidePage extends SharePointQueryable {
         };
     }
 
-    private static getPoster(baseUrl: string | SharePointQueryable, url: string): ClientSidePage {
-
-        if (typeof baseUrl !== "string") {
-            baseUrl = extractWebUrl(baseUrl.toUrl());
-        }
-
-        return new ClientSidePage(baseUrl, url);
+    private static initFrom(o: SharePointQueryable, url: string): ClientSidePage {
+        return (new ClientSidePage(extractWebUrl(o.toUrl()), url)).configureFrom(o);
     }
 
     public get pageLayout(): ClientSidePageLayoutType {
@@ -189,6 +193,12 @@ export class ClientSidePage extends SharePointQueryable {
     }
 
     public set bannerImageUrl(value: string) {
+        delete this._layoutPart.serverProcessedContent.customMetadata.imageSource;
+        delete this._layoutPart.properties.webId;
+        delete this._layoutPart.properties.siteId;
+        delete this._layoutPart.properties.listId;
+        delete this._layoutPart.properties.uniqueId;
+        this._layoutPart.serverProcessedContent.imageSources = { imageSource: value };
         this.json.BannerImageUrl = value;
     }
 
@@ -355,22 +365,22 @@ export class ClientSidePage extends SharePointQueryable {
 
         // we try and check out the page for the user
         if (!this.json.IsPageCheckedOutToCurrentUser) {
-            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
+            promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
         }
 
-        promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
+        promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 AuthorByline: this.json.AuthorByline,
                 BannerImageUrl: this.json.BannerImageUrl,
                 CanvasContent1: this.getCanvasContent1(),
                 LayoutWebpartsContent: this.getLayoutWebpartsContent(),
-                Title: this.json.Title,
-                TopicHeader: this.json.TopicHeader,
+                Title: this.title,
+                TopicHeader: this.topicHeader,
             })),
         }));
 
         if (publish) {
-            promise = promise.then(_ => (ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
+            promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
                 if (r) {
                     this.json.IsPageCheckedOutToCurrentUser = false;
                 }
@@ -386,7 +396,7 @@ export class ClientSidePage extends SharePointQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        return ClientSidePage.getPoster(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
+        return ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
             body: jsS(metadata("SP.Publishing.SitePage")),
         }).then(d => {
             this.fromJSON(d);
@@ -492,6 +502,39 @@ export class ClientSidePage extends SharePointQueryable {
         return page;
     }
 
+    /**
+     * Sets the modern page banner image
+     * 
+     * @param url Url of the image to display
+     * @param altText Alt text to describe the image
+     * @param bannerProps Additional properties to control display of the banner
+     */
+    public setBannerImage(url: string, props?: {
+        altText?: string;
+        imageSourceType?: number;
+        translateX?: number;
+        translateY?: number;
+    }): void {
+
+        this.bannerImageUrl = url;
+        this.bannerImageSourceType = 2; // this seems to always be true, so default?
+
+        if (objectDefinedNotNull(props)) {
+            if (hOP(props, "translateX")) {
+                this._layoutPart.properties.translateX = props.translateX;
+            }
+            if (hOP(props, "translateY")) {
+                this._layoutPart.properties.translateY = props.translateY;
+            }
+            if (hOP(props, "imageSourceType")) {
+                this.bannerImageSourceType = props.imageSourceType;
+            }
+            if (hOP(props, "altText")) {
+                this._layoutPart.properties.altText = props.altText;
+            }
+        }
+    }
+
     protected getCanvasContent1(): string {
         return JSON.stringify(this.getControls());
     }
@@ -535,6 +578,8 @@ export class ClientSidePage extends SharePointQueryable {
                         break;
                 }
             }
+
+            reindex(this.sections);
         }
     }
 
@@ -549,13 +594,17 @@ export class ClientSidePage extends SharePointQueryable {
         this.sections.forEach(section => {
             section.columns.forEach(column => {
                 if (column.controls.length < 1) {
+                    // empty column
                     canvasData.push({
                         displayMode: column.data.displayMode,
-                        emphasis: column.data.emphasis,
+                        emphasis: this.getEmphasisObj(section.emphasis),
                         position: column.data.position,
                     });
                 } else {
-                    column.controls.forEach(control => canvasData.push(control.data));
+                    column.controls.forEach(control => {
+                        control.data.emphasis = this.getEmphasisObj(section.emphasis);
+                        canvasData.push(control.data);
+                    });
                 }
             });
         });
@@ -563,6 +612,14 @@ export class ClientSidePage extends SharePointQueryable {
         canvasData.push(this._pageSettings);
 
         return canvasData;
+    }
+
+    private getEmphasisObj(value: 0 | 1 | 2 | 3): IClientControlEmphasis {
+        if (value < 1 || value > 3) {
+            return {};
+        }
+
+        return { zoneEmphasis: value };
     }
 
     /**
@@ -611,13 +668,11 @@ export class ClientSidePage extends SharePointQueryable {
             section = sections[0];
         }
 
+        section.emphasis = control.data.emphasis.zoneEmphasis || 0;
+
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
-            // create empty column
-            column = new CanvasColumn();
-            column.data.position.sectionIndex = sectionIndex;
-            column.data.position.sectionFactor = sectionFactor;
-            section.columns.push(column);
+            column = section.addColumn(sectionFactor);
         } else {
             column = columns[0];
         }
@@ -640,6 +695,7 @@ export class ClientSidePage extends SharePointQueryable {
 
         if (sections.length < 1) {
             section = new CanvasSection(this, order);
+            section.emphasis = column.data.emphasis.zoneEmphasis || 0;
             this.sections.push(section);
         } else {
             section = sections[0];
@@ -651,12 +707,12 @@ export class ClientSidePage extends SharePointQueryable {
 
     private getItem<T>(...selects: string[]): Promise<Item & T> {
 
-        const initer = ClientSidePage.getPoster(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        const initer = ClientSidePage.initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         return initer.postCore<{ Id: string, "odata.id": string }>().then(listData => {
-            const item = (new List(listData["odata.id"])).items.getById(this.json.Id);
+            const item = (new List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
 
             return item.select.apply(item, selects).get().then((d: T) => {
-                return extend(new Item(odataUrlFrom(d)), d);
+                return extend((new Item(odataUrlFrom(d))).configureFrom(this), d);
             });
         });
     }
@@ -669,8 +725,22 @@ export class CanvasSection {
      */
     private _memId: string;
 
-    constructor(protected page: ClientSidePage, public order: number, public columns: CanvasColumn[] = []) {
+    private _order: number;
+
+    constructor(protected page: ClientSidePage, order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
         this._memId = getGUID();
+        this._order = order;
+    }
+
+    public get order(): number {
+        return this._order;
+    }
+
+    public set order(value: number) {
+        this._order = value;
+        for (let i = 0; i < this.columns.length; i++) {
+            this.columns[i].data.position.zoneIndex = value;
+        }
     }
 
     /**
@@ -693,7 +763,7 @@ export class CanvasSection {
         column.section = this;
         column.data.position.zoneIndex = this.order;
         column.data.position.sectionFactor = factor;
-        column.data.position.sectionIndex = getNextOrder(this.columns);
+        column.order = getNextOrder(this.columns);
         this.columns.push(column);
         return column;
     }
@@ -706,6 +776,14 @@ export class CanvasSection {
     public addControl(control: ColumnControl<any>): this {
         this.defaultColumn.addControl(control);
         return this;
+    }
+
+    public get emphasis(): 0 | 1 | 2 | 3 {
+        return this._emphasis;
+    }
+
+    public set emphasis(value: 0 | 1 | 2 | 3) {
+        this._emphasis = value;
     }
 
     /**
@@ -757,6 +835,10 @@ export class CanvasColumn {
 
     public set order(value: number) {
         this.data.position.sectionIndex = value;
+        for (let i = 0; i < this.controls.length; i++) {
+            this.controls[i].data.position.zoneIndex = this.data.position.zoneIndex;
+            this.controls[i].data.position.sectionIndex = value;
+        }
     }
 
     public get factor(): CanvasColumnFactor {
@@ -842,7 +924,12 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
     };
 
     constructor(text: string, json: IClientSideTextData = JSON.parse(JSON.stringify(ClientSideText.Default))) {
+        if (stringIsNullOrEmpty(json.id)) {
+            json.id = getGUID();
+            json.anchorComponentId = json.id;
+        }
         super(json);
+
         this.text = text;
     }
 
@@ -1163,7 +1250,7 @@ export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasCon
 }
 
 export interface IClientControlEmphasis {
-    zoneEmphasis?: number;
+    zoneEmphasis?: 0 | 1 | 2 | 3;
 }
 
 export module ClientSideWebpartPropertyTypes {
@@ -1216,10 +1303,18 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        "htmlStrings": TypedHash<string>;
-        "searchablePlainTexts": TypedHash<string>;
-        "imageSources": TypedHash<string>;
-        "links": TypedHash<string>;
+        htmlStrings: TypedHash<string>;
+        searchablePlainTexts: TypedHash<string>;
+        imageSources: TypedHash<string>;
+        links: TypedHash<string>;
+        customMetadata?: {
+            imageSource?: {
+                siteId: string;
+                webId: string;
+                listId: string;
+                uniqueId: string;
+            },
+        }
     };
     dataVersion: string;
     properties: {
@@ -1238,5 +1333,12 @@ interface ILayoutPartsContent {
             name: string;
             role: string;
         }[];
+        webId?: string;
+        siteId?: string;
+        listId?: string;
+        uniqueId?: string;
+        translateX?: number;
+        translateY?: number;
+        altText?: string;
     };
 }

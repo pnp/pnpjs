@@ -318,7 +318,7 @@ export class File extends SharePointQueryableShareableFile {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(new Item(odataUrlFrom(d)), d);
+            return extend((new Item(odataUrlFrom(d))).configureFrom(this), d);
         });
     }
 

@@ -1981,6 +1981,12 @@
 <td></td>
 <td></td>
 </tr>
+<tr>
+<td>hubSiteId</td>
+<td>string</td>
+<td>no</td>
+<td>The Guid of the already existing Hub site</td>
+</tr>
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
@@ -1992,7 +1998,8 @@
             <span class="s2">&quot;https://tenant.sharepoint.com/sites/commSite&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Description&quot;</span><span class="p">,</span>
             <span class="s2">&quot;HBI&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;f6cc5403-0d63-442e-96c0-285923709ffc&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="s2">&quot;f6cc5403-0d63-442e-96c0-285923709ffc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;a00ec589-ea9f-4dba-a34e-67e78d41e509&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="p">{</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
             <span class="p">});</span>
 </pre></div>
@@ -2054,6 +2061,12 @@
 <td>no</td>
 <td>The Owners of the site to be created</td>
 </tr>
+<tr>
+<td>hubSiteId</td>
+<td>string</td>
+<td>no</td>
+<td>The Guid of the already existing Hub site</td>
+</tr>
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
@@ -2065,7 +2078,8 @@
         <span class="mi">1033</span><span class="p">,</span>
         <span class="s2">&quot;description&quot;</span><span class="p">,</span>
         <span class="s2">&quot;HBI&quot;</span><span class="p">,</span>
-        <span class="p">[</span><span class="s2">&quot;user1@tenant.onmicrosoft.com&quot;</span><span class="p">,</span><span class="s2">&quot;user2@tenant.onmicrosoft.com&quot;</span><span class="p">,</span><span class="s2">&quot;user3@tenant.onmicrosoft.com&quot;</span><span class="p">])</span>
+        <span class="p">[</span><span class="s2">&quot;user1@tenant.onmicrosoft.com&quot;</span><span class="p">,</span><span class="s2">&quot;user2@tenant.onmicrosoft.com&quot;</span><span class="p">,</span><span class="s2">&quot;user3@tenant.onmicrosoft.com&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;a00ec589-ea9f-4dba-a34e-67e78d41e509&quot;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
         <span class="p">});</span>

@@ -307,6 +307,15 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+     * Gets a folder by id
+     *
+     * @param uniqueId The uniqueId of the folder
+     */
+    public getFolderById(uniqueId: string): Folder {
+      return new Folder(this, `getFolderById('${uniqueId}')`);
+    }
+
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -325,6 +334,15 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getFolderByServerRelativePath(folderRelativeUrl: string): Folder {
         return new Folder(this, `getFolderByServerRelativePath(decodedUrl='${folderRelativeUrl}')`);
+    }
+
+    /**
+     * Gets a file by id
+     *
+     * @param uniqueId The uniqueId of the file
+     */
+    public getFileById(uniqueId: string): File {
+      return new File(this, `getFileById('${uniqueId}')`);
     }
 
     /**
