@@ -7,6 +7,7 @@ import { List } from "./lists";
 import { odataUrlFrom } from "./odata";
 import { Web } from "./webs";
 import { extractWebUrl } from "./utils/extractweburl";
+import { Site } from "./site";
 
 /**
  * Page promotion state
@@ -74,6 +75,7 @@ export class ClientSidePage extends SharePointQueryable {
 
     private _pageSettings: IClientSidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
+    private _bannerImageDirty: boolean;
 
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
@@ -88,6 +90,8 @@ export class ClientSidePage extends SharePointQueryable {
         public commentsDisabled = false) {
 
         super(baseUrl, path);
+
+        this._bannerImageDirty = false;
 
         // ensure we have a good url to build on for the pages api
         if (typeof baseUrl === "string") {
@@ -155,14 +159,12 @@ export class ClientSidePage extends SharePointQueryable {
     }
 
     private static getDefaultLayoutPart(): ILayoutPartsContent {
-        const layoutId = getGUID();
         return {
             dataVersion: "1.4",
             description: "Title Region Description",
-            id: layoutId,
-            instanceId: layoutId,
+            id: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
+            instanceId: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             properties: {
-                authorByline: [],
                 authors: [],
                 layoutType: "FullWidthImage",
                 showPublishDate: false,
@@ -193,13 +195,8 @@ export class ClientSidePage extends SharePointQueryable {
     }
 
     public set bannerImageUrl(value: string) {
-        delete this._layoutPart.serverProcessedContent.customMetadata.imageSource;
-        delete this._layoutPart.properties.webId;
-        delete this._layoutPart.properties.siteId;
-        delete this._layoutPart.properties.listId;
-        delete this._layoutPart.properties.uniqueId;
-        this._layoutPart.serverProcessedContent.imageSources = { imageSource: value };
         this.json.BannerImageUrl = value;
+        this._bannerImageDirty = true;
     }
 
     public get bannerImageSourceType(): number {
@@ -211,7 +208,7 @@ export class ClientSidePage extends SharePointQueryable {
     }
 
     public get topicHeader(): string {
-        return this.json.TopicHeader;
+        return objectDefinedNotNull(this.json.TopicHeader) ? this.json.TopicHeader : "";
     }
 
     public set topicHeader(value: string) {
@@ -326,6 +323,59 @@ export class ClientSidePage extends SharePointQueryable {
         // we will chain our work on this promise
         let promise = Promise.resolve<any>({});
 
+        if (this._bannerImageDirty) {
+
+            // we have to do these gymnastics to set the banner image url
+            promise = promise.then(_ => new Promise((resolve, reject) => {
+
+                const origImgUrl = this.json.BannerImageUrl;
+                const site = new Site(extractWebUrl(this.toUrl()));
+                const web = new Web(extractWebUrl(this.toUrl()));
+                const imgFile = web.getFileByServerRelativePath(origImgUrl);
+
+                let siteId = "";
+                let webId = "";
+                let imgId = "";
+                let listId = "";
+                let webUrl = "";
+
+                Promise.all([
+                    site.select("Id", "Url").get().then(r => siteId = r.Id),
+                    web.select("Id", "Url").get().then(r => { webId = r.Id; webUrl = r.Url; }),
+                    imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").get().then(r => { imgId = r.UniqueId; listId = r.ParentList.Id; }),
+                ]).then(() => {
+
+                    const f = new SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
+                    f.query.set("guidSite", `${siteId}`);
+                    f.query.set("guidWeb", `${webId}`);
+                    f.query.set("guidFile", `${imgId}`);
+                    this.bannerImageUrl = f.toUrlAndQuery();
+
+                    if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent)) {
+                        this._layoutPart.serverProcessedContent = <any>{};
+                    }
+
+                    this._layoutPart.serverProcessedContent.imageSources = { imageSource: origImgUrl };
+
+                    if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent.customMetadata)) {
+                        this._layoutPart.serverProcessedContent.customMetadata = <any>{};
+                    }
+
+                    this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
+                        listId,
+                        siteId,
+                        uniqueId: imgId,
+                        webId,
+                    };
+                    this._layoutPart.properties.webId = webId;
+                    this._layoutPart.properties.siteId = siteId;
+                    this._layoutPart.properties.listId = listId;
+                    this._layoutPart.properties.uniqueId = imgId;
+                    resolve();
+                }).catch(reject);
+            }));
+        }
+
         // we need to update our authors if they have changed
         // if (this._layoutPart.properties.authors === null && this._layoutPart.properties.authorByline.length > 0) {
 
@@ -368,16 +418,25 @@ export class ClientSidePage extends SharePointQueryable {
             promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`)).postCore<IPageData>());
         }
 
-        promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`)).postCore<boolean>({
-            body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
-                AuthorByline: this.json.AuthorByline,
-                BannerImageUrl: this.json.BannerImageUrl,
+        promise = promise.then(_ => {
+
+            const saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
+                AuthorByline: this.json.AuthorByline || [],
+                BannerImageUrl: this.bannerImageUrl,
                 CanvasContent1: this.getCanvasContent1(),
                 LayoutWebpartsContent: this.getLayoutWebpartsContent(),
                 Title: this.title,
                 TopicHeader: this.topicHeader,
-            })),
-        }));
+            });
+
+            const updater = ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
+            updater.configure({
+                headers: {
+                    "if-match": "*",
+                },
+            });
+            return updater.postCore<boolean>({ body: jsS(saveBody) });
+        });
 
         if (publish) {
             promise = promise.then(_ => (ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`)).postCore<boolean>()).then(r => {
@@ -386,6 +445,11 @@ export class ClientSidePage extends SharePointQueryable {
                 }
             });
         }
+
+        promise = promise.then(_ => {
+            // these are post-save actions
+            this._bannerImageDirty = false;
+        });
 
         return promise;
     }
@@ -1325,7 +1389,6 @@ interface ILayoutPartsContent {
         showTopicHeader: boolean;
         showPublishDate: boolean;
         topicHeader: string;
-        authorByline: string[];
         authors: {
             id: string,
             email: string;
