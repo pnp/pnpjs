@@ -163,6 +163,15 @@ export class SPRest {
     }
 
     /**
+     * Gets the Web instance representing the tenant app catalog web
+     */
+    public getTenantAppCatalogWeb(): Promise<Web> {
+        return this.create(Web, "_api/SP_TenantSettings_Current").get<{ CorporateCatalogUrl: string }>().then(r => {
+            return (new Web(r.CorporateCatalogUrl)).configure(this._options);
+        });
+    }
+
+    /**
      * Handles creating and configuring the objects returned from this class
      * 
      * @param fm The factory method used to create the instance
