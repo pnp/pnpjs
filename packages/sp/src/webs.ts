@@ -625,8 +625,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * When true, the cache is refreshed with the latest updates and then returned.
      * Use this if you just made changes and need to see those changes right away.
      */
-    public hubSiteData(forceRefresh = false): Promise<IHubSiteData> {
-        return this.clone(Web, `hubSiteData(${forceRefresh})`).get();
+    public async hubSiteData(forceRefresh = false): Promise<IHubSiteData> {
+        return this.clone(Web, `hubSiteData(${forceRefresh})`).get().then(r => JSON.parse(r));
     }
 
     /**
