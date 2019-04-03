@@ -1,8 +1,8 @@
 import { Logger, LogLevel } from "@pnp/logging";
 import { sp } from "@pnp/sp";
-import { SPFetchClient, SPOAuthEnv } from "@pnp/nodejs";
+import { SPFetchClient, SPOAuthEnv /*, setProxyUrl*/ } from "@pnp/nodejs";
 
-declare var process: { exit(code?: number): void };
+declare var process: { env: any, exit(code?: number): void };
 
 export async function Example(settings: any) {
 
@@ -10,6 +10,13 @@ export async function Example(settings: any) {
     sp.setup({
         sp: {
             fetchClientFactory: () => {
+                // UNSAFE - USE NODE_TLS_REJECT_UNAUTHORIZED FOR TESTING ONLY
+                // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+                // you can set a proxy to examine traffic or for use in a corp environment
+                // this example users fiddler
+                // setProxyUrl("http://127.0.0.1:8888");
+
                 return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
             },
         },
