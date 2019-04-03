@@ -42,6 +42,8 @@ export * from "./invitations";
 
 export * from "./subscriptions";
 
+export * from "./people";
+
 export * from "./sites";
 
 export * from "./insights";
