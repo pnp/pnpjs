@@ -44,6 +44,8 @@ export * from "./subscriptions";
 
 export * from "./security";
 
+export * from "./people";
+
 export * from "./sites";
 
 export * from "./insights";

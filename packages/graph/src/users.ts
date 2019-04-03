@@ -11,6 +11,8 @@ import {
 } from "@microsoft/microsoft-graph-types";
 import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
+import { People } from "./people";
+
 import { InsightsMethods, Insights } from "./insights";
 
 /**
@@ -175,6 +177,13 @@ export class User extends GraphQueryableInstance<IUser> {
         return this.clone(User, "sendMail").postCore({
             body: jsS(message),
         });
+    }
+
+    /**
+    * People ordered by their relevance to the user
+    */
+    public get people(): People {
+        return new People(this);
     }
 
     /**
