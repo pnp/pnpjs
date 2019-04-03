@@ -6,6 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "adal-node": "0.1.28",
+    "https-proxy-agent": "2.2.1",
     "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
     "tslib": "1.9.3"

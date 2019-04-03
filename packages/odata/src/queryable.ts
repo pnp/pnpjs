@@ -302,7 +302,6 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
 
         if (objectDefinedNotNull(batch)) {
             this._batch = batch;
-            this._batchDependency = batch.addDependency();
         }
 
         return this;
@@ -344,6 +343,15 @@ export abstract class ODataQueryable<BatchType extends ODataBatch, GetType = any
 
     protected putCore<T = any>(options: FetchOptions = {}, parser: ODataParser<T> = new ODataDefaultParser()): Promise<T> {
         return super.putCore<T>(options, parser);
+    }
+
+    protected reqImpl<T>(method: string, options: FetchOptions = {}, parser: ODataParser<T>): Promise<T> {
+
+        if (this.hasBatch) {
+            this._batchDependency = this.addBatchDependency();
+        }
+
+        return super.reqImpl(method, options, parser);
     }
 
     /**

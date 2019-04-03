@@ -1,7 +1,6 @@
-declare var require: (path: string) => any;
 import { HttpClientImpl } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-const nodeFetch = require("node-fetch").default;
+import { fetch } from "./fetch";
 
 /**
  * Payload from transient errors
@@ -34,7 +33,7 @@ export class NodeFetchClient implements HttpClientImpl {
             try {
 
                 // Try to make the request...
-                return await nodeFetch(url, options || {});
+                return await fetch(url, options || {});
 
             } catch (err) {
 
@@ -55,10 +54,10 @@ export class NodeFetchClient implements HttpClientImpl {
                     if (this.shouldRetry(retry)) {
                         await this.delay(retry.retryInterval);
                         return await wrapper(retry);
-                    } else { // max amount of retries reached, so throw the error
-                        throw err;
                     }
                 }
+
+                throw err;
             }
         };
 
