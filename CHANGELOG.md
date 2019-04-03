@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+- @pnp/graph: Added support for people queries ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/572)]
+- @pnp/graph: Added support for security APIs & related docs ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/573)]
+- @pnp/sp: Expose ability to get tenant app catalog web [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/nodejs: Added ability to use proxy with nodejs [[PR](https://github.com/pnp/pnpjs/pull/581)]
+
+### Fixed
+
+- @pnp/sp: Fixed issue with batches with internal requests [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/sp: Fixed return data parsing for HubSiteData method [[PR](https://github.com/pnp/pnpjs/pull/581)]
+
 ## 1.3.1 - 2019-21-03
 
 ### Added
