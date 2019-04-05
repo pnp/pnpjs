@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - @pnp/sp: Fixed issue with batches with internal requests [[PR](https://github.com/pnp/pnpjs/pull/581)]
 - @pnp/sp: Fixed return data parsing for HubSiteData method [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/sp: Fixed issue with setting banner image on client side pages [[PR](https://github.com/pnp/pnpjs/pull/581)]
 
 ## 1.3.1 - 2019-21-03
 
