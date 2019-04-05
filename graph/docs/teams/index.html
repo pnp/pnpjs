@@ -1886,8 +1886,7 @@ you can add, update and delete items in Teams.</p>
 
 
 <h2 id="get-teams-by-id">Get Teams by Id<a class="headerlink" href="#get-teams-by-id" title="Permanent link">&para;</a></h2>
-<p>Using the planner.plans.getById() you can get a specific Plan.
-Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
+<p>Using the teams.getById() you can get a specific Team.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">team</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>

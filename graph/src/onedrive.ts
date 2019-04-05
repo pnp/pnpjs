@@ -1,5 +1,5 @@
 import { GraphQueryableInstance, GraphQueryableCollection, defaultPath } from "./graphqueryable";
-import { DriveItem as IDriveItem, Drive as IDrive } from "@microsoft/microsoft-graph-types";
+import { Drive as IDrive } from "@microsoft/microsoft-graph-types";
 import { jsS, TypedHash, extend } from "@pnp/common";
 
 export interface IDriveItemsMethods {
@@ -88,7 +88,7 @@ export class DriveItems extends GraphQueryableCollection implements IDriveItemsM
  * Describes a Drive Item instance
  *
  */
-export class DriveItem extends GraphQueryableInstance<IDriveItem> {
+export class DriveItem extends GraphQueryableInstance<any> {
 
     public get children(): Children {
         return new Children(this);
@@ -150,7 +150,7 @@ export class Children extends GraphQueryableCollection {
     * @param name The name of the Drive Item.
     * @param properties Type of Drive Item to create.
     * */
-    public add(name: string, driveItemType: IDriveItem): Promise<IDriveItemAddResult> {
+    public add(name: string, driveItemType: any): Promise<IDriveItemAddResult> {
 
         const postBody = extend({
             name: name,
@@ -183,6 +183,6 @@ export class DriveSearch extends GraphQueryableInstance { }
 export class Thumbnails extends GraphQueryableInstance { }
 
 export interface IDriveItemAddResult {
-    data: IDriveItem;
+    data: any;
     driveItem: DriveItem;
 }

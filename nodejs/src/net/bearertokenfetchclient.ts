@@ -1,7 +1,5 @@
-declare var require: (path: string) => any;
-
 import { HttpClientImpl, mergeHeaders, FetchOptions } from "@pnp/common";
-const nodeFetch = require("node-fetch").default;
+import { fetch } from "./fetch";
 
 /**
  * Makes requests using the fetch API adding the supplied token to the Authorization header
@@ -28,6 +26,6 @@ export class BearerTokenFetchClient implements HttpClientImpl {
 
         options.headers = headers;
 
-        return nodeFetch(url, options);
+        return fetch(url, options);
     }
 }
