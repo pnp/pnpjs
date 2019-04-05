@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.3.2 - 2019-05-04
+
 ### Added
 
 - @pnp/graph: Added support for people queries ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/572)]
