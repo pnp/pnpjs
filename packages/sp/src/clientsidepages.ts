@@ -454,18 +454,27 @@ export class ClientSidePage extends SharePointQueryable {
         return promise;
     }
 
-    public discardPageCheckout(): Promise<void> {
+    public async discardPageCheckout(): Promise<void> {
 
         if (this.json.Id === null) {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        return ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
+        const d = await ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`).postCore<IPageData>({
             body: jsS(metadata("SP.Publishing.SitePage")),
-        }).then(d => {
-            this.fromJSON(d);
         });
+
+        this.fromJSON(d);
     }
+
+    public async promoteToNews(): Promise<boolean> {
+        return this.promoteNewsImpl("promoteToNews");
+    }
+
+    // API is currently broken on server side
+    // public async demoteFromNews(): Promise<boolean> {
+    //     return this.promoteNewsImpl("demoteFromNews");
+    // }
 
     /**
      * Enables comments on this page
@@ -696,6 +705,19 @@ export class ClientSidePage extends SharePointQueryable {
             const updater = new Item(i, `SetCommentsDisabled(${!on})`);
             return updater.update({});
         });
+    }
+
+    private async promoteNewsImpl(method: string): Promise<boolean> {
+
+        if (this.json.Id === null) {
+            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
+        }
+
+        const d = await ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`).postCore<boolean>({
+            body: jsS(metadata("SP.Publishing.SitePage")),
+        });
+
+        return d;
     }
 
     /**
