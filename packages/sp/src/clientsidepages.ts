@@ -1,6 +1,6 @@
 import { File } from "./files";
 import { Item, ItemUpdateResult } from "./items";
-import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine } from "@pnp/common";
+import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { SharePointQueryable } from "./sharepointqueryable";
 import { metadata } from "./utils/metadata";
 import { List } from "./lists";
@@ -328,7 +328,13 @@ export class ClientSidePage extends SharePointQueryable {
             // we have to do these gymnastics to set the banner image url
             promise = promise.then(_ => new Promise((resolve, reject) => {
 
-                const origImgUrl = this.json.BannerImageUrl;
+                let origImgUrl = this.json.BannerImageUrl;
+
+                if (isUrlAbsolute(origImgUrl)) {
+                    // do our best to make this a server relative url by removing the x.sharepoint.com part
+                    origImgUrl = origImgUrl.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
+                }
+
                 const site = new Site(extractWebUrl(this.toUrl()));
                 const web = new Web(extractWebUrl(this.toUrl()));
                 const imgFile = web.getFileByServerRelativePath(origImgUrl);
