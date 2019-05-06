@@ -1,0 +1,28 @@
+{
+    "extends": "../tsconfig.es5.json",
+    "compilerOptions": {
+        "types": [
+            "sharepoint"
+        ]
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp/tsconfig.es5.json"
+        }
+    ]
+}

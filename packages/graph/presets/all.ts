@@ -1,0 +1,33 @@
+import "../src/attachments";
+import "../src/calendars";
+import "../src/contacts";
+import "../src/conversations";
+import "../src/directory-objects";
+import "../src/groups";
+import "../src/members";
+import "../src/messages";
+import "../src/onedrive";
+import "../src/onenote";
+import "../src/photos";
+import "../src/planner";
+import "../src/subscriptions";
+import "../src/teams";
+import "../src/users";
+
+export * from "../src/attachments";
+export * from "../src/calendars";
+export * from "../src/contacts";
+export * from "../src/conversations";
+export * from "../src/directory-objects";
+export * from "../src/groups";
+export * from "../src/members";
+export * from "../src/messages";
+export * from "../src/onedrive";
+export * from "../src/onenote";
+export * from "../src/photos";
+export * from "../src/planner";
+export * from "../src/subscriptions";
+export * from "../src/teams";
+export * from "../src/users";
+
+export { graph, GraphRest } from "../src/rest";

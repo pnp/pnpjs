@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": "../",
+        "outDir": "../build/testing",
+        "declaration": false,
+        "downlevelIteration": true,
+        "types": [
+            "chai",
+            "chai-as-promised",
+            "node",
+            "mocha",
+            "sharepoint"
+        ],
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "paths": {
+            "@pnp/*": [
+                "../packages/*"
+            ]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "importHelpers": true
+    },
+    "include": [
+        "./**/*.ts"
+    ]
+}

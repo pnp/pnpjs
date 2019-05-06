@@ -1,0 +1,40 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/debug/launch/main.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": "build",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/build/debugging/**/*.js"
+			]
+		},
+		{
+			"name": "Debug Tests",
+			"type": "node",
+			"request": "attach",
+			"stopOnEntry": false,
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": "gulp-test",
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/build/testing/**/*.js"
+			]
+		}
+	]
+}

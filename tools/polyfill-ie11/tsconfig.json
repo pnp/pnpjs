@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es2015",
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "./dist",
+        "declaration": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "types": [
+            "core-js"
+        ],
+        "lib": [
+            "dom",
+            "es2016"
+        ]
+    },
+    "files": [
+        "./index.ts",
+        "./searchquerybuilder.ts"
+    ]
+}

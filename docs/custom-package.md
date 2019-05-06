@@ -1,0 +1,1 @@
+described how to create your own webpacked pnpjs package that includes just the pieces you need.

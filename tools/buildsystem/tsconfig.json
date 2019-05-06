@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "../../build/tools/buildsystem",
+        "declaration": true,
+        "declarationMap": true,
+        "types": [
+            "node"
+        ],
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node"
+    },
+    "include": [
+        "./index.ts", 
+        "../node-utils/getSubDirectorieNames.js", 
+        "./**/*.ts"
+    ]
+}

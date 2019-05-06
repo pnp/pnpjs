@@ -1,0 +1,37 @@
+{
+    "extends": "../tsconfig.es5.json",
+    "compilerOptions": {
+        "strictNullChecks": false
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts",
+        "../sp-clientsvc/index.ts",
+        "../sp-clientsvc/src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.es5.json"
+        },
+        {
+            "path": "../logging/tsconfig.es5.json"
+        },
+        {
+            "path": "../odata/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp-clientsvc/tsconfig.es5.json"
+        }
+    ]
+}

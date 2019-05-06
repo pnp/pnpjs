@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.es5.json",
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.es5.json"
+        },
+        {
+            "path": "../logging/tsconfig.es5.json"
+        }
+    ]
+}

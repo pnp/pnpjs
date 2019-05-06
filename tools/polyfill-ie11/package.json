@@ -1,0 +1,39 @@
+{
+  "name": "@pnp/polyfill-ie11",
+  "version": "1.0.1",
+  "description": "pnp - provides required polyfills for ie11",
+  "main": "./dist/index.js",
+  "types": "./dist",
+  "scripts": {
+    "bundle": "webpack"
+  },
+  "peerDependencies": {
+    "@pnp/logging": "*",
+    "@pnp/common": "*",
+    "@pnp/odata": "*",
+    "@pnp/sp": "*"
+  },
+  "dependencies": {    
+    "@types/core-js": "2.5.0",
+    "core-js": "2.6.2",
+    "es6-map": "0.1.5",
+    "whatwg-fetch": "3.0.0"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnpjs/issues"
+  },
+  "homepage": "https://github.com/pnp/pnpjs",
+  "repository": {
+    "type": "git",
+    "url": "git:github.com/pnp/pnpjs"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "5.2.1",
+    "typescript": "^3.2.2",
+    "webpack": "4.28.4"
+  }
+}

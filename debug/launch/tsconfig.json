@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": "../../",
+        "outDir": "../../build/debugging",
+        "declaration": true,
+        "declarationMap": true,
+        "types": [
+            "sharepoint"
+        ],
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "paths": {
+            "@pnp/*": [
+                "../../packages/*"
+            ]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "inlineSources": true,
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "strictNullChecks": false
+    },
+    "files": [
+        "./main.ts"
+    ]
+}

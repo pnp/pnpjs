@@ -1,0 +1,25 @@
+{
+  "name": "@pnp/buildsystem",
+  "private": true,
+  "version": "1.0.0",
+  "description": "pnp - the build system used within the @pnp repo",
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {},
+  "peerDependencies": {},
+  "engines": {
+    "node": "^8.9.4"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnpjs/issues"
+  },
+  "homepage": "https://github.com/pnp/pnpjs",
+  "repository": {
+    "type": "git",
+    "url": "git:github.com/pnp/pnpjs"
+  }
+}
