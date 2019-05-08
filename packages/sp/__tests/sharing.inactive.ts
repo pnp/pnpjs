@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { combine } from "@pnp/common";
 import { File, Folder, Item, SharingRole, Web } from "../";
 

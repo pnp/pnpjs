@@ -1,9 +1,8 @@
 declare var require: (s: string) => any;
 const path = require("path");
-const log = require("fancy-log");
 
 import { exec } from "child_process";
-import { BuildSchema } from "./schema";
+import { BuildSchema } from "../../config";
 
 const tscPath = path.resolve("./node_modules/.bin/tsc");
 

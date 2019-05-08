@@ -1,7 +1,7 @@
 import { dateAdd } from "@pnp/common";
 import { expect } from "chai";
 import { ChangedItemType, taxonomy } from "..";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 
 describe("TermStore", () => {
 

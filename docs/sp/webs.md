@@ -7,8 +7,8 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 [![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/lib/webs";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/lib/webs";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";|
 |Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presents/all";|
 |Preset: Core|import { sp, Webs, IWebs } from "@pnp/sp/presents/core";|
 
@@ -49,8 +49,8 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w:
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Web, IWeb } from "@pnp/sp/lib/webs";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/lib/webs";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Web, IWeb } from "@pnp/sp/src/webs";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";|
 |Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presents/all";|
 |Preset: Core|import { sp, Web, IWeb } from "@pnp/sp/presents/core";|
 
@@ -62,7 +62,7 @@ There are several ways to access a web instance, each of these methods is equive
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/lib/webs";
+import "@pnp/sp/src/webs";
 
 const r = await sp.web();
 ```
@@ -86,7 +86,7 @@ const r = await sp.web();
 **Create a web instance using the factory function**
 
 ```TypeScript
-import { Web } from "@pnp/sp/lib/web";
+import { Web } from "@pnp/sp/src/web";
 
 const web = Web("https://something.sharepoint.com/sites/dev");
 const r = await web();
@@ -118,7 +118,7 @@ const props3 = await web.select("Title")<{ Title: string }>();
 Get the data and IWeb instance for the parent web for the given web instance
 
 ```TypeScript
-import { IOpenWebByIdResult } from "@pnp/sp/lib/sites";
+import { IOpenWebByIdResult } from "@pnp/sp/src/sites";
 const web: IOpenWebByIdResult = web.getParentWeb();
 ```
 
@@ -174,7 +174,7 @@ const result = await web.update({
 });
 
 // a project implementation could wrap the update to provide type information for your expected fields:
-import { IWebUpdateResult } from "@pnp/sp/lib/webs";
+import { IWebUpdateResult } from "@pnp/sp/src/webs";
 
 interface IWebUpdateProps {
     Title: string;
@@ -269,8 +269,8 @@ const icon32FileName = await web.mapToIcon("test.docx", 1);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/lib/appcatalog";
-import { IStorageEntity } from "@pnp/sp/lib/webs";
+import "@pnp/sp/src/appcatalog";
+import { IStorageEntity } from "@pnp/sp/src/webs";
 
 // needs to be unique, GUIDs are great
 const key = "my-storage-key";
@@ -304,8 +304,8 @@ await tenantAppCatalogWeb.removeStorageEntity(key);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/appcatalog";|
-|Selective 2|import "@pnp/sp/lib/appcatalog/web";|
+|Selective 1|import "@pnp/sp/src/appcatalog";|
+|Selective 2|import "@pnp/sp/src/appcatalog/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### getAppCatalog
@@ -313,7 +313,7 @@ await tenantAppCatalogWeb.removeStorageEntity(key);
 Returns this web as an IAppCatalog instance or creates a new IAppCatalog instance from the provided url.
 
 ```TypeScript
-import { IApp } from "@pnp/sp/lib/appcatalog";
+import { IApp } from "@pnp/sp/src/appcatalog";
 
 const appWeb = web.getAppCatalog();
 // appWeb url === web url
@@ -328,8 +328,8 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/client-side-pages";|
-|Selective 2|import "@pnp/sp/lib/client-side-pages/web";|
+|Selective 1|import "@pnp/sp/src/client-side-pages";|
+|Selective 2|import "@pnp/sp/src/client-side-pages/web";|
 |Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presents/all";|
 
 # TODO (need to update code to latest from 1.x branch)
@@ -339,8 +339,8 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/content-types";|
-|Selective 2|import "@pnp/sp/lib/content-types/web";|
+|Selective 1|import "@pnp/sp/src/content-types";|
+|Selective 2|import "@pnp/sp/src/content-types/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### contentTypes
@@ -358,8 +358,8 @@ const cts2 = await web.contentTypes.select("Name")();
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/features";|
-|Selective 2|import "@pnp/sp/lib/features/web";|
+|Selective 1|import "@pnp/sp/src/features";|
+|Selective 2|import "@pnp/sp/src/features/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### features
@@ -374,8 +374,8 @@ const features = await web.features();
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/fields";|
-|Selective 2|import "@pnp/sp/lib/fields/web";|
+|Selective 1|import "@pnp/sp/src/fields";|
+|Selective 2|import "@pnp/sp/src/fields/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### fields
@@ -390,8 +390,8 @@ const fields = await web.fields();
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/files";|
-|Selective 2|import "@pnp/sp/lib/files/web";|
+|Selective 1|import "@pnp/sp/src/files";|
+|Selective 2|import "@pnp/sp/src/files/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### getFileByServerRelativeUrl
@@ -399,7 +399,7 @@ const fields = await web.fields();
 Gets a file by server relative url
 
 ```TypeScript
-import { IFile } from "@pnp/sp/lib/files";
+import { IFile } from "@pnp/sp/src/files";
 
 const file: IFile = web.getFileByServerRelativeUrl("/sites/dev/library/myfile.docx");
 ```
@@ -409,7 +409,7 @@ const file: IFile = web.getFileByServerRelativeUrl("/sites/dev/library/myfile.do
 Gets a file by server relative url if your file name contains # and % characters
 
 ```TypeScript
-import { IFile } from "@pnp/sp/lib/files";
+import { IFile } from "@pnp/sp/src/files";
 
 const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # file%.docx");
 ```
@@ -418,8 +418,8 @@ const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # fil
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/folders";|
-|Selective 2|import "@pnp/sp/lib/folders/web";|
+|Selective 1|import "@pnp/sp/src/folders";|
+|Selective 2|import "@pnp/sp/src/folders/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### folders
@@ -449,7 +449,7 @@ const folder = await web.rootFolder();
 Gets a folder by server relative url
 
 ```TypeScript
-import { IFolder } from "@pnp/sp/lib/folders";
+import { IFolder } from "@pnp/sp/src/folders";
 
 const folder: IFolder = web.getFolderByServerRelativeUrl("/sites/dev/library");
 ```
@@ -459,7 +459,7 @@ const folder: IFolder = web.getFolderByServerRelativeUrl("/sites/dev/library");
 Gets a folder by server relative url if your folder name contains # and % characters
 
 ```TypeScript
-import { IFolder } from "@pnp/sp/lib/folders";
+import { IFolder } from "@pnp/sp/src/folders";
 
 const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my # folder%/");
 ```
@@ -468,8 +468,8 @@ const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/lib/hubsites";|
-|Selective 2|import "@pnp/sp/lib/hubsites/web";|
+|Selective 1|import "@pnp/sp/src/hubsites";|
+|Selective 2|import "@pnp/sp/src/hubsites/web";|
 |Preset: All|import { sp } from "@pnp/sp/presents/all";|
 
 ### hubSiteData
@@ -477,7 +477,7 @@ const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my
 Gets hub site data for the current web
 
 ```TypeScript
-import { IHubSiteWebData } from "@pnp/sp/lib/hubsites";
+import { IHubSiteWebData } from "@pnp/sp/src/hubsites";
 
 // get the data and force a refresh
 const data: IHubSiteWebData = await web.hubSiteData(true);
@@ -495,8 +495,8 @@ await web.syncHubSiteTheme();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/lists";
-Selective 2|import "@pnp/sp/lib/lists/web";
+Selective 1|import "@pnp/sp/src/lists";
+Selective 2|import "@pnp/sp/src/lists/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 Preset: Core|import { sp } from "@pnp/sp/presents/core";
 
@@ -505,7 +505,7 @@ Preset: Core|import { sp } from "@pnp/sp/presents/core";
 Gets the collection of all lists that are contained in the Web site
 
 ```TypeScript
-import { ILists } from "@pnp/sp/lib/lists";
+import { ILists } from "@pnp/sp/src/lists";
 
 const lists: ILists = web.lists;
 
@@ -521,7 +521,7 @@ const data2 = await web.lists.top(3).orderBy("LastItemModifiedDate")();
 Gets the UserInfo list of the site collection that contains the Web site
 
 ```TypeScript
-import { IList } from "@pnp/sp/lib/lists";
+import { IList } from "@pnp/sp/src/lists";
 
 const list: IList = web.siteUserInfoList;
 
@@ -536,7 +536,7 @@ const items = await list.items.top(2)();
 Get a reference the default documents library of a web
 
 ```TypeScript
-import { IList } from "@pnp/sp/lib/lists";
+import { IList } from "@pnp/sp/src/lists";
 
 const list: IList = web.defaultDocumentLibrary;
 ```
@@ -546,7 +546,7 @@ const list: IList = web.defaultDocumentLibrary;
 Gets the collection of all list definitions and list templates that are available
 
 ```TypeScript
-import { IList } from "@pnp/sp/lib/lists";
+import { IList } from "@pnp/sp/src/lists";
 
 const templates = await web.customListTemplates();
 
@@ -559,7 +559,7 @@ const templates2 = await web.customListTemplates.select("Title")();
 Gets a list by server relative url (list's root folder)
 
 ```TypeScript
-import { IList } from "@pnp/sp/lib/lists";
+import { IList } from "@pnp/sp/src/lists";
 
 const list: IList = web.getList("/sites/dev/lists/test");
 
@@ -582,7 +582,7 @@ DesignCatalog | 124
 AppDataCatalog | 125
 
 ```TypeScript
-import { IList } from "@pnp/sp/lib/lists";
+import { IList } from "@pnp/sp/src/lists";
 
 const templateCatalog: IList = await web.getCatalog(111);
 
@@ -593,8 +593,8 @@ const themeCatalog: IList = await web.getCatalog(123);
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/navigation";
-Selective 2|import "@pnp/sp/lib/navigation/web";
+Selective 1|import "@pnp/sp/src/navigation";
+Selective 2|import "@pnp/sp/src/navigation/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ### navigation
@@ -602,7 +602,7 @@ Preset: All|import { sp } from "@pnp/sp/presents/all";
 Gets a navigation object that represents navigation on the Web site, including the Quick Launch area and the top navigation bar
 
 ```TypeScript
-import { INavigation } from "@pnp/sp/lib/navigation";
+import { INavigation } from "@pnp/sp/src/navigation";
 
 const nav: INavigation = web.navigation;
 
@@ -613,12 +613,12 @@ const navData = await nav();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/regional-settings";
-Selective 2|import "@pnp/sp/lib/regional-settings/web";
+Selective 1|import "@pnp/sp/src/regional-settings";
+Selective 2|import "@pnp/sp/src/regional-settings/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ```TypeScript
-import { IRegionalSettings } from "@pnp/sp/lib/navigation";
+import { IRegionalSettings } from "@pnp/sp/src/navigation";
 
 const settings: IRegionalSettings = web.regionalSettings;
 
@@ -629,12 +629,12 @@ const settingsData = await settings();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/related-items";
-Selective 2|import "@pnp/sp/lib/related-items/web";
+Selective 1|import "@pnp/sp/src/related-items";
+Selective 2|import "@pnp/sp/src/related-items/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ```TypeScript
-import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/lib/related-items";
+import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/src/related-items";
 
 const manager: IRelatedItemManager = web.relatedItems;
 
@@ -653,8 +653,8 @@ const data: IRelatedItem[] = await manager.getRelatedItems("{list name}", 4);
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/site-groups";
-Selective 2|import "@pnp/sp/lib/site-groups/web";
+Selective 1|import "@pnp/sp/src/site-groups";
+Selective 2|import "@pnp/sp/src/site-groups/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ### siteGroups
@@ -718,8 +718,8 @@ await web.createDefaultAssociatedGroups("Contoso", "{first owner login}", false,
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/site-users";
-Selective 2|import "@pnp/sp/lib/site-users/web";
+Selective 1|import "@pnp/sp/src/site-users";
+Selective 2|import "@pnp/sp/src/site-users/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ### siteUsers
@@ -750,7 +750,7 @@ const user2 = await web.currentUser.select("LoginName")();
 Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web
 
 ```TypeScript
-import { IWebEnsureUserResult } from "@pnp/sp/lib/site-users/";
+import { IWebEnsureUserResult } from "@pnp/sp/src/site-users/";
 
 const result: IWebEnsureUserResult = await web.ensureUser("i:0#.f|membership|user@domain.onmicrosoft.com");
 ```
@@ -760,7 +760,7 @@ const result: IWebEnsureUserResult = await web.ensureUser("i:0#.f|membership|use
 Returns the user corresponding to the specified member identifier for the current web
 
 ```TypeScript
-import { ISiteUser } from "@pnp/sp/lib/site-users/";
+import { ISiteUser } from "@pnp/sp/src/site-users/";
 
 const user: ISiteUser = web.getUserById(23);
 
@@ -773,8 +773,8 @@ const userData2 = await user.select("LoginName")();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/lib/user-custom-actions";
-Selective 2|import "@pnp/sp/lib/user-custom-actions/web";
+Selective 1|import "@pnp/sp/src/user-custom-actions";
+Selective 2|import "@pnp/sp/src/user-custom-actions/web";
 Preset: All|import { sp } from "@pnp/sp/presents/all";
 
 ## userCustomActions
@@ -782,7 +782,7 @@ Preset: All|import { sp } from "@pnp/sp/presents/all";
 Gets a newly refreshed collection of the SPWeb's SPUserCustomActionCollection
 
 ```TypeScript
-import { IUserCustomActions } from "@pnp/sp/lib/user-custom-actions";
+import { IUserCustomActions } from "@pnp/sp/src/user-custom-actions";
 
 const actions: IUserCustomActions = web.userCustomActions;
 

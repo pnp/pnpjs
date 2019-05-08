@@ -2,11 +2,11 @@
 import { getGUID, combine, extend } from "@pnp/common";
 import { graph } from "@pnp/graph";
 import { AdalFetchClient, SPFetchClient } from "@pnp/nodejs";
-import { sp } from "@pnp/sp";
-// import { Web } from "@pnp/sp/src/webs";
+import { sp } from "@pnp/sp/presets/all";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
+import * as findup from "findup-sync";
 
 chai.use(chaiAsPromised);
 
@@ -87,7 +87,7 @@ switch (mode) {
         break;
     default:
 
-        settings = require("../../../settings");
+        settings = require(findup("settings.js"));
         if (skipWeb) {
             settings.testing.enableWebTests = false;
         }

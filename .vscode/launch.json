@@ -30,11 +30,37 @@
 			"request": "attach",
 			"stopOnEntry": false,
 			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "gulp-test",
+			"preLaunchTask": "npm-test",
 			"sourceMaps": true,
 			"outFiles": [
 				"${workspaceRoot}/build/testing/**/*.js"
 			]
-		}
+		},
+		{
+			"name": "Debug Build System",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
+			"stopOnEntry": false,
+			"args": [
+				"-n",
+				"package",
+			],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": "build-buildsystem",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/tools/buildsystem/**/*.js"
+			]
+		},
 	]
 }

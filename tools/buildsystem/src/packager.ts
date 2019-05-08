@@ -2,7 +2,7 @@ declare var require: (s: string) => any;
 const colors = require("ansi-colors");
 const log = require("fancy-log");
 
-import { PackageSchema, PackageTask } from "./tasks/package/schema";
+import { PackageSchema, PackageTask } from "./config";
 
 /**
  * Engine function to process build files

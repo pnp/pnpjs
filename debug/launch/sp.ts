@@ -1,5 +1,5 @@
 // import { Logger, LogLevel } from "../../packages/logging";
-import { sp } from "@pnp/sp/presets/legacy";
+import { sp } from "@pnp/sp/presets/all";
 // import "@pnp/sp/src/webs";
 // import "@pnp/sp/src/features/web";
 // import { sp } from "@pnp/sp";
@@ -18,7 +18,7 @@ export async function Example(settings: any) {
         },
     });
 
-    const y = await sp.web.features();
+    const y = await sp.web();
 
     // const y = await sp.site.features();
 

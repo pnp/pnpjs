@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { taxonomy } from "..";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 
 describe("Taxonomy", () => {
 

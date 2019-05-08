@@ -1,6 +1,6 @@
 // this file tests that we are actually producing errors where we should be producing errors
 import { expect } from "chai";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { sp } from "../";
 
 describe("Errors", () => {

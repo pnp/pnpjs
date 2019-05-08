@@ -14,7 +14,7 @@ import "@pnp/sp/src/appcatalog";
 import "@pnp/sp/src/related-items/web";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
-import { IInvokableTest } from "types";
+import { IInvokableTest } from "../types";
 
 describe("Webs", function () {
 

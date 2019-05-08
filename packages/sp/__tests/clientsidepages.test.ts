@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { sp } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { getRandomString, combine } from "@pnp/common";
 import {
     ClientSideText,

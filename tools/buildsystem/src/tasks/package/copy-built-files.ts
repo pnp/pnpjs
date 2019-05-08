@@ -1,10 +1,16 @@
 declare var require: (s: string) => any;
 const pump = require("pump");
 import { src, dest } from "gulp";
-import { PackageSchema } from "./schema";
+import { PackageSchema } from "../../config";
 const path = require("path");
 
-export function copyDocs(version: string, config: PackageSchema) {
+interface TSConfig {
+    compilerOptions: {
+        outDir: string;
+    };
+}
+
+export function copyBuiltFiles(_version: string, config: PackageSchema) {
 
     const promises: Promise<void>[] = [];
 
@@ -12,15 +18,18 @@ export function copyDocs(version: string, config: PackageSchema) {
 
         const packageTarget = config.packageTargets[i];
 
+        // read the outdir from the packagetarget
+        const buildConfig: TSConfig = require(packageTarget.packageTarget);
         const sourceRoot = path.resolve(path.dirname(packageTarget.packageTarget));
+        const buildOutDir = path.resolve(sourceRoot, buildConfig.compilerOptions.outDir);
 
         promises.push(new Promise((resolve, reject) => {
 
             pump([
-                src(["./**/*.md"], {
-                    cwd: sourceRoot,
+                src(["./**/*.d.ts", "./**/*.js"], {
+                    cwd: buildOutDir,
                 }),
-                dest(path.resolve(packageTarget.outDir), <any>{
+                dest(path.resolve(packageTarget.outDir), {
                     overwrite: true,
                 }),
             ], (err: (Error | null)) => {

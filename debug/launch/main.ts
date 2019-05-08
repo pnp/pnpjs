@@ -1,5 +1,4 @@
-declare var require: (s: string) => any;
-
+import * as findup from "findup-sync";
 import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
 // importing the example debug scenario and running it
 // adding your debugging to other files and importing them will keep them out of git
@@ -7,7 +6,7 @@ import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./2.0/sp";
+import { Example } from "./sp";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -15,15 +14,18 @@ import { Example } from "./2.0/sp";
 // if you don't have a settings file defined this will error
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
-const settings = require("../../../../settings.js");
+import(findup("settings.js")).then(settings => {
 
-// // setup console logger
-Logger.subscribe(new ConsoleListener());
+    // // setup console logger
+    Logger.subscribe(new ConsoleListener());
 
-// change this to LogLevel.Verbose for more details about the request
-Logger.activeLogLevel = LogLevel.Info;
+    // change this to LogLevel.Verbose for more details about the request
+    Logger.activeLogLevel = LogLevel.Info;
 
-Example(settings);
+    Example(settings);
 
-// you can also set break points inside the src folder to examine how things are working
-// within the library while debugging
+    // you can also set break points inside the src folder to examine how things are working
+    // within the library while debugging
+});
+
+
