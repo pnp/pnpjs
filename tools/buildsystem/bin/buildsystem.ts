@@ -8,7 +8,6 @@ import { ConfigCollection, BuildSchema, PackageSchema, PublishSchema } from "../
 import { builder } from "../src/builder";
 import { packager } from "../src/packager";
 import { publisher } from "../src/publisher";
-import "tsconfig-paths/register";
 
 const args = yargs.argv;
 
@@ -44,16 +43,25 @@ BuildSystem.launch({}, async (env: LiftOff.LiftoffEnv) => {
     }
 
     switch (config[0].role) {
+
         case "build":
-            builder(pkg.version, <BuildSchema>config[0]);
+
+            const buildSchema = <BuildSchema>config[0];
+            await builder(pkg.version, buildSchema);
             break;
+
         case "package":
-            packager(pkg.version, <PackageSchema>config[0]);
+
+            await packager(pkg.version, <PackageSchema>config[0]);
             break;
+
         case "publish":
-            publisher(pkg.version, <PublishSchema>config[0]);
+
+            await publisher(pkg.version, <PublishSchema>config[0]);
             break;
+
         default:
+
             throw Error(`Unrecognized role ${config[0].role} in config.`);
     }
 });

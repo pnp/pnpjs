@@ -27,11 +27,11 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - all: updated internals to use await
 - all: interfaces prefixed with "I"
 - odata: an empty request pipeline now throws an error
-- sp & graph: updated clone to use factory
+- sp & graph: updated clone to use factory methods
 - sp: changed signature of createDefaultAssociatedGroups
-- sp: all query string params are escaped now within the library
+- sp: all query string params are escaped within the library
 - tooling: gulp tasks rewritten in TypeScript, updated to latest
-- tooling: build system rewritten
+- tooling: build system rewritten as cli
 
 ### Fixed
 
@@ -44,4 +44,5 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - sp: removed Web.addClientSidePageByPath
 - all: removed bundles from npm packages
 - tooling: removed gulp and replaced tasks with npm scripts
+- all: no longer building es5 code
 

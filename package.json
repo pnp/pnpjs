@@ -48,15 +48,16 @@
     "yargs": "^13.2.2"
   },
   "scripts": {
-    "start": "gulp serve",
+    "start": "npm run serve",
     "test": "nyc mocha",
     "build": "pnpbuild -n build",
     "buildDebug": "pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
-    "pnppublish": "npm run package && pnpbuild -n publish",
-    "pnppublish-beta": "npm run package && pnpbuild -n publish-beta",
+    "pnp-publish": "npm run package && pnpbuild -n publish",
+    "pnp-publish-beta": "npm run package && pnpbuild -n publish-beta",
     "lint": "tslint ./packages/**/*.ts",
-    "clean": "del-cli \"./?(dist|serve|site|build)\""
+    "clean": "del-cli \"./?(dist|serve|site|build)\"",
+    "serve": "ts-node -r tsconfig-paths/register ./tools/serve/serve.ts"
   },
   "repository": {
     "type": "git",

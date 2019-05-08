@@ -30,8 +30,6 @@ export default <ConfigCollection>[
         role: "package",
 
         packageTargets: [{
-            // we only need to package the main tsconfig as we are just using it for references
-            // we have previously built all the things
             outDir: resolve("./dist/packages/"),
             packageTarget: resolve("./packages/tsconfig.json"),
         }],

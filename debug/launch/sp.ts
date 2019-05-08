@@ -18,24 +18,9 @@ export async function Example(settings: any) {
         },
     });
 
-    const y = await sp.web();
+    const d = await sp.web();
 
-    // const y = await sp.site.features();
+    console.log(JSON.stringify(d, null, 2));
 
-    console.log(JSON.stringify(y, null, 2));
-
-    // const u = new getable(Web)(settings.testing.sp.url);
-
-    // // const y = new Web(settings.testing.sp.url);
-
-    // const d = await u();
-
-    // console.log(JSON.stringify(d, null, 2));
-
-    // // @ ts-ignore
-    // const uu = u.features;
-
-    // uu.get().then(r => {
-    //     console.log(JSON.stringify(r, null, 2));
-    // });
+    process.exit();
 }

@@ -6,7 +6,6 @@
 			"type": "node",
 			"request": "launch",
 			"program": "${workspaceRoot}/debug/launch/main.ts",
-			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": "build",
@@ -27,21 +26,17 @@
 		{
 			"name": "Debug Tests",
 			"type": "node",
-			"request": "attach",
-			"stopOnEntry": false,
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "npm-test",
 			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceRoot}/build/testing/**/*.js"
-			]
+			"outFiles": []
 		},
 		{
 			"name": "Debug Build System",
 			"type": "node",
 			"request": "launch",
 			"program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
-			"stopOnEntry": false,
 			"args": [
 				"-n",
 				"package",

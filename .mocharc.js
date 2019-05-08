@@ -59,7 +59,7 @@ const config = {
     "skip-web": yargs.skipWeb,
 };
 
-console.info("generated mocha config:");
+console.info("pnp generated mocha config:");
 console.info(prettyjson.render(config, null, 4, { noColor: true }));
 
 module.exports = config;

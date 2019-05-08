@@ -3,9 +3,10 @@
     "compilerOptions": {
         "target": "es2015",
         "module": "commonjs",
+        "composite": false,
+        "baseUrl": ".",
+        "rootDir": "../../",
         "outDir": "../../build/debugging",
-        "declaration": true,
-        "declarationMap": true,
         "types": [
             "sharepoint"
         ],
@@ -13,6 +14,11 @@
             "es6",
             "dom"
         ],
+        "paths": {
+            "@pnp/*": [
+                "../../packages/*"
+            ]
+        }
     },
     "files": [
         "./main.ts"
