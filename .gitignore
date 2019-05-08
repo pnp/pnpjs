@@ -13,6 +13,7 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage
+.nyc_output
 
 # node-waf configuration
 .lock-wscript
@@ -45,12 +46,3 @@ debug/serve/*
 
 # project settings
 settings.js
-
-bower_components
-
-# we don't use this in the repo
-package-lock.json
-
-# need to include this for bower to work, but leave this ignored as PRs
-# with updates to dist will be disallowed
-dist

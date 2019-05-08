@@ -2,10 +2,7 @@ declare var require: (s: string) => any;
 const fs = require("fs"),
     path = require("path");
 
-// import { src, dest } from "gulp";
-// const pump = require("pump");
-
-import { PackageSchema } from "./schema";
+import { PackageSchema } from "../../config";
 import getSubDirNames from "../../lib/getSubDirectoryNames";
 
 interface TSConfig {
@@ -43,9 +40,7 @@ export function writePackageFiles(version: string, config: PackageSchema) {
             const pkg = require(path.resolve(sourceRoot, builtFolders[j], "package.json"));
 
             pkg.version = version;
-            pkg.main = `./dist/${builtFolders[j]}.es5.umd.js`;
-            pkg.module = `./dist/${builtFolders[j]}.es5.js`;
-            pkg.es2015 = `./dist/${builtFolders[j]}.js`;
+            pkg.main = `./index.js`;
 
             // update our peer dependencies and dependencies placeholder if needed
             for (const key in pkg.peerDependencies) {

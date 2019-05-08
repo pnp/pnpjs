@@ -1,5 +1,5 @@
 declare var require: (s: string) => any;
-import { BuildSchema } from "./schema";
+import { BuildSchema } from "../../config";
 const path = require("path");
 import * as replace from "replace-in-file";
 
@@ -14,7 +14,7 @@ interface TSConfig {
  * 
  * @param ctx The build context
  */
-export function replaceDebug(version: string, config: BuildSchema) {
+export async function replaceDebug(version: string, config: BuildSchema): Promise<void> {
 
     const optionsVersion = {
         files: [],
@@ -50,7 +50,7 @@ export function replaceDebug(version: string, config: BuildSchema) {
         }));
     }
 
-    return Promise.all([
+    await Promise.all([
         replace(optionsVersion),
         ...requireOptionsCollection.map(c => replace(c)),
     ]).catch(e => console.error);

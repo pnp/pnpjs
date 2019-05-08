@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Web } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 
 describe("Batching", () => {
 

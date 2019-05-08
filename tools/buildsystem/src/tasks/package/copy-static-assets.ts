@@ -1,6 +1,7 @@
 declare var require: (s: string) => any;
-import { PackageSchema } from "./schema";
+import { PackageSchema } from "../../config";
 import getSubDirNames from "../../lib/getSubDirectoryNames";
+import * as findup from "findup-sync";
 const path = require("path"),
     fs = require("fs");
 
@@ -12,7 +13,7 @@ interface TSConfig {
 
 export function copyStaticAssets(version: string, config: PackageSchema) {
 
-    const projectRoot = path.resolve(__dirname, "../../../../../..");
+    const projectRoot = path.dirname(path.resolve(findup("package.json")));
 
     const licensePath = path.resolve(projectRoot, "LICENSE");
     const readmePath = path.resolve(projectRoot, "./packages/readme.md");

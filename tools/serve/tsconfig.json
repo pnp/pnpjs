@@ -32,8 +32,6 @@
         "resolveJsonModule": true
     },
     "include": [
-        "./index.ts",
-        "../node-utils/getSubDirectorieNames.js",
-        "./**/*.ts"
+        "./serve.ts"
     ]
 }

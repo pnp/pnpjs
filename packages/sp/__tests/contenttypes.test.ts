@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ContentTypes, ContentType } from "../src/contenttypes";
 import { sp } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { toMatchEndRegex } from "./utils";
 
 describe("ContentTypes", () => {

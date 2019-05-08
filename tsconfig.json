@@ -2,19 +2,18 @@
     "compilerOptions": {
         "target": "es2015",
         "module": "commonjs",
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "removeComments": false,
+        "types": [],
+        "lib": [
+            "es2015",
+            "dom"
+        ],
         "baseUrl": ".",
         "rootDir": ".",
-        "declaration": true,
-        "declarationMap": false,
-        "sourceMap": true,
-        "removeComments": true,
-        "types": [
-            "node"
-        ],
-        "lib": [
-            "es6",
-            "dom"
-        ], 
+        "outDir": "./build",
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
@@ -23,17 +22,19 @@
         "pretty": true,
         "experimentalDecorators": true,
         "noFallthroughCasesInSwitch": true,
+        "sourceMap": true,
         "skipDefaultLibCheck": true,
         "downlevelIteration": true,
         "skipLibCheck": true,
         "strictNullChecks": false,
         "preserveConstEnums": true,
         "importHelpers": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": {
+            "@pnp/*": [
+                "./packages/*"
+            ]
+        }
     },
-    "include": [
-        "./index.ts",
-        "../node-utils/getSubDirectorieNames.js",
-        "./**/*.ts"
-    ]
+    "include": []
 }

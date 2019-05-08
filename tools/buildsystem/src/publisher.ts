@@ -2,7 +2,7 @@ declare var require: (s: string) => any;
 const colors = require("ansi-colors");
 const log = require("fancy-log");
 
-import { PublishSchema, PublishTask } from "./tasks/publish/schema";
+import { PublishSchema, PublishTask } from "./config";
 
 /**
  * Engine function to process publish files
@@ -12,7 +12,6 @@ import { PublishSchema, PublishTask } from "./tasks/publish/schema";
  * @param callback (err?) => void
  */
 export async function publisher(version: string, config: PublishSchema): Promise<void> {
-
 
     try {
 

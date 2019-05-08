@@ -6,7 +6,6 @@
 			"type": "node",
 			"request": "launch",
 			"program": "${workspaceRoot}/debug/launch/main.ts",
-			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": "build",
@@ -27,14 +26,36 @@
 		{
 			"name": "Debug Tests",
 			"type": "node",
-			"request": "attach",
-			"stopOnEntry": false,
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "gulp-test",
+			"sourceMaps": true,
+			"outFiles": []
+		},
+		{
+			"name": "Debug Build System",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
+			"args": [
+				"-n",
+				"package",
+			],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": "build-buildsystem",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
 			"sourceMaps": true,
 			"outFiles": [
-				"${workspaceRoot}/build/testing/**/*.js"
+				"${workspaceRoot}/tools/buildsystem/**/*.js"
 			]
-		}
+		},
 	]
 }

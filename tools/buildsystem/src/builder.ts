@@ -1,9 +1,8 @@
 declare var require: (s: string) => any;
-const path = require("path"),
-    colors = require("ansi-colors"),
+const colors = require("ansi-colors"),
     log = require("fancy-log");
 
-import { BuildSchema, BuildTask } from "./tasks/build/schema";
+import { BuildSchema, BuildTask } from "./config";
 import { build } from "./tasks/build/build";
 
 /**

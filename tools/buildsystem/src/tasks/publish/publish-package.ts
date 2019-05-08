@@ -1,15 +1,10 @@
 import { exec } from "child_process";
-import { PublishSchema } from "./schema";
+import { PublishSchema } from "../../config";
 const colors = require("ansi-colors");
 import * as path from "path";
 import getSubDirNames from "../../lib/getSubDirectoryNames";
 const log = require("fancy-log");
 
-/**
- * Minifies the files created in es5 format into the target dist folder
- * 
- * @param ctx The build context 
- */
 export function publishPackage(version: string, config: PublishSchema): Promise<any> {
 
     const promises: Promise<void>[] = [];

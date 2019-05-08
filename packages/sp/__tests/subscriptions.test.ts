@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { sp, Lists } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 
 describe("Lists", () => {
 

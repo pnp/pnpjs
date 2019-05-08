@@ -1,12 +1,12 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "es6",
+        "target": "es2015",
         "module": "commonjs",
+        "composite": false,
         "baseUrl": ".",
         "rootDir": "../../",
         "outDir": "../../build/debugging",
-        "declaration": true,
-        "declarationMap": true,
         "types": [
             "sharepoint"
         ],
@@ -18,15 +18,7 @@
             "@pnp/*": [
                 "../../packages/*"
             ]
-        },
-        "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
-        "inlineSources": true,
-        "sourceMap": true,
-        "skipDefaultLibCheck": true,
-        "skipLibCheck": true,
-        "experimentalDecorators": true,
-        "strictNullChecks": false
+        }
     },
     "files": [
         "./main.ts"

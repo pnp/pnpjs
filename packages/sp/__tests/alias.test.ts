@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { sp, Web, IWeb } from "../presets/legacy";
 import { combine } from "@pnp/common";
 

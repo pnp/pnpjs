@@ -4,7 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "gulp build:debug",
+            "command": "npm run buildDebug",
             "args": [],
             "problemMatcher": [
                 "$tsc",
@@ -19,11 +19,47 @@
             }
         },
         {
-            "label": "gulp-test",
+            "label": "build-buildsystem",
             "type": "shell",
-            "command": "gulp test",
+            "command": "tsc -p ./tools/buildsystem",
             "args": [],
-            "isBackground": true,
+            "isBackground": false,
+            "problemMatcher": [
+                "$tsc",
+                "$jshint"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "label": "serve",
+            "type": "shell",
+            "command": "npm run serve",
+            "args": [],
+            "isBackground": false,
+            "problemMatcher": [
+                "$tsc",
+                "$jshint"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "npm test",
+            "args": [],
+            "isBackground": false,
             "problemMatcher": [
                 "$tsc",
                 "$jshint"

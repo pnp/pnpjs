@@ -1,7 +1,7 @@
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { ControlMode, List, Lists, PageType, sp } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { toMatchEndRegex } from "./utils";
 
 describe("Lists", () => {

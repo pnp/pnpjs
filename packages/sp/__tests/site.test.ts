@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { sp } from "../";
-import { testSettings } from "../../../test/main";
+import { testSettings } from "../../../test/test";
 import { combine } from "@pnp/common";
 
 describe("Site", () => {
