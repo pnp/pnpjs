@@ -3,10 +3,7 @@ language: node_js
 node_js:
   - "8"
 
-before_script:
-  - npm install -g gulp
-
 script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gulp travis:pull-request; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then gulp travis:push; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then mocha --mode pr; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mocha --mode push; fi'
   

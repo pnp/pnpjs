@@ -13,8 +13,10 @@ function getAllPackageFolderNames() {
     });
 }
 
+let mode = "cmd";
 let paths = ["./test/main.ts"];
 
+// handle package specific config
 if (yargs.packages || yargs.p) {
 
     const packageNames = (yargs.packages || yargs.p).split(",").map(s => s.trim().toLowerCase());
@@ -41,6 +43,24 @@ if (yargs.packages || yargs.p) {
     paths.push("./test/**/*.ts");
 }
 
+// handle mode config
+if (yargs.mode && /cmd|pr|push/i.test(yargs.mode)) {
+
+    switch (yargs.mode) {
+
+        case "pr":
+            mode = "travis-noweb"
+            break;
+
+        case "push":
+            mode = "travis";
+            break;
+
+        default:
+            mode = "cmd";
+    }
+}
+
 const reporter = yargs.verbose ? "spec" : "dot";
 
 const config = {
@@ -54,7 +74,7 @@ const config = {
         "ts-node/register"
     ],
     "spec": paths,
-    "pnp-test-mode": "cmd",
+    "pnp-test-mode": mode,
     "pnp-test-site": yargs.site || "''",
     "skip-web": yargs.skipWeb,
 };
