@@ -36,7 +36,7 @@
     "url": "git:github.com/pnp/pnpjs"
   },
   "scripts": {
-    "preinstall": "tsc -p .",
+    "preinstall": "npm install && tsc -p .",
     "clean": "del-cli \"./!(node_modules)/**/*.?(js|js.map|d.ts|d.ts.map)\" \"./*.?(js|js.map|d.ts|d.ts.map)\""
   },
   "devDependencies": {
