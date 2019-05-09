@@ -4,8 +4,6 @@ const join = require("path").join;
 const fs = require("fs");
 const prettyjson = require("prettyjson");
 
-type TestModes = "cmd" | "travis" | "travis-noweb";
-
 function getAllPackageFolderNames() {
 
     const root = resolve("./packages");
@@ -15,7 +13,7 @@ function getAllPackageFolderNames() {
     });
 }
 
-let mode: TestModes = "cmd";
+let mode = "cmd";
 let paths = ["./test/main.ts"];
 
 // handle package specific config
