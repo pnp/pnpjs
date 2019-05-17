@@ -1,7 +1,6 @@
 import { SharePointQueryable, _SharePointQueryableInstance, ISharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
 import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
-import { SPBatch } from "../batch";
 import { hOP, jsS, extend } from "@pnp/common";
 import { SPHttpClient } from "../net/sphttpclient";
 import { IGetable, body, headers } from "@pnp/odata";
@@ -74,14 +73,6 @@ export class _Site extends _SharePointQueryableInstance {
         const data = await q();
 
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
-    }
-
-    /**
-     * Creates a new batch for requests within the context of this site collection
-     *
-     */
-    public createBatch(): SPBatch {
-        return new SPBatch(this.parentUrl);
     }
 
     /**
@@ -213,7 +204,6 @@ export interface ISite extends IGetable, ISharePointQueryableInstance {
     getContextInfo(): Promise<IContextInfo>;
     getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]>;
     getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
-    createBatch(): SPBatch;
     openWebById(webId: string): Promise<IOpenWebByIdResult>;
     createCommunicationSite(
         title: string,

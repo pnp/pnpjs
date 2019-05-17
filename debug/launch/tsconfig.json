@@ -11,8 +11,8 @@
             "sharepoint"
         ],
         "lib": [
-            "es6",
-            "dom"
+            "dom",
+            "es2015"
         ],
         "paths": {
             "@pnp/*": [

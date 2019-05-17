@@ -1,6 +1,7 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
+        "target": "es2015",
         "baseUrl": ".",
         "rootDir": "../",
         "outDir": "../build/testing",
@@ -13,7 +14,12 @@
             "mocha",
             "sharepoint"
         ],
-        "removeComments": true
+        "removeComments": true,
+        "paths": {
+            "@pnp/*": [
+                "../packages/*"
+            ]
+        }
     },
     "include": [
         "./**/*.ts"

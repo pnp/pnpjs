@@ -1,9 +1,7 @@
 // import { Logger, LogLevel } from "../../packages/logging";
 import { sp } from "@pnp/sp/presets/all";
-// import "@pnp/sp/src/webs";
-// import "@pnp/sp/src/features/web";
-// import { sp } from "@pnp/sp";
 import { SPFetchClient } from "@pnp/nodejs";
+import "@pnp/odata/src/debug";
 
 declare var process: { exit(code?: number): void };
 
@@ -18,9 +16,15 @@ export async function Example(settings: any) {
         },
     });
 
-    const d = await sp.web();
+    sp.web.__enableDeepTrace();
 
-    console.log(JSON.stringify(d, null, 2));
+    const d = await sp.web.addClientSidePage("test123.aspx");
+
+    const y = 9;
+
+    console.log(y);
+
+    console.log(JSON.stringify(d.__json(), null, 2));
 
     process.exit();
 }

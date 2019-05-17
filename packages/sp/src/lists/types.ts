@@ -15,6 +15,7 @@ import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
 import { spPost } from "../operations";
+import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
 /**
  * Describes a collection of List objects
@@ -38,7 +39,7 @@ export class _Lists extends _SharePointQueryableCollection implements ILists {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return List(this, `getByTitle('${title}')`);
+        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
     }
 
     /**

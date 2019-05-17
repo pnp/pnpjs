@@ -26,7 +26,7 @@ export type DateAddInterval = "year" | "quarter" | "month" | "week" | "day" | "h
  * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
  */
 export function dateAdd(date: Date, interval: DateAddInterval, units: number): Date | undefined {
-    let ret: Date | undefined = new Date(date); // don't change original date
+    let ret: Date | undefined = new Date(date.toString()); // don't change original date
     switch (interval.toLowerCase()) {
         case "year": ret.setFullYear(ret.getFullYear() + units); break;
         case "quarter": ret.setMonth(ret.getMonth() + 3 * units); break;
