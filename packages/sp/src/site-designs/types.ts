@@ -168,6 +168,9 @@ export interface ISiteDesignInfo {
      * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
      */
     IsDefault: boolean;
+    /**
+     * The version number of the site design
+     */
     Version: string;
 }
 

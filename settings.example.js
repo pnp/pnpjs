@@ -12,6 +12,9 @@ var settings = {
             secret: "{ client secret }",
             url: "{ site collection url }",
             notificationUrl: "{ notification url }",
+            sitedesigns: {
+                testuser: "{ valid username i.e. contoso@contoso.onmicrosoft.com }",
+            }
         },
         graph: {
             tenant: "{tenant.onmicrosoft.com}",
