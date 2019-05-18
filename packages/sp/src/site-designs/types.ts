@@ -14,7 +14,7 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
      * @param baseUrl The parent url provider
      * @param methodName The static method name to call on the utility class
      */
-    constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
+    constructor(baseUrl: string | ISharePointQueryable, methodName: string = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
@@ -23,72 +23,34 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
         return spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
     }
 
-    /**
-     * Creates a new site design available to users when they create a new site from the SharePoint home page.
-     * 
-     * @param creationInfo A sitedesign creation information object
-     */
     public async createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
         return await this.clone(SiteDesignsCloneFactory, `CreateSiteDesign`).execute<ISiteDesignInfo>({ info: creationInfo });
     }
 
-    /**
-     * Applies a site design to an existing site collection.
-     *
-     * @param siteDesignId The ID of the site design to apply.
-     * @param webUrl The URL of the site collection where you want to apply the site design.
-     */
     public async applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
         return await this.clone(SiteDesignsCloneFactory, `ApplySiteDesign`).execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
     }
 
-    /**
-     * Gets a list of information about existing site designs.
-     */
     public async getSiteDesigns(): Promise<ISiteDesignInfo[]> {
         return await this.clone(SiteDesignsCloneFactory, `GetSiteDesigns`).execute<ISiteDesignInfo[]>({});
     }
 
-    /**
-     * Gets information about a specific site design.
-     * @param id The ID of the site design to get information about.
-     */
     public async getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
         return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignMetadata`).execute<ISiteDesignInfo>({ id: id });
     }
 
-    /**
-     * Updates a site design with new values. In the REST call, all parameters are optional except the site script Id.
-     * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE). 
-     * @param updateInfo A sitedesign update information object
-     */
     public async updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
         return await this.clone(SiteDesignsCloneFactory, `UpdateSiteDesign`).execute<ISiteDesignInfo>({ updateInfo: updateInfo });
     }
 
-    /**
-     * Deletes a site design.
-     * @param id The ID of the site design to delete.
-     */
     public async deleteSiteDesign(id: string): Promise<void> {
         return await this.clone(SiteDesignsCloneFactory, `DeleteSiteDesign`).execute<void>({ id: id });
     }
 
-    /**
-     * Gets a list of principals that have access to a site design.
-     * @param id The ID of the site design to get rights information from.
-     */
     public async getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
         return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRights`).execute<ISiteDesignPrincipals[]>({ id: id });
     }
 
-    /**
-     * Grants access to a site design for one or more principals.
-     * @param id The ID of the site design to grant rights on.
-     * @param principalNames An array of one or more principals to grant view rights. 
-     *                       Principals can be users or mail-enabled security groups in the form of "alias" or "alias@<domain name>.com"
-     * @param grantedRights Always set to 1. This represents the View right.
-     */
     public async grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
         return await this.clone(SiteDesignsCloneFactory, `GrantSiteDesignRights`)
             .execute<void>({
@@ -98,12 +60,6 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
             });
     }
 
-    /**
-     * Revokes access from a site design for one or more principals.
-     * @param id The ID of the site design to revoke rights from.
-     * @param principalNames An array of one or more principals to revoke view rights from. 
-     *                       If all principals have rights revoked on the site design, the site design becomes viewable to everyone.
-     */
     public async revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
         return await this.clone(SiteDesignsCloneFactory, `RevokeSiteDesignRights`)
             .execute<void>({
@@ -114,22 +70,70 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
 }
 
 export interface ISiteDesigns {
+    /**
+     * Gets a list of information about existing site designs.
+     */
     getSiteDesigns(): Promise<ISiteDesignInfo[]>;
+    /**
+     * Creates a new site design available to users when they create a new site from the SharePoint home page.
+     * 
+     * @param creationInfo A sitedesign creation information object
+     */
     createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo>;
+    /**
+     * Applies a site design to an existing site collection.
+     *
+     * @param siteDesignId The ID of the site design to apply.
+     * @param webUrl The URL of the site collection where you want to apply the site design.
+     */
     applySiteDesign(siteDesignId: string, webUrl: string): Promise<void>;
+    /**
+     * Gets information about a specific site design.
+     * @param id The ID of the site design to get information about.
+     */
     getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo>;
+    /**
+     * Updates a site design with new values. In the REST call, all parameters are optional except the site script Id.
+     * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE). 
+     * @param updateInfo A sitedesign update information object
+     */
     updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo>;
+    /**
+     * Deletes a site design.
+     * @param id The ID of the site design to delete.
+     */
     deleteSiteDesign(id: string): Promise<void>;
+    /**
+     * Gets a list of principals that have access to a site design.
+     * @param id The ID of the site design to get rights information from.
+     */
     getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]>;
+    /**
+     * Grants access to a site design for one or more principals.
+     * @param id The ID of the site design to grant rights on.
+     * @param principalNames An array of one or more principals to grant view rights. 
+     *                       Principals can be users or mail-enabled security groups in the form of "alias" or "alias@<domain name>.com"
+     * @param grantedRights Always set to 1. This represents the View right.
+     */
     grantSiteDesignRights(id: string, principalNames: string[], grantedRights?: number): Promise<void>;
+    /**
+     * Revokes access from a site design for one or more principals.
+     * @param id The ID of the site design to revoke rights from.
+     * @param principalNames An array of one or more principals to revoke view rights from. 
+     *                       If all principals have rights revoked on the site design, the site design becomes viewable to everyone.
+     */
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
 }
 
-export const SiteDesigns = (baseUrl: string | ISharePointQueryable): ISiteDesigns => new _SiteDesigns(baseUrl);
+export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName: string = ""): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
 type SiteDesignsCloneType = ISiteDesigns & ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteDesignsCloneFactory = (baseUrl: string | ISharePointQueryable): SiteDesignsCloneType => <any>SiteDesigns(baseUrl);
+const SiteDesignsCloneFactory = (baseUrl: string | ISharePointQueryable, methodName: string = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
 
+/**
+ * Result from creating or retrieving a site design
+ *
+ */
 export interface ISiteDesignInfo {
     /**
      * The ID of the site design to apply.
@@ -167,6 +171,10 @@ export interface ISiteDesignInfo {
     Version: string;
 }
 
+/**
+ * Data for creating a site design
+ *
+ */
 export interface ISiteDesignCreationInfo {
     /**
      * The display name of the site design.
@@ -199,6 +207,10 @@ export interface ISiteDesignCreationInfo {
     IsDefault?: boolean;
 }
 
+/**
+ * Data for updating a site design
+ *
+ */
 export interface ISiteDesignUpdateInfo {
     /**
      * The ID of the site design to apply.
@@ -236,8 +248,21 @@ export interface ISiteDesignUpdateInfo {
     IsDefault?: boolean;
 }
 
+/**
+ * Result from retrieving the rights for a site design
+ *
+ */
 export interface ISiteDesignPrincipals {
+    /**
+     * Display name
+     */
     DisplayName: string;
+    /**
+     * The principal name
+     */
     PrincipalName: string;
+    /**
+     * The principal name
+     */
     Rights: number;
 }
