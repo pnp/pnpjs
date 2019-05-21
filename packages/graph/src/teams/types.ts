@@ -1,6 +1,6 @@
 import { _GraphQueryableInstance, IGraphQueryableInstance, IGraphQueryableCollection, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { IInvokable, body } from "@pnp/odata";
-import { extend } from "@pnp/common";
+import { assign } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";
@@ -10,7 +10,7 @@ import { defaultPath } from "../decorators";
  */
 @defaultPath("team")
 @updateable()
-export class _Team extends _GraphQueryableInstance<ITeamProperties> implements ITeam {
+export class _Team extends _GraphQueryableInstance<ITeamProperties> implements _ITeam {
 
     public get channels(): IChannels {
         return Channels(this);
@@ -56,13 +56,13 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> implements I
         return graphPost(this.clone(Team, "clone"), body(postBody));
     }
 }
-export interface ITeam extends IInvokable, IUpdateable<ITeamProperties>, IGraphQueryableInstance<ITeamProperties> {
+export interface _ITeam {
     readonly channels: IChannels;
     archive(shouldSetSpoSiteReadOnlyForMembers?: boolean): Promise<void>;
     unarchive(): Promise<void>;
     cloneTeam(name: string, description?: string, partsToClone?: string, visibility?: string): Promise<void>;
 }
-export interface _Team extends IInvokable, IUpdateable<ITeamProperties> { }
+export interface ITeam extends _ITeam, IInvokable, IUpdateable<ITeamProperties>, IGraphQueryableInstance<ITeamProperties> { }
 export const Team = graphInvokableFactory<ITeam>(_Team);
 
 /**
@@ -70,24 +70,23 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> implements ITeams { }
-export interface ITeams extends IInvokable, IGetById<ITeam>, IGraphQueryableCollection<ITeamProperties[]> {
-}
-export interface _Teams extends IInvokable, IGetById<ITeam> { }
+export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> implements _ITeams { }
+export interface _ITeams { }
+export interface ITeams extends IInvokable, IGetById<ITeam>, IGraphQueryableCollection<ITeamProperties[]> { }
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
 
 /**
  * Channel
  */
-export class _Channel extends _GraphQueryableInstance implements IChannel {
+export class _Channel extends _GraphQueryableInstance implements _IChannel {
     public get tabs(): ITabs {
         return Tabs(this);
     }
 }
-export interface IChannel extends IInvokable, IGraphQueryableInstance {
+export interface _IChannel {
     readonly tabs: ITabs;
 }
-export interface _Channel extends IInvokable { }
+export interface IChannel extends _IChannel, IInvokable, IGraphQueryableInstance {}
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**
@@ -95,7 +94,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphQueryableCollection implements IChannels {
+export class _Channels extends _GraphQueryableCollection implements _IChannels {
 
     /**
      * Creates a new Channel in the Team
@@ -113,13 +112,13 @@ export class _Channels extends _GraphQueryableCollection implements IChannels {
         const data = await graphPost(this, body(postBody));
 
         return {
-            channel: this.getById(data.id),
+            channel: (<any>this).getById(data.id),
             data,
         };
     }
 }
-export interface IChannels extends IInvokable, IGetById<IChannel>, IGraphQueryableCollection { }
-export interface _Channels extends IInvokable, IGetById<IChannel> { }
+export interface _IChannels { }
+export interface IChannels extends _IChannels, IInvokable, IGetById<IChannel>, IGraphQueryableCollection { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
 
 /**
@@ -128,9 +127,9 @@ export const Channels = graphInvokableFactory<IChannels>(_Channels);
 @defaultPath("tab")
 @updateable()
 @deleteable()
-export class _Tab extends _GraphQueryableInstance implements ITab { }
-export interface ITab extends IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance { }
-export interface _Tab extends IInvokable, IUpdateable, IDeleteable { }
+export class _Tab extends _GraphQueryableInstance implements _ITab { }
+export interface _ITab { }
+export interface ITab extends _ITab, IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance { }
 export const Tab = graphInvokableFactory<ITab>(_Tab);
 
 /**
@@ -138,7 +137,7 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
  */
 @defaultPath("tabs")
 @getById(Tab)
-export class _Tabs extends _GraphQueryableCollection implements ITabs {
+export class _Tabs extends _GraphQueryableCollection implements _ITabs {
 
     /**
      * Adds a tab to the cahnnel
@@ -148,7 +147,7 @@ export class _Tabs extends _GraphQueryableCollection implements ITabs {
      */
     public async add(name: string, appUrl: string, properties: ITabsConfiguration): Promise<ITabCreateResult> {
 
-        const postBody = extend({
+        const postBody = assign({
             name,
             "teamsApp@odata.bind": appUrl,
         }, properties);
@@ -157,12 +156,12 @@ export class _Tabs extends _GraphQueryableCollection implements ITabs {
 
         return {
             data,
-            tab: this.getById(data.id),
+            tab: (<any>this).getById(data.id),
         };
     }
 }
-export interface ITabs extends IInvokable, IGetById<ITab>, IGraphQueryableCollection { }
-export interface _Tabs extends IInvokable, IGetById<ITab> { }
+export interface _ITabs { }
+export interface ITabs extends _ITabs, IInvokable, IGetById<ITab>, IGraphQueryableCollection { }
 export const Tabs = graphInvokableFactory<ITabs>(_Tabs);
 
 export interface ITeamUpdateResult {

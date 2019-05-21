@@ -7,7 +7,7 @@ import { spPost } from "../operations";
  * Implements the site designs API REST methods
  *
  */
-export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, ISharePointQueryable {
+export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns {
     /**
      * Creates a new instance of the SiteDesigns method class
      *
@@ -113,7 +113,7 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
     }
 }
 
-export interface ISiteDesigns {
+export interface _ISiteDesigns {
     getSiteDesigns(): Promise<ISiteDesignInfo[]>;
     createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo>;
     applySiteDesign(siteDesignId: string, webUrl: string): Promise<void>;
@@ -124,6 +124,8 @@ export interface ISiteDesigns {
     grantSiteDesignRights(id: string, principalNames: string[], grantedRights?: number): Promise<void>;
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
 }
+
+export interface ISiteDesigns extends _ISiteDesigns, ISharePointQueryable {}
 
 export const SiteDesigns = (baseUrl: string | ISharePointQueryable): ISiteDesigns => new _SiteDesigns(baseUrl);
 

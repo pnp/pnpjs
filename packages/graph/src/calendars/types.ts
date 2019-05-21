@@ -8,24 +8,26 @@ import { graphPost } from "../operations";
  * Calendars
  */
 @defaultPath("calendars")
-export class _Calendars extends _GraphQueryableCollection<ICalendarType[]> implements ICalendars { }
+export class _Calendars extends _GraphQueryableCollection<ICalendarType[]> implements _ICalendars { }
+export interface _ICalendars { }
 export interface ICalendars<GetType = any> extends IInvokable, IGraphQueryableCollection<GetType> { }
-export interface _Calendars extends IInvokable { }
 export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
 
 /**
  * Calendar
  */
-export class _Calendar extends _GraphQueryableInstance<ICalendarType> implements ICalendar {
+export class _Calendar extends _GraphQueryableInstance<ICalendarType> implements _ICalendar {
 
     public get events(): IEvents {
         return Events(this);
     }
 }
-export interface ICalendar extends IInvokable, IGraphQueryableInstance<ICalendarType> {
+export interface _ICalendar {
     readonly events: IEvents;
 }
-export interface _Calendar extends IInvokable { }
+
+export interface ICalendar extends _ICalendar, IInvokable, IGraphQueryableInstance<ICalendarType> { }
+
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
 
 /**
@@ -33,9 +35,9 @@ export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
  */
 @deleteable()
 @updateable()
-export class _Event extends _GraphQueryableInstance<IEventType> implements IEvent { }
-export interface IEvent extends IInvokable, IDeleteable, IUpdateable, IGraphQueryableInstance<IEventType> { }
-export interface _Event extends IInvokable, IDeleteable, IUpdateable { }
+export class _Event extends _GraphQueryableInstance<IEventType> implements _IEvent { }
+export interface _IEvent { }
+export interface IEvent extends _IEvent, IInvokable, IDeleteable, IUpdateable, IGraphQueryableInstance<IEventType> { }
 export const Event = graphInvokableFactory<IEvent>(_Event);
 
 /**
@@ -43,7 +45,7 @@ export const Event = graphInvokableFactory<IEvent>(_Event);
  */
 @defaultPath("events")
 @getById(Event)
-export class _Events extends _GraphQueryableCollection<IEventType[]> {
+export class _Events extends _GraphQueryableCollection<IEventType[]> implements _IEvents {
 
     /**
      * Adds a new event to the collection
@@ -56,15 +58,16 @@ export class _Events extends _GraphQueryableCollection<IEventType[]> {
 
         return {
             data,
-            event: this.getById(data.id),
+            event: (<any>this).getById(data.id),
         };
     }
 }
-export interface IEvents extends IInvokable, IGetById<IEvent>, IGraphQueryableCollection<IEventType[]> {
-    getById(id: string): IEvent;
+export interface _IEvents {
     add(properties: IEventType): Promise<EventAddResult>;
 }
-export interface _Events extends IInvokable, IGetById<IEvent> { }
+
+export interface IEvents extends _IEvents, IInvokable, IGetById<IEvent>, IGraphQueryableCollection<IEventType[]> { }
+
 export const Events = graphInvokableFactory<IEvents>(_Events);
 
 /**

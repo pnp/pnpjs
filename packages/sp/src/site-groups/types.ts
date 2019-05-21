@@ -6,7 +6,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { SiteUsers, ISiteUsers } from "../site-users/types";
-import { extend, TypedHash, hOP } from "@pnp/common";
+import { assign, TypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
@@ -17,7 +17,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("sitegroups")
-export class _SiteGroups extends _SharePointQueryableCollection implements ISiteGroups {
+export class _SiteGroups extends _SharePointQueryableCollection implements _ISiteGroups {
 
     /**	
      * Gets a group from the collection by id	
@@ -35,7 +35,7 @@ export class _SiteGroups extends _SharePointQueryableCollection implements ISite
      */
     public async add(properties: TypedHash<any>): Promise<IGroupAddResult> {
 
-        const postBody = body(extend(metadata("SP.Group"), properties));
+        const postBody = body(assign(metadata("SP.Group"), properties));
 
         const data = await spPost(this, postBody);
         return {
@@ -72,21 +72,23 @@ export class _SiteGroups extends _SharePointQueryableCollection implements ISite
     }
 }
 
-export interface ISiteGroups extends IInvokable, ISharePointQueryableCollection {
+export interface _ISiteGroups {
     getById(id: number): ISiteGroup;
     add(properties: TypedHash<any>): Promise<IGroupAddResult>;
     getByName(groupName: string): ISiteGroup;
     removeById(id: number): Promise<void>;
     removeByLoginName(loginName: string): Promise<any>;
 }
-export interface _SiteGroups extends IInvokable { }
+
+export interface ISiteGroups extends _ISiteGroups, IInvokable, ISharePointQueryableCollection {}
+
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
 /**
  * Describes a single group
  *
  */
-export class _SiteGroup extends _SharePointQueryableInstance implements ISiteGroup {
+export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGroup {
 
     /**
      * Gets the users for this group
@@ -112,11 +114,13 @@ export class _SiteGroup extends _SharePointQueryableInstance implements ISiteGro
     });
 }
 
-export interface ISiteGroup extends IInvokable, ISharePointQueryableInstance {
+export interface _ISiteGroup {
     readonly users: ISiteUsers;
     update(props: TypedHash<any>): Promise<IGroupUpdateResult>;
 }
-export interface _SiteGroup extends IInvokable { }
+
+export interface ISiteGroup extends _ISiteGroup, IInvokable, ISharePointQueryableInstance {}
+
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 export interface SiteGroupAddResult {

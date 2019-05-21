@@ -17,7 +17,7 @@ export interface GraphConfigurationPart {
 export interface GraphConfiguration extends LibraryConfiguration, GraphConfigurationPart { }
 
 export function setup(config: GraphConfiguration): void {
-    RuntimeConfig.extend(config);
+    RuntimeConfig.assign(config);
 }
 
 export class GraphRuntimeConfigImpl {

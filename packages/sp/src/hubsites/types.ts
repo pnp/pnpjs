@@ -4,6 +4,7 @@ import {
     ISharePointQueryableCollection,
     _SharePointQueryableCollection,
     spInvokableFactory,
+    ISharePointQueryableInstance,
 } from "../sharepointqueryable";
 import { INavigationNode } from "../navigation/types";
 import { defaultPath } from "../decorators";
@@ -33,7 +34,7 @@ export interface IHubSiteWebData {
  *
  */
 @defaultPath("_api/hubsites")
-export class _HubSites extends _SharePointQueryableCollection<IHubSiteData[]> implements IHubSites {
+export class _HubSites extends _SharePointQueryableCollection<IHubSiteData[]> implements _IHubSites {
 
     /**	    
      * Gets a Hub Site from the collection by id	     
@@ -46,19 +47,23 @@ export class _HubSites extends _SharePointQueryableCollection<IHubSiteData[]> im
     }
 }
 
-export interface IHubSites extends IInvokable, ISharePointQueryableCollection<IHubSiteData[]> {
+export interface _IHubSites {
     getById(id: string): IHubSite;
 }
-export interface _HubSites extends IInvokable {}
-export const HubSites = spInvokableFactory(_HubSites);
+
+export interface IHubSites extends _IHubSites, IInvokable, ISharePointQueryableCollection<IHubSiteData[]> {}
+
+export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
 
 
 /**
  * Represents a hub site instance
  */
-export class _HubSite extends _SharePointQueryableInstance<IHubSiteData> implements IHubSite { }
+export class _HubSite extends _SharePointQueryableInstance<IHubSiteData> implements _IHubSite { }
 
-export interface IHubSite extends IInvokable, _SharePointQueryableInstance<IHubSiteData> {}
-export interface _HubSite extends IInvokable {}
+export interface _IHubSite {}
+
+export interface IHubSite extends _IHubSite, IInvokable, ISharePointQueryableInstance<IHubSiteData> {}
+
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);

@@ -5,7 +5,7 @@ import { defaultPath } from "../decorators";
 import { graphPatch } from "../operations";
 
 @defaultPath("photo")
-export class _Photo extends _GraphQueryableInstance<IPhotoType> {
+export class _Photo extends _GraphQueryableInstance<IPhotoType> implements _IPhoto {
     /**
      * Gets the image bytes as a blob (browser)
      */
@@ -29,10 +29,10 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
         return graphPatch(this.clone(Photo, "$value", false), { body: content });
     }
 }
-export interface IPhoto extends IInvokable, IGraphQueryableInstance<IPhotoType> {
+export interface _IPhoto {
     getBlob(): Promise<Blob>;
     getBuffer(): Promise<ArrayBuffer>;
     setContent(content: ArrayBuffer | Blob): Promise<void>;
 }
-export interface _Photo extends IInvokable { }
+export interface IPhoto extends _IPhoto, IInvokable, IGraphQueryableInstance<IPhotoType> { }
 export const Photo = graphInvokableFactory<IPhoto>(_Photo);

@@ -8,7 +8,7 @@ import {
     SharePointQueryableInstance,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { extend, TypedHash, hOP } from "@pnp/common";
+import { assign, TypedHash, hOP, Omit } from "@pnp/common";
 import { IListItemFormUpdateValue } from "../lists/types";
 import { ODataParser, IInvokable, body, headers } from "@pnp/odata";
 import { IList } from "../lists";
@@ -23,7 +23,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("items")
-export class _Items extends _SharePointQueryableCollection implements IItems {
+export class _Items extends _SharePointQueryableCollection implements _IItems {
 
     /**	
     * Gets an Item by id	
@@ -79,7 +79,7 @@ export class _Items extends _SharePointQueryableCollection implements IItems {
 
         // this will be used for the actual query
         // and we set no metadata here to try and reduce traffic
-        const items = Items(this, "").top(requestSize).configure({
+        const items = <IItems>Items(this, "").top(requestSize).configure({
             headers: {
                 "Accept": acceptHeader,
             },
@@ -132,7 +132,7 @@ export class _Items extends _SharePointQueryableCollection implements IItems {
 
         const listItemEntityType = await this.ensureListItemEntityTypeName(listItemEntityTypeFullName);
 
-        const postBody = body(extend(metadata(listItemEntityType), properties));
+        const postBody = body(assign(metadata(listItemEntityType), properties));
 
         const promise = spPost<{ Id: number }>(this.clone(Items, ""), postBody).then((data) => {
             return {
@@ -155,11 +155,11 @@ export class _Items extends _SharePointQueryableCollection implements IItems {
 
         return candidatelistItemEntityTypeFullName ?
             Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent(_List).getListItemEntityTypeFullName();
+            this.getParent<IList>(_List).getListItemEntityTypeFullName();
     }
 }
 
-export interface IItems extends IInvokable, ISharePointQueryableCollection {
+export interface _IItems {
     /**	
     * Gets an Item by id	
     *	
@@ -204,7 +204,9 @@ export interface IItems extends IInvokable, ISharePointQueryableCollection {
      */
     add(properties?: TypedHash<any>, listItemEntityTypeFullName?: string): Promise<IItemAddResult>;
 }
-export interface _Items extends IInvokable { }
+
+export interface IItems extends _IItems, IInvokable, Omit<ISharePointQueryableCollection, "skip"> {}
+
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
@@ -262,7 +264,7 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
     }
 
     public get list(): IList {
-        return this.getParent(_List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(_List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**
@@ -278,7 +280,7 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
 
         const listItemEntityType = await this.ensureListItemEntityTypeName(listItemEntityTypeFullName);
 
-        const postBody = body(extend(metadata(listItemEntityType), properties), headers({
+        const postBody = body(assign(metadata(listItemEntityType), properties), headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
@@ -530,7 +532,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = Items(this.nextUrl, null).configureFrom(this.parent);
+            const items = <IItems>Items(this.nextUrl, null).configureFrom(this.parent);
             return items.getPaged<T>();
         }
 

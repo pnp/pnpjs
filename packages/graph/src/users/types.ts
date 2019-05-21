@@ -11,7 +11,7 @@ import { IInvokable } from "@pnp/odata";
  */
 @updateable()
 @deleteable()
-export class _User extends _DirectoryObject<IUserType> implements IUser {
+export class _User extends _DirectoryObject<IUserType> implements _IUser {
     /**
     * The groups and directory roles associated with the user
     */
@@ -19,10 +19,10 @@ export class _User extends _DirectoryObject<IUserType> implements IUser {
         return DirectoryObjects(this, "memberOf");
     }
 }
-export interface IUser extends IInvokable, IUpdateable<IUserType>, IDeleteable, IDirectoryObject<IUserType> {
+export interface _IUser {
     readonly memberOf: IDirectoryObjects;
- }
-export interface _User extends IInvokable, IUpdateable<IUserType>, IDeleteable { }
+}
+export interface IUser extends _IUser, IInvokable, IUpdateable<IUserType>, IDeleteable, IDirectoryObject<IUserType> { }
 export const User = graphInvokableFactory<IUser>(_User);
 
 /**
@@ -31,7 +31,7 @@ export const User = graphInvokableFactory<IUser>(_User);
  */
 @defaultPath("users")
 @getById(User)
-export class _Users extends _GraphQueryableCollection<IUserType[]> {}
-export interface IUsers extends IInvokable, IGetById<IUser>, IGraphQueryableCollection<IUserType[]> { }
-export interface _Users extends IInvokable, IGetById<IUser> { }
+export class _Users extends _GraphQueryableCollection<IUserType[]> implements _IUsers { }
+export interface _IUsers { }
+export interface IUsers extends _IUsers, IInvokable, IGetById<IUser>, IGraphQueryableCollection<IUserType[]> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);

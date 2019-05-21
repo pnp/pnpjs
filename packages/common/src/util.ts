@@ -1,5 +1,7 @@
 import { TypedHash } from "./collections";
 
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -130,7 +132,7 @@ export function isArray(array: any): boolean {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export function extend<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false,
+export function assign<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false,
     filter: (propName: string) => boolean = () => true): T & S {
 
     if (!objectDefinedNotNull(source)) {

@@ -1,7 +1,7 @@
 import { SharePointQueryable, _SharePointQueryableInstance, ISharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
 import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
-import { hOP, jsS, extend } from "@pnp/common";
+import { hOP, jsS, assign } from "@pnp/common";
 import { SPHttpClient } from "../net/sphttpclient";
 import { IInvokable, body, headers } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
@@ -12,7 +12,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("_api/site")
-export class _Site extends _SharePointQueryableInstance {
+export class _Site extends _SharePointQueryableInstance implements _ISite {
 
     /**
      * Gets the root web of the site collection
@@ -130,7 +130,7 @@ export class _Site extends _SharePointQueryableInstance {
         const postBody =
             body({
                 "request":
-                    extend({
+                    assign({
                         "__metadata": { "type": "Microsoft.SharePoint.Portal.SPSiteCreationRequest" },
                     }, props),
             },
@@ -198,7 +198,7 @@ export class _Site extends _SharePointQueryableInstance {
     }
 }
 
-export interface ISite extends IInvokable, ISharePointQueryableInstance {
+export interface _ISite {
     readonly rootWeb: IWeb;
     getRootWeb(): Promise<IWeb>;
     getContextInfo(): Promise<IContextInfo>;
@@ -223,7 +223,9 @@ export interface ISite extends IInvokable, ISharePointQueryableInstance {
         owners?: string[]): Promise<void>;
 
 }
-export interface _Site extends IInvokable { }
+
+export interface ISite extends _ISite, IInvokable, ISharePointQueryableInstance {}
+
 export const Site = spInvokableFactory<ISite>(_Site);
 
 /**

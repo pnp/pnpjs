@@ -1,7 +1,7 @@
 import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable";
-import { extend, TypedHash } from "@pnp/common";
+import { assign, TypedHash } from "@pnp/common";
 import { SPBatch } from "../batch";
-import { ICachingOptions, IInvokable, body } from "@pnp/odata";
+import { ICachingOptions, body } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types";
 import { metadata } from "../utils/metadata";
@@ -37,7 +37,7 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
     public sendEmail(props: IEmailProperties): Promise<void> {
 
         const params = {
-            properties: extend(metadata("SP.Utilities.EmailProperties"), {
+            properties: assign(metadata("SP.Utilities.EmailProperties"), {
                 Body: props.Body,
                 From: props.From,
                 Subject: props.Subject,
@@ -46,27 +46,27 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
 
         if (props.To && props.To.length > 0) {
 
-            params.properties = extend(params.properties, {
+            params.properties = assign(params.properties, {
                 To: { results: props.To },
             });
         }
 
         if (props.CC && props.CC.length > 0) {
 
-            params.properties = extend(params.properties, {
+            params.properties = assign(params.properties, {
                 CC: { results: props.CC },
             });
         }
 
         if (props.BCC && props.BCC.length > 0) {
 
-            params.properties = extend(params.properties, {
+            params.properties = assign(params.properties, {
                 BCC: { results: props.BCC },
             });
         }
 
         if (props.AdditionalHeaders) {
-            params.properties = extend(params.properties, {
+            params.properties = assign(params.properties, {
                 AdditionalHeaders: props.AdditionalHeaders,
             });
         }
@@ -167,7 +167,7 @@ export interface IUtilities {
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
-export interface _Utilities extends IInvokable { }
+
 export const Utilities = spInvokableFactory<IUtilities>(_Utilities);
 
 type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };

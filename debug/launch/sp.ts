@@ -18,7 +18,7 @@ export async function Example(settings: any) {
         },
     });
 
-    const listData2 = await Web(sp.web).orderedLists();
+    const listData2 = await Web("").orderedLists();
 
     console.log(JSON.stringify(listData2, null, 2));
 
@@ -27,7 +27,6 @@ export async function Example(settings: any) {
     console.log(JSON.stringify(listData, null, 2));
 
     // const web = sp.web;
-
 
     // hookObj(web, {
     //     __json: () => {

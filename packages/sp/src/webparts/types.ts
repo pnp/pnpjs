@@ -53,7 +53,7 @@ export const LimitedWebPartManager = (baseUrl: string | ISharePointQueryable, pa
 type LimitedWebPartManagerCloneType = ILimitedWebPartManager & ISharePointQueryable;
 const LimitedWebPartManagerCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): LimitedWebPartManagerCloneType => <any>LimitedWebPartManager(baseUrl, path);
 
-export class _WebPartDefinitions extends _SharePointQueryableCollection {
+export class _WebPartDefinitions extends _SharePointQueryableCollection implements _IWebPartDefinitions {
 
     /**
      * Gets a web part definition from the collection by id
@@ -74,15 +74,17 @@ export class _WebPartDefinitions extends _SharePointQueryableCollection {
     }
 }
 
-export interface IWebPartDefinitions extends IInvokable, ISharePointQueryableCollection {
+export interface _IWebPartDefinitions {
     getById(id: string): IWebPartDefinition;
     getByControlId(id: string): IWebPartDefinition;
 }
-export interface _WebPartDefinitions extends IInvokable { }
+
+export interface IWebPartDefinitions extends _IWebPartDefinitions, IInvokable, ISharePointQueryableCollection {}
+
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
 
 
-export class _WebPartDefinition extends _SharePointQueryableInstance implements IWebPartDefinition {
+export class _WebPartDefinition extends _SharePointQueryableInstance implements _IWebPartDefinition {
 
     public get webpart(): ISharePointQueryableInstance {
         return SharePointQueryableInstance(this, "webpart");
@@ -115,7 +117,7 @@ export class _WebPartDefinition extends _SharePointQueryableInstance implements 
     }
 }
 
-export interface IWebPartDefinition extends IInvokable, ISharePointQueryableInstance {
+export interface _IWebPartDefinition {
     /**
          * Gets the webpart information associated with this definition
          */
@@ -149,7 +151,9 @@ export interface IWebPartDefinition extends IInvokable, ISharePointQueryableInst
      */
     delete(): Promise<void>;
 }
-export interface IWebPartDefinition extends IInvokable { }
+
+export interface IWebPartDefinition extends _IWebPartDefinition, IInvokable, ISharePointQueryableInstance {}
+
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 
 export enum WebPartsPersonalizationScope {

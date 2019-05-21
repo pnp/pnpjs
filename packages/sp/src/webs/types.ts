@@ -1,4 +1,4 @@
-import { extend, TypedHash } from "@pnp/common";
+import { assign, TypedHash } from "@pnp/common";
 import { IInvokable, body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
@@ -19,14 +19,14 @@ import { spPost, spGet } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
 @defaultPath("webs")
-export class _Webs extends _SharePointQueryableCollection implements IWebs {
+export class _Webs extends _SharePointQueryableCollection implements _IWebs {
 
     @clientTagMethod("ws.add")
     public async add(title: string, url: string, description = "", template = "STS", language = 1033, inheritPermissions = true): Promise<IWebAddResult> {
 
         const postBody = body({
             "parameters":
-                extend(metadata("SP.WebCreationInformation"),
+                assign(metadata("SP.WebCreationInformation"),
                     {
                         Description: description,
                         Language: language,
@@ -49,7 +49,7 @@ export class _Webs extends _SharePointQueryableCollection implements IWebs {
 /**
  * Describes a collection of webs
  */
-export interface IWebs extends IInvokable, ISharePointQueryableCollection {
+export interface _IWebs {
 
     /**
      * Adds a new web to the collection
@@ -63,7 +63,12 @@ export interface IWebs extends IInvokable, ISharePointQueryableCollection {
      */
     add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean): Promise<IWebAddResult>;
 }
-export interface _Webs extends IInvokable { }
+
+export interface IWebs extends _IWebs, IInvokable, ISharePointQueryableCollection { }
+
+/**
+ * Invokable factory for IWebs instances
+ */
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 /**
@@ -72,7 +77,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  */
 @defaultPath("_api/web")
 @deleteable()
-export class _Web extends _SharePointQueryableInstance  {
+export class _Web extends _SharePointQueryableInstance implements _IWeb {
 
     public get webs(): IWebs {
         return Webs(this);
@@ -104,11 +109,11 @@ export class _Web extends _SharePointQueryableInstance  {
     @clientTagMethod("w.update")
     public async update(properties: TypedHash<any>): Promise<IWebUpdateResult> {
 
-        const postBody = body(extend(metadata("SP.Web"), properties), headers({ "X-HTTP-Method": "MERGE" }));
+        const postBody = body(assign(metadata("SP.Web"), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
         const data = await spPost(this, postBody);
 
-        return { data, web: this };
+        return { data, web: <any>this };
     }
 
     @clientTagMethod("w.applyTheme")
@@ -140,7 +145,7 @@ export class _Web extends _SharePointQueryableInstance  {
     @clientTagMethod("w.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        const postBody = body({ "query": extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        const postBody = body({ "query": assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     }
 
@@ -170,7 +175,7 @@ export class _Web extends _SharePointQueryableInstance  {
     }
 }
 
-export interface IWeb extends IInvokable, ISharePointQueryableInstance, IDeleteable {
+export interface _IWeb {
 
     /**
      * Gets this web's subwebs
@@ -281,7 +286,12 @@ export interface IWeb extends IInvokable, ISharePointQueryableInstance, IDeletea
      */
     removeStorageEntity(key: string): Promise<void>;
 }
-export interface _Web extends IInvokable, IDeleteable { }
+
+export interface IWeb extends _IWeb, IInvokable, ISharePointQueryableInstance, IDeleteable { }
+
+/**
+ * Invokable factory for IWeb instances
+ */
 export const Web = spInvokableFactory<IWeb>(_Web);
 
 /**

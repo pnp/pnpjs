@@ -1,4 +1,4 @@
-import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
+import { assign, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue } from "@pnp/sp-clientsvc";
 import { ITermSet, ITermSetData, ITermSets, TermSets } from "./termsets";
 import { ITermStore, TermStore } from "./termstores";
@@ -174,7 +174,7 @@ export class TermGroup extends ClientSvcQueryable implements ITermGroup {
 
         this._useCaching = false;
         return this.invokeMethod<ITermSetData>("CreateTermSet", params)
-            .then(r => extend(this.store.getTermSetById(r.Id), r));
+            .then(r => assign(this.store.getTermSetById(r.Id), r));
     }
 
     /**

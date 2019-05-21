@@ -15,7 +15,7 @@ import { SPBatch } from "../batch";
  *
  */
 @defaultPath("features")
-export class _Features extends _SharePointQueryableCollection implements IFeatures {
+export class _Features extends _SharePointQueryableCollection implements _IFeatures {
 
     /**
      * Adds a new list to the collection
@@ -63,15 +63,20 @@ export class _Features extends _SharePointQueryableCollection implements IFeatur
     }
 }
 
-export interface IFeatures extends IInvokable, ISharePointQueryableCollection {
+export interface _IFeatures {
     add(id: string, force?: boolean): Promise<FeatureAddResult>;
     getById(id: string): IFeature;
     remove(id: string, force?: boolean): Promise<any>;
 }
-export interface _Features extends IInvokable { }
+
+export interface IFeatures extends _IFeatures, IInvokable, ISharePointQueryableCollection {}
+
+/**
+ * Invokable factory for IFeatures instances
+ */
 export const Features = spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _SharePointQueryableInstance implements IFeature {
+export class _Feature extends _SharePointQueryableInstance implements _IFeature {
 
     /**
      * Removes (deactivates) a feature from the collection
@@ -84,7 +89,7 @@ export class _Feature extends _SharePointQueryableInstance implements IFeature {
 
         const feature = await Feature(this).select("DefinitionId")<{ DefinitionId: string; }>();
 
-        const promise = this.getParent(_Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
+        const promise = this.getParent<IFeatures>(_Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
 
         removeDependency();
 
@@ -92,10 +97,15 @@ export class _Feature extends _SharePointQueryableInstance implements IFeature {
     }
 }
 
-export interface IFeature extends IInvokable, ISharePointQueryableInstance {
+export interface _IFeature {
     deactivate(force?: boolean): Promise<any>;
 }
-export interface _Feature extends IInvokable { }
+
+export interface IFeature extends _IFeature, IInvokable, ISharePointQueryableInstance {}
+
+/**
+ * Invokable factory for IFeature instances
+ */
 export const Feature = spInvokableFactory<IFeature>(_Feature);
 
 export interface FeatureAddResult {

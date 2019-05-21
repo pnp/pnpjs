@@ -1,5 +1,5 @@
 import { ISharePointQueryableConstructor } from "./sharepointqueryable";
-import { extend, combine, hOP } from "@pnp/common";
+import { assign, combine, hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ODataParser } from "@pnp/odata";
 import { extractWebUrl } from "./utils/extractweburl";
@@ -47,13 +47,13 @@ class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
     public hydrate = (d: D) => {
         const o = <T>new this.factory(odataUrlFrom(d), null);
-        return extend(o, d);
+        return assign(o, d);
     }
 
     public parse(r: Response): Promise<T & D> {
         return super.parse(r).then((d: any) => {
             const o = <T>new this.factory(odataUrlFrom(d), null);
-            return extend<T, D>(o, d);
+            return assign<T, D>(o, d);
         });
     }
 }
@@ -67,7 +67,7 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
     public hydrate = (d: D[]) => {
         return d.map(v => {
             const o = <T>new this.factory(odataUrlFrom(v), null);
-            return extend(o, v);
+            return assign(o, v);
         });
     }
 
@@ -75,7 +75,7 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
         return super.parse(r).then((d: D[]) => {
             return d.map(v => {
                 const o = <T>new this.factory(odataUrlFrom(v), null);
-                return extend(o, v);
+                return assign(o, v);
             });
         });
     }

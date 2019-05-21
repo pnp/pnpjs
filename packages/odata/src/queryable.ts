@@ -274,7 +274,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
      * @param parent Parent queryable from which we will derive a base url
      * @param path Additional path
      */
-    protected extend(parent: IQueryable<any>, path?: string) {
+    protected assign(parent: IQueryable<any>, path?: string) {
         this.data.parentUrl = parent.data.url;
         this.data.url = combine(this.data.parentUrl, path || "");
         this.configureFrom(parent);

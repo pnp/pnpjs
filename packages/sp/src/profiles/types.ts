@@ -7,14 +7,14 @@ import {
     ISharePointQueryable,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { extend } from "@pnp/common";
+import { assign } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
 import { PrincipalType, PrincipalSource } from "../types";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
-export class _Profiles extends _SharePointQueryableInstance implements IProfiles {
+export class _Profiles extends _SharePointQueryableInstance implements _IProfiles {
 
     private clientPeoplePickerQuery: ClientPeoplePickerQuery;
     private profileLoader: ProfileLoader;
@@ -279,7 +279,7 @@ export class _Profiles extends _SharePointQueryableInstance implements IProfiles
     }
 }
 
-export interface IProfiles extends IInvokable, ISharePointQueryableInstance {
+export interface _IProfiles {
     readonly editProfileLink: Promise<string>;
 
     /**
@@ -441,7 +441,9 @@ export interface IProfiles extends IInvokable, ISharePointQueryableInstance {
      */
     clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): Promise<IPeoplePickerEntity[]>;
 }
-export interface _Profiles extends IInvokable { }
+
+export interface IProfiles extends _IProfiles, IInvokable, ISharePointQueryableInstance {}
+
 export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
 
 
@@ -538,7 +540,7 @@ class ClientPeoplePickerQuery extends _SharePointQueryable {
      * @param queryParams The query parameters to create request body
      */
     private getBodyFrom(queryParams: IClientPeoplePickerQueryParameters): { body: string } {
-        return body({ "queryParams": extend(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
+        return body({ "queryParams": assign(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
     }
 }
 

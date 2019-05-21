@@ -6,7 +6,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser, IInvokable, headers } from "@pnp/odata";
-import { extend, getGUID } from "@pnp/common";
+import { assign, getGUID } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath, IDeleteableWithETag, deleteableWithETag } from "../decorators";
@@ -28,7 +28,7 @@ export interface IFileUploadProgressData {
  *
  */
 @defaultPath("files")
-export class _Files extends _SharePointQueryableCollection implements IFiles {
+export class _Files extends _SharePointQueryableCollection implements _IFiles {
 
     /**
      * Gets a File by filename
@@ -90,13 +90,18 @@ export class _Files extends _SharePointQueryableCollection implements IFiles {
     }
 }
 
-export interface IFiles extends IInvokable, ISharePointQueryableCollection {
+export interface _IFiles {
     getByName(name: string): IFile;
     add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<IFileAddResult>;
     addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<IFileAddResult>;
     addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult>;
 }
-export interface _Files extends IInvokable { }
+
+export interface IFiles extends _IFiles, IInvokable, ISharePointQueryableCollection { }
+
+/**
+ * Invokable factory for IFiles instances
+ */
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
@@ -104,7 +109,7 @@ export const Files = spInvokableFactory<IFiles>(_Files);
  *
  */
 @deleteableWithETag()
-export class _File extends _SharePointQueryableInstance implements IFile {
+export class _File extends _SharePointQueryableInstance implements _IFile {
 
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
@@ -300,7 +305,7 @@ export class _File extends _SharePointQueryableInstance implements IFile {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects)().then((d: any) => {
 
-            return extend(Item(odataUrlFrom(d)), d);
+            return assign(Item(odataUrlFrom(d)), d);
         });
     }
 
@@ -404,7 +409,7 @@ export class _File extends _SharePointQueryableInstance implements IFile {
     }
 }
 
-export interface IFile extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface _IFile {
     readonly listItemAllFields: ISharePointQueryableInstance;
     readonly versions: IVersions;
     approve(comment?: string): Promise<void>;
@@ -426,7 +431,12 @@ export interface IFile extends IInvokable, ISharePointQueryableInstance, IDelete
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize?: number): Promise<IFileAddResult>;
 }
-export interface _File extends IInvokable, IDeleteableWithETag { }
+
+export interface IFile extends _IFile, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
+
+/**
+ * Invokable factory for IFile instances
+ */
 export const File = spInvokableFactory<IFile>(_File);
 
 /**
@@ -434,7 +444,7 @@ export const File = spInvokableFactory<IFile>(_File);
  *
  */
 @defaultPath("versions")
-export class _Versions extends _SharePointQueryableCollection implements IVersions {
+export class _Versions extends _SharePointQueryableCollection implements _IVersions {
 
     /**	
      * Gets a version by id	
@@ -499,7 +509,7 @@ export class _Versions extends _SharePointQueryableCollection implements IVersio
     }
 }
 
-export interface IVersions extends IInvokable, ISharePointQueryableCollection {
+export interface _IVersions {
     getById(versionId: number): IVersion;
     deleteAll(): Promise<void>;
     deleteById(versionId: number): Promise<void>;
@@ -508,7 +518,12 @@ export interface IVersions extends IInvokable, ISharePointQueryableCollection {
     recycleByLabel(label: string): Promise<void>;
     restoreByLabel(label: string): Promise<void>;
 }
-export interface _Versions extends IInvokable { }
+
+export interface IVersions extends _IVersions, IInvokable, ISharePointQueryableCollection { }
+
+/**
+ * Invokable factory for IVersions instances
+ */
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -516,10 +531,15 @@ export const Versions = spInvokableFactory<IVersions>(_Versions);
  *
  */
 @deleteableWithETag()
-export class _Version extends _SharePointQueryableInstance { }
+export class _Version extends _SharePointQueryableInstance implements _IVersion { }
 
-export interface IVersion extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
-export interface _Version extends IInvokable, IDeleteableWithETag { }
+export interface _IVersion { }
+
+export interface IVersion extends _IVersion, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
+
+/**
+ * Invokable factory for IVersion instances
+ */
 export const Version = spInvokableFactory<IVersion>(_Version);
 
 export enum CheckinType {

@@ -1,5 +1,5 @@
 import { _GraphQueryableCollection, IGraphQueryableCollection, _GraphQueryableInstance, IGraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
-import { TypedHash, extend } from "@pnp/common";
+import { TypedHash, assign } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -10,9 +10,9 @@ import { body, IInvokable } from "@pnp/odata";
  */
 @updateable()
 @deleteable()
-export class _Contact extends _GraphQueryableInstance<IContactType> implements IContact { }
-export interface IContact extends IInvokable, IUpdateable<IContactType>, IDeleteable, IGraphQueryableInstance<IContactType> { }
-export interface _Contact extends IInvokable, IUpdateable<IContactType>, IDeleteable { }
+export class _Contact extends _GraphQueryableInstance<IContactType> implements _IContact { }
+export interface _IContact { }
+export interface IContact extends _IContact, IInvokable, IUpdateable<IContactType>, IDeleteable, IGraphQueryableInstance<IContactType> { }
 export const Contact = graphInvokableFactory<IContact>(_Contact);
 
 /**
@@ -20,7 +20,7 @@ export const Contact = graphInvokableFactory<IContact>(_Contact);
  */
 @defaultPath("contacts")
 @getById(Contact)
-export class _Contacts extends _GraphQueryableCollection<IContactType[]> implements IContacts {
+export class _Contacts extends _GraphQueryableCollection<IContactType[]> implements _IContacts {
 
     /**
     * Create a new Contact for the user.
@@ -38,17 +38,17 @@ export class _Contacts extends _GraphQueryableCollection<IContactType[]> impleme
         businessPhones: string[],
         additionalProperties: TypedHash<any> = {}): Promise<IContactAddResult> {
 
-        const postBody = extend({ businessPhones, emailAddresses, givenName, surName }, additionalProperties);
+        const postBody = assign({ businessPhones, emailAddresses, givenName, surName }, additionalProperties);
 
         const data = await graphPost(this, body(postBody));
 
         return {
-            contact: this.getById(data.id),
+            contact: (<any>this).getById(data.id),
             data,
         };
     }
 }
-export interface IContacts extends IInvokable, IGetById<IContact>, IGraphQueryableCollection<IContactType[]> {
+export interface _IContacts {
     add(
         givenName: string,
         surName: string,
@@ -56,7 +56,7 @@ export interface IContacts extends IInvokable, IGetById<IContact>, IGraphQueryab
         businessPhones: string[],
         additionalProperties: TypedHash<any>): Promise<IContactAddResult>;
 }
-export interface _Contacts extends IInvokable, IGetById<IContact> { }
+export interface IContacts extends _IContacts, IInvokable, IGetById<IContact>, IGraphQueryableCollection<IContactType[]> {}
 export const Contacts = graphInvokableFactory<IContacts>(_Contacts);
 
 /**
@@ -64,7 +64,7 @@ export const Contacts = graphInvokableFactory<IContacts>(_Contacts);
  */
 @deleteable()
 @updateable()
-export class _ContactFolder extends _GraphQueryableInstance<IContactFolderType> {
+export class _ContactFolder extends _GraphQueryableInstance<IContactFolderType> implements _IContactFolder {
     /**
      * Gets the contacts in this contact folder
      */
@@ -79,11 +79,11 @@ export class _ContactFolder extends _GraphQueryableInstance<IContactFolderType> 
         return ContactFolders(this, "childFolders");
     }
 }
-export interface IContactFolder extends IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance<IContactFolderType> {
+export interface _IContactFolder {
     readonly contacts: IContacts;
     readonly childFolders: IContactFolders;
 }
-export interface _ContactFolder extends IInvokable, IUpdateable, IDeleteable { }
+export interface IContactFolder extends _IContactFolder, IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance<IContactFolderType> {}
 export const ContactFolder = graphInvokableFactory<IContactFolder>(_ContactFolder);
 
 /**
@@ -91,7 +91,7 @@ export const ContactFolder = graphInvokableFactory<IContactFolder>(_ContactFolde
  */
 @defaultPath("contactFolders")
 @getById(ContactFolder)
-export class _ContactFolders extends _GraphQueryableCollection<IContactFolderType[]> implements IContactFolders {
+export class _ContactFolders extends _GraphQueryableCollection<IContactFolderType[]> implements _IContactFolders {
 
     /**
      * Create a new Contact Folder for the user.
@@ -109,15 +109,15 @@ export class _ContactFolders extends _GraphQueryableCollection<IContactFolderTyp
         const data = await graphPost(this, body(postBody));
 
         return {
-            contactFolder: this.getById(data.id),
+            contactFolder: (<any>this).getById(data.id),
             data,
         };
     }
 }
-export interface IContactFolders extends IInvokable, IGetById<IContactFolder>, IGraphQueryableCollection<IContactFolderType[]> {
+export interface _IContactFolders {
     add(displayName: string, parentFolderId?: string): Promise<IContactFolderAddResult>;
 }
-export interface _ContactFolders extends IInvokable, IGetById<IContactFolder> { }
+export interface IContactFolders extends _IContactFolders, IInvokable, IGetById<IContactFolder>, IGraphQueryableCollection<IContactFolderType[]> {}
 export const ContactFolders = graphInvokableFactory<IContactFolders>(_ContactFolders);
 
 /**

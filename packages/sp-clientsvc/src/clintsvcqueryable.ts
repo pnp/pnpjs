@@ -1,7 +1,7 @@
 import {
     FetchOptions,
     combine,
-    extend,
+    assign,
     getGUID,
     mergeHeaders,
     mergeOptions,
@@ -169,14 +169,14 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
         if (this.hasBatch) {
 
             // this is using the options variable to pass some extra information downstream to the batch
-            options = extend(options, {
+            options = assign(options, {
                 clientsvc_ObjectPaths: clonedOps,
             });
 
         } else {
 
             if (!hOP(options, "body")) {
-                options = extend(options, {
+                options = assign(options, {
                     body: clonedOps.toBody(),
                 });
             }
@@ -192,7 +192,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
 
         const ops = this._objectPaths.copy().appendActionToLast(opQuery(this.getSelects()));
 
-        return this.send<DataType>(ops).then(r => extend(new factory(this), r));
+        return this.send<DataType>(ops).then(r => assign(new factory(this), r));
     }
 
     /**
@@ -202,7 +202,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
 
         const ops = this._objectPaths.copy().appendActionToLast(opQuery([], this.getSelects()));
 
-        return this.send<DataType[]>(ops).then(r => r.map(d => extend(factory(d), d)));
+        return this.send<DataType[]>(ops).then(r => r.map(d => assign(factory(d), d)));
     }
 
     /**
@@ -263,7 +263,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
         // append setting all the properties to this instance
         objectProperties(properties).map(a => ops.appendActionToLast(a));
         ops.appendActionToLast(opQuery([], null));
-        return this.send<DataType>(ops).then(r => extend(new factory(this), r));
+        return this.send<DataType>(ops).then(r => assign(new factory(this), r));
     }
 
     /**
@@ -293,7 +293,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
                 "content-type": "text/xml",
             });
 
-            options = extend(options, { headers });
+            options = assign(options, { headers });
 
             // we need to do some special cache handling to ensure we have a good key
             if (this._useCaching) {

@@ -1,5 +1,5 @@
 // import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine, extend } from "@pnp/common";
+import { getGUID, combine, assign } from "@pnp/common";
 import { graph } from "@pnp/graph";
 import { AdalFetchClient, SPFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
@@ -166,7 +166,7 @@ function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
     });
 }
 
-export let testSettings: ISettingsTestingPart = extend(settings.testing, { webUrl: "" });
+export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
 
 before(function (done: MochaDone) {
 

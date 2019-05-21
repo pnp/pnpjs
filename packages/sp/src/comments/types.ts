@@ -6,7 +6,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { extend } from "@pnp/common";
+import { assign } from "@pnp/common";
 import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
@@ -52,7 +52,7 @@ export interface ICommentInfo {
  * Represents a Collection of comments
  */
 @defaultPath("comments")
-export class _Comments extends _SharePointQueryableCollection<ICommentData[]> implements IComments {
+export class _Comments extends _SharePointQueryableCollection<ICommentData[]> implements _IComments {
 
     /**
      * Adds a new comment to this collection
@@ -65,11 +65,11 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> im
             info = { text: info };
         }
 
-        const postBody = body(extend(metadata("Microsoft.SharePoint.Comments.comment"), info));
+        const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
         const d = await spPost(this.clone(Comments, null), postBody);
 
-        return extend(this.getById(d.id), d);
+        return assign(this.getById(d.id), d);
     }
 
     /**
@@ -91,18 +91,23 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> im
     }
 }
 
-export interface IComments extends IInvokable, ISharePointQueryableCollection<ICommentData[]> {
+export interface _IComments {
     add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
     getById(id: string | number): IComment;
     clear(): Promise<boolean>;
 }
-export interface _Comments extends IInvokable { }
+
+export interface IComments extends _IComments, IInvokable, ISharePointQueryableCollection<ICommentData[]> { }
+
+/**
+ * Invokable factory for IComments instances
+ */
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
 /**
  * Represents a comment
  */
-export class _Comment extends _SharePointQueryableInstance<ICommentData> {
+export class _Comment extends _SharePointQueryableInstance<ICommentData> implements _IComment {
 
     public get replies(): IReplies {
         return Replies(this);
@@ -130,20 +135,25 @@ export class _Comment extends _SharePointQueryableInstance<ICommentData> {
     }
 }
 
-export interface IComment extends IInvokable, ISharePointQueryableInstance<ICommentData> {
+export interface _IComment {
     readonly replies: IReplies;
     like(): Promise<void>;
     unlike(): Promise<void>;
     delete(): Promise<void>;
 }
-export interface _Comment extends IInvokable { }
+
+export interface IComment extends _IComment, IInvokable, ISharePointQueryableInstance<ICommentData> { }
+
+/**
+ * Invokable factory for IComment instances
+ */
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 /**
  * Represents a Collection of comments
  */
 @defaultPath("replies")
-export class _Replies extends _SharePointQueryableCollection<ICommentData[]> implements IReplies {
+export class _Replies extends _SharePointQueryableCollection<ICommentData[]> implements _IReplies {
 
     /**
      * Adds a new reply to this collection
@@ -156,16 +166,21 @@ export class _Replies extends _SharePointQueryableCollection<ICommentData[]> imp
             info = { text: info };
         }
 
-        const postBody = body(extend(metadata("Microsoft.SharePoint.Comments.comment"), info));
+        const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
         const d = await spPost(this.clone(Replies, null), postBody);
 
-        return extend(Comment(odataUrlFrom(d)), d);
+        return assign(Comment(odataUrlFrom(d)), d);
     }
 }
 
-export interface IReplies extends IInvokable, ISharePointQueryableCollection<ICommentData[]> {
+export interface _IReplies {
     add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
 }
-export interface _Replies extends IInvokable { }
+
+export interface IReplies extends _IReplies, IInvokable, ISharePointQueryableCollection<ICommentData[]> { }
+
+/**
+ * Invokable factory for IReplies instances
+ */
 export const Replies = spInvokableFactory<IReplies>(_Replies);

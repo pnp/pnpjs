@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, extend, jsS, IFetchOptions } from "@pnp/common";
+import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
 import { Queryable, IQueryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
@@ -9,12 +9,8 @@ export interface ISharePointQueryableConstructor<T extends ISharePointQueryable 
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
 
-export type InvokableType = ISharePointQueryable & { new(): T; new(...args: any[]): T };
-
-export const spInvokableFactory = <T extends InvokableType>(f: T):
-    (baseUrl: string | ISharePointQueryable, path?: string) => T => {
-
-    return invokableFactory<InvokableType>(f);
+export const spInvokableFactory = <R>(f: any): (baseUrl: string | ISharePointQueryable, path?: string) => R => {
+    return invokableFactory<R>(f);
 };
 
 /**
@@ -165,7 +161,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
      * @param factory The contructor for the class to create
      */
     protected getParent<T extends ISharePointQueryable>(
-        factory: ISharePointQueryableConstructor<T>,
+        factory: ISharePointQueryableConstructor<any>,
         baseUrl: string | ISharePointQueryable = this.parentUrl,
         path?: string,
         batch?: SPBatch): T {
@@ -266,7 +262,7 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
      */
     protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return> {
         return (props: any) => spPost(this, {
-            body: jsS(extend(metadata(type), props)),
+            body: jsS(assign(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
             },

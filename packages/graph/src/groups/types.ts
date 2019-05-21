@@ -1,4 +1,4 @@
-import { extend, TypedHash } from "@pnp/common";
+import { assign, TypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body, IInvokable } from "@pnp/odata";
 import { _GraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
@@ -26,7 +26,7 @@ export enum GroupType {
  */
 @deleteable()
 @updateable()
-export class _Group extends _DirectoryObject<IGroupType> implements IGroup {
+export class _Group extends _DirectoryObject<IGroupType> implements _IGroup {
 
     public addFavorite(): Promise<void> {
         return graphPost(this.clone(Group, "addFavorite"));
@@ -56,7 +56,7 @@ export class _Group extends _DirectoryObject<IGroupType> implements IGroup {
         return view();
     }
 }
-export interface IGroup extends IInvokable, IDeleteable, IUpdateable, IDirectoryObject<IGroupType> {
+export interface _IGroup {
     /**
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
@@ -92,7 +92,7 @@ export interface IGroup extends IInvokable, IDeleteable, IUpdateable, IDirectory
      */
     getCalendarView(start: Date, end: Date): Promise<IEventType[]>;
 }
-export interface _Group extends IInvokable, IDeleteable, IUpdateable { }
+export interface IGroup extends _IGroup, IInvokable, IDeleteable, IUpdateable, IDirectoryObject<IGroupType> { }
 export const Group = graphInvokableFactory<IGroup>(_Group);
 
 /**
@@ -101,7 +101,7 @@ export const Group = graphInvokableFactory<IGroup>(_Group);
  */
 @defaultPath("groups")
 @getById(Group)
-export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements IGroups {
+export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements _IGroups {
 
     /**
      * Create a new group as specified in the request body.
@@ -113,7 +113,7 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
      */
     public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<any> = {}): Promise<IGroupAddResult> {
 
-        let postBody = extend({
+        let postBody = assign({
             displayName: name,
             mailEnabled: groupType === GroupType.Office365,
             mailNickname: mailNickname,
@@ -123,7 +123,7 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
         // include a group type if required
         if (groupType !== GroupType.Security) {
 
-            postBody = extend(postBody, {
+            postBody = assign(postBody, {
                 groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
             });
         }
@@ -132,12 +132,12 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
 
         return {
             data,
-            group: this.getById(data.id),
+            group: (<any>this).getById(data.id),
         };
     }
 }
-export interface IGroups extends IInvokable, IGetById<IGroup>, IGraphQueryableCollection<IGroupType[]> { }
-export interface _Groups extends IInvokable, IGetById<IGroup> { }
+export interface _IGroups { }
+export interface IGroups extends _IGroups, IInvokable, IGetById<IGroup>, IGraphQueryableCollection<IGroupType[]> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
 
 /**

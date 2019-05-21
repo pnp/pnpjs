@@ -1,6 +1,6 @@
 import { IFile } from "../files/types";
 import { Item, IItemUpdateResult, IItem } from "../items/types";
-import { TypedHash, extend, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
+import { TypedHash, assign, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
 import { metadata } from "../utils/metadata";
 import { List, IList } from "../lists/types";
@@ -43,7 +43,7 @@ export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 /**b 
  * Represents the data and methods associated with client side "modern" pages
  */
-export class _ClientSidePage extends _SharePointQueryable {
+export class _ClientSidePage extends _SharePointQueryable implements _IClientSidePage {
 
     private _pageSettings: IClientSidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
@@ -51,7 +51,6 @@ export class _ClientSidePage extends _SharePointQueryable {
 
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
-     * 
      */
     constructor(
         baseUrl: string | ISharePointQueryable,
@@ -70,7 +69,7 @@ export class _ClientSidePage extends _SharePointQueryable {
             this.data.parentUrl = "";
             this.data.url = combine(extractWebUrl(baseUrl), path);
         } else {
-            this.extend(_ClientSidePage.initFrom(baseUrl, null), path);
+            this.assign(_ClientSidePage.initFrom(baseUrl, null), path);
         }
 
         // set a default page settings slice
@@ -680,10 +679,11 @@ export class _ClientSidePage extends _SharePointQueryable {
         const listData = await spPost<{ Id: string, "odata.id": string }>(initer);
         const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
         const itemData: T = item.select.apply(item, selects)();
-        return extend((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
+        return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
     }
 }
-export interface IClientSidePage extends IInvokable, ISharePointQueryable {
+
+export interface _IClientSidePage {
     pageLayout: ClientSidePageLayoutType;
     bannerImageUrl: string;
     bannerImageSourceType: number;
@@ -782,7 +782,12 @@ export interface IClientSidePage extends IInvokable, ISharePointQueryable {
         translateY?: number;
     }): void;
 }
-export interface _ClientSidePage extends IInvokable { }
+
+export interface IClientSidePage extends _IClientSidePage, IInvokable, ISharePointQueryable {}
+
+/**
+ * Invokable factory for IClientSidePage instances
+ */
 const ClientSidePage = (
     baseUrl: string | ISharePointQueryable,
     path?: string,
@@ -791,9 +796,14 @@ const ClientSidePage = (
     sections: CanvasSection[] = [],
     commentsDisabled = false): IClientSidePage => {
 
-    return invokableFactory<IClientSidePage>(_ClientSidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
+    return invokableFactory<IClientSidePage>(<any>_ClientSidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
 };
 
+/**
+ * Loads a client side page from the supplied IFile instance
+ * 
+ * @param file Source IFile instance
+ */
 export const ClientSidePageFromFile = async (file: IFile): Promise<IClientSidePage> => {
 
     const item = await file.getItem<{ Id: number }>();
@@ -801,6 +811,14 @@ export const ClientSidePageFromFile = async (file: IFile): Promise<IClientSidePa
     return page.configureFrom(file).load();
 };
 
+/**
+ * Creates a new client side page
+ * 
+ * @param web The web or list
+ * @param pageName The name of the page (filename)
+ * @param title The page's title
+ * @param pageLayoutType Layout to use when creating the page
+ */
 export const CreateClientSidePage = async (web: IWeb | IList, pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<IClientSidePage> => {
 
     // patched because previously we used the full page name with the .aspx at the end
@@ -1141,7 +1159,7 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
     }
 
     public setProperties<T = any>(properties: T): this {
-        this.data.webPartData.properties = extend(this.data.webPartData.properties, properties);
+        this.data.webPartData.properties = assign(this.data.webPartData.properties, properties);
         return this;
     }
 

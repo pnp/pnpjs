@@ -7,8 +7,8 @@ export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
 }
 
-export const graphInvokableFactory = <T>(f: IGraphQueryableConstructor<T>) => (baseUrl: string | IGraphQueryable, path?: string): T => {
-    return invokableFactory<T>(f)(baseUrl, path);
+export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R => {
+    return invokableFactory<R>(f);
 };
 
 /**

@@ -1,5 +1,5 @@
 import "./queryable";
-import { hook } from "./hooking";
+import { extendGlobal } from "./extensions";
 import { Logger, LogLevel } from "@pnp/logging";
 
 declare module "./queryable" {
@@ -19,7 +19,7 @@ declare module "./queryable" {
 
 let deepTrace = false;
 
-hook([
+extendGlobal([
     (op: string, _target: any, ...rest: any[]): void => {
         if (deepTrace) {
             switch (op) {

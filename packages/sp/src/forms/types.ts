@@ -13,7 +13,7 @@ import { defaultPath } from "../decorators";
  *
  */
 @defaultPath("forms")
-export class _Forms extends _SharePointQueryableCollection implements IForms {
+export class _Forms extends _SharePointQueryableCollection implements _IForms {
     /**	
      * Gets a form by id	
      *	
@@ -24,18 +24,20 @@ export class _Forms extends _SharePointQueryableCollection implements IForms {
     }
 }
 
-export interface IForms extends IInvokable, ISharePointQueryableCollection {
+export interface _IForms {
     getById(id: string): IForm;
 }
-export interface _Forms extends IInvokable { }
+export interface IForms extends _IForms, IInvokable, ISharePointQueryableCollection { }
+
 export const Forms = spInvokableFactory<IForms>(_Forms);
 
 /**
  * Describes a single of Form instance
  *
  */
-export class _Form extends _SharePointQueryableInstance implements IForm { }
+export class _Form extends _SharePointQueryableInstance implements _IForm { }
 
-export interface IForm extends IInvokable, ISharePointQueryableInstance { }
-export interface _Form extends IInvokable { }
+export interface _IForm { }
+export interface IForm extends _IForm, IInvokable, ISharePointQueryableInstance { }
+
 export const Form = spInvokableFactory<IForm>(_Form);
