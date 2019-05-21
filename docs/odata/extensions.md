@@ -216,7 +216,7 @@ console.log(JSON.stringify(items.length, null, 2));
 
 ## Enable and Disable Extensions
 
-Extensions are automatically enabled when you set the an extension through any of the above outlined methods. You can disable and enable extensions on demand if needed.
+Extensions are automatically enabled when you set an extension through any of the above outlined methods. You can disable and enable extensions on demand if needed.
 
 ```TypeScript
 import { enableExtensions, disableExtensions } from "@pnp/odata";
