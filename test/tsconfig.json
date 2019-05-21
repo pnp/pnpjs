@@ -13,6 +13,11 @@
             "mocha",
             "sharepoint"
         ],
+        "paths": {
+            "@pnp/*": [
+                "../packages/*"
+            ]
+        },
         "removeComments": true
     },
     "include": [
