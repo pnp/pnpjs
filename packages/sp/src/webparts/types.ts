@@ -7,7 +7,7 @@ import {
     ISharePointQueryable,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { SharePointQueryableInstance } from "../sp";
 import { spPost } from "../operations";
 
@@ -74,11 +74,11 @@ export class _WebPartDefinitions extends _SharePointQueryableCollection {
     }
 }
 
-export interface IWebPartDefinitions extends IGetable, ISharePointQueryableCollection {
+export interface IWebPartDefinitions extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IWebPartDefinition;
     getByControlId(id: string): IWebPartDefinition;
 }
-export interface _WebPartDefinitions extends IGetable { }
+export interface _WebPartDefinitions extends IInvokable { }
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
 
 
@@ -115,7 +115,7 @@ export class _WebPartDefinition extends _SharePointQueryableInstance implements 
     }
 }
 
-export interface IWebPartDefinition extends IGetable, ISharePointQueryableInstance {
+export interface IWebPartDefinition extends IInvokable, ISharePointQueryableInstance {
     /**
          * Gets the webpart information associated with this definition
          */
@@ -149,7 +149,7 @@ export interface IWebPartDefinition extends IGetable, ISharePointQueryableInstan
      */
     delete(): Promise<void>;
 }
-export interface IWebPartDefinition extends IGetable { }
+export interface IWebPartDefinition extends IInvokable { }
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 
 export enum WebPartsPersonalizationScope {

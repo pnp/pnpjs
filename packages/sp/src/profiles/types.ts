@@ -9,7 +9,7 @@ import {
 } from "../sharepointqueryable";
 import { extend } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { PrincipalType, PrincipalSource } from "../types";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
@@ -279,7 +279,7 @@ export class _Profiles extends _SharePointQueryableInstance implements IProfiles
     }
 }
 
-export interface IProfiles extends IGetable, ISharePointQueryableInstance {
+export interface IProfiles extends IInvokable, ISharePointQueryableInstance {
     readonly editProfileLink: Promise<string>;
 
     /**
@@ -441,7 +441,7 @@ export interface IProfiles extends IGetable, ISharePointQueryableInstance {
      */
     clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): Promise<IPeoplePickerEntity[]>;
 }
-export interface _Profiles extends IGetable { }
+export interface _Profiles extends IInvokable { }
 export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
 
 

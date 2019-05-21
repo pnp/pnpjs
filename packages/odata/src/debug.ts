@@ -1,5 +1,5 @@
 import "./queryable";
-import { hook } from "./invokable";
+import { hook } from "./hooking";
 import { Logger, LogLevel } from "@pnp/logging";
 
 declare module "./queryable" {
@@ -23,14 +23,14 @@ hook([
     (op: string, _target: any, ...rest: any[]): void => {
         if (deepTrace) {
             switch (op) {
-                case "has":
                 case "apply":
+                    Logger.write(`${op} ::> ()`, LogLevel.Info);
+                    break;
+                case "has":
                 case "get":
                 case "set":
                     Logger.write(`${op} ::> ${rest[0]}`, LogLevel.Info);
                     break;
-                default:
-                    Logger.write(`${op} ::> ()`, LogLevel.Info);
             }
         }
     },

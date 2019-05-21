@@ -3,7 +3,7 @@ import { TypedHash, extend } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
-import { body, IGetable } from "@pnp/odata";
+import { body, IInvokable } from "@pnp/odata";
 
 /**
  * Contact
@@ -11,8 +11,8 @@ import { body, IGetable } from "@pnp/odata";
 @updateable()
 @deleteable()
 export class _Contact extends _GraphQueryableInstance<IContactType> implements IContact { }
-export interface IContact extends IGetable, IUpdateable<IContactType>, IDeleteable, IGraphQueryableInstance<IContactType> { }
-export interface _Contact extends IGetable, IUpdateable<IContactType>, IDeleteable { }
+export interface IContact extends IInvokable, IUpdateable<IContactType>, IDeleteable, IGraphQueryableInstance<IContactType> { }
+export interface _Contact extends IInvokable, IUpdateable<IContactType>, IDeleteable { }
 export const Contact = graphInvokableFactory<IContact>(_Contact);
 
 /**
@@ -48,7 +48,7 @@ export class _Contacts extends _GraphQueryableCollection<IContactType[]> impleme
         };
     }
 }
-export interface IContacts extends IGetable, IGetById<IContact>, IGraphQueryableCollection<IContactType[]> {
+export interface IContacts extends IInvokable, IGetById<IContact>, IGraphQueryableCollection<IContactType[]> {
     add(
         givenName: string,
         surName: string,
@@ -56,7 +56,7 @@ export interface IContacts extends IGetable, IGetById<IContact>, IGraphQueryable
         businessPhones: string[],
         additionalProperties: TypedHash<any>): Promise<IContactAddResult>;
 }
-export interface _Contacts extends IGetable, IGetById<IContact> { }
+export interface _Contacts extends IInvokable, IGetById<IContact> { }
 export const Contacts = graphInvokableFactory<IContacts>(_Contacts);
 
 /**
@@ -79,11 +79,11 @@ export class _ContactFolder extends _GraphQueryableInstance<IContactFolderType> 
         return ContactFolders(this, "childFolders");
     }
 }
-export interface IContactFolder extends IGetable, IUpdateable, IDeleteable, IGraphQueryableInstance<IContactFolderType> {
+export interface IContactFolder extends IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance<IContactFolderType> {
     readonly contacts: IContacts;
     readonly childFolders: IContactFolders;
 }
-export interface _ContactFolder extends IGetable, IUpdateable, IDeleteable { }
+export interface _ContactFolder extends IInvokable, IUpdateable, IDeleteable { }
 export const ContactFolder = graphInvokableFactory<IContactFolder>(_ContactFolder);
 
 /**
@@ -114,10 +114,10 @@ export class _ContactFolders extends _GraphQueryableCollection<IContactFolderTyp
         };
     }
 }
-export interface IContactFolders extends IGetable, IGetById<IContactFolder>, IGraphQueryableCollection<IContactFolderType[]> {
+export interface IContactFolders extends IInvokable, IGetById<IContactFolder>, IGraphQueryableCollection<IContactFolderType[]> {
     add(displayName: string, parentFolderId?: string): Promise<IContactFolderAddResult>;
 }
-export interface _ContactFolders extends IGetable, IGetById<IContactFolder> { }
+export interface _ContactFolders extends IInvokable, IGetById<IContactFolder> { }
 export const ContactFolders = graphInvokableFactory<IContactFolders>(_ContactFolders);
 
 /**

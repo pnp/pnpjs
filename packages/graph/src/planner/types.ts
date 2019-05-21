@@ -5,7 +5,7 @@ import {
     PlannerBucket as IPlannerBucketType,
     Planner as IPlannerType,
 } from "@microsoft/microsoft-graph-types";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { _GraphQueryableInstance, IGraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { updateable, IUpdateable, deleteable, IDeleteable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -37,7 +37,7 @@ export interface IPlanner {
     readonly tasks: ITasks;
     readonly buckets: IBuckets;
 }
-export interface _Planner extends IGetable { }
+export interface _Planner extends IInvokable { }
 export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 
 /**
@@ -55,11 +55,11 @@ export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
         return Buckets(this);
     }
 }
-export interface IPlan extends IGetable, IUpdateable<IPlannerPlanType>, IDeleteable, IGraphQueryableInstance<IPlannerPlanType> {
+export interface IPlan extends IInvokable, IUpdateable<IPlannerPlanType>, IDeleteable, IGraphQueryableInstance<IPlannerPlanType> {
     readonly tasks: ITasks;
     readonly buckets: IBuckets;
 }
-export interface _Plan extends IGetable, IUpdateable<IPlannerPlanType>, IDeleteable { }
+export interface _Plan extends IInvokable, IUpdateable<IPlannerPlanType>, IDeleteable { }
 export const Plan = graphInvokableFactory<IPlan>(_Plan);
 
 @defaultPath("plans")
@@ -81,10 +81,10 @@ export class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]> implem
         };
     }
 }
-export interface IPlans extends IGetable, IGetById<IPlan>, IGraphQueryableCollection<IPlannerPlanType[]> {
+export interface IPlans extends IInvokable, IGetById<IPlan>, IGraphQueryableCollection<IPlannerPlanType[]> {
     add(owner: string, title: string): Promise<IPlanAddResult>;
 }
-export interface _Plans extends IGetable, IGetById<IPlan> { }
+export interface _Plans extends IInvokable, IGetById<IPlan> { }
 export const Plans = graphInvokableFactory<IPlans>(_Plans);
 
 /**
@@ -93,8 +93,8 @@ export const Plans = graphInvokableFactory<IPlans>(_Plans);
 @updateable()
 @deleteable()
 export class _Task extends _GraphQueryableInstance<IPlannerTaskType> implements ITask { }
-export interface ITask extends IGetable, IUpdateable<IPlannerTaskType>, IDeleteable, IGraphQueryableInstance<IPlannerTaskType> { }
-export interface _Task extends IGetable, IUpdateable<IPlannerTaskType>, IDeleteable { }
+export interface ITask extends IInvokable, IUpdateable<IPlannerTaskType>, IDeleteable, IGraphQueryableInstance<IPlannerTaskType> { }
+export interface _Task extends IInvokable, IUpdateable<IPlannerTaskType>, IDeleteable { }
 export const Task = graphInvokableFactory<ITask>(_Task);
 
 /**
@@ -132,10 +132,10 @@ export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> implem
         };
     }
 }
-export interface ITasks extends IGetable, IGetById<ITask>, IGraphQueryableCollection<IPlannerTaskType[]> {
+export interface ITasks extends IInvokable, IGetById<ITask>, IGraphQueryableCollection<IPlannerTaskType[]> {
     add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<ITaskAddResult>;
 }
-export interface _Tasks extends IGetable, IGetById<ITask> { }
+export interface _Tasks extends IInvokable, IGetById<ITask> { }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 
 
@@ -149,10 +149,10 @@ export class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> impleme
         return Tasks(this);
     }
 }
-export interface IBucket extends IGetable, IUpdateable<IPlannerBucketType>, IDeleteable, IGraphQueryableInstance<IPlannerBucketType> {
+export interface IBucket extends IInvokable, IUpdateable<IPlannerBucketType>, IDeleteable, IGraphQueryableInstance<IPlannerBucketType> {
     readonly tasks: ITasks;
 }
-export interface _Bucket extends IGetable, IUpdateable<IPlannerBucketType>, IDeleteable { }
+export interface _Bucket extends IInvokable, IUpdateable<IPlannerBucketType>, IDeleteable { }
 export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
 
 
@@ -185,10 +185,10 @@ export class _Buckets extends _GraphQueryableCollection<IPlannerBucketType[]> im
         };
     }
 }
-export interface IBuckets extends IGetable, IGetById<IBucket>, IGraphQueryableCollection<IPlannerBucketType[]> {
+export interface IBuckets extends IInvokable, IGetById<IBucket>, IGraphQueryableCollection<IPlannerBucketType[]> {
     add(name: string, planId: string, orderHint?: string): Promise<IBucketAddResult>;
 }
-export interface _Buckets extends IGetable, IGetById<IBucket> { }
+export interface _Buckets extends IInvokable, IGetById<IBucket> { }
 export const Buckets = graphInvokableFactory<IBuckets>(_Buckets);
 
 export interface IBucketAddResult {

@@ -1,5 +1,5 @@
 import { extend, TypedHash, hOP } from "@pnp/common";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -124,7 +124,7 @@ export class _Lists extends _SharePointQueryableCollection implements ILists {
     }
 }
 
-export interface ILists extends IGetable, ISharePointQueryableCollection {
+export interface ILists extends IInvokable, ISharePointQueryableCollection {
     /**
      * Gets a list from the collection by guid id
      *
@@ -171,7 +171,7 @@ export interface ILists extends IGetable, ISharePointQueryableCollection {
      */
     ensureSitePagesLibrary(): Promise<IList>;
 }
-export interface _Lists extends IGetable { }
+export interface _Lists extends IInvokable { }
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
 /**
@@ -378,7 +378,7 @@ export class _List extends _SharePointQueryableInstance {
     }
 }
 
-export interface IList extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface IList extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
 
     /**
      * Gets the effective base permissions of this list
@@ -468,7 +468,7 @@ export interface IList extends IGetable, ISharePointQueryableInstance, IDeleteab
      */
     addValidateUpdateItemUsingPath(formValues: IListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, comment?: string): Promise<IListItemFormUpdateValue[]>;
 }
-export interface _List extends IGetable, IDeleteableWithETag { }
+export interface _List extends IInvokable, IDeleteableWithETag { }
 export const List = spInvokableFactory<IList>(_List);
 
 export interface IListAddResult {

@@ -1,5 +1,5 @@
 import { extend, TypedHash, hOP } from "@pnp/common";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,
@@ -58,12 +58,12 @@ export class _RoleAssignments extends _SharePointQueryableCollection implements 
     }
 }
 
-export interface IRoleAssignments extends IGetable, ISharePointQueryableCollection {
+export interface IRoleAssignments extends IInvokable, ISharePointQueryableCollection {
     getById(id: number): IRoleAssignment;
     add(principalId: number, roleDefId: number): Promise<void>;
     remove(principalId: number, roleDefId: number): Promise<void>;
 }
-export interface _RoleAssignments extends IGetable { }
+export interface _RoleAssignments extends IInvokable { }
 export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignments);
 
 /**
@@ -90,11 +90,11 @@ export class _RoleAssignment extends _SharePointQueryableInstance implements IRo
     }
 }
 
-export interface IRoleAssignment extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IRoleAssignment extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     readonly groups: ISiteGroups;
     readonly bindings: ISharePointQueryableCollection;
 }
-export interface _RoleAssignment extends IGetable, IDeleteable { }
+export interface _RoleAssignment extends IInvokable, IDeleteable { }
 export const RoleAssignment = spInvokableFactory<IRoleAssignment>(_RoleAssignment);
 
 /**
@@ -162,13 +162,13 @@ export class _RoleDefinitions extends _SharePointQueryableCollection implements 
     }
 }
 
-export interface IRoleDefinitions extends IGetable, ISharePointQueryableCollection {
+export interface IRoleDefinitions extends IInvokable, ISharePointQueryableCollection {
     getById(id: number): IRoleDefinition;
     getByName(name: string): IRoleDefinition;
     getByType(roleTypeKind: number): IRoleDefinition;
     add(name: string, description: string, order: number, basePermissions: IBasePermissions): Promise<IRoleDefinitionAddResult>;
 }
-export interface _RoleDefinitions extends IGetable { }
+export interface _RoleDefinitions extends IInvokable { }
 export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinitions);
 
 /**
@@ -208,10 +208,10 @@ export class _RoleDefinition extends _SharePointQueryableInstance implements IRo
     /* tslint:enable */
 }
 
-export interface IRoleDefinition extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IRoleDefinition extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     update(properties: TypedHash<any>): Promise<IRoleDefinitionUpdateResult>;
 }
-export interface _RoleDefinition extends IGetable, IDeleteable { }
+export interface _RoleDefinition extends IInvokable, IDeleteable { }
 export const RoleDefinition = spInvokableFactory<IRoleDefinition>(_RoleDefinition);
 
 export interface ISecurableMethods {

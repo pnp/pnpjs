@@ -1,7 +1,7 @@
 import { _GraphQueryableCollection, IGraphQueryableCollection, IGraphQueryableInstance, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { graphPost } from "../operations";
 
 /**
@@ -37,12 +37,12 @@ export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphQuer
         return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds }));
     }
 }
-export interface IDirectoryObject<GetType = IDirectoryObjectType> extends IGetable, IDeleteable, IGraphQueryableInstance<GetType> {
+export interface IDirectoryObject<GetType = IDirectoryObjectType> extends IInvokable, IDeleteable, IGraphQueryableInstance<GetType> {
     getMemberObjects(securityEnabledOnly?: boolean): Promise<{ value: string[] }>;
     getMemberGroups(securityEnabledOnly?: boolean): Promise<{ value: string[] }>;
     checkMemberGroups(groupIds: String[]): Promise<{ value: string[] }>;
  }
-export interface _DirectoryObject extends IGetable, IDeleteable { }
+export interface _DirectoryObject extends IInvokable, IDeleteable { }
 export const DirectoryObject = graphInvokableFactory<IDirectoryObject>(_DirectoryObject);
 
 /**
@@ -56,7 +56,7 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQ
         return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids, type }));
     }
 }
-export interface IDirectoryObjects<GetType = IDirectoryObjectType[]> extends IGetable, IGetById<IDirectoryObjectType>, IGraphQueryableCollection<GetType> {
+export interface IDirectoryObjects<GetType = IDirectoryObjectType[]> extends IInvokable, IGetById<IDirectoryObjectType>, IGraphQueryableCollection<GetType> {
     /**
     * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties. 
     * The $select query option is not available for this operation.
@@ -66,7 +66,7 @@ export interface IDirectoryObjects<GetType = IDirectoryObjectType[]> extends IGe
     */
     getByIds(ids: string[], type?: DirectoryObjectTypes): Promise<IDirectoryObjectType[]>;
 }
-export interface _DirectoryObjects extends IGetable, IGetById<any> { }
+export interface _DirectoryObjects extends IInvokable, IGetById<any> { }
 export const DirectoryObjects = graphInvokableFactory<IDirectoryObjects>(_DirectoryObjects);
 
 /**

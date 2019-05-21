@@ -7,7 +7,7 @@ import {
 } from "../sharepointqueryable";
 import { extend, TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { defaultPath, deleteable, IDeleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -434,7 +434,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
     }
 }
 
-export interface IFields extends IGetable, ISharePointQueryableCollection {
+export interface IFields extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IField;
     getByTitle(title: string): IField;
     getByInternalNameOrTitle(name: string): IField;
@@ -467,7 +467,7 @@ export interface IFields extends IGetable, ISharePointQueryableCollection {
     addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
     addLocation(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
 }
-export interface _Fields extends IGetable { }
+export interface _Fields extends IInvokable { }
 export const Fields = spInvokableFactory<IFields>(_Fields);
 
 /**
@@ -517,13 +517,13 @@ export class _Field extends _SharePointQueryableInstance implements IField {
     }
 }
 
-export interface IField extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IField extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     update(properties: TypedHash<string | number | boolean>, fieldType?: string): Promise<FieldUpdateResult>;
     setShowInDisplayForm(show: boolean): Promise<void>;
     setShowInEditForm(show: boolean): Promise<void>;
     setShowInNewForm(show: boolean): Promise<void>;
 }
-export interface _Field extends IGetable, IDeleteable { }
+export interface _Field extends IInvokable, IDeleteable { }
 export const Field = spInvokableFactory<IField>(_Field);
 
 /**

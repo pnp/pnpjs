@@ -5,7 +5,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost, spDelete, spPatch } from "../operations";
 
@@ -49,11 +49,11 @@ export class _Subscriptions extends _SharePointQueryableCollection implements IS
     }
 }
 
-export interface ISubscriptions extends IGetable, ISharePointQueryableCollection {
+export interface ISubscriptions extends IInvokable, ISharePointQueryableCollection {
     getById(subscriptionId: string): ISubscription;
     add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult>;
 }
-export interface _Subscriptions extends IGetable { }
+export interface _Subscriptions extends IInvokable { }
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
 /**
@@ -98,11 +98,11 @@ export class _Subscription extends _SharePointQueryableInstance implements ISubs
     }
 }
 
-export interface ISubscription extends IGetable, ISharePointQueryableInstance {
+export interface ISubscription extends IInvokable, ISharePointQueryableInstance {
     update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult>;
     delete(): Promise<void>;
 }
-export interface _Subscription extends IGetable { }
+export interface _Subscription extends IInvokable { }
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 export interface ISubscriptionAddResult {

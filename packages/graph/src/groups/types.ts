@@ -1,6 +1,6 @@
 import { extend, TypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
-import { body, IGetable } from "@pnp/odata";
+import { body, IInvokable } from "@pnp/odata";
 import { _GraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -56,7 +56,7 @@ export class _Group extends _DirectoryObject<IGroupType> implements IGroup {
         return view();
     }
 }
-export interface IGroup extends IGetable, IDeleteable, IUpdateable, IDirectoryObject<IGroupType> {
+export interface IGroup extends IInvokable, IDeleteable, IUpdateable, IDirectoryObject<IGroupType> {
     /**
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
@@ -92,7 +92,7 @@ export interface IGroup extends IGetable, IDeleteable, IUpdateable, IDirectoryOb
      */
     getCalendarView(start: Date, end: Date): Promise<IEventType[]>;
 }
-export interface _Group extends IGetable, IDeleteable, IUpdateable { }
+export interface _Group extends IInvokable, IDeleteable, IUpdateable { }
 export const Group = graphInvokableFactory<IGroup>(_Group);
 
 /**
@@ -136,8 +136,8 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
         };
     }
 }
-export interface IGroups extends IGetable, IGetById<IGroup>, IGraphQueryableCollection<IGroupType[]> { }
-export interface _Groups extends IGetable, IGetById<IGroup> { }
+export interface IGroups extends IInvokable, IGetById<IGroup>, IGraphQueryableCollection<IGroupType[]> { }
+export interface _Groups extends IInvokable, IGetById<IGroup> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
 
 /**

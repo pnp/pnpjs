@@ -1,16 +1,20 @@
 import { combine, isUrlAbsolute, extend, jsS, IFetchOptions } from "@pnp/common";
-import { Queryable, IQueryable, invokableFactory, IGetable } from "@pnp/odata";
+import { Queryable, IQueryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
 import { metadata } from "./utils/metadata";
 import { spGet, spPost } from "./operations";
 
-export interface ISharePointQueryableConstructor<T = ISharePointQueryable> {
+export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
 
-export const spInvokableFactory = <T>(f: ISharePointQueryableConstructor<T>) => (baseUrl: string | ISharePointQueryable, path?: string): T => {
-    return invokableFactory<T>(f)(baseUrl, path);
+export type InvokableType = ISharePointQueryable & { new(): T; new(...args: any[]): T };
+
+export const spInvokableFactory = <T extends InvokableType>(f: T):
+    (baseUrl: string | ISharePointQueryable, path?: string) => T => {
+
+    return invokableFactory<InvokableType>(f);
 };
 
 /**
@@ -179,13 +183,13 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
     }
 }
 
-export interface ISharePointQueryable<GetType = any> extends IGetable<GetType>, IQueryable<GetType> {
+export interface ISharePointQueryable<GetType = any> extends IInvokable<GetType>, IQueryable<GetType> {
     select(...selects: string[]): this;
     expand(...expands: string[]): this;
     clone<T extends _SharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean): T;
     get<T = GetType>(options?: IFetchOptions): Promise<T>;
 }
-export interface _SharePointQueryable extends IGetable { }
+export interface _SharePointQueryable extends IInvokable { }
 export const SharePointQueryable = spInvokableFactory<ISharePointQueryable>(_SharePointQueryable);
 
 /**
@@ -238,14 +242,14 @@ export class _SharePointQueryableCollection<GetType = any[]> extends _SharePoint
         return this;
     }
 }
-export interface ISharePointQueryableCollection<GetType = any[]> extends IGetable<GetType>, ISharePointQueryable<GetType> {
+export interface ISharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType>, ISharePointQueryable<GetType> {
     filter(filter: string): this;
     orderBy(orderBy: string, ascending?: boolean): this;
     skip(skip: number): this;
     top(top: number): this;
     get<T = GetType>(options?: IFetchOptions): Promise<T>;
 }
-export interface _SharePointQueryableCollection extends IGetable { }
+export interface _SharePointQueryableCollection extends IInvokable { }
 export const SharePointQueryableCollection = spInvokableFactory<ISharePointQueryableCollection>(_SharePointQueryableCollection);
 
 /**
@@ -269,6 +273,6 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
         }).then((d: Data) => mapper(d, props));
     }
 }
-export interface ISharePointQueryableInstance<GetType = any> extends IGetable, ISharePointQueryable<GetType> { }
-export interface _SharePointQueryableInstance extends IGetable { }
+export interface ISharePointQueryableInstance<GetType = any> extends IInvokable, ISharePointQueryable<GetType> { }
+export interface _SharePointQueryableInstance extends IInvokable { }
 export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);

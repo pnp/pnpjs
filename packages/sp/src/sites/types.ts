@@ -3,7 +3,7 @@ import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
 import { hOP, jsS, extend } from "@pnp/common";
 import { SPHttpClient } from "../net/sphttpclient";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";
 
@@ -198,7 +198,7 @@ export class _Site extends _SharePointQueryableInstance {
     }
 }
 
-export interface ISite extends IGetable, ISharePointQueryableInstance {
+export interface ISite extends IInvokable, ISharePointQueryableInstance {
     readonly rootWeb: IWeb;
     getRootWeb(): Promise<IWeb>;
     getContextInfo(): Promise<IContextInfo>;
@@ -223,7 +223,7 @@ export interface ISite extends IGetable, ISharePointQueryableInstance {
         owners?: string[]): Promise<void>;
 
 }
-export interface _Site extends IGetable { }
+export interface _Site extends IInvokable { }
 export const Site = spInvokableFactory<ISite>(_Site);
 
 /**

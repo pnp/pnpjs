@@ -9,7 +9,7 @@ import {
 } from "../sharepointqueryable";
 import { extend, TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { defaultPath, deleteable, IDeleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -77,12 +77,12 @@ export class _NavigationNodes extends _SharePointQueryableCollection implements 
     }
 }
 
-export interface INavigationNodes extends IGetable, ISharePointQueryableCollection {
+export interface INavigationNodes extends IInvokable, ISharePointQueryableCollection {
     getById(id: number): INavigationNode;
     add(title: string, url: string, visible?: boolean): Promise<INavigationNodeAddResult>;
     moveAfter(nodeId: number, previousNodeId: number): Promise<void>;
 }
-export interface _NavigationNodes extends IGetable { }
+export interface _NavigationNodes extends IInvokable { }
 export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationNodes);
 
 
@@ -118,11 +118,11 @@ export class _NavigationNode extends _SharePointQueryableInstance {
     }
 }
 
-export interface INavigationNode extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface INavigationNode extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     readonly children: INavigationNodes;
     update(properties: TypedHash<string | number | boolean>): Promise<INavNodeUpdateResult>;
 }
-export interface _NavigationNode extends IGetable, IDeleteable { }
+export interface _NavigationNode extends IInvokable, IDeleteable { }
 export const NavigationNode = spInvokableFactory<INavigationNode>(_NavigationNode);
 
 export interface INavNodeUpdateResult {
@@ -154,11 +154,11 @@ export class _Navigation extends _SharePointQueryable {
     }
 }
 
-export interface INavigation extends IGetable, ISharePointQueryable {
+export interface INavigation extends IInvokable, ISharePointQueryable {
     readonly quicklaunch: INavigationNodes;
     readonly topNavigationBar: INavigationNodes;
 }
-export interface _Navigation extends IGetable { }
+export interface _Navigation extends IInvokable { }
 export const Navigation = spInvokableFactory<INavigation>(_Navigation);
 
 /**

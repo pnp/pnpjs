@@ -8,3 +8,12 @@ export * from "./parsers";
 export * from "./pipeline";
 export * from "./queryable";
 export * from "./request-builders";
+export {
+    hook,
+    hookObj,
+    hookFactory,
+    IHook,
+    clearHooks,
+    enableHooks,
+    disableHooks,
+} from "./hooking";

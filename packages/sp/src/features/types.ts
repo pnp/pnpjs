@@ -1,4 +1,4 @@
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     ISharePointQueryableCollection,
@@ -63,12 +63,12 @@ export class _Features extends _SharePointQueryableCollection implements IFeatur
     }
 }
 
-export interface IFeatures extends IGetable, ISharePointQueryableCollection {
+export interface IFeatures extends IInvokable, ISharePointQueryableCollection {
     add(id: string, force?: boolean): Promise<FeatureAddResult>;
     getById(id: string): IFeature;
     remove(id: string, force?: boolean): Promise<any>;
 }
-export interface _Features extends IGetable { }
+export interface _Features extends IInvokable { }
 export const Features = spInvokableFactory<IFeatures>(_Features);
 
 export class _Feature extends _SharePointQueryableInstance implements IFeature {
@@ -92,10 +92,10 @@ export class _Feature extends _SharePointQueryableInstance implements IFeature {
     }
 }
 
-export interface IFeature extends IGetable, ISharePointQueryableInstance {
+export interface IFeature extends IInvokable, ISharePointQueryableInstance {
     deactivate(force?: boolean): Promise<any>;
 }
-export interface _Feature extends IGetable { }
+export interface _Feature extends IInvokable { }
 export const Feature = spInvokableFactory<IFeature>(_Feature);
 
 export interface FeatureAddResult {

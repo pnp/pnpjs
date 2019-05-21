@@ -7,7 +7,7 @@ import {
 } from "../sharepointqueryable";
 import { TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, IDeleteable, deleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -59,12 +59,12 @@ export class _Views extends _SharePointQueryableCollection implements IViews {
     }
 }
 
-export interface IViews extends IGetable, ISharePointQueryableCollection {
+export interface IViews extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IView;
     getByTitle(title: string): IView;
     add(title: string, personalView?: boolean, additionalSettings?: TypedHash<any>): Promise<IViewAddResult>;
 }
-export interface _Views extends IGetable { }
+export interface _Views extends IInvokable { }
 export const Views = spInvokableFactory<IViews>(_Views);
 
 /**
@@ -103,13 +103,13 @@ export class _View extends _SharePointQueryableInstance implements IView {
     }
 }
 
-export interface IView extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IView extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     readonly fields: IViewFields;
     update(props: TypedHash<any>): IViewUpdateResult;
     renderAsHtml(): Promise<string>;
     setViewXml(viewXml: string): Promise<void>;
 }
-export interface _View extends IGetable, IDeleteable { }
+export interface _View extends IInvokable, IDeleteable { }
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
@@ -157,14 +157,14 @@ export class _ViewFields extends _SharePointQueryableCollection implements IView
     }
 }
 
-export interface IViewFields extends IGetable, ISharePointQueryableCollection {
+export interface IViewFields extends IInvokable, ISharePointQueryableCollection {
     getSchemaXml(): Promise<string>;
     add(fieldTitleOrInternalName: string): Promise<void>;
     move(fieldInternalName: string, index: number): Promise<void>;
     removeAll(): Promise<void>;
     remove(fieldInternalName: string): Promise<void>;
 }
-export interface _ViewFields extends IGetable { }
+export interface _ViewFields extends IInvokable { }
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
 
 export interface IViewAddResult {

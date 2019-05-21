@@ -6,14 +6,14 @@ import { ISharePointQueryableCollection, SharePointQueryableCollection } from ".
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
 declare module "../webs/types" {
-    interface _Web {
-        readonly lists: ILists;
-        readonly siteUserInfoList: IList;
-        readonly defaultDocumentLibrary: IList;
-        readonly customListTemplates: ISharePointQueryableCollection;
-        getList(listRelativeUrl: string): IList;
-        getCatalog(type: number): Promise<IList>;
-    }
+    // interface _Web {
+    //     readonly lists: ILists;
+    //     readonly siteUserInfoList: IList;
+    //     readonly defaultDocumentLibrary: IList;
+    //     readonly customListTemplates: ISharePointQueryableCollection;
+    //     getList(listRelativeUrl: string): IList;
+    //     getCatalog(type: number): Promise<IList>;
+    // }
     interface IWeb {
 
         /**

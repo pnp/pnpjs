@@ -4,7 +4,7 @@ import {
 } from "@microsoft/microsoft-graph-types";
 import { _DirectoryObject, IDirectoryObject, DirectoryObjects, IDirectoryObjects } from "../directory-objects/types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 
 /**
  * Represents a user entity
@@ -19,10 +19,10 @@ export class _User extends _DirectoryObject<IUserType> implements IUser {
         return DirectoryObjects(this, "memberOf");
     }
 }
-export interface IUser extends IGetable, IUpdateable<IUserType>, IDeleteable, IDirectoryObject<IUserType> {
+export interface IUser extends IInvokable, IUpdateable<IUserType>, IDeleteable, IDirectoryObject<IUserType> {
     readonly memberOf: IDirectoryObjects;
  }
-export interface _User extends IGetable, IUpdateable<IUserType>, IDeleteable { }
+export interface _User extends IInvokable, IUpdateable<IUserType>, IDeleteable { }
 export const User = graphInvokableFactory<IUser>(_User);
 
 /**
@@ -32,6 +32,6 @@ export const User = graphInvokableFactory<IUser>(_User);
 @defaultPath("users")
 @getById(User)
 export class _Users extends _GraphQueryableCollection<IUserType[]> {}
-export interface IUsers extends IGetable, IGetById<IUser>, IGraphQueryableCollection<IUserType[]> { }
-export interface _Users extends IGetable, IGetById<IUser> { }
+export interface IUsers extends IInvokable, IGetById<IUser>, IGraphQueryableCollection<IUserType[]> { }
+export interface _Users extends IInvokable, IGetById<IUser> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);

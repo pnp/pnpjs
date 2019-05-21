@@ -10,7 +10,7 @@ import {
 } from "../sharepointqueryable";
 import { extend, TypedHash, hOP } from "@pnp/common";
 import { IListItemFormUpdateValue } from "../lists/types";
-import { ODataParser, IGetable, body, headers } from "@pnp/odata";
+import { ODataParser, IInvokable, body, headers } from "@pnp/odata";
 import { IList } from "../lists";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata";
@@ -159,7 +159,7 @@ export class _Items extends _SharePointQueryableCollection implements IItems {
     }
 }
 
-export interface IItems extends IGetable, ISharePointQueryableCollection {
+export interface IItems extends IInvokable, ISharePointQueryableCollection {
     /**	
     * Gets an Item by id	
     *	
@@ -204,7 +204,7 @@ export interface IItems extends IGetable, ISharePointQueryableCollection {
      */
     add(properties?: TypedHash<any>, listItemEntityTypeFullName?: string): Promise<IItemAddResult>;
 }
-export interface _Items extends IGetable { }
+export interface _Items extends IInvokable { }
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
@@ -371,7 +371,7 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
     }
 }
 
-export interface IItem extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface IItem extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
 
     /**
      * Gets the effective base permissions for the item
@@ -460,7 +460,7 @@ export interface IItem extends IGetable, ISharePointQueryableInstance, IDeleteab
      */
     getLikedByInformation(): Promise<void>;
 }
-export interface _Item extends IGetable, IDeleteableWithETag { }
+export interface _Item extends IInvokable, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);
 
 export interface IItemAddResult {
@@ -493,10 +493,10 @@ export class _ItemVersions extends _SharePointQueryableCollection implements IIt
     }
 }
 
-export interface IItemVersions extends IGetable, ISharePointQueryableCollection {
+export interface IItemVersions extends IInvokable, ISharePointQueryableCollection {
     getById(versionId: number): IItemVersion;
 }
-export interface _ItemVersions extends IGetable { }
+export interface _ItemVersions extends IInvokable { }
 export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**
@@ -506,8 +506,8 @@ export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 @deleteableWithETag()
 export class _ItemVersion extends _SharePointQueryableInstance {}
 
-export interface IItemVersion extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {}
-export interface _ItemVersion extends IGetable, IDeleteableWithETag { }
+export interface IItemVersion extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}
+export interface _ItemVersion extends IInvokable, IDeleteableWithETag { }
 export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
 
 /**

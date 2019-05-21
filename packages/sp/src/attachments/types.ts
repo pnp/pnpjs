@@ -7,7 +7,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, IGetable, headers } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, IInvokable, headers } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
     name: string;
@@ -78,14 +78,14 @@ export class _Attachments extends _SharePointQueryableCollection implements IAtt
     }
 }
 
-export interface IAttachments extends IGetable, ISharePointQueryableCollection {
+export interface IAttachments extends IInvokable, ISharePointQueryableCollection {
     getByName(name: string): IAttachment;
     add(name: string, content: string | Blob | ArrayBuffer): Promise<AttachmentAddResult>;
     addMultiple(files: AttachmentFileInfo[]): Promise<void>;
     deleteMultiple(...files: string[]): Promise<void>;
     recycleMultiple(...files: string[]): Promise<void>;
 }
-export interface _Attachments extends IGetable { }
+export interface _Attachments extends IInvokable { }
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
 /**
@@ -155,7 +155,7 @@ export class _Attachment extends _SharePointQueryableInstance implements IAttach
     }
 }
 
-export interface IAttachment extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface IAttachment extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
     getText(): Promise<string>;
     getBlob(): Promise<Blob>;
     getBuffer(): Promise<ArrayBuffer>;
@@ -163,7 +163,7 @@ export interface IAttachment extends IGetable, ISharePointQueryableInstance, IDe
     setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment>;
     recycle(eTag?: string): Promise<void>;
 }
-export interface _Attachment extends IGetable, IDeleteableWithETag { }
+export interface _Attachment extends IInvokable, IDeleteableWithETag { }
 export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
 
 export interface AttachmentAddResult {

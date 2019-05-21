@@ -1,4 +1,4 @@
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { Notebook as INotebookType, Onenote as IOnenoteType, OnenoteSection as ISectionType, OnenotePage as IOnenotePageType } from "@microsoft/microsoft-graph-types";
 import {
     GraphQueryableCollection,
@@ -29,12 +29,12 @@ export class _OneNote extends _GraphQueryableInstance<IOnenoteType> implements I
         return <any>GraphQueryableCollection(this, "pages");
     }
 }
-export interface IOneNote extends IGetable, IGraphQueryableInstance<IOnenoteType> {
+export interface IOneNote extends IInvokable, IGraphQueryableInstance<IOnenoteType> {
     readonly notebooks: INotebooks;
     readonly sections: ISections;
     readonly pages: IGraphQueryableCollection<IOnenotePageType[]>;
 }
-export interface _OneNote extends IGetable { }
+export interface _OneNote extends IInvokable { }
 export const OneNote = graphInvokableFactory<IOneNote>(_OneNote);
 
 
@@ -47,10 +47,10 @@ export class _Notebook extends _GraphQueryableInstance<INotebookType> implements
         return Sections(this);
     }
 }
-export interface INotebook extends IGetable, IGraphQueryableInstance<INotebookType> {
+export interface INotebook extends IInvokable, IGraphQueryableInstance<INotebookType> {
     readonly sections: ISections;
 }
-export interface _Notebook extends IGetable { }
+export interface _Notebook extends IInvokable { }
 export const Notebook = graphInvokableFactory<INotebook>(_Notebook);
 
 /**
@@ -75,10 +75,10 @@ export class _Notebooks extends _GraphQueryableCollection<INotebookType[]> imple
         };
     }
 }
-export interface INotebooks extends IGetable, IGetById<INotebook>, IGraphQueryableCollection<ISectionType[]> {
+export interface INotebooks extends IInvokable, IGetById<INotebook>, IGraphQueryableCollection<ISectionType[]> {
     add(displayName: string): Promise<INotebookAddResult>;
 }
-export interface _Notebooks extends IGetable, IGetById<INotebook> { }
+export interface _Notebooks extends IInvokable, IGetById<INotebook> { }
 export const Notebooks = graphInvokableFactory<INotebooks>(_Notebooks);
 
 
@@ -86,8 +86,8 @@ export const Notebooks = graphInvokableFactory<INotebooks>(_Notebooks);
  * Describes a sections instance
  */
 export class _Section extends _GraphQueryableInstance<ISectionType> implements ISection { }
-export interface ISection extends IGetable, IGraphQueryableInstance<ISectionType> { }
-export interface _Section extends IGetable { }
+export interface ISection extends IInvokable, IGraphQueryableInstance<ISectionType> { }
+export interface _Section extends IInvokable { }
 export const Section = graphInvokableFactory<ISection>(_Section);
 
 /**
@@ -112,10 +112,10 @@ export class _Sections extends _GraphQueryableCollection<ISectionType[]> impleme
         };
     }
 }
-export interface ISections extends IGetable, IGetById<ISection>, IGraphQueryableCollection<ISectionType[]> {
+export interface ISections extends IInvokable, IGetById<ISection>, IGraphQueryableCollection<ISectionType[]> {
     add(displayName: string): Promise<ISectionAddResult>;
 }
-export interface _Sections extends IGetable, IGetById<ISection> { }
+export interface _Sections extends IInvokable, IGetById<ISection> { }
 export const Sections = graphInvokableFactory<ISections>(_Sections);
 
 /**

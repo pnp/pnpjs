@@ -1,5 +1,5 @@
 import { TypedHash, extend } from "@pnp/common";
-import { body, IGetable } from "@pnp/odata";
+import { body, IInvokable } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath } from "../decorators";
@@ -27,10 +27,10 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> i
         return { data };
     }
 }
-export interface IInvitations extends IGetable, IGraphQueryableCollection<IInvitationType[]> {
+export interface IInvitations extends IInvokable, IGraphQueryableCollection<IInvitationType[]> {
     create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any>): Promise<IInvitationAddResult>;
 }
-export interface _Invitations extends IGetable { }
+export interface _Invitations extends IInvokable { }
 export const Invitations = graphInvokableFactory<IInvitations>(_Invitations);
 
 /**

@@ -1,6 +1,6 @@
 import { _GraphQueryableInstance, IGraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { extend } from "@pnp/common";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -11,8 +11,8 @@ import { graphPost } from "../operations";
 @deleteable()
 @updateable()
 export class _Subscription extends _GraphQueryableInstance<ISubscriptionType> implements ISubscription { }
-export interface ISubscription extends IGetable, IDeleteable, IUpdateable<ISubscriptionType>, IGraphQueryableInstance<ISubscriptionType> { }
-export interface _Subscription extends IGetable, IDeleteable, IUpdateable<ISubscriptionType> { }
+export interface ISubscription extends IInvokable, IDeleteable, IUpdateable<ISubscriptionType>, IGraphQueryableInstance<ISubscriptionType> { }
+export interface _Subscription extends IInvokable, IDeleteable, IUpdateable<ISubscriptionType> { }
 export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
 
 /**
@@ -38,7 +38,7 @@ export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[
         };
     }
 }
-export interface ISubscriptions extends IGetable, IGetById<ISubscription>, IGraphQueryableCollection<ISubscriptionType[]> {
+export interface ISubscriptions extends IInvokable, IGetById<ISubscription>, IGraphQueryableCollection<ISubscriptionType[]> {
     /**
      * Create a new Subscription.
      * 
@@ -51,7 +51,7 @@ export interface ISubscriptions extends IGetable, IGetById<ISubscription>, IGrap
      */
     add(changeType: string, notificationUrl: string, resource: string, expirationDateTime: string, props: ISubscriptionType): Promise<ISubAddResult>;
 }
-export interface _Subscriptions extends IGetable, IGetById<ISubscription> { }
+export interface _Subscriptions extends IInvokable, IGetById<ISubscription> { }
 export const Subscriptions = graphInvokableFactory<ISubscriptions>(_Subscriptions);
 
 /**

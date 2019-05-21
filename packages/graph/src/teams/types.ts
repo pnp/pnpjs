@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, IGraphQueryableInstance, IGraphQueryableCollection, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { extend } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
@@ -56,13 +56,13 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> implements I
         return graphPost(this.clone(Team, "clone"), body(postBody));
     }
 }
-export interface ITeam extends IGetable, IUpdateable<ITeamProperties>, IGraphQueryableInstance<ITeamProperties> {
+export interface ITeam extends IInvokable, IUpdateable<ITeamProperties>, IGraphQueryableInstance<ITeamProperties> {
     readonly channels: IChannels;
     archive(shouldSetSpoSiteReadOnlyForMembers?: boolean): Promise<void>;
     unarchive(): Promise<void>;
     cloneTeam(name: string, description?: string, partsToClone?: string, visibility?: string): Promise<void>;
 }
-export interface _Team extends IGetable, IUpdateable<ITeamProperties> { }
+export interface _Team extends IInvokable, IUpdateable<ITeamProperties> { }
 export const Team = graphInvokableFactory<ITeam>(_Team);
 
 /**
@@ -71,9 +71,9 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
 @defaultPath("teams")
 @getById(Team)
 export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> implements ITeams { }
-export interface ITeams extends IGetable, IGetById<ITeam>, IGraphQueryableCollection<ITeamProperties[]> {
+export interface ITeams extends IInvokable, IGetById<ITeam>, IGraphQueryableCollection<ITeamProperties[]> {
 }
-export interface _Teams extends IGetable, IGetById<ITeam> { }
+export interface _Teams extends IInvokable, IGetById<ITeam> { }
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
 
 /**
@@ -84,10 +84,10 @@ export class _Channel extends _GraphQueryableInstance implements IChannel {
         return Tabs(this);
     }
 }
-export interface IChannel extends IGetable, IGraphQueryableInstance {
+export interface IChannel extends IInvokable, IGraphQueryableInstance {
     readonly tabs: ITabs;
 }
-export interface _Channel extends IGetable { }
+export interface _Channel extends IInvokable { }
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**
@@ -118,8 +118,8 @@ export class _Channels extends _GraphQueryableCollection implements IChannels {
         };
     }
 }
-export interface IChannels extends IGetable, IGetById<IChannel>, IGraphQueryableCollection { }
-export interface _Channels extends IGetable, IGetById<IChannel> { }
+export interface IChannels extends IInvokable, IGetById<IChannel>, IGraphQueryableCollection { }
+export interface _Channels extends IInvokable, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
 
 /**
@@ -129,8 +129,8 @@ export const Channels = graphInvokableFactory<IChannels>(_Channels);
 @updateable()
 @deleteable()
 export class _Tab extends _GraphQueryableInstance implements ITab { }
-export interface ITab extends IGetable, IUpdateable, IDeleteable, IGraphQueryableInstance { }
-export interface _Tab extends IGetable, IUpdateable, IDeleteable { }
+export interface ITab extends IInvokable, IUpdateable, IDeleteable, IGraphQueryableInstance { }
+export interface _Tab extends IInvokable, IUpdateable, IDeleteable { }
 export const Tab = graphInvokableFactory<ITab>(_Tab);
 
 /**
@@ -161,8 +161,8 @@ export class _Tabs extends _GraphQueryableCollection implements ITabs {
         };
     }
 }
-export interface ITabs extends IGetable, IGetById<ITab>, IGraphQueryableCollection { }
-export interface _Tabs extends IGetable, IGetById<ITab> { }
+export interface ITabs extends IInvokable, IGetById<ITab>, IGraphQueryableCollection { }
+export interface _Tabs extends IInvokable, IGetById<ITab> { }
 export const Tabs = graphInvokableFactory<ITabs>(_Tabs);
 
 export interface ITeamUpdateResult {

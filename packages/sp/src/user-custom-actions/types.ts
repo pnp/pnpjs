@@ -6,7 +6,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { extend, TypedHash } from "@pnp/common";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, deleteable, IDeleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -50,12 +50,12 @@ export class _UserCustomActions extends _SharePointQueryableCollection implement
     }
 }
 
-export interface IUserCustomActions extends IGetable, ISharePointQueryableCollection {
+export interface IUserCustomActions extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IUserCustomAction;
     add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult>;
     clear(): Promise<void>;
 }
-export interface _UserCustomActions extends IGetable { }
+export interface _UserCustomActions extends IInvokable { }
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
 /**
@@ -73,10 +73,10 @@ export class _UserCustomAction extends _SharePointQueryableInstance implements I
     public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: this }));
 }
 
-export interface IUserCustomAction extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IUserCustomAction extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     update(props: TypedHash<any>): IUserCustomActionUpdateResult;
 }
-export interface _UserCustomAction extends IGetable, IDeleteable { }
+export interface _UserCustomAction extends IInvokable, IDeleteable { }
 export const UserCustomAction = spInvokableFactory<IUserCustomAction>(_UserCustomAction);
 
 /**

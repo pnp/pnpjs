@@ -8,7 +8,7 @@ import {
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
 import { TypedHash, extend } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import {IGetable, body } from "@pnp/odata";
+import {IInvokable, body } from "@pnp/odata";
 import { defaultPath, IDeleteable, deleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -81,7 +81,7 @@ export class _SiteUsers extends _SharePointQueryableCollection implements ISiteU
     }
 }
 
-export interface ISiteUsers extends IGetable, ISharePointQueryableCollection {
+export interface ISiteUsers extends IInvokable, ISharePointQueryableCollection {
     getById(id: number): ISiteUser;
     getByEmail(email: string): ISiteUser;
     getByLoginName(loginName: string): ISiteUser;
@@ -89,7 +89,7 @@ export interface ISiteUsers extends IGetable, ISharePointQueryableCollection {
     removeByLoginName(loginName: string): Promise<any>;
     add(loginName: string): Promise<ISiteUser>;
 }
-export interface _SiteUsers extends IGetable { }
+export interface _SiteUsers extends IInvokable { }
 export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
 
 /**
@@ -115,11 +115,11 @@ export class _SiteUser extends _SharePointQueryableInstance implements ISiteUser
     public update: (props: TypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, TypedHash<any>, any>("SP.User", data => ({ data, user: this }));
 }
 
-export interface ISiteUser extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface ISiteUser extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     readonly groups: ISiteGroups;
     update(props: TypedHash<any>): Promise<IUserUpdateResult>;
 }
-export interface _SiteUser extends IGetable, IDeleteable { }
+export interface _SiteUser extends IInvokable, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
 
 export interface ISiteUserProps {

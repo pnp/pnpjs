@@ -12,7 +12,7 @@ import {
 } from "../sharepointqueryable";
 import { odataUrlFrom } from "../odata";
 import { IItem, Item } from "../items/types";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
@@ -49,11 +49,11 @@ export class _Folders extends _SharePointQueryableCollection implements IFolders
     }
 }
 
-export interface IFolders extends IGetable, ISharePointQueryableCollection {
+export interface IFolders extends IInvokable, ISharePointQueryableCollection {
     getByName(name: string): IFolder;
     add(url: string): Promise<IFolderAddResult>;
 }
-export interface _Folders extends IGetable { }
+export interface _Folders extends IInvokable { }
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 /**
@@ -159,7 +159,7 @@ export class _Folder extends _SharePointQueryableInstance implements IFolder {
     }
 }
 
-export interface IFolder extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface IFolder extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
     /**
      * Specifies the sequence in which content types are displayed.
      *
@@ -222,7 +222,7 @@ export interface IFolder extends IGetable, ISharePointQueryableInstance, IDelete
     moveTo(destUrl: string): Promise<void>;
 }
 
-export interface _Folder extends IGetable, IDeleteableWithETag { }
+export interface _Folder extends IInvokable, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
 
 export interface IFolderAddResult {

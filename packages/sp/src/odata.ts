@@ -41,7 +41,7 @@ export function odataUrlFrom(candidate: any): string {
 
 class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
-    constructor(protected factory: ISharePointQueryableConstructor<T>) {
+    constructor(protected factory: ISharePointQueryableConstructor<any>) {
         super();
     }
 
@@ -60,7 +60,7 @@ class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
 class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
 
-    constructor(protected factory: ISharePointQueryableConstructor<T>) {
+    constructor(protected factory: ISharePointQueryableConstructor<any>) {
         super();
     }
 
@@ -81,10 +81,10 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
     }
 }
 
-export function spODataEntity<T, DataType = any>(factory: ISharePointQueryableConstructor<T>): ODataParser<T & DataType> {
+export function spODataEntity<T, DataType = any>(factory: ISharePointQueryableConstructor<any>): ODataParser<T & DataType> {
     return new SPODataEntityParserImpl<T, DataType>(factory);
 }
 
-export function spODataEntityArray<T, DataType = any>(factory: ISharePointQueryableConstructor<T>): ODataParser<(T & DataType)[]> {
+export function spODataEntityArray<T, DataType = any>(factory: ISharePointQueryableConstructor<any>): ODataParser<(T & DataType)[]> {
     return new SPODataEntityArrayParserImpl<T, DataType>(factory);
 }

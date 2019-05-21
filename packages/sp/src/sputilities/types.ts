@@ -1,7 +1,7 @@
 import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable";
 import { extend, TypedHash } from "@pnp/common";
 import { SPBatch } from "../batch";
-import { ICachingOptions, IGetable, body } from "@pnp/odata";
+import { ICachingOptions, IInvokable, body } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types";
 import { metadata } from "../utils/metadata";
@@ -167,7 +167,7 @@ export interface IUtilities {
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
-export interface _Utilities extends IGetable { }
+export interface _Utilities extends IInvokable { }
 export const Utilities = spInvokableFactory<IUtilities>(_Utilities);
 
 type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };

@@ -1,4 +1,4 @@
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import {
     ISharePointQueryable,
     _SharePointQueryableInstance,
@@ -51,11 +51,11 @@ export class _AppCatalog extends _SharePointQueryableCollection implements IAppC
     }
 }
 
-export interface IAppCatalog extends IGetable, ISharePointQueryableCollection {
+export interface IAppCatalog extends IInvokable, ISharePointQueryableCollection {
     add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<AppAddResult>;
     getAppById(id: string): IApp;
 }
-export interface _AppCatalog extends IGetable { }
+export interface _AppCatalog extends IInvokable { }
 export const AppCatalog = spInvokableFactory<IAppCatalog>(_AppCatalog);
 
 /**
@@ -111,8 +111,8 @@ export class _App extends _SharePointQueryableInstance implements IApp {
     }
 }
 
-export interface _App extends IGetable { }
-export interface IApp extends IGetable, ISharePointQueryableInstance {
+export interface _App extends IInvokable { }
+export interface IApp extends IInvokable, ISharePointQueryableInstance {
     deploy(skipFeatureDeployment?: boolean): Promise<void>;
     retract(): Promise<void>;
     install(): Promise<void>;

@@ -1,5 +1,5 @@
 import { TypedHash } from "@pnp/common";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import {
     SharePointQueryableCollection,
     _SharePointQueryableInstance,
@@ -69,12 +69,12 @@ export class _ContentTypes extends _SharePointQueryableCollection implements ICo
     }
 }
 
-export interface IContentTypes extends IGetable, ISharePointQueryableCollection {
+export interface IContentTypes extends IInvokable, ISharePointQueryableCollection {
     addAvailableContentType(contentTypeId: string): Promise<ContentTypeAddResult>;
     getById(id: string): IContentType;
     add(id: string, name: string, description?: string, group?: string, additionalSettings?: TypedHash<string | number | boolean>): Promise<ContentTypeAddResult>;
 }
-export interface _ContentTypes extends IGetable { }
+export interface _ContentTypes extends IInvokable { }
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 /**
@@ -113,13 +113,13 @@ export class _ContentType extends _SharePointQueryableInstance implements IConte
     }
 }
 
-export interface IContentType extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IContentType extends IInvokable, ISharePointQueryableInstance, IDeleteable {
     readonly fieldLinks: IFieldLinks;
     readonly fields: ISharePointQueryableCollection;
     readonly parent: IContentType;
     readonly workflowAssociations: ISharePointQueryableCollection;
 }
-export interface _ContentType extends IGetable, IDeleteable {}
+export interface _ContentType extends IInvokable, IDeleteable {}
 export const ContentType = spInvokableFactory<IContentType>(_ContentType);
 
 export interface ContentTypeAddResult {
@@ -142,10 +142,10 @@ export class _FieldLinks extends _SharePointQueryableCollection implements IFiel
     }
 }
 
-export interface IFieldLinks extends IGetable, ISharePointQueryableCollection {
+export interface IFieldLinks extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IFieldLink;
 }
-export interface _FieldLinks extends IGetable { }
+export interface _FieldLinks extends IInvokable { }
 export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
 
 /**
@@ -153,8 +153,8 @@ export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
  */
 export class _FieldLink extends _SharePointQueryableInstance implements IFieldLink { }
 
-export interface IFieldLink extends IGetable, _SharePointQueryableInstance {
+export interface IFieldLink extends IInvokable, _SharePointQueryableInstance {
 
 }
-export interface _FieldLink extends IGetable { }
+export interface _FieldLink extends IInvokable { }
 export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);

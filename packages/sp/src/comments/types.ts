@@ -9,7 +9,7 @@ import {
 import { extend } from "@pnp/common";
 import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { spPost } from "../operations";
 
 export interface ICommentAuthorData {
@@ -91,12 +91,12 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> im
     }
 }
 
-export interface IComments extends IGetable, ISharePointQueryableCollection<ICommentData[]> {
+export interface IComments extends IInvokable, ISharePointQueryableCollection<ICommentData[]> {
     add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
     getById(id: string | number): IComment;
     clear(): Promise<boolean>;
 }
-export interface _Comments extends IGetable { }
+export interface _Comments extends IInvokable { }
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
 /**
@@ -130,13 +130,13 @@ export class _Comment extends _SharePointQueryableInstance<ICommentData> {
     }
 }
 
-export interface IComment extends IGetable, ISharePointQueryableInstance<ICommentData> {
+export interface IComment extends IInvokable, ISharePointQueryableInstance<ICommentData> {
     readonly replies: IReplies;
     like(): Promise<void>;
     unlike(): Promise<void>;
     delete(): Promise<void>;
 }
-export interface _Comment extends IGetable { }
+export interface _Comment extends IInvokable { }
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 /**
@@ -164,8 +164,8 @@ export class _Replies extends _SharePointQueryableCollection<ICommentData[]> imp
     }
 }
 
-export interface IReplies extends IGetable, ISharePointQueryableCollection<ICommentData[]> {
+export interface IReplies extends IInvokable, ISharePointQueryableCollection<ICommentData[]> {
     add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
 }
-export interface _Replies extends IGetable { }
+export interface _Replies extends IInvokable { }
 export const Replies = spInvokableFactory<IReplies>(_Replies);

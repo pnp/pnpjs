@@ -1,4 +1,4 @@
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     ISharePointQueryableInstance,
@@ -24,10 +24,10 @@ export class _Forms extends _SharePointQueryableCollection implements IForms {
     }
 }
 
-export interface IForms extends IGetable, ISharePointQueryableCollection {
+export interface IForms extends IInvokable, ISharePointQueryableCollection {
     getById(id: string): IForm;
 }
-export interface _Forms extends IGetable { }
+export interface _Forms extends IInvokable { }
 export const Forms = spInvokableFactory<IForms>(_Forms);
 
 /**
@@ -36,6 +36,6 @@ export const Forms = spInvokableFactory<IForms>(_Forms);
  */
 export class _Form extends _SharePointQueryableInstance implements IForm { }
 
-export interface IForm extends IGetable, ISharePointQueryableInstance { }
-export interface _Form extends IGetable { }
+export interface IForm extends IInvokable, ISharePointQueryableInstance { }
+export interface _Form extends IInvokable { }
 export const Form = spInvokableFactory<IForm>(_Form);

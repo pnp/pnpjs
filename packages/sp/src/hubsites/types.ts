@@ -1,4 +1,4 @@
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     ISharePointQueryableCollection,
@@ -46,10 +46,10 @@ export class _HubSites extends _SharePointQueryableCollection<IHubSiteData[]> im
     }
 }
 
-export interface IHubSites extends IGetable, ISharePointQueryableCollection<IHubSiteData[]> {
+export interface IHubSites extends IInvokable, ISharePointQueryableCollection<IHubSiteData[]> {
     getById(id: string): IHubSite;
 }
-export interface _HubSites extends IGetable {}
+export interface _HubSites extends IInvokable {}
 export const HubSites = spInvokableFactory(_HubSites);
 
 
@@ -59,6 +59,6 @@ export const HubSites = spInvokableFactory(_HubSites);
  */
 export class _HubSite extends _SharePointQueryableInstance<IHubSiteData> implements IHubSite { }
 
-export interface IHubSite extends IGetable, _SharePointQueryableInstance<IHubSiteData> {}
-export interface _HubSite extends IGetable {}
+export interface IHubSite extends IInvokable, _SharePointQueryableInstance<IHubSiteData> {}
+export interface _HubSite extends IInvokable {}
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);

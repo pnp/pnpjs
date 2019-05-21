@@ -1,4 +1,4 @@
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, IGraphQueryableInstance, _GraphQueryableInstance, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, getById, IGetById } from "../decorators";
@@ -15,8 +15,8 @@ export class _Member extends _GraphQueryableInstance<IMemberType> implements IMe
         return graphDelete(this.clone(Member, "$ref"));
     }
 }
-export interface IMember extends IGetable, IGraphQueryableInstance<IMemberType> { }
-export interface _Member extends IGetable { }
+export interface IMember extends IInvokable, IGraphQueryableInstance<IMemberType> { }
+export interface _Member extends IInvokable { }
 export const Member = graphInvokableFactory<IMember>(_Member);
 
 /**
@@ -37,6 +37,6 @@ export class _Members extends _GraphQueryableCollection<IMemberType[]> implement
         return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
     }
 }
-export interface IMembers extends IGetable, IGetById<IMember>, IGraphQueryableCollection<IMemberType[]> { }
-export interface _Members extends IGetable, IGetById<IMember> { }
+export interface IMembers extends IInvokable, IGetById<IMember>, IGraphQueryableCollection<IMemberType[]> { }
+export interface _Members extends IInvokable, IGetById<IMember> { }
 export const Members = graphInvokableFactory<IMembers>(_Members);

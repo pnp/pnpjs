@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, IGraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
-import { BlobParser, BufferParser, IGetable } from "@pnp/odata";
+import { BlobParser, BufferParser, IInvokable } from "@pnp/odata";
 import { Photo as IPhotoType } from "@microsoft/microsoft-graph-types";
 import { defaultPath } from "../decorators";
 import { graphPatch } from "../operations";
@@ -29,10 +29,10 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
         return graphPatch(this.clone(Photo, "$value", false), { body: content });
     }
 }
-export interface IPhoto extends IGetable, IGraphQueryableInstance<IPhotoType> {
+export interface IPhoto extends IInvokable, IGraphQueryableInstance<IPhotoType> {
     getBlob(): Promise<Blob>;
     getBuffer(): Promise<ArrayBuffer>;
     setContent(content: ArrayBuffer | Blob): Promise<void>;
 }
-export interface _Photo extends IGetable { }
+export interface _Photo extends IInvokable { }
 export const Photo = graphInvokableFactory<IPhoto>(_Photo);

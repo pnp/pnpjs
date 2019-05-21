@@ -1,7 +1,9 @@
 // import { Logger, LogLevel } from "../../packages/logging";
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import { Web } from "@pnp/sp/src/webs";
 import { SPFetchClient } from "@pnp/nodejs";
 import "@pnp/odata/src/debug";
+import "./myweb";
 
 declare var process: { exit(code?: number): void };
 
@@ -16,15 +18,36 @@ export async function Example(settings: any) {
         },
     });
 
-    sp.web.__enableDeepTrace();
+    const listData2 = await Web(sp.web).orderedLists();
 
-    const d = await sp.web.addClientSidePage("test123.aspx");
+    console.log(JSON.stringify(listData2, null, 2));
 
-    const y = 9;
+    const listData = await sp.web.orderedLists();
 
-    console.log(y);
+    console.log(JSON.stringify(listData, null, 2));
 
-    console.log(JSON.stringify(d.__json(), null, 2));
+    // const web = sp.web;
+
+
+    // hookObj(web, {
+    //     __json: () => {
+    //         return { override: true };
+    //     },
+    // });
+
+    // const lists = web.lists;
+
+    // web.__enableDeepTrace();
+
+    // const d = await web.select("Title");
+
+    // const dd = await lists();
+
+    // console.log(JSON.stringify(d.__json(), null, 2));
+
+    // console.log(JSON.stringify(lists.__json(), null, 2));
+
+    // console.log(JSON.stringify(dd, null, 2));
 
     process.exit();
 }

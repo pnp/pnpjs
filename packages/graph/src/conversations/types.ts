@@ -1,4 +1,4 @@
-import { body, IGetable } from "@pnp/odata";
+import { body, IInvokable } from "@pnp/odata";
 import {
     ConversationThread as IConversationThreadType,
     Post as IPostType,
@@ -31,10 +31,10 @@ export class _Conversations extends _GraphQueryableCollection<IConversationType[
         return Conversation(this, id);
     }
 }
-export interface IConversations extends IGetable, IAddable<IConversationType>, IGraphQueryableCollection<IConversationType[]> {
+export interface IConversations extends IInvokable, IAddable<IConversationType>, IGraphQueryableCollection<IConversationType[]> {
     getById(id: string): IConversation;
 }
-export interface _Conversations extends IGetable, IAddable<IConversationType> { }
+export interface _Conversations extends IInvokable, IAddable<IConversationType> { }
 export const Conversations = graphInvokableFactory<IConversations>(_Conversations);
 
 /**
@@ -51,8 +51,8 @@ export class _Conversation extends _GraphQueryableInstance<IConversationType> {
         return Threads(this);
     }
 }
-export interface IConversation extends IGetable, IUpdateable<IConversationType>, IDeleteable, IGraphQueryableInstance<IConversationType> { }
-export interface _Conversation extends IGetable, IUpdateable<IConversationType>, IDeleteable { }
+export interface IConversation extends IInvokable, IUpdateable<IConversationType>, IDeleteable, IGraphQueryableInstance<IConversationType> { }
+export interface _Conversation extends IInvokable, IUpdateable<IConversationType>, IDeleteable { }
 export const Conversation = graphInvokableFactory<IConversation>(_Conversation);
 
 /**
@@ -71,10 +71,10 @@ export class _Threads extends _GraphQueryableCollection<IConversationThreadType[
         return Thread(this, id);
     }
 }
-export interface IThreads extends IGetable, IAddable<IConversationThreadType, { id: string }>, IGraphQueryableCollection<IConversationThreadType[]> {
+export interface IThreads extends IInvokable, IAddable<IConversationThreadType, { id: string }>, IGraphQueryableCollection<IConversationThreadType[]> {
     getById(id: string): IThread;
 }
-export interface _Threads extends IGetable, IAddable<IConversationThreadType, { id: string }> { }
+export interface _Threads extends IInvokable, IAddable<IConversationThreadType, { id: string }> { }
 export const Threads = graphInvokableFactory<IThreads>(_Threads);
 
 /**
@@ -99,11 +99,11 @@ export class _Thread extends _GraphQueryableInstance {
         return graphPost(this.clone(Thread, "reply"), body(post));
     }
 }
-export interface IThread extends IGetable, IDeleteable, IGraphQueryableInstance<IConversationThreadType> {
+export interface IThread extends IInvokable, IDeleteable, IGraphQueryableInstance<IConversationThreadType> {
     readonly posts: IPosts;
     reply(post: IPostType): Promise<void>;
 }
-export interface _Thread extends IGetable, IDeleteable { }
+export interface _Thread extends IInvokable, IDeleteable { }
 export const Thread = graphInvokableFactory<IThread>(_Thread);
 
 /**
@@ -127,11 +127,11 @@ export class _Post extends _GraphQueryableInstance<IPostType> implements IPost {
         return graphPost(this.clone(Post, "reply"), body(post));
     }
 }
-export interface IPost extends IGetable, IDeleteable, IGraphQueryableInstance<IPostType> {
+export interface IPost extends IInvokable, IDeleteable, IGraphQueryableInstance<IPostType> {
     forward(info: IPostForwardInfo): Promise<void>;
     reply(post: IPostType): Promise<void>;
 }
-export interface _Post extends IGetable, IDeleteable { }
+export interface _Post extends IInvokable, IDeleteable { }
 export const Post = graphInvokableFactory<IPost>(_Post);
 
 /**
@@ -141,8 +141,8 @@ export const Post = graphInvokableFactory<IPost>(_Post);
 @addable()
 @getById(Post)
 export class _Posts extends _GraphQueryableCollection<IPostType[]> implements IPosts { }
-export interface IPosts extends IGetable, IGetById<IPost>, IAddable<IPostType>, IGraphQueryableCollection<IPostType[]> { }
-export interface _Posts extends IGetable, IGetById<IPost>, IAddable<IPostType> { }
+export interface IPosts extends IInvokable, IGetById<IPost>, IAddable<IPostType>, IGraphQueryableCollection<IPostType[]> { }
+export interface _Posts extends IInvokable, IGetById<IPost>, IAddable<IPostType> { }
 export const Posts = graphInvokableFactory<IPosts>(_Posts);
 
 /**
@@ -169,11 +169,11 @@ export class _Senders extends _GraphQueryableCollection<IUserType[]> {
         return graphDelete(remover);
     }
 }
-export interface ISenders extends IGetable, IGraphQueryableCollection<IUserType[]> {
+export interface ISenders extends IInvokable, IGraphQueryableCollection<IUserType[]> {
     add(id: string): Promise<any>;
     remove(id: string): Promise<void>;
 }
-export interface _Senders extends IGetable { }
+export interface _Senders extends IInvokable { }
 export const Senders = graphInvokableFactory<ISenders>(_Senders);
 
 /**

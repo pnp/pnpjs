@@ -8,7 +8,7 @@ import {
 import { SiteUsers, ISiteUsers } from "../site-users/types";
 import { extend, TypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
@@ -72,14 +72,14 @@ export class _SiteGroups extends _SharePointQueryableCollection implements ISite
     }
 }
 
-export interface ISiteGroups extends IGetable, ISharePointQueryableCollection {
+export interface ISiteGroups extends IInvokable, ISharePointQueryableCollection {
     getById(id: number): ISiteGroup;
     add(properties: TypedHash<any>): Promise<IGroupAddResult>;
     getByName(groupName: string): ISiteGroup;
     removeById(id: number): Promise<void>;
     removeByLoginName(loginName: string): Promise<any>;
 }
-export interface _SiteGroups extends IGetable { }
+export interface _SiteGroups extends IInvokable { }
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
 /**
@@ -112,11 +112,11 @@ export class _SiteGroup extends _SharePointQueryableInstance implements ISiteGro
     });
 }
 
-export interface ISiteGroup extends IGetable, ISharePointQueryableInstance {
+export interface ISiteGroup extends IInvokable, ISharePointQueryableInstance {
     readonly users: ISiteUsers;
     update(props: TypedHash<any>): Promise<IGroupUpdateResult>;
 }
-export interface _SiteGroup extends IGetable { }
+export interface _SiteGroup extends IInvokable { }
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 export interface SiteGroupAddResult {

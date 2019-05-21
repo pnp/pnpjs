@@ -8,7 +8,7 @@ import { odataUrlFrom } from "../odata";
 import { Web, IWeb } from "../webs/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { Site } from "../sites/types";
-import { IGetable, invokableFactory, body } from "@pnp/odata";
+import { IInvokable, invokableFactory, body } from "@pnp/odata";
 import { spPost } from "../operations";
 import { getNextOrder, reindex } from "./funcs";
 
@@ -683,7 +683,7 @@ export class _ClientSidePage extends _SharePointQueryable {
         return extend((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
     }
 }
-export interface IClientSidePage extends IGetable, ISharePointQueryable {
+export interface IClientSidePage extends IInvokable, ISharePointQueryable {
     pageLayout: ClientSidePageLayoutType;
     bannerImageUrl: string;
     bannerImageSourceType: number;
@@ -782,7 +782,7 @@ export interface IClientSidePage extends IGetable, ISharePointQueryable {
         translateY?: number;
     }): void;
 }
-export interface _ClientSidePage extends IGetable { }
+export interface _ClientSidePage extends IInvokable { }
 const ClientSidePage = (
     baseUrl: string | ISharePointQueryable,
     path?: string,

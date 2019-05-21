@@ -1,5 +1,5 @@
 import { extend, TypedHash } from "@pnp/common";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,
@@ -49,7 +49,7 @@ export class _Webs extends _SharePointQueryableCollection implements IWebs {
 /**
  * Describes a collection of webs
  */
-export interface IWebs extends IGetable, ISharePointQueryableCollection {
+export interface IWebs extends IInvokable, ISharePointQueryableCollection {
 
     /**
      * Adds a new web to the collection
@@ -63,7 +63,7 @@ export interface IWebs extends IGetable, ISharePointQueryableCollection {
      */
     add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean): Promise<IWebAddResult>;
 }
-export interface _Webs extends IGetable { }
+export interface _Webs extends IInvokable { }
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 /**
@@ -72,7 +72,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  */
 @defaultPath("_api/web")
 @deleteable()
-export class _Web extends _SharePointQueryableInstance implements IWeb {
+export class _Web extends _SharePointQueryableInstance  {
 
     public get webs(): IWebs {
         return Webs(this);
@@ -170,7 +170,7 @@ export class _Web extends _SharePointQueryableInstance implements IWeb {
     }
 }
 
-export interface IWeb extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface IWeb extends IInvokable, ISharePointQueryableInstance, IDeleteable {
 
     /**
      * Gets this web's subwebs
@@ -281,7 +281,7 @@ export interface IWeb extends IGetable, ISharePointQueryableInstance, IDeleteabl
      */
     removeStorageEntity(key: string): Promise<void>;
 }
-export interface _Web extends IGetable, IDeleteable { }
+export interface _Web extends IInvokable, IDeleteable { }
 export const Web = spInvokableFactory<IWeb>(_Web);
 
 /**
