@@ -293,7 +293,8 @@ describe("Web", () => {
 
         describe("site-groups", () => {
 
-            it(".createDefaultAssociatedGroups", async function () {
+            // skipping this as the groups are already created so we get back a forbidden error
+            it.skip(".createDefaultAssociatedGroups", async function () {
 
                 const users = await sp.web.siteUsers.select("LoginName").top(2)();
                 return expect(sp.web.createDefaultAssociatedGroups("Testing", users[0].LoginName)).to.eventually.be.fulfilled;
