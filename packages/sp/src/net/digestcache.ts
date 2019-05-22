@@ -1,5 +1,5 @@
 import { SPHttpClient } from "./sphttpclient";
-import { combine, extend } from "@pnp/common";
+import { combine, assign } from "@pnp/common";
 import { ODataParser } from "@pnp/odata";
 import { SPRuntimeConfig } from "../config/splibconfig";
 
@@ -35,7 +35,7 @@ export class DigestCache {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: extend(headers, SPRuntimeConfig.headers, true),
+            headers: assign(headers, SPRuntimeConfig.headers, true),
             method: "POST",
         }).then((response) => {
             const parser = new ODataParser();

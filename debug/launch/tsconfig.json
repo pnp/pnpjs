@@ -7,12 +7,13 @@
         "baseUrl": ".",
         "rootDir": "../../",
         "outDir": "../../build/debugging",
+        "incremental": true,
         "types": [
             "sharepoint"
         ],
         "lib": [
-            "es6",
-            "dom"
+            "dom",
+            "es2015"
         ],
         "paths": {
             "@pnp/*": [

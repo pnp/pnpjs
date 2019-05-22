@@ -5,5 +5,5 @@ import { GraphConfigurationPart } from "@pnp/graph";
 export interface PnPConfiguration extends LibraryConfiguration, SPConfigurationPart, GraphConfigurationPart { }
 
 export function setup(config: PnPConfiguration): void {
-    RuntimeConfig.extend(config);
+    RuntimeConfig.assign(config);
 }

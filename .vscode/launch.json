@@ -30,7 +30,11 @@
 			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"cwd": "${workspaceRoot}",
 			"sourceMaps": true,
-			"outFiles": []
+			"outFiles": [],
+			"args": [
+				"--pnp-test-site",
+				"https://318studios.sharepoint.com/sites/dev/DQjh3o"
+			]
 		},
 		{
 			"name": "Debug Build System",
@@ -39,7 +43,7 @@
 			"program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
 			"args": [
 				"-n",
-				"package",
+				"package"
 			],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": "build-buildsystem",

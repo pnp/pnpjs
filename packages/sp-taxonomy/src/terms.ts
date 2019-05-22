@@ -1,4 +1,4 @@
-import { extend, sanitizeGuid, stringIsNullOrEmpty, getGUID } from "@pnp/common";
+import { assign, sanitizeGuid, stringIsNullOrEmpty, getGUID } from "@pnp/common";
 import {
     ClientSvcQueryable,
     IClientSvcQueryable,
@@ -113,7 +113,7 @@ export class Term extends ClientSvcQueryable implements ITerm {
         this._useCaching = false;
         return this.invokeMethod<ITermData>("CreateTerm", params,
             setProperty("IsAvailableForTagging", "Boolean", `${isAvailableForTagging}`))
-            .then(r => extend(this.termSet.getTermById(r.Id), r));
+            .then(r => assign(this.termSet.getTermById(r.Id), r));
     }
 
     public get terms(): ITerms {
@@ -164,7 +164,7 @@ export class Term extends ClientSvcQueryable implements ITerm {
 
         this._useCaching = false;
         return this.invokeMethod<ILabelData>("CreateLabel", params)
-            .then(r => extend(this.labels.getByValue(name), r));
+            .then(r => assign(this.labels.getByValue(name), r));
     }
 
     /**

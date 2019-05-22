@@ -75,7 +75,7 @@ const config = {
     ],
     "spec": paths,
     "pnp-test-mode": mode,
-    "pnp-test-site": yargs.site || "''",
+    "pnp-test-site": yargs.site || yargs.pnpTestSite || "''",
     "skip-web": yargs.skipWeb,
 };
 

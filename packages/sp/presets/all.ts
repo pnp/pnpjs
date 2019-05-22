@@ -2,7 +2,7 @@ import { SPRest } from "../src/rest";
 
 import "../src/appcatalog";
 import "../src/attachments";
-import "../src/clientsidepages";
+import "../src/clientside-pages";
 import "../src/comments";
 import "../src/content-types";
 import "../src/features";
@@ -35,7 +35,7 @@ import "../src/webs";
 
 export * from "../src/appcatalog";
 export * from "../src/attachments";
-export * from "../src/clientsidepages";
+export * from "../src/clientside-pages";
 export * from "../src/comments";
 export * from "../src/content-types";
 export * from "../src/features";

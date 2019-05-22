@@ -5,9 +5,9 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { extend, TypedHash } from "@pnp/common";
+import { assign, TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { defaultPath, deleteable, IDeleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -16,7 +16,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("fields")
-export class _Fields extends _SharePointQueryableCollection implements IFields {
+export class _Fields extends _SharePointQueryableCollection implements _IFields {
 
     /**	
      * Gets a field from the collection by id	
@@ -56,7 +56,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
 
         const postBody = body({
             "parameters":
-                extend(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
+                assign(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
         });
 
         const data = await spPost<{ Id: string; }>(this.clone(Fields, "createfieldasxml"), postBody);
@@ -102,7 +102,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             MaxLength: maxLength,
         };
 
-        return this.add(title, "SP.FieldText", extend(props, properties));
+        return this.add(title, "SP.FieldText", assign(props, properties));
     }
 
     /**
@@ -133,7 +133,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             OutputType: outputType,
         };
 
-        return this.add(title, "SP.FieldCalculated", extend(props, properties));
+        return this.add(title, "SP.FieldCalculated", assign(props, properties));
     }
 
     /**
@@ -159,7 +159,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             FriendlyDisplayFormat: friendlyDisplayFormat,
         };
 
-        return this.add(title, "SP.FieldDateTime", extend(props, properties));
+        return this.add(title, "SP.FieldDateTime", assign(props, properties));
     }
 
     /**
@@ -179,14 +179,14 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
         let props: { FieldTypeKind: number } = { FieldTypeKind: 9 };
 
         if (minValue !== undefined) {
-            props = extend({ MinimumValue: minValue }, props);
+            props = assign({ MinimumValue: minValue }, props);
         }
 
         if (maxValue !== undefined) {
-            props = extend({ MaximumValue: maxValue }, props);
+            props = assign({ MaximumValue: maxValue }, props);
         }
 
-        return this.add(title, "SP.FieldNumber", extend(props, properties));
+        return this.add(title, "SP.FieldNumber", assign(props, properties));
     }
 
     /**
@@ -211,14 +211,14 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
         };
 
         if (minValue !== undefined) {
-            props = extend({ MinimumValue: minValue }, props);
+            props = assign({ MinimumValue: minValue }, props);
         }
 
         if (maxValue !== undefined) {
-            props = extend({ MaximumValue: maxValue }, props);
+            props = assign({ MaximumValue: maxValue }, props);
         }
 
-        return this.add(title, "SP.FieldCurrency", extend(props, properties));
+        return this.add(title, "SP.FieldCurrency", assign(props, properties));
     }
 
     /**
@@ -251,7 +251,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             RichText: richText,
         };
 
-        return this.add(title, "SP.FieldMultiLineText", extend(props, properties));
+        return this.add(title, "SP.FieldMultiLineText", assign(props, properties));
     }
 
     /**
@@ -269,7 +269,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             FieldTypeKind: 11,
         };
 
-        return this.add(title, "SP.FieldUrl", extend(props, properties));
+        return this.add(title, "SP.FieldUrl", assign(props, properties));
     }
 
     /** Adds a user field to the colleciton
@@ -288,7 +288,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             SelectionMode: selectionMode,
         };
 
-        return this.add(title, "SP.FieldUser", extend(props, properties));
+        return this.add(title, "SP.FieldUser", assign(props, properties));
     }
 
     /**
@@ -305,7 +305,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
         lookupFieldName: string,
         properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
-        const props = extend({
+        const props = assign({
             FieldTypeKind: 7,
             LookupFieldName: lookupFieldName,
             LookupListId: lookupListId,
@@ -314,7 +314,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
 
         const postBody = body({
             "parameters":
-                extend(metadata("SP.FieldCreationInformation"), props),
+                assign(metadata("SP.FieldCreationInformation"), props),
         });
 
         const data = await spPost<{ Id: string; }>(this.clone(Fields, "addfield"), postBody);
@@ -350,7 +350,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             FillInChoice: fillIn,
         };
 
-        return this.add(title, "SP.FieldChoice", extend(props, properties));
+        return this.add(title, "SP.FieldChoice", assign(props, properties));
     }
 
     /**
@@ -375,7 +375,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             FillInChoice: fillIn,
         };
 
-        return this.add(title, "SP.FieldMultiChoice", extend(props, properties));
+        return this.add(title, "SP.FieldMultiChoice", assign(props, properties));
     }
 
     /**
@@ -392,7 +392,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
             FieldTypeKind: 8,
         };
 
-        return this.add(title, "SP.Field", extend(props, properties));
+        return this.add(title, "SP.Field", assign(props, properties));
     }
 
     /**
@@ -430,11 +430,11 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
 
         const props = { FieldTypeKind: 33 };
 
-        return this.add(title, "SP.FieldLocation", extend(props, properties));
+        return this.add(title, "SP.FieldLocation", assign(props, properties));
     }
 }
 
-export interface IFields extends IGetable, ISharePointQueryableCollection {
+export interface _IFields {
     getById(id: string): IField;
     getByTitle(title: string): IField;
     getByInternalNameOrTitle(name: string): IField;
@@ -467,7 +467,12 @@ export interface IFields extends IGetable, ISharePointQueryableCollection {
     addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
     addLocation(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
 }
-export interface _Fields extends IGetable { }
+
+export interface IFields extends _IFields, IInvokable, ISharePointQueryableCollection {}
+
+/**
+ * Invokable factory for IFields instances
+ */
 export const Fields = spInvokableFactory<IFields>(_Fields);
 
 /**
@@ -475,7 +480,7 @@ export const Fields = spInvokableFactory<IFields>(_Fields);
  *
  */
 @deleteable()
-export class _Field extends _SharePointQueryableInstance implements IField {
+export class _Field extends _SharePointQueryableInstance implements _IField {
 
     /**
      * Updates this field intance with the supplied properties
@@ -485,13 +490,13 @@ export class _Field extends _SharePointQueryableInstance implements IField {
      */
     public async update(properties: TypedHash<string | number | boolean>, fieldType = "SP.Field"): Promise<FieldUpdateResult> {
 
-        const req = body(extend(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
+        const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
         const data = await spPost(this, req);
 
         return {
             data,
-            field: this,
+            field: <any>this,
         };
     }
 
@@ -517,13 +522,18 @@ export class _Field extends _SharePointQueryableInstance implements IField {
     }
 }
 
-export interface IField extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface _IField {
     update(properties: TypedHash<string | number | boolean>, fieldType?: string): Promise<FieldUpdateResult>;
     setShowInDisplayForm(show: boolean): Promise<void>;
     setShowInEditForm(show: boolean): Promise<void>;
     setShowInNewForm(show: boolean): Promise<void>;
 }
-export interface _Field extends IGetable, IDeleteable { }
+
+export interface IField extends _IField, IInvokable, ISharePointQueryableInstance, IDeleteable { }
+
+/**
+ * Invokable factory for IField instances
+ */
 export const Field = spInvokableFactory<IField>(_Field);
 
 /**

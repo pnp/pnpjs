@@ -30,6 +30,7 @@ _Web.prototype.getClientSideWebParts = function (): Promise<IClientSidePageCompo
     return this.clone(SharePointQueryableCollection, "GetClientSideWebParts").get();
 };
 
-_Web.prototype.addClientSidePage = function (this: _Web, pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<IClientSidePage> {
-    return CreateClientSidePage(this.lists.getByTitle(libraryTitle), pageName, title);
+_Web.prototype.addClientSidePage = async function (this: _Web, pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<IClientSidePage> {
+    const page = await CreateClientSidePage(this.lists.getByTitle(libraryTitle), pageName, title);
+    return page;
 };

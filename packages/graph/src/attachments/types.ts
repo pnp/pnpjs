@@ -1,5 +1,5 @@
 import { Attachment as IAttachmentType } from "@microsoft/microsoft-graph-types";
-import { body, IGetable } from "@pnp/odata";
+import { body, IInvokable } from "@pnp/odata";
 import { _GraphQueryableCollection, _GraphQueryableInstance, IGraphQueryableInstance, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { graphPost } from "../operations";
 import { defaultPath, getById, IGetById } from "../decorators";
@@ -8,9 +8,9 @@ import { type } from "../utils/type";
 /**
  * Attachment
  */
-export class _Attachment extends _GraphQueryableInstance<IAttachmentType> { }
-export interface IAttachment extends IGetable, IGraphQueryableInstance<IAttachmentType> { }
-export interface _Attachment extends IGetable { }
+export class _Attachment extends _GraphQueryableInstance<IAttachmentType> implements _IAttachment { }
+export interface _IAttachment { }
+export interface IAttachment extends _IAttachment, IInvokable, IGraphQueryableInstance<IAttachmentType> { }
 export const Attachment = graphInvokableFactory<IAttachment>(_Attachment);
 
 /**
@@ -18,7 +18,7 @@ export const Attachment = graphInvokableFactory<IAttachment>(_Attachment);
  */
 @defaultPath("attachments")
 @getById(Attachment)
-export class _Attachments extends _GraphQueryableCollection<IAttachmentType[]> implements IAttachments {
+export class _Attachments extends _GraphQueryableCollection<IAttachmentType[]> implements _IAttachments {
 
     /**
      * Add attachment to this collection
@@ -34,8 +34,8 @@ export class _Attachments extends _GraphQueryableCollection<IAttachmentType[]> i
         })));
     }
 }
-export interface IAttachments extends IGetable, IGetById<IAttachment>, IGraphQueryableCollection<IAttachmentType[]> {
+export interface _IAttachments {
     addFile(name: string, bytes: string | Blob): Promise<IAttachmentType>;
 }
-export interface _Attachments extends IGetable, IGetById<IAttachment> { }
+export interface IAttachments extends _IAttachments, IInvokable, IGetById<IAttachment>, IGraphQueryableCollection<IAttachmentType[]> {}
 export const Attachments = graphInvokableFactory<IAttachments>(_Attachments);

@@ -7,14 +7,14 @@ import { spPost } from "../operations";
  * Implements the site designs API REST methods
  *
  */
-export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, ISharePointQueryable {
+export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns {
     /**
      * Creates a new instance of the SiteDesigns method class
      *
      * @param baseUrl The parent url provider
      * @param methodName The static method name to call on the utility class
      */
-    constructor(baseUrl: string | ISharePointQueryable, methodName: string = "") {
+    constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
@@ -69,10 +69,7 @@ export class _SiteDesigns extends _SharePointQueryable implements ISiteDesigns, 
     }
 }
 
-export interface ISiteDesigns {
-    /**
-     * Gets a list of information about existing site designs.
-     */
+export interface _ISiteDesigns {
     getSiteDesigns(): Promise<ISiteDesignInfo[]>;
     /**
      * Creates a new site design available to users when they create a new site from the SharePoint home page.
@@ -125,10 +122,12 @@ export interface ISiteDesigns {
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
 }
 
-export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName: string = ""): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
+export interface ISiteDesigns extends _ISiteDesigns, ISharePointQueryable {}
+
+export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
 type SiteDesignsCloneType = ISiteDesigns & ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteDesignsCloneFactory = (baseUrl: string | ISharePointQueryable, methodName: string = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
+const SiteDesignsCloneFactory = (baseUrl: string | ISharePointQueryable, methodName = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
 
 /**
  * Result from creating or retrieving a site design

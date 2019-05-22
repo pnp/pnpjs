@@ -1,11 +1,14 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
+        "target": "es2015",
         "baseUrl": ".",
         "rootDir": "../",
         "outDir": "../build/testing",
         "declaration": false,
+        "declarationMap": false,
         "composite": false,
+        "incremental": true,
         "types": [
             "chai",
             "chai-as-promised",
@@ -13,12 +16,12 @@
             "mocha",
             "sharepoint"
         ],
+        "removeComments": true,
         "paths": {
             "@pnp/*": [
                 "../packages/*"
             ]
-        },
-        "removeComments": true
+        }
     },
     "include": [
         "./**/*.ts"

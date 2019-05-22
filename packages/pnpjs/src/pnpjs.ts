@@ -9,7 +9,7 @@ import {
     isFunc,
     objectDefinedNotNull,
     isArray,
-    extend,
+    assign,
     isUrlAbsolute,
     stringIsNullOrEmpty,
     getAttrValueFromString,
@@ -40,7 +40,7 @@ export * from "@pnp/odata";
 export const util = {
     combine,
     dateAdd,
-    extend,
+    assign,
     getAttrValueFromString,
     getCtxCallback,
     getGUID,

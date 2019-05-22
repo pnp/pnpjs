@@ -7,7 +7,7 @@ import { body } from "@pnp/odata";
  * Implements the site script API REST methods
  *
  */
-export class _SiteScripts extends _SharePointQueryable implements ISiteScripts {
+export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts {
     /**
      * Creates a new instance of the SiteScripts method class
      *
@@ -76,13 +76,15 @@ export class _SiteScripts extends _SharePointQueryable implements ISiteScripts {
     }
 }
 
-export interface ISiteScripts {
+export interface _ISiteScripts {
     getSiteScripts(): Promise<ISiteScriptInfo[]>;
     createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo>;
     getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo>;
     deleteSiteScript(id: string): Promise<void>;
     updateSiteScript(siteScriptUpdateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo>;
 }
+
+export interface ISiteScripts extends _ISiteScripts { }
 
 export const SiteScripts = (baseUrl: string | ISharePointQueryable): ISiteScripts => new _SiteScripts(baseUrl);
 

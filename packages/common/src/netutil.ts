@@ -1,4 +1,4 @@
-import { extend, objectDefinedNotNull } from "./util";
+import { assign, objectDefinedNotNull } from "./util";
 
 declare var global: { fetch(url: string, options: any): Promise<Response> };
 
@@ -39,8 +39,8 @@ export function mergeHeaders(target: Headers, source: any): void {
 export function mergeOptions(target: IConfigOptions, source: IConfigOptions): void {
 
     if (objectDefinedNotNull(source)) {
-        const headers = extend(target.headers || {}, source.headers!);
-        target = extend(target, source);
+        const headers = assign(target.headers || {}, source.headers!);
+        target = assign(target, source);
         target.headers = headers;
     }
 }

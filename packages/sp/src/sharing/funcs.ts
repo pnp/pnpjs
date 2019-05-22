@@ -1,5 +1,5 @@
 import { body } from "@pnp/odata";
-import { jsS, extend } from "@pnp/common";
+import { jsS, assign } from "@pnp/common";
 import { SharePointQueryableCollection, _SharePointQueryableInstance, SharePointQueryableInstance } from "../sharepointqueryable";
 import { extractWebUrl } from "../utils/extractweburl";
 import { Web, _Web } from "../webs/types";
@@ -36,7 +36,7 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
     }
 
     // extend our options with some defaults
-    options = extend(options, {
+    options = assign(options, {
         group: null,
         includeAnonymousLinkInEmail: false,
         propagateAcl: false,
@@ -59,7 +59,7 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
     };
 
     if (options.emailData !== undefined && options.emailData !== null) {
-        postBody = extend(postBody, {
+        postBody = assign(postBody, {
             emailBody: options.emailData.body,
             emailSubject: options.emailData.subject !== undefined ? options.emailData.subject : "Shared with you.",
             sendEmail: true,
@@ -191,7 +191,7 @@ export async function shareWith(
         useSimplifiedRoles: true,
     };
     if (emailData !== undefined) {
-        postBody = extend(postBody, {
+        postBody = assign(postBody, {
             emailBody: emailData.body,
             emailSubject: emailData.subject !== undefined ? emailData.subject : "",
             sendEmail: true,

@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
-import { extend, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions } from "@pnp/common";
+import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { CachingOptions, body } from "@pnp/odata";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchQueryBuilder, SearchQueryInit } from "./types";
@@ -96,7 +96,7 @@ export class _Search extends _SharePointQueryableInstance {
         const query = this.parseQuery(queryInit);
 
         const postBody = body({
-            request: extend(
+            request: assign(
                 metadata("Microsoft.Office.Server.Search.REST.SearchRequest"),
                 Object.assign(
                     {},
@@ -240,7 +240,7 @@ export class SearchResults {
         // otherwise get the previous RowLimit or default to 10
         const rows = pageSize !== undefined ? pageSize : hOP(this._query, "RowLimit") ? this._query.RowLimit : 10;
 
-        const query: ISearchQuery = extend(this._query, {
+        const query: ISearchQuery = assign(this._query, {
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
         });

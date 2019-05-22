@@ -1,5 +1,5 @@
 import { TypedHash } from "@pnp/common";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import {
     SharePointQueryableCollection,
     _SharePointQueryableInstance,
@@ -17,7 +17,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("contenttypes")
-export class _ContentTypes extends _SharePointQueryableCollection implements IContentTypes {
+export class _ContentTypes extends _SharePointQueryableCollection {
 
     /**
      * Adds an existing contenttype to a content type collection
@@ -69,12 +69,15 @@ export class _ContentTypes extends _SharePointQueryableCollection implements ICo
     }
 }
 
-export interface IContentTypes extends IGetable, ISharePointQueryableCollection {
+export interface IContentTypes extends IInvokable, ISharePointQueryableCollection {
     addAvailableContentType(contentTypeId: string): Promise<ContentTypeAddResult>;
     getById(id: string): IContentType;
     add(id: string, name: string, description?: string, group?: string, additionalSettings?: TypedHash<string | number | boolean>): Promise<ContentTypeAddResult>;
 }
-export interface _ContentTypes extends IGetable { }
+
+/**
+ * Invokable factory for IContentTypes instances
+ */
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 /**
@@ -82,7 +85,7 @@ export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
  *
  */
 @deleteable()
-export class _ContentType extends _SharePointQueryableInstance implements IContentType {
+export class _ContentType extends _SharePointQueryableInstance implements _IContentType {
 
     /**
      * Gets the column (also known as field) references in the content type.
@@ -113,13 +116,18 @@ export class _ContentType extends _SharePointQueryableInstance implements IConte
     }
 }
 
-export interface IContentType extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface _IContentType {
     readonly fieldLinks: IFieldLinks;
     readonly fields: ISharePointQueryableCollection;
     readonly parent: IContentType;
     readonly workflowAssociations: ISharePointQueryableCollection;
 }
-export interface _ContentType extends IGetable, IDeleteable {}
+
+export interface IContentType extends _IContentType, IInvokable, ISharePointQueryableInstance, IDeleteable { }
+
+/**
+ * Invokable factory for IContentType instances
+ */
 export const ContentType = spInvokableFactory<IContentType>(_ContentType);
 
 export interface ContentTypeAddResult {
@@ -131,7 +139,7 @@ export interface ContentTypeAddResult {
  * Represents a collection of field link instances
  */
 @defaultPath("fieldlinks")
-export class _FieldLinks extends _SharePointQueryableCollection implements IFieldLinks {
+export class _FieldLinks extends _SharePointQueryableCollection implements _IFieldLinks {
     /**	
      * Gets a FieldLink by GUID id	
      *	
@@ -142,19 +150,27 @@ export class _FieldLinks extends _SharePointQueryableCollection implements IFiel
     }
 }
 
-export interface IFieldLinks extends IGetable, ISharePointQueryableCollection {
+export interface _IFieldLinks {
     getById(id: string): IFieldLink;
 }
-export interface _FieldLinks extends IGetable { }
+
+export interface IFieldLinks extends _IFieldLinks, IInvokable, ISharePointQueryableCollection { }
+
+/**
+ * Invokable factory for IFieldLinks instances
+ */
 export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
 
 /**
  * Represents a field link instance
  */
-export class _FieldLink extends _SharePointQueryableInstance implements IFieldLink { }
+export class _FieldLink extends _SharePointQueryableInstance implements _IFieldLink { }
 
-export interface IFieldLink extends IGetable, _SharePointQueryableInstance {
+export interface _IFieldLink {}
 
-}
-export interface _FieldLink extends IGetable { }
+export interface IFieldLink extends _IFieldLink, IInvokable, _SharePointQueryableInstance { }
+
+/**
+ * Invokable factory for IFieldLink instances
+ */
 export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);

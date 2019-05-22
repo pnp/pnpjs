@@ -7,7 +7,7 @@ import {
 } from "../sharepointqueryable";
 import { TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, IDeleteable, deleteable } from "../decorators";
 import { spPost } from "../operations";
 
@@ -16,7 +16,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("views")
-export class _Views extends _SharePointQueryableCollection implements IViews {
+export class _Views extends _SharePointQueryableCollection implements _IViews {
 
     /**	  
      * Gets a view by guid id	    
@@ -59,12 +59,14 @@ export class _Views extends _SharePointQueryableCollection implements IViews {
     }
 }
 
-export interface IViews extends IGetable, ISharePointQueryableCollection {
+export interface _IViews {
     getById(id: string): IView;
     getByTitle(title: string): IView;
     add(title: string, personalView?: boolean, additionalSettings?: TypedHash<any>): Promise<IViewAddResult>;
 }
-export interface _Views extends IGetable { }
+
+export interface IViews extends _IViews, IInvokable, ISharePointQueryableCollection {}
+
 export const Views = spInvokableFactory<IViews>(_Views);
 
 /**
@@ -72,7 +74,7 @@ export const Views = spInvokableFactory<IViews>(_Views);
  *
  */
 @deleteable()
-export class _View extends _SharePointQueryableInstance implements IView {
+export class _View extends _SharePointQueryableInstance implements _IView {
 
     public get fields(): IViewFields {
         return ViewFields(this);
@@ -83,7 +85,7 @@ export class _View extends _SharePointQueryableInstance implements IView {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    public update: any = this._update<IViewUpdateResult, TypedHash<any>>("SP.View", data => ({ data, view: this }));
+    public update: any = this._update<IViewUpdateResult, TypedHash<any>>("SP.View", data => ({ data, view: <any>this }));
 
     /**
      * Returns the list view as HTML.
@@ -103,17 +105,19 @@ export class _View extends _SharePointQueryableInstance implements IView {
     }
 }
 
-export interface IView extends IGetable, ISharePointQueryableInstance, IDeleteable {
+export interface _IView {
     readonly fields: IViewFields;
     update(props: TypedHash<any>): IViewUpdateResult;
     renderAsHtml(): Promise<string>;
     setViewXml(viewXml: string): Promise<void>;
 }
-export interface _View extends IGetable, IDeleteable { }
+
+export interface IView extends _IView, IInvokable, ISharePointQueryableInstance, IDeleteable {}
+
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SharePointQueryableCollection implements IViewFields {
+export class _ViewFields extends _SharePointQueryableCollection implements _IViewFields {
     /**
      * Gets a value that specifies the XML schema that represents the collection.
      */
@@ -157,14 +161,16 @@ export class _ViewFields extends _SharePointQueryableCollection implements IView
     }
 }
 
-export interface IViewFields extends IGetable, ISharePointQueryableCollection {
+export interface _IViewFields {
     getSchemaXml(): Promise<string>;
     add(fieldTitleOrInternalName: string): Promise<void>;
     move(fieldInternalName: string, index: number): Promise<void>;
     removeAll(): Promise<void>;
     remove(fieldInternalName: string): Promise<void>;
 }
-export interface _ViewFields extends IGetable { }
+
+export interface IViewFields extends _IViewFields, IInvokable, ISharePointQueryableCollection {}
+
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
 
 export interface IViewAddResult {

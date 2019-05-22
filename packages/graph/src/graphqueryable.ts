@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IGetable, IQueryable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable, IQueryable } from "@pnp/odata";
 import { GraphEndpoints } from "./types";
 import { graphGet } from "./operations";
 
@@ -7,8 +7,8 @@ export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
 }
 
-export const graphInvokableFactory = <T>(f: IGraphQueryableConstructor<T>) => (baseUrl: string | IGraphQueryable, path?: string): T => {
-    return invokableFactory<T>(f)(baseUrl, path);
+export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R => {
+    return invokableFactory<R>(f);
 };
 
 /**
@@ -128,7 +128,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
     }
 }
 
-export interface IGraphQueryable<GetType = any> extends IGetable, IQueryable<GetType> {
+export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<GetType> {
 
     /**
      * Choose which fields to return
@@ -153,7 +153,7 @@ export interface IGraphQueryable<GetType = any> extends IGetable, IQueryable<Get
     toUrlAndQuery(): string;
 
 }
-export interface _GraphQueryable extends IGetable { }
+export interface _GraphQueryable extends IInvokable { }
 export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQueryable);
 
 /**
@@ -222,7 +222,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     }
 }
 
-export interface IGraphQueryableCollection<GetType = any[]> extends IGetable, IGraphQueryable<GetType> {
+export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
 
     /**
      * 	Retrieves the total count of matching resources
@@ -262,7 +262,7 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IGetable, IG
      */
     skipToken(token: string): this;
 }
-export interface _GraphQueryableCollection extends IGetable { }
+export interface _GraphQueryableCollection extends IInvokable { }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
 
 export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection implements IGraphQueryableSearchableCollection {
@@ -276,10 +276,10 @@ export class _GraphQueryableSearchableCollection extends _GraphQueryableCollecti
     }
 }
 
-export interface IGraphQueryableSearchableCollection<GetType = any> extends IGetable, IGraphQueryable<GetType> {
+export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
     search(query: string): this;
 }
-export interface _GraphQueryableSearchableCollection extends IGetable { }
+export interface _GraphQueryableSearchableCollection extends IInvokable { }
 export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQueryableSearchableCollection>(_GraphQueryableSearchableCollection);
 
 
@@ -289,6 +289,6 @@ export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQu
  */
 export class _GraphQueryableInstance<GetType = any> extends _GraphQueryable<GetType> { }
 
-export interface IGraphQueryableInstance<GetType = any> extends IGetable, IGraphQueryable<GetType> { }
-export interface _GraphQueryableInstance extends IGetable { }
+export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
+export interface _GraphQueryableInstance extends IInvokable { }
 export const GraphQueryableInstance = graphInvokableFactory<IGraphQueryableInstance>(_GraphQueryableInstance);

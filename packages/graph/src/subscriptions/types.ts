@@ -1,6 +1,6 @@
 import { _GraphQueryableInstance, IGraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { extend } from "@pnp/common";
-import { IGetable, body } from "@pnp/odata";
+import { assign } from "@pnp/common";
+import { IInvokable, body } from "@pnp/odata";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -10,9 +10,9 @@ import { graphPost } from "../operations";
  */
 @deleteable()
 @updateable()
-export class _Subscription extends _GraphQueryableInstance<ISubscriptionType> implements ISubscription { }
-export interface ISubscription extends IGetable, IDeleteable, IUpdateable<ISubscriptionType>, IGraphQueryableInstance<ISubscriptionType> { }
-export interface _Subscription extends IGetable, IDeleteable, IUpdateable<ISubscriptionType> { }
+export class _Subscription extends _GraphQueryableInstance<ISubscriptionType> implements _ISubscription { }
+export interface _ISubscription { }
+export interface ISubscription extends _ISubscription, IInvokable, IDeleteable, IUpdateable<ISubscriptionType>, IGraphQueryableInstance<ISubscriptionType> { }
 export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
 
 /**
@@ -20,10 +20,10 @@ export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
  */
 @defaultPath("subscriptions")
 @getById(Subscription)
-export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[]> {
+export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[]> implements _ISubscriptions {
     public async add(changeType: string, notificationUrl: string, resource: string, expirationDateTime: string, props: ISubscriptionType = {}): Promise<ISubAddResult> {
 
-        const postBody = extend({
+        const postBody = assign({
             changeType,
             expirationDateTime,
             notificationUrl,
@@ -34,11 +34,11 @@ export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[
 
         return {
             data,
-            subscription: this.getById(data.id),
+            subscription: (<any>this).getById(data.id),
         };
     }
 }
-export interface ISubscriptions extends IGetable, IGetById<ISubscription>, IGraphQueryableCollection<ISubscriptionType[]> {
+export interface _ISubscriptions {
     /**
      * Create a new Subscription.
      * 
@@ -51,7 +51,7 @@ export interface ISubscriptions extends IGetable, IGetById<ISubscription>, IGrap
      */
     add(changeType: string, notificationUrl: string, resource: string, expirationDateTime: string, props: ISubscriptionType): Promise<ISubAddResult>;
 }
-export interface _Subscriptions extends IGetable, IGetById<ISubscription> { }
+export interface ISubscriptions extends IInvokable, IGetById<ISubscription>, IGraphQueryableCollection<ISubscriptionType[]> {}
 export const Subscriptions = graphInvokableFactory<ISubscriptions>(_Subscriptions);
 
 /**

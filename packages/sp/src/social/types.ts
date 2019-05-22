@@ -89,6 +89,7 @@ export interface ISocial {
     isFollowed(actorInfo: ISocialActorInfo): Promise<boolean>;
     stopFollowing(actorInfo: ISocialActorInfo): Promise<void>;
 }
+
 export const Social = (baseUrl: string | ISharePointQueryable): ISocial => new _Social(baseUrl);
 
 const SocialCloneFactory = (baseUrl: string | ISharePointQueryable): ISocial & ISharePointQueryable => <any>Social(baseUrl);

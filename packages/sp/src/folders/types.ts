@@ -1,4 +1,4 @@
-import { extend, TypedHash } from "@pnp/common";
+import { assign, TypedHash } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -12,7 +12,7 @@ import {
 } from "../sharepointqueryable";
 import { odataUrlFrom } from "../odata";
 import { IItem, Item } from "../items/types";
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
@@ -22,7 +22,7 @@ import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
  *
  */
 @defaultPath("folders")
-export class _Folders extends _SharePointQueryableCollection implements IFolders {
+export class _Folders extends _SharePointQueryableCollection implements _IFolders {
 
     /**
      * Gets a folder by folder name
@@ -49,11 +49,16 @@ export class _Folders extends _SharePointQueryableCollection implements IFolders
     }
 }
 
-export interface IFolders extends IGetable, ISharePointQueryableCollection {
+export interface _IFolders {
     getByName(name: string): IFolder;
     add(url: string): Promise<IFolderAddResult>;
 }
-export interface _Folders extends IGetable { }
+
+export interface IFolders extends _IFolders, IInvokable, ISharePointQueryableCollection {}
+
+/**
+ * Invokable factory for IFolders instances
+ */
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 /**
@@ -61,7 +66,7 @@ export const Folders = spInvokableFactory<IFolders>(_Folders);
  *
  */
 @deleteableWithETag()
-export class _Folder extends _SharePointQueryableInstance implements IFolder {
+export class _Folder extends _SharePointQueryableInstance implements _IFolder {
 
     /**
      * Specifies the sequence in which content types are displayed.
@@ -120,7 +125,7 @@ export class _Folder extends _SharePointQueryableInstance implements IFolder {
     }
 
     // TODO:: this typing is broken
-    public update: any = this._update<IFolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: <IFolder>this }));
+    public update: any = this._update<IFolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: <any>this }));
 
     /**
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
@@ -137,7 +142,7 @@ export class _Folder extends _SharePointQueryableInstance implements IFolder {
         const q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then((d: any) => {
 
-            return extend(Item(odataUrlFrom(d)), d);
+            return assign(Item(odataUrlFrom(d)), d);
         });
     }
 
@@ -159,7 +164,7 @@ export class _Folder extends _SharePointQueryableInstance implements IFolder {
     }
 }
 
-export interface IFolder extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface _IFolder {
     /**
      * Specifies the sequence in which content types are displayed.
      *
@@ -222,7 +227,8 @@ export interface IFolder extends IGetable, ISharePointQueryableInstance, IDelete
     moveTo(destUrl: string): Promise<void>;
 }
 
-export interface _Folder extends IGetable, IDeleteableWithETag { }
+export interface IFolder extends _IFolder, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}
+
 export const Folder = spInvokableFactory<IFolder>(_Folder);
 
 export interface IFolderAddResult {

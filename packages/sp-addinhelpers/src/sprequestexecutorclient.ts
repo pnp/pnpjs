@@ -1,4 +1,4 @@
-import { extend, IHttpClientImpl } from "@pnp/common";
+import { assign, IHttpClientImpl } from "@pnp/common";
 
 /**
  * Makes requests using the SP.RequestExecutor library.
@@ -45,9 +45,9 @@ export class SPRequestExecutorClient implements IHttpClientImpl {
             };
 
             if (options.body) {
-                requestOptions = extend(requestOptions, { body: options.body });
+                requestOptions = assign(requestOptions, { body: options.body });
             } else {
-                requestOptions = extend(requestOptions, { binaryStringRequestBody: true });
+                requestOptions = assign(requestOptions, { binaryStringRequestBody: true });
             }
             executor.executeAsync(requestOptions);
         });

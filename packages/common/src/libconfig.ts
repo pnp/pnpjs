@@ -40,7 +40,7 @@ export interface LibraryConfiguration {
 }
 
 export function setup(config: LibraryConfiguration): void {
-    RuntimeConfig.extend(config);
+    RuntimeConfig.assign(config);
 }
 
 // lable mapping for known config values
@@ -72,7 +72,7 @@ export class RuntimeConfigImpl {
      * 
      * @param config The set of properties to add to the globa configuration instance
      */
-    public extend(config: TypedHash<any>): void {
+    public assign(config: TypedHash<any>): void {
         this._v = mergeMaps(this._v, objectToMap(config));
     }
 

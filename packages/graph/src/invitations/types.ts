@@ -1,5 +1,5 @@
-import { TypedHash, extend } from "@pnp/common";
-import { body, IGetable } from "@pnp/odata";
+import { TypedHash, assign } from "@pnp/common";
+import { body, IInvokable } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath } from "../decorators";
@@ -9,7 +9,7 @@ import { graphPost } from "../operations";
  * Invitations
  */
 @defaultPath("invitations")
-export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> implements IInvitations {
+export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> implements _IInvitations {
 
     /**
      * Create a new Invitation via invitation manager.
@@ -20,17 +20,17 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> i
      */
     public async create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any> = {}): Promise<IInvitationAddResult> {
 
-        const postBody = extend({ inviteRedirectUrl, invitedUserEmailAddress }, additionalProperties);
+        const postBody = assign({ inviteRedirectUrl, invitedUserEmailAddress }, additionalProperties);
 
         const data = await graphPost<IInvitationType>(this, body(postBody));
 
         return { data };
     }
 }
-export interface IInvitations extends IGetable, IGraphQueryableCollection<IInvitationType[]> {
+export interface _IInvitations {
     create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any>): Promise<IInvitationAddResult>;
 }
-export interface _Invitations extends IGetable { }
+export interface IInvitations extends _IInvitations, IInvokable, IGraphQueryableCollection<IInvitationType[]> {}
 export const Invitations = graphInvokableFactory<IInvitations>(_Invitations);
 
 /**

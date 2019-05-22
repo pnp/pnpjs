@@ -13,6 +13,7 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - odata: added IQueryableData
 - all: added tests for all methods/properties
 - all: added docs entries for all methods/properties
+- odata: extension methods
 
 ### Changed
 
@@ -32,6 +33,7 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - sp: all query string params are escaped within the library
 - tooling: gulp tasks rewritten in TypeScript, updated to latest
 - tooling: build system rewritten as cli
+- common: extend renamed to assign
 
 ### Fixed
 

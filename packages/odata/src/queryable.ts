@@ -237,7 +237,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
     public addBatchDependency(): () => void {
-        if (this.data.batch !== null) {
+        if (objectDefinedNotNull(this.data.batch)) {
             return this.data.batch.addDependency();
         }
 
@@ -274,7 +274,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
      * @param parent Parent queryable from which we will derive a base url
      * @param path Additional path
      */
-    protected extend(parent: IQueryable<any>, path?: string) {
+    protected assign(parent: IQueryable<any>, path?: string) {
         this.data.parentUrl = parent.data.url;
         this.data.url = combine(this.data.parentUrl, path || "");
         this.configureFrom(parent);
