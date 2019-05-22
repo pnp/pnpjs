@@ -9,7 +9,7 @@ import { odataUrlFrom } from "../odata";
 import { Web, IWeb } from "../webs/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { Site } from "../sites/types";
-import { IInvokable, invokableFactory, body } from "@pnp/odata";
+import { IInvokable, invokableFactory, body, headers } from "@pnp/odata";
 import { spPost } from "../operations";
 import { getNextOrder, reindex } from "./funcs";
 
@@ -41,7 +41,11 @@ export type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPag
  */
 export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
-/**b 
+function initFrom(o: ISharePointQueryable, url: string): IClientSidePage {
+    return ClientSidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
+}
+
+/** 
  * Represents the data and methods associated with client side "modern" pages
  */
 export class _ClientSidePage extends _SharePointQueryable implements _IClientSidePage {
@@ -70,7 +74,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
             this.data.parentUrl = "";
             this.data.url = combine(extractWebUrl(baseUrl), path);
         } else {
-            this.assign(_ClientSidePage.initFrom(baseUrl, null), path);
+            this.assign(initFrom(baseUrl, null), path);
         }
 
         // set a default page settings slice
@@ -102,10 +106,6 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
             serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
             title: "Title area",
         };
-    }
-
-    private static initFrom(o: ISharePointQueryable, url: string): IClientSidePage {
-        return ClientSidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
     }
 
     public get pageLayout(): ClientSidePageLayoutType {
@@ -255,11 +255,12 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
 
             const batch = web.createBatch();
 
-            site.select("Id", "Url").inBatch(batch)().then(r => siteId = r.Id),
-                web.select("Id", "Url").inBatch(batch)().then(r => { webId = r.Id; webUrl = r.Url; }),
-                imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").inBatch(batch)().then(r => { imgId = r.UniqueId; listId = r.ParentList.Id; }),
+            site.select("Id", "Url").inBatch(batch)().then((r1: { Id: string }) => siteId = r1.Id);
+            web.select("Id", "Url").inBatch(batch)().then((r2: { Id: string, Url: string }) => { webId = r2.Id; webUrl = r2.Url; });
+            imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").inBatch(batch)()
+                .then((r3: { UniqueId: string, ParentList: { Id: string } }) => { imgId = r3.UniqueId; listId = r3.ParentList.Id; });
 
-                await batch.execute();
+            await batch.execute();
 
 
             const f = SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
@@ -292,7 +293,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
 
         // we try and check out the page for the user
         if (!this.json.IsPageCheckedOutToCurrentUser) {
-            await spPost(_ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
+            await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
         }
 
         const saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
@@ -304,18 +305,13 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
             TopicHeader: this.topicHeader,
         });
 
-        const updater = _ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
-        updater.configure({
-            headers: {
-                "if-match": "*",
-            },
-        });
-        await spPost<boolean>(updater, { body: jsS(saveBody) });
+        const updater = initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
+        await spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
 
         let r = true;
 
         if (publish) {
-            r = await spPost(_ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`));
+            r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`));
             if (r) {
                 this.json.IsPageCheckedOutToCurrentUser = false;
             }
@@ -332,7 +328,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        const d = await spPost(_ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), {
+        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), {
             body: jsS(metadata("SP.Publishing.SitePage")),
         });
 
@@ -348,9 +344,6 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
     //     return this.promoteNewsImpl("demoteFromNews");
     // }
 
-    /**
-     * Enables comments on this page
-     */
     public enableComments(): Promise<IItemUpdateResult> {
         return this.setCommentsOn(true).then(r => {
             this.commentsDisabled = false;
@@ -358,9 +351,6 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         });
     }
 
-    /**
-     * Disables comments on this page
-     */
     public disableComments(): Promise<IItemUpdateResult> {
         return this.setCommentsOn(false).then(r => {
             this.commentsDisabled = true;
@@ -368,20 +358,10 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         });
     }
 
-    /**
-     * Finds a control by the specified instance id
-     *
-     * @param id Instance id of the control to find
-     */
     public findControlById<T extends ColumnControl<any> = ColumnControl<any>>(id: string): T {
         return this.findControl((c) => c.id === id);
     }
 
-    /**
-     * Finds a control within this page's control tree using the supplied predicate
-     *
-     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
-     */
     public findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T {
         // check all sections
         for (let i = 0; i < this.sections.length; i++) {
@@ -401,42 +381,25 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         return null;
     }
 
-    /**
-     * Like the modern site page
-     */
     public like(): Promise<void> {
         return this.getItem().then(i => {
             return i.like();
         });
     }
 
-    /**
-     * Unlike the modern site page
-     */
     public unlike(): Promise<void> {
         return this.getItem().then(i => {
             return i.unlike();
         });
     }
 
-    /**
-     * Get the liked by information for a modern site page     
-     */
     public getLikedByInformation(): Promise<any> {
         return this.getItem().then(i => {
             return i.getLikedByInformation();
         });
     }
 
-    /**
-     * Creates a copy of this page
-     * 
-     * @param web The web where we will create the copy
-     * @param pageName The file name of the new page
-     * @param title The title of the new page
-     * @param publish If true the page will be published
-     */
-    public async copyPage(web: IWeb | IList, pageName: string, title: string, publish = true): Promise<IClientSidePage> {
+    public async copyPage(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientSidePage> {
 
         const page = await CreateClientSidePage(web, pageName, title, this.pageLayout);
 
@@ -448,13 +411,6 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         return page;
     }
 
-    /**
-     * Sets the modern page banner image
-     * 
-     * @param url Url of the image to display
-     * @param altText Alt text to describe the image
-     * @param bannerProps Additional properties to control display of the banner
-     */
     public setBannerImage(url: string, props?: {
         altText?: string;
         imageSourceType?: number;
@@ -586,7 +542,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        const d = await spPost(_ClientSidePage.initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), {
+        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), {
             body: jsS(metadata("SP.Publishing.SitePage")),
         });
 
@@ -666,7 +622,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
 
     private async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
-        const initer = _ClientSidePage.initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         const listData = await spPost<{ Id: string, "odata.id": string }>(initer);
         const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
         const itemData: T = await item.select.apply(item, selects)();
@@ -692,6 +648,11 @@ export interface _IClientSidePage {
      */
     addSection(): CanvasSection;
 
+    /**
+     * Loads this instance from the appropriate JSON data
+     * 
+     * @param pageData JSON data to load (replaces any existing data)
+     */
     fromJSON(pageData: Partial<IPageData>): this;
 
     /**
@@ -706,8 +667,14 @@ export interface _IClientSidePage {
      */
     save(publish?: boolean): Promise<boolean>;
 
+    /**
+     * Discards the checkout of this page
+     */
     discardPageCheckout(): Promise<void>;
 
+    /**
+     * Promotes this page as a news item
+     */
     promoteToNews(): Promise<boolean>;
 
     /**
@@ -787,7 +754,7 @@ const ClientSidePage = (
     sections: CanvasSection[] = [],
     commentsDisabled = false): IClientSidePage => {
 
-    return invokableFactory<IClientSidePage>(<any>_ClientSidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
+    return invokableFactory<IClientSidePage>(_ClientSidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
@@ -808,18 +775,16 @@ export const ClientSidePageFromFile = async (file: IFile): Promise<IClientSidePa
  * @param web The web or list
  * @param pageName The name of the page (filename)
  * @param title The page's title
- * @param pageLayoutType Layout to use when creating the page
+ * @param PageLayoutType Layout to use when creating the page
  */
-export const CreateClientSidePage = async (web: IWeb | IList, pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<IClientSidePage> => {
+export const CreateClientSidePage = async (web: IWeb, pageName: string, title: string, PageLayoutType: ClientSidePageLayoutType = "Article"): Promise<IClientSidePage> => {
 
     // patched because previously we used the full page name with the .aspx at the end
     // this allows folk's existing code to work after the re-write to the new API
     pageName = pageName.replace(/\.aspx$/i, "");
 
     // initialize the page, at this point a checked-out page with a junk filename will be created.
-    const pageInitData: IPageData = await spPost((<any>_ClientSidePage).initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
-        PageLayoutType: pageLayoutType,
-    })));
+    const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), { PageLayoutType })));
 
     // now we can init our page with the save data
     const newPage = ClientSidePage(web, "", pageInitData);

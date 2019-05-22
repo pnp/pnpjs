@@ -1,5 +1,5 @@
 import "../lists/web";
-import { _Web } from "../webs/types";
+import { _Web, IWeb } from "../webs/types";
 import { IClientSidePageComponent, CreateClientSidePage, IClientSidePage } from "./types";
 import { _SharePointQueryableCollection, SharePointQueryableCollection } from "../sharepointqueryable";
 
@@ -30,7 +30,6 @@ _Web.prototype.getClientSideWebParts = function (): Promise<IClientSidePageCompo
     return this.clone(SharePointQueryableCollection, "GetClientSideWebParts").get();
 };
 
-_Web.prototype.addClientSidePage = async function (this: _Web, pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<IClientSidePage> {
-    const page = await CreateClientSidePage(this.lists.getByTitle(libraryTitle), pageName, title);
-    return page;
+_Web.prototype.addClientSidePage = function (this: IWeb, pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<IClientSidePage> {
+    return CreateClientSidePage(this, pageName, title);
 };

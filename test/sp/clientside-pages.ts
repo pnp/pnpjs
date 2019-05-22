@@ -6,6 +6,7 @@ import "@pnp/sp/src/webs";
 import "@pnp/sp/src/clientside-pages";
 import "@pnp/sp/src/files";
 import { ClientSidePageFromFile, ClientSideText, ClientSideWebpartPropertyTypes, CreateClientSidePage, ClientSideWebpart, IClientSidePage } from "@pnp/sp/src/clientside-pages";
+import { Web } from "@pnp/sp/src/webs";
 
 describe("Clientside Pages", () => {
 
@@ -13,24 +14,25 @@ describe("Clientside Pages", () => {
 
         it("web.addClientSidePage", function () {
 
-            return expect(sp.web.addClientSidePage(`TestingAdd_${getRandomString(4)}.aspx`)).to.eventually.be.fulfilled;
+            return expect(Web(testSettings.sp.webUrl).addClientSidePage(`TestingAdd_${getRandomString(4)}.aspx`)).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage", function () {
 
-            return expect(CreateClientSidePage(sp.web, `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+            return expect(CreateClientSidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage - SingleWebPartAppPage", function () {
 
-            return expect(CreateClientSidePage(sp.web, `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage")).to.eventually.be.fulfilled;
+            const promise = CreateClientSidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it(".load", async function () {
 
             const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
 
-            await sp.web.addClientSidePage(pageFileName);
+            await Web(testSettings.sp.webUrl).addClientSidePage(pageFileName);
 
             // need to make the path relative
             const rel = testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
@@ -41,7 +43,7 @@ describe("Clientside Pages", () => {
         describe("save", function () {
 
             it("Should update a pages content with a text control", () => {
-                return sp.web.addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                return Web(testSettings.sp.webUrl).addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
                     page.addSection().addControl(new ClientSideText("This is test text!!!"));
 
@@ -50,9 +52,9 @@ describe("Clientside Pages", () => {
             });
 
             it("Should update a pages content with an embed control", () => {
-                return sp.web.getClientSideWebParts().then(parts => {
+                return Web(testSettings.sp.webUrl).getClientSideWebParts().then(parts => {
 
-                    sp.web.addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                    Web(testSettings.sp.webUrl).addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
                         const part = ClientSideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
 
@@ -74,7 +76,7 @@ describe("Clientside Pages", () => {
 
             before(async function () {
                 this.timeout(0);
-                page = await sp.web.addClientSidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
+                page = await Web(testSettings.sp.webUrl).addClientSidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
             });
 
             it("Should disable", function () {
@@ -92,7 +94,7 @@ describe("Clientside Pages", () => {
 
             beforeEach(function (done) {
                 this.timeout(0);
-                sp.web.addClientSidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`).then(p => {
+                Web(testSettings.sp.webUrl).addClientSidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`).then(p => {
                     page = <IClientSidePage>p;
                     done();
                 });
