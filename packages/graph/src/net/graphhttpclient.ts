@@ -1,5 +1,5 @@
 import {
-    extend,
+    assign,
     IRequestClient,
     mergeHeaders,
     IFetchOptions,
@@ -31,7 +31,7 @@ export class GraphHttpClient implements IRequestClient {
             headers.append("Content-Type", "application/json");
         }
 
-        const opts = extend(options, { headers: headers });
+        const opts = assign(options, { headers: headers });
 
         return this.fetchRaw(url, opts);
     }
@@ -41,7 +41,7 @@ export class GraphHttpClient implements IRequestClient {
         // here we need to normalize the headers
         const rawHeaders = new Headers();
         mergeHeaders(rawHeaders, options.headers);
-        options = extend(options, { headers: rawHeaders });
+        options = assign(options, { headers: rawHeaders });
 
         const retry = (ctx: RetryContext): void => {
 
@@ -85,22 +85,22 @@ export class GraphHttpClient implements IRequestClient {
     }
 
     public get(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "GET" });
+        const opts = assign(options, { method: "GET" });
         return this.fetch(url, opts);
     }
 
     public post(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "POST" });
+        const opts = assign(options, { method: "POST" });
         return this.fetch(url, opts);
     }
 
     public patch(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "PATCH" });
+        const opts = assign(options, { method: "PATCH" });
         return this.fetch(url, opts);
     }
 
     public delete(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "DELETE" });
+        const opts = assign(options, { method: "DELETE" });
         return this.fetch(url, opts);
     }
 }

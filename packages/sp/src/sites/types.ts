@@ -1,10 +1,9 @@
 import { SharePointQueryable, _SharePointQueryableInstance, ISharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
 import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
-import { SPBatch } from "../batch";
-import { hOP, jsS, extend } from "@pnp/common";
+import { hOP, jsS, assign } from "@pnp/common";
 import { SPHttpClient } from "../net/sphttpclient";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";
 
@@ -13,7 +12,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("_api/site")
-export class _Site extends _SharePointQueryableInstance {
+export class _Site extends _SharePointQueryableInstance implements _ISite {
 
     /**
      * Gets the root web of the site collection
@@ -77,14 +76,6 @@ export class _Site extends _SharePointQueryableInstance {
     }
 
     /**
-     * Creates a new batch for requests within the context of this site collection
-     *
-     */
-    public createBatch(): SPBatch {
-        return new SPBatch(this.parentUrl);
-    }
-
-    /**
      * Opens a web by id (using POST)
      *
      * @param webId The GUID id of the web to open
@@ -139,7 +130,7 @@ export class _Site extends _SharePointQueryableInstance {
         const postBody =
             body({
                 "request":
-                    extend({
+                    assign({
                         "__metadata": { "type": "Microsoft.SharePoint.Portal.SPSiteCreationRequest" },
                     }, props),
             },
@@ -207,13 +198,12 @@ export class _Site extends _SharePointQueryableInstance {
     }
 }
 
-export interface ISite extends IGetable, ISharePointQueryableInstance {
+export interface _ISite {
     readonly rootWeb: IWeb;
     getRootWeb(): Promise<IWeb>;
     getContextInfo(): Promise<IContextInfo>;
     getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]>;
     getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
-    createBatch(): SPBatch;
     openWebById(webId: string): Promise<IOpenWebByIdResult>;
     createCommunicationSite(
         title: string,
@@ -233,7 +223,9 @@ export interface ISite extends IGetable, ISharePointQueryableInstance {
         owners?: string[]): Promise<void>;
 
 }
-export interface _Site extends IGetable { }
+
+export interface ISite extends _ISite, IInvokable, ISharePointQueryableInstance {}
+
 export const Site = spInvokableFactory<ISite>(_Site);
 
 /**

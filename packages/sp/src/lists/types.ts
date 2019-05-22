@@ -1,5 +1,5 @@
-import { extend, TypedHash, hOP } from "@pnp/common";
-import { IGetable, body, headers } from "@pnp/odata";
+import { assign, TypedHash, hOP } from "@pnp/common";
+import { IInvokable, body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -15,13 +15,14 @@ import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
 import { spPost } from "../operations";
+import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
 /**
  * Describes a collection of List objects
  *
  */
 @defaultPath("lists")
-export class _Lists extends _SharePointQueryableCollection implements ILists {
+export class _Lists extends _SharePointQueryableCollection implements _ILists {
 
     /**
      * Gets a list from the collection by guid id
@@ -38,7 +39,7 @@ export class _Lists extends _SharePointQueryableCollection implements ILists {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return List(this, `getByTitle('${title}')`);
+        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
     }
 
     /**
@@ -87,7 +88,7 @@ export class _Lists extends _SharePointQueryableCollection implements ILists {
 
         return new Promise((resolve, reject) => {
 
-            const addOrUpdateSettings = extend(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+            const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
 
             const list: IList = this.getByTitle(addOrUpdateSettings.Title);
 
@@ -123,7 +124,7 @@ export class _Lists extends _SharePointQueryableCollection implements ILists {
     }
 }
 
-export interface ILists extends IGetable, ISharePointQueryableCollection {
+export interface _ILists {
     /**
      * Gets a list from the collection by guid id
      *
@@ -170,7 +171,9 @@ export interface ILists extends IGetable, ISharePointQueryableCollection {
      */
     ensureSitePagesLibrary(): Promise<IList>;
 }
-export interface _Lists extends IGetable { }
+
+export interface ILists extends _ILists, IInvokable, ISharePointQueryableCollection { }
+
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
 /**
@@ -178,7 +181,7 @@ export const Lists = spInvokableFactory<ILists>(_Lists);
  *
  */
 @deleteableWithETag()
-export class _List extends _SharePointQueryableInstance {
+export class _List extends _SharePointQueryableInstance implements _IList {
 
     /**
      * Gets the effective base permissions of this list
@@ -220,7 +223,7 @@ export class _List extends _SharePointQueryableInstance {
      */
     public async update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<IListUpdateResult> {
 
-        const postBody = body(extend({
+        const postBody = body(assign({
             "__metadata": { "type": "SP.List" },
         }, properties), headers({
             "IF-Match": eTag,
@@ -229,7 +232,7 @@ export class _List extends _SharePointQueryableInstance {
 
         const data = await spPost(this, postBody);
 
-        let list: IList = this;
+        let list: any = this;
 
         if (hOP(properties, "Title")) {
             list = this.getParent(_List, this.parentUrl, `getByTitle('${properties.Title}')`);
@@ -247,7 +250,7 @@ export class _List extends _SharePointQueryableInstance {
      */
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        return spPost(this.clone(List, "getchanges"), body({ query: extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
+        return spPost(this.clone(List, "getchanges"), body({ query: assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
     }
 
     /**
@@ -272,7 +275,7 @@ export class _List extends _SharePointQueryableInstance {
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ "query": extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
+        return spPost(q.expand.apply(q, expands), body({ "query": assign({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
     }
 
     /**
@@ -281,7 +284,7 @@ export class _List extends _SharePointQueryableInstance {
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
-        return spPost(o, body({ "query": extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
+        return spPost(o, body({ "query": assign({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
     }
 
     /**
@@ -314,8 +317,8 @@ export class _List extends _SharePointQueryableInstance {
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null): Promise<any> {
 
         const postBody = body({
-            overrideParameters: extend(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: extend(metadata("SP.RenderListDataParameters"), parameters),
+            overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
+            parameters: assign(metadata("SP.RenderListDataParameters"), parameters),
         });
 
         return spPost(this.clone(List, "RenderListDataAsStream", true), postBody);
@@ -377,7 +380,7 @@ export class _List extends _SharePointQueryableInstance {
     }
 }
 
-export interface IList extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface _IList {
 
     /**
      * Gets the effective base permissions of this list
@@ -467,7 +470,9 @@ export interface IList extends IGetable, ISharePointQueryableInstance, IDeleteab
      */
     addValidateUpdateItemUsingPath(formValues: IListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, comment?: string): Promise<IListItemFormUpdateValue[]>;
 }
-export interface _List extends IGetable, IDeleteableWithETag { }
+
+export interface IList extends _IList, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}
+
 export const List = spInvokableFactory<IList>(_List);
 
 export interface IListAddResult {

@@ -7,7 +7,7 @@ import {
     objectDefinedNotNull,
     IHttpClientImpl,
     isUrlAbsolute,
-    extend,
+    assign,
 } from "@pnp/common";
 
 export class AdalFetchClient implements IHttpClientImpl {
@@ -30,7 +30,7 @@ export class AdalFetchClient implements IHttpClientImpl {
                 headers: new Headers(),
             };
         } else if (!objectDefinedNotNull(options.headers)) {
-            options = extend(options, {
+            options = assign(options, {
                 headers: new Headers(),
             });
         }

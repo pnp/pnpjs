@@ -2,8 +2,8 @@
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 import { testSettings } from "../main";
-// import { IInvokableTest } from "../types";
 
 describe("SiteDesigns", function () {
 
@@ -16,7 +16,7 @@ describe("SiteDesigns", function () {
             const title = `Test_create_sitedesign_${getRandomString(8)}`;
             const p = sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             }).then(sd => createdSiteDesignIds.push(sd.Id));
 
             return expect(p, `site design '${title}' should've been created`).to.eventually.be.fulfilled;
@@ -27,7 +27,7 @@ describe("SiteDesigns", function () {
             const title = `Test_to_be_deleted_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             });
 
             return expect(sp.siteDesigns.deleteSiteDesign(sd.Id),
@@ -45,10 +45,10 @@ describe("SiteDesigns", function () {
             const title = `Test_get_metadata_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             });
 
-            createdSiteDesignIds.push(sd.Id)
+            createdSiteDesignIds.push(sd.Id);
 
             return expect(sp.siteDesigns.getSiteDesignMetadata(sd.Id),
                 `metadata of site design '${title}' should have been retrieved`).to.eventually.be.fulfilled;
@@ -59,7 +59,7 @@ describe("SiteDesigns", function () {
             const title = `Test_applying_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             });
 
             createdSiteDesignIds.push(sd.Id);
@@ -73,7 +73,7 @@ describe("SiteDesigns", function () {
             const title = `Test_to_update_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             });
 
             createdSiteDesignIds.push(sd.Id);
@@ -81,7 +81,7 @@ describe("SiteDesigns", function () {
             const updatedTitle = `Test_updated_sitedesign_${getRandomString(8)}`;
             return expect(sp.siteDesigns.updateSiteDesign({
                 Id: sd.Id,
-                Title: updatedTitle
+                Title: updatedTitle,
             }), `site design '${title}' should've been updated`).to.eventually.be.fulfilled;
         });
 
@@ -96,7 +96,7 @@ describe("SiteDesigns", function () {
             const title = `Test_to_get_sitedesign_rights__${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
                 Title: title,
-                WebTemplate: "68"
+                WebTemplate: "68",
             });
 
             createdSiteDesignIds.push(sd.Id);
@@ -114,14 +114,14 @@ describe("SiteDesigns", function () {
                 const title = `Test_grant_rights_sitedesign_${getRandomString(8)}`;
                 const sd = await sp.siteDesigns.createSiteDesign({
                     Title: title,
-                    WebTemplate: "68"
+                    WebTemplate: "68",
                 });
 
-                createdSiteDesignIds.push(sd.Id)
+                createdSiteDesignIds.push(sd.Id);
 
                 return expect(sp.siteDesigns.grantSiteDesignRights(
                     sd.Id,
-                    [testuser]
+                    [testuser],
                 ), `rights of site design '${title}' should have been granted to user '${testuser}'`).to.eventually.be.fulfilled;
             });
 
@@ -130,7 +130,7 @@ describe("SiteDesigns", function () {
                 const title = `Test_revoke_rights_sitedesign_${getRandomString(8)}`;
                 const sd = await sp.siteDesigns.createSiteDesign({
                     Title: title,
-                    WebTemplate: "68"
+                    WebTemplate: "68",
                 });
 
                 createdSiteDesignIds.push(sd.Id);

@@ -1,14 +1,14 @@
 import { Message as IMessageType, MailFolder as IMailFolderType, MailboxSettings as IMailboxSettingsType } from "@microsoft/microsoft-graph-types";
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import { _GraphQueryableCollection, _GraphQueryableInstance, IGraphQueryableInstance, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable } from "../decorators";
 
 /**
  * Message
  */
-export class _Message extends _GraphQueryableInstance<IMessageType> implements IMessage { }
-export interface IMessage extends IGetable, IGraphQueryableInstance<IMessageType> { }
-export interface _Message extends IGetable { }
+export class _Message extends _GraphQueryableInstance<IMessageType> implements _IMessage { }
+export interface _IMessage { }
+export interface IMessage extends _IMessage, IInvokable, IGraphQueryableInstance<IMessageType> { }
 export const Message = graphInvokableFactory<IMessage>(_Message);
 
 /**
@@ -17,17 +17,17 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
 @defaultPath("messages")
 @getById(Message)
 @addable()
-export class _Messages extends _GraphQueryableCollection<IMessageType[]> implements IMessages { }
-export interface IMessages extends IGetable, IGetById<IMessage>, IAddable<IMessageType>, IGraphQueryableInstance<IMessageType[]> { }
-export interface _Messages extends IGetable, IGetById<IMessage>, IAddable<IMessageType> { }
+export class _Messages extends _GraphQueryableCollection<IMessageType[]> implements _IMessages { }
+export interface _IMessages { }
+export interface IMessages extends _IMessages, IInvokable, IGetById<IMessage>, IAddable<IMessageType>, IGraphQueryableInstance<IMessageType[]> { }
 export const Messages = graphInvokableFactory<IMessages>(_Messages);
 
 /**
  * MailFolder
  */
-export class _MailFolder extends _GraphQueryableInstance<IMailFolderType> implements IMailFolder { }
-export interface IMailFolder extends IGetable, IGraphQueryableInstance<IMailFolderType> { }
-export interface _MailFolder extends IGetable { }
+export class _MailFolder extends _GraphQueryableInstance<IMailFolderType> implements _IMailFolder { }
+export interface _IMailFolder { }
+export interface IMailFolder extends _IMailFolder, IInvokable, IGraphQueryableInstance<IMailFolderType> { }
 export const MailFolder = graphInvokableFactory<IMailFolder>(_MailFolder);
 
 /**
@@ -36,9 +36,9 @@ export const MailFolder = graphInvokableFactory<IMailFolder>(_MailFolder);
 @defaultPath("mailFolders")
 @getById(MailFolder)
 @addable()
-export class _MailFolders extends _GraphQueryableCollection<IMailFolderType[]> implements IMailFolders {}
-export interface IMailFolders extends IGetable, IGetById<IMailFolder>, IAddable<IMailFolderType>, IGraphQueryableCollection<IMailFolderType[]> { }
-export interface _MailFolders extends IGetable, IGetById<IMailFolder>, IAddable<IMailFolderType> { }
+export class _MailFolders extends _GraphQueryableCollection<IMailFolderType[]> implements _IMailFolders {}
+export interface _IMailFolders { }
+export interface IMailFolders extends _IMailFolders, IInvokable, IGetById<IMailFolder>, IAddable<IMailFolderType>, IGraphQueryableCollection<IMailFolderType[]> { }
 export const MailFolders = graphInvokableFactory<IMailFolders>(_MailFolders);
 
 /**
@@ -46,7 +46,7 @@ export const MailFolders = graphInvokableFactory<IMailFolders>(_MailFolders);
  */
 @defaultPath("mailboxSettings")
 @updateable()
-export class _MailboxSettings extends _GraphQueryableInstance<IMailboxSettingsType> implements IMailboxSettings {}
-export interface IMailboxSettings extends IGetable, IUpdateable<IMailboxSettingsType>, IGraphQueryableInstance<IMailboxSettingsType> { }
-export interface _MailboxSettings extends IGetable, IUpdateable<IMailboxSettingsType> { }
+export class _MailboxSettings extends _GraphQueryableInstance<IMailboxSettingsType> implements _IMailboxSettings {}
+export interface _IMailboxSettings { }
+export interface IMailboxSettings extends _IMailboxSettings, IInvokable, IUpdateable<IMailboxSettingsType>, IGraphQueryableInstance<IMailboxSettingsType> { }
 export const MailboxSettings = graphInvokableFactory<IMailboxSettings>(_MailboxSettings);

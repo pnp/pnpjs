@@ -1,18 +1,17 @@
-import { IQueryable } from "./queryable";
+import { IQueryable, Queryable } from "./queryable";
 import { RequestContext } from "./pipeline";
 import { IFetchOptions, RuntimeConfig } from "@pnp/common";
+import { hookOr, doFactoryExtensions } from "./extensions";
 
-export type IHybrid<T, R = Promise<any>> = T & {
-    (this: T, ...args: any[]): R;
+export type IHybrid<T, R = any> = T & {
+    (this: T, ...args: any[]): Promise<R>;
 };
 
-export type IInvoker<T, R> = (this: T, ...args: any[]) => R;
+export type IInvoker<R> = (this: IQueryable<R>, ...args: any[]) => Promise<R>;
 
-export type IHybridConstructor<T, R> = (...args: any[]) => IHybrid<T, R>;
+const invokableBinder = <T = Queryable<any>>(invoker: IInvoker<T>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R => {
 
-const invokableBinder = <T extends { new(): T; new(...args: any[]): T }, R = any>(invoker: IInvoker<T, R>) => (constructor: T): IHybridConstructor<T, R> => {
-
-    return (...args: any[]) => {
+    return function (...args: any[]) {
 
         const factory = (as: any[]) => {
             const r = Object.assign(function (...ags: any[]) { return invoker.apply(r, ags); }, new constructor(...as));
@@ -23,18 +22,19 @@ const invokableBinder = <T extends { new(): T; new(...args: any[]): T }, R = any
         if (RuntimeConfig.ie11) {
             return factory(args);
         } else {
-            return new Proxy<IHybrid<T, R>>(factory(args), {
+
+            return new Proxy<IHybrid<T>>(doFactoryExtensions(factory, args), {
                 apply: (target: any, _thisArg: any, argArray?: any) => {
-                    return Reflect.apply(target, _thisArg, argArray);
+                    return hookOr("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
                 },
                 get: (target: any, p: PropertyKey, receiver: any) => {
-                    return Reflect.get(target, p, receiver);
+                    return hookOr("get", (...a: any[]) => Reflect.get(a[0], a[1], a[2]), target, p, receiver);
                 },
                 has: (target: any, p: PropertyKey) => {
-                    return Reflect.has(target, p);
+                    return hookOr("has", (...a: any[]) => Reflect.get(a[0], a[1]), target, p);
                 },
                 set: (target: any, p: PropertyKey, value: any, receiver: any) => {
-                    return Reflect.set(target, p, value, receiver);
+                    return hookOr("set", (...a: any[]) => Reflect.set(a[0], a[1], a[2], a[3]), target, p, value, receiver);
                 },
             });
         }
@@ -45,13 +45,8 @@ function defaultAction<R = any>(this: IQueryable<R>, options?: IFetchOptions): P
     return this.defaultAction(options);
 }
 
-// @ts-ignore (reason: there is not a great way to describe the "this" type for this operation)
-export const invokable = invokableBinder(defaultAction);
+export const invokableFactory = invokableBinder(defaultAction);
 
-export interface IGetable<R = any> {
+export interface IInvokable<R = any> {
     <T = R>(options?: Partial<RequestContext<T>>): Promise<T>;
 }
-
-export const invokableFactory = <T>(f: { new(...args: any[]): T }) => (...args: any[]): T => {
-    return invokable<T>(f)(...args);
-};

@@ -1,4 +1,4 @@
-import { IGetable, body } from "@pnp/odata";
+import { IInvokable, body } from "@pnp/odata";
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, IGraphQueryableInstance, _GraphQueryableInstance, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, getById, IGetById } from "../decorators";
@@ -7,7 +7,7 @@ import { graphDelete, graphPost } from "../operations";
 /**
  * Member
  */
-export class _Member extends _GraphQueryableInstance<IMemberType> implements IMember {
+export class _Member extends _GraphQueryableInstance<IMemberType> implements _IMember {
     /**
      * Removes this Member
      */
@@ -15,8 +15,8 @@ export class _Member extends _GraphQueryableInstance<IMemberType> implements IMe
         return graphDelete(this.clone(Member, "$ref"));
     }
 }
-export interface IMember extends IGetable, IGraphQueryableInstance<IMemberType> { }
-export interface _Member extends IGetable { }
+export interface _IMember { }
+export interface IMember extends _IMember, IInvokable, IGraphQueryableInstance<IMemberType> { }
 export const Member = graphInvokableFactory<IMember>(_Member);
 
 /**
@@ -24,7 +24,7 @@ export const Member = graphInvokableFactory<IMember>(_Member);
  */
 @defaultPath("members")
 @getById(Member)
-export class _Members extends _GraphQueryableCollection<IMemberType[]> implements IMembers {
+export class _Members extends _GraphQueryableCollection<IMemberType[]> implements _IMembers {
 
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
@@ -37,6 +37,6 @@ export class _Members extends _GraphQueryableCollection<IMemberType[]> implement
         return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
     }
 }
-export interface IMembers extends IGetable, IGetById<IMember>, IGraphQueryableCollection<IMemberType[]> { }
-export interface _Members extends IGetable, IGetById<IMember> { }
+export interface _IMembers { }
+export interface IMembers extends _IMembers, IInvokable, IGetById<IMember>, IGraphQueryableCollection<IMemberType[]> { }
 export const Members = graphInvokableFactory<IMembers>(_Members);

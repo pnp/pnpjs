@@ -1,4 +1,4 @@
-import { extend, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
+import { assign, getGUID, sanitizeGuid, stringIsNullOrEmpty } from "@pnp/common";
 import { ClientSvcQueryable, IClientSvcQueryable, MethodParams, ObjectPathQueue, method, objConstructor, objectPath, objectProperties, opQuery, property } from "@pnp/sp-clientsvc";
 import { ITermGroup, ITermGroupData, TermGroup, ITermGroups, TermGroups } from "./termgroup";
 import { ITerm, ITerms, Term, Terms } from "./terms";
@@ -298,7 +298,7 @@ export class TermStore extends ClientSvcQueryable implements ITermStore {
 
         this._useCaching = false;
         return this.invokeMethod<ITermGroupData>("CreateGroup", params)
-            .then(r => extend(this.getTermGroupById(r.Id), r));
+            .then(r => assign(this.getTermGroupById(r.Id), r));
     }
 
     /**

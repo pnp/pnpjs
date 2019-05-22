@@ -2,7 +2,13 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "rootDir": ".",
-        "outDir": "../build/packages"
+        "outDir": "../build/packages",
+        "target": "es5",
+        "module": "esnext",
+        "lib": [
+            "es2015",
+            "dom"
+        ]
     },
     "include": [],
     "references": [

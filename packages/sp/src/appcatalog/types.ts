@@ -1,4 +1,4 @@
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import {
     ISharePointQueryable,
     _SharePointQueryableInstance,
@@ -15,7 +15,7 @@ import { File, IFile } from "../files/types";
 /**
  * Represents an app catalog
  */
-export class _AppCatalog extends _SharePointQueryableCollection implements IAppCatalog {
+export class _AppCatalog extends _SharePointQueryableCollection implements _IAppCatalog {
 
     constructor(baseUrl: string | ISharePointQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
         super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
@@ -51,17 +51,22 @@ export class _AppCatalog extends _SharePointQueryableCollection implements IAppC
     }
 }
 
-export interface IAppCatalog extends IGetable, ISharePointQueryableCollection {
+export interface _IAppCatalog {
     add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<AppAddResult>;
     getAppById(id: string): IApp;
 }
-export interface _AppCatalog extends IGetable { }
+
+export interface IAppCatalog extends _IAppCatalog, IInvokable, ISharePointQueryableCollection { }
+
+/**
+ * Invokable factory for IAppCatalog instances
+ */
 export const AppCatalog = spInvokableFactory<IAppCatalog>(_AppCatalog);
 
 /**
  * Represents the actions you can preform on a given app within the catalog
  */
-export class _App extends _SharePointQueryableInstance implements IApp {
+export class _App extends _SharePointQueryableInstance implements _IApp {
 
     /**
      * This method deploys an app on the app catalog.  It must be called in the context
@@ -111,8 +116,7 @@ export class _App extends _SharePointQueryableInstance implements IApp {
     }
 }
 
-export interface _App extends IGetable { }
-export interface IApp extends IGetable, ISharePointQueryableInstance {
+export interface _IApp {
     deploy(skipFeatureDeployment?: boolean): Promise<void>;
     retract(): Promise<void>;
     install(): Promise<void>;
@@ -120,6 +124,12 @@ export interface IApp extends IGetable, ISharePointQueryableInstance {
     upgrade(): Promise<void>;
     remove(): Promise<void>;
 }
+
+export interface IApp extends _IApp, IInvokable, ISharePointQueryableInstance { }
+
+/**
+ * Invokable factory for IApp instances
+ */
 export const App = spInvokableFactory<IApp>(_App);
 
 export interface AppAddResult {

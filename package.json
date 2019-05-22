@@ -1,7 +1,7 @@
 {
   "name": "@pnp/monorepo",
   "private": true,
-  "version": "2.0.0-0",
+  "version": "2.0.0-2",
   "description": "A JavaScript library for SharePoint development.",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
@@ -11,6 +11,7 @@
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "7.1.0",
     "@types/core-js": "^2.5.0",
+    "@types/es6-promise": "^3.3.0",
     "@types/findup-sync": "^2.0.1",
     "@types/gulp": "^4.0.6",
     "@types/gulp-replace": "^0.0.31",
@@ -50,7 +51,7 @@
     "start": "npm run serve",
     "test": "nyc mocha",
     "build": "pnpbuild -n build",
-    "buildDebug": "pnpbuild -n build-debug",
+    "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
     "pnp-publish": "npm run package && pnpbuild -n publish",
     "pnp-publish-beta": "npm run package && pnpbuild -n publish-beta",

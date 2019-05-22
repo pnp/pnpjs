@@ -1,6 +1,6 @@
 import { Batch, ODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { extend, jsS, isUrlAbsolute } from "@pnp/common";
+import { assign, jsS, isUrlAbsolute } from "@pnp/common";
 import { GraphRuntimeConfig } from "./config/graphlibconfig";
 import { GraphHttpClient } from "./net/graphhttpclient";
 
@@ -88,26 +88,26 @@ export class GraphBatch extends Batch {
             // merge global config headers
             if (GraphRuntimeConfig.headers !== undefined && GraphRuntimeConfig.headers !== null) {
 
-                headers = extend(headers, GraphRuntimeConfig.headers);
+                headers = assign(headers, GraphRuntimeConfig.headers);
             }
 
             if (reqInfo.options !== undefined) {
 
                 // merge per request headers
                 if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
-                    headers = extend(headers, reqInfo.options.headers);
+                    headers = assign(headers, reqInfo.options.headers);
                 }
 
                 // add a request body
                 if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
 
-                    requestFragment = extend(requestFragment, {
+                    requestFragment = assign(requestFragment, {
                         body: reqInfo.options.body,
                     });
                 }
             }
 
-            requestFragment = extend(requestFragment, {
+            requestFragment = assign(requestFragment, {
                 headers: headers,
             });
 

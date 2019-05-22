@@ -1,6 +1,6 @@
 import { DigestCache } from "./digestcache";
 import {
-    extend,
+    assign,
     mergeHeaders,
     IFetchOptions,
     IRequestClient,
@@ -21,7 +21,7 @@ export class SPHttpClient implements IRequestClient {
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
 
-        let opts = extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        let opts = assign(options, { cache: "no-cache", credentials: "same-origin" }, true);
 
         const headers = new Headers();
 
@@ -58,7 +58,7 @@ export class SPHttpClient implements IRequestClient {
             headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/$$Version$$");
         }
 
-        opts = extend(opts, { headers: headers });
+        opts = assign(opts, { headers: headers });
 
         if (opts.method && opts.method.toUpperCase() !== "GET") {
 
@@ -80,7 +80,7 @@ export class SPHttpClient implements IRequestClient {
         // here we need to normalize the headers
         const rawHeaders = new Headers();
         mergeHeaders(rawHeaders, options.headers);
-        options = extend(options, { headers: rawHeaders });
+        options = assign(options, { headers: rawHeaders });
 
         const retry = (ctx: RetryContext): void => {
 
@@ -146,22 +146,22 @@ export class SPHttpClient implements IRequestClient {
     }
 
     public get(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "GET" });
+        const opts = assign(options, { method: "GET" });
         return this.fetch(url, opts);
     }
 
     public post(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "POST" });
+        const opts = assign(options, { method: "POST" });
         return this.fetch(url, opts);
     }
 
     public patch(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "PATCH" });
+        const opts = assign(options, { method: "PATCH" });
         return this.fetch(url, opts);
     }
 
     public delete(url: string, options: IFetchOptions = {}): Promise<Response> {
-        const opts = extend(options, { method: "DELETE" });
+        const opts = assign(options, { method: "DELETE" });
         return this.fetch(url, opts);
     }
 }

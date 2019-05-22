@@ -1,4 +1,4 @@
-import { IRequestClient, extend, isFunc, hOP } from "@pnp/common";
+import { IRequestClient, assign, isFunc, hOP } from "@pnp/common";
 import { LogLevel, Logger } from "@pnp/logging";
 import { CachingOptions, CachingParserWrapper } from "./caching";
 import { IQueryableData } from "./queryable";
@@ -148,7 +148,7 @@ export class PipelineMethods {
 
                 let cacheOptions = new CachingOptions(context.url.toLowerCase());
                 if (context.cachingOptions !== undefined) {
-                    cacheOptions = extend(cacheOptions, context.cachingOptions);
+                    cacheOptions = assign(cacheOptions, context.cachingOptions);
                 }
 
                 // we may not have a valid store
@@ -213,7 +213,7 @@ export class PipelineMethods {
 
                 // we are not part of a batch, so proceed as normal
                 const client = context.clientFactory();
-                const opts = extend(context.options || {}, { method: context.method });
+                const opts = assign(context.options || {}, { method: context.method });
                 client.fetch(context.url, opts)
                     .then(response => context.parser.parse(response))
                     .then(result => setResult(context, result))

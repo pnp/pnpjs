@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { getCtxCallback } from "..";
-import { dateAdd, combine, getRandomString, getGUID, isFunc, isArray, getAttrValueFromString, extend } from "..";
+import { dateAdd, combine, getRandomString, getGUID, isFunc, isArray, getAttrValueFromString, assign } from "..";
 
 describe("extend", () => {
 
@@ -14,7 +14,7 @@ describe("extend", () => {
             desc: "another",
         };
 
-        const o = extend(o1, o2);
+        const o = assign(o1, o2);
 
         expect(o).to.deep.eq({ title: "thing", desc: "another" });
     });
@@ -31,7 +31,7 @@ describe("extend", () => {
             sara: "wendy",
         };
 
-        const o = extend(o1, o2);
+        const o = assign(o1, o2);
 
         expect(o).to.deep.eq({ desc: "another", title: "thing", bob: "sam", sara: "wendy" });
     });
@@ -46,7 +46,7 @@ describe("extend", () => {
             title: "new",
         };
 
-        const o = extend(o1, o2);
+        const o = assign(o1, o2);
 
         expect(o).to.deep.eq({ title: "new" });
     });
@@ -61,7 +61,7 @@ describe("extend", () => {
             title: "new",
         };
 
-        const o = extend(o1, o2, true);
+        const o = assign(o1, o2, true);
 
         expect(o).to.deep.eq({ title: "thing" });
     });
@@ -77,7 +77,7 @@ describe("extend", () => {
             sara: "wendy",
         };
 
-        const o = extend(o1, o2, false, (name) => name !== "bob");
+        const o = assign(o1, o2, false, (name) => name !== "bob");
 
         expect(o).to.deep.eq({ title: "thing", sara: "wendy" });
     });

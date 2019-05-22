@@ -29,7 +29,7 @@ export interface SPConfigurationPart {
 export interface SPConfiguration extends LibraryConfiguration, SPConfigurationPart { }
 
 export function setup(config: SPConfiguration): void {
-    RuntimeConfig.extend(config);
+    RuntimeConfig.assign(config);
 }
 
 export class SPRuntimeConfigImpl {

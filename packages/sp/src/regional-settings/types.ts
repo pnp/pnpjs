@@ -9,14 +9,14 @@ import {
 import { defaultPath } from "../decorators";
 import { spODataEntity } from "../odata";
 import { dateAdd, hOP } from "@pnp/common";
-import { IGetable } from "@pnp/odata";
+import { IInvokable } from "@pnp/odata";
 import { spPost } from "../operations";
 
 /**
  * Describes regional settings ODada object
  */
 @defaultPath("regionalsettings")
-export class _RegionalSettings extends _SharePointQueryableInstance implements IRegionalSettings {
+export class _RegionalSettings extends _SharePointQueryableInstance implements _IRegionalSettings {
     /**
      * Gets the collection of languages used in a server farm.
      */
@@ -46,20 +46,22 @@ export class _RegionalSettings extends _SharePointQueryableInstance implements I
     }
 }
 
-export interface IRegionalSettings extends IGetable, ISharePointQueryableInstance {
+export interface _IRegionalSettings {
     readonly installedLanguages: ISharePointQueryableCollection;
     readonly globalInstalledLanguages: ISharePointQueryableCollection;
     readonly timeZone: ITimeZone;
     readonly timeZones: ITimeZones;
 }
-export interface _RegionalSettings extends IGetable { }
+
+export interface IRegionalSettings extends _IRegionalSettings, IInvokable, ISharePointQueryableInstance { }
+
 export const RegionalSettings = spInvokableFactory<IRegionalSettings>(_RegionalSettings);
 
 /**
  * Describes TimeZone ODada object
  */
 @defaultPath("timezone")
-export class _TimeZone extends _SharePointQueryableInstance {
+export class _TimeZone extends _SharePointQueryableInstance implements _ITimeZone {
     /**
      * Gets an Local Time by UTC Time
      *
@@ -100,18 +102,20 @@ export class _TimeZone extends _SharePointQueryableInstance {
     }
 }
 
-export interface ITimeZone extends IGetable, ISharePointQueryableInstance {
+export interface _ITimeZone {
     utcToLocalTime(utcTime: string | Date): Promise<string>;
     localTimeToUTC(localTime: string | Date): Promise<string>;
 }
-export interface _TimeZone extends IGetable { }
+
+export interface ITimeZone extends _ITimeZone, IInvokable, ISharePointQueryableInstance { }
+
 export const TimeZone = spInvokableFactory<ITimeZone>(_TimeZone);
 
 /**
  * Describes time zones queriable collection
  */
 @defaultPath("timezones")
-export class _TimeZones extends _SharePointQueryableCollection implements ITimeZones {
+export class _TimeZones extends _SharePointQueryableCollection implements _ITimeZones {
     // https://msdn.microsoft.com/en-us/library/office/jj247008.aspx - timezones ids
     /**
      * Gets an TimeZone by id
@@ -124,8 +128,10 @@ export class _TimeZones extends _SharePointQueryableCollection implements ITimeZ
     }
 }
 
-export interface ITimeZones extends IGetable, ISharePointQueryableInstance {
+export interface _ITimeZones {
     getById(id: number): Promise<ITimeZone>;
 }
-export interface _TimeZones extends IGetable { }
+
+export interface ITimeZones extends _ITimeZones, IInvokable, ISharePointQueryableInstance { }
+
 export const TimeZones = spInvokableFactory<ITimeZones>(_TimeZones);

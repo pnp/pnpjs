@@ -5,7 +5,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { IGetable, body, headers } from "@pnp/odata";
+import { IInvokable, body, headers } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost, spDelete, spPatch } from "../operations";
 
@@ -14,7 +14,7 @@ import { spPost, spDelete, spPatch } from "../operations";
  *
  */
 @defaultPath("subscriptions")
-export class _Subscriptions extends _SharePointQueryableCollection implements ISubscriptions {
+export class _Subscriptions extends _SharePointQueryableCollection implements _ISubscriptions {
 
     /**
      * Returns all the webhook subscriptions or the specified webhook subscription
@@ -49,18 +49,20 @@ export class _Subscriptions extends _SharePointQueryableCollection implements IS
     }
 }
 
-export interface ISubscriptions extends IGetable, ISharePointQueryableCollection {
+export interface _ISubscriptions {
     getById(subscriptionId: string): ISubscription;
     add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult>;
 }
-export interface _Subscriptions extends IGetable { }
+
+export interface ISubscriptions extends _ISubscriptions, IInvokable, ISharePointQueryableCollection {}
+
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
 /**
  * Describes a single webhook subscription instance
  *
  */
-export class _Subscription extends _SharePointQueryableInstance implements ISubscription {
+export class _Subscription extends _SharePointQueryableInstance implements _ISubscription {
 
     /**
      * Renews this webhook subscription
@@ -98,11 +100,13 @@ export class _Subscription extends _SharePointQueryableInstance implements ISubs
     }
 }
 
-export interface ISubscription extends IGetable, ISharePointQueryableInstance {
+export interface _ISubscription {
     update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult>;
     delete(): Promise<void>;
 }
-export interface _Subscription extends IGetable { }
+
+export interface ISubscription extends _ISubscription, IInvokable, ISharePointQueryableInstance {}
+
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 export interface ISubscriptionAddResult {

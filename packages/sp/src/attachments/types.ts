@@ -7,7 +7,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, IGetable, headers } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, IInvokable, headers } from "@pnp/odata";
 
 export interface AttachmentFileInfo {
     name: string;
@@ -19,7 +19,7 @@ export interface AttachmentFileInfo {
  *
  */
 @defaultPath("AttachmentFiles")
-export class _Attachments extends _SharePointQueryableCollection implements IAttachments {
+export class _Attachments extends _SharePointQueryableCollection {
 
     /**
      * Gets a Attachment File by filename
@@ -78,14 +78,17 @@ export class _Attachments extends _SharePointQueryableCollection implements IAtt
     }
 }
 
-export interface IAttachments extends IGetable, ISharePointQueryableCollection {
+export interface IAttachments extends IInvokable, ISharePointQueryableCollection {
     getByName(name: string): IAttachment;
     add(name: string, content: string | Blob | ArrayBuffer): Promise<AttachmentAddResult>;
     addMultiple(files: AttachmentFileInfo[]): Promise<void>;
     deleteMultiple(...files: string[]): Promise<void>;
     recycleMultiple(...files: string[]): Promise<void>;
 }
-export interface _Attachments extends IGetable { }
+
+/**
+ * Invokable factory for IAttachments instances
+ */
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
 /**
@@ -93,7 +96,7 @@ export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
  *
  */
 @deleteableWithETag()
-export class _Attachment extends _SharePointQueryableInstance implements IAttachment {
+export class _Attachment extends _SharePointQueryableInstance implements _IAttachment {
 
     /**
      * Gets the contents of the file as text
@@ -155,7 +158,7 @@ export class _Attachment extends _SharePointQueryableInstance implements IAttach
     }
 }
 
-export interface IAttachment extends IGetable, ISharePointQueryableInstance, IDeleteableWithETag {
+export interface _IAttachment {
     getText(): Promise<string>;
     getBlob(): Promise<Blob>;
     getBuffer(): Promise<ArrayBuffer>;
@@ -163,7 +166,12 @@ export interface IAttachment extends IGetable, ISharePointQueryableInstance, IDe
     setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment>;
     recycle(eTag?: string): Promise<void>;
 }
-export interface _Attachment extends IGetable, IDeleteableWithETag { }
+
+export interface IAttachment extends _IAttachment, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
+
+/**
+ * Invokable factory for IAttachment instances
+ */
 export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
 
 export interface AttachmentAddResult {
