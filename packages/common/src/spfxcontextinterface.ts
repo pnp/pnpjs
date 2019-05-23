@@ -10,8 +10,6 @@ export interface ISPFXContext {
         }>;
     };
 
-    graphHttpClient: ISPFXGraphHttpClient;
-
     pageContext: {
         aadInfo: {
             tenantId: {
