@@ -1,9 +1,7 @@
-// import { Logger, LogLevel } from "../../packages/logging";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/clientside-pages/web";
 import { SPFetchClient } from "@pnp/nodejs";
-import "@pnp/odata/src/debug";
 import "./myweb";
 
 declare var process: { exit(code?: number): void };
@@ -19,9 +17,9 @@ export async function Example(settings: any) {
         },
     });
 
-    const f = await sp.web.addClientSidePage("asdfasdf111.aspx");
+    const f = await sp.web();
 
-    console.log(JSON.stringify(f.__json(), null, 2));
+    console.log(JSON.stringify(f, null, 2));
 
     process.exit();
 }
