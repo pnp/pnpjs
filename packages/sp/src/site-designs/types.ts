@@ -122,7 +122,7 @@ export interface _ISiteDesigns {
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
 }
 
-export interface ISiteDesigns extends _ISiteDesigns, ISharePointQueryable {}
+export interface ISiteDesigns extends _ISiteDesigns { }
 
 export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
