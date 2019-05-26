@@ -17,7 +17,6 @@ import { spPost } from "../operations";
  */
 @defaultPath("views")
 export class _Views extends _SharePointQueryableCollection implements _IViews {
-
     /**	  
      * Gets a view by guid id	    
      *	   
@@ -43,8 +42,7 @@ export class _Views extends _SharePointQueryableCollection implements _IViews {
      * @param personalView True if this is a personal view, otherwise false, default = false
      * @param additionalSettings Will be passed as part of the view creation body
      */
-    public async add(title: string, personalView = false, additionalSettings: TypedHash<any> = {}): Promise<IViewAddResult> {
-
+    public async add(title: string, personalView: boolean = false, additionalSettings: TypedHash<any> = {}): Promise<IViewAddResult> {
         const postBody = body(Object.assign(metadata("SP.View"), {
             "PersonalView": personalView,
             "Title": title,
@@ -65,7 +63,7 @@ export interface _IViews {
     add(title: string, personalView?: boolean, additionalSettings?: TypedHash<any>): Promise<IViewAddResult>;
 }
 
-export interface IViews extends _IViews, IInvokable, ISharePointQueryableCollection {}
+export interface IViews extends _IViews, IInvokable, ISharePointQueryableCollection { }
 
 export const Views = spInvokableFactory<IViews>(_Views);
 
@@ -112,7 +110,7 @@ export interface _IView {
     setViewXml(viewXml: string): Promise<void>;
 }
 
-export interface IView extends _IView, IInvokable, ISharePointQueryableInstance, IDeleteable {}
+export interface IView extends _IView, IInvokable, ISharePointQueryableInstance, IDeleteable { }
 
 export const View = spInvokableFactory<IView>(_View);
 
@@ -169,7 +167,7 @@ export interface _IViewFields {
     remove(fieldInternalName: string): Promise<void>;
 }
 
-export interface IViewFields extends _IViewFields, IInvokable, ISharePointQueryableCollection {}
+export interface IViewFields extends _IViewFields, IInvokable, ISharePointQueryableCollection { }
 
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
 
