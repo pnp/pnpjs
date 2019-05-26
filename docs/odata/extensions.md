@@ -105,7 +105,7 @@ You can register Extensions either globally, on an invokable factory, or on a pe
 
 ### Global Registration
 
-Globally registering an extension allows you to inject functionality into every invokable that is instantiated within your application. It is important to remember that processing extensions are processed on ALL property access and method invocation operations - so global extensions should be used sparingly.
+Globally registering an extension allows you to inject functionality into every invokable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.
 
 ```TypeScript
 import { extendGlobal } from "@pnp/odata";
