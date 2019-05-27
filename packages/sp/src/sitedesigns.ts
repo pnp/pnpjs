@@ -106,6 +106,29 @@ export interface SiteDesignUpdateInfo {
     IsDefault?: boolean;
 }
 
+export interface ISiteDesignTask {
+    /**
+     * The ID of the site design task
+     */
+    ID: string;
+    /**
+     * Logonname of the user who created the task
+     */
+    LogonName: string;
+    /**
+     * The ID of the site design the task is running on
+     */
+    SiteDesignID: string;
+    /**
+     * The ID of the site collection
+     */
+    SiteID: string;
+    /**
+     * The ID of the web
+     */
+    WebID: string;
+}
+
 export interface SiteDesignPrincipals {
     DisplayName: string;
     PrincipalName: string;
@@ -122,6 +145,8 @@ export interface SiteDesignsUtilityMethods {
     getSiteDesignRights(id: string): Promise<SiteDesignPrincipals[]>;
     grantSiteDesignRights(id: string, principalNames: string[], grantedRights?: number): Promise<void>;
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
+    addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask>;
+    getSiteDesignTask(id: string): Promise<ISiteDesignTask | null>;
 }
 
 /**
@@ -250,5 +275,23 @@ export class SiteDesigns extends SharePointQueryable implements SiteDesignsUtili
                 "id": id,
                 "principalNames": principalNames,
             });
+    }
+
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param id The ID of the site design to create a task for
+     */
+    public async addSiteDesignTaskToCurrentWeb(id: string): Promise<ISiteDesignTask> {
+        return await this.clone(SiteDesigns, `AddSiteDesignTaskToCurrentWeb`)
+            .execute<ISiteDesignTask>({ "siteDesignId": id });
+    }
+
+    /**
+     * Retrieves the site design task, if the task has finished running null will be returned
+     * @param id The ID of the site design task
+     */
+    public async getSiteDesignTask(id: string): Promise<ISiteDesignTask | null> {
+        return await this.clone(SiteDesigns, `GetSiteDesignTask`)
+            .execute<ISiteDesignTask | null>({ "taskId": id });
     }
 }

@@ -22,6 +22,7 @@ export interface SiteScriptUtilityMethods {
     getSiteScriptMetadata(id: string): Promise<SiteScriptInfo>;
     deleteSiteScript(id: string): Promise<void>;
     updateSiteScript(siteScriptUpdateInfo: SiteScriptUpdateInfo, content?: any): Promise<SiteScriptInfo>;
+    getSiteScriptFromList(listUrl: string): Promise<string>;
 }
 
 /**
@@ -110,5 +111,14 @@ export class SiteScripts extends SharePointQueryable implements SiteScriptUtilit
         }
 
         return await this.clone(SiteScripts, "UpdateSiteScript").execute<SiteScriptInfo>({ updateInfo: siteScriptUpdateInfo });
+    }
+
+    /**
+     * Gets the site script syntax (JSON) for a specific list
+     * @param listUrl The absolute url of the list to retrieve site script
+     */
+    public async getSiteScriptFromList(listUrl: string): Promise<string> {
+        return await this.clone(SiteScripts, `GetSiteScriptFromList`)
+            .execute<string>({ "listUrl": listUrl });
     }
 }
