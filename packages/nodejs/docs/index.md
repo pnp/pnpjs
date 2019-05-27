@@ -15,6 +15,7 @@ exported functionality.
 * [AdalFetchClient](adal-fetch-client.md)
 * [SPFetchClient](sp-fetch-client.md)
 * [BearerTokenFetchClient](bearer-token-fetch-client.md)
+* [Using A Proxy](proxy.md)
 
 ## UML
 ![Graphical UML diagram](../../documentation/img/pnpjs-nodejs-uml.svg)

@@ -6,6 +6,78 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.3.2 - 2019-05-04
+
+### Added
+
+- @pnp/graph: Added support for people queries ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/572)]
+- @pnp/graph: Added support for security APIs & related docs ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/573)]
+- @pnp/sp: Expose ability to get tenant app catalog web [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/nodejs: Added ability to use proxy with nodejs [[PR](https://github.com/pnp/pnpjs/pull/581)]
+
+### Fixed
+
+- @pnp/sp: Fixed issue with batches with internal requests [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/sp: Fixed return data parsing for HubSiteData method [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/sp: Fixed issue with setting banner image on client side pages [[PR](https://github.com/pnp/pnpjs/pull/581)]
+- @pnp/graph: Fixes docs related to Teams ([@taylanken](https://github.com/taylanken)) [[PR](https://github.com/pnp/pnpjs/pull/588)]
+
+## 1.3.1 - 2019-21-03
+
+### Added
+
+- @pnp/sp: Added ability to set section emphasis for modern pages [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/sp: Added setBannerImage method to ClientSidePage [[PR](https://github.com/pnp/pnpjs/pull/561)] 
+- @pnp/sp: Added support for HubSiteId while creating modern sites ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/553)]
+- @pnp/sp: Added support for "SingleWebPartAppPage" & "RepostPage" modern page types ([@gautamdsheth](https://github.com/gautamdsheth)) [[PR](https://github.com/pnp/pnpjs/pull/554)]
+- @pnp/sp: Added getFileById and getFolderById methods to Web ([@tavikukko](https://github.com/tavikukko)) [[PR](https://github.com/pnp/pnpjs/pull/562)]
+
+### Fixed
+
+- @pnp/sp: Fixed code to set id and anchorComponentId for new text webparts [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/sp: Fixed ClientSidePage to respect configureFrom settings [[PR](https://github.com/pnp/pnpjs/pull/561)]
+- @pnp/common: updated storage to not hang if getter throws an exception ([@cslecours](https://github.com/cslecours)) [[PR](https://github.com/pnp/pnpjs/pull/546)]
+
+## 1.3.0 - 2019-08-03
+
+### Added
+
+- @pnp/graph: Added support for SharePoint sites, lists, columns, items and more endpoints ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/503)]
+- @pnp/graph: Added support for insights ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/511)]
+- @pnp/sp: Added copyPage method to ClientSidePage [[PR](https://github.com/pnp/pnpjs/pull/533)]
+- @pnp/sp: Added getSiteCollectionAppCatalog to Web [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+### Changed
+
+- @pnp/sp: Changed NavigationService contructor to allow specifying site [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+### Fixed
+
+- documentation: Fixed spelling errors in docs ([@michaelmaillot](https://github.com/michaelmaillot)) [[PR](https://github.com/pnp/pnpjs/pull/516)]
+- documentation: Fixed spelling errors docs ([@0xflotus](https://github.com/michaelmaillot)) [[PR](https://github.com/pnp/pnpjs/pull/543)]
+- @pnp/sp: Fixed client side page management [[PR](https://github.com/pnp/pnpjs/pull/533)]
+- @pnp/sp: Fixed return types for verbose json in utility methods [[PR](https://github.com/pnp/pnpjs/pull/533)]
+
+
+## 1.2.9 - 2019-08-02
+
+### Added
+
+- @pnp/graph: Added subscriptions + documentation ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/465)]
+- @pnp/graph: Added remove to members and owners ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/488)]
+- @pnp/sp: Added HubSite functionality and Types ([@simonagren](https://github.com/simonagren)) [[PR](https://github.com/pnp/pnpjs/pull/490)]
+- @pnp/sp: Added DateTimeFieldFriendlyFormatType enum ([@tsekityam](https://github.com/tsekityam)) [[PR](https://github.com/pnp/pnpjs/pull/462)]
+
+### Changed
+
+- @pnp/sp: web.allproperties now returns SharePointQueryableInstance [[PR](https://github.com/pnp/pnpjs/pull/484)]
+
+### Fixed
+
+- @pnp/sp: Fixed batching issue when using items.add [[PR](https://github.com/pnp/pnpjs/pull/474)]
+
+## 1.2.8 - 2019-11-01
+
 ### Added
 
 - @pnp/sp-taxonomy: Add support for add new term from term ([@siata13](https://github.com/siata13)) [[PR](https://github.com/pnp/pnpjs/pull/411)]

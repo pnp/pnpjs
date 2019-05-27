@@ -1,6 +1,4 @@
-declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
-const nodeFetch = require("node-fetch").default;
 import { AADToken } from "../types";
 import {
     combine,
@@ -9,6 +7,7 @@ import {
     isUrlAbsolute,
     extend,
 } from "@pnp/common";
+import { fetch } from "./fetch";
 
 export class AdalFetchClient implements HttpClientImpl {
 
@@ -43,7 +42,7 @@ export class AdalFetchClient implements HttpClientImpl {
 
             options.headers.set("Authorization", `${token.tokenType} ${token.accessToken}`);
 
-            return nodeFetch(url, options);
+            return fetch(url, options);
         });
     }
 

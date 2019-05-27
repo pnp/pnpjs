@@ -6,6 +6,8 @@
         "rootDir": ".",
         "outDir": "./dist",
         "declaration": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
         "types": [
             "core-js"
         ],

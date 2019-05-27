@@ -22,7 +22,7 @@ const map = objectToMap({ a: "b", c: "d"});
 
 ## mergeMaps
 
-Merges two or more maps, overwiting values with the same key. Last value in wins.
+Merges two or more maps, overwriting values with the same key. Last value in wins.
 
 ```TypeScript
 const m1 = new Map();

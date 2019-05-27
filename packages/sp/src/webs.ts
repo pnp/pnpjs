@@ -1,5 +1,5 @@
 import { extend, TypedHash, jsS } from "@pnp/common";
-import { SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -11,7 +11,7 @@ import { ContentTypes } from "./contenttypes";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
 import { extractWebUrl } from "./utils/extractweburl";
-import { ChangeQuery, StorageEntity } from "./types";
+import { ChangeQuery, StorageEntity, HubSiteData as IHubSiteData } from "./types";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
@@ -127,8 +127,8 @@ export class Web extends SharePointQueryableShareableWeb {
     /**
      * Allows access to the web's all properties collection
      */
-    public get allProperties(): SharePointQueryableCollection {
-        return this.clone(SharePointQueryableCollection, "allproperties");
+    public get allProperties(): SharePointQueryableInstance {
+        return this.clone(SharePointQueryableInstance, "allproperties");
     }
 
     /**
@@ -307,6 +307,15 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
+     * Gets a folder by id
+     *
+     * @param uniqueId The uniqueId of the folder
+     */
+    public getFolderById(uniqueId: string): Folder {
+      return new Folder(this, `getFolderById('${uniqueId}')`);
+    }
+
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -325,6 +334,15 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getFolderByServerRelativePath(folderRelativeUrl: string): Folder {
         return new Folder(this, `getFolderByServerRelativePath(decodedUrl='${folderRelativeUrl}')`);
+    }
+
+    /**
+     * Gets a file by id
+     *
+     * @param uniqueId The uniqueId of the file
+     */
+    public getFileById(uniqueId: string): File {
+      return new File(this, `getFileById('${uniqueId}')`);
     }
 
     /**
@@ -538,12 +556,21 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
-     * Gets the app catalog for this web
+     * Gets the tenant app catalog for this web
      *
      * @param url Optional url or web containing the app catalog (default: current web)
      */
     public getAppCatalog(url?: string | Web) {
         return new AppCatalog(url || this);
+    }
+
+    /**
+     * Gets the site collection app catalog for this web
+     *
+     * @param url Optional url or web containing the app catalog (default: current web)
+     */
+    public getSiteCollectionAppCatalog(url?: string | Web) {
+        return new AppCatalog(url || this, "_api/web/sitecollectionappcatalog/AvailableApps");
     }
 
     /**
@@ -560,8 +587,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
-    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), libraryTitle = "Site Pages"): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
+    public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(this, pageName, title);
     }
 
     /**
@@ -571,8 +598,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param listRelativePath The server relative path to the list's root folder (including /sites/ if applicable)
      * @param title Display title of the new page
      */
-    public addClientSidePageByPath(pageName: string, listRelativePath: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
-        return ClientSidePage.create(this.getList(listRelativePath), pageName, title);
+    public addClientSidePageByPath(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
+        return ClientSidePage.create(this, pageName, title);
     }
 
     /**
@@ -598,8 +625,8 @@ export class Web extends SharePointQueryableShareableWeb {
      * When true, the cache is refreshed with the latest updates and then returned.
      * Use this if you just made changes and need to see those changes right away.
      */
-    public hubSiteData(forceRefresh = false): Promise<void> {
-        return this.clone(Web, `hubSiteData(${forceRefresh})`).get();
+    public async hubSiteData(forceRefresh = false): Promise<IHubSiteData> {
+        return this.clone(Web, `hubSiteData(${forceRefresh})`).get().then(r => JSON.parse(r));
     }
 
     /**

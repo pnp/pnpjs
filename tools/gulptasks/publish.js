@@ -124,7 +124,7 @@ gulp.task("publish", ["clean", "clean-build"], (done) => {
 
         // here we need to update the version in the mkdocs.yml file
         replace({
-            files: [path.resolve("../../mkdocs.yml")],
+            files: [path.resolve(projectRoot, "mkdocs.yml")],
             from: /version: '[0-9\.-]+'/ig,
             to: `version: '${updatedPkg.version}'`,
         });

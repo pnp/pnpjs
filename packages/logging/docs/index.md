@@ -16,7 +16,7 @@ The logging framework is based on the Logger class to which any number of listen
 
 ```TypeScript
 /**
- * Interface that defines a log listner
+ * Interface that defines a log listener
  *
  */
 export interface LogListener {

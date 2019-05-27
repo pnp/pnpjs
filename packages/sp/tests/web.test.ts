@@ -73,6 +73,13 @@ describe("Web", () => {
         });
     });
 
+    describe("getFolderById", () => {
+      it("should return _api/web/getFolderById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')", () => {
+        expect(web.getFolderById("6a48ec7d-2c3a-470d-936f-c56032d23dbe").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFolderById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')"));
+      });
+    });
+
     describe("getFolderByServerRelativeUrl", () => {
         it("should return _api/web/getFolderByServerRelativeUrl('/sites/dev/shared documents/folder')", () => {
             expect(web.getFolderByServerRelativeUrl("/sites/dev/shared documents/folder").toUrl())
@@ -80,11 +87,18 @@ describe("Web", () => {
         });
     });
 
+    describe("getFileById", () => {
+      it("should return _api/web/getFileById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')", () => {
+        expect(web.getFileById("6a48ec7d-2c3a-470d-936f-c56032d23dbe").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFileById('6a48ec7d-2c3a-470d-936f-c56032d23dbe')"));
+      });
+    });
+
     describe("getFileByServerRelativeUrl", () => {
-        it("should return _api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')", () => {
-            expect(web.getFileByServerRelativeUrl("/sites/dev/shared documents/folder/doc.docx").toUrl())
-                .to.match(toMatchEndRegex("_api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')"));
-        });
+      it("should return _api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')", () => {
+        expect(web.getFileByServerRelativeUrl("/sites/dev/shared documents/folder/doc.docx").toUrl())
+          .to.match(toMatchEndRegex("_api/web/getFileByServerRelativeUrl('/sites/dev/shared documents/folder/doc.docx')"));
+      });
     });
 
     describe("getList", () => {
@@ -212,7 +226,7 @@ describe("Web", () => {
 
         describe("delete", () => {
             it("should create and then delete a new sub-web", function () {
-                this.ignoreTimeouts(true);
+                this.timeout(60000);
                 const url = getRandomString(5);
                 return expect(sp.web.webs.add("Better be deleted!", url).then(result => {
                     return result.web.delete();
@@ -220,19 +234,20 @@ describe("Web", () => {
             });
         });
 
-        describe("applyTheme", () => {
-            it("should apply a theme to our web", function () {
-                // this takes a long time to process
-                this.timeout(60000);
-                this.ignoreTimeouts(true);
+        // commenting out this test as the code hasn't changed in years and it takes longer than any other test
+        // describe("applyTheme", () => {
+        //     it("should apply a theme to our web", function () {
 
-                const index = testSettings.sp.url.indexOf("/sites/");
-                const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-                const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+        //         // this takes a long time to process
+        //         this.timeout(60000);
 
-                return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
-            });
-        });
+        //         const index = testSettings.sp.url.indexOf("/sites/");
+        //         const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+        //         const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+
+        //         return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
+        //     });
+        // });
 
         describe("applyWebTemplate", () => {
             it("should apply a web template to a web");

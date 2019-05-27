@@ -1,5 +1,5 @@
 import { SharePointQueryable } from "./sharepointqueryable";
-import { extend, jsS } from "@pnp/common";
+import { extend, jsS, hOP } from "@pnp/common";
 import { EmailProperties } from "./types";
 import { SPBatch } from "./batch";
 import { ICachingOptions } from "@pnp/odata";
@@ -122,7 +122,9 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
 
     public getCurrentUserEmailAddresses(): Promise<string> {
 
-        return this.clone(UtilityMethod, "GetCurrentUserEmailAddresses", true).excute<string>({});
+        return this.clone(UtilityMethod, "GetCurrentUserEmailAddresses", true).excute<string>({}).then(r => {
+            return hOP(r, "GetCurrentUserEmailAddresses") ? (<any>r).GetCurrentUserEmailAddresses : r;
+        });
     }
 
     public resolvePrincipal(input: string,
@@ -141,7 +143,9 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             sources: sources,
         };
 
-        return this.clone(UtilityMethod, "ResolvePrincipalInCurrentContext", true).excute<PrincipalInfo>(params);
+        return this.clone(UtilityMethod, "ResolvePrincipalInCurrentContext", true).excute<PrincipalInfo>(params).then(r => {
+            return hOP(r, "ResolvePrincipalInCurrentContext") ? (<any>r).ResolvePrincipalInCurrentContext : r;
+        });
     }
 
     public searchPrincipals(input: string,
@@ -158,7 +162,9 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             sources: sources,
         };
 
-        return this.clone(UtilityMethod, "SearchPrincipalsUsingContextWeb", true).excute<PrincipalInfo[]>(params);
+        return this.clone(UtilityMethod, "SearchPrincipalsUsingContextWeb", true).excute<PrincipalInfo[] | { SearchPrincipalsUsingContextWeb: PrincipalInfo[] }>(params).then(r => {
+            return hOP(r, "SearchPrincipalsUsingContextWeb") ? (<any>r).SearchPrincipalsUsingContextWeb : r;
+        });
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
@@ -167,7 +173,9 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             pageAddress: pageAddress,
         };
 
-        return this.clone(UtilityMethod, "CreateEmailBodyForInvitation", true).excute<string>(params);
+        return this.clone(UtilityMethod, "CreateEmailBodyForInvitation", true).excute<string>(params).then(r => {
+            return hOP(r, "CreateEmailBodyForInvitation") ? (<any>r).CreateEmailBodyForInvitation : r;
+        });
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<PrincipalInfo[]> {
@@ -177,7 +185,9 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             maxCount: maxCount,
         };
 
-        return this.clone(UtilityMethod, "ExpandGroupsToPrincipals", true).excute<PrincipalInfo[]>(params);
+        return this.clone(UtilityMethod, "ExpandGroupsToPrincipals", true).excute<PrincipalInfo[]>(params).then(r => {
+            return hOP(r, "ExpandGroupsToPrincipals") ? (<any>r).ExpandGroupsToPrincipals : r;
+        });
     }
 
     public createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult> {
@@ -186,7 +196,7 @@ export class UtilityMethod extends SharePointQueryable implements UtilityMethods
             parameters: info,
         }).then(r => {
             return {
-                data: r,
+                data: hOP(r, "CreateWikiPageInContextWeb") ? (<any>r).CreateWikiPageInContextWeb : r,
                 file: new File(odataUrlFrom(r)),
             };
         });

@@ -1,6 +1,6 @@
 # @pnp/common/netutil
 
-This module contains a set of classes and interfaces used to caracterize shared http interactions and configuration of the libraries. Some of the interfaces
+This module contains a set of classes and interfaces used to characterize shared http interactions and configuration of the libraries. Some of the interfaces
 are described below (many have no use outside the library) as well as several classes.
 
 ## Interfaces
