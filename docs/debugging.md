@@ -51,7 +51,8 @@ Now that we have created an add-in registration we need to tell SharePoint what 
 2. Edit this file to set the values on the testing.sp object to
     - id: "The client id you created"
     - secret: "The client secret you created"
-    - url: "{site url}"
+    - url: `https://{tenant}/{site}` (same url used in spsave section)
+    - notificationUrl: `https://{tenant}/{site}` (same url used in spsave section)
 3. You can disable web tests at any time by setting enableWebTests to false in settings.js, this can be helpful as they take a few minutes to run
 
 #### Create App Registration for Graph Testing
