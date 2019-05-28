@@ -5,6 +5,7 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 ## IWebs
 
 [![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs";|
