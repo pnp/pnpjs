@@ -21,7 +21,7 @@ import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
 import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
-import { SiteDesigns, ISiteDesignRun } from './sitedesigns';
+import { SiteDesigns, ISiteDesignRun, ISiteDesignTask } from './sitedesigns';
 import { SiteScripts, ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from './sitescripts';
 
 /**
@@ -652,6 +652,14 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public getSiteScript(extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
         return new SiteScripts(this, "").getSiteScriptFromWeb(undefined, extractInfo);
+    }
+
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    public addSiteDesignTask(siteDesignId?: string): Promise<ISiteDesignTask> {
+        return new SiteDesigns(this, "").addSiteDesignTaskToCurrentWeb(siteDesignId);
     }
 }
 

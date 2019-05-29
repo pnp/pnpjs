@@ -177,6 +177,7 @@ export interface SiteDesignsUtilityMethods {
     getSiteDesignRights(id: string): Promise<SiteDesignPrincipals[]>;
     grantSiteDesignRights(id: string, principalNames: string[], grantedRights?: number): Promise<void>;
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
+    addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask>;
     addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask>;
     getSiteDesignTask(id: string): Promise<ISiteDesignTask>;
     getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]>;
@@ -311,12 +312,22 @@ export class SiteDesigns extends SharePointQueryable implements SiteDesignsUtili
     }
 
     /**
-     * Adds a site design task on the current web to be invoked asynchronously.
-     * @param id The ID of the site design to create a task for
+     * Adds a site design task on the specified web url to be invoked asynchronously.
+     * @param webUrl The absolute url of the web on where to create the task
+     * @param siteDesignId The ID of the site design to create a task for
      */
-    public async addSiteDesignTaskToCurrentWeb(id: string): Promise<ISiteDesignTask> {
+    public async addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
+        return await this.clone(SiteDesigns, `AddSiteDesignTask`)
+            .execute<ISiteDesignTask>({ "webUrl": webUrl, "siteDesignId": siteDesignId });
+    }
+
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    public async addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
         return await this.clone(SiteDesigns, `AddSiteDesignTaskToCurrentWeb`)
-            .execute<ISiteDesignTask>({ "siteDesignId": id });
+            .execute<ISiteDesignTask>({ "siteDesignId": siteDesignId });
     }
 
     /**
