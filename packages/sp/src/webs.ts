@@ -21,6 +21,8 @@ import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
 import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
+import { SiteDesigns, ISiteDesignRun } from './sitedesigns';
+import { SiteScripts, ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from './sitescripts';
 
 /**
  * Describes a collection of webs
@@ -312,7 +314,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param uniqueId The uniqueId of the folder
      */
     public getFolderById(uniqueId: string): Folder {
-      return new Folder(this, `getFolderById('${uniqueId}')`);
+        return new Folder(this, `getFolderById('${uniqueId}')`);
     }
 
     /**
@@ -342,7 +344,7 @@ export class Web extends SharePointQueryableShareableWeb {
      * @param uniqueId The uniqueId of the file
      */
     public getFileById(uniqueId: string): File {
-      return new File(this, `getFileById('${uniqueId}')`);
+        return new File(this, `getFileById('${uniqueId}')`);
     }
 
     /**
@@ -634,6 +636,22 @@ export class Web extends SharePointQueryableShareableWeb {
      */
     public syncHubSiteTheme(): Promise<void> {
         return this.clone(Web, `syncHubSiteTheme`).postCore();
+    }
+
+    /**
+     * Retrieves a list of site design that have run on the current web
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    public getSiteDesignRuns(siteDesignId?: string): Promise<ISiteDesignRun[]> {
+        return new SiteDesigns(this, "").getSiteDesignRun(undefined, siteDesignId);
+    }
+
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param extractInfo configuration object to specify what to extract
+     */
+    public getSiteScript(extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+        return new SiteScripts(this, "").getSiteScriptFromWeb(undefined, extractInfo);
     }
 }
 

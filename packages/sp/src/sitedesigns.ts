@@ -1,4 +1,5 @@
 import { SharePointQueryable } from "./sharepointqueryable";
+import { hOP } from "@pnp/common";
 
 export interface SiteDesignInfo {
     /**
@@ -129,6 +130,37 @@ export interface ISiteDesignTask {
     WebID: string;
 }
 
+export interface ISiteDesignRun {
+    /**
+     * The ID of the site design run
+     */
+    ID: string,
+    /**
+     * The ID of the site design that was applied
+     */
+    SiteDesignID: string;
+    /**
+     * The title of the site design that was applied
+     */
+    SiteDesignTitle: string;
+    /**
+     * The version of the site design that was applied
+     */
+    SiteDesignVersion: number;
+    /**
+     * The site id where the site design was applied
+     */
+    SiteID: string;
+    /**
+     * The start time when the site design was applied
+     */
+    StartTime: number;
+    /**
+     * The web id where the site design was applied
+     */
+    WebID: string;
+}
+
 export interface SiteDesignPrincipals {
     DisplayName: string;
     PrincipalName: string;
@@ -146,7 +178,8 @@ export interface SiteDesignsUtilityMethods {
     grantSiteDesignRights(id: string, principalNames: string[], grantedRights?: number): Promise<void>;
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
     addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask>;
-    getSiteDesignTask(id: string): Promise<ISiteDesignTask | null>;
+    getSiteDesignTask(id: string): Promise<ISiteDesignTask>;
+    getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]>;
 }
 
 /**
@@ -290,8 +323,21 @@ export class SiteDesigns extends SharePointQueryable implements SiteDesignsUtili
      * Retrieves the site design task, if the task has finished running null will be returned
      * @param id The ID of the site design task
      */
-    public async getSiteDesignTask(id: string): Promise<ISiteDesignTask | null> {
-        return await this.clone(SiteDesigns, `GetSiteDesignTask`)
-            .execute<ISiteDesignTask | null>({ "taskId": id });
+    public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
+        const task = await this.clone(SiteDesigns, `GetSiteDesignTask`)
+            .execute<ISiteDesignTask>({ "taskId": id });
+
+        return hOP(task, "ID") ? task : null;
     }
+
+    /**
+     * Retrieves a list of site design that have run on a specific web
+     * @param webUrl The url of the web where the site design was applied
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    public async getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
+        return await this.clone(SiteDesigns, `GetSiteDesignRun`)
+            .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
+    }
+
 }
