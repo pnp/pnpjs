@@ -1,14 +1,14 @@
 # @pnp/sp-taxonomy/utilities
 
-These are a collection of helper methods you may find useful
+These are a collection of helper methods you may find useful.
 
 ## setItemMetaDataField
 
-Allows you to easily set the value of a metadata field in a list item
+Allows you to easily set the value of a metadata field in a list item.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { taxonomy, setItemMetaDataMultiField } from "@pnp/sp-taxonomy";
+import { taxonomy, setItemMetaDataField } from "@pnp/sp-taxonomy";
 
 // create a new item, or load an existing
 const itemResult = await sp.web.lists.getByTitle("TaxonomyList").items.add({
@@ -16,14 +16,15 @@ const itemResult = await sp.web.lists.getByTitle("TaxonomyList").items.add({
 });
 
 // get a term
-const term = await taxonomy.getDefaultSiteCollectionTermStore().getTermById("99992696-1111-1111-1111-15e65b221111").get();
+const term = await taxonomy.getDefaultSiteCollectionTermStore()
+    .getTermById("99992696-1111-1111-1111-15e65b221111").get();
 
-setItemMetaDataMultiField(itemResult.item, "MetaDataFieldName", term);
+setItemMetaDataField(itemResult.item, "MetaDataFieldName", term);
 ```
 
 ## setItemMetaDataMultiField
 
-Allows you to easily set the value of a multi-value metadata field in a list item
+Allows you to easily set the value of a multi-value metadata field in a list item.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -35,13 +36,22 @@ const itemResult = await sp.web.lists.getByTitle("TaxonomyList").items.add({
 });
 
 // get a term
-const term = await taxonomy.getDefaultSiteCollectionTermStore().getTermById("99992696-1111-1111-1111-15e65b221111").get();
+const term = await taxonomy.getDefaultSiteCollectionTermStore()
+    .getTermById("99992696-1111-1111-1111-15e65b221111").get();
 
 // get another term
-const term2 = await taxonomy.getDefaultSiteCollectionTermStore().getTermById("99992696-1111-1111-1111-15e65b221112").get();
+const term2 = await taxonomy.getDefaultSiteCollectionTermStore()
+    .getTermById("99992696-1111-1111-1111-15e65b221112").get();
 
 // get yet another term
-const term3 = await taxonomy.getDefaultSiteCollectionTermStore().getTermById("99992696-1111-1111-1111-15e65b221113").get();
+const term3 = await taxonomy.getDefaultSiteCollectionTermStore()
+    .getTermById("99992696-1111-1111-1111-15e65b221113").get();
 
-setItemMetaDataMultiField(itemResult.item, "MultiValueMetaDataFieldName", term, term2, term3);
+setItemMetaDataMultiField(
+    itemResult.item,
+    "MultiValueMetaDataFieldName",
+    term,
+    term2,
+    term3
+);
 ```
