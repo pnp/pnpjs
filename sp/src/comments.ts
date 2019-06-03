@@ -111,7 +111,7 @@ export class Comment extends SharePointQueryableInstance {
      * Deletes this comment
      */
     public delete(): Promise<void> {
-        return this.clone(Comment, "DeleteComment").postCore<void>();
+        return this.deleteCore();
     }
 }
 

@@ -187,6 +187,13 @@ export class User extends GraphQueryableInstance<IUser> {
     }
 
     /**
+    * People that have direct reports to the user
+    */
+    public get directReports(): People {
+        return new People(this, "directReports");
+    }
+
+    /**
     * The Insights associated with me
     */
     public get insights(): InsightsMethods {
