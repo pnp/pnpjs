@@ -30,7 +30,7 @@ declare module "../webs/types" {
         getFolderByServerRelativeUrl(folderRelativeUrl: string): IFolder;
 
         /**
-         * Gets a folder by server relative relative path if your folder name contains # and % characters
+         * Gets a folder by server relative path if your folder name contains # and % characters
          * This works only in SharePoint online.
          *
          * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
