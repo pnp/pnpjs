@@ -34,23 +34,23 @@ export const enum PromotedState {
 /**
  * Type describing the available page layout types for client side "modern" pages
  */
-export type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage" | "RepostPage";
+export type ClientsidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage" | "RepostPage";
 
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
  */
 export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
-function initFrom(o: ISharePointQueryable, url: string): IClientSidePage {
-    return ClientSidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
+function initFrom(o: ISharePointQueryable, url: string): IClientsidePage {
+    return ClientsidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
 }
 
 /** 
  * Represents the data and methods associated with client side "modern" pages
  */
-export class _ClientSidePage extends _SharePointQueryable implements _IClientSidePage {
+export class _ClientsidePage extends _SharePointQueryable implements _IClientsidePage {
 
-    private _pageSettings: IClientSidePageSettingsSlice;
+    private _pageSettings: IClientsidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
     private _bannerImageDirty: boolean;
 
@@ -81,7 +81,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
 
         // set a default layout part
-        this._layoutPart = _ClientSidePage.getDefaultLayoutPart();
+        this._layoutPart = _ClientsidePage.getDefaultLayoutPart();
 
         if (typeof json !== "undefined" && !noInit) {
             this.fromJSON(json);
@@ -108,11 +108,11 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         };
     }
 
-    public get pageLayout(): ClientSidePageLayoutType {
+    public get pageLayout(): ClientsidePageLayoutType {
         return this.json.PageLayoutType;
     }
 
-    public set pageLayout(value: ClientSidePageLayoutType) {
+    public set pageLayout(value: ClientsidePageLayoutType) {
         this.json.PageLayoutType = value;
     }
 
@@ -123,14 +123,6 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
     public set bannerImageUrl(value: string) {
         this.json.BannerImageUrl = value;
         this._bannerImageDirty = true;
-    }
-
-    public get bannerImageSourceType(): number {
-        return this._layoutPart.properties.imageSourceType;
-    }
-
-    public set bannerImageSourceType(value: number) {
-        this._layoutPart.properties.imageSourceType = value;
     }
 
     public get topicHeader(): string {
@@ -199,7 +191,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
 
         this.json = pageData;
 
-        const canvasControls: IClientSideControlBaseData[] = JSON.parse(pageData.CanvasContent1);
+        const canvasControls: IClientsideControlBaseData[] = JSON.parse(pageData.CanvasContent1);
 
         const layouts = <ILayoutPartsContent[]>JSON.parse(pageData.LayoutWebpartsContent);
         if (layouts && layouts.length > 0) {
@@ -214,7 +206,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
     /**
      * Loads this page's content from the server
      */
-    public async load(): Promise<IClientSidePage> {
+    public async load(): Promise<IClientsidePage> {
 
         const item = await this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled");
         const pageData = await SharePointQueryable(this, `_api/sitepages/pages(${item.Id})`)<IPageData>();
@@ -399,9 +391,9 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         });
     }
 
-    public async copyPage(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientSidePage> {
+    public async copy(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientsidePage> {
 
-        const page = await CreateClientSidePage(web, pageName, title, this.pageLayout);
+        const page = await CreateClientsidePage(web, pageName, title, this.pageLayout);
 
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());
@@ -419,7 +411,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
     }): void {
 
         this.bannerImageUrl = url;
-        this.bannerImageSourceType = 2; // this seems to always be true, so default?
+        this._layoutPart.properties.imageSourceType = 2; // this seems to always be true, so default?
 
         if (objectDefinedNotNull(props)) {
             if (hOP(props, "translateX")) {
@@ -429,7 +421,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
                 this._layoutPart.properties.translateY = props.translateY;
             }
             if (hOP(props, "imageSourceType")) {
-                this.bannerImageSourceType = props.imageSourceType;
+                this._layoutPart.properties.imageSourceType = props.imageSourceType;
             }
             if (hOP(props, "altText")) {
                 this._layoutPart.properties.altText = props.altText;
@@ -449,7 +441,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         }
     }
 
-    protected setControls(controls: IClientSideControlBaseData[]): void {
+    protected setControls(controls: IClientsideControlBaseData[]): void {
 
         if (controls && controls.length) {
 
@@ -463,19 +455,19 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
                     case 0:
                         // empty canvas column or page settings
                         if (hOP(controls[i], "pageSettingsSlice")) {
-                            this._pageSettings = <IClientSidePageSettingsSlice>controls[i];
+                            this._pageSettings = <IClientsidePageSettingsSlice>controls[i];
                         } else {
                             // we have an empty column
-                            this.mergeColumnToTree(new CanvasColumn(<IClientSidePageColumnData>controls[i]));
+                            this.mergeColumnToTree(new CanvasColumn(<IClientsidePageColumnData>controls[i]));
                         }
                         break;
                     case 3:
-                        const part = new ClientSideWebpart(<IClientSideWebPartData>controls[i]);
+                        const part = new ClientsideWebpart(<IClientsideWebPartData>controls[i]);
                         this.mergePartToTree(part, part.data.position);
                         break;
                     case 4:
-                        const textData = <IClientSideTextData>controls[i];
-                        const text = new ClientSideText(textData.innerHTML, textData);
+                        const textData = <IClientsideTextData>controls[i];
+                        const text = new ClientsideText(textData.innerHTML, textData);
                         this.mergePartToTree(text, text.data.position);
                         break;
                 }
@@ -485,7 +477,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
         }
     }
 
-    protected getControls(): IClientSideControlBaseData[] {
+    protected getControls(): IClientsideControlBaseData[] {
 
         // reindex things
         reindex(this.sections);
@@ -554,7 +546,7 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
      * 
      * @param control The control to merge
      */
-    private mergePartToTree(control: any, positionData: IClientSideControlPositionData): void {
+    private mergePartToTree(control: any, positionData: IClientsideControlPositionData): void {
 
         let section: CanvasSection = null;
         let column: CanvasColumn = null;
@@ -630,10 +622,9 @@ export class _ClientSidePage extends _SharePointQueryable implements _IClientSid
     }
 }
 
-export interface _IClientSidePage {
-    pageLayout: ClientSidePageLayoutType;
+export interface _IClientsidePage {
+    pageLayout: ClientsidePageLayoutType;
     bannerImageUrl: string;
-    bannerImageSourceType: number;
     topicHeader: string;
     title: string;
     layoutType: LayoutType;
@@ -658,7 +649,7 @@ export interface _IClientSidePage {
     /**
      * Loads this page's content from the server
      */
-    load(): Promise<IClientSidePage>;
+    load(): Promise<IClientsidePage>;
 
     /**
      * Persists the content changes (sections, columns, and controls) [does not work with batching]
@@ -724,7 +715,7 @@ export interface _IClientSidePage {
      * @param title The title of the new page
      * @param publish If true the page will be published
      */
-    copyPage(web: IWeb | IList, pageName: string, title: string, publish?: boolean): Promise<IClientSidePage>;
+    copy(web: IWeb | IList, pageName: string, title: string, publish?: boolean): Promise<IClientsidePage>;
 
     /**
      * Sets the modern page banner image
@@ -741,20 +732,20 @@ export interface _IClientSidePage {
     }): void;
 }
 
-export interface IClientSidePage extends _IClientSidePage, IInvokable, ISharePointQueryable { }
+export interface IClientsidePage extends _IClientsidePage, IInvokable, ISharePointQueryable { }
 
 /**
  * Invokable factory for IClientSidePage instances
  */
-const ClientSidePage = (
+const ClientsidePage = (
     baseUrl: string | ISharePointQueryable,
     path?: string,
     json?: Partial<IPageData>,
     noInit = false,
     sections: CanvasSection[] = [],
-    commentsDisabled = false): IClientSidePage => {
+    commentsDisabled = false): IClientsidePage => {
 
-    return invokableFactory<IClientSidePage>(_ClientSidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
+    return invokableFactory<IClientsidePage>(_ClientsidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
@@ -762,10 +753,10 @@ const ClientSidePage = (
  * 
  * @param file Source IFile instance
  */
-export const ClientSidePageFromFile = async (file: IFile): Promise<IClientSidePage> => {
+export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePage> => {
 
     const item = await file.getItem<{ Id: number }>();
-    const page = ClientSidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true);
+    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true);
     return page.configureFrom(file).load();
 };
 
@@ -777,7 +768,7 @@ export const ClientSidePageFromFile = async (file: IFile): Promise<IClientSidePa
  * @param title The page's title
  * @param PageLayoutType Layout to use when creating the page
  */
-export const CreateClientSidePage = async (web: IWeb, pageName: string, title: string, PageLayoutType: ClientSidePageLayoutType = "Article"): Promise<IClientSidePage> => {
+export const CreateClientsidePage = async (web: IWeb, pageName: string, title: string, PageLayoutType: ClientsidePageLayoutType = "Article"): Promise<IClientsidePage> => {
 
     // patched because previously we used the full page name with the .aspx at the end
     // this allows folk's existing code to work after the re-write to the new API
@@ -787,7 +778,7 @@ export const CreateClientSidePage = async (web: IWeb, pageName: string, title: s
     const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), { PageLayoutType })));
 
     // now we can init our page with the save data
-    const newPage = ClientSidePage(web, "", pageInitData);
+    const newPage = ClientsidePage(web, "", pageInitData);
     newPage.title = pageName;
     await newPage.save(false);
     newPage.title = title;
@@ -803,7 +794,7 @@ export class CanvasSection {
 
     private _order: number;
 
-    constructor(protected page: IClientSidePage, order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
+    constructor(protected page: IClientsidePage, order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
         this._memId = getGUID();
         this._order = order;
     }
@@ -873,7 +864,7 @@ export class CanvasSection {
 
 export class CanvasColumn {
 
-    public static Default: IClientSidePageColumnData = {
+    public static Default: IClientsidePageColumnData = {
         controlType: 0,
         displayMode: 2,
         emphasis: {},
@@ -888,12 +879,12 @@ export class CanvasColumn {
     private _section: CanvasSection | null;
     private _memId: string;
 
-    constructor(protected json: IClientSidePageColumnData = JSON.parse(JSON.stringify(CanvasColumn.Default)), public controls: ColumnControl<any>[] = []) {
+    constructor(protected json: IClientsidePageColumnData = JSON.parse(JSON.stringify(CanvasColumn.Default)), public controls: ColumnControl<any>[] = []) {
         this._section = null;
         this._memId = getGUID();
     }
 
-    public get data(): IClientSidePageColumnData {
+    public get data(): IClientsidePageColumnData {
         return this.json;
     }
 
@@ -979,9 +970,9 @@ export abstract class ColumnControl<T extends ICanvasControlBaseData> {
     protected abstract onColumnChange(col: CanvasColumn): void;
 }
 
-export class ClientSideText extends ColumnControl<IClientSideTextData> {
+export class ClientsideText extends ColumnControl<IClientsideTextData> {
 
-    public static Default: IClientSideTextData = {
+    public static Default: IClientsideTextData = {
         addedFromPersistedData: false,
         anchorComponentId: "",
         controlType: 4,
@@ -999,7 +990,7 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         },
     };
 
-    constructor(text: string, json: IClientSideTextData = JSON.parse(JSON.stringify(ClientSideText.Default))) {
+    constructor(text: string, json: IClientsideTextData = JSON.parse(JSON.stringify(ClientsideText.Default))) {
         if (stringIsNullOrEmpty(json.id)) {
             json.id = getGUID();
             json.anchorComponentId = json.id;
@@ -1036,9 +1027,9 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
     }
 }
 
-export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
+export class ClientsideWebpart extends ColumnControl<IClientsideWebPartData> {
 
-    public static Default: IClientSideWebPartData = {
+    public static Default: IClientsideWebPartData = {
         addedFromPersistedData: false,
         controlType: 3,
         displayMode: 2,
@@ -1056,12 +1047,12 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
         webPartId: null,
     };
 
-    constructor(json: IClientSideWebPartData = JSON.parse(JSON.stringify(ClientSideWebpart.Default))) {
+    constructor(json: IClientsideWebPartData = JSON.parse(JSON.stringify(ClientsideWebpart.Default))) {
         super(json);
     }
 
-    public static fromComponentDef(definition: IClientSidePageComponent): ClientSideWebpart {
-        const part = new ClientSideWebpart();
+    public static fromComponentDef(definition: IClientsidePageComponent): ClientsideWebpart {
+        const part = new ClientsideWebpart();
         part.import(definition);
         return part;
     }
@@ -1130,14 +1121,14 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
         this.data.position.sectionIndex = col.data.position.sectionIndex;
     }
 
-    protected import(component: IClientSidePageComponent): void {
+    protected import(component: IClientsidePageComponent): void {
 
         const id = getGUID();
         const componendId = component.Id.replace(/^\{|\}$/g, "").toLowerCase();
         const manifest: IClientSidePageComponentManifest = JSON.parse(component.Manifest);
         const preconfiguredEntries = manifest.preconfiguredEntries[0];
 
-        this.setData(Object.assign({}, this.data, <IClientSideWebPartData>{
+        this.setData(Object.assign({}, this.data, <IClientsideWebPartData>{
             id,
             webPartData: {
                 dataVersion: "1.0",
@@ -1169,7 +1160,7 @@ export interface IPageData {
     IsPageCheckedOutToCurrentUser: boolean;
     IsWebWelcomePage: boolean;
     readonly Modified: string;
-    PageLayoutType: ClientSidePageLayoutType;
+    PageLayoutType: ClientsidePageLayoutType;
     Path: {
         DecodedUrl: string;
     };
@@ -1191,7 +1182,7 @@ export interface IPageData {
 /**
  * Client side webpart object (retrieved via the _api/web/GetClientSideWebParts REST call)
  */
-export interface IClientSidePageComponent {
+export interface IClientsidePageComponent {
     /**
      * Component type for client side webpart object
      */
@@ -1246,24 +1237,24 @@ interface IClientSidePageComponentManifest {
     version: string;
 }
 
-export interface IClientSideControlBaseData {
+export interface IClientsideControlBaseData {
     controlType: number;
 }
 
-export interface ICanvasControlBaseData extends IClientSideControlBaseData {
+export interface ICanvasControlBaseData extends IClientsideControlBaseData {
     id: string;
     emphasis: IClientControlEmphasis;
     displayMode: number;
 }
 
-export interface IClientSidePageSettingsSlice extends IClientSideControlBaseData {
+export interface IClientsidePageSettingsSlice extends IClientsideControlBaseData {
     pageSettingsSlice: {
         "isDefaultDescription": boolean;
         "isDefaultThumbnail": boolean;
     };
 }
 
-export interface IClientSidePageColumnData extends IClientSideControlBaseData {
+export interface IClientsidePageColumnData extends IClientsideControlBaseData {
     controlType: 0;
     displayMode: number;
     emphasis: IClientControlEmphasis;
@@ -1275,14 +1266,14 @@ export interface IClientSidePageColumnData extends IClientSideControlBaseData {
     };
 }
 
-interface IClientSideControlPositionData {
+interface IClientsideControlPositionData {
     zoneIndex: number;
     sectionIndex: number;
     controlIndex: number;
     sectionFactor?: CanvasColumnFactor;
 }
 
-export interface IClientSideTextData extends ICanvasControlBaseData {
+export interface IClientsideTextData extends ICanvasControlBaseData {
     controlType: 4;
     position: {
         zoneIndex: number;
@@ -1297,7 +1288,7 @@ export interface IClientSideTextData extends ICanvasControlBaseData {
     innerHTML: string;
 }
 
-export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasControlBaseData {
+export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasControlBaseData {
     controlType: 3;
     position: {
         zoneIndex: number;
@@ -1327,47 +1318,6 @@ export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasCon
 
 export interface IClientControlEmphasis {
     zoneEmphasis?: 0 | 1 | 2 | 3;
-}
-
-export module ClientSideWebpartPropertyTypes {
-
-    /**
-     * Propereties for Embed (component id: 490d7c76-1824-45b2-9de3-676421c997fa)
-     */
-    export interface Embed {
-        embedCode: string;
-        cachedEmbedCode?: string;
-        shouldScaleWidth?: boolean;
-        tempState?: any;
-    }
-
-    /**
-     * Properties for Bing Map (component id: e377ea37-9047-43b9-8cdb-a761be2f8e09)
-     */
-    export interface BingMap {
-        center: {
-            altitude?: number;
-            altitudeReference?: number;
-            latitude: number;
-            longitude: number;
-        };
-        mapType: "aerial" | "birdseye" | "road" | "streetside";
-        maxNumberOfPushPins?: number;
-        pushPins?: {
-            location: {
-                latitude: number;
-                longitude: number;
-                altitude?: number;
-                altitudeReference?: number;
-            };
-            address?: string;
-            defaultAddress?: string;
-            defaultTitle?: string;
-            title?: string;
-        }[];
-        shouldShowPushPinTitle?: boolean;
-        zoomLevel?: number;
-    }
 }
 
 export type LayoutType = "FullWidthImage" | "NoImage" | "ColorBlock" | "CutInShape";
