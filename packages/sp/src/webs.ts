@@ -21,8 +21,8 @@ import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
 import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
-import { SiteDesigns, ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from './sitedesigns';
-import { SiteScripts, ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from './sitescripts';
+import { SiteDesigns, ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from "./sitedesigns";
+import { SiteScripts, ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./sitescripts";
 
 /**
  * Describes a collection of webs

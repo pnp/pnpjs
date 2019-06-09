@@ -147,7 +147,7 @@ export interface ISiteDesignRun {
     /**
      * The ID of the site design run
      */
-    ID: string,
+    ID: string;
     /**
      * The ID of the site design that was applied
      */

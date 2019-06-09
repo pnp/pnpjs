@@ -12,8 +12,8 @@ import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
 import { Folder } from "./folders";
 import { metadata } from "./utils/metadata";
-import { SiteScripts } from '..';
-import { toAbsoluteUrl } from './utils/toabsoluteurl';
+import { SiteScripts } from "..";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
  * Describes a collection of List objects

@@ -40,7 +40,6 @@ export interface ISiteScriptSerializationResult {
     Warnings: string[];
 }
 
-
 /**
  * Implements the site script API REST methods
  *
