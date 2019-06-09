@@ -130,6 +130,19 @@ export interface ISiteDesignTask {
     WebID: string;
 }
 
+export interface ISiteScriptActionStatus {
+    ActionIndex: number;
+    ActionKey: string;
+    ActionTitle: string;
+    LastModified: number;
+    OrdinalIndex: string;
+    OutcomeCode: number;
+    OutcomeText: string;
+    SiteScriptID: string;
+    SiteScriptIndex: number;
+    SiteScriptTitle: string;
+}
+
 export interface ISiteDesignRun {
     /**
      * The ID of the site design run
@@ -181,6 +194,7 @@ export interface SiteDesignsUtilityMethods {
     addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask>;
     getSiteDesignTask(id: string): Promise<ISiteDesignTask>;
     getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]>;
+    getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]>;
 }
 
 /**
@@ -349,6 +363,16 @@ export class SiteDesigns extends SharePointQueryable implements SiteDesignsUtili
     public async getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
         return await this.clone(SiteDesigns, `GetSiteDesignRun`)
             .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
+    }
+
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param webUrl The url of the web where the site design was applied
+     * @param runId the run ID
+     */
+    public async getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
+        return await this.clone(SiteDesigns, `GetSiteDesignRunStatus`)
+            .execute<ISiteScriptActionStatus[]>({ "webUrl": webUrl, runId: runId });
     }
 
 }

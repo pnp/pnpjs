@@ -21,7 +21,7 @@ import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
 import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
-import { SiteDesigns, ISiteDesignRun, ISiteDesignTask } from './sitedesigns';
+import { SiteDesigns, ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from './sitedesigns';
 import { SiteScripts, ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from './sitescripts';
 
 /**
@@ -658,9 +658,18 @@ export class Web extends SharePointQueryableShareableWeb {
      * Adds a site design task on the current web to be invoked asynchronously.
      * @param siteDesignId The ID of the site design to create a task for
      */
-    public addSiteDesignTask(siteDesignId?: string): Promise<ISiteDesignTask> {
+    public addSiteDesignTask(siteDesignId: string): Promise<ISiteDesignTask> {
         return new SiteDesigns(this, "").addSiteDesignTaskToCurrentWeb(siteDesignId);
     }
+
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param runId the run ID
+     */
+    public getSiteDesignRunStatus(runId: string): Promise<ISiteScriptActionStatus[]> {
+        return new SiteDesigns(this, "").getSiteDesignRunStatus(undefined, runId);
+    }
+
 }
 
 /**
