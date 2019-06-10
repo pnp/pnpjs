@@ -1,7 +1,6 @@
-import "../lists/web";
 import { _Web, IWeb } from "../webs/types";
 import { IClientsidePageComponent, CreateClientsidePage, IClientsidePage, ClientsidePageLayoutType, ClientsidePageFromFile } from "./types";
-import { _SharePointQueryableCollection, SharePointQueryableCollection } from "../sharepointqueryable";
+import { SharePointQueryableCollection } from "../sharepointqueryable";
 
 declare module "../webs/types" {
     interface _Web {
@@ -34,7 +33,7 @@ declare module "../webs/types" {
 }
 
 _Web.prototype.getClientsideWebParts = function (): Promise<IClientsidePageComponent[]> {
-    return this.clone(SharePointQueryableCollection, "GetClientSideWebParts").get();
+    return this.clone(SharePointQueryableCollection, "GetClientSideWebParts")();
 };
 
 _Web.prototype.addClientsidePage = function (this: IWeb, pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), layout?: ClientsidePageLayoutType): Promise<IClientsidePage> {

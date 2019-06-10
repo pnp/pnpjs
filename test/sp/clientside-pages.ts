@@ -40,6 +40,50 @@ describe("Clientside Pages", () => {
             return expect(promise).to.eventually.be.fulfilled;
         });
 
+        describe("web.loadClientsidePage", async function () {
+
+            let page: IClientsidePage;
+
+            const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(pageName);
+                await page.save();
+            });
+
+            it("can load a page", async function () {
+
+                const serverRelativePath = combine("/", testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/")), "SitePages", pageName);
+
+                page = await sp.web.loadClientsidePage(serverRelativePath);
+
+                return expect(page).to.not.be.null.and.not.undefined;
+            });
+        });
+
+        describe("promoteToNews", async function () {
+
+            let page: IClientsidePage;
+
+            const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(pageName);
+                await page.save();
+            });
+
+            it("can promote a page", async function () {
+
+                return expect(page.promoteToNews()).to.eventually.be.fulfilled.and.eq(true);
+            });
+        });
+
+        it("web.getClientsideWebParts", function () {
+            return expect(sp.web.getClientsideWebParts()).to.eventually.be.fulfilled;
+        });
+
         describe("save", function () {
 
             it("Should update a pages content with a text control", () => {
@@ -51,7 +95,7 @@ describe("Clientside Pages", () => {
                 });
             });
 
-            it("Should update a pages content with an embed control", () => {
+            it("Should update a pages content with an embed control", function () {
                 return Web(testSettings.sp.webUrl).getClientsideWebParts().then(parts => {
 
                     Web(testSettings.sp.webUrl).addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
@@ -119,6 +163,28 @@ describe("Clientside Pages", () => {
                 expect(page.sections[0].columns.length === 2);
                 expect(page.sections[0].columns[0].factor === 6);
                 expect(page.sections[0].columns[1].factor === 6);
+            });
+        });
+
+        describe("like and unlike", function () {
+
+            let page: IClientsidePage;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
+            });
+
+            it(".like()", function () {
+                return expect(page.like()).to.eventually.be.fulfilled;
+            });
+
+            it(".unlike()", function () {
+                return expect(page.unlike()).to.eventually.be.fulfilled;
+            });
+
+            it(".getLikedByInformation", function() {
+                return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
             });
         });
     }
