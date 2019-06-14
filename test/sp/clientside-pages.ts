@@ -136,12 +136,9 @@ describe("Clientside Pages", () => {
 
             let page: IClientsidePage;
 
-            beforeEach(function (done) {
+            before(async function () {
                 this.timeout(0);
-                Web(testSettings.sp.webUrl).addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`).then(p => {
-                    page = <IClientsidePage>p;
-                    done();
-                });
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
             });
 
             it("Default section, 2 empty columns", async function () {
@@ -183,7 +180,7 @@ describe("Clientside Pages", () => {
                 return expect(page.unlike()).to.eventually.be.fulfilled;
             });
 
-            it(".getLikedByInformation", function() {
+            it(".getLikedByInformation", function () {
                 return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
             });
         });
