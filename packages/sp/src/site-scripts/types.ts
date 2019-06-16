@@ -48,6 +48,16 @@ export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts 
 
         return await this.clone(SiteScriptsCloneFactory, "UpdateSiteScript").execute<ISiteScriptInfo>({ updateInfo: siteScriptUpdateInfo });
     }
+
+    public async getSiteScriptFromList(listUrl: string): Promise<string> {
+        return await this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`)
+            .execute<string>({ "listUrl": listUrl });
+    }
+
+    public async getSiteScriptFromWeb(webUrl: string, extractInfo: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+        return await this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`)
+            .execute<ISiteScriptSerializationResult>({ "webUrl": webUrl, info: extractInfo });
+    }
 }
 
 export interface _ISiteScripts {
@@ -82,6 +92,17 @@ export interface _ISiteScripts {
      * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
      */
     updateSiteScript(siteScriptUpdateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo>;
+    /**
+     * Gets the site script syntax (JSON) for a specific list
+     * @param listUrl The absolute url of the list to retrieve site script
+     */
+    getSiteScriptFromList(listUrl: string): Promise<string>;
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
 }
 
 export interface ISiteScripts extends _ISiteScripts { }
@@ -143,4 +164,42 @@ export interface ISiteScriptUpdateInfo {
      * (Optional) The new version for the updated site script
      */
     Version?: string;
+}
+
+export interface ISiteScriptSerializationInfo {
+    /**
+     * (Optional) Include branding
+     */
+    IncludeBranding?: boolean;
+    /**
+     * (Optional) Lists to include e.g. ["Lists/MyList"]
+     */
+    IncludedLists?: string[];
+    /**
+     * (Optional) Include links to exported items
+     */
+    IncludeLinksToExportedItems?: boolean;
+    /**
+     * (Optional) Include regional settings
+     */
+    IncludeRegionalSettings?: boolean;
+    /**
+     * (Optional) Include site external sharing capability
+     */
+    IncludeSiteExternalSharingCapability?: boolean;
+    /**
+     * (Optional) Include theme
+     */
+    IncludeTheme?: boolean;
+}
+
+export interface ISiteScriptSerializationResult {
+    /**
+     * The site script in JSON format
+     */
+    JSON: string;
+     /**
+     * A collection of warnings
+     */
+    Warnings: string[];
 }

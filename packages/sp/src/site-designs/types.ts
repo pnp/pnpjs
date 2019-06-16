@@ -2,6 +2,7 @@ import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryab
 import { extractWebUrl } from "../utils/extractweburl";
 import { headers, body } from "@pnp/odata";
 import { spPost } from "../operations";
+import { hOP } from "@pnp/common";
 
 /**
  * Implements the site designs API REST methods
@@ -67,6 +68,33 @@ export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns 
                 "principalNames": principalNames,
             });
     }
+
+    public async addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
+        return await this.clone(SiteDesignsCloneFactory, `AddSiteDesignTask`)
+            .execute<ISiteDesignTask>({ "webUrl": webUrl, "siteDesignId": siteDesignId });
+    }
+
+    public async addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
+        return await this.clone(SiteDesignsCloneFactory, `AddSiteDesignTaskToCurrentWeb`)
+            .execute<ISiteDesignTask>({ "siteDesignId": siteDesignId });
+    }
+
+    public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
+        const task = await this.clone(SiteDesignsCloneFactory, `GetSiteDesignTask`)
+            .execute<ISiteDesignTask>({ "taskId": id });
+
+        return hOP(task, "ID") ? task : null;
+    }
+
+    public async getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
+        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRun`)
+            .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
+    }
+
+    public async getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
+        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRunStatus`)
+            .execute<ISiteScriptActionStatus[]>({ "webUrl": webUrl, runId: runId });
+    }
 }
 
 export interface _ISiteDesigns {
@@ -120,6 +148,34 @@ export interface _ISiteDesigns {
      *                       If all principals have rights revoked on the site design, the site design becomes viewable to everyone.
      */
     revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void>;
+    /**
+     * Adds a site design task on the specified web url to be invoked asynchronously.
+     * @param webUrl The absolute url of the web on where to create the task
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask>;
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask>;
+    /**
+     * Retrieves the site design task, if the task has finished running null will be returned
+     * @param id The ID of the site design task
+     */
+    getSiteDesignTask(id: string): Promise<ISiteDesignTask>;
+    /**
+     * Retrieves a list of site design that have run on a specific web
+     * @param webUrl The url of the web where the site design was applied
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]>;
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param webUrl The url of the web where the site design was applied
+     * @param runId the run ID
+     */
+    getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]>;
 }
 
 export interface ISiteDesigns extends _ISiteDesigns { }
@@ -267,4 +323,101 @@ export interface ISiteDesignPrincipals {
      * The principal name
      */
     Rights: number;
+}
+
+export interface ISiteDesignTask {
+    /**
+     * The ID of the site design task
+     */
+    ID: string;
+    /**
+     * Logonname of the user who created the task
+     */
+    LogonName: string;
+    /**
+     * The ID of the site design the task is running on
+     */
+    SiteDesignID: string;
+    /**
+     * The ID of the site collection
+     */
+    SiteID: string;
+    /**
+     * The ID of the web
+     */
+    WebID: string;
+}
+
+export interface ISiteScriptActionStatus {
+    /**
+     * Action index
+     */
+    ActionIndex: number;
+    /**
+     * Action key
+     */
+    ActionKey: string;
+    /**
+     * Action title
+     */
+    ActionTitle: string;
+    /**
+     * Last modified
+     */
+    LastModified: number;
+    /**
+     * Ordinal index
+     */
+    OrdinalIndex: string;
+    /**
+     * Outcome code
+     */
+    OutcomeCode: number;
+    /**
+    * Outcome text
+    */
+    OutcomeText: string;
+    /**
+     * Site script id
+     */
+    SiteScriptID: string;
+    /**
+     * Site script index
+     */
+    SiteScriptIndex: number;
+    /**
+     * Site script title
+     */
+    SiteScriptTitle: string;
+}
+
+export interface ISiteDesignRun {
+    /**
+     * The ID of the site design run
+     */
+    ID: string;
+    /**
+     * The ID of the site design that was applied
+     */
+    SiteDesignID: string;
+    /**
+     * The title of the site design that was applied
+     */
+    SiteDesignTitle: string;
+    /**
+     * The version of the site design that was applied
+     */
+    SiteDesignVersion: number;
+    /**
+     * The site id where the site design was applied
+     */
+    SiteID: string;
+    /**
+     * The start time when the site design was applied
+     */
+    StartTime: number;
+    /**
+     * The web id where the site design was applied
+     */
+    WebID: string;
 }

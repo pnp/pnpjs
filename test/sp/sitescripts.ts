@@ -4,6 +4,7 @@ import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/site-scripts";
 import { testSettings } from "../main";
+import { IList } from '@pnp/sp/src/lists';
 
 describe("SiteScripts", function () {
 
@@ -22,6 +23,7 @@ describe("SiteScripts", function () {
     if (testSettings.enableWebTests) {
 
         const createdSiteScriptIds: string[] = [];
+        const createdLists: IList[] = [];
 
         it("creates a site script", function () {
 
@@ -123,11 +125,34 @@ describe("SiteScripts", function () {
                 `all the site scripts should've been fetched`).to.eventually.be.fulfilled;
         });
 
+        it("gets a site script from a list", async function () {
+            const listTitle = `sc_list_${getRandomString(8)}`;
+            const listResult = await sp.web.lists.add(listTitle);
+            createdLists.push(listResult.list);
+
+            return expect(listResult.list.getSiteScript(),
+                `the lists site script should've been fetched`).to.eventually.be.fulfilled;
+        });
+
+        it("gets a site script from a web", async function () {
+            // Note: currently this method is an experimental feature and fails
+            return expect(sp.web.getSiteScript(),
+                `the webs site script should've been fetched`).to.eventually.be.fulfilled;
+        });
+
         after(() => {
 
-            return Promise.all(createdSiteScriptIds.map((sdId) => {
-                return sp.siteScripts.deleteSiteScript(sdId);
-            }));
+            const promises: Promise<void>[] = [];
+
+            createdSiteScriptIds.forEach((sdId) => {
+                promises.push(sp.siteScripts.deleteSiteScript(sdId));
+            });
+
+            createdLists.forEach((list: IList) => {
+                promises.push(list.delete());
+            });
+
+            return Promise.all(promises);
         });
     }
 });

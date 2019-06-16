@@ -1,9 +1,13 @@
 
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
 import "@pnp/sp/src/site-designs";
+import { ISiteDesignRun } from '@pnp/sp/src/site-designs';
+import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
+
+const sleep = (ms: number) => new Promise(r => setTimeout(() => { r() }, ms));
 
 describe("SiteDesigns", function () {
 
@@ -141,6 +145,81 @@ describe("SiteDesigns", function () {
                     `rights of site design '${title}' should have been revoked from user '${testuser}'`).to.eventually.be.fulfilled;
             });
 
+            it("gets the site design runs", async function () {
+
+                return expect(sp.web.getSiteDesignRuns(),
+                    `site design runs should've been fetched`).to.eventually.be.fulfilled;
+            });
+
+            it("adds a site design task with absolute web url", async function () {
+
+                const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
+                const sd = await sp.siteDesigns.createSiteDesign({
+                    Title: title,
+                    WebTemplate: "68",
+                });
+
+                createdSiteDesignIds.push(sd.Id);
+
+                return expect(sp.siteDesigns.addSiteDesignTask(testSettings.sp.url, sd.Id),
+                    `site design task should've been created with absolute web url`).to.eventually.be.fulfilled;
+            });
+
+            it("adds a site design task", async function () {
+
+                const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
+                const sd = await sp.siteDesigns.createSiteDesign({
+                    Title: title,
+                    WebTemplate: "68",
+                });
+
+                createdSiteDesignIds.push(sd.Id);
+
+                return expect(sp.web.addSiteDesignTask(sd.Id),
+                    `site design task should've been created`).to.eventually.be.fulfilled;
+            });
+
+            it("gets a site design task", async function () {
+
+                const title = `Test_get_task_run_sitedesign_${getRandomString(8)}`;
+                const sd = await sp.siteDesigns.createSiteDesign({
+                    Title: title,
+                    WebTemplate: "68",
+                });
+
+                createdSiteDesignIds.push(sd.Id);
+
+                const originalTask = await sp.web.addSiteDesignTask(sd.Id);
+
+                return expect(sp.siteDesigns.getSiteDesignTask(originalTask.ID),
+                    `site design task should've been fetched`).to.eventually.be.fulfilled;
+            });
+
+            it("gets a site design run status", async function () {
+                this.enableTimeouts(false);
+
+                const title = `Test_add_task_run_sitedesign_${getRandomString(8)}`;
+                const sd = await sp.siteDesigns.createSiteDesign({
+                    Title: title,
+                    WebTemplate: "68",
+                });
+
+                createdSiteDesignIds.push(sd.Id);
+
+                const originalTask = await sp.web.addSiteDesignTask(sd.Id);
+
+                let task = null;
+                do {
+                    await sleep(10000);
+                    task = await sp.siteDesigns.getSiteDesignTask(originalTask.ID);
+                }
+                while (task != null)
+
+                const siteDesignRuns: ISiteDesignRun[] = await sp.web.getSiteDesignRuns();
+
+                return expect(sp.web.getSiteDesignRunStatus(siteDesignRuns[0].ID),
+                    `site design task should've been created`).to.eventually.be.fulfilled;
+            });
         }
 
         after(() => {
