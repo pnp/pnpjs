@@ -1,3 +1,4 @@
+import "./web";
 import { SPRest } from "../rest";
 import { ISiteDesigns, SiteDesigns } from "./types";
 
@@ -8,6 +9,9 @@ export {
     ISiteDesignUpdateInfo,
     ISiteDesigns,
     SiteDesigns,
+    ISiteDesignRun,
+    ISiteDesignTask,
+    ISiteScriptActionStatus
 } from "./types";
 
 /**
