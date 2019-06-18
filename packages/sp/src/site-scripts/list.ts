@@ -1,10 +1,9 @@
-import { _List, List } from '../lists/types';
-import { SiteScripts } from '.';
-import "../folders/list";
-import { _Web, Web } from '../webs/types';
 import { combine } from "@pnp/common";
-import { extractWebUrl } from '../utils/extractweburl';
-
+import { _List, List } from "../lists/types";
+import { SiteScripts } from "./types";
+import "../folders/list";
+import { _Web, Web } from "../webs/types";
+import { extractWebUrl } from "../utils/extractweburl";
 
 declare module "../lists/types" {
     interface _List {
@@ -20,8 +19,9 @@ declare module "../lists/types" {
 }
 
 _List.prototype.getSiteScript = async function (this: _List): Promise<string> {
+
     const rootFolder = await this.clone(List).rootFolder.get<{ Name: string }>();
     const web = await Web(extractWebUrl(this.toUrl())).select("Url").get();
-    const absoluteListUrl = combine(web.Url, 'Lists', rootFolder.Name);
+    const absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
     return SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
 };

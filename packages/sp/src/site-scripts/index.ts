@@ -9,7 +9,7 @@ export {
     ISiteScriptInfo,
     ISiteScriptUpdateInfo,
     ISiteScriptSerializationInfo,
-    ISiteScriptSerializationResult
+    ISiteScriptSerializationResult,
 } from "./types";
 
 /**

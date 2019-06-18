@@ -1,10 +1,9 @@
-
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/site-scripts";
 import { testSettings } from "../main";
-import { IList } from '@pnp/sp/src/lists';
+import { IList } from "@pnp/sp/src/lists";
 
 describe("SiteScripts", function () {
 
@@ -12,12 +11,12 @@ describe("SiteScripts", function () {
         "$schema": "schema.json",
         "actions": [
             {
-                "verb": "applyTheme",
-                "themeName": "Dummy Theme"
-            }
+                themeName: "Dummy Theme",
+                verb: "applyTheme",
+            },
         ],
-        "bindata": {},
-        "version": 1
+        bindata: {},
+        version: 1,
     };
 
     if (testSettings.enableWebTests) {
@@ -52,7 +51,7 @@ describe("SiteScripts", function () {
                 "$schema": "schema.json",
                 "actions": [],
                 "bindata": {},
-                "version": 1
+                "version": 1,
             };
 
             const title = `Test_create_sitescript_no_actions_${getRandomString(8)}`;
@@ -103,19 +102,19 @@ describe("SiteScripts", function () {
 
             const updatedScriptSchema = {
                 "$schema": "schema.json",
-                "actions": [
+                actions: [
                     {
-                        "verb": "applyTheme",
-                        "themeName": "Dummy Theme 2"
-                    }
+                        themeName: "Dummy Theme 2",
+                        verb: "applyTheme",
+                    },
                 ],
-                "bindata": {},
-                "version": 2
+                bindata: {},
+                version: 2,
             };
 
             return expect(sp.siteScripts.updateSiteScript({
                 Id: ss.Id,
-                Title: updatedTitle
+                Title: updatedTitle,
             }, updatedScriptSchema), `site script '${title}' should've been updated`).to.eventually.be.fulfilled;
         });
 

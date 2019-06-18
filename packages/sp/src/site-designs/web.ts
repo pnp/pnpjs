@@ -1,7 +1,8 @@
-import { _Web } from '../webs/types';
-import { ISiteDesignRun, SiteDesigns, ISiteDesignTask, ISiteScriptActionStatus } from './types';
+import { _Web } from "../webs/types";
+import { ISiteDesignRun, SiteDesigns, ISiteDesignTask, ISiteScriptActionStatus } from "./types";
 
 declare module "../webs/types" {
+
     interface _Web {
         getSiteDesignRuns(siteDesignId?: string): Promise<ISiteDesignRun[]>;
         addSiteDesignTask(siteDesignId: string): Promise<ISiteDesignTask>;
@@ -27,14 +28,14 @@ declare module "../webs/types" {
     }
 }
 
-_Web.prototype.getSiteDesignRuns = async function (this: _Web, siteDesignId?: string): Promise<ISiteDesignRun[]> {
+_Web.prototype.getSiteDesignRuns = function (this: _Web, siteDesignId?: string): Promise<ISiteDesignRun[]> {
     return SiteDesigns(this, "").getSiteDesignRun(undefined, siteDesignId);
 };
 
-_Web.prototype.addSiteDesignTask = async function (this: _Web, siteDesignId: string): Promise<ISiteDesignTask> {
+_Web.prototype.addSiteDesignTask = function (this: _Web, siteDesignId: string): Promise<ISiteDesignTask> {
     return SiteDesigns(this, "").addSiteDesignTaskToCurrentWeb(siteDesignId);
 };
 
-_Web.prototype.getSiteDesignRunStatus = async function (this: _Web, runId: string): Promise<ISiteScriptActionStatus[]> {
+_Web.prototype.getSiteDesignRunStatus = function (this: _Web, runId: string): Promise<ISiteScriptActionStatus[]> {
     return SiteDesigns(this, "").getSiteDesignRunStatus(undefined, runId);
 };

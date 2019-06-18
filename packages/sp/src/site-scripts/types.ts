@@ -2,18 +2,11 @@ import { body } from "@pnp/odata";
 import { spPost } from "../operations";
 import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
 import { extractWebUrl } from "../utils/extractweburl";
+import { clientTagMethod } from "../decorators";
+import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
-/**
- * Implements the site script API REST methods
- *
- */
 export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts {
-    /**
-     * Creates a new instance of the SiteScripts method class
-     *
-     * @param baseUrl The parent url provider
-     * @param methodName The static method name to call on the utility class
-     */
+
     constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
@@ -23,40 +16,46 @@ export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts 
         return spPost<T>(this, body(props));
     }
 
+    @clientTagMethod("ss.getSiteScripts")
     public getSiteScripts(): Promise<ISiteScriptInfo[]> {
         return this.clone(SiteScriptsCloneFactory, "GetSiteScripts", true).execute<ISiteScriptInfo[]>({});
     }
 
-    public async createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
-        return await this.clone(SiteScriptsCloneFactory,
-            `CreateSiteScript(Title=@title,Description=@desc)?@title='${encodeURIComponent(title)}'&@desc='${encodeURIComponent(description)}'`)
+    @clientTagMethod("ss.createSiteScript")
+    public createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
+        return this.clone(SiteScriptsCloneFactory,
+            `CreateSiteScript(Title=@title,Description=@desc)?@title='${escapeQueryStrValue(title)}'&@desc='${escapeQueryStrValue(description)}'`)
             .execute<ISiteScriptInfo>(content);
     }
 
-    public async getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo> {
-        return await this.clone(SiteScriptsCloneFactory, "GetSiteScriptMetadata").execute<ISiteScriptInfo>({ id: id });
+    @clientTagMethod("ss.getSiteScriptMetadata")
+    public getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo> {
+        return this.clone(SiteScriptsCloneFactory, "GetSiteScriptMetadata").execute<ISiteScriptInfo>({ id });
     }
 
-    public async deleteSiteScript(id: string): Promise<void> {
-        await this.clone(SiteScriptsCloneFactory, "DeleteSiteScript").execute<void>({ id: id });
+    @clientTagMethod("ss.deleteSiteScript")
+    public deleteSiteScript(id: string): Promise<void> {
+        return this.clone(SiteScriptsCloneFactory, "DeleteSiteScript").execute<void>({ id });
     }
 
-    public async updateSiteScript(siteScriptUpdateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo> {
+    @clientTagMethod("ss.updateSiteScript")
+    public updateSiteScript(updateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo> {
+
         if (content) {
-            siteScriptUpdateInfo.Content = JSON.stringify(content);
+            updateInfo.Content = JSON.stringify(content);
         }
 
-        return await this.clone(SiteScriptsCloneFactory, "UpdateSiteScript").execute<ISiteScriptInfo>({ updateInfo: siteScriptUpdateInfo });
+        return this.clone(SiteScriptsCloneFactory, "UpdateSiteScript").execute<ISiteScriptInfo>({ updateInfo });
     }
 
-    public async getSiteScriptFromList(listUrl: string): Promise<string> {
-        return await this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`)
-            .execute<string>({ "listUrl": listUrl });
+    @clientTagMethod("ss.getSiteScriptFromList")
+    public getSiteScriptFromList(listUrl: string): Promise<string> {
+        return this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`).execute<string>({ listUrl });
     }
 
-    public async getSiteScriptFromWeb(webUrl: string, extractInfo: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
-        return await this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`)
-            .execute<ISiteScriptSerializationResult>({ "webUrl": webUrl, info: extractInfo });
+    @clientTagMethod("ss.getSiteScriptFromWeb")
+    public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+        return this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`).execute<ISiteScriptSerializationResult>({ webUrl, info });
     }
 }
 
@@ -198,8 +197,8 @@ export interface ISiteScriptSerializationResult {
      * The site script in JSON format
      */
     JSON: string;
-     /**
-     * A collection of warnings
-     */
+    /**
+    * A collection of warnings
+    */
     Warnings: string[];
 }

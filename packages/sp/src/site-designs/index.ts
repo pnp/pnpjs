@@ -11,12 +11,9 @@ export {
     SiteDesigns,
     ISiteDesignRun,
     ISiteDesignTask,
-    ISiteScriptActionStatus
+    ISiteScriptActionStatus,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly siteDesigns: ISiteDesigns;

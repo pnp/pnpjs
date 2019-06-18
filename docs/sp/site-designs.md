@@ -1,13 +1,22 @@
-# @pnp/sp/sitedesigns
+# @pnp/sp/site-designs
 
 You can create site designs to provide reusable lists, themes, layouts, pages, or custom actions so that your users can quickly build new SharePoint sites with the features they need.
 Check out [SharePoint site design and site script overview](https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/site-design-overview) for more information.
 
 # Site Designs
 
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/site-designs";|
+|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+
 ## Create a new site design
+
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 // WebTemplate: 64 Team site template, 68 Communication site template
 const siteDesign = await sp.siteDesigns.createSiteDesign({
@@ -23,6 +32,7 @@ console.log(siteDesign.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 // Limited to 30 actions in a site script, but runs synchronously
 await sp.siteDesigns.applySiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8","https://contoso.sharepoint.com/sites/teamsite-pnpjs001");
@@ -32,8 +42,10 @@ const task = await sp.web.addSiteDesignTask("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 ```
 
 ## Retrieval
+
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 // Retrieving all site designs
 const allSiteDesigns = await sp.siteDesigns.getSiteDesigns();
@@ -45,8 +57,10 @@ console.log(siteDesign.Title);
 ```
 
 ## Update and delete
+
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 // Update
 const updatedSiteDesign = await sp.siteDesigns.updateSiteDesign({ Id: "75b9d8fe-4381-45d9-88c6-b03f483ae6a8", Title: "SiteDesignUpdatedTitle001" });
@@ -56,8 +70,10 @@ await sp.siteDesigns.deleteSiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
 ```
 
 ## Setting Rights/Permissions
+
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 // Get
 const rights = await sp.siteDesigns.getSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
@@ -75,8 +91,10 @@ await sp.siteDesigns.revokeSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 ```
 
 ## Get a history of site designs that have run on a web
+
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/site-designs";
 
 const runs = await sp.web.getSiteDesignRuns();
 const runs2 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.com/sites/mysite");
@@ -89,82 +107,4 @@ const runs4 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.c
 const runStatus = await sp.web.getSiteDesignRunStatus(runs[0].ID);
 const runStatus2 = await sp.siteDesigns.getSiteDesignRunStatus("https://TENANT.sharepoint.com/sites/mysite", runs[0].ID);
 
-```
-
-# Site Scripts
-
-## Create a new site script
-```TypeScript
-import { sp } from "@pnp/sp";
-
-const sitescriptContent = {
-    "$schema": "schema.json",
-    "actions": [
-        {
-            "themeName": "Theme Name 123",
-            "verb": "applyTheme",
-        },
-    ],
-    "bindata": {},
-    "version": 1,
-};
-
-const siteScript = await sp.siteScripts.createSiteScript("Title", "description", sitescriptContent);
-    
-console.log(siteScript.Title);
-```
-
-## Retrieval
-```TypeScript
-import { sp } from "@pnp/sp";
-
-// Retrieving all site scripts
-const allSiteScripts = await sp.siteScripts.getSiteScripts();
-console.log(allSiteScripts.length > 0 ? allSiteScripts[0].Title : "");
-
-// Retrieving a single site script by Id
-const siteScript = await sp.siteScripts.getSiteScriptMetadata("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
-console.log(siteScript.Title);
-```
-
-## Update and delete
-```TypeScript
-import { sp } from "@pnp/sp";
-
-// Update
-const updatedSiteScript = await sp.siteScripts.updateSiteScript({ Id: "884ed56b-1aab-4653-95cf-4be0bfa5ef0a", Title: "New Title" });
-console.log(updatedSiteScript.Title);
-
-// Delete
-await sp.siteScripts.deleteSiteScript("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
-```
-
-## Get site script from a list
-```TypeScript
-import { sp } from "@pnp/sp";
-
-// Using the absolute URL of the list
-const ss = await sp.siteScripts.getSiteScriptFromList("https://TENANT.sharepoint.com/Lists/mylist");
-
-// Using the PnPjs web object to fetch the site script from a specific list
-const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
-```
-
-## Get site script from a web
-```TypeScript
-import { sp } from "@pnp/sp";
-
-const extractInfo = {
-    IncludeBranding: true,
-    IncludeLinksToExportedItems: true,
-    IncludeRegionalSettings: true,
-    IncludeSiteExternalSharingCapability: true,
-    IncludeTheme: true,
-    IncludedLists: ["Lists/MyList"]
-};
-
-const ss = await sp.siteScripts.getSiteScriptFromWeb("https://TENANT.sharepoint.com/sites/mysite", extractInfo);
-
-// Using the PnPjs web object to fetch the site script from a specific web
-const ss2 = await sp.web.getSiteScript(extractInfo);
 ```

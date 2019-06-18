@@ -3,11 +3,11 @@ import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/site-designs";
-import { ISiteDesignRun } from '@pnp/sp/src/site-designs';
+import { ISiteDesignRun } from "@pnp/sp/src/site-designs";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => { r() }, ms));
+const sleep = (ms: number) => new Promise(r => setTimeout(() => { r(); }, ms));
 
 describe("SiteDesigns", function () {
 
@@ -213,7 +213,7 @@ describe("SiteDesigns", function () {
                     await sleep(10000);
                     task = await sp.siteDesigns.getSiteDesignTask(originalTask.ID);
                 }
-                while (task != null)
+                while (task != null);
 
                 const siteDesignRuns: ISiteDesignRun[] = await sp.web.getSiteDesignRuns();
 

@@ -3,18 +3,10 @@ import { extractWebUrl } from "../utils/extractweburl";
 import { headers, body } from "@pnp/odata";
 import { spPost } from "../operations";
 import { hOP } from "@pnp/common";
+import { clientTagMethod } from "../decorators";
 
-/**
- * Implements the site designs API REST methods
- *
- */
 export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns {
-    /**
-     * Creates a new instance of the SiteDesigns method class
-     *
-     * @param baseUrl The parent url provider
-     * @param methodName The static method name to call on the utility class
-     */
+
     constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
@@ -24,36 +16,44 @@ export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns 
         return spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
     }
 
-    public async createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
-        return await this.clone(SiteDesignsCloneFactory, `CreateSiteDesign`).execute<ISiteDesignInfo>({ info: creationInfo });
+    @clientTagMethod("sd.createSiteDesign")
+    public createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
+        return this.clone(SiteDesignsCloneFactory, `CreateSiteDesign`).execute<ISiteDesignInfo>({ info: creationInfo });
     }
 
-    public async applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
-        return await this.clone(SiteDesignsCloneFactory, `ApplySiteDesign`).execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
+    @clientTagMethod("sd.applySiteDesign")
+    public applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
+        return this.clone(SiteDesignsCloneFactory, `ApplySiteDesign`).execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
     }
 
-    public async getSiteDesigns(): Promise<ISiteDesignInfo[]> {
-        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesigns`).execute<ISiteDesignInfo[]>({});
+    @clientTagMethod("sd.getSiteDesigns")
+    public getSiteDesigns(): Promise<ISiteDesignInfo[]> {
+        return this.clone(SiteDesignsCloneFactory, `GetSiteDesigns`).execute<ISiteDesignInfo[]>({});
     }
 
-    public async getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
-        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignMetadata`).execute<ISiteDesignInfo>({ id: id });
+    @clientTagMethod("sd.getSiteDesignMetadata")
+    public getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
+        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignMetadata`).execute<ISiteDesignInfo>({ id: id });
     }
 
-    public async updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
-        return await this.clone(SiteDesignsCloneFactory, `UpdateSiteDesign`).execute<ISiteDesignInfo>({ updateInfo: updateInfo });
+    @clientTagMethod("sd.updateSiteDesign")
+    public updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
+        return this.clone(SiteDesignsCloneFactory, `UpdateSiteDesign`).execute<ISiteDesignInfo>({ updateInfo: updateInfo });
     }
 
-    public async deleteSiteDesign(id: string): Promise<void> {
-        return await this.clone(SiteDesignsCloneFactory, `DeleteSiteDesign`).execute<void>({ id: id });
+    @clientTagMethod("sd.deleteSiteDesign")
+    public deleteSiteDesign(id: string): Promise<void> {
+        return this.clone(SiteDesignsCloneFactory, `DeleteSiteDesign`).execute<void>({ id: id });
     }
 
-    public async getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
-        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRights`).execute<ISiteDesignPrincipals[]>({ id: id });
+    @clientTagMethod("sd.getSiteDesignRights")
+    public getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
+        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRights`).execute<ISiteDesignPrincipals[]>({ id: id });
     }
 
-    public async grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
-        return await this.clone(SiteDesignsCloneFactory, `GrantSiteDesignRights`)
+    @clientTagMethod("sd.grantSiteDesignRights")
+    public grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
+        return this.clone(SiteDesignsCloneFactory, `GrantSiteDesignRights`)
             .execute<void>({
                 "grantedRights": grantedRights.toString(),
                 "id": id,
@@ -61,24 +61,28 @@ export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns 
             });
     }
 
-    public async revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
-        return await this.clone(SiteDesignsCloneFactory, `RevokeSiteDesignRights`)
+    @clientTagMethod("sd.revokeSiteDesignRights")
+    public revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
+        return this.clone(SiteDesignsCloneFactory, `RevokeSiteDesignRights`)
             .execute<void>({
                 "id": id,
                 "principalNames": principalNames,
             });
     }
 
-    public async addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
-        return await this.clone(SiteDesignsCloneFactory, `AddSiteDesignTask`)
+    @clientTagMethod("sd.addSiteDesignTask")
+    public addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
+        return this.clone(SiteDesignsCloneFactory, `AddSiteDesignTask`)
             .execute<ISiteDesignTask>({ "webUrl": webUrl, "siteDesignId": siteDesignId });
     }
 
-    public async addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
-        return await this.clone(SiteDesignsCloneFactory, `AddSiteDesignTaskToCurrentWeb`)
+    @clientTagMethod("sd.addSiteDesignTaskToCurrentWeb")
+    public addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
+        return this.clone(SiteDesignsCloneFactory, `AddSiteDesignTaskToCurrentWeb`)
             .execute<ISiteDesignTask>({ "siteDesignId": siteDesignId });
     }
 
+    @clientTagMethod("sd.getSiteDesignTask")
     public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
         const task = await this.clone(SiteDesignsCloneFactory, `GetSiteDesignTask`)
             .execute<ISiteDesignTask>({ "taskId": id });
@@ -86,18 +90,23 @@ export class _SiteDesigns extends _SharePointQueryable implements _ISiteDesigns 
         return hOP(task, "ID") ? task : null;
     }
 
-    public async getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
-        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRun`)
+    @clientTagMethod("sd.getSiteDesignRun")
+    public getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
+        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRun`)
             .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
     }
 
-    public async getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
-        return await this.clone(SiteDesignsCloneFactory, `GetSiteDesignRunStatus`)
+    @clientTagMethod("sd.getSiteDesignRunStatus")
+    public getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
+        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRunStatus`)
             .execute<ISiteScriptActionStatus[]>({ "webUrl": webUrl, runId: runId });
     }
 }
 
 export interface _ISiteDesigns {
+    /**
+     * Gets the list of available site designs
+     */
     getSiteDesigns(): Promise<ISiteDesignInfo[]>;
     /**
      * Creates a new site design available to users when they create a new site from the SharePoint home page.
