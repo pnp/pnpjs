@@ -167,7 +167,7 @@ Creates a modern communication site.
 ||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
 ||||
 | hubSiteId | string | no | The Guid of the already existing Hub site
-| ownerId | string | no | Required when using app-only context |
+| owner | string | no | Required when using app-only context. Owner principal name e.g. kemicza@kemiczadev.onmicrosoft.com |
 
 ```TypeScript
 
