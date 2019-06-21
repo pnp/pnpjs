@@ -245,7 +245,7 @@ export class Site extends SharePointQueryableInstance {
         const rootWeb: any = await this.getRootWeb();
         const client = new SPHttpClient();
         const methodUrl = `${rootWeb.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
-        let statusResult = await client.post(methodUrl, {
+        const statusResult = await client.post(methodUrl, {
             body: postBody,
             headers: {
                 "Accept": "application/json;odata=verbose",
@@ -256,13 +256,13 @@ export class Site extends SharePointQueryableInstance {
         let status: IGroupSiteInfo = (await statusResult.json()).d.CreateGroupEx;
         const groupId: string = status.GroupId;
         if (statusResult.ok) {
-            const sleep = (ms: number) => new Promise<void>((res, rej) => { setTimeout(() => res(), ms) });
+            const sleep = (ms: number) => new Promise<void>((res, rej) => { setTimeout(() => res(), ms); });
             while (status.SiteStatus !== 2) {
                 await sleep(1000);
                 const methodUrlStatus = `${rootWeb.parentUrl}/_api/GroupSiteManager/GetSiteStatus`;
                 status = (await (await client.post(methodUrlStatus, {
                     body: jsS({
-                        groupId: groupId
+                        groupId: groupId,
                     }),
                     headers: {
                         "Accept": "application/json;odata=verbose",
