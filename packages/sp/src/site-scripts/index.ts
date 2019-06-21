@@ -1,3 +1,5 @@
+import "./web";
+import "./list";
 import { SPRest } from "../rest";
 import { ISiteScripts, SiteScripts } from "./types";
 
@@ -6,6 +8,8 @@ export {
     ISiteScripts,
     ISiteScriptInfo,
     ISiteScriptUpdateInfo,
+    ISiteScriptSerializationInfo,
+    ISiteScriptSerializationResult,
 } from "./types";
 
 /**
