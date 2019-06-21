@@ -256,7 +256,7 @@ export class Site extends SharePointQueryableInstance {
         let status: IGroupSiteInfo = (await statusResult.json()).d.CreateGroupEx;
         const groupId: string = status.GroupId;
         if (statusResult.ok) {
-            const sleep = (ms: number) => new Promise<void>((res, rej) => { setTimeout(() => res(), ms); });
+            const sleep = (ms: number) => new Promise<void>((res) => { setTimeout(() => res(), ms); });
             while (status.SiteStatus !== 2) {
                 await sleep(1000);
                 const methodUrlStatus = `${rootWeb.parentUrl}/_api/GroupSiteManager/GetSiteStatus`;
