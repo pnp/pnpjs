@@ -215,7 +215,7 @@ export class Site extends SharePointQueryableInstance {
      * @param owners The Owners of the site to be created     
      */
 
-    public createModernTeamSite(
+    public async createModernTeamSite(
         displayName: string,
         alias: string,
         isPublic = true,
@@ -224,7 +224,7 @@ export class Site extends SharePointQueryableInstance {
         classification = "",
         owners?: string[],
         hubSiteId = "00000000-0000-0000-0000-000000000000",
-    ): Promise<void> {
+    ): Promise<IGroupSiteInfo> {
 
         const postBody = jsS({
             alias: alias,
@@ -242,18 +242,38 @@ export class Site extends SharePointQueryableInstance {
             },
         });
 
-        return this.getRootWeb().then(async (d: any) => {
-
-            const client = new SPHttpClient();
-            const methodUrl = `${d.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
-            return client.post(methodUrl, {
-                body: postBody,
-                headers: {
-                    "Accept": "application/json;odata=verbose",
-                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                },
-            }).then(r => r.json());
+        const rootWeb: any = await this.getRootWeb();
+        const client = new SPHttpClient();
+        const methodUrl = `${rootWeb.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
+        let statusResult = await client.post(methodUrl, {
+            body: postBody,
+            headers: {
+                "Accept": "application/json;odata=verbose",
+                "Content-Type": "application/json;odata=verbose;charset=utf-8",
+            },
         });
+
+        let status: IGroupSiteInfo = (await statusResult.json()).d.CreateGroupEx;
+        const groupId: string = status.GroupId;
+        if (statusResult.ok) {
+            const sleep = (ms: number) => new Promise<void>((res, rej) => { setTimeout(() => res(), ms) });
+            while (status.SiteStatus !== 2) {
+                await sleep(1000);
+                const methodUrlStatus = `${rootWeb.parentUrl}/_api/GroupSiteManager/GetSiteStatus`;
+                status = (await (await client.post(methodUrlStatus, {
+                    body: jsS({
+                        groupId: groupId
+                    }),
+                    headers: {
+                        "Accept": "application/json;odata=verbose",
+                        "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                    },
+                })).json()).d.GetSiteStatus;
+            }
+            status.GroupId = groupId;
+        }
+
+        return status;
     }
 }
 
@@ -263,4 +283,12 @@ export class Site extends SharePointQueryableInstance {
 export interface OpenWebByIdResult {
     data: any;
     web: Web;
+}
+
+export interface IGroupSiteInfo {
+    DocumentsUrl: string;
+    ErrorMessage: string;
+    GroupId: string;
+    SiteStatus: number;
+    SiteUrl: string;
 }
