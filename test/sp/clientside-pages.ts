@@ -5,7 +5,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/clientside-pages";
 import "@pnp/sp/src/files";
-import { ClientSidePageFromFile, ClientSideText, ClientSideWebpartPropertyTypes, CreateClientSidePage, ClientSideWebpart, IClientSidePage } from "@pnp/sp/src/clientside-pages";
+import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/src/clientside-pages";
 import { Web } from "@pnp/sp/src/webs";
 
 describe("Clientside Pages", () => {
@@ -14,17 +14,17 @@ describe("Clientside Pages", () => {
 
         it("web.addClientSidePage", function () {
 
-            return expect(Web(testSettings.sp.webUrl).addClientSidePage(`TestingAdd_${getRandomString(4)}.aspx`)).to.eventually.be.fulfilled;
+            return expect(Web(testSettings.sp.webUrl).addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`)).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage", function () {
 
-            return expect(CreateClientSidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+            return expect(CreateClientsidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage - SingleWebPartAppPage", function () {
 
-            const promise = CreateClientSidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
+            const promise = CreateClientsidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
             return expect(promise).to.eventually.be.fulfilled;
         });
 
@@ -32,33 +32,77 @@ describe("Clientside Pages", () => {
 
             const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
 
-            await Web(testSettings.sp.webUrl).addClientSidePage(pageFileName);
+            await Web(testSettings.sp.webUrl).addClientsidePage(pageFileName);
 
             // need to make the path relative
             const rel = testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
-            const promise = ClientSidePageFromFile(sp.web.getFileByServerRelativeUrl(combine("/", rel, "SitePages", pageFileName)));
+            const promise = ClientsidePageFromFile(sp.web.getFileByServerRelativeUrl(combine("/", rel, "SitePages", pageFileName)));
             return expect(promise).to.eventually.be.fulfilled;
+        });
+
+        describe("web.loadClientsidePage", async function () {
+
+            let page: IClientsidePage;
+
+            const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(pageName);
+                await page.save();
+            });
+
+            it("can load a page", async function () {
+
+                const serverRelativePath = combine("/", testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/")), "SitePages", pageName);
+
+                page = await sp.web.loadClientsidePage(serverRelativePath);
+
+                return expect(page).to.not.be.null.and.not.undefined;
+            });
+        });
+
+        describe("promoteToNews", async function () {
+
+            let page: IClientsidePage;
+
+            const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(pageName);
+                await page.save();
+            });
+
+            it("can promote a page", async function () {
+
+                return expect(page.promoteToNews()).to.eventually.be.fulfilled.and.eq(true);
+            });
+        });
+
+        it("web.getClientsideWebParts", function () {
+            return expect(sp.web.getClientsideWebParts()).to.eventually.be.fulfilled;
         });
 
         describe("save", function () {
 
             it("Should update a pages content with a text control", () => {
-                return Web(testSettings.sp.webUrl).addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                return Web(testSettings.sp.webUrl).addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
-                    page.addSection().addControl(new ClientSideText("This is test text!!!"));
+                    page.addSection().addControl(new ClientsideText("This is test text!!!"));
 
                     return expect(page.save()).to.eventually.be.fulfilled;
                 });
             });
 
-            it("Should update a pages content with an embed control", () => {
-                return Web(testSettings.sp.webUrl).getClientSideWebParts().then(parts => {
+            it("Should update a pages content with an embed control", function () {
+                return Web(testSettings.sp.webUrl).getClientsideWebParts().then(parts => {
 
-                    Web(testSettings.sp.webUrl).addClientSidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                    Web(testSettings.sp.webUrl).addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
-                        const part = ClientSideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
+                        const part = ClientsideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
 
-                        part.setProperties<ClientSideWebpartPropertyTypes.Embed>({
+                        part.setProperties<{ embedCode: string }>({
                             embedCode: "https://www.youtube.com/watch?v=IWQFZ7Lx-rg",
                         });
 
@@ -72,11 +116,11 @@ describe("Clientside Pages", () => {
 
         describe("Page comments", function () {
 
-            let page: IClientSidePage;
+            let page: IClientsidePage;
 
             before(async function () {
                 this.timeout(0);
-                page = await Web(testSettings.sp.webUrl).addClientSidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
             });
 
             it("Should disable", function () {
@@ -90,14 +134,11 @@ describe("Clientside Pages", () => {
 
         describe("Sections and Columns", function () {
 
-            let page: IClientSidePage;
+            let page: IClientsidePage;
 
-            beforeEach(function (done) {
+            before(async function () {
                 this.timeout(0);
-                Web(testSettings.sp.webUrl).addClientSidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`).then(p => {
-                    page = <IClientSidePage>p;
-                    done();
-                });
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
             });
 
             it("Default section, 2 empty columns", async function () {
@@ -119,6 +160,28 @@ describe("Clientside Pages", () => {
                 expect(page.sections[0].columns.length === 2);
                 expect(page.sections[0].columns[0].factor === 6);
                 expect(page.sections[0].columns[1].factor === 6);
+            });
+        });
+
+        describe("like and unlike", function () {
+
+            let page: IClientsidePage;
+
+            before(async function () {
+                this.timeout(0);
+                page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
+            });
+
+            it(".like()", function () {
+                return expect(page.like()).to.eventually.be.fulfilled;
+            });
+
+            it(".unlike()", function () {
+                return expect(page.unlike()).to.eventually.be.fulfilled;
+            });
+
+            it(".getLikedByInformation", function () {
+                return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
             });
         });
     }

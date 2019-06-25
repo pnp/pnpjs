@@ -43,7 +43,7 @@ export class SPHttpClient implements IRequestClient {
         if (!headers.has("X-ClientService-ClientTag")) {
 
             const methodName = clientTagMethod.getClientTag(headers);
-            let clientTag = `PnPCoreJS:@pnp-$$Version$$:${methodName}`;
+            let clientTag = `PnPjs:$$Version$$:${methodName}`;
 
             if (clientTag.length > 32) {
                 clientTag = clientTag.substr(0, 32);
@@ -55,7 +55,7 @@ export class SPHttpClient implements IRequestClient {
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
             // does not work in browsers
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/$$Version$$");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/$$Version$$");
         }
 
         opts = assign(opts, { headers: headers });
