@@ -8,6 +8,7 @@
         "rootDir": "../../",
         "outDir": "../../build/debugging",
         "incremental": true,
+        "noUnusedLocals": false,
         "types": [
             "sharepoint"
         ],
