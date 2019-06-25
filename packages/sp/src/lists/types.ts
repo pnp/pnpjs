@@ -13,7 +13,7 @@ import {
 import { IChangeQuery } from "../types";
 import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
-import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
+import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
@@ -21,13 +21,15 @@ import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 export class _Lists extends _SharePointQueryableCollection implements _ILists {
 
     public getById(id: string): IList {
-        return List(this).concat(`('${id}')`);
+
+        return clientTagMethod.configure(List(this).concat(`('${id}')`), "l.getById");
     }
 
     public getByTitle(title: string): IList {
-        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
+        return clientTagMethod.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "l.getByTitle");
     }
 
+    @clientTagMethod("ls.add")
     public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListAddResult> {
 
         const addSettings = Object.assign({
@@ -43,7 +45,8 @@ export class _Lists extends _SharePointQueryableCollection implements _ILists {
         return { data, list: this.getByTitle(addSettings.Title) };
     }
 
-    public ensure(
+    @clientTagMethod("ls.ensure")
+    public async ensure(
         title: string,
         desc = "",
         template = 100,
@@ -75,11 +78,13 @@ export class _Lists extends _SharePointQueryableCollection implements _ILists {
         });
     }
 
+    @clientTagMethod("ls.ensureSiteAssetsLibrary")
     public async ensureSiteAssetsLibrary(): Promise<IList> {
         const json = await spPost(this.clone(Lists, "ensuresiteassetslibrary"));
         return List(odataUrlFrom(json));
     }
 
+    @clientTagMethod("ls.ensureSitePagesLibrary")
     public async ensureSitePagesLibrary(): Promise<IList> {
         const json = await spPost(this.clone(Lists, "ensuresitepageslibrary"));
         return List(odataUrlFrom(json));
@@ -157,6 +162,7 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         return SharePointQueryable(this, "InformationRightsManagementSettings");
     }
 
+    @clientTagMethod("l.update")
     public async update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<IListUpdateResult> {
 
         const postBody = body(assign({
@@ -180,28 +186,33 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         };
     }
 
+    @clientTagMethod("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
         return spPost(this.clone(List, "getchanges"), body({ query: assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
     }
 
+    @clientTagMethod("l.CAMLQuery")
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
         return spPost(q.expand.apply(q, expands), body({ "query": assign({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
     }
 
+    @clientTagMethod("l.ChangesSinceToken")
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
         return spPost(o, body({ "query": assign({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
     }
 
+    @clientTagMethod("l.recycle")
     public async recycle(): Promise<string> {
         const data = await spPost(this.clone(List, "recycle"));
         return hOP(data, "Recycle") ? data.Recycle : data;
     }
 
+    @clientTagMethod("l.renderListData")
     public async renderListData(viewXml: string): Promise<IRenderListData> {
 
         const q = this.clone(List, "renderlistdata(@viewXml)");
@@ -212,6 +223,7 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         return JSON.parse(hOP(data, "RenderListData") ? data.RenderListData : data);
     }
 
+    @clientTagMethod("l.AsStream")
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null): Promise<any> {
 
         const postBody = body({
@@ -222,27 +234,32 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         return spPost(this.clone(List, "RenderListDataAsStream", true), postBody);
     }
 
+    @clientTagMethod("l.renderListFormData")
     public async renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<IListFormData> {
         const data = await spPost(this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`));
         // data will be a string, so we parse it again
         return JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data);
     }
 
+    @clientTagMethod("l.reserveListItemId")
     public async reserveListItemId(): Promise<number> {
         const data = await spPost(this.clone(List, "reservelistitemid"));
         return hOP(data, "ReserveListItemId") ? data.ReserveListItemId : data;
     }
 
+    @clientTagMethod("l.getListItemEntityTypeFullName")
     public getListItemEntityTypeFullName(): Promise<string> {
         return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
     }
 
+    @clientTagMethod("l.addValidateUpdateItemUsingPath")
     public async addValidateUpdateItemUsingPath(
         formValues: IListItemFormUpdateValue[],
         decodedUrl: string,
         bNewDocumentUpdate = false,
         checkInComment?: string,
     ): Promise<IListItemFormUpdateValue[]> {
+
         const res = await spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
             bNewDocumentUpdate,
             checkInComment,

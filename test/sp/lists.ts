@@ -7,6 +7,7 @@ import "@pnp/sp/src/views/list";
 import "@pnp/sp/src/folders/list";
 import "@pnp/sp/src/fields/list";
 import "@pnp/sp/src/forms/list";
+import "@pnp/sp/src/items/list";
 import "@pnp/sp/src/subscriptions/list";
 import "@pnp/sp/src/user-custom-actions/list";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue } from "@pnp/sp/src/lists";

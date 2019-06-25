@@ -23,10 +23,10 @@ import "@pnp/sp/src/webs";
 import "@pnp/sp/src/lists";
 
 // get the list by Id
-const list = await sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
+const list = sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
 
 // we can use this 'list' variable to execute more querys on the list:
-const r = await list.select("Title").get();
+const r = await list.select("Title")();
 
 // show the response from the server
 console.log(r.Title);
@@ -42,10 +42,10 @@ import "@pnp/sp/src/webs";
 import "@pnp/sp/src/lists";
 
 // get the default document library 'Documents'
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 
 // we can use this 'list' variable to run more querys on the list:
-const r = await list.select("Id").get();
+const r = await list.select("Id")();
 
 // log the list Id to console
 console.log(r.Id);
@@ -60,7 +60,7 @@ You can add a list to the web's list collection using the .add-method. To invoke
 const listAddResult = await sp.web.lists.add("My new list");
 
 // we can work with the list created using the IListAddResult.list property:
-const r = await listAddResult.list.select("Title").get();
+const r = await listAddResult.list.select("Title")();
 
 // log newly created list title to console
 console.log(r.Title);
@@ -96,7 +96,7 @@ if (listEnsureResult.created) {
 }
 
 // work on the created/updated list
-const r = await listEnsureResult.list.select("Id").get();
+const r = await listEnsureResult.list.select("Id")();
 
 // log the Id
 console.log(r.Id);
@@ -112,7 +112,7 @@ sp.web.lists.add("My List 2").then(async () => {
 const listEnsureResult = await sp.web.lists.ensure("My List 2", "Updated description");
 
 // get the updated description
-const r = await listEnsureResult.list.select("Description").get();
+const r = await listEnsureResult.list.select("Description")();
 
 // log the updated description
 console.log(r.Description);
@@ -128,7 +128,7 @@ Gets a list that is the default asset location for images or other files, which 
 const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
 
 // get the Title
-const r = await siteAssetsList.select("Title").get();
+const r = await siteAssetsList.select("Title")();
 
 // log Title
 console.log(r.Title);
@@ -143,7 +143,7 @@ Gets a list that is the default location for wiki pages.
 const siteAssetsList = await sp.web.lists.ensureSitePagesLibrary();
 
 // get the Title
-const r = await siteAssetsList.select("Title").get();
+const r = await siteAssetsList.select("Title")();
 
 // log Title
 console.log(r.Title);
@@ -177,7 +177,7 @@ const updateProperties = {
 list.update(updateProperties).then(async (l: IListUpdateResult) => {
 
     // get the updated title and description
-    const r = await l.list.select("Title", "Description").get();
+    const r = await l.list.select("Title", "Description")();
 
     // log the updated properties to the console
     console.log(r.Title);
@@ -326,7 +326,7 @@ console.log(entityTypeFullName);
 ### Add a list item using path (folder), validation and set field values
 
 ```TypeScript
-const list = await sp.webs.lists.getByTitle("MyList").select("Title", "ParentWebUrl").get();
+const list = await sp.webs.lists.getByTitle("MyList").select("Title", "ParentWebUrl")();
 const formValues: IListItemFormUpdateValue[] = [
                 {
                     FieldName: "Title",
@@ -343,13 +343,13 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 |--|--|
 |Selective 1|import "@pnp/sp/src/content-types";|
 |Selective 2|import "@pnp/sp/src/content-types/list";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### contentTypes
 
 Get all content types for a list
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const r = await list.contentTypes();
 ```
 
@@ -359,14 +359,14 @@ const r = await list.contentTypes();
 |--|--|
 |Selective 1|import "@pnp/sp/src/fields";|
 |Selective 2|import "@pnp/sp/src/fields/list";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### fields
 
 Get all the fields for a list
 
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const r = await list.fields();
 ```
 
@@ -383,14 +383,14 @@ await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaX
 |--|--|
 |Selective 1|import "@pnp/sp/src/folders";|
 |Selective 2|import "@pnp/sp/src/folders/list";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### folders
 
 Get the root folder of a list.
 
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const r = await list.rootFolder();
 ```
 
@@ -400,7 +400,7 @@ const r = await list.rootFolder();
 |--|--|
 |Selective 1|import "@pnp/sp/src/forms";|
 |Selective 2|import "@pnp/sp/src/forms/list";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### forms
 
@@ -414,7 +414,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/items";
 Selective 2|import "@pnp/sp/src/items/list";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### items
 
@@ -430,14 +430,14 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/views";
 Selective 2|import "@pnp/sp/src/views/list";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### views
 
 Get the default view of the list
 
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const views = await list.views();
 const defaultView = await list.defaultView();
 ```
@@ -445,7 +445,7 @@ const defaultView = await list.defaultView();
 Get a list view by Id
 
 ```TypeScript
-const view = await list.getView(defaultView.Id).select("Title").get();
+const view = await list.getView(defaultView.Id).select("Title")();
 ```
 
 ## security imports
@@ -458,14 +458,14 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/subscriptions";
 Selective 2|import "@pnp/sp/src/subscriptions/list";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### subscriptions
 
 Get all subscriptions on the list
 
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const subscriptions = await list.subscriptions();
 ```
 
@@ -475,13 +475,13 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/user-custom-actions";
 Selective 2|import "@pnp/sp/src/user-custom-actions/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ## userCustomActions
 
 Get a collection of the list's user custom actions.
 
 ```TypeScript
-const list = await sp.web.lists.getByTitle("Documents");
+const list = sp.web.lists.getByTitle("Documents");
 const r = await list.userCustomActions();
 ```
