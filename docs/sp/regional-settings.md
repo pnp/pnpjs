@@ -11,7 +11,7 @@ The regional settings module helps with managing dates and times across various 
 |Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/src/regional-settings";|
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings";|
 |Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings/web";|
-|Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
 
 ```TypeScript
 import { sp } from "@pnp/sp";
