@@ -7,16 +7,15 @@ Views define the columns, ordering, and other details we see when we look at a l
 To get a views properties you need to know it's id or title. You can use the standard OData operators as expected to select properties. For a list of the properties, please see [this article](https://msdn.microsoft.com/en-us/library/office/dn531433.aspx#bk_View).
 
 ```TypeScript
-import { sp } from "@pnp/sp";
-// know a view's GUID id
-sp.web.lists.getByTitle("Documents").getView("2B382C69-DF64-49C4-85F1-70FB9CECACFE").select("Title").get().then(v => {
+import { sp, IView } from "@pnp/sp";
 
+// get by the GUID of the view
+sp.web.lists.getByTitle("Documents").views.getById("2B382C69-DF64-49C4-85F1-70FB9CECACFE").then(v: IView => {
     console.log(v);
 });
 
 // get by the display title of the view
-sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").select("Title").get().then(v => {
-
+sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").get().then(v: IView => {
     console.log(v);
 });
 ```
@@ -26,19 +25,18 @@ sp.web.lists.getByTitle("Documents").views.getByTitle("All Documents").select("T
 To add a view you use the add method of the views collection. You must supply a title and can supply other parameters as well.
 
 ```TypeScript
-import { sp, ViewAddResult } from "@pnp/sp";
-// create a new view with default fields and properties
-sp.web.lists.getByTitle("Documents").views.add("My New View").then(v => {
+import { sp, IViewAddResult } from "@pnp/sp";
 
+// create a new view with default fields and properties
+sp.web.lists.getByTitle("Documents").views.add("My New View").then(v: IViewAddResult => {
     console.log(v);
 });
 
 // create a new view with specific properties
 sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
-
     RowLimit: 10,
     ViewQuery: "<OrderBy><FieldRef Name='Modified' Ascending='False' /></OrderBy>",
-}).then((v: ViewAddResult) => {
+}).then((v: IViewAddResult) => {
 
     // manipulate the view's fields
     v.view.fields.removeAll().then(_ => {
@@ -47,7 +45,6 @@ sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
             v.view.fields.add("Title"),
             v.view.fields.add("Modified"),
         ]).then(_ =>{
-
             console.log("View created");
         });
     });
@@ -57,12 +54,11 @@ sp.web.lists.getByTitle("Documents").views.add("My New View 2", false, {
 ## Update a View
 
 ```TypeScript
-import { sp, ViewUpdateResult } from "@pnp/sp";
+import { sp, IViewUpdateResult } from "@pnp/sp";
 
 sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").update({
     RowLimit: 20,
-}).then((v: ViewUpdateResult) => {
-
+}).then((v: IViewUpdateResult) => {
     console.log(v);
 });
 ```
@@ -85,7 +81,6 @@ await sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").setVi
 import { sp } from "@pnp/sp";
 
 sp.web.lists.getByTitle("Documents").views.getByTitle("My New View").delete().then(_ => {
-
     console.log("View deleted");
 });
 ```
