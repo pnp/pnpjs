@@ -29,11 +29,21 @@ suggestion or asking a question delete this section.*
 *If you are reporting an issue please describe the steps to reproduce the bug in sufficient detail to allow testing. If you are making
 a suggestion or asking a question delete this section.*
 
+```typescript 
+// Remove this if you don't have any code sample to provide
+import { sp } from "@pnp/sp";
+sp.web.get();
+```
+
 ### Submission Guidelines
 *Delete this section after reading*
 * All suggestions, questions and issues are welcome, please let us know what's on your mind.
 * Remember to include sufficient details and context.
 * Please check back occasionally on your issue as we may have follow up questions.
 * If you have multiple suggestions, questions, or bugs please submit them in seperate issues so we can track resolution.
+* When selecting a category remove the space between the square brackets and add a x: [ ] --> [x]
+* When adding code please use the following syntax to ensure readability and formatting  
+  <div>```typescript CODE_GOES_HERE ```</div>
+
 
 Thank you for your feedback!
