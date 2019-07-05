@@ -167,7 +167,7 @@ Creates a modern communication site.
 ||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
 ||||
 | hubSiteId | string | no | The Guid of the already existing Hub site
-| owner | string | no | Required when using app-only context. Owner principal name e.g. kemicza@kemiczadev.onmicrosoft.com |
+| owner | string | no | Required when using app-only context. Owner principal name e.g. user@tenant.onmicrosoft.com |
 
 ```TypeScript
 
@@ -227,7 +227,6 @@ sp.site.createModernTeamSite(
 ## Delete a site collection
 
 ```TypeScript
-
 import { sp } from "@pnp/sp";
 
 // Delete the current site
@@ -237,5 +236,4 @@ await sp.site.delete();
 const siteUrl = "https://tenant.sharepoint.com/sites/tstpnpsitecoldelete5";
 const site2 = new Site(siteUrl);
 await site2.delete();
-
 ```
