@@ -6,17 +6,10 @@ import {
     ISharingResult,
     SharingRole,
     ISharedFuncs,
+    ISharingInformationRequest,
+    SharingLinkKind,
+    ISharingRecipient,
 } from "./types";
-import {
-    shareWith,
-    getShareLink,
-    checkPermissions,
-    getSharingInformation,
-    getObjectSharingSettings,
-    unshareObject,
-    deleteLinkByKind,
-    unshareLink,
-} from "./funcs";
 
 /**
 * Extend Folder
@@ -30,15 +23,6 @@ declare module "../folders/types" {
     }
 }
 
-/**
- * Shares this item with one or more users
- *
- * @param loginNames string or string[] of resolved login names to which this item will be shared
- * @param role The role (View | Edit) applied to the share
- * @param shareEverything Share everything in this folder, even items with unique permissions.
- * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
- * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
- */
 _Folder.prototype.shareWith = async function (
     loginNames: string | string[],
     role: SharingRole = SharingRole.View,
@@ -46,56 +30,65 @@ _Folder.prototype.shareWith = async function (
     shareEverything = false,
     emailData?: ISharingEmailData): Promise<ISharingResult> {
 
-    return shareWith(this, loginNames, role, requireSignin, shareEverything, emailData);
+    const dependency = this.addBatchDependency();
+
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData);
 };
 
-/**
- * Gets a link suitable for sharing for this item
- *
- * @param kind The type of link to share
- * @param expiration The optional expiration date
- */
-_Folder.prototype.getShareLink = getShareLink;
+_Folder.prototype.getShareLink = async function (this: _Folder, kind: SharingLinkKind, expiration: Date = null): Promise<any> {
+    const dependency = this.addBatchDependency();
 
-/**
- * Checks Permissions on the list of Users and returns back role the users have on the Item.
- *
- * @param recipients The array of Entities for which Permissions need to be checked.
- */
-_Folder.prototype.checkSharingPermissions = checkPermissions;
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.getShareLink(kind, expiration);
+};
 
-/**
- * Get Sharing Information.
- *
- * @param request The SharingInformationRequest Object.
- * @param expands Expand more fields.
- * 
- */
-_Folder.prototype.getSharingInformation = getSharingInformation;
+_Folder.prototype.checkSharingPermissions = async function (this: _Folder, recipients: ISharingRecipient[]): Promise<any> {
+    const dependency = this.addBatchDependency();
 
-/**
- * Gets the sharing settings of an item.
- *
- * @param useSimplifiedRoles Determines whether to use simplified roles.
- */
-_Folder.prototype.getObjectSharingSettings = getObjectSharingSettings;
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.checkSharingPermissions(recipients);
+};
 
-/**
- * Unshare this item
- */
-_Folder.prototype.unshare = unshareObject;
+_Folder.prototype.getSharingInformation = async function (this: _Folder, request?: ISharingInformationRequest, expands?: string[]): Promise<any> {
+    const dependency = this.addBatchDependency();
 
-/**
- * Deletes a sharing link by kind
- *
- * @param kind Deletes a sharing link by the kind of link
- */
-_Folder.prototype.deleteSharingLinkByKind = deleteLinkByKind;
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.getSharingInformation(request, expands);
+};
 
-/**
- * Removes the specified link to the item.
- *
- * @param kind The kind of link to be deleted.
- * @param shareId
- */
-_Folder.prototype.unshareLink = unshareLink;
+_Folder.prototype.getObjectSharingSettings = async function (this: _Folder, useSimplifiedRoles = true): Promise<any> {
+    const dependency = this.addBatchDependency();
+
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.getObjectSharingSettings(useSimplifiedRoles);
+};
+
+_Folder.prototype.unshare = async function (this: _Folder): Promise<any> {
+    const dependency = this.addBatchDependency();
+
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.unshare();
+};
+
+_Folder.prototype.deleteSharingLinkByKind = async function (this: _Folder, kind: SharingLinkKind): Promise<any> {
+    const dependency = this.addBatchDependency();
+
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.deleteSharingLinkByKind(kind);
+};
+
+_Folder.prototype.unshareLink = async function (this: _Folder, kind: SharingLinkKind, shareId?: string): Promise<any> {
+    const dependency = this.addBatchDependency();
+
+    const shareable = await this.getShareable();
+    dependency();
+    return shareable.unshareLink(kind, shareId);
+};
