@@ -760,7 +760,7 @@ export class ClientSidePage extends SharePointQueryable {
             section = sections[0];
         }
 
-        section.emphasis = control.data.emphasis.zoneEmphasis || 0;
+        section.emphasis = control.data.emphasis && control.data.emphasis.zoneEmphasis ? control.data.emphasis.zoneEmphasis : 0;
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
@@ -1140,10 +1140,12 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
     }
 
     protected onColumnChange(col: CanvasColumn): void {
-        this.data.position.sectionFactor = col.factor;
-        this.data.position.controlIndex = getNextOrder(col.controls);
-        this.data.position.zoneIndex = col.data.position.zoneIndex;
-        this.data.position.sectionIndex = col.data.position.sectionIndex;
+        this.data.position = {
+            controlIndex: getNextOrder(col.controls),
+            sectionFactor: col.factor,
+            sectionIndex: col.data.position.sectionIndex,
+            zoneIndex: col.data.position.zoneIndex,
+        };
     }
 
     protected import(component: ClientSidePageComponent): void {
