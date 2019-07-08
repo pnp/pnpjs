@@ -12,7 +12,7 @@
     "@pnp/graph": "0.0.0-PLACEHOLDER",
     "@pnp/config-store": "0.0.0-PLACEHOLDER",
     "@pnp/sp-addinhelpers": "0.0.0-PLACEHOLDER",
-    "tslib": "1.9.3"
+    "tslib": "1.10.0"
   },
   "author": {
     "name": "Microsoft and other contributors"
