@@ -63,7 +63,7 @@ if (items.hasNext) {
 }
 ```
 
-### getListItemChangesSinceToken 
+### getListItemChangesSinceToken
 
 The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.
 
@@ -87,7 +87,7 @@ let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceTo
 
 _Added in 1.0.2_
 
-Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
+Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should
 be used.
 
 ```TypeScript
@@ -210,7 +210,7 @@ import { getGUID } from "@pnp/common";
 sp.web.lists.getByTitle("PeopleFields").items.add({
     Title: getGUID(),
     User1Id: 9, // allows a single user
-    User2Id: { 
+    User2Id: {
         results: [ 16, 45 ] // allows multiple users
     }
 }).then(i => {
@@ -249,7 +249,7 @@ import { getGUID } from "@pnp/common";
 sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
-    MuptiLookupFieldId: { 
+    MuptiLookupFieldId: {
         results: [ 1, 56 ]  // allows multiple lookup value
     }
 }).then(console.log).catch(console.log);
@@ -340,6 +340,18 @@ list.getListItemEntityTypeFullName().then(entityTypeFullName => {
 });
 ```
 
+## Recycle
+
+Sending an item to the Recycle Bin is as simple as calling the .recycle method.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+let list = sp.web.lists.getByTitle("MyList");
+
+list.items.getById(1).recycle().then(_ => {});
+```
+
 ## Delete
 
 Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.
@@ -379,4 +391,4 @@ sp.web.lists
   .catch(console.log);
 ```
 
-Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used. 
+Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used.

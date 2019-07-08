@@ -12,6 +12,8 @@ import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
 import { Folder } from "./folders";
 import { metadata } from "./utils/metadata";
+import { SiteScripts } from "..";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
  * Describes a collection of List objects
@@ -446,6 +448,15 @@ export class List extends SharePointQueryableSecurable {
             }
             return res;
         });
+    }
+
+    /**
+    * Gets the site script syntax (JSON) for the current list
+    */
+    public async getSiteScript(): Promise<string> {
+        const rootFolder = await this.clone(List).rootFolder.select("ServerRelativeUrl").get();
+        const absoluteListUrl = await toAbsoluteUrl(rootFolder.ServerRelativeUrl);
+        return new SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
     }
 }
 

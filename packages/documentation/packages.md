@@ -15,5 +15,5 @@ The latest published version is **{{version}}**.
 || [pnpjs](../pnpjs/docs/index.md) | Rollup library of core functionality (mimics sp-pnp-js) |
 || [sp](../sp/docs/index.md) | Provides a fluent api for working with SharePoint REST |
 || [sp-addinhelpers](../sp-addinhelpers/docs/index.md) | Provides functionality for working within SharePoint add-ins |
-|| [sp-clientsvc](../sp-clientsvc/docs/index.md) | Provides based classes used to create a fluent api for working with SharePoint Managed Metadata |
+|| [sp-clientsvc](../sp-clientsvc/docs/index.md) | Provides base classes for working with the legacy SharePoint  |
 || [sp-taxonomy](../sp-taxonomy/docs/index.md) | Provides a fluent api for working with SharePoint Managed Metadata |

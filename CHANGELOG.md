@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.3.3 - 2019-06-03
+
+### Added
+
+- @pnp/sp: Added promoteToNews method to clientsidepage [[PR](https://github.com/pnp/pnpjs/pull/597)]
+- @pnp/graph: Added directReports method to user ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnpjs/pull/612)]
+- @pnp/nodejs: Added support for client certificate auth ([@kcasamento](https://github.com/kcasamento)) [[PR](https://github.com/pnp/pnpjs/pull/700)]
+
+### Fixed
+
+- @pnp/polyfill-ie11: Fixed missing Object.assign polyfill ([@koltyakov](https://github.com/koltyakov)) [[PR](https://github.com/pnp/pnpjs/pull/718)]
+
 ## 1.3.2 - 2019-05-04
 
 ### Added

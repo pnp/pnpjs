@@ -20,10 +20,15 @@ console.log(siteDesign.Title);
 ```
 
 ## Applying a site design to a site
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 
+// Limited to 30 actions in a site script, but runs synchronously
 await sp.siteDesigns.applySiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8","https://contoso.sharepoint.com/sites/teamsite-pnpjs001");
+
+// Better use the following method for 300 actions in a site script
+const task = await sp.web.addSiteDesignTask("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
 ```
 
 ## Retrieval
@@ -67,6 +72,23 @@ await sp.siteDesigns.revokeSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 // Reset all view rights
 const rights = await sp.siteDesigns.getSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
 await sp.siteDesigns.revokeSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a8", rights.map(u => u.PrincipalName));
+```
+
+## Get a history of site designs that have run on a web
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const runs = await sp.web.getSiteDesignRuns();
+const runs2 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.com/sites/mysite");
+
+// Get runs specific to a site design
+const runs3 = await sp.web.getSiteDesignRuns("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
+const runs4 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.com/sites/mysite", "75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
+
+// For more information about the site script actions
+const runStatus = await sp.web.getSiteDesignRunStatus(runs[0].ID);
+const runStatus2 = await sp.siteDesigns.getSiteDesignRunStatus("https://TENANT.sharepoint.com/sites/mysite", runs[0].ID);
+
 ```
 
 # Site Scripts
@@ -116,3 +138,34 @@ console.log(updatedSiteScript.Title);
 // Delete
 await sp.siteScripts.deleteSiteScript("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
 ```
+
+## Get site script from a list
+```TypeScript
+import { sp } from "@pnp/sp";
+
+// Using the absolute URL of the list
+const ss = await sp.siteScripts.getSiteScriptFromList("https://TENANT.sharepoint.com/Lists/mylist");
+
+// Using the PnPjs web object to fetch the site script from a specific list
+const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
+```
+
+## Get site script from a web
+```TypeScript
+import { sp } from "@pnp/sp";
+
+const extractInfo = {
+    IncludeBranding: true,
+    IncludeLinksToExportedItems: true,
+    IncludeRegionalSettings: true,
+    IncludeSiteExternalSharingCapability: true,
+    IncludeTheme: true,
+    IncludedLists: ["Lists/MyList"]
+};
+
+const ss = await sp.siteScripts.getSiteScriptFromWeb("https://TENANT.sharepoint.com/sites/mysite", extractInfo);
+
+// Using the PnPjs web object to fetch the site script from a specific web
+const ss2 = await sp.web.getSiteScript(extractInfo);
+```
+
