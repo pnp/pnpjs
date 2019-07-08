@@ -13,7 +13,7 @@ import {
 import { odataUrlFrom } from "../odata";
 import { IItem, Item } from "../items/types";
 import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
+import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
@@ -21,9 +21,10 @@ import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 export class _Folders extends _SharePointQueryableCollection implements _IFolders {
 
     public getByName(name: string): IFolder {
-        return Folder(this).concat(`('${escapeQueryStrValue(name)}')`);
+        return clientTagMethod.configure(Folder(this).concat(`('${escapeQueryStrValue(name)}')`), "fs.getByName");
     }
 
+    @clientTagMethod("fs.add")
     public async add(url: string): Promise<IFolderAddResult> {
 
         const data = await spPost(this.clone(Folders, `add('${escapeQueryStrValue(url)}')`));
@@ -67,7 +68,7 @@ export const Folders = spInvokableFactory<IFolders>(_Folders);
 export class _Folder extends _SharePointQueryableInstance implements _IFolder {
 
     public get contentTypeOrder(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "contentTypeOrder");
+        return clientTagMethod.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
     }
 
     public get folders(): IFolders {
@@ -75,39 +76,42 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
     }
 
     public get listItemAllFields(): ISharePointQueryableInstance {
-        return SharePointQueryableInstance(this, "listItemAllFields");
+        return clientTagMethod.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
     }
 
     public get parentFolder(): IFolder {
-        return Folder(this, "parentFolder");
+        return clientTagMethod.configure(Folder(this, "parentFolder"), "f.parentFolder");
     }
 
-    public get properties(): _SharePointQueryableInstance {
-        return new _SharePointQueryableInstance(this, "properties");
+    public get properties(): ISharePointQueryableInstance {
+        return clientTagMethod.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
     }
 
     public get serverRelativeUrl(): ISharePointQueryable {
-        return SharePointQueryable(this, "serverRelativeUrl");
+        return clientTagMethod.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
     }
 
     public get uniqueContentTypeOrder(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "uniqueContentTypeOrder");
+        return clientTagMethod.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
     }
 
     public update = this._update<IFolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: <any>this }));
 
+    @clientTagMethod("f.recycle")
     public recycle(): Promise<string> {
         return spPost(this.clone(Folder, "recycle"));
     }
 
+    @clientTagMethod("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const q = this.listItemAllFields;
-        const d = await q.select.apply(q, selects).get();
+        const d = await q.select.apply(q, selects)();
 
         return assign(Item(odataUrlFrom(d)), d);
     }
 
+    @clientTagMethod("f.moveTo")
     public async moveTo(destUrl: string): Promise<void> {
 
         const srcUrl = await this.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
@@ -120,9 +124,10 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
         }));
     }
 
+    @clientTagMethod("f.moveTo")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
-        const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id").get();
+        const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
 
         let shareable = Item(odataUrlFrom(d));
 
@@ -168,7 +173,7 @@ export interface _IFolder {
      * Gets this folder's properties
      *
      */
-    readonly properties: _SharePointQueryableInstance;
+    readonly properties: ISharePointQueryableInstance;
 
     /**
      * Gets this folder's server relative url
