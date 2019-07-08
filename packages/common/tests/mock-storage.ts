@@ -5,10 +5,6 @@ export default class MockStorage implements Storage {
         return this._store.size;
     }
 
-    public set length(i: number) {
-        this._length = i;
-    }
-
     public clear(): void {
         this._store.clear();
     }
