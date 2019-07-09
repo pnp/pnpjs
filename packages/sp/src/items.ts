@@ -458,19 +458,13 @@ class PagedItemCollectionParser<T> extends ODataParserBase<PagedItemCollection<T
 
     public parse(r: Response): Promise<PagedItemCollection<T>> {
 
-        return new Promise((resolve, reject) => {
+        return this.innerParser.parse(r).then(async items => {
 
-            if (this.handleError(r, reject)) {
+            const json = (<any>this.innerParser).rawJson;
 
-                this.innerParser.parse(r).then(async items => {
+            const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
 
-                    const json = (<any>this.innerParser).rawJson;
-
-                    const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-
-                    resolve(new PagedItemCollection(this._parent, nextUrl, items, this.innerParser));
-                });
-            }
+            return new PagedItemCollection(this._parent, nextUrl, items, this.innerParser);
         });
     }
 }
