@@ -1,6 +1,6 @@
 declare var require: (path: string) => any;
 const u: any = require("url");
-const nodeFetch = require("node-fetch").default;
+import { fetch } from "./net/fetch";
 import * as jwt from "jsonwebtoken";
 import { TypedHash } from "@pnp/common";
 import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types";
@@ -82,7 +82,7 @@ async function getTokenInternal(params: GetTokenInternalParams): Promise<AuthTok
     body.push(`client_secret=${encodeURIComponent(params.clientSecret)}`);
     body.push(`resource=${resource}`);
 
-    const r = await nodeFetch(params.stsUri, {
+    const r = await fetch(params.stsUri, {
         body: body.join("&"),
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
