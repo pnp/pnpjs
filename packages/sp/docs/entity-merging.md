@@ -64,3 +64,24 @@ try {
     Logger.error(e);
 }
 ```
+
+## Use with Item getPaged
+
+_Added in 1.3.4_
+
+Starting with 1.3.4 you can now include entity merging in the getPaged command as shown below. This approach will work with any objects matching the required factory pattern.
+
+```TypeScript
+// create Item instances with the defined property Title
+const items = await sp.web.lists.getByTitle("BigList").items.select("Title").getPaged(spODataEntityArray<Item, { Title: string }>(Item));
+
+console.log(items.results.length);
+
+// now invoke methods on the Item object
+const perms = await items.results[0].getCurrentUserEffectivePermissions();
+
+console.log(JSON.stringify(perms, null, 2));
+
+// you can also type the result slightly differently if you prefer this, but the results are the same functionally.
+const items2 = await sp.web.lists.getByTitle("BigList").items.select("Title").getPaged<(Item & { Title: string })[]>(spODataEntityArray(Item));
+```
