@@ -230,7 +230,8 @@ export class Site extends SharePointQueryableInstance {
      * @param lcid The language to use for the site. If not specified will default to English (1033).
      * @param description The description of the site to be created.
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-     * @param owners The Owners of the site to be created     
+     * @param owners The Owners of the site to be created    
+     * @param siteDesignId The ID of the site design to apply to the new site 
      */
 
     public createModernTeamSite(
@@ -242,9 +243,10 @@ export class Site extends SharePointQueryableInstance {
         classification = "",
         owners?: string[],
         hubSiteId = "00000000-0000-0000-0000-000000000000",
+        siteDesignId?: string,
     ): Promise<void> {
 
-        const postBody = jsS({
+        const postBody = {
             alias: alias,
             displayName: displayName,
             isPublic: isPublic,
@@ -258,14 +260,18 @@ export class Site extends SharePointQueryableInstance {
                     "results": owners ? owners : [],
                 },
             },
-        });
+        };
+
+        if (siteDesignId) {
+            postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${siteDesignId}`);
+        }
 
         return this.getRootWeb().then(async (d: any) => {
 
             const client = new SPHttpClient();
             const methodUrl = `${d.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
             return client.post(methodUrl, {
-                body: postBody,
+                body: jsS(postBody),
                 headers: {
                     "Accept": "application/json;odata=verbose",
                     "Content-Type": "application/json;odata=verbose;charset=utf-8",
