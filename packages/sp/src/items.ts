@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance, defaultPath, SharePointQueryableConstructor } from "./sharepointqueryable";
+import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableItem } from "./sharepointqueryableshareable";
 import { Folder } from "./folders";
 import { File } from "./files";
@@ -11,7 +11,6 @@ import { List } from "./lists";
 import { Logger, LogLevel } from "@pnp/logging";
 import { Comments } from "./comments";
 import { metadata } from "./utils/metadata";
-import { spODataEntityArray } from "./odata";
 
 /**
  * Describes a collection of Item objects
