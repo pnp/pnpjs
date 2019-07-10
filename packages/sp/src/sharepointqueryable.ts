@@ -88,7 +88,8 @@ export class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, 
 
         const aliasedParams = new Map<string, string>(this.query);
 
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+        // This regex uses negative lookbehind and lookahead to include escaped apostrophes in the value
+        let url = this.toUrl().replace(/'!(@.*?)::(.*?)(?<!')'(?!')/ig, (match, labelName, value) => {
             Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
             aliasedParams.set(labelName, `'${value}'`);
             return labelName;
