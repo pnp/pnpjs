@@ -49,14 +49,14 @@ export class User extends GraphQueryableInstance<IUser> {
     public get contacts(): Contacts {
         return new Contacts(this);
     }
-    
+
      /**
      * The photo associated with the user
      */
     public get photo(): Photo {
         return new Photo(this);
     }
-    
+
     /**
     * The Teams associated with the user
     */
