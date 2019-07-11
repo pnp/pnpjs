@@ -12,7 +12,7 @@ import {
 import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
 import { People } from "./people";
-import { Photo } from './photos';
+import { Photo } from "./photos";
 
 import { InsightsMethods, Insights } from "./insights";
 
