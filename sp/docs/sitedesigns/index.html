@@ -601,30 +601,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../common/docs/decorators.md" title="decorators" class="md-nav__link">
-      decorators
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../../common/docs/exceptions.md" title="exceptions" class="md-nav__link">
-      exceptions
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../../common/docs/libconfig/" title="libconfig" class="md-nav__link">
       libconfig
     </a>
@@ -1639,7 +1615,11 @@ Check out <a href="https://docs.microsoft.com/en-us/sharepoint/dev/declarative-c
 <h2 id="applying-a-site-design-to-a-site">Applying a site design to a site<a class="headerlink" href="#applying-a-site-design-to-a-site" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
+<span class="c1">// Limited to 30 actions in a site script, but runs synchronously</span>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">applySiteDesign</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span><span class="s2">&quot;https://contoso.sharepoint.com/sites/teamsite-pnpjs001&quot;</span><span class="p">);</span>
+
+<span class="c1">// Better use the following method for 300 actions in a site script</span>
+<span class="kr">const</span> <span class="nx">task</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addSiteDesignTask</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
 </pre></div>
 
 
@@ -1683,6 +1663,22 @@ Check out <a href="https://docs.microsoft.com/en-us/sharepoint/dev/declarative-c
 <span class="c1">// Reset all view rights</span>
 <span class="kr">const</span> <span class="nx">rights</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">revokeSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span> <span class="nx">rights</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="nx">u</span><span class="p">.</span><span class="nx">PrincipalName</span><span class="p">));</span>
+</pre></div>
+
+
+<h2 id="get-a-history-of-site-designs-that-have-run-on-a-web">Get a history of site designs that have run on a web<a class="headerlink" href="#get-a-history-of-site-designs-that-have-run-on-a-web" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">runs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRuns</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">runs2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRun</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get runs specific to a site design</span>
+<span class="kr">const</span> <span class="nx">runs3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRuns</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">runs4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRun</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">,</span> <span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+
+<span class="c1">// For more information about the site script actions</span>
+<span class="kr">const</span> <span class="nx">runStatus</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRunStatus</span><span class="p">(</span><span class="nx">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">ID</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">runStatus2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRunStatus</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">,</span> <span class="nx">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">ID</span><span class="p">);</span>
 </pre></div>
 
 
@@ -1730,6 +1726,36 @@ Check out <a href="https://docs.microsoft.com/en-us/sharepoint/dev/declarative-c
 
 <span class="c1">// Delete</span>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">deleteSiteScript</span><span class="p">(</span><span class="s2">&quot;884ed56b-1aab-4653-95cf-4be0bfa5ef0a&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="get-site-script-from-a-list">Get site script from a list<a class="headerlink" href="#get-site-script-from-a-list" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// Using the absolute URL of the list</span>
+<span class="kr">const</span> <span class="nx">ss</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">getSiteScriptFromList</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/Lists/mylist&quot;</span><span class="p">);</span>
+
+<span class="c1">// Using the PnPjs web object to fetch the site script from a specific list</span>
+<span class="kr">const</span> <span class="nx">ss2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;mylist&quot;</span><span class="p">).</span><span class="nx">getSiteScript</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="get-site-script-from-a-web">Get site script from a web<a class="headerlink" href="#get-site-script-from-a-web" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">extractInfo</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">IncludeBranding</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">IncludeLinksToExportedItems</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">IncludeRegionalSettings</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">IncludeSiteExternalSharingCapability</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">IncludeTheme</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">IncludedLists</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Lists/MyList&quot;</span><span class="p">]</span>
+<span class="p">};</span>
+
+<span class="kr">const</span> <span class="nx">ss</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">getSiteScriptFromWeb</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">,</span> <span class="nx">extractInfo</span><span class="p">);</span>
+
+<span class="c1">// Using the PnPjs web object to fetch the site script from a specific web</span>
+<span class="kr">const</span> <span class="nx">ss2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteScript</span><span class="p">(</span><span class="nx">extractInfo</span><span class="p">);</span>
 </pre></div>
                 
                   

@@ -8,7 +8,6 @@ import {
     ContentType as IContentType,
     ColumnDefinition as IColumnDefinition,
     ListInfo as IListInfo,
-    FieldValueSet as IFieldValueSet,
     ColumnLink as IColumnLink,
 } from "@microsoft/microsoft-graph-types";
 import {
@@ -266,7 +265,7 @@ export class GraphItems extends GraphQueryableCollection<IListItem[]> {
     * @param additionalProperties A plain object collection of additional properties you want to set in list
     * 
     * */
-    public create(fields: IFieldValueSet): Promise<IItemCreationResult> {
+    public create(fields: TypedHash<any>): Promise<IItemCreationResult> {
 
         const postBody = {
             fields: fields,
@@ -327,7 +326,7 @@ export class GraphItem extends GraphQueryableInstance<IListItem> {
  *
  */
 @defaultPath("fields")
-export class GraphFields extends GraphQueryableCollection<IFieldValueSet[]> { }
+export class GraphFields extends GraphQueryableCollection<any[]> { }
 
 /**
  * Describes a collection of Version objects

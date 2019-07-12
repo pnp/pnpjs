@@ -99,6 +99,17 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
     }
 
     /**
+     * Allows setting the endpoint (v1.0, beta)
+     * 
+     * @param endpoint 
+     */
+    public setEndpoint(endpoint: "beta" | "v1.0"): this {
+
+        this._url = GraphEndpoints.ensure(this._url, endpoint);
+        return this;
+    }
+
+    /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
@@ -120,12 +131,6 @@ export class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, Ge
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch = true): T {
 
         return <T>super._clone(new factory(this, additionalPath), { includeBatch });
-    }
-
-    protected setEndpoint(endpoint: string): this {
-
-        this._url = GraphEndpoints.ensure(this._url, endpoint);
-        return this;
     }
 
     /**

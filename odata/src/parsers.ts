@@ -23,6 +23,8 @@ export class HttpRequestError extends Error {
 
 export abstract class ODataParserBase<T> implements ODataParser<T> {
 
+    protected rawJson: any = {};
+
     public parse(r: Response): Promise<T> {
 
         return new Promise<T>((resolve, reject) => {
@@ -66,6 +68,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
      * @param json json object to parse
      */
     protected parseODataJSON<U>(json: any): U {
+        this.rawJson = json;
         let result = json;
         if (hOP(json, "d")) {
             if (hOP(json.d, "results")) {
@@ -80,7 +83,7 @@ export abstract class ODataParserBase<T> implements ODataParser<T> {
     }
 }
 
-export class ODataDefaultParser extends ODataParserBase<any> {
+export class ODataDefaultParser<T = any> extends ODataParserBase<T> {
 }
 
 export class TextParser extends ODataParserBase<string> {

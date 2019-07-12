@@ -5,7 +5,7 @@ import { File } from "./files";
 import { ContentType } from "./contenttypes";
 import { extend, TypedHash, jsS, hOP } from "@pnp/common";
 import { ListItemFormUpdateValue, LikeData } from "./types";
-import { ODataParserBase } from "@pnp/odata";
+import { ODataParserBase, ODataDefaultParser, ODataParser } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 import { Logger, LogLevel } from "@pnp/logging";
@@ -59,8 +59,9 @@ export class Items extends SharePointQueryableCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
-    public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
-        return this.get(new PagedItemCollectionParser<T>(this));
+    public getPaged<T = any[]>(parser: ODataParser<any> = new ODataDefaultParser()): Promise<PagedItemCollection<T>> {
+
+        return this.get(new PagedItemCollectionParser<any>(this, parser));
     }
 
     /**
@@ -425,7 +426,7 @@ export class ItemVersion extends SharePointQueryableInstance {
  */
 export class PagedItemCollection<T> {
 
-    constructor(private parent: Items, private nextUrl: string, public results: T) { }
+    constructor(private parent: Items, private nextUrl: string, public results: T, private innerParser: ODataParser<T>) { }
 
     /**
      * If true there are more results available in the set, otherwise there are not
@@ -441,7 +442,7 @@ export class PagedItemCollection<T> {
 
         if (this.hasNext) {
             const items = new Items(this.nextUrl, null).configureFrom(this.parent);
-            return items.getPaged<T>();
+            return items.getPaged<T>(this.innerParser);
         }
 
         return new Promise<any>(r => r(null));
@@ -450,27 +451,25 @@ export class PagedItemCollection<T> {
 
 class PagedItemCollectionParser<T> extends ODataParserBase<PagedItemCollection<T>> {
 
-    constructor(private _parent: Items) {
+    constructor(private _parent: Items, private innerParser: ODataParser<T>) {
         super();
     }
 
     public parse(r: Response): Promise<PagedItemCollection<T>> {
 
-        return new Promise<PagedItemCollection<T>>((resolve, reject) => {
+        return this.innerParser.parse(r).then(async items => {
 
-            if (this.handleError(r, reject)) {
-                r.json().then(json => {
-                    const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection(this._parent, nextUrl, this.parseODataJSON(json)));
-                });
-            }
+            const json = (<any>this.innerParser).rawJson;
+
+            const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+
+            return new PagedItemCollection(this._parent, nextUrl, items, this.innerParser);
         });
     }
 }
 
 class ItemUpdatedParser extends ODataParserBase<ItemUpdateResultData> {
     public async parse(r: Response): Promise<ItemUpdateResultData> {
-
         return new Promise<ItemUpdateResultData>((resolve, reject) => {
 
             if (this.handleError(r, reject)) {

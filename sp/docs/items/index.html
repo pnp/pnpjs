@@ -601,30 +601,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../common/docs/decorators.md" title="decorators" class="md-nav__link">
-      decorators
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../../common/docs/exceptions.md" title="exceptions" class="md-nav__link">
-      exceptions
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../../common/docs/libconfig/" title="libconfig" class="md-nav__link">
       libconfig
     </a>
@@ -1365,6 +1341,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recycle" title="Recycle" class="md-nav__link">
+    Recycle
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#delete" title="Delete" class="md-nav__link">
     Delete
   </a>
@@ -1891,6 +1874,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recycle" title="Recycle" class="md-nav__link">
+    Recycle
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#delete" title="Delete" class="md-nav__link">
     Delete
   </a>
@@ -2001,7 +1991,7 @@
 
 <h3 id="get-all-items">Get All Items<a class="headerlink" href="#get-all-items" title="Permanent link">&para;</a></h3>
 <p><em>Added in 1.0.2</em></p>
-<p>Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
+<p>Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should
 be used.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="c1">// basic usage</span>
@@ -2111,7 +2101,7 @@ be used.</p>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;PeopleFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
     <span class="nx">Title</span>: <span class="kt">getGUID</span><span class="p">(),</span>
     <span class="nx">User1Id</span>: <span class="kt">9</span><span class="p">,</span> <span class="c1">// allows a single user</span>
-    <span class="nx">User2Id</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="nx">User2Id</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">results</span><span class="o">:</span> <span class="p">[</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">45</span> <span class="p">]</span> <span class="c1">// allows multiple users</span>
     <span class="p">}</span>
 <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">i</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2147,7 +2137,7 @@ be used.</p>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
     <span class="nx">Title</span>: <span class="kt">getGUID</span><span class="p">(),</span>
     <span class="nx">LookupFieldId</span>: <span class="kt">2</span><span class="p">,</span>       <span class="c1">// allows a single lookup value</span>
-    <span class="nx">MuptiLookupFieldId</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="nx">MuptiLookupFieldId</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">results</span><span class="o">:</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">56</span> <span class="p">]</span>  <span class="c1">// allows multiple lookup value</span>
     <span class="p">}</span>
 <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">).</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">);</span>
@@ -2233,6 +2223,16 @@ be used.</p>
 </pre></div>
 
 
+<h2 id="recycle">Recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h2>
+<p>Sending an item to the Recycle Bin is as simple as calling the .recycle method.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
+
+<span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">recycle</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+</pre></div>
+
+
 <h2 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h2>
 <p>Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
@@ -2267,7 +2267,7 @@ Field's <code>EntityPropertyName</code> value should be used.</p>
 </pre></div>
 
 
-<p>Lookup fields' names should be ended with additional <code>Id</code> suffix. E.g. for <code>Editor</code> EntityPropertyName <code>EditorId</code> should be used. </p>
+<p>Lookup fields' names should be ended with additional <code>Id</code> suffix. E.g. for <code>Editor</code> EntityPropertyName <code>EditorId</code> should be used.</p>
                 
                   
                 

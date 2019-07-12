@@ -97,6 +97,21 @@ export class Site extends SharePointQueryableInstance {
     }
 
     /**
+     * Deletes the current site
+     *
+     */
+    public async delete(): Promise<void> {
+        const site = await this.clone(Site, "").select("Id").get<{ Id: string }>();
+
+        const q = new Site(this.parentUrl, "_api/SPSiteManager/Delete");
+        await q.postCore({
+            body: jsS({
+                siteId: site.Id,
+            }),
+        });
+    }
+
+    /**
      * Creates a new batch for requests within the context of this site collection
      *
      */
@@ -155,7 +170,8 @@ export class Site extends SharePointQueryableInstance {
      *                     You can use the below default OOTB GUIDs:
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
-     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
+     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param owner Required when creating the site using app-only context
      */
 
     public createCommunicationSite(
@@ -167,13 +183,15 @@ export class Site extends SharePointQueryableInstance {
         classification = "",
         siteDesignId = "00000000-0000-0000-0000-000000000000",
         hubSiteId = "00000000-0000-0000-0000-000000000000",
-    ): Promise<void> {
+        owner?: string,
+    ): Promise<ISPSiteCreationResponse> {
 
         const props = {
             Classification: classification,
             Description: description,
             HubSiteId: hubSiteId,
             Lcid: lcid,
+            Owner: owner,
             ShareByEmailEnabled: shareByEmailEnabled,
             SiteDesignId: siteDesignId,
             Title: title,
@@ -212,7 +230,8 @@ export class Site extends SharePointQueryableInstance {
      * @param lcid The language to use for the site. If not specified will default to English (1033).
      * @param description The description of the site to be created.
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-     * @param owners The Owners of the site to be created     
+     * @param owners The Owners of the site to be created    
+     * @param siteDesignId The ID of the site design to apply to the new site 
      */
 
     public createModernTeamSite(
@@ -224,9 +243,10 @@ export class Site extends SharePointQueryableInstance {
         classification = "",
         owners?: string[],
         hubSiteId = "00000000-0000-0000-0000-000000000000",
+        siteDesignId?: string,
     ): Promise<void> {
 
-        const postBody = jsS({
+        const postBody = {
             alias: alias,
             displayName: displayName,
             isPublic: isPublic,
@@ -240,14 +260,18 @@ export class Site extends SharePointQueryableInstance {
                     "results": owners ? owners : [],
                 },
             },
-        });
+        };
+
+        if (siteDesignId) {
+            postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${siteDesignId}`);
+        }
 
         return this.getRootWeb().then(async (d: any) => {
 
             const client = new SPHttpClient();
             const methodUrl = `${d.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
             return client.post(methodUrl, {
-                body: postBody,
+                body: jsS(postBody),
                 headers: {
                     "Accept": "application/json;odata=verbose",
                     "Content-Type": "application/json;odata=verbose;charset=utf-8",
@@ -263,4 +287,13 @@ export class Site extends SharePointQueryableInstance {
 export interface OpenWebByIdResult {
     data: any;
     web: Web;
+}
+
+/**
+ * The result of creating a site collection
+ */
+export interface ISPSiteCreationResponse {
+    SiteId: string;
+    SiteStatus: number;
+    SiteUrl: string;
 }

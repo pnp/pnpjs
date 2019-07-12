@@ -22,6 +22,22 @@ export interface SiteScriptUtilityMethods {
     getSiteScriptMetadata(id: string): Promise<SiteScriptInfo>;
     deleteSiteScript(id: string): Promise<void>;
     updateSiteScript(siteScriptUpdateInfo: SiteScriptUpdateInfo, content?: any): Promise<SiteScriptInfo>;
+    getSiteScriptFromList(listUrl: string): Promise<string>;
+    getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
+}
+
+export interface ISiteScriptSerializationInfo {
+    IncludeBranding?: boolean;
+    IncludedLists?: string[];
+    IncludeLinksToExportedItems?: boolean;
+    IncludeRegionalSettings?: boolean;
+    IncludeSiteExternalSharingCapability?: boolean;
+    IncludeTheme?: boolean;
+}
+
+export interface ISiteScriptSerializationResult {
+    JSON: string;
+    Warnings: string[];
 }
 
 /**
@@ -111,4 +127,24 @@ export class SiteScripts extends SharePointQueryable implements SiteScriptUtilit
 
         return await this.clone(SiteScripts, "UpdateSiteScript").execute<SiteScriptInfo>({ updateInfo: siteScriptUpdateInfo });
     }
+
+    /**
+     * Gets the site script syntax (JSON) for a specific list
+     * @param listUrl The absolute url of the list to retrieve site script
+     */
+    public async getSiteScriptFromList(listUrl: string): Promise<string> {
+        return await this.clone(SiteScripts, `GetSiteScriptFromList`)
+            .execute<string>({ "listUrl": listUrl });
+    }
+
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    public async getSiteScriptFromWeb(webUrl: string, extractInfo: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+        return await this.clone(SiteScripts, `getSiteScriptFromWeb`)
+            .execute<ISiteScriptSerializationResult>({ "webUrl": webUrl, info: extractInfo });
+    }
+
 }

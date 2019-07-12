@@ -601,30 +601,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../common/docs/decorators.md" title="decorators" class="md-nav__link">
-      decorators
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../../common/docs/exceptions.md" title="exceptions" class="md-nav__link">
-      exceptions
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../../common/docs/libconfig/" title="libconfig" class="md-nav__link">
       libconfig
     </a>
@@ -1395,6 +1371,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#delete-a-site-collection" title="Delete a site collection" class="md-nav__link">
+    Delete a site collection
+  </a>
+  
+</li>
+      
       
       
       
@@ -1770,6 +1753,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#delete-a-site-collection" title="Delete a site collection" class="md-nav__link">
+    Delete a site collection
+  </a>
+  
+</li>
+      
       
       
       
@@ -1987,11 +1977,17 @@
 <td>no</td>
 <td>The Guid of the already existing Hub site</td>
 </tr>
+<tr>
+<td>owner</td>
+<td>string</td>
+<td>no</td>
+<td>Required when using app-only context. Owner principal name e.g. user@tenant.onmicrosoft.com</td>
+</tr>
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSite</span><span class="p">(</span>
+<span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSite</span><span class="p">(</span>
             <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
             <span class="mi">1033</span><span class="p">,</span>
             <span class="kc">true</span><span class="p">,</span>
@@ -1999,9 +1995,8 @@
             <span class="s2">&quot;Description&quot;</span><span class="p">,</span>
             <span class="s2">&quot;HBI&quot;</span><span class="p">,</span>
             <span class="s2">&quot;f6cc5403-0d63-442e-96c0-285923709ffc&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;a00ec589-ea9f-4dba-a34e-67e78d41e509&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
-            <span class="p">});</span>
+            <span class="s2">&quot;a00ec589-ea9f-4dba-a34e-67e78d41e509&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user@TENANT.onmicrosoft.com&quot;</span><span class="p">);</span>
 </pre></div>
 
 
@@ -2083,6 +2078,19 @@
         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
         <span class="p">});</span>
+</pre></div>
+
+
+<h2 id="delete-a-site-collection">Delete a site collection<a class="headerlink" href="#delete-a-site-collection" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// Delete the current site</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+
+<span class="c1">// Specify which site to delete</span>
+<span class="kr">const</span> <span class="nx">siteUrl</span> <span class="o">=</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/tstpnpsitecoldelete5&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">site2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Site</span><span class="p">(</span><span class="nx">siteUrl</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">site2</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
 </pre></div>
                 
                   

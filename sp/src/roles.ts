@@ -123,7 +123,10 @@ export class RoleDefinitions extends SharePointQueryableCollection {
     public add(name: string, description: string, order: number, basePermissions: BasePermissions): Promise<RoleDefinitionAddResult> {
 
         const postBody = jsS({
-            BasePermissions: extend({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: {
+                High: basePermissions.High.toString(),
+                Low: basePermissions.Low.toString(),
+            },
             Description: description,
             Name: name,
             Order: order,
@@ -159,9 +162,11 @@ export class RoleDefinition extends SharePointQueryableInstance {
     /* tslint:disable no-string-literal */
     public update(properties: TypedHash<any>): Promise<RoleDefinitionUpdateResult> {
 
-        const s = ["BasePermissions"];
-        if (hOP(properties, s[0]) !== undefined) {
-            properties[s[0]] = extend({ __metadata: { type: "SP." + s[0] } }, properties[s[0]]);
+        if (hOP(properties, "BasePermissions") !== undefined) {
+            properties["BasePermissions"] = extend({ __metadata: { type: "SP.BasePermissions" } }, {
+                High: properties["BasePermissions"].High.toString(),
+                Low: properties["BasePermissions"].Low.toString(),
+            });
         }
 
         const postBody = jsS(extend(metadata("SP.RoleDefinition"), properties));

@@ -601,30 +601,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../common/docs/decorators.md" title="decorators" class="md-nav__link">
-      decorators
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../../common/docs/exceptions.md" title="exceptions" class="md-nav__link">
-      exceptions
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../../common/docs/libconfig/" title="libconfig" class="md-nav__link">
       libconfig
     </a>
@@ -1207,6 +1183,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#use-with-item-getpaged" title="Use with Item getPaged" class="md-nav__link">
+    Use with Item getPaged
+  </a>
+  
+</li>
+      
       
       
       
@@ -1658,6 +1641,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#use-with-item-getpaged" title="Use with Item getPaged" class="md-nav__link">
+    Use with Item getPaged
+  </a>
+  
+</li>
+      
       
       
       
@@ -1735,6 +1725,24 @@
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">}</span>
+</pre></div>
+
+
+<h2 id="use-with-item-getpaged">Use with Item getPaged<a class="headerlink" href="#use-with-item-getpaged" title="Permanent link">&para;</a></h2>
+<p><em>Added in 1.3.4</em></p>
+<p>Starting with 1.3.4 you can now include entity merging in the getPaged command as shown below. This approach will work with any objects matching the required factory pattern.</p>
+<div class="codehilite"><pre><span></span><span class="c1">// create Item instances with the defined property Title</span>
+<span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">getPaged</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Item</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Title</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">));</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+
+<span class="c1">// now invoke methods on the Item object</span>
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">items</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+
+<span class="c1">// you can also type the result slightly differently if you prefer this, but the results are the same functionally.</span>
+<span class="kr">const</span> <span class="nx">items2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">getPaged</span><span class="o">&lt;</span><span class="p">(</span><span class="nx">Item</span> <span class="o">&amp;</span> <span class="p">{</span> <span class="nx">Title</span>: <span class="kt">string</span> <span class="p">})[]</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="p">(</span><span class="nx">Item</span><span class="p">));</span>
 </pre></div>
                 
                   
