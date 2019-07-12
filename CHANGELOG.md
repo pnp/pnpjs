@@ -4,7 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 1.3.4 - 2019-07-12
+
+### Added
+
+- @pnp/graph: setEndpoint method of GraphQueryable now public [[PR](https://github.com/pnp/pnpjs/pull/779)]
+- @pnp/graph: added photo to User ([@JakeStanger](https://github.com/JakeStanger)) [[PR](https://github.com/pnp/pnpjs/pull/776)]
+- @pnp/sp: Added entity merging and docs for Items getPaged method [[PR](https://github.com/pnp/pnpjs/pull/771)]
+- @pnp/sp: Added site design parameter to createModernTeamSite method [[PR](https://github.com/pnp/pnpjs/pull/769)]
+- @pnp/sp: Added Item recycle method ([@gitbrent](https://github.com/gitbrent)) [[PR](https://github.com/pnp/pnpjs/pull/752)]
+- @pnp/sp: Added site delete and communication site creation ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/738)]
+- @pnp/sp: Added many site designs methods ([@KEMiCZA](https://github.com/KEMiCZA)) [[PR](https://github.com/pnp/pnpjs/pull/733)]
+
+### Fixed
+
+- @pnp/nodejs: Fixed SPTokenUtils to use shared fetch method [[PR](https://github.com/pnp/pnpjs/pull/770)]
+- @pnp/sp: Fixed issue with BasePermissions parsing [[PR](https://github.com/pnp/pnpjs/pull/768)]
+- @pnp/sp: Fixed issues with loading single page app client side pages [[PR](https://github.com/pnp/pnpjs/pull/735)]
+- @pnp/graph: Fixed item create parameters typings bug [[PR](https://github.com/pnp/pnpjs/pull/764)]
+- documentation: Fixed broken nav links [[PR](https://github.com/pnp/pnpjs/pull/763)]
+- @pnp/nodejs: Fixed import issue with AdalCertificateFetchClient ([@cebud](https://github.com/cebud)) [[PR](https://github.com/pnp/pnpjs/pull/729)]
 
 ## 1.3.3 - 2019-06-03
 
