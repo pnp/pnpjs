@@ -13,6 +13,7 @@ import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
 import { People } from "./people";
 import { Photo } from "./photos";
+import { Calendar } from "./calendars";
 
 import { InsightsMethods, Insights } from "./insights";
 
@@ -48,6 +49,13 @@ export class User extends GraphQueryableInstance<IUser> {
     */
     public get contacts(): Contacts {
         return new Contacts(this);
+    }
+    
+    /**
+     * The calendar associated with the user
+     */
+    public get calendar(): Calendar {
+        return new Calendar(this, "calendar");
     }
 
      /**
