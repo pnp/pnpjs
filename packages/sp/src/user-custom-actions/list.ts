@@ -6,17 +6,18 @@ import { UserCustomActions, IUserCustomActions } from "./types";
 * Extend Item
 */
 declare module "../lists/types" {
-    interface _List {
+    interface _List 
+    {
         /**
-         * Get all custom actions on a site collection
-         *
+         * Get all custom actions on a list
          */
         readonly userCustomActions: IUserCustomActions;
     }
-    interface IList {
+
+    interface IList 
+    {
         /**
-         * Get all custom actions on a site collection
-         *
+         * Get all custom actions on a list
          */
         readonly userCustomActions: IUserCustomActions;
     }

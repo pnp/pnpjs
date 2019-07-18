@@ -6,10 +6,19 @@ import { UserCustomActions, IUserCustomActions } from "./types";
 * Extend Web
 */
 declare module "../sites/types" {
-    interface _Site {
+    interface _Site 
+    {
+        /**
+         * Get all custom actions on a site collection
+         */
         readonly userCustomActions: IUserCustomActions;
     }
-    interface ISite {
+    
+    interface ISite 
+    {
+        /**
+         * Get all custom actions on a site collection
+         */
         readonly userCustomActions: IUserCustomActions;
     }
 }
