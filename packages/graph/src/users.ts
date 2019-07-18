@@ -50,7 +50,7 @@ export class User extends GraphQueryableInstance<IUser> {
     public get contacts(): Contacts {
         return new Contacts(this);
     }
-    
+
     /**
      * The calendar associated with the user
      */
