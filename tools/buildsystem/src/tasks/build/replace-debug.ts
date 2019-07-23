@@ -17,6 +17,7 @@ interface TSConfig {
 export function replaceDebug(version: string, config: BuildSchema) {
 
     const optionsVersion = {
+        allowEmptyPaths: true,
         files: [],
         from: /\$\$Version\$\$/ig,
         to: version,
@@ -35,8 +36,9 @@ export function replaceDebug(version: string, config: BuildSchema) {
         const sourceRoot = path.resolve(path.dirname(config.buildTargets[i]));
         const outDir = buildConfig.compilerOptions.outDir;
 
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/src/net/sphttpclient.js"));
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/src/batch.js"));
+        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "packages/sp/src/net/sphttpclient.js"));
+        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "packages/sp/src/batch.js"));
+        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "packages/graph/src/net/graphhttpclient.js"));
 
         requireOptionsCollection.push(Object.assign({}, optionsRequireTemplate, {
             files: [
@@ -50,8 +52,5 @@ export function replaceDebug(version: string, config: BuildSchema) {
         }));
     }
 
-    return Promise.all([
-        replace(optionsVersion),
-        ...requireOptionsCollection.map(c => replace(c)),
-    ]).catch(e => console.error);
+    return replace(optionsVersion).then(_ => Promise.all([...requireOptionsCollection.map(c => replace(c))]).catch(e => console.error));
 }

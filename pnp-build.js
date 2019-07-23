@@ -18,7 +18,7 @@ module.exports = {
     ],
 
     postBuildTasks: [
-        // this task is scoped to the sp files within the task
-        tasks.replaceSPHttpVersion,
+        // this task is scoped to the files within the task
+        tasks.replaceVersion,
     ],
 };
