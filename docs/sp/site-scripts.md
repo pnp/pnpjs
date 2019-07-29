@@ -5,7 +5,7 @@
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/site-scripts";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## Create a new site script
 

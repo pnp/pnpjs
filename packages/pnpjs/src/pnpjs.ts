@@ -38,9 +38,9 @@ export * from "@pnp/odata";
  * Utility methods
  */
 export const util = {
+    assign,
     combine,
     dateAdd,
-    assign,
     getAttrValueFromString,
     getCtxCallback,
     getGUID,

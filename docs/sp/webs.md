@@ -10,8 +10,8 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs";|
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";|
-|Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presents/all";|
-|Preset: Core|import { sp, Webs, IWebs } from "@pnp/sp/presents/core";|
+|Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
+|Preset: Core|import { sp, Webs, IWebs } from "@pnp/sp/presets/core";|
 
 
 ### Add Web
@@ -52,8 +52,8 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w:
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import { Web, IWeb } from "@pnp/sp/src/webs";|
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";|
-|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presents/all";|
-|Preset: Core|import { sp, Web, IWeb } from "@pnp/sp/presents/core";|
+|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
+|Preset: Core|import { sp, Web, IWeb } from "@pnp/sp/presets/core";|
 
 ### Access a Web
 
@@ -307,7 +307,7 @@ await tenantAppCatalogWeb.removeStorageEntity(key);
 |--|--|
 |Selective 1|import "@pnp/sp/src/appcatalog";|
 |Selective 2|import "@pnp/sp/src/appcatalog/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### getAppCatalog
 
@@ -331,7 +331,7 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 |--|--|
 |Selective 1|import "@pnp/sp/src/client-side-pages";|
 |Selective 2|import "@pnp/sp/src/client-side-pages/web";|
-|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
 
 # TODO (need to update code to latest from 1.x branch)
 
@@ -342,7 +342,7 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 |--|--|
 |Selective 1|import "@pnp/sp/src/content-types";|
 |Selective 2|import "@pnp/sp/src/content-types/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### contentTypes
 
@@ -361,7 +361,7 @@ const cts2 = await web.contentTypes.select("Name")();
 |--|--|
 |Selective 1|import "@pnp/sp/src/features";|
 |Selective 2|import "@pnp/sp/src/features/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### features
 
@@ -377,7 +377,7 @@ const features = await web.features();
 |--|--|
 |Selective 1|import "@pnp/sp/src/fields";|
 |Selective 2|import "@pnp/sp/src/fields/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### fields
 
@@ -393,7 +393,7 @@ const fields = await web.fields();
 |--|--|
 |Selective 1|import "@pnp/sp/src/files";|
 |Selective 2|import "@pnp/sp/src/files/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### getFileByServerRelativeUrl
 
@@ -421,7 +421,7 @@ const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # fil
 |--|--|
 |Selective 1|import "@pnp/sp/src/folders";|
 |Selective 2|import "@pnp/sp/src/folders/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### folders
 
@@ -471,7 +471,7 @@ const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my
 |--|--|
 |Selective 1|import "@pnp/sp/src/hubsites";|
 |Selective 2|import "@pnp/sp/src/hubsites/web";|
-|Preset: All|import { sp } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### hubSiteData
 
@@ -498,8 +498,8 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/lists";
 Selective 2|import "@pnp/sp/src/lists/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
-Preset: Core|import { sp } from "@pnp/sp/presents/core";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: Core|import { sp } from "@pnp/sp/presets/core";
 
 ### lists
 
@@ -596,7 +596,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/navigation";
 Selective 2|import "@pnp/sp/src/navigation/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### navigation
 
@@ -616,7 +616,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/regional-settings";
 Selective 2|import "@pnp/sp/src/regional-settings/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ```TypeScript
 import { IRegionalSettings } from "@pnp/sp/src/navigation";
@@ -632,7 +632,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/related-items";
 Selective 2|import "@pnp/sp/src/related-items/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ```TypeScript
 import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/src/related-items";
@@ -656,7 +656,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/site-groups";
 Selective 2|import "@pnp/sp/src/site-groups/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### siteGroups
 
@@ -721,7 +721,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/site-users";
 Selective 2|import "@pnp/sp/src/site-users/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### siteUsers
 
@@ -776,7 +776,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/src/user-custom-actions";
 Selective 2|import "@pnp/sp/src/user-custom-actions/web";
-Preset: All|import { sp } from "@pnp/sp/presents/all";
+Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ## userCustomActions
 

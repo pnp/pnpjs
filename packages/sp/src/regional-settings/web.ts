@@ -7,7 +7,6 @@ declare module "../webs/types" {
         regionalSettings: IRegionalSettings;
     }
     interface IWeb {
-
         /**
          * Regional settings for this web
          */
