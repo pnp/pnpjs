@@ -202,7 +202,7 @@ describe("Web", () => {
 
             it(".getClientSideWebParts", async function () {
 
-                return expect(sp.web.getClientSideWebParts()).to.eventually.be.fulfilled;
+                return expect(sp.web.getClientsideWebParts()).to.eventually.be.fulfilled;
             });
 
             it(".addClientSidePage");
