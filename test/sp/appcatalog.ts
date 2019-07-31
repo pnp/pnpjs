@@ -13,7 +13,7 @@ import * as path from "path";
 
 const sleep = (ms: number) => new Promise(r => setTimeout(() => { r(); }, ms));
 
-describe.only("AppCatalog", function () {
+describe("AppCatalog", function () {
 
     if (testSettings.enableWebTests) {
         let appCatalog: IAppCatalog;
