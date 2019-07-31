@@ -22,11 +22,18 @@ export class _AppCatalog extends _SharePointQueryableCollection implements _IApp
         return App(this, `getById('${id}')`);
     }
 
-    public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
+    public async add(filename: string, content: any, shouldOverWrite = true): Promise<IAppAddResult> {
         // you don't add to the availableapps collection
         const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
 
-        const r = await spPost(adder, { body: content });
+        const r = await spPost(adder, {
+            body: content, headers: {
+                "binaryStringRequestBody": "true",
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "content-length": "3521",
+            }
+        });
 
         return {
             data: r,
@@ -47,7 +54,7 @@ export interface _IAppCatalog {
      * @param shouldOverWrite Should an app with the same name in the same location be overwritten? (default: true)
      * @returns Promise<AppAddResult>
      */
-    add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<IAppAddResult>;
+    add(filename: string, content: any, shouldOverWrite?: boolean): Promise<IAppAddResult>;
     /**
      * Get details of specific app from the app catalog
      * @param id - Specify the guid of the app
