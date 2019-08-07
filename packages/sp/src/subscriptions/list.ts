@@ -10,6 +10,10 @@ declare module "../lists/types" {
         readonly subscriptions: ISubscriptions;
     }
     interface IList {
+        /**
+         * Gets the collection of webhooks created for this list
+         *
+         */
         readonly subscriptions: ISubscriptions;
     }
 }
