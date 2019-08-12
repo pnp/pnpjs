@@ -12,7 +12,7 @@ describe("Subscriptions", function() {
         
         let subID = null;
         const listTitle = "Documents";
-        const notificationUrl = "https://pnp-v2-subscriptions.azurewebsites.net/api/HttpTriggerCSharp1?code=aKNSc3nvVho84ZF/ckYxHC1tpjicOU1gYelymzti4lVkJ1W3RexE6g==";
+        const notificationUrl = testSettings.sp.subscriptions.notificationUrl;
         const after120Days = (dateAdd(new Date(), "day", 120).toISOString());
         const after180Days = (dateAdd(new Date(), "day", 180).toISOString());
 

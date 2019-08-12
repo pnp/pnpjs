@@ -9,6 +9,9 @@ var settings = {
             notificationUrl: "{ notification url }",
             sitedesigns: {
                 testuser: "{ valid username i.e. contoso@contoso.onmicrosoft.com }",
+            },
+            subscriptions: {
+                notificationUrl: "{ A remote notification URL for the webhook }",
             }
         },
         graph: {
