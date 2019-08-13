@@ -11,28 +11,15 @@ import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
+import "../security/web";
 
-/**
- * Describes a collection of site groups
- *
- */
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SharePointQueryableCollection implements _ISiteGroups {
 
-    /**	
-     * Gets a group from the collection by id	
-     *	
-     * @param id The id of the group to retrieve	
-     */
     public getById(id: number): ISiteGroup {
         return SiteGroup(this).concat(`(${id})`);
     }
 
-    /**
-     * Adds a new group to the site collection
-     *
-     * @param props The group properties object of property names and values to be set for the group
-     */
     public async add(properties: TypedHash<any>): Promise<IGroupAddResult> {
 
         const postBody = body(assign(metadata("SP.Group"), properties));
@@ -44,39 +31,53 @@ export class _SiteGroups extends _SharePointQueryableCollection implements _ISit
         };
     }
 
-    /**
-     * Gets a group from the collection by name
-     *
-     * @param groupName The name of the group to retrieve
-     */
     public getByName(groupName: string): ISiteGroup {
         return SiteGroup(this, `getByName('${groupName}')`);
     }
 
-    /**
-     * Removes the group with the specified member id from the collection
-     *
-     * @param id The id of the group to remove
-     */
     public removeById(id: number): Promise<void> {
         return spPost(this.clone(SiteGroups, `removeById('${id}')`));
     }
 
-    /**
-     * Removes the cross-site group with the specified name from the collection
-     *
-     * @param loginName The name of the group to remove
-     */
     public removeByLoginName(loginName: string): Promise<any> {
         return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
     }
 }
 
+/**
+ * Describes a collection of site groups
+ *
+ */
 export interface _ISiteGroups {
+    /**	
+     * Gets a group from the collection by id	
+     *	
+     * @param id The id of the group to retrieve	
+     */
     getById(id: number): ISiteGroup;
+    /**
+     * Adds a new group to the site collection
+     *
+     * @param properties The group properties object of property names and values to be set for the group
+     */
     add(properties: TypedHash<any>): Promise<IGroupAddResult>;
+    /**
+     * Gets a group from the collection by name
+     *
+     * @param groupName The name of the group to retrieve
+     */
     getByName(groupName: string): ISiteGroup;
+    /**
+     * Removes the group with the specified member id from the collection
+     *
+     * @param id The id of the group to remove
+     */
     removeById(id: number): Promise<void>;
+    /**
+     * Removes the cross-site group with the specified name from the collection
+     *
+     * @param loginName The name of the group to remove
+     */
     removeByLoginName(loginName: string): Promise<any>;
 }
 
@@ -84,16 +85,8 @@ export interface ISiteGroups extends _ISiteGroups, IInvokable, ISharePointQuerya
 
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
-/**
- * Describes a single group
- *
- */
 export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGroup {
 
-    /**
-     * Gets the users for this group
-     *
-     */
     public get users(): ISiteUsers {
         return SiteUsers(this, "users");
     }
@@ -114,8 +107,21 @@ export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGr
     });
 }
 
+/**
+ * Describes a single group
+ *
+ */
 export interface _ISiteGroup {
+    /**
+     * Gets the users for this group
+     *
+     */
     readonly users: ISiteUsers;
+    /**
+     * Updates the group with the given property values
+     * 
+     * @param props The group properties object of property names and values to be set for the group
+     */
     update(props: TypedHash<any>): Promise<IGroupUpdateResult>;
 }
 
@@ -123,13 +129,8 @@ export interface ISiteGroup extends _ISiteGroup, IInvokable, ISharePointQueryabl
 
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
-export interface SiteGroupAddResult {
-    group: ISiteGroup;
-    data: any;
-}
-
 /**
- * Results from updating a group
+ * Result from updating a group
  *
  */
 export interface IGroupUpdateResult {
