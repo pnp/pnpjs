@@ -6,45 +6,55 @@ import {
     _SharePointQueryable,
     ISharePointQueryable,
     spInvokableFactory,
+    SharePointQueryable,
 } from "../sharepointqueryable";
 import { IInvokable, body } from "@pnp/odata";
-import { SharePointQueryableInstance } from "../sp";
+import { SharePointQueryableInstance, clientTagMethod } from "../sp";
 import { spPost } from "../operations";
 
 export class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
 
-    /**
-     * Gets the set of web part definitions contained by this web part manager
-     *
-     */
+    public get scope(): ISharePointQueryable {
+        return clientTagMethod.configure(SharePointQueryable(this, "Scope"), "f.scope");
+    }
+
     public get webparts(): IWebPartDefinitions {
         return WebPartDefinitions(this, "webparts");
     }
+
+    public export(id: string): Promise<string> {
+        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ExportWebPart"), body({ webPartId: id }));
+    }
+
+    public import(xml: string): Promise<any> {
+        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ImportWebPart"), body({ webPartXml: xml }));
+    }
+}
+
+export interface ILimitedWebPartManager {
+
+    /**
+     * Gets the scope of this web part manager (User = 0 or Shared = 1)
+     */
+    readonly scope: ISharePointQueryable;
+
+    /**
+     * Gets the set of web part definitions contained by this web part manager
+     */
+    readonly webparts: IWebPartDefinitions;
 
     /**
      * Exports a webpart definition
      *
      * @param id the GUID id of the definition to export
      */
-    public export(id: string): Promise<string> {
-
-        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ExportWebPart"), body({ webPartId: id }));
-    }
+    export(id: string): Promise<string>;
 
     /**
      * Imports a webpart
      *
      * @param xml webpart definition which must be valid XML in the .dwp or .webpart format
      */
-    public import(xml: string): Promise<any> {
-
-        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ImportWebPart"), body({ webPartXml: xml }));
-    }
-}
-
-export interface ILimitedWebPartManager {
-    readonly webparts: IWebPartDefinitions;
-    export(id: string): Promise<string>;
     import(xml: string): Promise<any>;
 }
 
@@ -55,34 +65,34 @@ const LimitedWebPartManagerCloneFactory = (baseUrl: string | ISharePointQueryabl
 
 export class _WebPartDefinitions extends _SharePointQueryableCollection implements _IWebPartDefinitions {
 
-    /**
-     * Gets a web part definition from the collection by id
-     *
-     * @param id The storage ID of the SPWebPartDefinition to retrieve
-     */
     public getById(id: string): IWebPartDefinition {
         return WebPartDefinition(this, `getbyid('${id}')`);
     }
 
-    /**
-     * Gets a web part definition from the collection by storage id
-     *
-     * @param id The WebPart.ID of the SPWebPartDefinition to retrieve
-     */
     public getByControlId(id: string): IWebPartDefinition {
         return WebPartDefinition(this, `getByControlId('${id}')`);
     }
 }
 
 export interface _IWebPartDefinitions {
+    /**
+     * Gets a web part definition from the collection by id
+     *
+     * @param id The storage ID of the SPWebPartDefinition to retrieve
+     */
     getById(id: string): IWebPartDefinition;
+
+    /**
+     * Gets a web part definition from the collection by storage id
+     *
+     * @param id The WebPart.ID of the SPWebPartDefinition to retrieve
+     */
     getByControlId(id: string): IWebPartDefinition;
 }
 
-export interface IWebPartDefinitions extends _IWebPartDefinitions, IInvokable, ISharePointQueryableCollection {}
+export interface IWebPartDefinitions extends _IWebPartDefinitions, IInvokable, ISharePointQueryableCollection { }
 
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
-
 
 export class _WebPartDefinition extends _SharePointQueryableInstance implements _IWebPartDefinition {
 
@@ -91,36 +101,30 @@ export class _WebPartDefinition extends _SharePointQueryableInstance implements 
     }
 
     public saveChanges(): Promise<any> {
-
         return spPost(this.clone(WebPartDefinition, "SaveWebPartChanges"));
     }
 
     public moveTo(zoneId: string, zoneIndex: number): Promise<void> {
-
         return spPost(this.clone(WebPartDefinition, `MoveWebPartTo(zoneID='${zoneId}', zoneIndex=${zoneIndex})`));
     }
 
     public close(): Promise<void> {
-
         return spPost(this.clone(WebPartDefinition, "CloseWebPart"));
     }
 
     public open(): Promise<void> {
-
         return spPost(this.clone(WebPartDefinition, "OpenWebPart"));
-
     }
 
     public delete(): Promise<void> {
-
         return spPost(this.clone(WebPartDefinition, "DeleteWebPart"));
     }
 }
 
 export interface _IWebPartDefinition {
     /**
-         * Gets the webpart information associated with this definition
-         */
+    * Gets the webpart information associated with this definition
+    */
     readonly webpart: ISharePointQueryableInstance;
 
     /**
@@ -152,7 +156,7 @@ export interface _IWebPartDefinition {
     delete(): Promise<void>;
 }
 
-export interface IWebPartDefinition extends _IWebPartDefinition, IInvokable, ISharePointQueryableInstance {}
+export interface IWebPartDefinition extends _IWebPartDefinition, IInvokable, ISharePointQueryableInstance { }
 
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 

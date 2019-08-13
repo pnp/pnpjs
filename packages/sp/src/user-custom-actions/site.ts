@@ -7,9 +7,16 @@ import { UserCustomActions, IUserCustomActions } from "./types";
 */
 declare module "../sites/types" {
     interface _Site {
+        /**
+         * Get all custom actions on a site collection
+         */
         readonly userCustomActions: IUserCustomActions;
     }
+
     interface ISite {
+        /**
+         * Get all custom actions on a site collection
+         */
         readonly userCustomActions: IUserCustomActions;
     }
 }
