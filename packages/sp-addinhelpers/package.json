@@ -6,9 +6,7 @@
   "typings": "./index",
   "dependencies": {
     "tslib": "1.9.3",
-    "@types/sharepoint": "2016.1.2"
-  },
-  "peerDependencies": {
+    "@types/sharepoint": "2016.1.2",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER"
   },
