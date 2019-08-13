@@ -6,16 +6,14 @@ import { UserCustomActions, IUserCustomActions } from "./types";
 * Extend Web
 */
 declare module "../webs/types" {
-    interface _Web 
-    {
+    interface _Web {
         /**
          * Gets a newly refreshed collection of the SPWeb's SPUserCustomActionCollection
          */
         readonly userCustomActions: IUserCustomActions;
     }
-    
-    interface IWeb 
-    {
+
+    interface IWeb {
         /**
          * Gets a newly refreshed collection of the SPWeb's SPUserCustomActionCollection
          */

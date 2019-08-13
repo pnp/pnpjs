@@ -8,10 +8,8 @@ import { metadata } from "../utils/metadata";
 import { File, IFile } from "../files/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { spPost } from "../operations";
+import { clientTagMethod } from "../decorators";
 
-/**
- * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
- */
 export class _Utilities extends _SharePointQueryable implements IUtilities {
     constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
@@ -58,24 +56,30 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             });
         }
 
-        return this.clone(UtilitiesCloneFactory, "SendEmail", true).excute<void>(params);
+        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "SendEmail", true), "u.sendEmail").excute<void>(params);
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {
-        return this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true).excute<string>({});
+        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true), "u.getCurrentUserEmailAddresses").excute<string>({});
     }
 
-    public resolvePrincipal(input: string, scopes: PrincipalType, sources: PrincipalSource, inputIsEmailOnly: boolean, addToUserInfoList: boolean, matchUserInfoList = false): Promise<IPrincipalInfo> {
+    public resolvePrincipal(input: string,
+        scopes: PrincipalType,
+        sources: PrincipalSource,
+        inputIsEmailOnly: boolean,
+        addToUserInfoList: boolean,
+        matchUserInfoList = false): Promise<IPrincipalInfo> {
         const params = {
-            addToUserInfoList: addToUserInfoList,
-            input: input,
-            inputIsEmailOnly: inputIsEmailOnly,
-            matchUserInfoList: matchUserInfoList,
-            scopes: scopes,
-            sources: sources,
+            addToUserInfoList,
+            input,
+            inputIsEmailOnly,
+            matchUserInfoList,
+            scopes,
+            sources,
         };
 
-        return this.clone(UtilitiesCloneFactory, "ResolvePrincipalInCurrentContext", true).excute<IPrincipalInfo>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "ResolvePrincipalInCurrentContext", true);
+        return clientTagMethod.configure(clone, "u.ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
     }
 
     public searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]> {
@@ -87,7 +91,8 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             sources: sources,
         };
 
-        return this.clone(UtilitiesCloneFactory, "SearchPrincipalsUsingContextWeb", true).excute<IPrincipalInfo[]>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "SearchPrincipalsUsingContextWeb", true);
+        return clientTagMethod.configure(clone, "u.SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
@@ -95,7 +100,8 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             pageAddress: pageAddress,
         };
 
-        return this.clone(UtilitiesCloneFactory, "CreateEmailBodyForInvitation", true).excute<string>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "CreateEmailBodyForInvitation", true);
+        return clientTagMethod.configure(clone, "u.CreateEmailBodyForInvitation").excute<string>(params);
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<IPrincipalInfo[]> {
@@ -104,16 +110,18 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             maxCount: maxCount,
         };
 
-        return this.clone(UtilitiesCloneFactory, "ExpandGroupsToPrincipals", true).excute<IPrincipalInfo[]>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "ExpandGroupsToPrincipals", true);
+        return clientTagMethod.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
     }
 
     public async createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult> {
 
-        const newPage = await this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true).excute<ICreateWikiPageResult>({ parameters: info });
-        
+        const clone = this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true);
+        const newPage = await clientTagMethod.configure(clone, "u.CreateWikiPageInContextWeb").excute<ICreateWikiPageResult>({ parameters: info });
+
         return {
             data: newPage,
-            file: File(odataUrlFrom(newPage))
+            file: File(odataUrlFrom(newPage)),
         } as ICreateWikiPageResult;
     }
 }
@@ -142,7 +150,12 @@ export interface IUtilities {
     /*
      * Gets information about a principal that matches the specified Search criteria.
      */
-    resolvePrincipal(email: string, scopes: PrincipalType, sources: PrincipalSource, inputIsEmailOnly: boolean, addToUserInfoList: boolean, matchUserInfoList?: boolean): Promise<IPrincipalInfo>;
+    resolvePrincipal(email: string,
+        scopes: PrincipalType,
+        sources: PrincipalSource,
+        inputIsEmailOnly: boolean,
+        addToUserInfoList: boolean,
+        matchUserInfoList?: boolean): Promise<IPrincipalInfo>;
 
     /*
      * Gets information about the principals that match the specified Search criteria.
@@ -177,7 +190,7 @@ export interface ICreateWikiPageResult {
     data: any;
 
     /*
-     * The returned Wiki page represented as a file what can be further updated.
+     * The returned Wiki page represented as a file which can be further updated.
      */
     file: IFile;
 }

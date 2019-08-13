@@ -34,28 +34,28 @@ export class _UserCustomActions extends _SharePointQueryableCollection implement
     }
 }
 
-export interface _IUserCustomActions {    
+export interface _IUserCustomActions {
     /**	   
      * Returns the user custom action with the specified id	     
      *	    
      * @param id The GUID id of the user custom action to retrieve	     
      */
     getById(id: string): IUserCustomAction;
-    
+
     /**
      * Creates a user custom action
      *
      * @param properties The information object of property names and values which define the new user custom action
      */
     add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult>;
-    
+
     /**
      * Deletes all user custom actions in the collection
      */
     clear(): Promise<void>;
 }
 
-export interface IUserCustomActions extends _IUserCustomActions, IInvokable, ISharePointQueryableCollection {}
+export interface IUserCustomActions extends _IUserCustomActions, IInvokable, ISharePointQueryableCollection { }
 
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
@@ -67,7 +67,7 @@ export class _UserCustomAction extends _SharePointQueryableInstance implements _
     public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
 }
 
-export interface _IUserCustomAction {    
+export interface _IUserCustomAction {
     /**
     * Updates this user custom action with the supplied properties
     *
@@ -76,7 +76,7 @@ export interface _IUserCustomAction {
     update(props: TypedHash<any>): IUserCustomActionUpdateResult;
 }
 
-export interface IUserCustomAction extends _IUserCustomAction, IInvokable, ISharePointQueryableInstance, IDeleteable {}
+export interface IUserCustomAction extends _IUserCustomAction, IInvokable, ISharePointQueryableInstance, IDeleteable { }
 
 export const UserCustomAction = spInvokableFactory<IUserCustomAction>(_UserCustomAction);
 

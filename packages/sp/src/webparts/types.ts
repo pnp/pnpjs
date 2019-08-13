@@ -32,24 +32,24 @@ export class _LimitedWebPartManager extends _SharePointQueryable implements ILim
 }
 
 export interface ILimitedWebPartManager {
-    
+
     /**
      * Gets the scope of this web part manager (User = 0 or Shared = 1)
      */
     readonly scope: ISharePointQueryable;
-    
+
     /**
      * Gets the set of web part definitions contained by this web part manager
      */
     readonly webparts: IWebPartDefinitions;
-    
+
     /**
      * Exports a webpart definition
      *
      * @param id the GUID id of the definition to export
      */
     export(id: string): Promise<string>;
-    
+
     /**
      * Imports a webpart
      *
@@ -74,14 +74,14 @@ export class _WebPartDefinitions extends _SharePointQueryableCollection implemen
     }
 }
 
-export interface _IWebPartDefinitions {    
+export interface _IWebPartDefinitions {
     /**
      * Gets a web part definition from the collection by id
      *
      * @param id The storage ID of the SPWebPartDefinition to retrieve
      */
     getById(id: string): IWebPartDefinition;
-    
+
     /**
      * Gets a web part definition from the collection by storage id
      *
@@ -90,7 +90,7 @@ export interface _IWebPartDefinitions {
     getByControlId(id: string): IWebPartDefinition;
 }
 
-export interface IWebPartDefinitions extends _IWebPartDefinitions, IInvokable, ISharePointQueryableCollection {}
+export interface IWebPartDefinitions extends _IWebPartDefinitions, IInvokable, ISharePointQueryableCollection { }
 
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
 
@@ -156,7 +156,7 @@ export interface _IWebPartDefinition {
     delete(): Promise<void>;
 }
 
-export interface IWebPartDefinition extends _IWebPartDefinition, IInvokable, ISharePointQueryableInstance {}
+export interface IWebPartDefinition extends _IWebPartDefinition, IInvokable, ISharePointQueryableInstance { }
 
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 
