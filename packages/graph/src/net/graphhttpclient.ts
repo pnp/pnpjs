@@ -31,6 +31,11 @@ export class GraphHttpClient implements RequestClient {
             headers.append("Content-Type", "application/json");
         }
 
+        if (!headers.has("SdkVersion")) {
+            // this marks the requests for understanding by the service
+            headers.append("SdkVersion", "PnPCoreJS/$$Version$$");
+        }
+
         const opts = extend(options, { headers: headers });
 
         return this.fetchRaw(url, opts);

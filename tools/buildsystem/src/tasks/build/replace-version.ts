@@ -15,9 +15,10 @@ interface TSConfig {
  * @param version The version number
  * @param ctx The build context 
  */
-export function replaceSPHttpVersion(version: string, config: BuildSchema) {
+export function replaceVersion(version: string, config: BuildSchema) {
 
     const options = {
+        allowEmptyPaths: true,
         files: [],
         from: /\$\$Version\$\$/ig,
         to: version,
@@ -31,6 +32,7 @@ export function replaceSPHttpVersion(version: string, config: BuildSchema) {
 
         options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/net/sphttpclient.js"));
         options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/batch.js"));
+        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "graph/src/net/graphhttpclient.js"));
     }
 
     return replace(options);
