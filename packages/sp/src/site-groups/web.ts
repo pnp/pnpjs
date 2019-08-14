@@ -3,7 +3,7 @@ import { _Web, Web } from "../webs/types";
 import { ISiteGroups, SiteGroups } from "./types";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
-import "../security";
+import "../security/web";
 
 declare module "../webs/types" {
 

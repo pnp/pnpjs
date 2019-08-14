@@ -11,13 +11,10 @@ import {
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
 import { IBasePermissions } from "./types";
 import { metadata } from "../utils/metadata";
-import { _Web } from "../webs/types";
-import { _List } from "../lists/types";
-import { _Item } from "../items/types";
 import { defaultPath, IDeleteable, deleteable } from "../decorators";
 import { spPost } from "../operations";
 
-export type SecurableQueryable = _Web | _List | _Item;
+export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethods;
 
 /**
  * Describes a set of role assignments for the current scope

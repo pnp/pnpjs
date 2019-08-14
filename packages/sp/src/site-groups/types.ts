@@ -9,7 +9,7 @@ import { SiteUsers, ISiteUsers } from "../site-users/types";
 import { assign, TypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
-import { defaultPath } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import "../security/web";
 
@@ -17,14 +17,14 @@ import "../security/web";
 export class _SiteGroups extends _SharePointQueryableCollection implements _ISiteGroups {
 
     public getById(id: number): ISiteGroup {
-        return SiteGroup(this).concat(`(${id})`);
+        return clientTagMethod.configure(SiteGroup(this).concat(`(${id})`), "sgs.getById");
     }
 
     public async add(properties: TypedHash<any>): Promise<IGroupAddResult> {
 
         const postBody = body(assign(metadata("SP.Group"), properties));
 
-        const data = await spPost(this, postBody);
+        const data = await spPost(clientTagMethod.configure(this, "sgs.add"), postBody);
         return {
             data,
             group: this.getById(data.Id),
@@ -32,13 +32,15 @@ export class _SiteGroups extends _SharePointQueryableCollection implements _ISit
     }
 
     public getByName(groupName: string): ISiteGroup {
-        return SiteGroup(this, `getByName('${groupName}')`);
+        return clientTagMethod.configure(SiteGroup(this, `getByName('${groupName}')`), "sgs.getByName");
     }
 
+    @clientTagMethod("sgs.removeById")
     public removeById(id: number): Promise<void> {
         return spPost(this.clone(SiteGroups, `removeById('${id}')`));
     }
 
+    @clientTagMethod("sgs.removeByLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
         return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
     }
@@ -81,14 +83,14 @@ export interface _ISiteGroups {
     removeByLoginName(loginName: string): Promise<any>;
 }
 
-export interface ISiteGroups extends _ISiteGroups, IInvokable, ISharePointQueryableCollection {}
+export interface ISiteGroups extends _ISiteGroups, IInvokable, ISharePointQueryableCollection { }
 
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
 export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGroup {
 
     public get users(): ISiteUsers {
-        return SiteUsers(this, "users");
+        return clientTagMethod.configure(SiteUsers(this, "users"), "sg.users");
     }
 
     public update = this._update<IGroupUpdateResult, TypedHash<any>, any>("SP.Group", (d, p) => {
@@ -125,7 +127,7 @@ export interface _ISiteGroup {
     update(props: TypedHash<any>): Promise<IGroupUpdateResult>;
 }
 
-export interface ISiteGroup extends _ISiteGroup, IInvokable, ISharePointQueryableInstance {}
+export interface ISiteGroup extends _ISiteGroup, IInvokable, ISharePointQueryableInstance { }
 
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
