@@ -1,5 +1,6 @@
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
+import "@pnp/sp/src/lists/web";
 import { SPFetchClient } from "@pnp/nodejs";
 
 declare var process: { exit(code?: number): void };
@@ -15,7 +16,7 @@ export async function Example(settings: any) {
         },
     });
 
-    const f = await sp.web();
+    const f = await sp.web.lists();
 
     console.log(JSON.stringify(f, null, 2));
 

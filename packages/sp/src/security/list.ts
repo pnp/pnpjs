@@ -13,15 +13,11 @@ import {
 } from "./funcs";
 
 /**
-* Extend Item
+* Extend List
 */
 declare module "../lists/types" {
-    interface _List extends ISecurableMethods {
-
-    }
-    interface IList extends ISecurableMethods {
-
-    }
+    interface _List extends ISecurableMethods { }
+    interface IList extends ISecurableMethods { }
 }
 
 addProp(_List, "roleAssignments", RoleAssignments);

@@ -6,6 +6,5 @@ export {
     IGroupUpdateResult,
     ISiteGroups,
     SiteGroup,
-    SiteGroupAddResult,
     SiteGroups,
 } from "./types";

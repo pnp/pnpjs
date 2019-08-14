@@ -3,8 +3,10 @@ import { _Web, Web } from "../webs/types";
 import { ISiteGroups, SiteGroups } from "./types";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import "../security/web";
 
 declare module "../webs/types" {
+
     interface _Web {
         readonly siteGroups: ISiteGroups;
         readonly associatedOwnerGroup: ISiteGroups;
@@ -15,7 +17,7 @@ declare module "../webs/types" {
     interface IWeb {
 
         /**
-         * The site groups
+         * Returns the site groups of this web
          */
         readonly siteGroups: ISiteGroups;
 

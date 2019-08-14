@@ -8,18 +8,9 @@ import { metadata } from "../utils/metadata";
 import { File, IFile } from "../files/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { spPost } from "../operations";
+import { clientTagMethod } from "../decorators";
 
-/**
- * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
- */
 export class _Utilities extends _SharePointQueryable implements IUtilities {
-
-    /**
-     * Creates a new instance of the Utility method class
-     *
-     * @param baseUrl The parent url provider
-     * @param methodName The static method name to call on the utility class
-     */
     constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/SP.Utilities.Utility.${methodName}`);
@@ -29,13 +20,7 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         return spPost(this, body(props));
     }
 
-    /**
-     * Sends an email based on the supplied properties
-     *
-     * @param props The properties of the email to send
-     */
     public sendEmail(props: IEmailProperties): Promise<void> {
-
         const params = {
             properties: assign(metadata("SP.Utilities.EmailProperties"), {
                 Body: props.Body,
@@ -71,12 +56,11 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             });
         }
 
-        return this.clone(UtilitiesCloneFactory, "SendEmail", true).excute<void>(params);
+        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "SendEmail", true), "u.sendEmail").excute<void>(params);
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {
-
-        return this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true).excute<string>({});
+        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true), "u.getCurrentUserEmailAddresses").excute<string>({});
     }
 
     public resolvePrincipal(input: string,
@@ -85,25 +69,20 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         inputIsEmailOnly: boolean,
         addToUserInfoList: boolean,
         matchUserInfoList = false): Promise<IPrincipalInfo> {
-
         const params = {
-            addToUserInfoList: addToUserInfoList,
-            input: input,
-            inputIsEmailOnly: inputIsEmailOnly,
-            matchUserInfoList: matchUserInfoList,
-            scopes: scopes,
-            sources: sources,
+            addToUserInfoList,
+            input,
+            inputIsEmailOnly,
+            matchUserInfoList,
+            scopes,
+            sources,
         };
 
-        return this.clone(UtilitiesCloneFactory, "ResolvePrincipalInCurrentContext", true).excute<IPrincipalInfo>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "ResolvePrincipalInCurrentContext", true);
+        return clientTagMethod.configure(clone, "u.ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
     }
 
-    public searchPrincipals(input: string,
-        scopes: PrincipalType,
-        sources: PrincipalSource,
-        groupName: string,
-        maxCount: number): Promise<IPrincipalInfo[]> {
-
+    public searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]> {
         const params = {
             groupName: groupName,
             input: input,
@@ -112,59 +91,90 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             sources: sources,
         };
 
-        return this.clone(UtilitiesCloneFactory, "SearchPrincipalsUsingContextWeb", true).excute<IPrincipalInfo[]>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "SearchPrincipalsUsingContextWeb", true);
+        return clientTagMethod.configure(clone, "u.SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
-
         const params = {
             pageAddress: pageAddress,
         };
 
-        return this.clone(UtilitiesCloneFactory, "CreateEmailBodyForInvitation", true).excute<string>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "CreateEmailBodyForInvitation", true);
+        return clientTagMethod.configure(clone, "u.CreateEmailBodyForInvitation").excute<string>(params);
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<IPrincipalInfo[]> {
-
         const params = {
             inputs: inputs,
             maxCount: maxCount,
         };
 
-        return this.clone(UtilitiesCloneFactory, "ExpandGroupsToPrincipals", true).excute<IPrincipalInfo[]>(params);
+        const clone = this.clone(UtilitiesCloneFactory, "ExpandGroupsToPrincipals", true);
+        return clientTagMethod.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
     }
 
-    public createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult> {
+    public async createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult> {
 
-        return this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true).excute<ICreateWikiPageResult>({
-            parameters: info,
-        }).then(r => {
-            return {
-                data: r,
-                file: File(odataUrlFrom(r)),
-            };
-        });
+        const clone = this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true);
+        const newPage = await clientTagMethod.configure(clone, "u.CreateWikiPageInContextWeb").excute<ICreateWikiPageResult>({ parameters: info });
+
+        return {
+            data: newPage,
+            file: File(odataUrlFrom(newPage)),
+        } as ICreateWikiPageResult;
     }
 }
 
 export interface IUtilities {
+    /*
+     * Gives you the ability to cache returned data in an easy way.
+     */
     usingCaching(options?: ICachingOptions): this;
+
+    /*
+     * Gives you the ability to batch multiple requests into a single request to SharePoint.
+     */
     inBatch(batch: SPBatch): this;
+
+    /*
+     * This methods will send an e-mail based on the incoming properties of the IEmailProperties parameter.
+     */
     sendEmail(props: IEmailProperties): Promise<void>;
+
+    /*
+     * This method returns the current user's email addresses known to SharePoint.
+     */
     getCurrentUserEmailAddresses(): Promise<string>;
+
+    /*
+     * Gets information about a principal that matches the specified Search criteria.
+     */
     resolvePrincipal(email: string,
         scopes: PrincipalType,
         sources: PrincipalSource,
         inputIsEmailOnly: boolean,
         addToUserInfoList: boolean,
         matchUserInfoList?: boolean): Promise<IPrincipalInfo>;
-    searchPrincipals(input: string,
-        scopes: PrincipalType,
-        sources: PrincipalSource,
-        groupName: string,
-        maxCount: number): Promise<IPrincipalInfo[]>;
+
+    /*
+     * Gets information about the principals that match the specified Search criteria.
+     */
+    searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]>;
+
+    /*
+     * Gets the external (outside the firewall) URL to a document or resource in a site.
+     */
     createEmailBodyForInvitation(pageAddress: string): Promise<string>;
+
+    /*
+     * Resolves the principals contained within the supplied groups.
+     */
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
+
+    /*
+     * Creates a new Wiki page.
+     */
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 
@@ -174,18 +184,54 @@ type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props:
 const UtilitiesCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
 
 export interface ICreateWikiPageResult {
+    /*
+     * The returned Wiki page represented by raw data.
+     */
     data: any;
+
+    /*
+     * The returned Wiki page represented as a file which can be further updated.
+     */
     file: IFile;
 }
 
 export interface IEmailProperties {
-
+    /*
+     * The list of receivers represented by a string array.
+     */
     To: string[];
+
+    /*
+     * The list of receivers as CC (carbon copy) represented by a string array.
+     * This is optional.
+     */
     CC?: string[];
+
+    /*
+     * The list of receivers as BCC (blind carbon copy) represented by a string array.
+     * This is optional.
+     */
     BCC?: string[];
+
+    /*
+     * The subject of the email.
+     */
     Subject: string;
+
+    /*
+     * The body of the email.
+     */
     Body: string;
+
+    /*
+     * The additional headers appened to the request in key/value pairs.
+     */
     AdditionalHeaders?: TypedHash<string>;
+
+    /*
+     * The from address of the email.
+     * This is optional.
+     */
     From?: string;
 }
 
