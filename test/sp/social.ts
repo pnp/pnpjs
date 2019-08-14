@@ -4,7 +4,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/social";
 import { testSettings } from "../main";
-import { ISocialActorInfo, SocialActorType } from '@pnp/sp/src/social';
+import { ISocialActorInfo, SocialActorType } from "@pnp/sp/src/social";
 
 describe("Social", function () {
   if (testSettings.enableWebTests) {
