@@ -64,6 +64,7 @@ export class MethodParams implements IMethodParamsBuilder {
     }
 
     private a(type: PropertyType, value: string): this {
+        value = value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
         this._p.push({ type, value });
         return this;
     }
