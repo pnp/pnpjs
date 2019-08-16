@@ -601,7 +601,7 @@ export interface SearchResponse {
     ElapsedTime: number;
     Properties?: { Key: string, Value: any, ValueType: string }[];
     PrimaryQueryResult?: ResultTableCollection;
-    SecondaryQueryResults?: ResultTableCollection;
+    SecondaryQueryResults?: ResultTableCollection[];
     SpellingSuggestion?: string;
     TriggeredRules?: any[];
 }
