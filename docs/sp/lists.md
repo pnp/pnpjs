@@ -1,6 +1,6 @@
 # @pnp/sp/lists
 
-Lists in SharePoint are collections of information built in a structural way using columns and rows. Columns for metadata, and rows representing each entry. Visually, it reminds us a lot of a database table or an Excel spreadsheet. 
+Lists in SharePoint are collections of information built in a structural way using columns and rows. Columns for metadata, and rows representing each entry. Visually, it reminds us a lot of a database table or an Excel spreadsheet.
 
 ## ILists
 
@@ -25,7 +25,7 @@ import "@pnp/sp/src/lists";
 // get the list by Id
 const list = sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
 
-// we can use this 'list' variable to execute more querys on the list:
+// we can use this 'list' variable to execute more queries on the list:
 const r = await list.select("Title")();
 
 // show the response from the server
@@ -44,7 +44,7 @@ import "@pnp/sp/src/lists";
 // get the default document library 'Documents'
 const list = sp.web.lists.getByTitle("Documents");
 
-// we can use this 'list' variable to run more querys on the list:
+// we can use this 'list' variable to run more queries on the list:
 const r = await list.select("Id")();
 
 // log the list Id to console
@@ -53,7 +53,7 @@ console.log(r.Id);
 
 ### Add List
 
-You can add a list to the web's list collection using the .add-method. To invoke this method in its most simple form, you can provide only a title as a parameter. This will result in a standard out of the box list with all default settings, and the title you provide. 
+You can add a list to the web's list collection using the .add-method. To invoke this method in its most simple form, you can provide only a title as a parameter. This will result in a standard out of the box list with all default settings, and the title you provide.
 
 ```TypeScript
 // create a new list, passing only the title
@@ -82,7 +82,7 @@ console.log(r.Id);
 
 ### Ensure that a List exists (by title)
 
-Ensures that the specified list exists in the collection (note: this method not supported for batching). Just like with the add-method (see examples above) you can provide only the title, or any or all of the optional paramters desc, template, enableContentTypes and additionalSettings. 
+Ensures that the specified list exists in the collection (note: this method not supported for batching). Just like with the add-method (see examples above) you can provide only the title, or any or all of the optional parameters desc, template, enableContentTypes and additionalSettings.
 
 ```TypeScript
 // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
