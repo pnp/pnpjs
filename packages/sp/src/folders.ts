@@ -151,9 +151,9 @@ export class Folder extends SharePointQueryableShareableFolder {
      * @param destUrl Absolute or relative URL of the destination path
      */
     public moveTo(destUrl: string): Promise<void> {
-        return this.select("ServerRelativeUrl").get().then(({ ServerRelativeUrl: srcUrl }) => {
+        return this.select("ServerRelativeUrl").get().then(({ ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl }) => {
             const client = new SPHttpClient();
-            const webBaseUrl = this.toUrl().split("/_api")[0];
+            const webBaseUrl = absoluteUrl.split("/_api")[0];
             const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
             const methodUrl = `${webBaseUrl}/_api/SP.MoveCopyUtil.MoveFolder()`;
             return client.post(methodUrl, {
