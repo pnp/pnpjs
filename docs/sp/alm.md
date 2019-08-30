@@ -6,23 +6,31 @@ The ALM api allows you to manage app installations both in the tenant app catalo
 
 Before you begin provisioning applications it is important to understand the relationship between a local web catalog and the tenant app catalog. Some of the methods described below only work within the context of the tenant app catalog web, such as adding an app to the catalog and the app actions retract, remove, and deploy. You can install, uninstall, and upgrade an app in any web. [Read more in the official documentation](https://docs.microsoft.com/en-us/sharepoint/dev/apis/alm-api-for-spfx-add-ins).
 
-## Reference an App Catalog
+## Referencing an App Catalog
 
 There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/appcatalog";
+
 // get the curren't context web's app catalog
 const catalog = sp.web.getAppCatalog();
 
 // you can also chain off the app catalog
-pnp.sp.web.getAppCatalog().get().then(console.log);
+const apps = await sp.web.getAppCatalog().get();
+console.log(apps);
 ```
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-// you can get the tenant app catalog (or any app catalog) by passing in a url
+import "@pnp/sp/src/appcatalog";
 
+// you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
+const appCatWeb = await sp.getTenantAppCatalogWeb();
+const appCatalog = appCatWeb.getAppCatalog();
+
+// you can get the tenant app catalog (or any app catalog) by passing in a url
 // get the tenant app catalog
 const tenantCatalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog");
 
@@ -32,17 +40,18 @@ const catalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anot
 
 ```TypeScript
 // alternatively you can create a new app catalog instance directly by importing the AppCatalog class
-import { AppCatalog } from "@pnp/sp";
+import { IAppCatalog, AppCatalog } from '@pnp/sp/src/appcatalog';
 
-const catalog = new AppCatalog("https://mytenant.sharepoint.com/sites/dev");
+const catalog: IAppCatalog = AppCatalog("https://mytenant.sharepoint.com/sites/apps");
 ```
 
 ```TypeScript
 // and finally you can combine use of the Web and AppCatalog classes to create an AppCatalog instance from an existing Web
-import { Web, AppCatalog } from "@pnp/sp";
+import { Web } from '@pnp/sp/src/webs';
+import { AppCatalog } from '@pnp/sp/src/appcatalog';
 
-const web = new Web("https://mytenant.sharepoint.com/sites/dev");
-const catalog = new AppCatalog(web);
+const web = Web("https://mytenant.sharepoint.com/sites/apps");
+const catalog = AppCatalog(web);
 ```
 
 The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.
@@ -53,10 +62,10 @@ The AppCatalog is itself a queryable collection so you can query this object dir
 
 ```TypeScript
 // get available apps
-catalog.get().then(console.log);
+await catalog.get();
 
 // get available apps selecting two fields
-catalog.select("Title", "Deployed").get().then(console.log);
+await catalog.select("Title", "Deployed").get();
 ```
 
 ## Add an App
@@ -68,16 +77,14 @@ This action must be performed in the context of the tenant app catalog
 const blob = new Blob();
 
 // there is an optional third argument to control overwriting existing files
-catalog.add("myapp.app", blob).then(r => {
+const r = await catalog.add("myapp.app", blob);
 
-    // this is at its core a file add operation so you have access to the response data as well
-    // as a File isntance representing the created file
-
-    console.log(JSON.stringify(r.data, null, 4));
-
-    // all file operations are available
-    r.file.select("Name").get().then(console.log);
-});
+// this is at its core a file add operation so you have access to the response data as well
+// as a File isntance representing the created file
+console.log(JSON.stringify(r.data, null, 4));
+    
+// all file operations are available
+const nameData = await r.file.select("Name").get();
 ```
 
 ## Get an App
@@ -85,35 +92,47 @@ catalog.add("myapp.app", blob).then(r => {
 You can get the details of a single app by GUID id. This is also the branch point to perform specific app actions
 
 ```TypeScript
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").get().then(console.log);
+const app = await catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").get();
 ```
 
 ## Perform app actions
 
-Remember: retract, deploy, and remove only work in the context of the tenant app catalog web. All of these methods return void and you can monitor success using then and catch.
+Remember: retract, deploy, and remove only work in the context of the tenant app catalog web. All of these methods return void and you can monitor success by wrapping the call in a try/catch block.
 
 ```TypeScript
+const myAppId = "5137dff1-0b79-4ebc-8af4-ca01f7bd393c";
 
 // deploy
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").deploy().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).deploy();
 
 // retract
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").retract().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).retract();
 
 // install
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").install().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).install();
 
 // uninstall
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").uninstall().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).uninstall();
 
 // upgrade
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").upgrade().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).upgrade();
 
 // remove
-catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").remove().then(console.log).catch(console.error);
+await catalog.getAppById(myAppId).remove();
 
 ```
 
+## Synchronize a solution/app to the Microsoft Teams App Catalog
+
+By default this REST call requires the SharePoint item id of the app, not the app id. PnPjs will try to fetch the SharePoint item id by default. You can still use this the second parameter __useSharePointItemId__ to pass your own item id in the first parameter __id__.
+
+```TypeScript
+// Using the app id
+await catalog.syncSolutionToTeams("5137dff1-0b79-4ebc-8af4-ca01f7bd393c");
+
+// Using the SharePoint apps item id
+await catalog.syncSolutionToTeams("123", true);
+```
 
 ## Notes
 

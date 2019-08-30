@@ -25,7 +25,7 @@ describe("Social", function () {
       const f = await sp.social.follow(actor);
       return expect(f).to.not.be.null;
     });
-    it.only("is followed (test site)", function () {
+    it("is followed (test site)", function () {
       const actor: ISocialActorInfo = {
         ActorType: SocialActorType.Site,
         ContentUri: testSettings.sp.url,
