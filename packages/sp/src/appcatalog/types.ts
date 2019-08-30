@@ -11,8 +11,9 @@ import { spPost } from "../operations";
 import { odataUrlFrom } from "../odata";
 import { extractWebUrl } from "../utils/extractweburl";
 import { File, IFile } from "../files/types";
-import { Web } from '../webs';
-import '../items';
+import { clientTagMethod } from "../decorators";
+import { Web } from "../webs";
+import "../items";
 
 export class _AppCatalog extends _SharePointQueryableCollection implements _IAppCatalog {
 
@@ -21,30 +22,28 @@ export class _AppCatalog extends _SharePointQueryableCollection implements _IApp
     }
 
     public getAppById(id: string): IApp {
-        return App(this, `getById('${id}')`);
+        return clientTagMethod.configure(App(this, `getById('${id}')`), "ac.getAppById");
     }
 
-    public async syncSolutionToTeams(id: string | number, useSharePointItemId: boolean = false): Promise<void> {
+    public async syncSolutionToTeams(id: string | number, useSharePointItemId = false): Promise<void> {
         // This REST call requires that you refer the list item id of the solution in the app catalog site.
         let appId = null;
         const webUrl = extractWebUrl(this.toUrl());
 
         if (useSharePointItemId === true) {
             appId = id;
-        }
-        else {
+        } else {
             const web = Web(webUrl);
             const listId = (await web.lists.select("Id").filter(`EntityTypeName eq 'AppCatalog'`).get())[0].Id;
             const listItems = await web.lists.getById(listId).items.filter(`AppProductID eq '${id}'`).top(1).get();
             if (listItems && listItems.length > 0) {
                 appId = listItems[0].Id;
-            }
-            else {
+            } else {
                 throw Error(`Did not find the app with id ${id} in the appcatalog (╯°□°）╯︵ ┻━┻`);
             }
         }
 
-        const poster = AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
+        const poster = clientTagMethod.configure(AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
         return await spPost(poster, {});
     }
 
@@ -55,7 +54,7 @@ export class _AppCatalog extends _SharePointQueryableCollection implements _IApp
         const r = await spPost(adder, {
             body: content, headers: {
                 "binaryStringRequestBody": "true",
-            }
+            },
         });
 
         return {
@@ -75,7 +74,7 @@ export interface _IAppCatalog {
      * @param filename Filename to create.
      * @param content app package data (eg: the .app or .sppkg file).
      * @param shouldOverWrite Should an app with the same name in the same location be overwritten? (default: true)
-     * @returns Promise<AppAddResult>
+     * @returns Promise<IAppAddResult>
      */
     add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<IAppAddResult>;
     /**
@@ -86,7 +85,8 @@ export interface _IAppCatalog {
     /**
      * Synchronize a solution to the Microsoft Teams App Catalog
      * @param id - Specify the guid of the app
-     * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id. PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter 
+     * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id.
+     *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter 
      */
     syncSolutionToTeams(id: string | number, useSharePointItemId?: boolean): Promise<void>;
 }
@@ -100,26 +100,32 @@ export const AppCatalog = spInvokableFactory<IAppCatalog>(_AppCatalog);
 
 export class _App extends _SharePointQueryableInstance implements _IApp {
 
+    @clientTagMethod("app.deploy")
     public deploy(skipFeatureDeployment = false): Promise<void> {
         return spPost(this.clone(App, `Deploy(${skipFeatureDeployment})`));
     }
 
+    @clientTagMethod("app.retract")
     public retract(): Promise<void> {
         return spPost(this.clone(App, "Retract"));
     }
 
+    @clientTagMethod("app.install")
     public install(): Promise<void> {
         return spPost(this.clone(App, "Install"));
     }
 
+    @clientTagMethod("app.uninstall")
     public uninstall(): Promise<void> {
         return spPost(this.clone(App, "Uninstall"));
     }
 
+    @clientTagMethod("app.upgrade")
     public upgrade(): Promise<void> {
         return spPost(this.clone(App, "Upgrade"));
     }
 
+    @clientTagMethod("app.remove")
     public remove(): Promise<void> {
         return spPost(this.clone(App, "Remove"));
     }

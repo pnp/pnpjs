@@ -5,7 +5,7 @@ import "./web";
 import { SharePointQueryable } from "../sharepointqueryable";
 
 export {
-    IAppAddResult as AppAddResult,
+    IAppAddResult,
     IApp,
     IAppCatalog,
     App,

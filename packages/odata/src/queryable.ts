@@ -52,8 +52,9 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
                 return value;
         }
     });
-    
-    if(source.options && source.options.body){
+
+    // this handles bodies that cannot be JSON encoded (Blob, etc)
+    if (source.options && source.options.body) {
         parsed.options.body = source.options.body;
     }
 
