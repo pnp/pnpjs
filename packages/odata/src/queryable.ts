@@ -34,7 +34,7 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
         }
     }, 0);
 
-    return JSON.parse(s, (key: any, value: any) => {
+    const parsed = JSON.parse(s, (key: any, value: any) => {
         switch (key) {
             case "query":
                 return new Map(JSON.parse(value));
@@ -52,6 +52,12 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
                 return value;
         }
     });
+    
+    if(source.options && source.options.body){
+        parsed.options.body = source.options.body;
+    }
+
+    return parsed;
 }
 
 export interface IQueryableData<DefaultActionType = any> {
