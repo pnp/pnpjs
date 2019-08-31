@@ -29,7 +29,6 @@ export interface ISettingsTestingPart {
         notificationUrl: string | null;
         secret: string;
         url: string;
-        sitedesigns?: { testuser: string }
     };
 }
 
