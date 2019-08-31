@@ -38,5 +38,17 @@ describe("webparts", function () {
 
             return expect(webparts).to.be.an.instanceOf(Array).and.be.empty;
         });
+
+        /*it("no-unittest-for-import", function()
+        {
+            //Reason: The current implementation of the "import" method gives an empty SP.WebParts.WebPartDefinition and a HTTP 200 in return (JSOM API). The ID of the returned webpart definition is an empty guid.
+        });
+        */
+
+        /*it("no-unittest-for-export", function()
+        {
+            //Reason: we cannot automate tests of the "export" method because the "addWebPart" method is not implemented. This means that we cannot write a testcase that creates a new page, inserts a webpart, which we then could manipulate.            
+        });
+        */
     }
 });

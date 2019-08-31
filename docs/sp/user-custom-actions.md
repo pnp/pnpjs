@@ -1,0 +1,89 @@
+# @pnp/sp/user-custom-actions
+
+Represents a custom action associated with a SharePoint list, web or site collection.
+
+## IUserCustomActions
+
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/src/user-custom-actions";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/user-custom-actions";|
+|Preset: All|import { sp, IUserCustomActions, IUserCustomAction } from "@pnp/sp/presents/all";|
+
+### Get a collection of User Custom Actions from a web
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/user-custom-actions";
+
+const userCustomActions = sp.web.userCustomActions();
+```
+
+### Add a new User Custom Action
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/user-custom-actions";
+import { IUserCustomActionAddResult } from '@pnp/sp/src/user-custom-actions';
+
+const newValues: TypedHash<string> = {
+    "Title": "New Title",
+    "Description": "New Description",
+    "Location": "ScriptLink",
+    "ScriptSrc": "https://..."
+};
+
+const response : IUserCustomActionAddResult = await sp.web.userCustomActions.add(newValues);
+```
+
+### Get a User Custom Action by ID
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/user-custom-actions";
+
+const uca: IUserCustomAction = sp.web.userCustomActions.getById("00000000-0000-0000-0000-000000000000");
+```
+
+### Clear the User Custom Action collection
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/user-custom-actions";
+
+// Site collection level
+sp.site.userCustomActions.clear();
+
+// Site (web) level
+sp.web.userCustomActions.clear();
+
+// List level
+sp.web.lists.getByTitle("Documents").userCustomActions.clear();
+```
+
+## IUserCustomAction
+
+### Update an existing User Custom Action
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/user-custom-actions";
+import { IUserCustomActionUpdateResult } from '@pnp/sp/src/user-custom-actions';
+
+const uca = sp.web.userCustomActions.getById("00000000-0000-0000-0000-000000000000");
+
+const newValues: TypedHash<string> = {
+    "Title": "New Title",
+    "Description": "New Description",
+    "ScriptSrc": "https://..."
+};
+
+const response: IUserCustomActionUpdateResult = uca.update(newValues);
+```
