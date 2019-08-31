@@ -8,13 +8,14 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { defaultPath, deleteable, IDeleteable } from "../decorators";
+import { defaultPath, deleteable, IDeleteable, clientTagMethod } from "../decorators";
 import { metadata } from "../utils/metadata";
 import { spPost } from "../operations";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SharePointQueryableCollection {
 
+    @clientTagMethod("cts.addAvailableContentType")
     public async addAvailableContentType(contentTypeId: string): Promise<ContentTypeAddResult> {
 
         const data = await spPost(this.clone(ContentTypes, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }));
@@ -25,9 +26,10 @@ export class _ContentTypes extends _SharePointQueryableCollection {
     }
 
     public getById(id: string): IContentType {
-        return ContentType(this).concat(`('${id}')`);
+        return clientTagMethod.configure(ContentType(this).concat(`('${id}')`), "cts.getById");
     }
 
+    @clientTagMethod("cts.add")
     public async add(
         id: string,
         name: string,
@@ -43,6 +45,7 @@ export class _ContentTypes extends _SharePointQueryableCollection {
         }, additionalSettings));
 
         const data = await spPost(this, postBody);
+
         return { contentType: this.getById(data.id), data };
     }
 }
@@ -89,22 +92,19 @@ export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 export class _ContentType extends _SharePointQueryableInstance implements _IContentType {
 
     public get fieldLinks(): IFieldLinks {
-        return FieldLinks(this);
+        return clientTagMethod.configure(FieldLinks(this), "ct.fieldLinks");
     }
-
 
     public get fields(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "fields");
+        return clientTagMethod.configure(SharePointQueryableCollection(this, "fields"), "ct.fields");
     }
-
 
     public get parent(): IContentType {
-        return ContentType(this, "parent");
+        return clientTagMethod.configure(ContentType(this, "parent"), "ct.parent");
     }
 
-
     public get workflowAssociations(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "workflowAssociations");
+        return clientTagMethod.configure(SharePointQueryableCollection(this, "workflowAssociations"), "ct.workflowAssociations");
     }
 }
 
@@ -154,7 +154,7 @@ export interface ContentTypeAddResult {
 export class _FieldLinks extends _SharePointQueryableCollection implements _IFieldLinks {
 
     public getById(id: string): IFieldLink {
-        return FieldLink(this).concat(`(guid'${id}')`);
+        return clientTagMethod.configure(FieldLink(this).concat(`(guid'${id}')`), "fls.getById");
     }
 }
 

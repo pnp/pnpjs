@@ -22,7 +22,7 @@ sp.web.lists.getByTitle("Documents").contentTypes.addAvailableContentType("0x010
 ### Get a Content Type by Id
 
 ```TypeScript
-const d: IContentType = await sp.web.contentTypes.getById("0x01").get();
+const d: IContentType = await sp.web.contentTypes.getById("0x01")();
 
 // log content type name to console
 console.log(d.name);

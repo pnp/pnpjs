@@ -2,17 +2,18 @@ import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { expect } from "chai";
 import "@pnp/sp/src/content-types";
+import "@pnp/sp/src/lists/web";
 import { getRandomString } from "@pnp/common";
 
 describe("Content Types", function () {
 
     if (testSettings.enableWebTests) {
 
-        it(".addAvailableContentType", function () {
+        it(".addAvailableContentType", async function () {
             const listTitle = `PnPJSTEST${getRandomString(8)}`;
-            sp.web.lists.add(listTitle, listTitle, 101, true).then(function () {
-                return expect(sp.web.lists.getByTitle(listTitle).contentTypes.addAvailableContentType("0x010102")).to.eventually.be.fulfilled;
-            });
+            await sp.web.lists.add(listTitle, listTitle, 101, true);
+
+            return expect(sp.web.lists.getByTitle(listTitle).contentTypes.addAvailableContentType("0x010102")).to.eventually.be.fulfilled;
         });
 
         it(".getById", function () {
