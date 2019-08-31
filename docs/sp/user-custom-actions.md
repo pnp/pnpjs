@@ -48,6 +48,8 @@ import "@pnp/sp/src/webs";
 import "@pnp/sp/src/user-custom-actions";
 
 const uca: IUserCustomAction = sp.web.userCustomActions.getById("00000000-0000-0000-0000-000000000000");
+
+const ucaData = await uca();
 ```
 
 ### Clear the User Custom Action collection
@@ -58,13 +60,13 @@ import "@pnp/sp/src/webs";
 import "@pnp/sp/src/user-custom-actions";
 
 // Site collection level
-sp.site.userCustomActions.clear();
+await sp.site.userCustomActions.clear();
 
 // Site (web) level
-sp.web.userCustomActions.clear();
+await sp.web.userCustomActions.clear();
 
 // List level
-sp.web.lists.getByTitle("Documents").userCustomActions.clear();
+await sp.web.lists.getByTitle("Documents").userCustomActions.clear();
 ```
 
 ## IUserCustomAction

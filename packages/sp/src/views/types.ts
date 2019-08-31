@@ -71,7 +71,7 @@ export interface _IViews {
 export interface IViews extends _IViews, IInvokable, ISharePointQueryableCollection { }
 export const Views = spInvokableFactory<IViews>(_Views);
 
-@deleteable()
+@deleteable("vw")
 export class _View extends _SharePointQueryableInstance implements _IView {
 
     public get fields(): IViewFields {

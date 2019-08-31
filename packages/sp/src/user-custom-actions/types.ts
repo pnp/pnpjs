@@ -7,20 +7,17 @@ import {
 } from "../sharepointqueryable";
 import { assign, TypedHash } from "@pnp/common";
 import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, deleteable, IDeleteable } from "../decorators";
+import { defaultPath, deleteable, IDeleteable, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 
-/**
- * Describes a collection of user custom actions
- *
- */
 @defaultPath("usercustomactions")
 export class _UserCustomActions extends _SharePointQueryableCollection implements _IUserCustomActions {
 
     public getById(id: string): IUserCustomAction {
-        return UserCustomAction(this).concat(`('${id}')`);
+        return clientTagMethod.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
     }
 
+    @clientTagMethod("ucas.add")
     public async add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult> {
         const data = await spPost(this, body(assign({ __metadata: { "type": "SP.UserCustomAction" } }, properties)));
         return {
@@ -29,11 +26,16 @@ export class _UserCustomActions extends _SharePointQueryableCollection implement
         };
     }
 
+    @clientTagMethod("ucas.clear")
     public clear(): Promise<void> {
         return spPost(this.clone(UserCustomActions, "clear"));
     }
 }
 
+/**
+ * Describes a collection of user custom actions
+ *
+ */
 export interface _IUserCustomActions {
     /**	   
      * Returns the user custom action with the specified id	     
@@ -59,14 +61,14 @@ export interface IUserCustomActions extends _IUserCustomActions, IInvokable, ISh
 
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
-/**
- * Describes a single user custom action
- */
-@deleteable()
+@deleteable("uca")
 export class _UserCustomAction extends _SharePointQueryableInstance implements _IUserCustomAction {
     public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
 }
 
+/**
+ * Describes a single user custom action
+ */
 export interface _IUserCustomAction {
     /**
     * Updates this user custom action with the supplied properties
