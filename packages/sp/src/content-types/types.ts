@@ -88,7 +88,7 @@ export interface IContentTypes extends IInvokable, ISharePointQueryableCollectio
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 
-@deleteable()
+@deleteable("ct")
 export class _ContentType extends _SharePointQueryableInstance implements _IContentType {
 
     public get fieldLinks(): IFieldLinks {
