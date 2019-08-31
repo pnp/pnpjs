@@ -6,14 +6,16 @@ Webhooks on a SharePoint list are used to notify any change in the list, to othe
 
 [![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
 
-|Scenario|Import Statement|
-|--|--|
-|Selective|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list"|
-|Preset: All|import {sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/presets/all";|
+| Scenario    | Import Statement                                                                                                                                                                                                           |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list" |
+| Preset: All | import {sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/presets/all";                                                                                            |
 
 
 ### Add a webhook
+
 Using this library, you can add a webhook to a specified list within the SharePoint site.
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -51,10 +53,10 @@ This interface provides the methods for managing a particular webhook.
 
 [![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
 
-|Scenario|Import Statement|
-|--|--|
-|Selective|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list"|
-|Preset: All|import {sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/presets/all";|
+| Scenario    | Import Statement                                                                                                                                                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list" |
+| Preset: All | import { sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription } from "@pnp/sp/presets/all";                                                                                                                       |
 
 ### Managing a webhook
 
@@ -65,7 +67,7 @@ import "@pnp/sp/src/lists";
 import "@pnp/sp/src/subscriptions";
 
 // Get details of a webhook based on its ID
-const webhookId = "1f029e5c-16d4-4941-b46f-67899118763f";
+const webhookId = "1f029e5c-16e4-4941-b46f-67895118763f";
 const webhook = await sp.web.lists.getByTitle("Documents").subscriptions.getById(webhookId)();
 
 // Update a webhook

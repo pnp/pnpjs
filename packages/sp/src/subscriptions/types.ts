@@ -6,16 +6,18 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { IInvokable, body, headers } from "@pnp/odata";
-import { defaultPath } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { spPost, spDelete, spPatch } from "../operations";
 
 @defaultPath("subscriptions")
 export class _Subscriptions extends _SharePointQueryableCollection implements _ISubscriptions {
 
     public getById(subscriptionId: string): ISubscription {
-        return Subscription(this).concat(`('${subscriptionId}')`);
+
+        return clientTagMethod.configure(Subscription(this).concat(`('${subscriptionId}')`), "subs.getById");
     }
 
+    @clientTagMethod("subs.add")
     public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult> {
 
         const postBody: any = {
@@ -29,6 +31,7 @@ export class _Subscriptions extends _SharePointQueryableCollection implements _I
         }
 
         const data = await spPost(this, body(postBody, headers({ "Content-Type": "application/json" })));
+
         return { data, subscription: this.getById(data.id) };
     }
 }
@@ -38,11 +41,11 @@ export class _Subscriptions extends _SharePointQueryableCollection implements _I
  *
  */
 export interface _ISubscriptions {
-     /**
-     * Returns all the webhook subscriptions or the specified webhook subscription
-     *
-     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
-     */
+    /**
+    * Returns all the webhook subscriptions or the specified webhook subscription
+    *
+    * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
+    */
     getById(subscriptionId: string): ISubscription;
     /**
      * Creates a new webhook subscription
@@ -54,12 +57,13 @@ export interface _ISubscriptions {
     add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult>;
 }
 
-export interface ISubscriptions extends _ISubscriptions, IInvokable, ISharePointQueryableCollection {}
+export interface ISubscriptions extends _ISubscriptions, IInvokable, ISharePointQueryableCollection { }
 
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
 export class _Subscription extends _SharePointQueryableInstance implements _ISubscription {
 
+    @clientTagMethod("sub.update")
     public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult> {
 
         const postBody: any = {};
@@ -77,9 +81,11 @@ export class _Subscription extends _SharePointQueryableInstance implements _ISub
         }
 
         const data = await spPatch(this, body(postBody, headers({ "Content-Type": "application/json" })));
+
         return { data, subscription: this };
     }
 
+    @clientTagMethod("sub.delete")
     public delete(): Promise<void> {
         return spDelete(this);
     }
@@ -105,7 +111,7 @@ export interface _ISubscription {
     delete(): Promise<void>;
 }
 
-export interface ISubscription extends _ISubscription, IInvokable, ISharePointQueryableInstance {}
+export interface ISubscription extends _ISubscription, IInvokable, ISharePointQueryableInstance { }
 
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
