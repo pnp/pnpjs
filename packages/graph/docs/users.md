@@ -36,3 +36,13 @@ import "@pnp/graph/src/users";
 
 const matchingUser = await graph.users.getById('jane@contoso.com');
 ```
+
+## Update Current User
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/src/users";
+
+await graph.me.update({
+    displayName: 'John Doe'
+});
+```
