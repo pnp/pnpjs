@@ -61,13 +61,12 @@ export interface _IFeatures {
      * @param id The Id of the feature (GUID)	    
      */
     getById(id: string): IFeature;
-    
     /**
      * Removes (deactivates) a feature from the collection
      *
      * @param id The Id of the feature (GUID)
      * @param force If true the feature deactivation will be forced
-     */    
+     */
     remove(id: string, force?: boolean): Promise<any>;
 }
 
