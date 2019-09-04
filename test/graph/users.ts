@@ -1,7 +1,7 @@
 import { testSettings } from "../main";
 import {graph } from "@pnp/graph";
 import "@pnp/graph/src/users";
-import "@pnp/graph/presets";
+import "@pnp/graph/presets/all";
 import { expect } from "chai";
 
 describe("Users", function () {
