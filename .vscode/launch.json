@@ -31,10 +31,7 @@
 			"cwd": "${workspaceRoot}",
 			"sourceMaps": true,
 			"outFiles": [],
-			"args": [
-				"--pnp-test-site",
-				"https://318studios.sharepoint.com/sites/dev/DQjh3o"
-			]
+			"args": []
 		},
 		{
 			"name": "Debug Build System",

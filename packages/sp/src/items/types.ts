@@ -213,7 +213,7 @@ export const Items = spInvokableFactory<IItems>(_Items);
  * Descrines a single Item instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("i")
 export class _Item extends _SharePointQueryableInstance implements IItem {
 
     /**
@@ -356,8 +356,8 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
     /**
      * Get the like by information for a modern site page     
      */
-    public getLikedByInformation(): Promise<void> {
-        return this.clone(Item, "likedByInformation").expand("likedby")();
+    public getLikedByInformation(): Promise<ILikedByInformation> {
+        return this.clone(Item, "likedByInformation").expand("likedby")<ILikedByInformation>();
     }
 
     /**
@@ -460,7 +460,7 @@ export interface IItem extends IInvokable, ISharePointQueryableInstance, IDelete
     /**
      * Get the like by information for a modern site page     
      */
-    getLikedByInformation(): Promise<void>;
+    getLikedByInformation(): Promise<ILikedByInformation>;
 }
 export interface _Item extends IInvokable, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);
@@ -477,6 +477,18 @@ export interface IItemUpdateResult {
 
 export interface IItemUpdateResultData {
     "odata.etag": string;
+}
+
+export interface ILikedByInformation {
+    likedBy: {
+        creationDate: string;
+        email: string;
+        id: number;
+        loginName: string;
+        name: string;
+    }[];
+    isLikedByUser: boolean;
+    likeCount: number;
 }
 
 /**
@@ -505,7 +517,7 @@ export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
  * Describes a single Version instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("iv")
 export class _ItemVersion extends _SharePointQueryableInstance {}
 
 export interface IItemVersion extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}

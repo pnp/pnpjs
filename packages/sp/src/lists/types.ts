@@ -13,44 +13,23 @@ import {
 import { IChangeQuery } from "../types";
 import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
-import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
+import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
 
-/**
- * Describes a collection of List objects
- *
- */
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection implements _ILists {
 
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
     public getById(id: string): IList {
-        return List(this).concat(`('${id}')`);
+
+        return clientTagMethod.configure(List(this).concat(`('${id}')`), "l.getById");
     }
 
-    /**
-     * Gets a list from the collection by title
-     *
-     * @param title The title of the list
-     */
     public getByTitle(title: string): IList {
-        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
+        return clientTagMethod.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "l.getByTitle");
     }
 
-    /**
-     * Adds a new list to the collection
-     *
-     * @param title The new list's title
-     * @param desc The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body
-     */
+    @clientTagMethod("ls.add")
     public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListAddResult> {
 
         const addSettings = Object.assign({
@@ -66,16 +45,8 @@ export class _Lists extends _SharePointQueryableCollection implements _ILists {
         return { data, list: this.getByTitle(addSettings.Title) };
     }
 
-    /**
-     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
-     *
-     * @param title The new list's title
-     * @param desc The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
-     */
-    public ensure(
+    @clientTagMethod("ls.ensure")
+    public async ensure(
         title: string,
         desc = "",
         template = 100,
@@ -107,17 +78,13 @@ export class _Lists extends _SharePointQueryableCollection implements _ILists {
         });
     }
 
-    /**
-     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
-     */
+    @clientTagMethod("ls.ensureSiteAssetsLibrary")
     public async ensureSiteAssetsLibrary(): Promise<IList> {
         const json = await spPost(this.clone(Lists, "ensuresiteassetslibrary"));
         return List(odataUrlFrom(json));
     }
 
-    /**
-     * Gets a list that is the default location for wiki pages.
-     */
+    @clientTagMethod("ls.ensureSitePagesLibrary")
     public async ensureSitePagesLibrary(): Promise<IList> {
         const json = await spPost(this.clone(Lists, "ensuresitepageslibrary"));
         return List(odataUrlFrom(json));
@@ -176,51 +143,26 @@ export interface ILists extends _ILists, IInvokable, ISharePointQueryableCollect
 
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
-/**
- * Describes a single List instance
- *
- */
-@deleteableWithETag()
+@deleteableWithETag("l")
 export class _List extends _SharePointQueryableInstance implements _IList {
 
-    /**
-     * Gets the effective base permissions of this list
-     *
-     */
     public get effectiveBasePermissions(): ISharePointQueryable {
         return SharePointQueryable(this, "EffectiveBasePermissions");
     }
 
-    /**
-     * Gets the event receivers attached to this list
-     *
-     */
     public get eventReceivers(): ISharePointQueryableCollection {
         return SharePointQueryableCollection(this, "EventReceivers");
     }
 
-    /**
-     * Gets the related fields of this list
-     *
-     */
     public get relatedFields(): ISharePointQueryable {
         return SharePointQueryable(this, "getRelatedFields");
     }
 
-    /**
-     * Gets the IRM settings for this list
-     *
-     */
     public get informationRightsManagementSettings(): ISharePointQueryable {
         return SharePointQueryable(this, "InformationRightsManagementSettings");
     }
 
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
+    @clientTagMethod("l.update")
     public async update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<IListUpdateResult> {
 
         const postBody = body(assign({
@@ -243,61 +185,34 @@ export class _List extends _SharePointQueryableInstance implements _IList {
             list,
         };
     }
-    /* tslint:enable */
 
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
-     */
+    @clientTagMethod("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
         return spPost(this.clone(List, "getchanges"), body({ query: assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
     }
 
-    /**
-     * Returns a collection of items from the list based on the specified query.
-     *
-     * @param CamlQuery The Query schema of Collaborative Application Markup
-     * Language (CAML) is used in various ways within the context of Microsoft SharePoint Foundation
-     * to define queries against list data.
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/ms467521.aspx
-     *
-     * @param expands A URI with a $expand System Query Option indicates that Entries associated with
-     * the Entry or Collection of Entries identified by the Resource Path
-     * section of the URI must be represented inline (i.e. eagerly loaded).
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/fp142385.aspx
-     *
-     * http://www.odata.org/documentation/odata-version-2-0/uri-conventions/#ExpandSystemQueryOption
-     */
+    @clientTagMethod("l.CAMLQuery")
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
         return spPost(q.expand.apply(q, expands), body({ "query": assign({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
     }
 
-    /**
-     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
-     */
+    @clientTagMethod("l.ChangesSinceToken")
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
         return spPost(o, body({ "query": assign({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
     }
 
-    /**
-     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
+    @clientTagMethod("l.recycle")
     public async recycle(): Promise<string> {
         const data = await spPost(this.clone(List, "recycle"));
         return hOP(data, "Recycle") ? data.Recycle : data;
     }
 
-    /**
-     * Renders list data based on the view xml provided
-     */
+    @clientTagMethod("l.renderListData")
     public async renderListData(viewXml: string): Promise<IRenderListData> {
 
         const q = this.clone(List, "renderlistdata(@viewXml)");
@@ -308,12 +223,7 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         return JSON.parse(hOP(data, "RenderListData") ? data.RenderListData : data);
     }
 
-    /**
-     * Returns the data for the specified query view
-     *
-     * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     */
+    @clientTagMethod("l.AsStream")
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null): Promise<any> {
 
         const postBody = body({
@@ -324,45 +234,32 @@ export class _List extends _SharePointQueryableInstance implements _IList {
         return spPost(this.clone(List, "RenderListDataAsStream", true), postBody);
     }
 
-    /**
-     * Gets the field values and field schema attributes for a list item.
-     */
+    @clientTagMethod("l.renderListFormData")
     public async renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<IListFormData> {
         const data = await spPost(this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`));
         // data will be a string, so we parse it again
         return JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data);
     }
 
-    /**
-     * Reserves a list item ID for idempotent list item creation.
-     */
+    @clientTagMethod("l.reserveListItemId")
     public async reserveListItemId(): Promise<number> {
         const data = await spPost(this.clone(List, "reservelistitemid"));
         return hOP(data, "ReserveListItemId") ? data.ReserveListItemId : data;
     }
 
-    /**
-     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
-     *
-     */
+    @clientTagMethod("l.getListItemEntityTypeFullName")
     public getListItemEntityTypeFullName(): Promise<string> {
         return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
     }
 
-    /**
-     * Creates an item using path (in a folder), validates and sets its field values.
-     *
-     * @param formValues The fields to change and their new values.
-     * @param decodedUrl Path decoded url; folder's server relative path.
-     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param checkInComment Optional check in comment.
-     */
+    @clientTagMethod("l.addValidateUpdateItemUsingPath")
     public async addValidateUpdateItemUsingPath(
         formValues: IListItemFormUpdateValue[],
         decodedUrl: string,
         bNewDocumentUpdate = false,
         checkInComment?: string,
     ): Promise<IListItemFormUpdateValue[]> {
+
         const res = await spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
             bNewDocumentUpdate,
             checkInComment,
@@ -416,13 +313,20 @@ export interface _IList {
 
     /**
      * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+     * @param query A query that is performed against the change log.
      */
     getChanges(query: IChangeQuery): Promise<any>;
 
+    /**
+     * Returns the collection of items in the list based on the provided CamlQuery
+     * @param query A query that is performed against the list
+     * @param expands An expanded array of n items that contains fields to expand in the CamlQuery
+     */
     getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any>;
 
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
+     * @param query An object that defines the change log item query
      */
     getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string>;
 
@@ -433,6 +337,7 @@ export interface _IList {
 
     /**
      * Renders list data based on the view xml provided
+     * @param viewXml A string object representing a view xml
      */
     renderListData(viewXml: string): Promise<IRenderListData>;
 
@@ -446,6 +351,9 @@ export interface _IList {
 
     /**
      * Gets the field values and field schema attributes for a list item.
+     * @param itemId Item id of the item to render form data for
+     * @param formId The id of the form
+     * @param mode Enum representing the control mode of the form (Display, Edit, New)
      */
     renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<IListFormData>;
 
@@ -471,20 +379,29 @@ export interface _IList {
     addValidateUpdateItemUsingPath(formValues: IListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, comment?: string): Promise<IListItemFormUpdateValue[]>;
 }
 
-export interface IList extends _IList, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}
+export interface IList extends _IList, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
 
 export const List = spInvokableFactory<IList>(_List);
 
+/**
+ * Represents the output of the add method
+ */
 export interface IListAddResult {
     list: IList;
     data: any;
 }
 
+/**
+ * Represents the output of the update method
+ */
 export interface IListUpdateResult {
     list: IList;
     data: any;
 }
 
+/**
+ * Represents the output of the ensure method
+ */
 export interface IListEnsureResult {
     list: IList;
     created: boolean;
@@ -567,6 +484,9 @@ export interface IChangeLogItemQuery {
     ViewName?: string;
 }
 
+/**
+ * Represents the output parameter of the renderListFormData method.
+ */
 export interface IListFormData {
     ContentType?: string;
     Title?: string;
@@ -619,6 +539,9 @@ export interface IListFormData {
     JSLinks?: string;
 }
 
+/**
+ * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
+ */
 export enum IRenderListDataOptions {
     None = 0,
     ContextInfo = 1,
@@ -638,7 +561,9 @@ export enum IRenderListDataOptions {
     PageContextInfo = 16384,
     ClientSideComponentManifest = 32768,
 }
-
+/**
+ * Represents the parameters to be used to render list data as JSON string in the RenderListDataAsStream method of IList.
+ */
 export interface IRenderListDataParameters {
     AllowMultipleValueFilterForTaxonomyFields?: boolean;
     DatesInUtc?: boolean;
@@ -679,6 +604,9 @@ export interface IListItemFormUpdateValue {
     HasException?: boolean;
 }
 
+/**
+ * Represents the output parameter of the renderListData method.
+ */
 export interface IRenderListData {
     Row: any[];
     FirstRow: number;

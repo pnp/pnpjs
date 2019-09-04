@@ -8,9 +8,7 @@
     "adal-node": "0.1.28",
     "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
-    "tslib": "1.9.3"
-  },
-  "peerDependencies": {
+    "tslib": "1.9.3",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER"
   },

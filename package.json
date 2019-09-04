@@ -49,13 +49,13 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "test": "nyc mocha",
+    "test": "npm run lint && mocha",
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
     "pnp-publish": "npm run package && pnpbuild -n publish",
     "pnp-publish-beta": "npm run package && pnpbuild -n publish-beta",
-    "lint": "tslint ./packages/**/*.ts",
+    "lint": "tslint ./packages/**/*.ts ./test/**/*.ts",
     "clean": "del-cli \"./?(dist|serve|site|build)\"",
     "serve": "ts-node -r tsconfig-paths/register ./tools/serve/serve.ts"
   },

@@ -12,6 +12,9 @@ import "@pnp/sp/src/user-custom-actions/web";
 import "@pnp/sp/src/security";
 import "@pnp/sp/src/appcatalog";
 import "@pnp/sp/src/related-items/web";
+import "@pnp/sp/src/fields/web";
+import "@pnp/sp/src/features/web";
+import "@pnp/sp/src/hubsites/web";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { IInvokableTest } from "../types";
@@ -202,7 +205,7 @@ describe("Web", () => {
 
             it(".getClientSideWebParts", async function () {
 
-                return expect(sp.web.getClientSideWebParts()).to.eventually.be.fulfilled;
+                return expect(sp.web.getClientsideWebParts()).to.eventually.be.fulfilled;
             });
 
             it(".addClientSidePage");
