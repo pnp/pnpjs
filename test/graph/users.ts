@@ -10,5 +10,9 @@ describe("Users", function () {
             const me = await graph.me();
             return expect(me).to.not.be.null;
         });
+        it("gets all users", async function() {
+            const users = await graph.users();
+            return expect(users).to.not.be.null;
+        });
     }
 });
