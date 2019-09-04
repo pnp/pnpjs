@@ -69,7 +69,7 @@ export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignm
  * Describes a role assignment
  *
  */
-@deleteable()
+@deleteable("ra")
 export class _RoleAssignment extends _SharePointQueryableInstance implements _IRoleAssignment {
 
     /**
@@ -178,7 +178,7 @@ export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinit
  * Describes a role definition
  *
  */
-@deleteable()
+@deleteable("rd")
 export class _RoleDefinition extends _SharePointQueryableInstance implements _IRoleDefinition {
 
     /**

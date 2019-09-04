@@ -92,7 +92,7 @@ export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationN
  * Represents an instance of a navigation node
  *
  */
-@deleteable()
+@deleteable("nn")
 export class _NavigationNode extends _SharePointQueryableInstance implements _INavigationNode {
 
     /**

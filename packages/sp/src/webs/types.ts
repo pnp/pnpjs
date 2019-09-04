@@ -76,7 +76,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  *
  */
 @defaultPath("_api/web")
-@deleteable()
+@deleteable("w")
 export class _Web extends _SharePointQueryableInstance implements _IWeb {
 
     public get webs(): IWebs {

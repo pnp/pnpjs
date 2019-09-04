@@ -10,6 +10,9 @@ declare module "../items/types" {
         readonly contentType: IContentType;
     }
     interface IItem {
+        /**
+         * The content type of this item
+         */
         readonly contentType: IContentType;
     }
 }
