@@ -4,7 +4,7 @@ import { spPost } from "../operations";
 
 declare module "../webs/types" {
     interface _Web {
-        hubSiteData(forceRefresh?: boolean): Promise<IHubSiteWebData>;
+        hubSiteData(forceRefresh?: boolean): Promise<Partial<IHubSiteWebData>>;
         syncHubSiteTheme(): Promise<void>;
     }
     interface IWeb {
@@ -16,7 +16,7 @@ declare module "../webs/types" {
          * When true, the cache is refreshed with the latest updates and then returned.
          * Use this if you just made changes and need to see those changes right away.
          */
-        hubSiteData(forceRefresh?: boolean): Promise<IHubSiteWebData>;
+        hubSiteData(forceRefresh?: boolean): Promise<Partial<IHubSiteWebData>>;
 
         /**
          * Applies theme updates from the parent hub site collection.
@@ -25,8 +25,9 @@ declare module "../webs/types" {
     }
 }
 
-_Web.prototype.hubSiteData = function (this: _Web, forceRefresh = false): Promise<IHubSiteWebData> {
-    return this.clone(Web, `hubSiteData(${forceRefresh})`)();
+_Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): Promise<Partial<IHubSiteWebData>> {
+    const data = await this.clone(Web, `hubSiteData(${forceRefresh})`)();
+    return JSON.parse(data);
 };
 
 _Web.prototype.syncHubSiteTheme = function (this: _Web): Promise<void> {

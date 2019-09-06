@@ -1,7 +1,6 @@
 import { SPRest } from "../rest";
 import { HubSites, IHubSites } from "./types";
 
-// extend everything if they include the root
 import "./site";
 import "./web";
 
@@ -14,11 +13,11 @@ export {
     IHubSites,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
+        /**
+         * Lists all of the subsites
+         */
         readonly hubSites: IHubSites;
     }
 }

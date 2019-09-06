@@ -240,3 +240,15 @@ export interface IMenuNodeCollection {
     StartingNodeTitle: string;
     Version: Date;
 }
+
+export interface ISerializableNavigationNode {
+    Id: number;
+    Title: string;
+    Url: string;
+    IsDocLib: boolean;
+    IsExternal: boolean;
+    ParentId: number;
+    ListTemplateType: number;
+    AudienceIds: string[];
+    Children: ISerializableNavigationNode[];
+}

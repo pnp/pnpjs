@@ -43,7 +43,7 @@ export class SPHttpClient implements IRequestClient {
         if (!headers.has("X-ClientService-ClientTag")) {
 
             const methodName = clientTagMethod.getClientTag(headers);
-            let clientTag = `PnPjs:$$Version$$:${methodName}`;
+            let clientTag = `PnPCoreJS:$$Version$$:${methodName}`;
 
             if (clientTag.length > 32) {
                 clientTag = clientTag.substr(0, 32);

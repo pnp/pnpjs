@@ -7,7 +7,7 @@ import "@pnp/sp/src/lists";
 import "@pnp/sp/src/subscriptions";
 import { dateAdd } from "@pnp/common";
 
-describe.only("Subscriptions", function () {
+describe("Subscriptions", function () {
     if (testSettings.enableWebTests) {
 
         const listTitle = "Documents";
