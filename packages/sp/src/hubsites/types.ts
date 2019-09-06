@@ -6,35 +6,49 @@ import {
     spInvokableFactory,
     ISharePointQueryableInstance,
 } from "../sharepointqueryable";
-import { INavigationNode } from "../navigation/types";
-import { defaultPath } from "../decorators";
+import { ISerializableNavigationNode } from "../navigation/types";
+import { defaultPath, clientTagMethod } from "../decorators";
+import { Site, ISite } from "../sites/types";
 
 export interface IHubSiteData {
-    Id?: string;
-    Title?: string;
-    SiteId?: string;
-    TenantInstanceId?: string;
-    SiteUrl?: string;
-    LogoUrl?: string;
-    Description?: string;
-    Targets?: string;
+    ID: string;
+    Title: string;
+    SiteId: string;
+    TenantInstanceId: string;
+    SiteUrl: string;
+    LogoUrl: string;
+    Description: string;
+    Targets: string;
+    SiteDesignId: string;
+    RequiresJoinApproval: boolean;
+    RelatedHubSiteIds: string[];
+    ParentHubSiteId: string;
+    HideNameInNavigation: boolean;
+    EnablePermissionsSync: boolean;
 }
 
 export interface IHubSiteWebData {
-    ThemeKey: string;
-    Name: string;
-    Url: string;
-    LogoUrl: string;
-    UsesMetadataNavigation: boolean;
-    Navigation?: INavigationNode;
+    headerEmphasis: string | null;
+    themeKey: string | null;
+    name: string | null;
+    url: string;
+    logoUrl: string | null;
+    usesMetadataNavigation: boolean;
+    megaMenuEnabled: boolean;
+    navigation: ISerializableNavigationNode[];
+    isNavAudienceTargeted: boolean;
+    siteDesignId: string;
+    requiresJoinApproval: boolean;
+    hideNameInNavigation: boolean;
+    parentHubSiteId: string;
+    relatedHubSiteIds: string | null;
 }
 
-
 @defaultPath("_api/hubsites")
-export class _HubSites extends _SharePointQueryableCollection<IHubSiteData[]> implements _IHubSites {
+export class _HubSites extends _SharePointQueryableCollection<Partial<IHubSiteData>[]> implements _IHubSites {
 
     public getById(id: string): IHubSite {
-        return HubSite(this, `GetById?hubSiteId='${id}'`);
+        return clientTagMethod.configure(HubSite(this, `GetById?hubSiteId='${id}'`), "hss.getById");
 
     }
 }
@@ -57,12 +71,25 @@ export interface IHubSites extends _IHubSites, IInvokable, ISharePointQueryableC
 
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
-export class _HubSite extends _SharePointQueryableInstance<IHubSiteData> implements _IHubSite { }
+export class _HubSite extends _SharePointQueryableInstance<Partial<IHubSiteData>> implements _IHubSite {
+
+    @clientTagMethod("hs.getSite")
+    public async getSite(): Promise<ISite> {
+
+        const d = await this.select("SiteUrl")();
+        return Site(d.SiteUrl);
+    }
+}
 
 /**
  * Represents a hub site instance
  */
-export interface _IHubSite { }
+export interface _IHubSite {
+    /**
+     * Gets the ISite instance associated with this hubsite
+     */
+    getSite(): Promise<ISite>;
+}
 
 export interface IHubSite extends _IHubSite, IInvokable, ISharePointQueryableInstance<IHubSiteData> { }
 
