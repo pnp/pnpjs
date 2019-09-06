@@ -2,9 +2,6 @@ import { addProp } from "@pnp/odata";
 import { _Web } from "../webs/types";
 import { Features, IFeatures } from "./types";
 
-/**
- * Extend Web
- */
 declare module "../webs/types" {
     interface _Web {
         readonly features: IFeatures;
@@ -12,7 +9,7 @@ declare module "../webs/types" {
     interface IWeb {
 
         /**
-         * This web's collection of features
+         * Access the features activated in this web
          */
         readonly features: IFeatures;
     }

@@ -6,13 +6,14 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import { SPBatch } from "../batch";
 
 @defaultPath("features")
 export class _Features extends _SharePointQueryableCollection implements _IFeatures {
 
+    @clientTagMethod("fes.add")
     public async add(id: string, force = false): Promise<IFeatureAddResult> {
 
         const data = await spPost(this.clone(Features, "add"), body({
@@ -30,9 +31,10 @@ export class _Features extends _SharePointQueryableCollection implements _IFeatu
     public getById(id: string): IFeature {
         const feature = Feature(this);
         feature.concat(`('${id}')`);
-        return feature;
+        return clientTagMethod.configure(feature, "fes.getById");
     }
 
+    @clientTagMethod("fes.remove")
     public remove(id: string, force = false): Promise<any> {
 
         return spPost(this.clone(Features, "remove"), body({
@@ -79,6 +81,7 @@ export const Features = spInvokableFactory<IFeatures>(_Features);
 
 export class _Feature extends _SharePointQueryableInstance implements _IFeature {
 
+    @clientTagMethod("fe.deactivate")
     public async deactivate(force = false): Promise<any> {
 
         const removeDependency = this.addBatchDependency();
