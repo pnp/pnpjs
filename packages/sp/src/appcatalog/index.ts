@@ -2,10 +2,10 @@ import { SPRest } from "../rest";
 import { IWeb, Web } from "../webs/types";
 
 import "./web";
-import { SharePointQueryable } from "@pnp/sp/presets/all";
+import { SharePointQueryable } from "../sharepointqueryable";
 
 export {
-    AppAddResult,
+    IAppAddResult,
     IApp,
     IAppCatalog,
     App,

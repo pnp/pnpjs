@@ -4,6 +4,7 @@ import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
 import { metadata } from "./utils/metadata";
 import { spGet, spPost } from "./operations";
+import { clientTagMethod } from "./decorators";
 
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
@@ -261,7 +262,7 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
      * @param mapper 
      */
     protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return> {
-        return (props: any) => spPost(this, {
+        return (props: any) => spPost(clientTagMethod.configure(this, `${type}.Update`), {
             body: jsS(assign(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
