@@ -10,6 +10,9 @@ declare module "../lists/types" {
         readonly contentTypes: IContentTypes;
     }
     interface IList {
+        /**
+         * Content types available on this list
+         */
         readonly contentTypes: IContentTypes;
     }
 }

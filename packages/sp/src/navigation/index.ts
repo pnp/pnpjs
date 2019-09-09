@@ -17,6 +17,7 @@ export {
     NavigationService,
     IMenuNode,
     IMenuNodeCollection,
+    ISerializableNavigationNode,
 } from "./types";
 
 /**

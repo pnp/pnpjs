@@ -143,7 +143,7 @@ export interface ILists extends _ILists, IInvokable, ISharePointQueryableCollect
 
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
-@deleteableWithETag()
+@deleteableWithETag("l")
 export class _List extends _SharePointQueryableInstance implements _IList {
 
     public get effectiveBasePermissions(): ISharePointQueryable {

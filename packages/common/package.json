@@ -8,7 +8,6 @@
     "adal-angular": "1.0.17",
     "tslib": "1.9.3"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@types/adal-angular": "1.0.1"
   },

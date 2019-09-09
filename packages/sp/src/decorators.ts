@@ -27,12 +27,12 @@ export function defaultPath(path: string) {
 /**
  * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
-export function deleteable() {
+export function deleteable(tag: string) {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
             public delete(this: ISharePointQueryable): Promise<void> {
-                return spPostDelete(this);
+                return spPostDelete(clientTagMethod.configure(this, `${tag}.delete`));
             }
         };
     };
@@ -45,12 +45,12 @@ export interface IDeleteable {
     delete(): Promise<void>;
 }
 
-export function deleteableWithETag() {
+export function deleteableWithETag(tag: string) {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
             public delete(this: ISharePointQueryable, eTag = "*"): Promise<void> {
-                return spPostDelete(this, headers({
+                return spPostDelete(clientTagMethod.configure(this, `${tag}.delete`), headers({
                     "IF-Match": eTag,
                     "X-HTTP-Method": "DELETE",
                 }));
