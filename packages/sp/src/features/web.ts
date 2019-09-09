@@ -9,7 +9,7 @@ declare module "../webs/types" {
     interface IWeb {
 
         /**
-         * This web's collection of features
+         * Access the features activated in this web
          */
         readonly features: IFeatures;
     }

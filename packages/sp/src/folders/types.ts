@@ -64,7 +64,7 @@ export interface IFolders extends _IFolders, IInvokable, ISharePointQueryableCol
  */
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
-@deleteableWithETag()
+@deleteableWithETag("fo")
 export class _Folder extends _SharePointQueryableInstance implements _IFolder {
 
     public get contentTypeOrder(): ISharePointQueryableCollection {

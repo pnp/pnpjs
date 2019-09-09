@@ -213,7 +213,7 @@ export const Items = spInvokableFactory<IItems>(_Items);
  * Descrines a single Item instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("i")
 export class _Item extends _SharePointQueryableInstance implements IItem {
 
     /**
@@ -517,7 +517,7 @@ export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
  * Describes a single Version instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("iv")
 export class _ItemVersion extends _SharePointQueryableInstance {}
 
 export interface IItemVersion extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}

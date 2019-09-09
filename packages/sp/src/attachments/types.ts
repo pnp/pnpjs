@@ -95,7 +95,7 @@ export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
  * Describes a single attachment file instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("at")
 export class _Attachment extends _SharePointQueryableInstance implements _IAttachment {
 
     /**

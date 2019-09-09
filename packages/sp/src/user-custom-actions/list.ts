@@ -8,15 +8,14 @@ import { UserCustomActions, IUserCustomActions } from "./types";
 declare module "../lists/types" {
     interface _List {
         /**
-         * Get all custom actions on a site collection
-         *
+         * Get all custom actions on a list
          */
         readonly userCustomActions: IUserCustomActions;
     }
+
     interface IList {
         /**
-         * Get all custom actions on a site collection
-         *
+         * Get all custom actions on a list
          */
         readonly userCustomActions: IUserCustomActions;
     }

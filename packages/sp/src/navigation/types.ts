@@ -92,7 +92,7 @@ export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationN
  * Represents an instance of a navigation node
  *
  */
-@deleteable()
+@deleteable("nn")
 export class _NavigationNode extends _SharePointQueryableInstance implements _INavigationNode {
 
     /**
@@ -239,4 +239,16 @@ export interface IMenuNodeCollection {
     StartingNodeKey: string;
     StartingNodeTitle: string;
     Version: Date;
+}
+
+export interface ISerializableNavigationNode {
+    Id: number;
+    Title: string;
+    Url: string;
+    IsDocLib: boolean;
+    IsExternal: boolean;
+    ParentId: number;
+    ListTemplateType: number;
+    AudienceIds: string[];
+    Children: ISerializableNavigationNode[];
 }

@@ -1,23 +1,23 @@
 site_name: PnP/PnPjs
-docs_dir: 'packages'
+docs_dir: 'docs'
 nav:
   - Home: 'index.md'
-  - 'Getting Started': 'documentation/getting-started.md'
-  - 'Transition Guide': 'documentation/transition-guide.md'
+  - 'Getting Started': 'getting-started.md'
+  - 'Transition Guide': 'transition-guide.md'
   - General:
-    - 'Getting Started': 'documentation/getting-started.md'
-    - 'Getting Started Contributing': 'documentation/getting-started-dev.md'
-    - 'Gulp Commands': 'documentation/gulp-commands.md'
-    - Debugging: 'documentation/debugging.md'
-    - 'Building Docs': 'documentation/documentation.md'
-    - Deployment: 'documentation/deployment.md'
-    - 'Install Beta Versions': 'documentation/beta-versions.md'
-    - Polyfills: 'documentation/polyfill.md'
-    - 'Package Structure': 'documentation/package-structure.md'
-    - 'SPFx On-Premises 2016': 'documentation/SPFx-On-Premesis-2016.md'
-    - 'Transition Guide': 'documentation/transition-guide.md'
+    - 'Getting Started': 'getting-started.md'
+    - 'Getting Started Contributing': 'getting-started-dev.md'
+    - 'Gulp Commands': 'gulp-commands.md'
+    - Debugging: 'debugging.md'
+    - 'Building Docs': 'documentation.md'
+    - Deployment: 'deployment.md'
+    - 'Install Beta Versions': 'beta-versions.md'
+    - Polyfills: 'polyfill.md'
+    - 'Package Structure': 'package-structure.md'
+    - 'SPFx On-Premises 2016': 'SPFx-On-Premesis-2016.md'
+    - 'Transition Guide': 'transition-guide.md'
   - Packages:
-    - Packages: 'documentation/packages.md'
+    - Packages: 'packages.md'
     - common:
       - common: 'common/docs/index.md'
       - adalclient: 'common/docs/adalclient.md'
@@ -100,14 +100,14 @@ nav:
       - Utilities: 'sp-taxonomy/docs/utilities.md'
 theme:
   name: 'material'
-  custom_dir: 'packages/documentation/theme'
+  custom_dir: 'docs/theme'
   palette:
     primary: 'blue'
-  logo: 'documentation/img/Logo.png'
+  logo: 'docs/img/Logo.png'
   feature:
     tabs: true
 extra_css:
-  - 'documentation/css/extra.css'
+  - 'docs/css/extra.css'
 markdown_extensions:
   - admonition
   - codehilite:
@@ -118,7 +118,7 @@ plugins:
   - search
   - markdownextradata
 extra:
-  version: '1.2.8'
+  version: '2.0.0'
   social:
     - type: 'twitter'
       link: 'https://twitter.com/officedevpnp'

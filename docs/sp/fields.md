@@ -85,10 +85,8 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/fields";
 
-// define the schema for your new field
-const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" \
-      Name="MyField" DisplayName="My New Field" \
-      Type="Currency" Decimals="2" Min="0" Required="FALSE" Group="My Group" />`;
+// define the schema for your new field, in this case a date field with a default date of today.
+const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
 
 // create the new field in the web
 const field = await sp.web.fields.createFieldAsXml(testFieldSchema);
@@ -102,7 +100,7 @@ const r = await field.select("Id")();
 console.log(r.Id);
 ```
 
-### Add a Field
+### Add a New Field
 
 Use the add method to create a new field where you define the field type
 
@@ -118,6 +116,24 @@ const field = await sp.web.lists.getByTitle("My List").fields.add("My Field", "S
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.select("Id")();
+
+// log the field Id to console
+console.log(r.Id);
+```
+
+### Add a Site Field to a List
+
+Use the createFieldAsXml method to add a site field to a list.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/fields";
+
+// create a new field called 'My Field' in web.
+const field = await sp.web.fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
+// add the site field 'My Field' to the list 'My List'
+const fieldList = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(field.data.SchemaXml);
 
 // log the field Id to console
 console.log(r.Id);
@@ -410,10 +426,12 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/fields";
 
-// delete the field called 'My Field' from web, returns boolean
+// delete one or more fields from web, returns boolean
 const result = await sp.web.fields.getByTitle("My Field").delete();
-// delete the field called 'My Field' from list 'My List', returns boolean
+const result2 = await sp.web.fields.getByTitle("My Field 2").delete();
+// delete one or more fields from list 'My List', returns boolean
 const result = await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field").delete();
+const result2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field 2").delete();
 ```
 
 ### Update a Field

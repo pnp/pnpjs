@@ -98,7 +98,7 @@ export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
  * Describes a single user
  *
  */
-@deleteable()
+@deleteable("su")
 export class _SiteUser extends _SharePointQueryableInstance implements _ISiteUser {
 
     /**

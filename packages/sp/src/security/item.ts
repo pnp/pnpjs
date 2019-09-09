@@ -16,10 +16,8 @@ import {
 * Extend Item
 */
 declare module "../items/types" {
-    interface _Item extends ISecurableMethods {
-    }
-    interface IItem extends ISecurableMethods {
-    }
+    interface _Item extends ISecurableMethods { }
+    interface IItem extends ISecurableMethods { }
 }
 
 addProp(_Item, "roleAssignments", RoleAssignments);

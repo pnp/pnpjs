@@ -109,7 +109,7 @@ export const Files = spInvokableFactory<IFiles>(_Files);
  * Describes a single File instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("fi")
 export class _File extends _SharePointQueryableInstance implements _IFile {
 
     /**
@@ -531,7 +531,7 @@ export const Versions = spInvokableFactory<IVersions>(_Versions);
  * Describes a single Version instance
  *
  */
-@deleteableWithETag()
+@deleteableWithETag("ver")
 export class _Version extends _SharePointQueryableInstance implements _IVersion { }
 
 export interface _IVersion { }

@@ -1,5 +1,6 @@
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
+import "@pnp/sp/src/lists/web";
 import { SPFetchClient } from "@pnp/nodejs";
 
 import "@pnp/sp/src/webs";
@@ -29,20 +30,6 @@ export async function Example(settings: any) {
   // const f = await sp.social.isFollowed(actor);
   // const f = await sp.social.follow(actor);
   // const testFieldId = "060E50AC-E9C1-4D3C-B1F9-DE0BCAC300F6";
-
-  // const f = await sp.web.fields.getById(testFieldId);
-  // console.log(JSON.stringify(f, null, 2));
-  const testFieldSchema = '<Field ID="{060E50AC-E9C1-4D3C-B1F9-DE0BCAC300F6}" \
-          Name="Amount" \
-          DisplayName="Amount" \
-          Type="Currency" \
-          Decimals="2" \
-          Min="0" \
-          Required="FALSE" \
-          Group="Financial Columns" />';
-  const field = await sp.web.lists.getByTitle("Documents").fields.createFieldAsXml(testFieldSchema);
-  await sp.web.fields.getById("060E50AC-E9C1-4D3C-B1F9-DE0BCAC300F6").delete();
-
 
   process.exit();
 }

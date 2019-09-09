@@ -16,7 +16,7 @@ Thank You for your interest and willing spirit to contribute your personal time 
 5. Once you have completed the list of tasks for your selected v2 sub module, please submit a single Pull Request with all changes.
   
 ### Can I complete just one or two of the checklist tasks in a “2.0.0 Sub-Module” issue and submit a partial Pull Request?
-At this time we are asking for contributors to complete all the tasks listed in an issue before submitting a Pull Request. Unfortunately, based on the current team size and availability, the work efforts needed to process and cross-reference partial Pull Requests to individual tasks for a single sub module exceeds the available capacity at this time.
+At this time, we are asking for contributors to complete all the tasks listed in an issue before submitting a Pull Request. Unfortunately, based on the current team size and availability, the work efforts needed to process and cross-reference partial Pull Requests to individual tasks for a single sub module exceeds the available capacity at this time.
 
 ### As I'm working on a “2.0.0 Sub-Module”, if I need some guidance (ex: How complex should my tests be?), is there another “2.0.0 Sub-Module” I can examine for reference?
 Yes, please use the [[2.0.0] sub module: SP-webs](https://github.com/pnp/pnpjs/tree/dev-v2/packages/sp/src/webs) as an accurate form of guidance and reference.<BR>
