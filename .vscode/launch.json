@@ -1,62 +1,63 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "Debug",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/debug/launch/main.ts",
-			"args": [],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "build",
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"internalConsoleOptions": "openOnSessionStart",
-			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceRoot}/build/debugging/**/*.js"
-			]
-		},
-		{
-			"name": "Debug Tests",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-			"cwd": "${workspaceRoot}",
-			"sourceMaps": true,
-			"outFiles": [],
-			"args": []
-		},
-		{
-			"name": "Debug Build System",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
-			"args": [
-				"-n",
-				"package"
-			],
-			"cwd": "${workspaceRoot}",
-			"preLaunchTask": "build-buildsystem",
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"internalConsoleOptions": "openOnSessionStart",
-			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceRoot}/tools/buildsystem/**/*.js"
-			]
-		},
-	]
+  "version": "0.2.0",
+  "configurations": [{
+      "name": "Debug",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/debug/launch/main.ts",
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build",
+      "runtimeExecutable": null,
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/build/debugging/**/*.js"
+      ]
+    },
+    {
+      "name": "Debug Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "cwd": "${workspaceRoot}",
+      "sourceMaps": true,
+      "outFiles": [],
+      "args": ["--site",
+        "https://julieturner.sharepoint.com/sites/pnpjs"
+      ]
+    },
+    {
+      "name": "Debug Build System",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
+      "args": [
+        "-n",
+        "package"
+      ],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build-buildsystem",
+      "runtimeExecutable": null,
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/tools/buildsystem/**/*.js"
+      ]
+    },
+  ]
 }
