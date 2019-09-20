@@ -10,7 +10,7 @@ const send = <T>(operation: IOperation): (o: IGraphQueryable<T>, options?: IFetc
     return async function <R = T>(o: IGraphQueryable<R>, options?: IFetchOptions): Promise<R> {
 
         const data = cloneQueryableData(o.data);
-        const batchDependency = objectDefinedNotNull(data.batch) !== null ? data.batch.addDependency() : () => { return; };
+        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => { return; };
         const url = o.toUrlAndQuery();
 
         mergeOptions(data.options, options);

@@ -34,7 +34,7 @@ const allUsers = await graph.users();
 import { graph } from "@pnp/graph";
 import "@pnp/graph/src/users";
 
-const matchingUser = await graph.users.getById('jane@contoso.com');
+const matchingUser = await graph.users.getById('jane@contoso.com')();
 ```
 
 ## Update Current User
