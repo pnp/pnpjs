@@ -8,46 +8,25 @@ import {
 import { assign, TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body, headers } from "@pnp/odata";
-import { defaultPath, deleteable, IDeleteable } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 
-/**
- * Describes a collection of Field objects
- *
- */
 @defaultPath("fields")
 export class _Fields extends _SharePointQueryableCollection implements _IFields {
 
-  /**	
-   * Gets a field from the collection by id	
-   *	
-   * @param id The Id of the list	
-   */
   public getById(id: string): IField {
-    return Field(this); // .concat(`('${id}')`);
+    return clientTagMethod.configure(Field(this).concat(`('${id}')`), "fs.getById");
   }
 
-  /**
-   * Gets a field from the collection by title
-   *
-   * @param title The case-sensitive title of the field
-   */
   public getByTitle(title: string): IField {
-    return Field(this, `getByTitle('${title}')`);
+    return clientTagMethod.configure(Field(this, `getByTitle('${title}')`), "fs.getByTitle");
   }
 
-  /**
-   * Gets a field from the collection by using internal name or title
-   *
-   * @param name The case-sensitive internal name or title of the field
-   */
   public getByInternalNameOrTitle(name: string): IField {
-    return Field(this, `getByInternalNameOrTitle('${name}')`);
+    return clientTagMethod.configure(Field(this, `getByInternalNameOrTitle('${name}')`), "fs.getByInternalNameOrTitle");
   }
 
-  /**
-   * Creates a field based on the specified schema
-   */
+  @clientTagMethod("fs.createFieldAsXml")
   public async createFieldAsXml(xml: string | XmlSchemaFieldCreationInformation): Promise<FieldAddResult> {
 
     if (typeof xml === "string") {
@@ -62,39 +41,30 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     const data = await spPost<{ Id: string; }>(this.clone(Fields, "createfieldasxml"), postBody);
 
     return {
-      data: data,
+      data,
       field: this.getById(data.Id),
     };
   }
 
-  /**
-   * Adds a new field to the collection
-   *
-   * @param title The new field's title
-   * @param fieldType The new field's type (ex: SP.FieldText)
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
   public async add(title: string, fieldType: string, properties: IFieldCreationProperties & { FieldTypeKind: number }): Promise<FieldAddResult> {
 
     const postBody = body(Object.assign(metadata(fieldType), {
       "Title": title,
     }, properties));
 
+    if (!clientTagMethod.isTagged(this)) {
+      clientTagMethod.configure(this, "fs.add");
+    }
+
     const data = await spPost<{ Id: string; }>(this.clone(Fields, null), postBody);
 
     return {
-      data: data,
+      data,
       field: this.getById(data.Id),
     };
   }
 
-  /**
-   * Adds a new SP.FieldText to the collection
-   *
-   * @param title The field title
-   * @param maxLength The maximum number of characters allowed in the value of the field.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addText")
   public addText(title: string, maxLength = 255, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props: { FieldTypeKind: number, MaxLength: number } = {
@@ -105,15 +75,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldText", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldCalculated to the collection
-   *
-   * @param title The field title.
-   * @param formula The formula for the field.
-   * @param dateFormat The date and time format that is displayed in the field.
-   * @param outputType Specifies the output format for the field. Represents a FieldType value.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addCalculated")
   public addCalculated(
     title: string,
     formula: string,
@@ -136,15 +98,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldCalculated", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldDateTime to the collection
-   *
-   * @param title The field title
-   * @param displayFormat The format of the date and time that is displayed in the field.
-   * @param calendarType Specifies the calendar type of the field.
-   * @param friendlyDisplayFormat The type of friendly display format that is used in the field.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addDateTime")
   public addDateTime(
     title: string,
     displayFormat: DateTimeFieldFormatType = DateTimeFieldFormatType.DateOnly,
@@ -162,14 +116,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldDateTime", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldNumber to the collection
-   *
-   * @param title The field title
-   * @param minValue The field's minimum value
-   * @param maxValue The field's maximum value
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addNumber")
   public addNumber(
     title: string,
     minValue?: number,
@@ -189,15 +136,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldNumber", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldCurrency to the collection
-   *
-   * @param title The field title
-   * @param minValue The field's minimum value
-   * @param maxValue The field's maximum value
-   * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addCurrency")
   public addCurrency(
     title: string,
     minValue?: number,
@@ -221,18 +160,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldCurrency", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldMultiLineText to the collection
-   *
-   * @param title The field title
-   * @param numberOfLines Specifies the number of lines of text to display for the field.
-   * @param richText Specifies whether the field supports rich formatting.
-   * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
-   * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
-   * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   *
-   */
+  @clientTagMethod("fs.addMultilineText")
   public addMultilineText(
     title: string,
     numberOfLines = 6,
@@ -254,15 +182,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldMultiLineText", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldUrl to the collection
-   *
-   * @param title The field title
-   */
-  public addUrl(
-    title: string,
-    displayFormat: UrlFieldFormatType = UrlFieldFormatType.Hyperlink,
-    properties?: IFieldCreationProperties): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addUrl")
+  public addUrl(title: string, displayFormat: UrlFieldFormatType = UrlFieldFormatType.Hyperlink, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props = {
       DisplayFormat: displayFormat,
@@ -272,16 +193,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldUrl", assign(props, properties));
   }
 
-  /** Adds a user field to the colleciton
-  * 
-  * @param title The new field's title
-  * @param selectionMode The selection mode of the field
-  * @param selectionGroup Value that specifies the identifier of the SharePoint group whose members can be selected as values of the field
-  * @param properties
-  */
-  public addUser(title: string,
-    selectionMode: FieldUserSelectionMode,
-    properties?: IFieldCreationProperties): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addUser")
+  public addUser(title: string, selectionMode: FieldUserSelectionMode, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props = {
       FieldTypeKind: 20,
@@ -291,14 +204,7 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldUser", assign(props, properties));
   }
 
-  /**
-   * Adds a SP.FieldLookup to the collection
-   *
-   * @param title The new field's title
-   * @param lookupListId The guid id of the list where the source of the lookup is found
-   * @param lookupFieldName The internal name of the field in the source list
-   * @param properties Set of additional properties to set on the new field
-   */
+  @clientTagMethod("fs.addLookup")
   public async addLookup(
     title: string,
     lookupListId: string,
@@ -320,20 +226,12 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     const data = await spPost<{ Id: string; }>(this.clone(Fields, "addfield"), postBody);
 
     return {
-      data: data,
+      data,
       field: this.getById(data.Id),
     };
   }
 
-  /**
-   * Adds a new SP.FieldChoice to the collection
-   *
-   * @param title The field title.
-   * @param choices The choices for the field.
-   * @param format The display format of the available options for the field.
-   * @param fillIn Specifies whether the field allows fill-in values.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+  @clientTagMethod("fs.addChoice")
   public addChoice(
     title: string,
     choices: string[],
@@ -353,19 +251,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldChoice", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldMultiChoice to the collection
-   *
-   * @param title The field title.
-   * @param choices The choices for the field.
-   * @param fillIn Specifies whether the field allows fill-in values.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
-  public addMultiChoice(
-    title: string,
-    choices: string[],
-    fillIn?: boolean,
-    properties?: IFieldCreationProperties): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addMultiChoice")
+  public addMultiChoice(title: string, choices: string[], fillIn?: boolean, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props = {
       Choices: {
@@ -378,15 +265,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.FieldMultiChoice", assign(props, properties));
   }
 
-  /**
-   * Adds a new SP.FieldBoolean to the collection
-   *
-   * @param title The field title.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
-  public addBoolean(
-    title: string,
-    properties?: IFieldCreationProperties): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addBoolean")
+  public addBoolean(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props = {
       FieldTypeKind: 8,
@@ -395,18 +275,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     return this.add(title, "SP.Field", assign(props, properties));
   }
 
-  /**
-  * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
-  * 
-  * @param displayName The display name of the new field.
-  * @param primaryLookupFieldId The guid of the primary Lookup Field.
-  * @param showField Which field to show from the lookup list.
-  */
-  public async addDependentLookupField(
-    displayName: string,
-    primaryLookupFieldId: string,
-    showField: string,
-  ): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addDependentLookupField")
+  public async addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult> {
 
     const path = `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`;
 
@@ -418,15 +288,8 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
     };
   }
 
-  /**
-   * Adds a new SP.FieldLocation to the collection
-   *
-   * @param title The field title.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
-  public addLocation(
-    title: string,
-    properties?: IFieldCreationProperties): Promise<FieldAddResult> {
+  @clientTagMethod("fs.addLocation")
+  public addLocation(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult> {
 
     const props = { FieldTypeKind: 33 };
 
@@ -434,22 +297,107 @@ export class _Fields extends _SharePointQueryableCollection implements _IFields 
   }
 }
 
+/**
+ * Describes a collection of Field objects
+ *
+ */
 export interface _IFields {
+  /**	
+   * Gets a field from the collection by id	
+   *	
+   * @param id The Id of the list	
+   */
   getById(id: string): IField;
+  /**
+   * Gets a field from the collection by title
+   *
+   * @param title The case-sensitive title of the field
+   */
   getByTitle(title: string): IField;
+  /**
+   * Gets a field from the collection by using internal name or title
+   *
+   * @param name The case-sensitive internal name or title of the field
+   */
   getByInternalNameOrTitle(name: string): IField;
+  /**
+   * Creates a field based on the specified schema
+   * 
+   * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
+   */
   createFieldAsXml(xml: string | XmlSchemaFieldCreationInformation): Promise<FieldAddResult>;
+  /**
+   * Adds a new field to the collection
+   *
+   * @param title The new field's title
+   * @param fieldType The new field's type (ex: SP.FieldText)
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   add(title: string, fieldType: string, properties: IFieldCreationProperties & { FieldTypeKind: number }): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldText to the collection
+   *
+   * @param title The field title
+   * @param maxLength The maximum number of characters allowed in the value of the field.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addText(title: string, maxLength?: number, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldCalculated to the collection
+   *
+   * @param title The field title.
+   * @param formula The formula for the field.
+   * @param dateFormat The date and time format that is displayed in the field.
+   * @param outputType Specifies the output format for the field. Represents a FieldType value.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addCalculated(title: string, formula: string, dateFormat: DateTimeFieldFormatType, outputType?: FieldTypes, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldDateTime to the collection
+   *
+   * @param title The field title
+   * @param displayFormat The format of the date and time that is displayed in the field.
+   * @param calendarType Specifies the calendar type of the field.
+   * @param friendlyDisplayFormat The type of friendly display format that is used in the field.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addDateTime(
     title: string,
     displayFormat?: DateTimeFieldFormatType,
     calendarType?: CalendarType,
     friendlyDisplayFormat?: DateTimeFieldFriendlyFormatType,
     properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldNumber to the collection
+   *
+   * @param title The field title
+   * @param minValue The field's minimum value
+   * @param maxValue The field's maximum value
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addNumber(title: string, minValue?: number, maxValue?: number, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldCurrency to the collection
+   *
+   * @param title The field title
+   * @param minValue The field's minimum value
+   * @param maxValue The field's maximum value
+   * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addCurrency(title: string, minValue?: number, maxValue?: number, currencyLocalId?: number, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldMultiLineText to the collection
+   *
+   * @param title The field title
+   * @param numberOfLines Specifies the number of lines of text to display for the field.
+   * @param richText Specifies whether the field supports rich formatting.
+   * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
+   * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
+   * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   *
+   */
   addMultilineText(
     title: string,
     numberOfLines?: number,
@@ -458,36 +406,78 @@ export interface _IFields {
     appendOnly?: boolean,
     allowHyperlink?: boolean,
     properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldUrl to the collection
+   *
+   * @param title The field title
+   */
   addUrl(title: string, displayFormat?: UrlFieldFormatType, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /** Adds a user field to the colleciton
+  * 
+  * @param title The new field's title
+  * @param selectionMode The selection mode of the field
+  * @param selectionGroup Value that specifies the identifier of the SharePoint group whose members can be selected as values of the field
+  * @param properties
+  */
   addUser(title: string, selectionMode: FieldUserSelectionMode, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a SP.FieldLookup to the collection
+   *
+   * @param title The new field's title
+   * @param lookupListId The guid id of the list where the source of the lookup is found
+   * @param lookupFieldName The internal name of the field in the source list
+   * @param properties Set of additional properties to set on the new field
+   */
   addLookup(title: string, lookupListId: string, lookupFieldName: string, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldChoice to the collection
+   *
+   * @param title The field title.
+   * @param choices The choices for the field.
+   * @param format The display format of the available options for the field.
+   * @param fillIn Specifies whether the field allows fill-in values.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addChoice(title: string, choices: string[], format?: ChoiceFieldFormatType, fillIn?: boolean, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldMultiChoice to the collection
+   *
+   * @param title The field title.
+   * @param choices The choices for the field.
+   * @param fillIn Specifies whether the field allows fill-in values.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addMultiChoice(title: string, choices: string[], fillIn?: boolean, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldBoolean to the collection
+   *
+   * @param title The field title.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addBoolean(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
+  /**
+  * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
+  * 
+  * @param displayName The display name of the new field.
+  * @param primaryLookupFieldId The guid of the primary Lookup Field.
+  * @param showField Which field to show from the lookup list.
+  */
   addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
+  /**
+   * Adds a new SP.FieldLocation to the collection
+   *
+   * @param title The field title.
+   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+   */
   addLocation(title: string, properties?: IFieldCreationProperties): Promise<FieldAddResult>;
 }
 
 export interface IFields extends _IFields, IInvokable, ISharePointQueryableCollection { }
-
-/**
- * Invokable factory for IFields instances
- */
 export const Fields = spInvokableFactory<IFields>(_Fields);
 
-/**
- * Describes a single of Field instance
- *
- */
-@deleteable("f")
 export class _Field extends _SharePointQueryableInstance implements _IField {
 
-  /**
-   * Updates this field instance with the supplied properties
-   *
-   * @param properties A plain object hash of values to update for the list
-   * @param fieldType The type value, required to update child field type properties
-   */
+  @clientTagMethod("f.update")
   public async update(properties: TypedHash<string | number | boolean>, fieldType = "SP.Field"): Promise<FieldUpdateResult> {
 
     const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
@@ -500,40 +490,49 @@ export class _Field extends _SharePointQueryableInstance implements _IField {
     };
   }
 
-  /**
-   * Sets the value of the ShowInDisplayForm property for this field.
-   */
+  @clientTagMethod("f.setShowInDisplayForm")
   public setShowInDisplayForm(show: boolean): Promise<void> {
     return spPost(this.clone(Field, `setshowindisplayform(${show})`));
   }
 
-  /**
-   * Sets the value of the ShowInEditForm property for this field.
-   */
+  @clientTagMethod("f.setShowInEditForm")
   public setShowInEditForm(show: boolean): Promise<void> {
     return spPost(this.clone(Field, `setshowineditform(${show})`));
   }
 
-  /**
-   * Sets the value of the ShowInNewForm property for this field.
-   */
+  @clientTagMethod("f.setShowInNewForm")
   public setShowInNewForm(show: boolean): Promise<void> {
     return spPost(this.clone(Field, `setshowinnewform(${show})`));
   }
 }
 
+/**
+ * Describes a single of Field instance
+ *
+ */
 export interface _IField {
+  /**
+   * Updates this field instance with the supplied properties
+   *
+   * @param properties A plain object hash of values to update for the list
+   * @param fieldType The type value, required to update child field type properties
+   */
   update(properties: TypedHash<string | number | boolean>, fieldType?: string): Promise<FieldUpdateResult>;
+  /**
+   * Sets the value of the ShowInDisplayForm property for this field.
+   */
   setShowInDisplayForm(show: boolean): Promise<void>;
+  /**
+   * Sets the value of the ShowInEditForm property for this field.
+   */
   setShowInEditForm(show: boolean): Promise<void>;
+  /**
+   * Sets the value of the ShowInNewForm property for this field.
+   */
   setShowInNewForm(show: boolean): Promise<void>;
 }
 
-export interface IField extends _IField, IInvokable, ISharePointQueryableInstance, IDeleteable { }
-
-/**
- * Invokable factory for IField instances
- */
+export interface IField extends _IField, IInvokable, ISharePointQueryableInstance { }
 export const Field = spInvokableFactory<IField>(_Field);
 
 /**
@@ -544,6 +543,9 @@ export interface FieldAddResult {
   field: IField;
 }
 
+/**
+ * This interface defines the result of updating a field
+ */
 export interface FieldUpdateResult {
   data: any;
   field: IField;

@@ -30,9 +30,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["--site",
-        "https://julieturner.sharepoint.com/sites/pnpjs"
-      ]
+      "args": []
     },
     {
       "name": "Debug Build System",

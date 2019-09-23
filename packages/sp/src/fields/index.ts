@@ -1,4 +1,3 @@
-// extend everything if they include the root
 import "./web";
 import "./list";
 import "./web";
