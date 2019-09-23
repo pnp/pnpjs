@@ -109,6 +109,9 @@ clientTagMethod.getClientTag = (h: Headers, deleteFromCollection = true): string
 clientTagMethod.configure = <T extends ISharePointQueryable>(o: T, name: string): T => {
     return o.configure(headers({ "X-PnPjs-Tracking": name }));
 };
+clientTagMethod.isTagged = <T extends ISharePointQueryable>(o: T): T => {
+    return o.data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
+};
 
  // TODO::?
 // performance tracking method decorator

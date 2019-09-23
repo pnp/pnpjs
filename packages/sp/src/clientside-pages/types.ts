@@ -1,5 +1,5 @@
 import { invokableFactory, body, headers } from "@pnp/odata";
-import { TypedHash, assign, getGUID, jsS, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
+import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
 import { Item, IItemUpdateResult, IItem, ILikedByInformation } from "../items/types";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
@@ -309,9 +309,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), {
-            body: jsS(metadata("SP.Publishing.SitePage")),
-        });
+        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), body(metadata("SP.Publishing.SitePage")));
 
         this.fromJSON(d);
     }
