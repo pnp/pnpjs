@@ -3,7 +3,7 @@ import { spPost } from "../operations";
 import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
 import { extractWebUrl } from "../utils/extractweburl";
 import { clientTagMethod } from "../decorators";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts {
 

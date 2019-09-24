@@ -12,7 +12,7 @@ import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath, IDeleteableWithETag, deleteableWithETag } from "../decorators";
 import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 export interface IFileUploadProgressData {
     uploadId: string;

@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
 import { _Web } from "../webs/types";
 import { Folders, IFolders, Folder, IFolder } from "./types";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 declare module "../webs/types" {
     interface _Web {

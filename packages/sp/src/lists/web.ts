@@ -3,7 +3,7 @@ import { _Web, Web } from "../webs/types";
 import { Lists, ILists, IList, List } from "./types";
 import { odataUrlFrom } from "../odata";
 import { ISharePointQueryableCollection, SharePointQueryableCollection } from "../sharepointqueryable";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 declare module "../webs/types" {
     interface _Web {

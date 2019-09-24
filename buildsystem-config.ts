@@ -3,7 +3,6 @@ import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } fr
 
 export default <ConfigCollection>[
     <BuildSchema>{
-        exclude: ["documentation"],
 
         name: "build",
 

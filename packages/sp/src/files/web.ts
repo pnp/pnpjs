@@ -1,6 +1,6 @@
 import { _Web } from "../webs/types";
 import { File, IFile } from "./types";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 declare module "../webs/types" {
     interface _Web {

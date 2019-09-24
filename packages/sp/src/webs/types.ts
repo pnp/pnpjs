@@ -16,7 +16,7 @@ import { SPBatch } from "../batch";
 import { metadata } from "../utils/metadata";
 import { Site, IOpenWebByIdResult } from "../sites";
 import { spPost, spGet } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 @defaultPath("webs")
 export class _Webs extends _SharePointQueryableCollection implements _IWebs {
