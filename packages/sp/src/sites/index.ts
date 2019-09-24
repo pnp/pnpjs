@@ -9,9 +9,6 @@ export {
     IDocumentLibraryInformation,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly site: ISite;
@@ -25,4 +22,3 @@ Reflect.defineProperty(SPRest.prototype, "site", {
         return Site(this._baseUrl).configure(this._options);
     },
 });
-

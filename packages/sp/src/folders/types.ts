@@ -15,7 +15,7 @@ import { IItem, Item } from "../items/types";
 import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection implements _IFolders {

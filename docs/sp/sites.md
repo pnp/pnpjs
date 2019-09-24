@@ -7,14 +7,12 @@ Site collection are one of the fundamental entry points while working with Share
 Using the library, you can get the context information of the current site collection
 
 ```Typescript
-
 import { sp } from "@pnp/sp";
-import { IContextInfo } from '@pnp/sp/src/sites';
+import "@pnp/sp/src/sites";
+import { IContextInfo } from "@pnp/sp/src/sites";
 
 const oContext: IContextInfo = await sp.site.getContextInfo();
 console.log(oContext.FormDigestValue);
-      
-
 ```
 
 ## Get document libraries of a web
@@ -25,7 +23,8 @@ Using the library, you can get a list of the document libraries present in the a
 
 ```Typescript
 import { sp } from "@pnp/sp";
-import { IDocumentLibraryInformation } from '@pnp/sp/src/sites';
+import "@pnp/sp/src/sites";
+import { IDocumentLibraryInformation } from "@pnp/sp/src/sites";
 
 const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries("https://tenant.sharepoint.com/sites/test/subsite");
 
@@ -33,7 +32,6 @@ const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibrarie
 docLibs.forEach((docLib: IDocumentLibraryInformation) => {
     // do something with each library
 });
-
 ```
 
 ## Open Web By Id
@@ -41,13 +39,16 @@ docLibs.forEach((docLib: IDocumentLibraryInformation) => {
 Because this method is a POST request you can chain off it directly. You will get back the full web properties in the data property of the return object. You can also chain directly off the returned Web instance on the web property.
 
 ```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
+
 const w = await sp.site.openWebById("111ca453-90f5-482e-a381-cee1ff383c9e");
 
-    //we got all the data from the web as well
-    console.log(w.data);
+//we got all the data from the web as well
+console.log(w.data);
 
-    // we can chain
-    const w2 = await w.web.select("Title").get();
+// we can chain
+const w2 = await w.web.select("Title").get();
 ```
 
 ## Get site collection url from page
@@ -55,16 +56,29 @@ const w = await sp.site.openWebById("111ca453-90f5-482e-a381-cee1ff383c9e");
 Using the library, you can get the site collection url by providing a page url
 
 ```TypeScript
-
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
 
 const d: string = await sp.site.getWebUrlFromPageUrl("https://tenant.sharepoint.com/sites/test/Pages/test.aspx");
 
 console.log(d); //https://tenant.sharepoint.com/sites/test
-       
 ```
 
+## Access the root web
 
+There are two methods to access the root web. The first, using the rootWeb property, is best for directly accessing information about that web. If you want to chain multiple operations off of the web, better to use the getRootWeb method that will ensure the web instance is created using its own Url vs. "_api/sites/rootweb" which does not work for all operations.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
+
+// use for rootweb information access
+const rootwebData = await sp.sites.rootWeb();
+
+// use for chaining
+const rootweb = await sp.sites.getRootWeb();
+const listData = await rootWeb.lists.getByTitle("MyList")();
+```
 
 ## Create a modern communication site
 
@@ -79,7 +93,7 @@ Creates a modern communication site.
 | shareByEmailEnabled | boolean | yes | If set to true, it will enable sharing files via Email. By default it is set to false |
 | url | string | yes | The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site. |
 | description | string | no | The description of the communication site. |
-| classification | string | no | The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+| classification | string | no | The Site classification to use. For instance "Contoso Classified". See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
 | siteDesignId | string | no | The Guid of the site design to be used. 
 ||||You can use the below default OOTB GUIDs: 
 ||||Topic: null
@@ -91,6 +105,7 @@ Creates a modern communication site.
 ```TypeScript
 
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
 
 const s = await sp.site.createCommunicationSite(
             "Title",
@@ -107,7 +122,6 @@ const s = await sp.site.createCommunicationSite(
 
 ## Create a modern team site
 
-
 **Note:** Works only in SharePoint online. It wont work with App only tokens
 
 Creates a modern team site backed by O365 group.
@@ -119,7 +133,7 @@ Creates a modern team site backed by O365 group.
 | isPublic | boolean | yes | Defines whether the Office 365 Group will be public (default), or private. |
 | lcid | number | yes | The language to use for the site. If not specified will default to English (1033). |
 | description | string | no | The description of the modern team site. |
-| classification | string | no | The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+| classification | string | no | The Site classification to use. For instance "Contoso Classified". See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
 | owners | string array (string[]) | no | The Owners of the site to be created
 |hubSiteId|	string	| no | The Guid of the already existing Hub site
 | siteDesignId | string | no | The Guid of the site design to be used. 
@@ -131,6 +145,7 @@ Creates a modern team site backed by O365 group.
 ```TypeScript
 
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
 
 const d = await sp.site.createModernTeamSite(
         "displayName",
@@ -145,8 +160,6 @@ const d = await sp.site.createModernTeamSite(
         );
 
 console.log(d);
-        
-
 ```
 
 ## Delete a site collection
@@ -155,6 +168,7 @@ Using the library, you can delete a specific site collection
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/sites";
 import { Site } from "@pnp/sp/src/sites";
 
 // Delete the current site

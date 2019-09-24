@@ -1,5 +1,5 @@
 import { SharePointQueryable, _SharePointQueryableInstance, ISharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { Web, IWeb } from "../webs/types";
 import { hOP, jsS, assign } from "@pnp/common";
 import { SPHttpClient } from "../net/sphttpclient";
@@ -7,26 +7,23 @@ import { IInvokable, body, headers } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";
 import { SPBatch } from "../batch";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
-/**
- * Describes a site collection
- *
- */
 @defaultPath("_api/site")
 export class _Site extends _SharePointQueryableInstance implements _ISite {
 
     public get rootWeb(): IWeb {
-        return Web(this, "rootweb");
+        return clientTagMethod.configure(Web(this, "rootweb"), "si.rootWeb");
     }
 
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return Web(web.Url);
+        return clientTagMethod.configure(Web(web.Url), "si.getRootWeb");
     }
 
     public async getContextInfo(): Promise<IContextInfo> {
 
-        const q = Site(this.parentUrl, "_api/contextinfo");
+        const q = clientTagMethod.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
         const data = await spPost(q);
 
         if (hOP(data, "GetContextWebInformation")) {
@@ -38,59 +35,34 @@ export class _Site extends _SharePointQueryableInstance implements _ISite {
         }
     }
 
-
-
-    /**
-     * Creates a new batch for requests within the context of this site collection
-     *
-     */
     public createBatch(): SPBatch {
         return new SPBatch(this.parentUrl);
     }
 
     public async delete(): Promise<void> {
-        const site = await this.clone(Site, "").select("Id").get<{ Id: string }>();
 
-        const q = Site(this.parentUrl, "_api/SPSiteManager/Delete");
-        await spPost(q, {
-            body: jsS({
-                siteId: site.Id,
-            }),
-        });
-    }
-
-
-    /**
-     * Registers the current site collection as hub site collection
-     */
-    public registerHubSite(): Promise<void> {
-        return spPost(this.clone(Site, `registerHubSite`));
-    }
-
-    /**
-     * Unregisters the current site collection as hub site collection.
-     */
-    public unRegisterHubSite(): Promise<void> {
-        return spPost(this.clone(Site, `unRegisterHubSite`));
+        const site = await this.clone(Site, "").select("Id")<{ Id: string }>();
+        const q = clientTagMethod.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
+        await spPost(q, body({ siteId: site.Id }));
     }
 
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
 
-        const q = SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
-        q.query.set("@v", "'" + absoluteWebUrl + "'");
+        const q = clientTagMethod.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
+        q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
-
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
     }
 
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
-        const q = SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
-        q.query.set("@v", `'${absolutePageUrl}'`);
-        const data = await q();
 
+        const q = clientTagMethod.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
+        q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
+        const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
     }
 
+    @clientTagMethod("si.openWebById")
     public async openWebById(webId: string): Promise<IOpenWebByIdResult> {
 
         const data = await spPost(this.clone(Site, `openWebById('${webId}')`));
@@ -278,7 +250,6 @@ export interface _ISite {
 }
 
 export interface ISite extends _ISite, IInvokable, ISharePointQueryableInstance { }
-
 export const Site = spInvokableFactory<ISite>(_Site);
 
 /**

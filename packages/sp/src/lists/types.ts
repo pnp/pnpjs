@@ -15,7 +15,7 @@ import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection implements _ILists {
