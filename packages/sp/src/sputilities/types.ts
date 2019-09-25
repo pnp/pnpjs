@@ -179,7 +179,6 @@ export interface IUtilities {
 }
 
 export const Utilities = spInvokableFactory<IUtilities>(_Utilities);
-
 type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };
 const UtilitiesCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
 

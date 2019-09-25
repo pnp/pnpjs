@@ -5,15 +5,12 @@ import {
   _SharePointQueryable,
 } from "../sharepointqueryable";
 
-import { defaultPath } from "../decorators";
+import { defaultPath, clientTagMethod } from "../decorators";
 import { hOP, IFetchOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { body } from "@pnp/odata";
 import { spPost } from "../operations";
 
-/**
- * Exposes social following methods
- */
 @defaultPath("_api/social.following")
 export class _Social extends _SharePointQueryableInstance implements ISocial {
 
@@ -21,57 +18,33 @@ export class _Social extends _SharePointQueryableInstance implements ISocial {
     return MySocial(this);
   }
 
-  /**
-   * Gets a URI to a site that lists the current user's followed sites.
-   */
+  @clientTagMethod("soc.getFollowedSitesUri")
   public async getFollowedSitesUri(): Promise<string> {
     const r = await this.clone(SocialCloneFactory, "FollowedSitesUri").get();
     return r.FollowedSitesUri || r;
   }
 
-  /**
-   * Gets a URI to a site that lists the current user's followed documents.
-   */
-  public async getFollowedDocumentsUri(): Promise<string> {
+  @clientTagMethod("soc.getFollowedDocumentsUri")
+    public async getFollowedDocumentsUri(): Promise<string> {
     const r = await this.clone(SocialCloneFactory, "FollowedDocumentsUri").get();
     return r.FollowedDocumentsUri || r;
   }
 
-  /**
-   * Makes the current user start following a user, document, site, or tag
-   *
-   * @param actorInfo The actor to start following
-   */
+  @clientTagMethod("soc.follow")
   public async follow(actorInfo: ISocialActorInfo): Promise<SocialFollowResult> {
-    const c = this.clone(SocialCloneFactory, "follow");
-    const b = this.createSocialActorInfoRequestBody(actorInfo);
-    return await spPost(c, b);
-    // return await spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
+    return await spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
   }
 
-  /**
-   * Indicates whether the current user is following a specified user, document, site, or tag
-   *
-   * @param actorInfo The actor to find the following status for
-   */
+  @clientTagMethod("soc.isFollowed")
   public async isFollowed(actorInfo: ISocialActorInfo): Promise<boolean> {
     return await spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
   }
 
-  /**
-   * Makes the current user stop following a user, document, site, or tag
-   *
-   * @param actorInfo The actor to stop following
-   */
+  @clientTagMethod("soc.stopFollowing")
   public async stopFollowing(actorInfo: ISocialActorInfo): Promise<void> {
     return await spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
   }
 
-  /**
-   * Creates SocialActorInfo request body
-   *
-   * @param actorInfo The actor to create request body
-   */
   private createSocialActorInfoRequestBody(actorInfo: ISocialActorInfo): IFetchOptions {
     return body({
       "actor":
@@ -86,6 +59,9 @@ export class _Social extends _SharePointQueryableInstance implements ISocial {
  * Describes the public methods for the Social interface
  */
 export interface ISocial {
+  /**
+   * Access to the curren't user's social data
+   */
   readonly my: IMySocial;
   /**
    * Get a list of followed sites for the current user.
@@ -119,7 +95,6 @@ export interface ISocial {
  * Get a new Social instance for the particular Url
  */
 export const Social = (baseUrl: string | ISharePointQueryable): ISocial => new _Social(baseUrl);
-
 const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: string): ISocial & ISharePointQueryable => new _Social(baseUrl, paths);
 
 /**
@@ -128,47 +103,41 @@ const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: stri
 @defaultPath("my")
 export class _MySocial extends _SharePointQueryableInstance implements IMySocial {
 
-  /**
-   * Gets users, documents, sites, and tags that the current user is following.
-   * 
-   * @param types Bitwise set of SocialActorTypes to retrieve
-   */
+  @clientTagMethod("msoc.followed")
   public async followed(types: SocialActorTypes): Promise<ISocialActor[]> {
-    // const r = await this.clone(MySocialCloneFactory, `followed(types=${types})`)();
     const r = await this.clone(MySocialCloneFactory, `followed(types=${types})`)();
     return hOP(r, "Followed") ? r.Followed.results : r;
   }
 
-  /**
-   * Gets the count of users, documents, sites, and tags that the current user is following.
-   * 
-   * @param types Bitwise set of SocialActorTypes to retrieve
-   */
+  @clientTagMethod("msoc.followedCount")
   public async followedCount(types: SocialActorTypes): Promise<number> {
     const r = await this.clone(MySocialCloneFactory, `followedcount(types=${types})`)();
     return r.FollowedCount || r;
   }
 
-  /**
-   * Gets the users who are following the current user.
-   */
+  @clientTagMethod("msoc.followers")
   public async followers(): Promise<ISocialActor[]> {
     const r = await this.clone(MySocialCloneFactory, "followers")();
     return hOP(r, "Followers") ? r.Followers.results : r;
   }
 
-  /**
-   * Gets users who the current user might want to follow.
-   */
+  @clientTagMethod("msoc.suggestions")
   public async suggestions(): Promise<ISocialActor[]> {
     const r = await this.clone(MySocialCloneFactory, "suggestions")();
     return hOP(r, "Suggestions") ? r.Suggestions.results : r;
   }
 }
+
 /**
  * Defines the public methods exposed by the my endpoint
  */
 export interface IMySocial {
+
+  /**
+   * Allow access to the v2 invokable
+   */
+  (this: IMySocial): Promise<IMySocialData>;
+
   /**
    * Gets this user's data
    */
@@ -199,7 +168,6 @@ export interface IMySocial {
  * Invokable factory for IMySocial instances
  */
 export const MySocial = spInvokableFactory<IMySocial>(_MySocial);
-
 const MySocialCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): IMySocial & ISharePointQueryable => <any>MySocial(baseUrl, path);
 
 /**

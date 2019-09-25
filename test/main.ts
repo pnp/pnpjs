@@ -44,16 +44,29 @@ let skipWeb = false;
 
 for (let i = 0; i < process.argv.length; i++) {
     const arg = process.argv[i];
-    if (/^--pnp-test-mode/i.test(arg)) {
-        mode = process.argv[++i];
+    if (/^--mode/i.test(arg)) {
+        switch (process.argv[++i]) {
+            case "pr":
+                mode = "travis-noweb";
+                break;
+            case "push":
+                mode = "travis";
+        }
     }
-    if (/^--pnp-test-site/i.test(arg)) {
+    if (/^--site/i.test(arg)) {
         site = process.argv[++i];
     }
     if (/^--skip-web/i.test(arg)) {
         skipWeb = true;
     }
 }
+
+console.log(`*****************************`);
+console.log("Testing command args:");
+console.log(`mode: ${mode}`);
+console.log(`site: ${site}`);
+console.log(`skipWeb: ${skipWeb}`);
+console.log(`*****************************`);
 
 switch (mode) {
 
