@@ -1,7 +1,8 @@
 declare var require: (s: string) => any;
 const path = require("path");
 import { BuildSchema } from "../../config";
-import * as replace from "replace-in-file";
+// they broke the types in replace-in-file so we need to import it this way
+const replace = require("replace-in-file");
 
 interface TSConfig {
     compilerOptions: {
@@ -15,7 +16,7 @@ interface TSConfig {
  * @param version The version number
  * @param ctx The build context 
  */
-export function replaceSPHttpVersion(version: string, config: BuildSchema) {
+export async function replaceSPHttpVersion(version: string, config: BuildSchema): Promise<void> {
 
     const options = {
         files: [],
@@ -33,5 +34,5 @@ export function replaceSPHttpVersion(version: string, config: BuildSchema) {
         options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/batch.js"));
     }
 
-    return replace(options);
+    await replace(options);
 }

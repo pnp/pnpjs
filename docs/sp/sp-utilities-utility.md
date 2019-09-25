@@ -53,7 +53,17 @@ This method returns the current user's email addresses known to SharePoint.
 ```TypeScript
 import { sp } from "@pnp/sp";
 
-let addressString : string = await sp.utility.getCurrentUserEmailAddresses();
+let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
+
+// and use it with sendEmail
+await sp.utility.sendEmail({
+    To: [addressString],
+    Subject: "This email is about...",
+    Body: "Here is the body. <b>It supports html</b>",
+    AdditionalHeaders: {
+        "content-type": "text/html"
+    },
+});
 ```
 
 ## resolvePrincipal
