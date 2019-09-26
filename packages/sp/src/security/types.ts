@@ -62,7 +62,6 @@ export interface _IRoleAssignments {
 }
 
 export interface IRoleAssignments extends _IRoleAssignments, IInvokable, ISharePointQueryableCollection { }
-
 export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignments);
 
 /**
@@ -171,7 +170,6 @@ export interface _IRoleDefinitions {
 }
 
 export interface IRoleDefinitions extends _IRoleDefinitions, IInvokable, ISharePointQueryableCollection {}
-
 export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinitions);
 
 /**
@@ -216,7 +214,6 @@ export interface _IRoleDefinition {
 }
 
 export interface IRoleDefinition extends _IRoleDefinition, IInvokable, ISharePointQueryableInstance, IDeleteable {}
-
 export const RoleDefinition = spInvokableFactory<IRoleDefinition>(_RoleDefinition);
 
 export interface ISecurableMethods {

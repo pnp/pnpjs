@@ -98,10 +98,6 @@ export interface _IComments {
 }
 
 export interface IComments extends _IComments, IInvokable<ICommentData[]>, ISharePointQueryableCollection<ICommentData[]> { }
-
-/**
- * Invokable factory for IComments instances
- */
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
 /**
@@ -143,10 +139,6 @@ export interface _IComment {
 }
 
 export interface IComment extends _IComment, IInvokable<ICommentData>, ISharePointQueryableInstance<ICommentData> { }
-
-/**
- * Invokable factory for IComment instances
- */
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 /**
