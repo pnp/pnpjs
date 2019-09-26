@@ -111,7 +111,7 @@ export enum SharingLinkKind {
 }
 
 export interface ISharedFuncs {
-    getShareLink(kind?: SharingLinkKind, expiration?: Date): Promise<IShareLinkResponse>;
+    getShareLink(kind: SharingLinkKind, expiration?: Date): Promise<IShareLinkResponse>;
     checkSharingPermissions(recipients: ISharingRecipient[]): Promise<ISharingEntityPermission[]>;
     getSharingInformation(request?: ISharingInformationRequest, expands?: string[]): Promise<ISharingInformation>;
     getObjectSharingSettings(useSimplifiedRoles?: boolean): Promise<IObjectSharingSettings>;

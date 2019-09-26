@@ -17,7 +17,6 @@ describe("SiteDesigns", function () {
     before(async function () {
 
         const users = await sp.web.siteUsers.top(1).select("LoginName")<{ LoginName: string }[]>();
-
         testuser = users[0].LoginName;
     });
 

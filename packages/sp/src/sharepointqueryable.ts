@@ -270,6 +270,6 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
         }).then((d: Data) => mapper(d, props));
     }
 }
-export interface ISharePointQueryableInstance<GetType = any> extends IInvokable, ISharePointQueryable<GetType> { }
+export interface ISharePointQueryableInstance<GetType = any> extends IInvokable<GetType>, ISharePointQueryable<GetType> { }
 export interface _SharePointQueryableInstance extends IInvokable { }
 export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);

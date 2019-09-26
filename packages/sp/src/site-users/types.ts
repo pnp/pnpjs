@@ -90,8 +90,7 @@ export interface _ISiteUsers {
     add(loginName: string): Promise<ISiteUser>;
 }
 
-export interface ISiteUsers extends _ISiteUsers, IInvokable, ISharePointQueryableCollection { }
-
+export interface ISiteUsers extends _ISiteUsers, IInvokable<ISiteUserProps[]>, ISharePointQueryableCollection<ISiteUserProps[]> { }
 export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
 
 /**
@@ -122,8 +121,7 @@ export interface _ISiteUser {
     update(props: TypedHash<any>): Promise<IUserUpdateResult>;
 }
 
-export interface ISiteUser extends _ISiteUser, IInvokable, ISharePointQueryableInstance, IDeleteable {}
-
+export interface ISiteUser extends _ISiteUser, IInvokable<ISiteUserProps>, ISharePointQueryableInstance<ISiteUserProps>, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
 
 export interface ISiteUserProps {
@@ -135,6 +133,11 @@ export interface ISiteUserProps {
     LoginName: string;
     PrincipalType: number;
     Title: string;
+    UserPrincipalName: string;
+    UserId: {
+        NameId: string,
+        NameIdIssuer: string,
+    };
 }
 
 /**
