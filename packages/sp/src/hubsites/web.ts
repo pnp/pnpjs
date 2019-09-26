@@ -27,7 +27,10 @@ declare module "../webs/types" {
 
 _Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): Promise<Partial<IHubSiteWebData>> {
     const data = await this.clone(Web, `hubSiteData(${forceRefresh})`)();
-    return JSON.parse(data);
+    if (typeof data === "string") {
+        return JSON.parse(data);
+    }
+    return data;
 };
 
 _Web.prototype.syncHubSiteTheme = function (this: _Web): Promise<void> {

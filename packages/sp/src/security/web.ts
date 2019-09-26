@@ -12,9 +12,6 @@ import {
     hasPermissions,
 } from "./funcs";
 
-/**
-* Extend Web
-*/
 declare module "../webs/types" {
     interface _Web extends ISecurableMethods {
         roleDefinitions: IRoleDefinitions;

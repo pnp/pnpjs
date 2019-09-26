@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "8"
+  - "10"
 
 script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then mocha --mode pr; fi'
