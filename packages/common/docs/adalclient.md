@@ -1,7 +1,5 @@
 # @pnp/common/adalclient
 
-_Added in 1.0.4_
-
 This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
 SharePoint Framework's permissions.
 

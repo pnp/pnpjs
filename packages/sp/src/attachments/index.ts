@@ -5,6 +5,7 @@ export {
     IAttachments,
     Attachment,
     Attachments,
-    AttachmentAddResult,
-    AttachmentFileInfo,
+    IAttachmentAddResult,
+    IAttachmentFileInfo,
+    IAttachmentInfo,
 } from "./types";

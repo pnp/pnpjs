@@ -27,8 +27,6 @@ sp.web.get().then(w => {
 
 ## Set Authentication Environment
 
-_Added in 1.1.2_
-
 For some areas such as Germany, China, and US Gov clouds you need to specifiy a different authentication url to the service. This is done by specifying the correct SPOAuthEnv enumeration to the SPFetchClient constructor. The options are listed below. If you are not sure which option to specify the default is likely OK.
 
 - SPO : (default) for all *.sharepoint.com urls

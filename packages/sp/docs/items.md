@@ -85,8 +85,6 @@ let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceTo
 
 ### Get All Items
 
-_Added in 1.0.2_
-
 Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
 be used.
 
