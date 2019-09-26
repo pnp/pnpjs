@@ -58,7 +58,9 @@ const config = {
     "spec": paths,
 };
 
+console.info(`*****************************`);
 console.info("pnp generated mocha config:");
 console.info(prettyjson.render(config, null, 4, { noColor: true }));
+console.info(`*****************************`);
 
 module.exports = config;

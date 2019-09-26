@@ -97,7 +97,7 @@ export interface _IComments {
     clear(): Promise<boolean>;
 }
 
-export interface IComments extends _IComments, IInvokable, ISharePointQueryableCollection<ICommentData[]> { }
+export interface IComments extends _IComments, IInvokable<ICommentData[]>, ISharePointQueryableCollection<ICommentData[]> { }
 
 /**
  * Invokable factory for IComments instances
@@ -142,7 +142,7 @@ export interface _IComment {
     delete(): Promise<void>;
 }
 
-export interface IComment extends _IComment, IInvokable, ISharePointQueryableInstance<ICommentData> { }
+export interface IComment extends _IComment, IInvokable<ICommentData>, ISharePointQueryableInstance<ICommentData> { }
 
 /**
  * Invokable factory for IComment instances
@@ -178,7 +178,7 @@ export interface _IReplies {
     add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
 }
 
-export interface IReplies extends _IReplies, IInvokable, ISharePointQueryableCollection<ICommentData[]> { }
+export interface IReplies extends _IReplies, IInvokable<ICommentData[]>, ISharePointQueryableCollection<ICommentData[]> { }
 
 /**
  * Invokable factory for IReplies instances

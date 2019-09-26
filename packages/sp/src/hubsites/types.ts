@@ -67,7 +67,7 @@ export interface _IHubSites {
     getById(id: string): IHubSite;
 }
 
-export interface IHubSites extends _IHubSites, IInvokable, ISharePointQueryableCollection<IHubSiteData[]> { }
+export interface IHubSites extends _IHubSites, IInvokable<IHubSiteData[]>, ISharePointQueryableCollection<IHubSiteData[]> { }
 
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
@@ -91,6 +91,6 @@ export interface _IHubSite {
     getSite(): Promise<ISite>;
 }
 
-export interface IHubSite extends _IHubSite, IInvokable, ISharePointQueryableInstance<IHubSiteData> { }
+export interface IHubSite extends _IHubSite, IInvokable<IHubSiteData>, ISharePointQueryableInstance<IHubSiteData> { }
 
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);

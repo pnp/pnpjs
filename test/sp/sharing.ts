@@ -1,49 +1,57 @@
 import { expect } from "chai";
-import { testSettings } from "../../../test/test";
-import { combine } from "@pnp/common";
-import { File, Folder, Item, SharingRole, Web } from "../";
+import { testSettings } from "../main";
+import { combine, dateAdd } from "@pnp/common";
+import { Web, IWeb } from "@pnp/sp/src/webs";
+import { IFolder } from "@pnp/sp/src/folders";
+import { IFile } from "@pnp/sp/src/files";
+import { IItem } from "@pnp/sp/src/items";
+import "@pnp/sp/src/lists/web";
+import "@pnp/sp/src/folders";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/sharing";
+import "@pnp/sp/src/site-users";
+import { SharingRole, SharingLinkKind } from "@pnp/sp/src/sharing";
 
 describe("Sharing", () => {
 
     let webAbsUrl = "";
     let webRelativeUrl = "";
-    let web: Web;
+    let web: IWeb;
+    let userName = "";
 
-    before((done) => {
+    before(async function () {
 
         // we need to take some steps to ensure we are operating on the correct web here
         // due to the url manipulation in the library for sharing
-        web = new Web(testSettings.sp.webUrl);
+        web = Web(testSettings.sp.webUrl);
 
-        web.select("ServerRelativeUrl", "Url").get().then(u => {
+        const urls = await web.select("ServerRelativeUrl", "Url")();
 
-            // make sure we have the correct server relative url
-            webRelativeUrl = u.ServerRelativeUrl;
-            webAbsUrl = u.Url;
+        // make sure we have the correct server relative url
+        webRelativeUrl = urls.ServerRelativeUrl;
+        webAbsUrl = urls.Url;
 
-            // we need a doc lib with a file and folder in it
-            web.lists.ensure("SharingTestLib", "Used to test sharing", 101).then(ler => {
+        // we need a doc lib with a file and folder in it
+        const ler = await web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
 
-                // add a file and folder
-                Promise.all([
-                    ler.list.rootFolder.folders.add("MyTestFolder"),
-                    ler.list.rootFolder.files.add("text.txt", "Some file content!"),
-                ]).then(_ => {
-                    done();
-                }).catch(_ => {
-                    done();
-                });
-            }).catch(_ => {
-                done();
-            });
-        });
+        const users = await web.siteUsers.select("LoginName").top(1)();
+
+        // we need a user to share to
+        await web.ensureUser(users[0].LoginName);
+        userName = users[0].LoginName;
+
+        // add a file and folder
+        await Promise.all([
+            ler.list.rootFolder.folders.add("MyTestFolder"),
+            ler.list.rootFolder.files.add("test.txt", "Some file content!"),
+        ]);
     });
 
     if (testSettings.enableWebTests) {
 
         describe("can operate on folders", () => {
 
-            let folder: Folder = null;
+            let folder: IFolder = null;
 
             before(() => {
 
@@ -53,50 +61,43 @@ describe("Sharing", () => {
             // // these tests cover share link
             it("Should get a sharing link with default settings.", () => {
 
-                return expect(folder.getShareLink())
+                return expect(folder.getShareLink(SharingLinkKind.OrganizationView))
                     .to.eventually.be.fulfilled
                     .and.have.property("sharingLinkInfo")
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            // it("Should get a sharing link with a specified kind.", () => {
-            //     return expect(folder.getShareLink(SharingLinkKind.AnonymousView))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            // it("Should get a sharing link with a specified kind and expiration.", () => {
-            //     return expect(folder.getShareLink(SharingLinkKind.AnonymousView, Util.dateAdd(new Date(), "day", 5)))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            it("Should allow sharing to a person with default settings.", () => {
-
-                return expect(folder.shareWith("c:0(.s|true"))
+            it("Should get a sharing link with a specified kind.", () => {
+                return expect(folder.getShareLink(SharingLinkKind.AnonymousView))
                     .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
+            });
+
+            it("Should get a sharing link with a specified kind and expiration.", () => {
+                return expect(folder.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
+                    .to.eventually.be.fulfilled
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
             });
 
             it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(folder.shareWith("c:0(.s|true", SharingRole.Edit))
+                return expect(folder.shareWith(userName, SharingRole.Edit))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow sharing to a person with the edit role and share all content.", () => {
 
-                return expect(folder.shareWith("c:0(.s|true", SharingRole.Edit, true))
+                return expect(folder.shareWith(userName, SharingRole.Edit, true))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(folder.checkSharingPermissions([{ alias: "c:0(.s|true" }]))
+                return expect(folder.checkSharingPermissions([{ alias: userName }]))
                     .to.eventually.be.fulfilled;
             });
 
@@ -135,9 +136,10 @@ describe("Sharing", () => {
             // });
         });
 
-        describe("can operate on files", () => {
+        // files sharing is not testable
+        describe.skip("can operate on files", () => {
 
-            let file: File = null;
+            let file: IFile = null;
 
             before(() => {
 
@@ -146,50 +148,43 @@ describe("Sharing", () => {
 
             it("Should get a sharing link with default settings.", () => {
 
-                return expect(file.getShareLink())
+                return expect(file.getShareLink(SharingLinkKind.OrganizationView))
                     .to.eventually.be.fulfilled
                     .and.have.property("sharingLinkInfo")
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            // it("Should get a sharing link with a specified kind.", () => {
-            //     return expect(file.getShareLink(SharingLinkKind.AnonymousView))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            // it("Should get a sharing link with a specified kind and expiration.", () => {
-            //     return expect(file.getShareLink(SharingLinkKind.AnonymousView, Util.dateAdd(new Date(), "day", 5)))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            it("Should allow sharing to a person with default settings.", () => {
-
-                return expect(file.shareWith("c:0(.s|true"))
+            it("Should get a sharing link with a specified kind.", () => {
+                return expect(file.getShareLink(SharingLinkKind.AnonymousView))
                     .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
+            });
+
+            it("Should get a sharing link with a specified kind and expiration.", () => {
+                return expect(file.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
+                    .to.eventually.be.fulfilled
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
             });
 
             it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(file.shareWith("c:0(.s|true", SharingRole.Edit))
+                return expect(file.shareWith(userName, SharingRole.Edit))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(file.shareWith("c:0(.s|true", SharingRole.View, true))
+                return expect(file.shareWith(userName, SharingRole.View, true))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(file.checkSharingPermissions([{ alias: "c:0(.s|true" }]))
+                return expect(file.checkSharingPermissions([{ alias: userName }]))
                     .to.eventually.be.fulfilled;
             });
 
@@ -211,26 +206,26 @@ describe("Sharing", () => {
                     .to.eventually.be.fulfilled;
             });
 
-            // it("Should allow deleting a link by kind.", () => {
+            it("Should allow deleting a link by kind.", () => {
 
-            //     return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(_ => {
+                return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(_ => {
 
-            //         return file.deleteSharingLinkByKind(SharingLinkKind.AnonymousView);
-            //     })).to.eventually.be.fulfilled;
-            // });
+                    return file.deleteSharingLinkByKind(SharingLinkKind.AnonymousView);
+                })).to.eventually.be.fulfilled;
+            });
 
-            // it("Should allow unsharing a link by kind.", () => {
+            it("Should allow unsharing a link by kind.", () => {
 
-            //     return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(response => {
+                return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(response => {
 
-            //         return file.unshareLink(SharingLinkKind.AnonymousView, response.sharingLinkInfo.ShareId);
-            //     })).to.eventually.be.fulfilled;
-            // });
+                    return file.unshareLink(SharingLinkKind.AnonymousView, response.sharingLinkInfo.ShareId);
+                })).to.eventually.be.fulfilled;
+            });
         });
 
         describe("can operate on items", () => {
 
-            let item: Item = null;
+            let item: IItem = null;
 
             before(() => {
 
@@ -239,57 +234,50 @@ describe("Sharing", () => {
 
             it("Should get a sharing link with default settings.", () => {
 
-                return expect(item.getShareLink())
+                return expect(item.getShareLink(SharingLinkKind.OrganizationView))
                     .to.eventually.be.fulfilled
                     .and.have.property("sharingLinkInfo")
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            // it("Should get a sharing link with a specified kind.", () => {
-            //     return expect(item.getShareLink(SharingLinkKind.AnonymousView))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            // it("Should get a sharing link with a specified kind and expiration.", () => {
-            //     return expect(item.getShareLink(SharingLinkKind.AnonymousView, Util.dateAdd(new Date(), "day", 5)))
-            //         .to.eventually.be.fulfilled
-            //         .and.have.property("sharingLinkInfo")
-            //         .and.have.deep.property("Url").that.is.not.null;
-            // });
-
-            it("Should allow sharing to a person with default settings.", () => {
-
-                return expect(item.shareWith("c:0(.s|true"))
+            it("Should get a sharing link with a specified kind.", () => {
+                return expect(item.getShareLink(SharingLinkKind.AnonymousView))
                     .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
+            });
+
+            it("Should get a sharing link with a specified kind and expiration.", () => {
+                return expect(item.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
+                    .to.eventually.be.fulfilled
+                    .and.have.property("sharingLinkInfo")
+                    .and.have.deep.property("Url").that.is.not.null;
             });
 
             it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(item.shareWith("c:0(.s|true", SharingRole.Edit))
+                return expect(item.shareWith(userName, SharingRole.Edit))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(item.shareWith("c:0(.s|true", SharingRole.View, true))
+                return expect(item.shareWith(userName, SharingRole.View, true))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(item.shareWith("c:0(.s|true", SharingRole.View, true))
+                return expect(item.shareWith(userName, SharingRole.View, true))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
             it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(item.checkSharingPermissions([{ alias: "c:0(.s|true" }]))
+                return expect(item.checkSharingPermissions([{ alias: userName }]))
                     .to.eventually.be.fulfilled;
             });
 
@@ -330,16 +318,9 @@ describe("Sharing", () => {
 
         describe("can operate on webs", () => {
 
-            it("Should allow you to share a web with a person using default settings", () => {
-
-                return expect(web.shareWith("c:0(.s|true"))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
-
             it("Should allow you to share an object by url", () => {
 
-                return expect(web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), "c:0(.s|true", SharingRole.View))
+                return expect(web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), userName, SharingRole.View))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
