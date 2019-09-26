@@ -32,8 +32,6 @@ sp.search(<SearchQuery>{
 
 ## Search Result Caching
 
-_Added in 1.1.5_
-
 As of version 1.1.5 you can also use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options
 
 ```TypeScript

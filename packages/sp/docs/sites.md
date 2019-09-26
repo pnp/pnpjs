@@ -65,8 +65,6 @@ sp.site.getWebUrlFromPageUrl("https://tenant.sharepoint.com/sites/test/Pages/tes
 
 ## Join a hub site
 
-Added in _1.2.4_
-
 **Note:** Works only in SharePoint online
 
 Join the current site collection to a hub site collection
@@ -94,8 +92,6 @@ site.select("ID").get().then(d => {
 
 ## Disassociate the current site collection from a hub site collection
 
-Added in _1.2.4_
-
 **Note:** Works only in SharePoint online
 
 ```TypeScript
@@ -109,8 +105,6 @@ sp.site.joinHubSite("00000000-0000-0000-0000-000000000000").then(d => {
 ```
 
 ## Register a hub site
-
-Added in _1.2.4_
 
 **Note:** Works only in SharePoint online
 
@@ -128,8 +122,6 @@ sp.site.registerHubSite().then(d => {
 
 ## Un-Register a hub site
 
-Added in _1.2.4_
-
 **Note:** Works only in SharePoint online
 
 Un-Registers the current site collection as a hub site collection
@@ -145,8 +137,6 @@ sp.site.unRegisterHubSite().then(d => {
 ```
 
 ## Create a modern communication site
-
-Added in _1.2.6_
 
 **Note:** Works only in SharePoint online
 
@@ -185,8 +175,6 @@ sp.site.createCommunicationSite(
 ```
 
 ## Create a modern team site
-
-Added in _1.2.6_
 
 **Note:** Works only in SharePoint online. It wont work with App only tokens
 
