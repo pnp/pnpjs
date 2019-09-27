@@ -1,5 +1,6 @@
 import { combine, getRandomString } from "@pnp/common";
 import { expect } from "chai";
+import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/content-types/web";
 import "@pnp/sp/src/lists/web";
@@ -13,11 +14,10 @@ import "@pnp/sp/src/related-items/web";
 import "@pnp/sp/src/fields/web";
 import "@pnp/sp/src/features/web";
 import "@pnp/sp/src/hubsites/web";
-import "@pnp/sp/src/security";
+import "@pnp/sp/src/security/web";
 import "@pnp/sp/src/appcatalog";
 import "@pnp/sp/src/regional-settings";
 import "@pnp/sp/src/clientside-pages";
-import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { IInvokableTest } from "../types";
 
