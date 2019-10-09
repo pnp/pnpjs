@@ -171,6 +171,7 @@ export class Site extends SharePointQueryableInstance {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param hubSiteId The Guid of the already existing Hub site
      * @param owner Required when creating the site using app-only context
      */
 
@@ -217,7 +218,18 @@ export class Site extends SharePointQueryableInstance {
                     "Accept": "application/json;odata=verbose",
                     "Content-Type": "application/json;odata=verbose;charset=utf-8",
                 },
-            }).then(r => r.json());
+            }).then(r => r.json()).then((n: any) => {
+
+                if (hOP(n, "error")) {
+                    throw n;
+                }
+
+                if (hOP(n, "d") && hOP(n.d, "Create")) {
+                    return n.d.Create;
+                }
+
+                return n;
+            });
         });
     }
 

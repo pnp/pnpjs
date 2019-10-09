@@ -228,4 +228,12 @@ export class Term extends ClientSvcQueryable implements ITerm {
     public update(properties: { Name: string }): Promise<ITermData & ITerm> {
         return this.invokeUpdate<ITermData, ITerm>(properties, Term);
     }
+
+    /**
+     * Deletes a this term
+     * 
+     */
+    public delete(): Promise<void> {
+        return this.invokeNonQuery("DeleteObject");
+    }
 }

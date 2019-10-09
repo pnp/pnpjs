@@ -1,10 +1,10 @@
-import { extend, TypedHash, jsS } from "@pnp/common";
+import { extend, TypedHash, jsS, isUrlAbsolute } from "@pnp/common";
 import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableShareableFolder } from "./sharepointqueryableshareable";
 import { Files } from "./files";
 import { odataUrlFrom } from "./odata";
 import { Item } from "./items";
-import { SPHttpClient } from "./net/sphttpclient";
+import { extractWebUrl } from "./utils/extractweburl";
 
 /**
  * Describes a collection of Folder objects
@@ -31,10 +31,27 @@ export class Folders extends SharePointQueryableCollection {
      */
     public add(url: string): Promise<FolderAddResult> {
 
-        return this.clone(Folders, `add('${url}')`).postCore().then((response) => {
+        return this.clone(Folders, `add('${url}')`).postCore().then((data) => {
             return {
-                data: response,
+                data,
                 folder: this.getByName(url),
+            };
+        });
+    }
+
+    /**
+     * Adds a new folder by path and should be prefered over add
+     * 
+     * @param serverRelativeUrl The server relative url of the new folder to create
+     * @param overwrite True to overwrite an existing folder, default false
+     */
+    public addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<FolderAddResult> {
+
+        return this.clone(Folders, `addUsingPath(DecodedUrl='${serverRelativeUrl}',overwrite=${overwrite})`).postCore().then((data) => {
+
+            return {
+                data,
+                folder: new Folder(extractWebUrl(this.toUrl()), `_api/web/getFolderByServerRelativePath(decodedUrl='${serverRelativeUrl}')`),
             };
         });
     }
@@ -152,19 +169,17 @@ export class Folder extends SharePointQueryableShareableFolder {
      */
     public moveTo(destUrl: string): Promise<void> {
         return this.select("ServerRelativeUrl").get().then(({ ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl }) => {
-            const client = new SPHttpClient();
-            const webBaseUrl = absoluteUrl.split("/_api")[0];
+            const webBaseUrl = extractWebUrl(absoluteUrl);
             const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-            const methodUrl = `${webBaseUrl}/_api/SP.MoveCopyUtil.MoveFolder()`;
-            return client.post(methodUrl, {
+            const f = new Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()");
+            return f.postCore({
                 body: jsS({
-                    destUrl: destUrl.indexOf("http") === 0 ? destUrl : `${hostUrl}${destUrl}`,
+                    destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
                     srcUrl: `${hostUrl}${srcUrl}`,
                 }),
-            }).then(r => r.json());
+            });
         });
     }
-
 }
 
 export interface FolderAddResult {
