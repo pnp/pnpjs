@@ -58,9 +58,9 @@ export class User extends GraphQueryableInstance<IUser> {
         return new Calendar(this, "calendar");
     }
 
-     /**
-     * The photo associated with the user
-     */
+    /**
+    * The photo associated with the user
+    */
     public get photo(): Photo {
         return new Photo(this);
     }
@@ -188,11 +188,14 @@ export class User extends GraphQueryableInstance<IUser> {
 
     /**
      * Send the message specified in the request body. The message is saved in the Sent Items folder by default.
+     * 
+     * @param message The message details to send
+     * @param saveToSentItems If true the message will be saved to sent items. Default: false
      */
-    public sendMail(message: IMessage): Promise<void> {
+    public sendMail(message: IMessage, saveToSentItems = false): Promise<void> {
 
         return this.clone(User, "sendMail").postCore({
-            body: jsS(message),
+            body: jsS({ message, saveToSentItems }),
         });
     }
 
@@ -211,10 +214,16 @@ export class User extends GraphQueryableInstance<IUser> {
     }
 
     /**
-    * The Insights associated with me
+    * The Insights associated with this user
     */
     public get insights(): InsightsMethods {
         return new Insights(this);
     }
 
+    /**
+    * The manager associated with this user
+    */
+    public get manager(): User {
+        return new User(this, "manager");
+    }
 }
