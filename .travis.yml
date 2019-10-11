@@ -4,6 +4,6 @@ node_js:
   - 10
 
 script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run build && mocha --mode pr; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run build && mocha --mode push; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run build && npm run lint && mocha --mode pr; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run build && npm run lint && mocha --mode push; fi'
   
