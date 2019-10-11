@@ -6,7 +6,7 @@ import { IInvokableTest } from "../types";
 import {  ISiteUserProps } from "@pnp/sp/src/site-users";
 
 describe("Web", () => {
-    if(testSettings.enableWebTests) {
+    if (testSettings.enableWebTests) {
         describe("Invokable Properties", () => {
             const tests: IInvokableTest[] = [
                 {desc: ".siteUsers", test: sp.web.siteUsers},

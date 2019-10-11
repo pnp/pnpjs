@@ -100,13 +100,26 @@ export interface ISiteUsers extends _ISiteUsers, IInvokable, ISharePointQueryabl
 
 export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
 
-@deleteable()
+/**
+ * Describes a single user
+ *
+ */
+@deleteable("su")
 export class _SiteUser extends _SharePointQueryableInstance implements _ISiteUser {
 
+    /**
+     * Gets the groups for this user
+     *
+     */
     public get groups(): ISiteGroups {
         return SiteGroups(this, "groups");
     }
 
+    /**
+    * Updates this user instance with the supplied properties
+    *
+    * @param properties A plain object of property names and values to update for the user
+    */
     public update: (props: TypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, TypedHash<any>, any>("SP.User", data => ({ data, user: <any>this }));
 }
 
