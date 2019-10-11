@@ -1935,12 +1935,10 @@ We are using an internal method for combining the URL in the right combination, 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">newItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
-<span class="s2">&quot;fields&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;Widget&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Color&quot;</span><span class="o">:</span> <span class="s2">&quot;Purple&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Weight&quot;</span><span class="o">:</span> <span class="mi">32</span>
-  <span class="p">}</span>
-<span class="p">})</span>
+<span class="p">});</span>
 </pre></div>
 
 

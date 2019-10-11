@@ -95,10 +95,13 @@ export class Plan extends GraphQueryableInstance<IPlannerPlan> {
      * 
      * @param properties Set of properties of this Plan to update
      */
-    public update(properties: IPlanner): Promise<void> {
+    public update(properties: IPlanner, eTag = "*"): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
+            headers: {
+                "If-Match": eTag,
+            },
         });
     }
 }
@@ -155,10 +158,13 @@ export class Task extends GraphQueryableInstance<IPlannerTask> {
      * 
      * @param properties Set of properties of this Task to update
      */
-    public update(properties: IPlannerTask): Promise<void> {
+    public update(properties: IPlannerTask, eTag = "*"): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
+            headers: {
+                "If-Match": eTag,
+            },
         });
     }
 
@@ -213,10 +219,13 @@ export class Bucket extends GraphQueryableInstance<IPlannerBucket> {
      * 
      * @param properties Set of properties of this Bucket to update
      */
-    public update(properties: IPlannerBucket): Promise<void> {
+    public update(properties: IPlannerBucket, eTag = "*"): Promise<void> {
 
         return this.patchCore({
             body: jsS(properties),
+            headers: {
+                "If-Match": eTag,
+            },
         });
     }
 
@@ -226,7 +235,7 @@ export class Bucket extends GraphQueryableInstance<IPlannerBucket> {
 }
 
 @defaultPath("details")
-export class Details extends GraphQueryableCollection<IPlannerPlanDetails> {}
+export class Details extends GraphQueryableCollection<IPlannerPlanDetails> { }
 
 export interface BucketAddResult {
     data: IPlannerBucket;
