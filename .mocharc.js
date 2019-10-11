@@ -46,16 +46,17 @@ if (yargs.packages || yargs.p) {
 const reporter = yargs.verbose ? "spec" : "dot";
 
 const config = {
-    "package": "./package.json",
-    "reporter": reporter,
-    "slow": 3000,
-    "timeout": 40000,
-    "ui": "bdd",
-    "require": [
+    package: "./package.json",
+    reporter: reporter,
+    slow: 3000,
+    timeout: 40000,
+    ui: "bdd",
+    retries: "2",
+    require: [
         "tsconfig-paths/register",
         "ts-node/register"
     ],
-    "spec": paths,
+    spec: paths,
 };
 
 console.info(`*****************************`);

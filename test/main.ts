@@ -8,6 +8,7 @@ import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
+import { Web } from "@pnp/sp/src/webs";
 
 chai.use(chaiAsPromised);
 
@@ -41,6 +42,7 @@ let settings: ISettings = null;
 let mode = "cmd";
 let site: string = null;
 let skipWeb = false;
+let deleteWeb = false;
 
 for (let i = 0; i < process.argv.length; i++) {
     const arg = process.argv[i];
@@ -59,6 +61,9 @@ for (let i = 0; i < process.argv.length; i++) {
     if (/^--skip-web/i.test(arg)) {
         skipWeb = true;
     }
+    if (/^--cleanup/i.test(arg)) {
+        deleteWeb = true;
+    }
 }
 
 console.log(`*****************************`);
@@ -66,6 +71,7 @@ console.log("Testing command args:");
 console.log(`mode: ${mode}`);
 console.log(`site: ${site}`);
 console.log(`skipWeb: ${skipWeb}`);
+console.log(`deleteWeb: ${deleteWeb}`);
 console.log(`*****************************`);
 
 switch (mode) {
@@ -181,7 +187,7 @@ function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
 export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
 
-before(function (done: MochaDone) {
+before(async function (): Promise<void> {
 
     // this may take some time, don't timeout early
     this.timeout(90000);
@@ -189,39 +195,74 @@ before(function (done: MochaDone) {
     // establish the connection to sharepoint
     if (testSettings.enableWebTests) {
 
-        Promise.all([
-            // un comment this to delete older subsites
-            // cleanUpAllSubsites(),
-            spTestSetup(testSettings),
-            graphTestSetup(testSettings),
-        ]).then(_ => done()).catch(e => {
+        // un comment this to delete older subsites
+        // await cleanUpAllSubsites();
 
-            console.log("Error creating testing sub-site: " + JSON.stringify(e));
-            done(e);
-        });
-    } else {
-        done();
+        console.log(`Setting up SharePoint tests...`);
+        let s = Date.now();
+        await spTestSetup(testSettings);
+        let e = Date.now();
+        console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+
+        console.log(`Setting up Graph tests...`);
+        s = Date.now();
+        await graphTestSetup(testSettings);
+        e = Date.now();
+        console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
     }
 });
 
-after(() => {
+after(async () => {
 
-    // could remove the sub web here?
-    // clean up other stuff?
-    // write some logging?
+    console.log();
+    console.log();
+    console.log();
+    console.log("Ending...");
+    console.log();
+
+    if (deleteWeb && testSettings.enableWebTests) {
+
+        console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
+        const w = Web(testSettings.sp.webUrl);
+
+        const children = await w.webs.select("Title")();
+
+        await Promise.all(children.map((value) => {
+            const web2 = Web(value["odata.id"], "");
+            console.log(`Deleting: ${value["odata.id"]}`);
+            return web2.delete();
+        }));
+
+        await w.delete();
+        console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
+    } else {
+        console.log(`Leaving ${testSettings.sp.webUrl} alone.`);
+    }
+
+    console.log("All done. Have a nice day :)");
 });
 
 // this can be used to clean up lots of test sub webs :)
-// function cleanUpAllSubsites(): Promise<void> {
-//     return sp.site.rootWeb.webs.select("Title").get().then((w) => {
-//         w.forEach((element: any) => {
-//             const web = Web(element["odata.id"], "");
-//             web.webs.select("Title").get().then((sw: any[]) => {
-//                 return Promise.all(sw.map((value) => {
-//                     const web2 = Web(value["odata.id"], "");
-//                     return web2.delete();
-//                 }));
-//             }).then(() => { web.delete(); });
-//         });
+// async function cleanUpAllSubsites(): Promise<void> {
+
+//     const w = await sp.site.rootWeb.webs.select("Title")();
+
+//     w.forEach(async (e: any) => {
+
+//         const web = Web(e["odata.id"], "");
+
+//         console.log(`Deleting: ${e["odata.id"]}`);
+
+//         const children = await web.webs.select("Title")();
+
+//         await Promise.all(children.map(async (value) => {
+//             const web2 = Web(value["odata.id"], "");
+//             console.log(`Deleting: ${value["odata.id"]}`);
+//             return web2.delete();
+//         }));
+
+//         await web.delete();
+
+//         console.log(`Deleted: ${e["odata.id"]}`);
 //     });
 // }

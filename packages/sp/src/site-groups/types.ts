@@ -11,7 +11,6 @@ import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
-import "../security/web";
 
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SharePointQueryableCollection implements _ISiteGroups {

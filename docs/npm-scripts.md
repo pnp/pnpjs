@@ -73,6 +73,17 @@ This option can be used with any or none of the other testing options.
 npm test -- -p sp -s web --site https://some.site.com/sites/dev
 ```
 
+**Cleanup**
+
+>`--cleanup`
+
+If you include this flag the testing web will be deleted once tests are complete. Useful for local testing where you do not need to inspect the web once the tests are complete. Works with any of the other options, be careful when specifying a web using `--site` as it will be deleted.
+
+```cmd
+# run only sp web tests with a certain site
+npm test -- --cleanup
+```
+
 ## build
 
 Invokes the pnpbuild cli to transpile the TypeScript into JavaScript. All behavior is controlled via the tsconfig.json in the root of the project and sub folders as needed.

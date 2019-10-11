@@ -2,6 +2,7 @@ import { combine, getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
+
 import "@pnp/sp/src/content-types/web";
 import "@pnp/sp/src/lists/web";
 import "@pnp/sp/src/navigation/web";
@@ -14,7 +15,6 @@ import "@pnp/sp/src/related-items/web";
 import "@pnp/sp/src/fields/web";
 import "@pnp/sp/src/features/web";
 import "@pnp/sp/src/hubsites/web";
-import "@pnp/sp/src/security/web";
 import "@pnp/sp/src/appcatalog/web";
 import "@pnp/sp/src/regional-settings/web";
 import "@pnp/sp/src/clientside-pages";
@@ -46,6 +46,7 @@ describe("Web", () => {
         describe("Invokable Properties", () => {
 
             const tests: IInvokableTest[] = [
+                { desc: ".roleDefinitions", test: sp.web.roleDefinitions },
                 { desc: ".webs", test: sp.web.webs },
                 { desc: ".contentTypes", test: sp.web.contentTypes },
                 { desc: ".lists", test: sp.web.lists },
@@ -57,7 +58,6 @@ describe("Web", () => {
                 { desc: ".siteGroups", test: sp.web.siteGroups },
                 { desc: ".folders", test: sp.web.folders },
                 { desc: ".userCustomActions", test: sp.web.userCustomActions },
-                { desc: ".roleDefinitions", test: sp.web.roleDefinitions },
                 { desc: ".customListTemplate", test: sp.web.customListTemplates },
                 { desc: ".currentUser", test: sp.web.currentUser },
                 { desc: ".allProperties", test: sp.web.allProperties },

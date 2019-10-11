@@ -35,7 +35,7 @@ describe("SiteScripts", function () {
         });
 
         // TODO: this test is supposed to succeed in the future #313
-        it("fails to create a site script with a single-quote in the title argument", function () {
+        it.skip("fails to create a site script with a single-quote in the title argument", function () {
 
             const title = `Test_create_sitescript_${getRandomString(8)}'`;
             const description = `${getRandomString(100)}`;
