@@ -1,7 +1,7 @@
 declare var require: (s: string) => any;
 import { BuildSchema } from "./schema";
 const path = require("path");
-import * as replace from "replace-in-file";
+const replace = require("replace-in-file");
 
 interface TSConfig {
     compilerOptions: {

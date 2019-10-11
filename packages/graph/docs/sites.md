@@ -239,12 +239,10 @@ Using the items.create() you can create an Item in a List.
 import { graph } from "@pnp/graph";
 
 const newItem = await graph.sites.getById('contoso.sharepoint.com').lists.getById('listId').items.create({
-"fields": {
     "Title": "Widget",
     "Color": "Purple",
     "Weight": 32
-  }
-})
+});
 
 ```
 

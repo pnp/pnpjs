@@ -28,7 +28,7 @@ export function opQuery(selectProperties: string[] = null, childSelectProperties
     } else {
         builder.push(`<Query SelectAllProperties="false" >`);
         builder.push(`<Properties>`);
-        [].push.apply(builder, selectProperties.map(p => `<Property Name="${p}" SelectAll="true" />`));
+        [].push.apply(builder, <any>selectProperties.map(p => `<Property Name="${p}" SelectAll="true" />`));
         builder.push(`</Properties>`);
         builder.push(`</Query >`);
     }
@@ -41,7 +41,7 @@ export function opQuery(selectProperties: string[] = null, childSelectProperties
         } else {
             builder.push(`<ChildItemQuery SelectAllProperties="false" >`);
             builder.push(`<Properties>`);
-            [].push.apply(builder, childSelectProperties.map(p => `<Property Name="${p}" SelectAll="true" />`));
+            [].push.apply(builder, <any>childSelectProperties.map(p => `<Property Name="${p}" SelectAll="true" />`));
             builder.push(`</Properties>`);
             builder.push(`</ChildItemQuery >`);
         }
@@ -71,7 +71,7 @@ export function methodAction(name: string, params: IMethodParamsBuilder | null):
             builder.push(`<Parameters />`);
         } else {
             builder.push(`<Parameters>`);
-            [].push.apply(builder, arrParams.map(p => `<Parameter Type="${p.type}">${p.value}</Parameter>`));
+            [].push.apply(builder, <any>arrParams.map(p => `<Parameter Type="${p.type}">${p.value}</Parameter>`));
             builder.push(`</Parameters>`);
         }
     }

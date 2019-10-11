@@ -79,7 +79,7 @@ export class ClientSvcQueryable<GetType = any> extends Queryable<GetType> implem
      * @param selects One or more fields to return
      */
     public select(...selects: string[]): this {
-        [].push.apply(this._selects, selects);
+        [].push.apply(this._selects, <any>selects);
         return this;
     }
 
