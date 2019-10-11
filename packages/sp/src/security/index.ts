@@ -3,9 +3,6 @@ import "./list";
 import "./web";
 
 export {
-    /**
-     * Roles
-     */
     IRoleDefinitions,
     IRoleDefinition,
     IRoleAssignment,
@@ -16,10 +13,6 @@ export {
     RoleAssignments,
     RoleDefinition,
     RoleDefinitions,
-
-    /**
-     * Interfaces & types
-     */
     IBasePermissions,
     PermissionKind,
     SecurableQueryable,

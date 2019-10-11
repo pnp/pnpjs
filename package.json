@@ -49,7 +49,7 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "test": "npm run lint && mocha",
+    "test": "npm run build && npm run lint && mocha",
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
