@@ -38,8 +38,8 @@ describe("Site Users", () => {
         });
 
         it.only(".getByEmail", async function () {
-            const email = testSettings.sp.sitedesigns.testuser;
-            return expect(sp.web.siteUsers.getByEmail(email)()).to.eventually.fulfilled;
+            const e: ISiteUserProps = await sp.web.currentUser.get();
+            return expect(sp.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
         });
 
         it.only(".getByLoginName", async function () {
