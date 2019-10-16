@@ -14,6 +14,8 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - all: added tests for all methods/properties
 - all: added docs entries for all methods/properties
 - odata: extension methods
+- sp/graph: support for typing of available select properties tied to GetType type param
+- sp: added ability to add/retrieve comments directly from IClientsidePage
 
 ### Changed
 

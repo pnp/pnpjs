@@ -30,7 +30,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [],
-      "args": []
+      "args": ["-p", "sp", "-s", "comments", "--cleanup"]
     },
     {
       "name": "Debug Build System",

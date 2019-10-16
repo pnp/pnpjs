@@ -1,4 +1,4 @@
-import { assign, TypedHash } from "@pnp/common";
+import { assign, TypedHash, isUrlAbsolute } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -16,6 +16,7 @@ import { IInvokable, body } from "@pnp/odata";
 import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { extractWebUrl } from "../utils/extractweburl";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection implements _IFolders {
@@ -32,6 +33,22 @@ export class _Folders extends _SharePointQueryableCollection implements _IFolder
         return {
             data,
             folder: this.getByName(url),
+        };
+    }
+
+    /**
+     * Adds a new folder by path and should be prefered over add
+     * 
+     * @param serverRelativeUrl The server relative url of the new folder to create
+     * @param overwrite True to overwrite an existing folder, default false
+     */
+    public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
+
+        const data = await spPost(this.clone(Folders, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
+
+        return {
+            data,
+            folder: Folder(extractWebUrl(this.toUrl()), `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativeUrl)}')`),
         };
     }
 }
@@ -114,14 +131,14 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
     @clientTagMethod("f.moveTo")
     public async moveTo(destUrl: string): Promise<void> {
 
-        const srcUrl = await this.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
-
-        const webBaseUrl = this.toUrl().split("/_api")[0];
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
         const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        return spPost(SharePointQueryable(`${webBaseUrl}/_api/SP.MoveCopyUtil.MoveFolder()`), body({
-            destUrl: destUrl.indexOf("http") === 0 ? destUrl : `${hostUrl}${destUrl}`,
-            srcUrl: `${hostUrl}${srcUrl.ServerRelativeUrl}`,
-        }));
+        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"),
+            body({
+                destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                srcUrl: `${hostUrl}${srcUrl}`,
+            }));
     }
 
     @clientTagMethod("f.moveTo")

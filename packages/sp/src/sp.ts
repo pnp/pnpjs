@@ -1,10 +1,4 @@
 export {
-    odataUrlFrom,
-    spODataEntity,
-    spODataEntityArray,
-} from "./odata";
-
-export {
     ISharePointQueryable,
     ISharePointQueryableCollection,
     ISharePointQueryableInstance,
@@ -13,6 +7,7 @@ export {
     ISharePointQueryableConstructor,
     SharePointQueryable,
     spInvokableFactory,
+    ISPInvokableFactory,
 } from "./sharepointqueryable";
 
 export {
