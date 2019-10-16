@@ -267,3 +267,4 @@ sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem<
         console.log(perms);
     });
 });
+```
