@@ -10,7 +10,9 @@ export interface ISharePointQueryableConstructor<T extends ISharePointQueryable 
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
 
-export const spInvokableFactory = <R>(f: any): (baseUrl: string | ISharePointQueryable, path?: string) => R => {
+export type ISPInvokableFactory<R = any> = (baseUrl: string | ISharePointQueryable, path?: string) => R;
+
+export const spInvokableFactory = <R>(f: any): ISPInvokableFactory<R> => {
     return invokableFactory<R>(f);
 };
 
@@ -239,6 +241,7 @@ export class _SharePointQueryableCollection<GetType = any[]> extends _SharePoint
         return this;
     }
 }
+
 export interface ISharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType>, ISharePointQueryable<GetType> {
     filter(filter: string): this;
     orderBy(orderBy: string, ascending?: boolean): this;
@@ -246,6 +249,7 @@ export interface ISharePointQueryableCollection<GetType = any[]> extends IInvoka
     top(top: number): this;
     get<T = GetType>(options?: IFetchOptions): Promise<T>;
 }
+
 export interface _SharePointQueryableCollection extends IInvokable { }
 export const SharePointQueryableCollection = spInvokableFactory<ISharePointQueryableCollection>(_SharePointQueryableCollection);
 

@@ -13,6 +13,4 @@ export {
     IItemUpdateResult,
     IItemUpdateResultData,
     PagedItemCollection,
-    ILikeData,
-    ILikedByInformation,
 } from "./types";

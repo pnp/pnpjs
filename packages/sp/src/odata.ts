@@ -1,5 +1,5 @@
-import { ISharePointQueryableConstructor } from "./sharepointqueryable";
-import { assign, combine, hOP } from "@pnp/common";
+import { ISPInvokableFactory } from "./sharepointqueryable";
+import { assign, combine, hOP, isUrlAbsolute } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ODataParser } from "@pnp/odata";
 import { extractWebUrl } from "./utils/extractweburl";
@@ -22,7 +22,12 @@ export function odataUrlFrom(candidate: any): string {
 
         if (hOP(candidate, s[3]) && hOP(candidate, s[1])) {
             // we are dealign with minimal metadata (default)
-            parts.push(extractWebUrl(candidate[s[3]]), "_api", candidate[s[1]]);
+
+            // some entities return an abosolute url in the editlink while for others it is relative
+            // without the _api. This code is meant to handle both situations
+            const editLink = isUrlAbsolute(candidate[s[1]]) ?  candidate[s[1]].split("_api")[1] : candidate[s[1]];
+
+            parts.push(extractWebUrl(candidate[s[3]]), "_api", editLink);
         } else if (hOP(candidate, s[1])) {
             parts.push("_api", candidate[s[1]]);
         } else if (hOP(candidate, s[2])) {
@@ -41,18 +46,18 @@ export function odataUrlFrom(candidate: any): string {
 
 class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
-    constructor(protected factory: ISharePointQueryableConstructor<any>) {
+    constructor(protected factory: ISPInvokableFactory<any>) {
         super();
     }
 
     public hydrate = (d: D) => {
-        const o = <T>new this.factory(odataUrlFrom(d), null);
+        const o = this.factory(odataUrlFrom(d), null);
         return assign(o, d);
     }
 
     public parse(r: Response): Promise<T & D> {
         return super.parse(r).then((d: any) => {
-            const o = <T>new this.factory(odataUrlFrom(d), null);
+            const o = this.factory(odataUrlFrom(d), null);
             return assign<T, D>(o, d);
         });
     }
@@ -60,13 +65,13 @@ class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
 class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
 
-    constructor(protected factory: ISharePointQueryableConstructor<any>) {
+    constructor(protected factory: ISPInvokableFactory<T>) {
         super();
     }
 
     public hydrate = (d: D[]) => {
         return d.map(v => {
-            const o = <T>new this.factory(odataUrlFrom(v), null);
+            const o = this.factory(odataUrlFrom(v), null);
             return assign(o, v);
         });
     }
@@ -74,17 +79,17 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
     public parse(r: Response): Promise<(T & D)[]> {
         return super.parse(r).then((d: D[]) => {
             return d.map(v => {
-                const o = <T>new this.factory(odataUrlFrom(v), null);
+                const o = this.factory(odataUrlFrom(v), null);
                 return assign(o, v);
             });
         });
     }
 }
 
-export function spODataEntity<T, DataType = any>(factory: ISharePointQueryableConstructor<any>): ODataParser<T & DataType> {
+export function spODataEntity<T, DataType = any>(factory: ISPInvokableFactory<T>): ODataParser<T & DataType> {
     return new SPODataEntityParserImpl<T, DataType>(factory);
 }
 
-export function spODataEntityArray<T, DataType = any>(factory: ISharePointQueryableConstructor<any>): ODataParser<(T & DataType)[]> {
+export function spODataEntityArray<T, DataType = any>(factory: ISPInvokableFactory<T>): ODataParser<(T & DataType)[]> {
     return new SPODataEntityArrayParserImpl<T, DataType>(factory);
 }

@@ -114,7 +114,7 @@ export class _TimeZones extends _SharePointQueryableCollection<ITimeZoneInfo[]> 
 
     public getById(id: number): Promise<ITimeZone & ITimeZoneInfo> {
         // do the post and merge the result into a TimeZone instance so the data and methods are available
-        return spPost(this.clone(TimeZones, `GetById(${id})`).usingParser(spODataEntity(_TimeZone)));
+        return spPost(this.clone(TimeZones, `GetById(${id})`).usingParser(spODataEntity(TimeZone)));
     }
 }
 
