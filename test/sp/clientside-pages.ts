@@ -4,6 +4,7 @@ import { getRandomString, combine } from "@pnp/common";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import "@pnp/sp/src/clientside-pages";
+import "@pnp/sp/src/comments/clientside-page";
 import "@pnp/sp/src/files";
 import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/src/clientside-pages";
 import { Web } from "@pnp/sp/src/webs";

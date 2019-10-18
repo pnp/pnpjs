@@ -1,7 +1,8 @@
 import { invokableFactory, body, headers } from "@pnp/odata";
 import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
-import { Item, IItemUpdateResult, IItem, ILikedByInformation } from "../items/types";
+import { Item, IItemUpdateResult, IItem } from "../items/types";
+import { ILikedByInformation } from "../comments/types";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
 import { metadata } from "../utils/metadata";
 import { List, IList } from "../lists/types";
@@ -12,6 +13,8 @@ import { Site } from "../sites/types";
 import { spPost } from "../operations";
 import { getNextOrder, reindex } from "./funcs";
 import "../files/web";
+import "../comments/item";
+import { clientTagMethod } from "../decorators";
 
 /**
  * Page promotion state
@@ -55,12 +58,12 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
     private _bannerImageDirty: boolean;
 
     /**
-     * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
+     * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
     constructor(
         baseUrl: string | ISharePointQueryable,
         path?: string,
-        private json?: Partial<IPageData>,
+        protected json?: Partial<IPageData>,
         noInit = false,
         public sections: CanvasSection[] = [],
         public commentsDisabled = false) {
@@ -200,6 +203,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return this;
     }
 
+    @clientTagMethod("csp.load")
     public async load(): Promise<IClientsidePage> {
 
         const item = await this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled");
@@ -208,6 +212,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return this.fromJSON(pageData);
     }
 
+    @clientTagMethod("csp.save")
     public async save(publish = true): Promise<boolean> {
 
         if (this.json.Id === null) {
@@ -241,8 +246,8 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
             imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").inBatch(batch)()
                 .then((r3: { UniqueId: string, ParentList: { Id: string } }) => { imgId = r3.UniqueId; listId = r3.ParentList.Id; });
 
+            // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await batch.execute();
-
 
             const f = SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
             f.query.set("guidSite", `${siteId}`);
@@ -303,6 +308,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return r;
     }
 
+    @clientTagMethod("csp.discardPageCheckout")
     public async discardPageCheckout(): Promise<void> {
 
         if (this.json.Id === null) {
@@ -314,6 +320,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         this.fromJSON(d);
     }
 
+    @clientTagMethod("csp.promoteToNews")
     public async promoteToNews(): Promise<boolean> {
         return this.promoteNewsImpl("promoteToNews");
     }
@@ -323,6 +330,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
     //     return this.promoteNewsImpl("demoteFromNews");
     // }
 
+    @clientTagMethod("csp.enableComments")
     public enableComments(): Promise<IItemUpdateResult> {
         return this.setCommentsOn(true).then(r => {
             this.commentsDisabled = false;
@@ -330,6 +338,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         });
     }
 
+    @clientTagMethod("csp.disableComments")
     public disableComments(): Promise<IItemUpdateResult> {
         return this.setCommentsOn(false).then(r => {
             this.commentsDisabled = true;
@@ -360,21 +369,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return null;
     }
 
-    public async like(): Promise<void> {
-        const item = await this.getItem("ID");
-        return item.like();
-    }
-
-    public async unlike(): Promise<void> {
-        const item = await this.getItem("ID");
-        return item.unlike();
-    }
-
-    public async getLikedByInformation(): Promise<ILikedByInformation> {
-        const item = await this.getItem("ID");
-        return item.getLikedByInformation();
-    }
-
+    @clientTagMethod("csp.copy")
     public async copy(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientsidePage> {
 
         const page = await CreateClientsidePage(web, pageName, title, this.pageLayout);
@@ -411,6 +406,21 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
                 this._layoutPart.properties.altText = props.altText;
             }
         }
+    }
+
+    /**
+     * Gets the list item associated with this clientside page
+     * 
+     * @param selects Specific set of fields to include when getting the item
+     */
+    @clientTagMethod("csp.getItem")
+    public async getItem<T>(...selects: string[]): Promise<IItem & T> {
+
+        const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        const listData = await spPost<{ Id: string, "odata.id": string }>(initer);
+        const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
+        const itemData: T = await item.select.apply(item, selects)();
+        return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
     }
 
     protected getCanvasContent1(): string {
@@ -590,20 +600,6 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         column.section = section;
         section.columns.push(column);
     }
-
-    /**
-     * Gets the list item associated with this clientside page
-     * 
-     * @param selects Specific set of fields to include when getting the item
-     */
-    private async getItem<T>(...selects: string[]): Promise<IItem & T> {
-
-        const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
-        const listData = await spPost<{ Id: string, "odata.id": string }>(initer);
-        const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
-        const itemData: T = await item.select.apply(item, selects)();
-        return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
-    }
 }
 
 export interface _IClientsidePage {
@@ -638,7 +634,7 @@ export interface _IClientsidePage {
     /**
      * Persists the content changes (sections, columns, and controls) [does not work with batching]
      * 
-     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published
+     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published [Default: true]
      */
     save(publish?: boolean): Promise<boolean>;
 
@@ -714,6 +710,13 @@ export interface _IClientsidePage {
         translateX?: number;
         translateY?: number;
     }): void;
+
+    /**
+     * Gets the ListItem associated with this clientside page
+     * 
+     * @param selects The set of fields to include when retrieving the item
+     */
+    getItem<T>(...selects: string[]): Promise<IItem & T>;
 }
 
 export interface IClientsidePage extends _IClientsidePage, ISharePointQueryable { }

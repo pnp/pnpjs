@@ -296,27 +296,6 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
     }
 
     /**
-     * Gets the collection of people who have liked this item
-     */
-    public getLikedBy(): Promise<ILikeData[]> {
-        return spPost<ILikeData[]>(this.clone(Item, "likedBy"));
-    }
-
-    /**
-     * Likes this item as the current user
-     */
-    public like(): Promise<void> {
-        return spPost<void>(this.clone(Item, "like"));
-    }
-
-    /**
-     * Unlikes this item as the current user
-     */
-    public unlike(): Promise<void> {
-        return spPost<void>(this.clone(Item, "unlike"));
-    }
-
-    /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     public recycle(): Promise<string> {
@@ -351,13 +330,6 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
      */
     public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
         return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
-    }
-
-    /**
-     * Get the like by information for a modern site page     
-     */
-    public getLikedByInformation(): Promise<ILikedByInformation> {
-        return this.clone(Item, "likedByInformation").expand("likedby")<ILikedByInformation>();
     }
 
     /**
@@ -421,21 +393,6 @@ export interface IItem extends IInvokable, ISharePointQueryableInstance, IDelete
     update(properties: TypedHash<any>, eTag?: string, listItemEntityTypeFullName?: string): Promise<IItemUpdateResult>;
 
     /**
-     * Gets the collection of people who have liked this item
-     */
-    getLikedBy(): Promise<ILikeData[]>;
-
-    /**
-     * Likes this item as the current user
-     */
-    like(): Promise<void>;
-
-    /**
-     * Unlikes this item as the current user
-     */
-    unlike(): Promise<void>;
-
-    /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     recycle(): Promise<string>;
@@ -448,7 +405,6 @@ export interface IItem extends IInvokable, ISharePointQueryableInstance, IDelete
      */
     getWopiFrameUrl(action?: number): Promise<string>;
 
-
     /**
      * Validates and sets the values of the specified collection of fields for the list item.
      *
@@ -456,11 +412,6 @@ export interface IItem extends IInvokable, ISharePointQueryableInstance, IDelete
      * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      */
     validateUpdateListItem(formValues: IListItemFormUpdateValue[], newDocumentUpdate?: boolean): Promise<IListItemFormUpdateValue[]>;
-
-    /**
-     * Get the like by information for a modern site page     
-     */
-    getLikedByInformation(): Promise<ILikedByInformation>;
 }
 export interface _Item extends IInvokable, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);
@@ -477,18 +428,6 @@ export interface IItemUpdateResult {
 
 export interface IItemUpdateResultData {
     "odata.etag": string;
-}
-
-export interface ILikedByInformation {
-    likedBy: {
-        creationDate: string;
-        email: string;
-        id: number;
-        loginName: string;
-        name: string;
-    }[];
-    isLikedByUser: boolean;
-    likeCount: number;
 }
 
 /**
@@ -584,12 +523,4 @@ class ItemUpdatedParser extends ODataParser<IItemUpdateResultData> {
             }
         });
     }
-}
-
-export interface ILikeData {
-    name: string;
-    loginName: string;
-    id: number;
-    email: string;
-    creationDate: string;
 }

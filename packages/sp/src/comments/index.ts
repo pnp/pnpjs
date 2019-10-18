@@ -10,4 +10,6 @@ export {
     IReplies,
     ICommentInfo,
     Replies,
+    ILikeData,
+    ILikedByInformation,
 } from "./types";

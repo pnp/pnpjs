@@ -1,7 +1,13 @@
+/**
+ * Howdy, graph testing is meant to be commented out.
+ * We aren't going to implement tests for the graph library at this time.
+ */
+
+
 // import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { getGUID, combine, assign } from "@pnp/common";
-import { graph } from "@pnp/graph";
-import { AdalFetchClient, SPFetchClient } from "@pnp/nodejs";
+// import { graph } from "@pnp/graph";
+import { SPFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
 import * as chai from "chai";
@@ -14,6 +20,8 @@ chai.use(chaiAsPromised);
 
 declare var process: any;
 
+// optionally enable logging in verbose mode for all testing requests. (generates a lot of info)
+// or set any of the other logging levels
 // Logger.activeLogLevel = LogLevel.Verbose;
 // Logger.subscribe(new ConsoleListener());
 
@@ -169,21 +177,21 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
     });
 }
 
-function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
+// function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
-    return new Promise((resolve) => {
+//     return new Promise((resolve) => {
 
-        graph.setup({
-            graph: {
-                fetchClientFactory: () => {
-                    return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
-                },
-            },
-        });
+//         graph.setup({
+//             graph: {
+//                 fetchClientFactory: () => {
+//                     return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
+//                 },
+//             },
+//         });
 
-        resolve();
-    });
-}
+//         resolve();
+//     });
+// }
 
 export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
 
@@ -199,16 +207,16 @@ before(async function (): Promise<void> {
         // await cleanUpAllSubsites();
 
         console.log(`Setting up SharePoint tests...`);
-        let s = Date.now();
+        const s = Date.now();
         await spTestSetup(testSettings);
-        let e = Date.now();
+        const e = Date.now();
         console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
 
-        console.log(`Setting up Graph tests...`);
-        s = Date.now();
-        await graphTestSetup(testSettings);
-        e = Date.now();
-        console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+        // console.log(`Setting up Graph tests...`);
+        // s = Date.now();
+        // await graphTestSetup(testSettings);
+        // e = Date.now();
+        // console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
     }
 });
 

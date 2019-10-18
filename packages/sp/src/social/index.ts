@@ -15,9 +15,6 @@ export {
   SocialStatusCode,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
   interface SPRest {
     /**

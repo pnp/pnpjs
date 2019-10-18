@@ -1,4 +1,4 @@
-# Explain selective Imports concept
+# Explain Selective Imports concept
 
 - custom bundles section
 
