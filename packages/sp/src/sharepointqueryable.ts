@@ -163,12 +163,12 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
      * @param factory The contructor for the class to create
      */
     protected getParent<T extends ISharePointQueryable>(
-        factory: ISharePointQueryableConstructor<any>,
+        factory: ISPInvokableFactory<any>,
         baseUrl: string | ISharePointQueryable = this.parentUrl,
         path?: string,
         batch?: SPBatch): T {
 
-        let parent = new factory(baseUrl, path).configureFrom(this);
+        let parent = factory(baseUrl, path).configureFrom(this);
 
         const t = "@target";
         if (this.query.has(t)) {

@@ -76,7 +76,7 @@ export class _Feature extends _SharePointQueryableInstance {
 
         const feature = await Feature(this).select("DefinitionId")<{ DefinitionId: string; }>();
 
-        const promise = this.getParent<IFeatures>(_Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
+        const promise = this.getParent<IFeatures>(Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
 
         removeDependency();
 

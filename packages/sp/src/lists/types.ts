@@ -186,7 +186,7 @@ export class _List extends _SharePointQueryableInstance {
         let list: any = this;
 
         if (hOP(properties, "Title")) {
-            list = this.getParent(_List, this.parentUrl, `getByTitle('${properties.Title}')`);
+            list = this.getParent(List, this.parentUrl, `getByTitle('${properties.Title}')`);
         }
 
         return {

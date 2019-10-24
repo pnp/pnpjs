@@ -14,7 +14,8 @@ Example: "!@p1::\sites\dev" or "!@p2::\text.txt"
 ### Example without aliasing
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
+
 // still works as expected, no aliasing
 const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
 
@@ -30,7 +31,8 @@ query.get().then(r => {
 ### Example with aliasing
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
+
 // same query with aliasing
 const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
 
@@ -48,7 +50,7 @@ query.get().then(r => {
 Aliasing is supported with batching as well:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 // same query with aliasing and batching
 const batch = sp.web.createBatch();
 

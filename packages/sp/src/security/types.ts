@@ -179,7 +179,7 @@ export class _RoleDefinition extends _SharePointQueryableInstance {
 
         let definition: IRoleDefinition = <any>this;
         if (hOP(properties, "Name")) {
-            const parent = this.getParent<IRoleDefinitions>(_RoleDefinitions, this.parentUrl, "");
+            const parent = this.getParent<IRoleDefinitions>(RoleDefinitions, this.parentUrl, "");
             definition = parent.getByName((<string>properties["Name"]));
         }
         return {

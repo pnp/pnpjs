@@ -298,7 +298,7 @@ class ProfileLoader extends _SharePointQueryable {
      *
      */
     public get ownerUserProfile(): Promise<IUserProfile> {
-        let q = this.getParent(ProfileLoader, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile");
+        let q = this.getParent(ProfileLoaderFactory, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile");
 
         if (this.hasBatch) {
             q = q.inBatch(this.batch);

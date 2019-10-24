@@ -10,12 +10,11 @@ import {
     IDeleteableWithETag,
 } from "../sharepointqueryable";
 import { assign, TypedHash, hOP } from "@pnp/common";
-import { IListItemFormUpdateValue } from "../lists/types";
+import { IListItemFormUpdateValue, List } from "../lists/types";
 import { ODataParser, body, headers } from "@pnp/odata";
 import { IList } from "../lists";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata";
-import { _List } from "../lists/types";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
@@ -156,7 +155,7 @@ export class _Items extends _SharePointQueryableCollection {
 
         return candidatelistItemEntityTypeFullName ?
             Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent<IList>(_List).getListItemEntityTypeFullName();
+            this.getParent<IList>(List).getListItemEntityTypeFullName();
     }
 }
 export interface IItems extends _Items { }
@@ -218,7 +217,7 @@ export class _Item extends _SharePointQueryableInstance {
     }
 
     public get list(): IList {
-        return this.getParent<IList>(_List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**

@@ -92,7 +92,7 @@ export class _SiteGroup extends _SharePointQueryableInstance {
 
         if (hOP(p, "Title")) {
             /* tslint:disable-next-line no-string-literal */
-            retGroup = this.getParent(_SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
+            retGroup = this.getParent(SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
         }
 
         return {
