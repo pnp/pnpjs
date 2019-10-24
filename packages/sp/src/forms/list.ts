@@ -14,4 +14,4 @@ declare module "../lists/types" {
     }
 }
 
-addProp(_List, "forms", Forms, "file");
+addProp(_List, "forms", Forms, "forms");
