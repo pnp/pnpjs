@@ -6,7 +6,7 @@ import {
 import { defaultPath } from "../decorators";
 
 /**
- * Describes a collection of Field objects
+ * Describes a collection of Form objects
  *
  */
 @defaultPath("forms")
