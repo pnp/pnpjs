@@ -20,12 +20,12 @@ describe("Web", () => {
         });
 
         it(".ensureUser", async function () {
-            const e: ISiteUserProps = await sp.web.currentUser.get();
+            const e: ISiteUserProps = await sp.web.currentUser();
             return expect(sp.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
         });
 
         it(".getUserById",  async function () {
-            const user: ISiteUserProps = await sp.web.currentUser.get();
+            const user: ISiteUserProps = await sp.web.currentUser();
             return expect(sp.web.getUserById(user.Id)()).to.eventually.fulfilled;
         });
     }
@@ -33,18 +33,18 @@ describe("Web", () => {
 
 describe("Site Users", () => {
     if (testSettings.enableWebTests) {
-        it.only(".getByID", async function () {
-            const e: ISiteUserProps = await sp.web.currentUser.get();
+        it(".getByID", async function () {
+            const e: ISiteUserProps = await sp.web.currentUser();
             return expect(sp.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
         });
 
         it(".getByEmail", async function () {
-            const e: ISiteUserProps = await sp.web.currentUser.get();
+            const e: ISiteUserProps = await sp.web.currentUser();
             return expect(sp.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
         });
 
         it(".getByLoginName", async function () {
-            const e: ISiteUserProps = await sp.web.currentUser.get();
+            const e: ISiteUserProps = await sp.web.currentUser();
             return expect(sp.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
         });
     }
@@ -57,7 +57,7 @@ describe("Site User", () => {
          return expect(e.length).to.be.gte(0);
      });
         it(".update", async function() {
-             const _props: ISiteUserProps = await sp.web.currentUser.get();
+             const _props: ISiteUserProps = await sp.web.currentUser();
              _props.Title = "Changed Title";
             const e: IUserUpdateResult = await sp.web.currentUser.update(_props);
             const _newProps = await e.user.get();
