@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
 import { _Web, Web } from "../webs/types";
-import { ISiteGroups, SiteGroups } from "./types";
+import { ISiteGroups, SiteGroups, ISiteGroup } from "./types";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import "../security/web";
@@ -9,9 +9,9 @@ declare module "../webs/types" {
 
     interface _Web {
         readonly siteGroups: ISiteGroups;
-        readonly associatedOwnerGroup: ISiteGroups;
-        readonly associatedMemberGroup: ISiteGroups;
-        readonly associatedVisitorGroup: ISiteGroups;
+        readonly associatedOwnerGroup: ISiteGroup;
+        readonly associatedMemberGroup: ISiteGroup;
+        readonly associatedVisitorGroup: ISiteGroup;
         createDefaultAssociatedGroups(groupNameSeed: string, siteOwner: string, copyRoleAssignments?: boolean, clearSubscopes?: boolean, siteOwner2?: string): Promise<void>;
     }
     interface IWeb {
@@ -24,17 +24,17 @@ declare module "../webs/types" {
         /**
          * The web's owner group
          */
-        readonly associatedOwnerGroup: ISiteGroups;
+        readonly associatedOwnerGroup: ISiteGroup;
 
         /**
          * The web's member group
          */
-        readonly associatedMemberGroup: ISiteGroups;
+        readonly associatedMemberGroup: ISiteGroup;
 
         /**
          * The web's visitor group
          */
-        readonly associatedVisitorGroup: ISiteGroups;
+        readonly associatedVisitorGroup: ISiteGroup;
 
         /**
          * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
