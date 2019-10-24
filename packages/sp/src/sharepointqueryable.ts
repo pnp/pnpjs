@@ -82,7 +82,6 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
 
     /**
      * Gets the full url with query information
-     *
      */
     public toUrlAndQuery(): string {
 
@@ -114,7 +113,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
         return this;
     }
 
-    public get<T = any>(options?: IFetchOptions): Promise<T> {
+    public get<T = GetType>(options?: IFetchOptions): Promise<T> {
         return spGet<T>(<any>this, options);
     }
 

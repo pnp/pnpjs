@@ -243,7 +243,7 @@ after(async () => {
 
         await w.delete();
         console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
-    } else {
+    } else if (testSettings.enableWebTests) {
         console.log(`Leaving ${testSettings.sp.webUrl} alone.`);
     }
 
