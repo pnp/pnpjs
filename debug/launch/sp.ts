@@ -20,9 +20,7 @@ export async function Example(settings: any) {
     },
   });
 
-  const user = await sp.web.siteUsers.getByEmail("patrick@three18studios.com")();
-
-  const r = await sp.web.shareWith(user.LoginName);
+  const r = await sp.web();
 
   console.log(JSON.stringify(r, null, 2));
 
