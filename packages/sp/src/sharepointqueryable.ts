@@ -3,8 +3,8 @@ import { Queryable, IQueryable, invokableFactory, IInvokable } from "@pnp/odata"
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
 import { metadata } from "./utils/metadata";
-import { spGet, spPost } from "./operations";
-import { clientTagMethod } from "./decorators";
+import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations";
+import { tag } from "./telemetry";
 
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
@@ -266,7 +266,7 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
      * @param mapper 
      */
     protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return> {
-        return (props: any) => spPost(clientTagMethod.configure(this, `${type}.Update`), {
+        return (props: any) => spPost(tag.configure(this, `${type}.Update`), {
             body: jsS(assign(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -277,3 +277,36 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
 export interface ISharePointQueryableInstance<GetType = any> extends IInvokable<GetType>, ISharePointQueryable<GetType> { }
 export interface _SharePointQueryableInstance extends IInvokable { }
 export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);
+
+/**
+ * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
+ */
+export function deleteable(t: string) {
+
+    return function (this: ISharePointQueryable): Promise<void> {
+        return spPostDelete<void>(tag.configure(this, `${t}.delete`));
+    };
+}
+
+export interface IDeleteable {
+    /**
+     * Delete this instance
+     */
+    delete(): Promise<void>;
+}
+
+export function deleteableWithETag(t: string) {
+
+    return function (this: ISharePointQueryable, eTag = "*"): Promise<void> {
+        return spPostDeleteETag<void>(tag.configure(this, `${t}.delete`), {}, eTag);
+    };
+}
+
+export interface IDeleteableWithETag {
+    /**
+     * Delete this instance
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    delete(eTag?: string): Promise<void>;
+}

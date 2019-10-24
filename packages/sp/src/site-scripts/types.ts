@@ -2,10 +2,10 @@ import { body } from "@pnp/odata";
 import { spPost } from "../operations";
 import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
 import { extractWebUrl } from "../utils/extractweburl";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 
-export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts {
+export class _SiteScripts extends _SharePointQueryable {
 
     constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
@@ -16,29 +16,55 @@ export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts 
         return spPost<T>(this, body(props));
     }
 
-    @clientTagMethod("ss.getSiteScripts")
+    /**
+     * Gets a list of information on all existing site scripts.
+     */
+    @tag("ss.getSiteScripts")
     public getSiteScripts(): Promise<ISiteScriptInfo[]> {
         return this.clone(SiteScriptsCloneFactory, "GetSiteScripts", true).execute<ISiteScriptInfo[]>({});
     }
 
-    @clientTagMethod("ss.createSiteScript")
+    /**
+     * Creates a new site script.
+     * 
+     * @param title The display name of the site script.
+     * @param content JSON value that describes the script. For more information, see JSON reference.
+     */
+    @tag("ss.createSiteScript")
     public createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
         return this.clone(SiteScriptsCloneFactory,
             `CreateSiteScript(Title=@title,Description=@desc)?@title='${escapeQueryStrValue(title)}'&@desc='${escapeQueryStrValue(description)}'`)
             .execute<ISiteScriptInfo>(content);
     }
 
-    @clientTagMethod("ss.getSiteScriptMetadata")
+    /**
+     * Gets information about a specific site script. It also returns the JSON of the script.
+     * 
+     * @param id The ID of the site script to get information about.
+     */
+    @tag("ss.getSiteScriptMetadata")
     public getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo> {
         return this.clone(SiteScriptsCloneFactory, "GetSiteScriptMetadata").execute<ISiteScriptInfo>({ id });
     }
 
-    @clientTagMethod("ss.deleteSiteScript")
+    /**
+     * Deletes a site script.
+     * 
+     * @param id The ID of the site script to delete.
+     */
+    @tag("ss.deleteSiteScript")
     public deleteSiteScript(id: string): Promise<void> {
         return this.clone(SiteScriptsCloneFactory, "DeleteSiteScript").execute<void>({ id });
     }
 
-    @clientTagMethod("ss.updateSiteScript")
+    /**
+     * Updates a site script with new values. In the REST call, all parameters are optional except the site script Id.
+     * 
+     * @param siteScriptUpdateInfo Object that contains the information to update a site script. 
+     *                             Make sure you stringify the content object or pass it in the second 'content' parameter
+     * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
+     */
+    @tag("ss.updateSiteScript")
     public updateSiteScript(updateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo> {
 
         if (content) {
@@ -48,64 +74,26 @@ export class _SiteScripts extends _SharePointQueryable implements _ISiteScripts 
         return this.clone(SiteScriptsCloneFactory, "UpdateSiteScript").execute<ISiteScriptInfo>({ updateInfo });
     }
 
-    @clientTagMethod("ss.getSiteScriptFromList")
-    public getSiteScriptFromList(listUrl: string): Promise<string> {
-        return this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`).execute<string>({ listUrl });
-    }
-
-    @clientTagMethod("ss.getSiteScriptFromWeb")
-    public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
-        return this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`).execute<ISiteScriptSerializationResult>({ webUrl, info });
-    }
-}
-
-export interface _ISiteScripts {
-    /**
-     * Gets a list of information on all existing site scripts.
-     */
-    getSiteScripts(): Promise<ISiteScriptInfo[]>;
-    /**
-     * Creates a new site script.
-     * 
-     * @param title The display name of the site script.
-     * @param content JSON value that describes the script. For more information, see JSON reference.
-     */
-    createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo>;
-    /**
-     * Gets information about a specific site script. It also returns the JSON of the script.
-     * 
-     * @param id The ID of the site script to get information about.
-     */
-    getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo>;
-    /**
-     * Deletes a site script.
-     * 
-     * @param id The ID of the site script to delete.
-     */
-    deleteSiteScript(id: string): Promise<void>;
-    /**
-     * Updates a site script with new values. In the REST call, all parameters are optional except the site script Id.
-     * 
-     * @param siteScriptUpdateInfo Object that contains the information to update a site script. 
-     *                             Make sure you stringify the content object or pass it in the second 'content' parameter
-     * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
-     */
-    updateSiteScript(siteScriptUpdateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo>;
     /**
      * Gets the site script syntax (JSON) for a specific list
      * @param listUrl The absolute url of the list to retrieve site script
      */
-    getSiteScriptFromList(listUrl: string): Promise<string>;
+    @tag("ss.getSiteScriptFromList")
+    public getSiteScriptFromList(listUrl: string): Promise<string> {
+        return this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`).execute<string>({ listUrl });
+    }
+
     /**
      * Gets the site script syntax (JSON) for a specific web
      * @param webUrl The absolute url of the web to retrieve site script
      * @param extractInfo configuration object to specify what to extract
      */
-    getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
+    @tag("ss.getSiteScriptFromWeb")
+    public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+        return this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`).execute<ISiteScriptSerializationResult>({ webUrl, info });
+    }
 }
-
-export interface ISiteScripts extends _ISiteScripts { }
-
+export interface ISiteScripts extends _SiteScripts { }
 export const SiteScripts = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
 
 type SiteScriptsCloneType = ISiteScripts & ISharePointQueryable & { execute<T>(props: any): Promise<T> };

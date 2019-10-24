@@ -7,7 +7,6 @@ declare module "../webs/types" {
         readonly contentTypes: IContentTypes;
     }
     interface IWeb {
-
         /**
          * Content types contained in this web
          */

@@ -1,19 +1,24 @@
-import { IInvokable, body } from "@pnp/odata";
+import { body } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { defaultPath, clientTagMethod } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { SPBatch } from "../batch";
+import { tag } from "../telemetry";
 
 @defaultPath("features")
-export class _Features extends _SharePointQueryableCollection implements _IFeatures {
+export class _Features extends _SharePointQueryableCollection {
 
-    @clientTagMethod("fes.add")
+    /**
+     * Adds (activates) the specified feature
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature activation will be forced
+     */
+    @tag("fes.add")
     public async add(id: string, force = false): Promise<IFeatureAddResult> {
 
         const data = await spPost(this.clone(Features, "add"), body({
@@ -28,13 +33,24 @@ export class _Features extends _SharePointQueryableCollection implements _IFeatu
         };
     }
 
+    /**	    
+     * Gets a feature from the collection with the specified guid
+     *	    
+     * @param id The Id of the feature (GUID)	    
+     */
     public getById(id: string): IFeature {
         const feature = Feature(this);
         feature.concat(`('${id}')`);
-        return clientTagMethod.configure(feature, "fes.getById");
+        return tag.configure(feature, "fes.getById");
     }
 
-    @clientTagMethod("fes.remove")
+    /**
+     * Removes (deactivates) a feature from the collection
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature deactivation will be forced
+     */
+    @tag("fes.remove")
     public remove(id: string, force = false): Promise<any> {
 
         return spPost(this.clone(Features, "remove"), body({
@@ -43,45 +59,17 @@ export class _Features extends _SharePointQueryableCollection implements _IFeatu
         }));
     }
 }
-
-/**
- * Describes a collection of features
- *
- */
-export interface _IFeatures {
-    /**
-     * Adds (activates) the specified feature
-     *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature activation will be forced
-     */
-    add(id: string, force?: boolean): Promise<IFeatureAddResult>;
-
-    /**	    
-     * Gets a feature from the collection with the specified guid
-     *	    
-     * @param id The Id of the feature (GUID)	    
-     */
-    getById(id: string): IFeature;
-    /**
-     * Removes (deactivates) a feature from the collection
-     *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature deactivation will be forced
-     */
-    remove(id: string, force?: boolean): Promise<any>;
-}
-
-export interface IFeatures extends _IFeatures, IInvokable, ISharePointQueryableCollection {}
-
-/**
- * Invokable factory for IFeatures instances
- */
+export interface IFeatures extends _Features {}
 export const Features = spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _SharePointQueryableInstance implements _IFeature {
+export class _Feature extends _SharePointQueryableInstance {
 
-    @clientTagMethod("fe.deactivate")
+    /**
+     * Removes (deactivates) the feature
+     *
+     * @param force If true the feature deactivation will be forced
+     */
+    @tag("fe.deactivate")
     public async deactivate(force = false): Promise<any> {
 
         const removeDependency = this.addBatchDependency();
@@ -95,24 +83,7 @@ export class _Feature extends _SharePointQueryableInstance implements _IFeature 
         return promise;
     }
 }
-
-/**
- * Describes a feature
- */
-export interface _IFeature {
-     /**
-     * Removes (deactivates) the feature
-     *
-     * @param force If true the feature deactivation will be forced
-     */
-    deactivate(force?: boolean): Promise<any>;
-}
-
-export interface IFeature extends _IFeature, IInvokable, ISharePointQueryableInstance {}
-
-/**
- * Invokable factory for IFeature instances
- */
+export interface IFeature extends _Feature {}
 export const Feature = spInvokableFactory<IFeature>(_Feature);
 
 /**

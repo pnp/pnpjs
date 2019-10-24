@@ -1,23 +1,34 @@
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { IInvokable, body, headers } from "@pnp/odata";
-import { defaultPath, clientTagMethod } from "../decorators";
+import { body, headers } from "@pnp/odata";
+import { defaultPath } from "../decorators";
 import { spPost, spDelete, spPatch } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("subscriptions")
-export class _Subscriptions extends _SharePointQueryableCollection implements _ISubscriptions {
+export class _Subscriptions extends _SharePointQueryableCollection {
 
+    /**
+    * Returns all the webhook subscriptions or the specified webhook subscription
+    *
+    * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
+    */
     public getById(subscriptionId: string): ISubscription {
 
-        return clientTagMethod.configure(Subscription(this).concat(`('${subscriptionId}')`), "subs.getById");
+        return tag.configure(Subscription(this).concat(`('${subscriptionId}')`), "subs.getById");
     }
 
-    @clientTagMethod("subs.add")
+    /**
+     * Creates a new webhook subscription
+     *
+     * @param notificationUrl The url to receive the notifications
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+     * @param clientState A client specific string (optional)
+     */
+    @tag("subs.add")
     public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult> {
 
         const postBody: any = {
@@ -35,35 +46,19 @@ export class _Subscriptions extends _SharePointQueryableCollection implements _I
         return { data, subscription: this.getById(data.id) };
     }
 }
-
-/**
- * Describes a collection of webhook subscriptions
- *
- */
-export interface _ISubscriptions {
-    /**
-    * Returns all the webhook subscriptions or the specified webhook subscription
-    *
-    * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
-    */
-    getById(subscriptionId: string): ISubscription;
-    /**
-     * Creates a new webhook subscription
-     *
-     * @param notificationUrl The url to receive the notifications
-     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
-     * @param clientState A client specific string (optional)
-     */
-    add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult>;
-}
-
-export interface ISubscriptions extends _ISubscriptions, IInvokable, ISharePointQueryableCollection { }
-
+export interface ISubscriptions extends _Subscriptions { }
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
-export class _Subscription extends _SharePointQueryableInstance implements _ISubscription {
+export class _Subscription extends _SharePointQueryableInstance {
 
-    @clientTagMethod("sub.update")
+    /**
+     * Renews this webhook subscription
+     *
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months, optional)
+     * @param notificationUrl The url to receive the notifications (optional)
+     * @param clientState A client specific string (optional)
+     */
+    @tag("sub.update")
     public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult> {
 
         const postBody: any = {};
@@ -85,34 +80,16 @@ export class _Subscription extends _SharePointQueryableInstance implements _ISub
         return { data, subscription: this };
     }
 
-    @clientTagMethod("sub.delete")
-    public delete(): Promise<void> {
-        return spDelete(this);
-    }
-}
-
-/**
- * Describes a single webhook subscription instance
- *
- */
-export interface _ISubscription {
-    /**
-     * Renews this webhook subscription
-     *
-     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months, optional)
-     * @param notificationUrl The url to receive the notifications (optional)
-     * @param clientState A client specific string (optional)
-     */
-    update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult>;
     /**
      * Removes this webhook subscription
      *
      */
-    delete(): Promise<void>;
+    @tag("sub.delete")
+    public delete(): Promise<void> {
+        return spDelete(this);
+    }
 }
-
-export interface ISubscription extends _ISubscription, IInvokable, ISharePointQueryableInstance { }
-
+export interface ISubscription extends _Subscription { }
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 /**

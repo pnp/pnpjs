@@ -4,12 +4,14 @@ import {
     ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
+    IDeleteable,
+    deleteable,
 } from "../sharepointqueryable";
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
 import { TypedHash, assign } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, IDeleteable, deleteable } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
 
@@ -97,8 +99,9 @@ export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
  * Describes a single user
  *
  */
-@deleteable("su")
 export class _SiteUser extends _SharePointQueryableInstance implements _ISiteUser {
+
+    public delete = deleteable("su");
 
     /**
      * Gets the groups for this user

@@ -1,21 +1,25 @@
-import { defaultPath, clientTagMethod } from "../decorators";
+import { defaultPath } from "../decorators";
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { assign } from "@pnp/common";
 import { odataUrlFrom } from "../odata";
 import { metadata } from "../utils/metadata";
-import { IInvokable, body } from "@pnp/odata";
+import { body } from "@pnp/odata";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("comments")
-export class _Comments extends _SharePointQueryableCollection<ICommentData[]> implements _IComments {
+export class _Comments extends _SharePointQueryableCollection<ICommentData[]> {
 
-    @clientTagMethod("coms.add")
+    /**
+     * Adds a new comment to this collection
+     * 
+     * @param info Comment information to add
+     */
+    @tag("coms.add")
     public async add(info: string | ICommentInfo): Promise<IComment & ICommentData> {
 
         if (typeof info === "string") {
@@ -29,91 +33,70 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> im
         return assign(this.getById(d.id), d);
     }
 
-    public getById(id: string | number): IComment {
-        return Comment(this).concat(`(${id})`);
-    }
-
-    public clear(): Promise<boolean> {
-        return spPost<boolean>(clientTagMethod.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
-    }
-}
-
-/**
- * Represents a Collection of comments
- */
-export interface _IComments {
-    /**
-     * Adds a new comment to this collection
-     * 
-     * @param info Comment information to add
-     */
-    add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
     /**
      * Gets a comment by id
      * 
      * @param id Id of the comment to load
      */
-    getById(id: string | number): IComment;
+    public getById(id: string | number): IComment {
+        return Comment(this).concat(`(${id})`);
+    }
+
     /**
      * Deletes all the comments in this collection
      */
-    clear(): Promise<boolean>;
+    public clear(): Promise<boolean> {
+        return spPost<boolean>(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
+    }
 }
-
-export interface IComments extends _IComments, IInvokable<ICommentData[]>, ISharePointQueryableCollection<ICommentData[]> { }
+export interface IComments extends _Comments {}
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
-export class _Comment extends _SharePointQueryableInstance<ICommentData> implements _IComment {
+export class _Comment extends _SharePointQueryableInstance<ICommentData> {
 
+    /**
+     * A comment's replies
+     */
     public get replies(): IReplies {
-        return clientTagMethod.configure(Replies(this), "com.replies");
+        return tag.configure(Replies(this), "com.replies");
     }
 
-    @clientTagMethod("com.like")
+    /**
+     * Likes the comment as the current user
+     */
+    @tag("com.like")
     public like(): Promise<void> {
         return spPost(this.clone(Comment, "Like"));
     }
 
-    @clientTagMethod("com.unlike")
+    /**
+     * Unlikes the comment as the current user
+     */
+    @tag("com.unlike")
     public unlike(): Promise<void> {
         return spPost(this.clone(Comment, "Unlike"));
     }
 
-    @clientTagMethod("com.delete")
+    /**
+     * Deletes this comment
+     */
+    @tag("com.delete")
     public delete(): Promise<void> {
         return spPost(this.clone(Comment, "DeleteComment"));
     }
 }
-
-/**
- * Represents a comment
- */
-export interface _IComment {
-    /**
-     * A comment's replies
-     */
-    readonly replies: IReplies;
-    /**
-     * Likes the comment as the current user
-     */
-    like(): Promise<void>;
-    /**
-     * Unlikes the comment as the current user
-     */
-    unlike(): Promise<void>;
-    /**
-     * Deletes this comment
-     */
-    delete(): Promise<void>;
-}
-
-export interface IComment extends _IComment, IInvokable<ICommentData>, ISharePointQueryableInstance<ICommentData> { }
+export interface IComment extends _Comment {}
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 @defaultPath("replies")
-export class _Replies extends _SharePointQueryableCollection<ICommentData[]> implements _IReplies {
+export class _Replies extends _SharePointQueryableCollection<ICommentData[]> {
 
-    @clientTagMethod("reps.add")
+    /**
+     * Adds a new reply to this collection
+     * 
+     * @param info Comment information to add
+     */
+    @tag("reps.add")
     public async add(info: string | ICommentInfo): Promise<IComment & ICommentData> {
 
         if (typeof info === "string") {
@@ -127,20 +110,7 @@ export class _Replies extends _SharePointQueryableCollection<ICommentData[]> imp
         return assign(Comment(odataUrlFrom(d)), d);
     }
 }
-
-/**
- * Represents a Collection of comments
- */
-export interface _IReplies {
-    /**
-     * Adds a new reply to this collection
-     * 
-     * @param info Comment information to add
-     */
-    add(info: string | ICommentInfo): Promise<IComment & ICommentData>;
-}
-
-export interface IReplies extends _IReplies, IInvokable<ICommentData[]>, ISharePointQueryableCollection<ICommentData[]> { }
+export interface IReplies extends _Replies {}
 export const Replies = spInvokableFactory<IReplies>(_Replies);
 
 /**

@@ -1,11 +1,10 @@
 import { invokableFactory, body, headers } from "@pnp/odata";
 import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
-import { Item, IItemUpdateResult, IItem } from "../items/types";
-import { ILikedByInformation } from "../comments/types";
+import { Item, IItem } from "../items/types";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
 import { metadata } from "../utils/metadata";
-import { List, IList } from "../lists/types";
+import { List } from "../lists/types";
 import { odataUrlFrom } from "../odata";
 import { Web, IWeb } from "../webs/types";
 import { extractWebUrl } from "../utils/extractweburl";
@@ -14,7 +13,7 @@ import { spPost } from "../operations";
 import { getNextOrder, reindex } from "./funcs";
 import "../files/web";
 import "../comments/item";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
 
 /**
  * Page promotion state
@@ -51,7 +50,7 @@ function initFrom(o: ISharePointQueryable, url: string): IClientsidePage {
 /** 
  * Represents the data and methods associated with client side "modern" pages
  */
-export class _ClientsidePage extends _SharePointQueryable implements _IClientsidePage {
+export class _ClientsidePage extends _SharePointQueryable implements IClientsidePage {
 
     private _pageSettings: IClientsidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
@@ -181,12 +180,20 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         this._layoutPart.properties.showPublishDate = value;
     }
 
+    /**
+     * Add a section to this page
+     */
     public addSection(): CanvasSection {
         const section = new CanvasSection(this, getNextOrder(this.sections));
         this.sections.push(section);
         return section;
     }
 
+    /**
+     * Loads this instance from the appropriate JSON data
+     * 
+     * @param pageData JSON data to load (replaces any existing data)
+     */
     public fromJSON(pageData: Partial<IPageData>): this {
 
         this.json = pageData;
@@ -203,7 +210,10 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return this;
     }
 
-    @clientTagMethod("csp.load")
+    /**
+     * Loads this page's content from the server
+     */
+    @tag("csp.load")
     public async load(): Promise<IClientsidePage> {
 
         const item = await this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled");
@@ -212,7 +222,12 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return this.fromJSON(pageData);
     }
 
-    @clientTagMethod("csp.save")
+    /**
+     * Persists the content changes (sections, columns, and controls) [does not work with batching]
+     * 
+     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published [Default: true]
+     */
+    @tag("csp.save")
     public async save(publish = true): Promise<boolean> {
 
         if (this.json.Id === null) {
@@ -308,7 +323,10 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return r;
     }
 
-    @clientTagMethod("csp.discardPageCheckout")
+    /**
+     * Discards the checkout of this page
+     */
+    @tag("csp.discardPageCheckout")
     public async discardPageCheckout(): Promise<void> {
 
         if (this.json.Id === null) {
@@ -320,7 +338,10 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         this.fromJSON(d);
     }
 
-    @clientTagMethod("csp.promoteToNews")
+    /**
+     * Promotes this page as a news item
+     */
+    @tag("csp.promoteToNews")
     public async promoteToNews(): Promise<boolean> {
         return this.promoteNewsImpl("promoteToNews");
     }
@@ -330,26 +351,20 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
     //     return this.promoteNewsImpl("demoteFromNews");
     // }
 
-    @clientTagMethod("csp.enableComments")
-    public enableComments(): Promise<IItemUpdateResult> {
-        return this.setCommentsOn(true).then(r => {
-            this.commentsDisabled = false;
-            return r;
-        });
-    }
-
-    @clientTagMethod("csp.disableComments")
-    public disableComments(): Promise<IItemUpdateResult> {
-        return this.setCommentsOn(false).then(r => {
-            this.commentsDisabled = true;
-            return r;
-        });
-    }
-
+    /**
+     * Finds a control by the specified instance id
+     *
+     * @param id Instance id of the control to find
+     */
     public findControlById<T extends ColumnControl<any> = ColumnControl<any>>(id: string): T {
         return this.findControl((c) => c.id === id);
     }
 
+    /**
+     * Finds a control within this page's control tree using the supplied predicate
+     *
+     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
+     */
     public findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T {
         // check all sections
         for (let i = 0; i < this.sections.length; i++) {
@@ -369,7 +384,15 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return null;
     }
 
-    @clientTagMethod("csp.copy")
+    /**
+     * Creates a copy of this page
+     * 
+     * @param web The web where we will create the copy
+     * @param pageName The file name of the new page
+     * @param title The title of the new page
+     * @param publish If true the page will be published
+     */
+    @tag("csp.copy")
     public async copy(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientsidePage> {
 
         const page = await CreateClientsidePage(web, pageName, title, this.pageLayout);
@@ -382,6 +405,13 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return page;
     }
 
+    /**
+     * Sets the modern page banner image
+     * 
+     * @param url Url of the image to display
+     * @param altText Alt text to describe the image
+     * @param bannerProps Additional properties to control display of the banner
+     */
     public setBannerImage(url: string, props?: {
         altText?: string;
         imageSourceType?: number;
@@ -413,7 +443,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
      * 
      * @param selects Specific set of fields to include when getting the item
      */
-    @clientTagMethod("csp.getItem")
+    @tag("csp.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
@@ -510,24 +540,13 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         return { zoneEmphasis: value };
     }
 
-    /**
-     * Sets the comments flag for a page
-     * 
-     * @param on If true comments are enabled, false they are disabled
-     */
-    private async setCommentsOn(on: boolean): Promise<IItemUpdateResult> {
-        const item = await this.getItem();
-        return Item(item, `SetCommentsDisabled(${!on})`).update({});
-    }
-
     private async promoteNewsImpl(method: string): Promise<boolean> {
 
         if (this.json.Id === null) {
             throw Error("The id for this page is null.");
         }
 
-        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));
-        return d;
+        return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));
     }
 
     /**
@@ -601,125 +620,7 @@ export class _ClientsidePage extends _SharePointQueryable implements _IClientsid
         section.columns.push(column);
     }
 }
-
-export interface _IClientsidePage {
-    pageLayout: ClientsidePageLayoutType;
-    bannerImageUrl: string;
-    topicHeader: string;
-    title: string;
-    layoutType: LayoutType;
-    headerTextAlignment: TextAlignment;
-    showTopicHeader: boolean;
-    showPublishDate: boolean;
-    sections: CanvasSection[];
-    commentsDisabled: boolean;
-
-    /**
-     * Add a section to this page
-     */
-    addSection(): CanvasSection;
-
-    /**
-     * Loads this instance from the appropriate JSON data
-     * 
-     * @param pageData JSON data to load (replaces any existing data)
-     */
-    fromJSON(pageData: Partial<IPageData>): this;
-
-    /**
-     * Loads this page's content from the server
-     */
-    load(): Promise<IClientsidePage>;
-
-    /**
-     * Persists the content changes (sections, columns, and controls) [does not work with batching]
-     * 
-     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published [Default: true]
-     */
-    save(publish?: boolean): Promise<boolean>;
-
-    /**
-     * Discards the checkout of this page
-     */
-    discardPageCheckout(): Promise<void>;
-
-    /**
-     * Promotes this page as a news item
-     */
-    promoteToNews(): Promise<boolean>;
-
-    /**
-     * Enables comments on this page
-     */
-    enableComments(): Promise<IItemUpdateResult>;
-
-    /**
-     * Disables comments on this page
-     */
-    disableComments(): Promise<IItemUpdateResult>;
-
-    /**
-     * Finds a control by the specified instance id
-     *
-     * @param id Instance id of the control to find
-     */
-    findControlById<T extends ColumnControl<any> = ColumnControl<any>>(id: string): T;
-
-    /**
-     * Finds a control within this page's control tree using the supplied predicate
-     *
-     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
-     */
-    findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T;
-
-    /**
-     * Like the modern site page
-     */
-    like(): Promise<void>;
-
-    /**
-     * Unlike the modern site page
-     */
-    unlike(): Promise<void>;
-
-    /**
-     * Get the liked by information for a modern site page     
-     */
-    getLikedByInformation(): Promise<ILikedByInformation>;
-
-    /**
-     * Creates a copy of this page
-     * 
-     * @param web The web where we will create the copy
-     * @param pageName The file name of the new page
-     * @param title The title of the new page
-     * @param publish If true the page will be published
-     */
-    copy(web: IWeb | IList, pageName: string, title: string, publish?: boolean): Promise<IClientsidePage>;
-
-    /**
-     * Sets the modern page banner image
-     * 
-     * @param url Url of the image to display
-     * @param altText Alt text to describe the image
-     * @param bannerProps Additional properties to control display of the banner
-     */
-    setBannerImage(url: string, props?: {
-        altText?: string;
-        imageSourceType?: number;
-        translateX?: number;
-        translateY?: number;
-    }): void;
-
-    /**
-     * Gets the ListItem associated with this clientside page
-     * 
-     * @param selects The set of fields to include when retrieving the item
-     */
-    getItem<T>(...selects: string[]): Promise<IItem & T>;
-}
-
-export interface IClientsidePage extends _IClientsidePage, ISharePointQueryable { }
+export interface IClientsidePage extends _ClientsidePage { }
 
 /**
  * Invokable factory for IClientSidePage instances

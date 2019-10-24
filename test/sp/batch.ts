@@ -1,6 +1,8 @@
 import { expect } from "chai";
-import { Web } from "../";
-import { testSettings } from "../../../test/test";
+import { Web } from "@pnp/sp/src/webs";
+import "@pnp/sp/src/lists/web";
+import "@pnp/sp/src/items/list";
+import { testSettings } from "../main";
 
 describe("Batching", () => {
 
@@ -8,7 +10,7 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for a single request", () => {
 
-            const web = new Web(testSettings.sp.webUrl);
+            const web = Web(testSettings.sp.webUrl);
 
             const order: number[] = [];
 
@@ -26,25 +28,25 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an even number of requests", () => {
 
-            const web = new Web(testSettings.sp.webUrl);
+            const web = Web(testSettings.sp.webUrl);
 
             const order: number[] = [];
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(_ => {
+            web.inBatch(batch)().then(_ => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch).get().then(_ => {
+            web.lists.inBatch(batch)().then(_ => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch).get().then(_ => {
+            web.lists.top(2).inBatch(batch)().then(_ => {
                 order.push(3);
             });
 
-            web.lists.select("Title").inBatch(batch).get().then(_ => {
+            web.lists.select("Title").inBatch(batch)().then(_ => {
                 order.push(4);
             });
 
@@ -56,21 +58,21 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an odd number of requests", () => {
 
-            const web = new Web(testSettings.sp.webUrl);
+            const web = Web(testSettings.sp.webUrl);
 
             const order: number[] = [];
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(_ => {
+            web.inBatch(batch)().then(_ => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch).get().then(_ => {
+            web.lists.inBatch(batch)().then(_ => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch).get().then(_ => {
+            web.lists.top(2).inBatch(batch)().then(_ => {
                 order.push(3);
             });
 
@@ -82,7 +84,7 @@ describe("Batching", () => {
 
         it("Should execute batches that have internally cloned requests", () => {
 
-            const web = new Web(testSettings.sp.webUrl);
+            const web = Web(testSettings.sp.webUrl);
 
             const order: number[] = [];
 

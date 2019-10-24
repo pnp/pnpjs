@@ -9,7 +9,7 @@ import {
 } from "@pnp/common";
 import { SPRuntimeConfig } from "../config/splibconfig";
 import { extractWebUrl } from "../utils/extractweburl";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
 
 export class SPHttpClient implements IRequestClient {
 
@@ -42,7 +42,7 @@ export class SPHttpClient implements IRequestClient {
 
         if (!headers.has("X-ClientService-ClientTag")) {
 
-            const methodName = clientTagMethod.getClientTag(headers);
+            const methodName = tag.getClientTag(headers);
             let clientTag = `PnPCoreJS:$$Version$$:${methodName}`;
 
             if (clientTag.length > 32) {

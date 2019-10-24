@@ -1,7 +1,8 @@
 import { _ClientsidePage } from "../clientside-pages/types";
 import { ICommentInfo, ICommentData, IComment, _Comment, Comment, ILikedByInformation } from "./types";
 import { spODataEntity } from "../odata";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
+import { IItemUpdateResult, Item } from "../items";
 
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {
@@ -12,6 +13,9 @@ declare module "../clientside-pages/types" {
         like(): Promise<void>;
         unlike(): Promise<void>;
         getLikedByInformation(): Promise<ILikedByInformation>;
+        enableComments(): Promise<IItemUpdateResult>;
+        disableComments(): Promise<IItemUpdateResult>;
+        setCommentsOn(on: boolean): Promise<IItemUpdateResult>;
     }
     interface IClientsidePage {
         /**
@@ -45,6 +49,14 @@ declare module "../clientside-pages/types" {
          * gets list of who likes the page, current user's status, a few other details
          */
         getLikedByInformation(): Promise<ILikedByInformation>;
+        /**
+         * Enables comments for this page
+         */
+        enableComments(): Promise<IItemUpdateResult>;
+        /**
+         * Disables comments for this page
+         */
+        disableComments(): Promise<IItemUpdateResult>;
     }
 }
 
@@ -69,20 +81,41 @@ _ClientsidePage.prototype.clearComments = async function (this: _ClientsidePage)
 _ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): Promise<ICommentData[]> {
 
     const item = await this.getItem();
-    return clientTagMethod.configure(item, "").comments();
+    return tag.configure(item, "").comments();
 };
 
-_ClientsidePage.prototype.like = async function (): Promise<void> {
+_ClientsidePage.prototype.like = async function (this: _ClientsidePage): Promise<void> {
     const item = await this.getItem("ID");
     return item.like();
 };
 
-_ClientsidePage.prototype.unlike = async function (): Promise<void> {
+_ClientsidePage.prototype.unlike = async function (this: _ClientsidePage): Promise<void> {
     const item = await this.getItem("ID");
     return item.unlike();
 };
 
-_ClientsidePage.prototype.getLikedByInformation = async function (): Promise<ILikedByInformation> {
+_ClientsidePage.prototype.getLikedByInformation = async function (this: _ClientsidePage): Promise<ILikedByInformation> {
     const item = await this.getItem("ID");
     return item.getLikedByInformation();
+};
+
+_ClientsidePage.prototype.enableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
+    tag.configure(this, "csp.enableComments");
+    return this.setCommentsOn(true).then(r => {
+        this.commentsDisabled = false;
+        return r;
+    });
+};
+
+_ClientsidePage.prototype.disableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
+    tag.configure(this, "csp.disableComments");
+    return this.setCommentsOn(false).then(r => {
+        this.commentsDisabled = true;
+        return r;
+    });
+};
+
+_ClientsidePage.prototype.setCommentsOn = async function (this: _ClientsidePage, on: boolean): Promise<IItemUpdateResult> {
+    const item = await this.getItem();
+    return Item(item, `SetCommentsDisabled(${!on})`).update({});
 };

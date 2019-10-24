@@ -3,7 +3,6 @@ import { _SharePointQueryableInstance, _SharePointQueryable, SharePointQueryable
 import { hOP } from "@pnp/common";
 import { spPost } from "../operations";
 
-// export function
 /**
 * Gets the effective permissions for the user supplied
 *

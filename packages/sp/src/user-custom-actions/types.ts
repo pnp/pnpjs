@@ -1,23 +1,34 @@
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableInstance,
-    ISharePointQueryableCollection,
     _SharePointQueryableCollection,
     spInvokableFactory,
+    deleteable,
+    IDeleteable,
 } from "../sharepointqueryable";
 import { assign, TypedHash } from "@pnp/common";
-import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, deleteable, IDeleteable, clientTagMethod } from "../decorators";
+import { body } from "@pnp/odata";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("usercustomactions")
-export class _UserCustomActions extends _SharePointQueryableCollection implements _IUserCustomActions {
+export class _UserCustomActions extends _SharePointQueryableCollection {
 
+    /**	   
+     * Returns the user custom action with the specified id	     
+     *	    
+     * @param id The GUID id of the user custom action to retrieve	     
+     */
     public getById(id: string): IUserCustomAction {
-        return clientTagMethod.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
+        return tag.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
     }
 
-    @clientTagMethod("ucas.add")
+    /**
+     * Creates a user custom action
+     *
+     * @param properties The information object of property names and values which define the new user custom action
+     */
+    @tag("ucas.add")
     public async add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult> {
         const data = await spPost(this, body(assign({ __metadata: { "type": "SP.UserCustomAction" } }, properties)));
         return {
@@ -26,60 +37,29 @@ export class _UserCustomActions extends _SharePointQueryableCollection implement
         };
     }
 
-    @clientTagMethod("ucas.clear")
+    /**
+     * Deletes all user custom actions in the collection
+     */
+    @tag("ucas.clear")
     public clear(): Promise<void> {
         return spPost(this.clone(UserCustomActions, "clear"));
     }
 }
-
-/**
- * Describes a collection of user custom actions
- *
- */
-export interface _IUserCustomActions {
-    /**	   
-     * Returns the user custom action with the specified id	     
-     *	    
-     * @param id The GUID id of the user custom action to retrieve	     
-     */
-    getById(id: string): IUserCustomAction;
-
-    /**
-     * Creates a user custom action
-     *
-     * @param properties The information object of property names and values which define the new user custom action
-     */
-    add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult>;
-
-    /**
-     * Deletes all user custom actions in the collection
-     */
-    clear(): Promise<void>;
-}
-
-export interface IUserCustomActions extends _IUserCustomActions, IInvokable, ISharePointQueryableCollection { }
-
+export interface IUserCustomActions extends _UserCustomActions { }
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
-@deleteable("uca")
-export class _UserCustomAction extends _SharePointQueryableInstance implements _IUserCustomAction {
-    public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
-}
+export class _UserCustomAction extends _SharePointQueryableInstance {
 
-/**
- * Describes a single user custom action
- */
-export interface _IUserCustomAction {
+    public delete = deleteable("uca");
+
     /**
     * Updates this user custom action with the supplied properties
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    update(props: TypedHash<any>): IUserCustomActionUpdateResult;
+    public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
 }
-
-export interface IUserCustomAction extends _IUserCustomAction, IInvokable, ISharePointQueryableInstance, IDeleteable { }
-
+export interface IUserCustomAction extends _UserCustomAction, IDeleteable { }
 export const UserCustomAction = spInvokableFactory<IUserCustomAction>(_UserCustomAction);
 
 /**

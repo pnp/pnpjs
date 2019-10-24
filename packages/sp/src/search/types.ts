@@ -1,6 +1,6 @@
-export type SearchQueryInit = string | ISearchQuery | ISearchQueryBuilder;
+export type SearchQueryInit = string | ISearchQuery | ISearchBuilder;
 
-export interface ISearchQueryBuilder {
+export interface ISearchBuilder {
     query: any;
     readonly bypassResultTypes: this;
     readonly enableStemming: this;
@@ -346,6 +346,7 @@ export interface IRefiner {
     Name: string;
     Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[];
 }
+
 export interface IResultTable {
     GroupTemplateId?: string;
     ItemTemplateId?: string;

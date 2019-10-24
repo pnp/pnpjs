@@ -2,7 +2,7 @@ import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepoin
 import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { CachingOptions, body } from "@pnp/odata";
-import { ISearchQuery, ISearchResponse, ISearchResult, ISearchQueryBuilder, SearchQueryInit } from "./types";
+import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types";
 import { spPost } from "../operations";
 import { defaultPath } from "../decorators";
 
@@ -51,7 +51,7 @@ function toPropCase(str: string) {
  * @param queryText Initial query text
  * @param _query Any initial query configuration
  */
-export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBuilder {
+export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder {
 
     return new Proxy(<any>{
         query: Object.assign({
@@ -143,8 +143,8 @@ export class _Search extends _SharePointQueryableInstance {
         if (typeof prop === "undefined") {
             return ({ results: [] });
         }
-        prop = isArray(prop) ? prop : [prop];
-        return hOP(prop, "results") ? prop : { results: prop };
+
+        return { results: isArray(prop) ? prop : [prop] };
     }
 
     /**
@@ -158,8 +158,8 @@ export class _Search extends _SharePointQueryableInstance {
 
         if (typeof query === "string") {
             finalQuery = { Querytext: query };
-        } else if ((query as ISearchQueryBuilder).toSearchQuery) {
-            finalQuery = (query as ISearchQueryBuilder).toSearchQuery();
+        } else if ((query as ISearchBuilder).toSearchQuery) {
+            finalQuery = (query as ISearchBuilder).toSearchQuery();
         } else {
             finalQuery = <ISearchQuery>query;
         }
@@ -172,21 +172,12 @@ export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
 
-export const Search: ISearch = (queryInit: SearchQueryInit) => (new _Search("").execute(queryInit));
-
-export const SearchFactory = (baseUrl: string | ISharePointQueryable, path = "", options: IConfigOptions = {}): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl, path)).configure(options).execute(queryInit);
+export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISearch => (queryInit: SearchQueryInit) => {
+    return (new _Search(baseUrl, "")).configure(options).execute(queryInit);
 };
 
-/**
- * Describes the SearchResults class, which returns the formatted and raw version of the query response
- */
 export class SearchResults {
 
-    /**
-     * Creates a new instance of the SearchResult class
-     *
-     */
     constructor(rawResponse: any,
         private _url: string,
         private _query: ISearchQuery,
@@ -250,7 +241,7 @@ export class SearchResults {
             return Promise.resolve(null);
         }
 
-        return SearchFactory(this._url, null)(query);
+        return Search(this._url)(query);
     }
 
     /**
@@ -269,7 +260,7 @@ export class SearchResults {
 
             results.push(cells.reduce((res, cell) => {
 
-                Object.defineProperty(res, cell.Key,
+                Reflect.defineProperty(res, cell.Key,
                     {
                         configurable: false,
                         enumerable: true,
@@ -285,5 +276,3 @@ export class SearchResults {
         return results;
     }
 }
-
-

@@ -11,9 +11,6 @@ import {
     ISharingRecipient,
 } from "./types";
 
-/**
-* Extend Folder
-*/
 declare module "../folders/types" {
     interface _Folder extends ISharedFuncs {
         shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, shareEverything?: boolean, emailData?: ISharingEmailData): Promise<ISharingResult>;

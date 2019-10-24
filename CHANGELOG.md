@@ -19,7 +19,7 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 ### Changed
 
 - odata: refactor Queryable
-  - remove withPipeline
+  - removed withPipeline
   - removed the action methods (get, post, put, delete)
   - introduced "invokable" concept
   - added additional methods to operate on Queryables
@@ -35,10 +35,10 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - tooling: gulp tasks rewritten in TypeScript, updated to latest
 - tooling: build system rewritten as cli
 - common: extend renamed to assign
-- sp: client side pages breaking updates in method signatures
+- sp: client side pages breaking changes in method signatures
+- sp: breaking change to rename search classes and factories
 
 ### Fixed
-
 
 ### Removed
 

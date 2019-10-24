@@ -2,9 +2,6 @@ import { addProp } from "@pnp/odata";
 import { _List } from "../lists/types";
 import { Forms, IForms } from "./types";
 
-/**
-* Extend Item
-*/
 declare module "../lists/types" {
     interface _List {
         readonly forms: IForms;

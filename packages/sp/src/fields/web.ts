@@ -12,7 +12,6 @@ declare module "../webs/types" {
      * This web's collection of fields
      */
     readonly fields: IFields;
-
     /**
      * This web's collection of available fields
      */

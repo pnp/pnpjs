@@ -20,7 +20,7 @@ import {
     RoleType,
 } from "./types";
 import { spPost } from "../operations";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
 import { RoleDefinitions } from "../security/types";
 
 /**
@@ -83,7 +83,7 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
     const expString = expiration !== null ? expiration.toISOString() : null;
 
     // clone using the factory and send the request
-    const o = clientTagMethod.configure(this.clone(SharePointQueryableInstance, "shareLink"), "sh.getShareLink");
+    const o = tag.configure(this.clone(SharePointQueryableInstance, "shareLink"), "sh.getShareLink");
     return spPost<IShareLinkResponse>(o, body({
         request: {
             createLink: true,
@@ -103,7 +103,7 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
  */
 export function checkPermissions(this: ShareableQueryable, recipients: ISharingRecipient[]): Promise<ISharingEntityPermission[]> {
 
-    const o = clientTagMethod.configure(this.clone(SharePointQueryableInstance, "checkPermissions"), "sh.checkPermissions");
+    const o = tag.configure(this.clone(SharePointQueryableInstance, "checkPermissions"), "sh.checkPermissions");
     return spPost<ISharingEntityPermission[]>(o, body({ recipients }));
 }
 
@@ -116,7 +116,7 @@ export function checkPermissions(this: ShareableQueryable, recipients: ISharingR
  */
 export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
 
-    const o = clientTagMethod.configure(this.clone(SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
+    const o = tag.configure(this.clone(SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
     return spPost(o.expand(...expands), body({ request }));
 }
 
@@ -127,7 +127,7 @@ export function getSharingInformation(this: ShareableQueryable, request: ISharin
  */
 export function getObjectSharingSettings(this: ShareableQueryable, useSimplifiedRoles = true): Promise<IObjectSharingSettings> {
 
-    const o = clientTagMethod.configure(this.clone(SharePointQueryableInstance, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
+    const o = tag.configure(this.clone(SharePointQueryableInstance, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
     return spPost<IObjectSharingSettings>(o, body({ useSimplifiedRoles }));
 }
 
@@ -136,7 +136,7 @@ export function getObjectSharingSettings(this: ShareableQueryable, useSimplified
  */
 export function unshareObject(this: ShareableQueryable): Promise<ISharingResult> {
 
-    return spPost(clientTagMethod.configure(this.clone(SharePointQueryableInstance, "unshareObject"), "sh.unshareObject"));
+    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareObject"), "sh.unshareObject"));
 }
 
 /**
@@ -146,7 +146,7 @@ export function unshareObject(this: ShareableQueryable): Promise<ISharingResult>
  */
 export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLinkKind): Promise<void> {
 
-    return spPost(clientTagMethod.configure(this.clone(SharePointQueryableInstance, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind }));
+    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind }));
 }
 
 /**
@@ -157,7 +157,7 @@ export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLink
  */
 export function unshareLink(this: ShareableQueryable, linkKind: SharingLinkKind, shareId = "00000000-0000-0000-0000-000000000000"): Promise<void> {
 
-    return spPost(clientTagMethod.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
+    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
 }
 
 /**
@@ -207,12 +207,12 @@ export async function shareWith(
         });
     }
 
-    return spPost<ISharingResult>(clientTagMethod.configure(o.clone(SharePointQueryableInstance, "shareObject"), "sh.shareWith"), body(postBody));
+    return spPost<ISharingResult>(tag.configure(o.clone(SharePointQueryableInstance, "shareObject"), "sh.shareWith"), body(postBody));
 }
 
 function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<ISharingResult> {
 
-    const w = clientTagMethod.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
+    const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 

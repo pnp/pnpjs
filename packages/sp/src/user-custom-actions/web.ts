@@ -2,9 +2,6 @@ import { addProp } from "@pnp/odata";
 import { _Web } from "../webs/types";
 import { UserCustomActions, IUserCustomActions } from "./types";
 
-/**
-* Extend Web
-*/
 declare module "../webs/types" {
     interface _Web {
         /**

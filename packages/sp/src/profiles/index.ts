@@ -15,9 +15,6 @@ export {
     UrlZone,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly profiles: IProfiles;
