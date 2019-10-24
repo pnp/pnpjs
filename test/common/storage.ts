@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { PnPClientStorageWrapper} from "..";
+import { PnPClientStorageWrapper} from "@pnp/common";
 import MockStorage  from "./mock-storage";
 
 describe("Storage", () => {

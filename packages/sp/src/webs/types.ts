@@ -22,7 +22,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
 
 @defaultPath("webs")
-export class _Webs extends _SharePointQueryableCollection {
+export class _Webs extends _SharePointQueryableCollection<any[]> {
 
     /**
      * Adds a new web to the collection

@@ -49,4 +49,5 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - all: removed bundles from npm packages
 - tooling: removed gulp and replaced tasks with npm scripts
 - all: no longer building es5 code
+- common: removed getAttrValueFromString method
 

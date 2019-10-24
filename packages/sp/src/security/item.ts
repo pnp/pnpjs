@@ -12,9 +12,6 @@ import {
     hasPermissions,
 } from "./funcs";
 
-/**
-* Extend Item
-*/
 declare module "../items/types" {
     interface _Item extends ISecurableMethods { }
     interface IItem extends ISecurableMethods { }

@@ -2,10 +2,6 @@ import { SPFetchClient } from "@pnp/nodejs";
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
-import "@pnp/sp/src/sharing/web";
-import { SharingLinkKind } from "@pnp/sp/src/sharing";
-import { dateAdd } from "@pnp/common";
 
 declare var process: { exit(code?: number): void };
 

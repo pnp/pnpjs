@@ -203,12 +203,11 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
      * @param url Absolute url of the request
      * @param options Any options
      */
-    public fetch(url: string, options: IFetchOptions): Promise<Response> {
+    public async fetch(url: string, options: IFetchOptions): Promise<Response> {
 
-        return this.getToken(getResource(url)).then(token => {
-            this.token = token;
-            return super.fetch(url, options);
-        });
+        const token = await this.getToken(getResource(url));
+        this.token = token;
+        return super.fetch(url, options);
     }
 
     /**
@@ -216,11 +215,9 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
      * 
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
-    public getToken(resource: string): Promise<string> {
+    public async getToken(resource: string): Promise<string> {
 
-        return this.context.aadTokenProviderFactory.getTokenProvider().then(provider => {
-
-            return provider.getToken(resource);
-        });
+        const provider = await this.context.aadTokenProviderFactory.getTokenProvider();
+        return provider.getToken(resource);
     }
 }

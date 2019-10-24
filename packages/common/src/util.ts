@@ -170,22 +170,6 @@ export function stringIsNullOrEmpty(s: string): boolean {
 }
 
 /**
- * Gets an attribute value from an html/xml string block. NOTE: if the input attribute value has
- * RegEx special characters they will be escaped in the returned string
- * 
- * @param html HTML to search
- * @param attrName The name of the attribute to find
- */
-export function getAttrValueFromString(html: string, attrName: string): string | null {
-
-    // make the input safe for regex
-    html = html.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const reg = new RegExp(`${attrName}\\s*?=\\s*?("|')([^\\1]*?)\\1`, "i");
-    const match = reg.exec(html);
-    return match !== null && match.length > 0 ? match[2] : null;
-}
-
-/**
  * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
  * 
  * @param guid The candidate guid
