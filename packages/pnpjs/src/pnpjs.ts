@@ -12,7 +12,6 @@ import {
     assign,
     isUrlAbsolute,
     stringIsNullOrEmpty,
-    getAttrValueFromString,
     sanitizeGuid,
 } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
@@ -41,7 +40,6 @@ export const util = {
     assign,
     combine,
     dateAdd,
-    getAttrValueFromString,
     getCtxCallback,
     getGUID,
     getRandomString,

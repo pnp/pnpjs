@@ -6,7 +6,6 @@ declare module "../webs/types" {
         relatedItems: IRelatedItemManager;
     }
     interface IWeb {
-
         /**
          * The related items manager associated with this web
          */
@@ -18,6 +17,6 @@ Reflect.defineProperty(_Web.prototype, "relatedItems", {
     configurable: true,
     enumerable: true,
     get: function (this: _Web) {
-        return RelatedItemManager(this.toUrl());
+        return RelatedItemManager(this);
     },
 });
