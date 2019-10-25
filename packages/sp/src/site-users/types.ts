@@ -88,9 +88,9 @@ export interface _ISiteUsers {
     removeByLoginName(loginName: string): Promise<any>;
 
     /**
-     * Adds a user to a group
+     * Adds a user to a site collection
      *
-     * @param loginName The login name of the user to add to the group
+     * @param loginName The login name of the user to add  to a site collection
      *
      */
     add(loginName: string): Promise<ISiteUser>;
