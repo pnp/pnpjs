@@ -5,7 +5,7 @@ outlines usage with the @pnp/graph library, though it would work in any case whe
 
 ```TypeScript
 import { AdalFetchClient } from "@pnp/nodejs";
-import { graph } from "@pnp/graph";
+import { graph } from "@pnp/graph/presets/all";
 
 // setup the client using graph setup function
 graph.setup({
@@ -17,12 +17,7 @@ graph.setup({
 });
 
 // execute a library request as normal
-graph.groups.get().then(g => {
+const g = await graph.groups.get();
 
-    console.log(JSON.stringify(g, null, 4));
-
-}).catch(e => {
-
-    console.error(e);
-});
+console.log(JSON.stringify(g, null, 4));
 ```

@@ -4,10 +4,13 @@ One of the more challenging tasks on the client side is working with SharePoint 
 
 ## Reading Files
 
-Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../../odata/docs/parsers.md).
+Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../odata/parsers.md).
 
 ```typescript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
 
 sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.avi").getBlob().then((blob: Blob) => {});
 
@@ -28,9 +31,14 @@ Likewise you can add files using one of two methods, add or addChunked. The seco
 ```typescript
 declare var require: (s: string) => any;
 
-import { ConsoleListener, Web, Logger, LogLevel, ODataRaw } from "@pnp/sp";
+import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
+import { sp } from "@pnp/sp";
+import { Web } from "@pnp/sp/src/webs";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
 import { auth } from "./auth";
-let $ = require("jquery");
+let $ = require("jquery"); //<-- used here for illustration
 
 let siteUrl = "https://mytenant.sharepoint.com/sites/dev";
 
@@ -40,7 +48,7 @@ let siteUrl = "https://mytenant.sharepoint.com/sites/dev";
 Logger.subscribe(new ConsoleListener());
 Logger.activeLogLevel = LogLevel.Verbose;
 
-let web = new Web(siteUrl);
+let web = Web(siteUrl);
 
 $(() => {
     $("#testingdiv").append("<button id='thebuttontodoit'>Do It</button>");
@@ -69,11 +77,15 @@ $(() => {
     });
 });
 ```
+
 ### Setting Associated Item Values
 You can also update the file properties of a newly uploaded file using code similar to the below snippet:
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
 
 sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.add(file.name, file, true).then(f => {
     
@@ -93,11 +105,15 @@ You can of course use similar methods to update existing files as shown below:
 
 ```typescript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
 
 sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.txt").setContent("New string content for the file.");
 
 sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.mp4").setContentChunked(file);
 ```
+
 ## Check in, Check out, and Approve & Deny
 
 The library provides helper methods for checking in, checking out, and approving files. Examples of these methods are shown below.
@@ -107,7 +123,10 @@ The library provides helper methods for checking in, checking out, and approving
 Check in takes two optional arguments, comment and check in type.
 
 ```TypeScript
-import { sp, CheckinType } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { CheckinType } from "@pnp/sp/src/files";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
 
 // default options with empty comment and CheckinType.Major
 sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin().then(_ => {
@@ -134,6 +153,8 @@ Check out takes no arguments.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
 
 sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkout().then(_ => {
 
@@ -147,6 +168,8 @@ You can also approve or deny files in libraries that use approval. Approve takes
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
 
 sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").approve("Approval Comment").then(_ => {
 
@@ -172,6 +195,9 @@ You can both publish and unpublish a file using the library. Both methods take a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+
 // publish with no comment
 sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").publish().then(_ => {
 
@@ -230,6 +256,9 @@ This method allows you to get the item associated with this file. You can option
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
 
 sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem().then(item => {
 
@@ -255,6 +284,12 @@ You can also supply a generic typing parameter and the resulting type will be a 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/src/webs";
+import "@pnp/sp/src/files";
+import "@pnp/sp/src/folders";
+import "@pnp/sp/src/items";
+import "@pnp/sp/src/security";
+
 // also supports typing the objects so your type will be a union type
 sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem<{ Id: number, Title: string }>("Id", "Title").then(item => {
 

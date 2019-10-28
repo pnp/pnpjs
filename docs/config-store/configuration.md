@@ -4,7 +4,7 @@ The main class exported from the config-store package is Settings. This is the c
 settings via [providers](providers.md).
 
 ```TypeScript
-import { Web } from "@pnp/sp";
+import { Web } from "@pnp/sp/presets/all";
 import { Settings, SPListConfigurationProvider } from "@pnp/config-store";
 
 // create an instance of the settings class, could be static and shared across your application
@@ -30,7 +30,7 @@ settings.apply({
 });
 
 // and finally you can load values from a configuration provider
-const w = new Web("https://mytenant.sharepoint.com/sites/dev");
+const w = Web("https://mytenant.sharepoint.com/sites/dev");
 const provider = new SPListConfigurationProvider(w, "myconfiglistname");
 
 // this will load values from the supplied list

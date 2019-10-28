@@ -2,7 +2,7 @@
 
 The clientside pages module allows you to created, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 | Scenario    | Import Statement                                                                                                                                                                                                    |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

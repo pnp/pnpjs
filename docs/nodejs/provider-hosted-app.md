@@ -7,7 +7,7 @@ The usage of this class assumes the provider-hosted add-in is called from ShareP
 **Note**: To support concurrent requests by different users and/or add-ins on different tenants, do not use the `SPFetchClient` class. Instead, use the more generic `NodeFetchClient` class. The downside is that you have to manually configure each request to use the desired user/app context.
 
 ```TypeScript
-import { sp, SPRest } from "@pnp/sp";
+import { sp, SPRest } from "@pnp/sp/presets/all";
 import { NodeFetchClient, ProviderHostedRequestContext } from "@pnp/nodejs";
 
 // configure your node options

@@ -26,8 +26,3 @@ console.log(getGUID());
 * [storage](storage.md)
 * [util](util.md)
 * [Custom HttpClient](custom-httpclientimpl.md)
-
-## UML
-![Graphical UML diagram](../../documentation/img/pnpjs-common-uml.svg)
-
-Graphical UML diagram of @pnp/common. Right-click the diagram and open in new tab if it is too small.

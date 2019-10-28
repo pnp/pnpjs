@@ -20,8 +20,3 @@ Install the library and required dependencies
 * [Parsers](parsers.md)
 * [Pipeline](pipeline.md)
 * [Queryable](queryable.md)
-
-## UML
-![Graphical UML diagram](../../documentation/img/pnpjs-odata-uml.svg)
-
-Graphical UML diagram of @pnp/odata. Right-click the diagram and open in new tab if it is too small.

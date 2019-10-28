@@ -12,7 +12,7 @@ Install the logging module, it has no other dependencies
 
 ## Understanding the Logging Framework
 
-The logging framework is based on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface.
+The logging framework is centered on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface as a parameter.
 
 ```TypeScript
 /**
@@ -93,10 +93,10 @@ Logger.log({
 ## Log an error
 
 There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
-instance pased in, the level will be Error, and the message will be the Error instance message.
+instance pased in, the level will be 'Error', and the message will be the Error instance's message property.
 
 ```TypeScript
-const e = new Error("An Error");
+const e = Error("An Error");
 
 Logger.error(e);
 ```
@@ -167,8 +167,3 @@ class MyListener implements LogListener {
 
 Logger.subscribe(new MyListener());
 ```
-
-## UML
-![Graphical UML diagram](../../documentation/img/pnpjs-logging-uml.svg)
-
-Graphical UML diagram of @pnp/logging. Right-click the diagram and open in new tab if it is too small.

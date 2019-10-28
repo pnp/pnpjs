@@ -5,7 +5,7 @@ Check out [SharePoint site design and site script overview](https://docs.microso
 
 # Site Designs
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|

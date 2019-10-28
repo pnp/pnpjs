@@ -4,7 +4,7 @@ The SPFetchClient is used to authentication to SharePoint as a provider hosted a
 
 ```TypeScript
 import { SPFetchClient } from "@pnp/nodejs";
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 
 sp.setup({
     sp: {
@@ -15,14 +15,9 @@ sp.setup({
 });
 
 // execute a library request as normal
-sp.web.get().then(w => {
+const w = await sp.web.get();
 
-    console.log(JSON.stringify(w, null, 4));
-
-}).catch(e => {
-
-    console.error(e);
-});
+console.log(JSON.stringify(w, null, 4));
 ```
 
 ## Set Authentication Environment
@@ -36,7 +31,7 @@ For some areas such as Germany, China, and US Gov clouds you need to specifiy a 
 - USGov: USA Government cloud
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 import { SPFetchClient, SPOAuthEnv } from "@pnp/nodejs";
 
 sp.setup({
@@ -48,15 +43,12 @@ sp.setup({
 });
 ```
 
-
 ## Set Realm
 
 In some cases automatically resolving the realm may not work. In this case you can set the realm parameter in the SPFetchClient constructor. You can determine the correct value for the realm by navigating to "https://{site name}-admin.sharepoint.com/_layouts/15/TA_AllAppPrincipals.aspx" and copying the GUID value that appears after the "@" - this is the realm id.
 
-**As of version 1.1.2 the realm parameter is now the 5th parameter in the constructor.**
-
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 import { SPFetchClient, SPOAuthEnv } from "@pnp/nodejs";
 
 sp.setup({
@@ -101,4 +93,4 @@ Now that we have created an add-in registration we need to tell SharePoint what 
   </AppPermissionRequests>
 ```
 
-**Note that the above XML will grant full tenant control, you should grant only those permissions necessary for your application**
+**Note that the above XML will grant full tenant control. This is OK for testing, but you should grant only those permissions necessary for your application in production.**

@@ -3,7 +3,7 @@ Content Types are used to define sets of columns in SharePoint.
 
 ## IContentTypes
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
@@ -51,7 +51,7 @@ sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Ty
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/content-types";|
 |Preset: All|import { sp, ContentType, IContentType } from "@pnp/sp/presets/all";|
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 ### Get the field links
 

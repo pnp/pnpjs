@@ -7,7 +7,7 @@ Sometimes when we make a query entity's data we would like then to immediately r
 If we are loading a single entity we use the _spODataEntity_ method. Here we show loading a list item using the Item class and a simple get query.
 
 ```TypeScript
-import { sp, spODataEntity, Item } from "@pnp/sp";
+import { sp, spODataEntity, Item } from "@pnp/sp/presets/all";
 
 // interface defining the returned properites
 interface MyProps {
@@ -37,7 +37,7 @@ try {
 The same pattern works when requesting a collection of objects with the exception of using the _spODataEntityArray_ method.
 
 ```TypeScript
-import { sp, spODataEntityArray, Item } from "@pnp/sp";
+import { sp, spODataEntityArray, Item } from "@pnp/sp/presets/all";
 
 // interface defining the returned properites
 interface MyProps {

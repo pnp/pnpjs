@@ -92,8 +92,3 @@ graph.groups.get().then(g => {
     console.log(`Groups: ${JSON.stringify(g, null, 4)}`);
 });
 ```
-
-## UML
-![Graphical UML diagram](../../documentation/img/pnpjs-graph-uml.svg)
-
-Graphical UML diagram of @pnp/graph. Right-click the diagram and open in new tab if it is too small.

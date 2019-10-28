@@ -111,7 +111,7 @@ Another new capability in v2 is the ability to extend objects and factories. Thi
 
 ## CDN publishing
 
-Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot fo ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their [own bundles](custom-bundle.md), optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please [review the article on creating your custom bundles](custom-bundle.md) to see how to tailor bundles to your needs.
+Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot fo ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their [own bundles](concepts/custom-bundle.md), optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please [review the article on creating your custom bundles](concepts/custom-bundle.md) to see how to tailor bundles to your needs.
 
 Inline with this we will drop the pnpjs library for the same reason.
 

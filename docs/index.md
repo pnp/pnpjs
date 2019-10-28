@@ -7,17 +7,14 @@ _Animation of the library in use, note intellisense help in building your querie
 
 ## General Guidance
 
-These articles provide general guidance for working with the libraries. If you are migrating from _sp-pnp-js_ please review the [transition guide](documentation/transition-guide.md).
+These articles provide general guidance for working with the libraries. If you are migrating from _sp-pnp-js_ please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Getting Started Contributing](getting-started-dev.md)
 * [Documentation](documentation.md)
-* [npm scripts](npm-scripts.md.md)
+* [npm scripts](npm-scripts.md)
 * [Debugging](debugging.md)
-* [Deployment](deployment.md)
-* [Install Beta Versions](beta-versions.md)
-* [Polyfills](polyfill.md)
-* [Package Structure](package-structure.md)
+* [Polyfills](concepts/polyfill.md)
 
 ## Packages
 
@@ -28,17 +25,15 @@ The latest published version is **{{version}}**.
 |     ||  | 
 | ---| -------------|-------------|
 | @pnp/| | | 
+|| [adaljsclient](adaljsclient/index.md)  | Provides shared functionality across all pnp libraries | 
 || [common](common/index.md)  | Provides shared functionality across all pnp libraries | 
 || [config-store](config-store/index.md) | Provides a way to manage configuration within your application | 
 || [graph](graph/index.md) | Provides a fluent api for working with Microsoft Graph |
 || [logging](logging/index.md) | Light-weight, subscribable logging framework |
 || [nodejs](nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
 || [odata](odata/index.md) | Provides shared odata functionality and base classes |
-|| [pnpjs](pnpjs/index.md) | Rollup library of core functionality (mimics sp-pnp-js) |
 || [sp](sp/index.md) | Provides a fluent api for working with SharePoint REST |
 || [sp-addinhelpers](sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
-|| [sp-clientsvc](sp-clientsvc/index.md) | Provides based classes used to create a fluent api for working with SharePoint Managed Metadata |
-|| [sp-taxonomy](sp-taxonomy/index.md) | Provides a fluent api for working with SharePoint Managed Metadata |
 
 ## Issues, Questions, Ideas
 
