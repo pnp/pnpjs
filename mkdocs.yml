@@ -96,6 +96,8 @@ nav:
       - Terms: 'sp-taxonomy/docs/terms.md'
       - Labels: 'sp-taxonomy/docs/labels.md'
       - Utilities: 'sp-taxonomy/docs/utilities.md'
+  - 'V2 Beta Docs':
+    - Beta Docs: 'documentation/v2-beta'
 theme:
   name: 'material'
   custom_dir: 'packages/documentation/theme'
