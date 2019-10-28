@@ -1,8 +1,5 @@
-import { IInvokable } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableInstance,
-    ISharePointQueryableCollection,
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
@@ -13,7 +10,7 @@ import { defaultPath } from "../decorators";
  *
  */
 @defaultPath("forms")
-export class _Forms extends _SharePointQueryableCollection implements _IForms {
+export class _Forms extends _SharePointQueryableCollection {
     /**	
      * Gets a form by id	
      *	
@@ -23,21 +20,13 @@ export class _Forms extends _SharePointQueryableCollection implements _IForms {
         return Form(this).concat(`('${id}')`);
     }
 }
-
-export interface _IForms {
-    getById(id: string): IForm;
-}
-export interface IForms extends _IForms, IInvokable, ISharePointQueryableCollection { }
-
+export interface IForms extends _Forms { }
 export const Forms = spInvokableFactory<IForms>(_Forms);
 
 /**
  * Describes a single of Form instance
  *
  */
-export class _Form extends _SharePointQueryableInstance implements _IForm { }
-
-export interface _IForm { }
-export interface IForm extends _IForm, IInvokable, ISharePointQueryableInstance { }
-
+export class _Form extends _SharePointQueryableInstance { }
+export interface IForm extends _Form { }
 export const Form = spInvokableFactory<IForm>(_Form);

@@ -1,10 +1,10 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
-import { Queryable, IQueryable, invokableFactory, IInvokable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch";
 import { metadata } from "./utils/metadata";
-import { spGet, spPost } from "./operations";
-import { clientTagMethod } from "./decorators";
+import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations";
+import { tag } from "./telemetry";
 
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
@@ -20,7 +20,7 @@ export const spInvokableFactory = <R>(f: any): ISPInvokableFactory<R> => {
  * SharePointQueryable Base Class
  *
  */
-export class _SharePointQueryable<GetType = any> extends Queryable<GetType> implements ISharePointQueryable<GetType> {
+export class _SharePointQueryable<GetType = any> extends Queryable<GetType> {
 
     protected _forceCaching: boolean;
 
@@ -82,7 +82,6 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
 
     /**
      * Gets the full url with query information
-     *
      */
     public toUrlAndQuery(): string {
 
@@ -114,7 +113,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
         return this;
     }
 
-    public get<T = any>(options?: IFetchOptions): Promise<T> {
+    public get<T = GetType>(options?: IFetchOptions): Promise<T> {
         return spGet<T>(<any>this, options);
     }
 
@@ -164,12 +163,12 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
      * @param factory The contructor for the class to create
      */
     protected getParent<T extends ISharePointQueryable>(
-        factory: ISharePointQueryableConstructor<any>,
+        factory: ISPInvokableFactory<any>,
         baseUrl: string | ISharePointQueryable = this.parentUrl,
         path?: string,
         batch?: SPBatch): T {
 
-        let parent = new factory(baseUrl, path).configureFrom(this);
+        let parent = factory(baseUrl, path).configureFrom(this);
 
         const t = "@target";
         if (this.query.has(t)) {
@@ -181,21 +180,15 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> impl
         return parent;
     }
 }
-
-export interface ISharePointQueryable<GetType = any> extends IInvokable<GetType>, IQueryable<GetType> {
-    select(...selects: string[]): this;
-    expand(...expands: string[]): this;
-    clone<T extends _SharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean): T;
-    get<T = GetType>(options?: IFetchOptions): Promise<T>;
-}
-export interface _SharePointQueryable extends IInvokable { }
+export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType>, IInvokable<GetType> { }
+export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> { }
 export const SharePointQueryable = spInvokableFactory<ISharePointQueryable>(_SharePointQueryable);
 
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class _SharePointQueryableCollection<GetType = any[]> extends _SharePointQueryable<GetType> implements ISharePointQueryableCollection<GetType> {
+export class _SharePointQueryableCollection<GetType = any[]> extends _SharePointQueryable<GetType> {
 
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
@@ -241,23 +234,15 @@ export class _SharePointQueryableCollection<GetType = any[]> extends _SharePoint
         return this;
     }
 }
-
-export interface ISharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType>, ISharePointQueryable<GetType> {
-    filter(filter: string): this;
-    orderBy(orderBy: string, ascending?: boolean): this;
-    skip(skip: number): this;
-    top(top: number): this;
-    get<T = GetType>(options?: IFetchOptions): Promise<T>;
-}
-
-export interface _SharePointQueryableCollection extends IInvokable { }
+export interface _SharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType> { }
+export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType>, IInvokable<GetType> { }
 export const SharePointQueryableCollection = spInvokableFactory<ISharePointQueryableCollection>(_SharePointQueryableCollection);
 
 /**
  * Represents an instance that can be selected
  *
  */
-export class _SharePointQueryableInstance<GetType = any> extends _SharePointQueryable<GetType> implements ISharePointQueryableInstance<GetType> {
+export class _SharePointQueryableInstance<GetType = any> extends _SharePointQueryable<GetType> {
 
     /**
      * Curries the update function into the common pieces
@@ -266,7 +251,7 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
      * @param mapper 
      */
     protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return> {
-        return (props: any) => spPost(clientTagMethod.configure(this, `${type}.Update`), {
+        return (props: any) => spPost(tag.configure(this, `${type}.Update`), {
             body: jsS(assign(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -274,6 +259,39 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
         }).then((d: Data) => mapper(d, props));
     }
 }
-export interface ISharePointQueryableInstance<GetType = any> extends IInvokable<GetType>, ISharePointQueryable<GetType> { }
-export interface _SharePointQueryableInstance extends IInvokable { }
+export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType>, IInvokable<GetType> { }
+export interface _SharePointQueryableInstance<GetType = any> extends IInvokable<GetType> { }
 export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);
+
+/**
+ * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
+ */
+export function deleteable(t: string) {
+
+    return function (this: ISharePointQueryable): Promise<void> {
+        return spPostDelete<void>(tag.configure(this, `${t}.delete`));
+    };
+}
+
+export interface IDeleteable {
+    /**
+     * Delete this instance
+     */
+    delete(): Promise<void>;
+}
+
+export function deleteableWithETag(t: string) {
+
+    return function (this: ISharePointQueryable, eTag = "*"): Promise<void> {
+        return spPostDeleteETag<void>(tag.configure(this, `${t}.delete`), {}, eTag);
+    };
+}
+
+export interface IDeleteableWithETag {
+    /**
+     * Delete this instance
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    delete(eTag?: string): Promise<void>;
+}

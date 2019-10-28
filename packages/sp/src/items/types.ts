@@ -1,21 +1,21 @@
 import {
     SharePointQueryable,
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
     ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     ISharePointQueryable,
     SharePointQueryableInstance,
     spInvokableFactory,
+    deleteableWithETag,
+    IDeleteableWithETag,
 } from "../sharepointqueryable";
-import { assign, TypedHash, hOP, Omit } from "@pnp/common";
-import { IListItemFormUpdateValue } from "../lists/types";
-import { ODataParser, IInvokable, body, headers } from "@pnp/odata";
+import { assign, TypedHash, hOP } from "@pnp/common";
+import { IListItemFormUpdateValue, List } from "../lists/types";
+import { ODataParser, body, headers } from "@pnp/odata";
 import { IList } from "../lists";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata";
-import { _List } from "../lists/types";
-import { defaultPath, deleteableWithETag, IDeleteableWithETag } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
 /**
@@ -23,7 +23,7 @@ import { spPost } from "../operations";
  *
  */
 @defaultPath("items")
-export class _Items extends _SharePointQueryableCollection implements _IItems {
+export class _Items extends _SharePointQueryableCollection {
 
     /**	
     * Gets an Item by id	
@@ -155,66 +155,19 @@ export class _Items extends _SharePointQueryableCollection implements _IItems {
 
         return candidatelistItemEntityTypeFullName ?
             Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent<IList>(_List).getListItemEntityTypeFullName();
+            this.getParent<IList>(List).getListItemEntityTypeFullName();
     }
 }
-
-export interface _IItems {
-    /**	
-    * Gets an Item by id	
-    *	
-    * @param id The integer id of the item to retrieve	
-    */
-    getById(id: number): IItem;
-
-    /**
-     * Gets BCS Item by string id
-     *
-     * @param stringId The string id of the BCS item to retrieve
-     */
-    getItemByStringId(stringId: string): IItem;
-
-    /**
-     * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
-     *
-     * @param skip The starting id where the page should start, use with top to specify pages
-     * @param reverse It true the PagedPrev=true parameter is added allowing backwards navigation in the collection
-     */
-    skip(skip: number, reverse?: boolean): this;
-
-    /**
-     * Gets a collection designed to aid in paging through data
-     *
-     */
-    getPaged<T = any[]>(): Promise<PagedItemCollection<T>>;
-
-    /**
-     * Gets all the items in a list, regardless of count. Does not support batching or caching
-     *
-     *  @param requestSize Number of items to return in each request (Default: 2000)
-     *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
-     */
-    getAll(requestSize?: number, acceptHeader?: string): Promise<any[]>;
-
-    /**
-     * Adds a new item to the collection
-     *
-     * @param properties The new items's properties
-     * @param listItemEntityTypeFullName The type name of the list's entities
-     */
-    add(properties?: TypedHash<any>, listItemEntityTypeFullName?: string): Promise<IItemAddResult>;
-}
-
-export interface IItems extends _IItems, IInvokable, Omit<ISharePointQueryableCollection, "skip"> {}
-
+export interface IItems extends _Items { }
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
  * Descrines a single Item instance
  *
  */
-@deleteableWithETag("i")
-export class _Item extends _SharePointQueryableInstance implements IItem {
+export class _Item extends _SharePointQueryableInstance {
+
+    public delete = deleteableWithETag("i");
 
     /**
      * Gets the effective base permissions for the item
@@ -264,7 +217,7 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
     }
 
     public get list(): IList {
-        return this.getParent<IList>(_List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**
@@ -344,98 +297,15 @@ export class _Item extends _SharePointQueryableInstance implements IItem {
             this.list.getListItemEntityTypeFullName();
     }
 }
-
-export interface IItem extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {
-
-    /**
-     * Gets the effective base permissions for the item
-     *
-     */
-    readonly effectiveBasePermissions: ISharePointQueryable;
-
-    /**
-     * Gets the effective base permissions for the item in a UI context
-     *
-     */
-    readonly effectiveBasePermissionsForUI: ISharePointQueryable;
-
-    /**
-     * Gets the field values for this list item in their HTML representation
-     *
-     */
-    readonly fieldValuesAsHTML: ISharePointQueryableInstance;
-
-    /**
-     * Gets the field values for this list item in their text representation
-     *
-     */
-    readonly fieldValuesAsText: ISharePointQueryableInstance;
-
-    /**
-     * Gets the field values for this list item for use in editing controls
-     *
-     */
-    readonly fieldValuesForEdit: ISharePointQueryableInstance;
-    /**
-     * Gets the collection of versions associated with this item
-     */
-    readonly versions: IItemVersions;
-
-    readonly list: IList;
-
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     * @param listItemEntityTypeFullName The type name of the list's entities
-     */
-    update(properties: TypedHash<any>, eTag?: string, listItemEntityTypeFullName?: string): Promise<IItemUpdateResult>;
-
-    /**
-     * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    recycle(): Promise<string>;
-
-    /**
-     * Gets a string representation of the full URL to the WOPI frame.
-     * If there is no associated WOPI application, or no associated action, an empty string is returned.
-     *
-     * @param action Display mode: 0: view, 1: edit, 2: mobileView, 3: interactivePreview
-     */
-    getWopiFrameUrl(action?: number): Promise<string>;
-
-    /**
-     * Validates and sets the values of the specified collection of fields for the list item.
-     *
-     * @param formValues The fields to change and their new values.
-     * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     */
-    validateUpdateListItem(formValues: IListItemFormUpdateValue[], newDocumentUpdate?: boolean): Promise<IListItemFormUpdateValue[]>;
-}
-export interface _Item extends IInvokable, IDeleteableWithETag { }
+export interface IItem extends _Item, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);
-
-export interface IItemAddResult {
-    item: IItem;
-    data: any;
-}
-
-export interface IItemUpdateResult {
-    item: IItem;
-    data: IItemUpdateResultData;
-}
-
-export interface IItemUpdateResultData {
-    "odata.etag": string;
-}
 
 /**
  * Describes a collection of Version objects
  *
  */
 @defaultPath("versions")
-export class _ItemVersions extends _SharePointQueryableCollection implements IItemVersions {
+export class _ItemVersions extends _SharePointQueryableCollection {
     /**	
      * Gets a version by id	
      *	
@@ -445,22 +315,17 @@ export class _ItemVersions extends _SharePointQueryableCollection implements IIt
         return ItemVersion(this).concat(`(${versionId})`);
     }
 }
-
-export interface IItemVersions extends IInvokable, ISharePointQueryableCollection {
-    getById(versionId: number): IItemVersion;
-}
-export interface _ItemVersions extends IInvokable { }
+export interface IItemVersions extends _ItemVersions { }
 export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**
  * Describes a single Version instance
  *
  */
-@deleteableWithETag("iv")
-export class _ItemVersion extends _SharePointQueryableInstance {}
-
-export interface IItemVersion extends IInvokable, ISharePointQueryableInstance, IDeleteableWithETag {}
-export interface _ItemVersion extends IInvokable, IDeleteableWithETag { }
+export class _ItemVersion extends _SharePointQueryableInstance {
+    public delete = deleteableWithETag("iv");
+}
+export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
 export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
 
 /**
@@ -523,4 +388,18 @@ class ItemUpdatedParser extends ODataParser<IItemUpdateResultData> {
             }
         });
     }
+}
+
+export interface IItemAddResult {
+    item: IItem;
+    data: any;
+}
+
+export interface IItemUpdateResult {
+    item: IItem;
+    data: IItemUpdateResultData;
+}
+
+export interface IItemUpdateResultData {
+    "odata.etag": string;
 }

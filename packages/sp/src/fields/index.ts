@@ -7,8 +7,8 @@ export {
     Fields,
     IField,
     Field,
-    FieldAddResult,
-    FieldUpdateResult,
+    IFieldAddResult,
+    IFieldUpdateResult,
     AddFieldOptions,
     CalendarType,
     ChoiceFieldFormatType,
@@ -18,5 +18,5 @@ export {
     FieldUserSelectionMode,
     IFieldCreationProperties,
     UrlFieldFormatType,
-    XmlSchemaFieldCreationInformation,
+    IXmlSchemaFieldCreationInformation,
 } from "./types";

@@ -111,12 +111,49 @@ export enum SharingLinkKind {
 }
 
 export interface ISharedFuncs {
+    /**
+     * Gets a link suitable for sharing for this item
+     *
+     * @param kind The type of link to share
+     * @param expiration The optional expiration date
+     */
     getShareLink(kind: SharingLinkKind, expiration?: Date): Promise<IShareLinkResponse>;
+    /**
+     * Checks Permissions on the list of Users and returns back role the users have on the Item.
+     *
+     * @param recipients The array of Entities for which Permissions need to be checked.
+     */
     checkSharingPermissions(recipients: ISharingRecipient[]): Promise<ISharingEntityPermission[]>;
+    /**
+     * Get Sharing Information.
+     *
+     * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     * 
+     */
     getSharingInformation(request?: ISharingInformationRequest, expands?: string[]): Promise<ISharingInformation>;
+    /**
+     * Gets the sharing settings of an item.
+     *
+     * @param useSimplifiedRoles Determines whether to use simplified roles.
+     */
     getObjectSharingSettings(useSimplifiedRoles?: boolean): Promise<IObjectSharingSettings>;
+    /**
+     * Unshare this item
+     */
     unshare(): Promise<ISharingResult>;
+    /**
+     * Deletes a sharing link by kind
+     *
+     * @param kind Deletes a sharing link by the kind of link
+     */
     deleteSharingLinkByKind(kind: SharingLinkKind): Promise<void>;
+    /**
+     * Removes the specified link to the item.
+     *
+     * @param kind The kind of link to be deleted.
+     * @param shareId
+     */
     unshareLink(kind: SharingLinkKind, shareId?: string): Promise<void>;
 }
 

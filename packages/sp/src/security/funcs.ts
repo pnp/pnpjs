@@ -3,7 +3,6 @@ import { _SharePointQueryableInstance, _SharePointQueryable, SharePointQueryable
 import { hOP } from "@pnp/common";
 import { spPost } from "../operations";
 
-// export function
 /**
 * Gets the effective permissions for the user supplied
 *
@@ -24,7 +23,7 @@ export async function getUserEffectivePermissions(this: SecurableQueryable, logi
 export async function getCurrentUserEffectivePermissions(this: SecurableQueryable): Promise<IBasePermissions> {
 
     // remove need to reference Web here, which created a circular build issue
-    const w = new _SharePointQueryableInstance("_api/web", "currentuser");
+    const w = SharePointQueryableInstance("_api/web", "currentuser");
     const user = await w.configureFrom(this).select("LoginName")<{ LoginName: string }>();
     return getUserEffectivePermissions.call(this, user.LoginName);
 }

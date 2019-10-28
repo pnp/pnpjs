@@ -20,9 +20,6 @@ export {
     ISerializableNavigationNode,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly navigation: INavigation;

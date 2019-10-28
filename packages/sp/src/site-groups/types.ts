@@ -1,104 +1,98 @@
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { SiteUsers, ISiteUsers } from "../site-users/types";
 import { assign, TypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, clientTagMethod } from "../decorators";
+import { body } from "@pnp/odata";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("sitegroups")
-export class _SiteGroups extends _SharePointQueryableCollection implements _ISiteGroups {
+export class _SiteGroups extends _SharePointQueryableCollection {
 
+    /**	
+     * Gets a group from the collection by id	
+     *	
+     * @param id The id of the group to retrieve	
+     */
     public getById(id: number): ISiteGroup {
-        return clientTagMethod.configure(SiteGroup(this).concat(`(${id})`), "sgs.getById");
+        return tag.configure(SiteGroup(this).concat(`(${id})`), "sgs.getById");
     }
 
+    /**
+     * Adds a new group to the site collection
+     *
+     * @param properties The group properties object of property names and values to be set for the group
+     */
     public async add(properties: TypedHash<any>): Promise<IGroupAddResult> {
 
         const postBody = body(assign(metadata("SP.Group"), properties));
 
-        const data = await spPost(clientTagMethod.configure(this, "sgs.add"), postBody);
+        const data = await spPost(tag.configure(this, "sgs.add"), postBody);
         return {
             data,
             group: this.getById(data.Id),
         };
     }
 
-    public getByName(groupName: string): ISiteGroup {
-        return clientTagMethod.configure(SiteGroup(this, `getByName('${groupName}')`), "sgs.getByName");
-    }
-
-    @clientTagMethod("sgs.removeById")
-    public removeById(id: number): Promise<void> {
-        return spPost(this.clone(SiteGroups, `removeById('${id}')`));
-    }
-
-    @clientTagMethod("sgs.removeByLoginName")
-    public removeByLoginName(loginName: string): Promise<any> {
-        return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
-    }
-}
-
-/**
- * Describes a collection of site groups
- *
- */
-export interface _ISiteGroups {
-    /**	
-     * Gets a group from the collection by id	
-     *	
-     * @param id The id of the group to retrieve	
-     */
-    getById(id: number): ISiteGroup;
-    /**
-     * Adds a new group to the site collection
-     *
-     * @param properties The group properties object of property names and values to be set for the group
-     */
-    add(properties: TypedHash<any>): Promise<IGroupAddResult>;
     /**
      * Gets a group from the collection by name
      *
      * @param groupName The name of the group to retrieve
      */
-    getByName(groupName: string): ISiteGroup;
+    public getByName(groupName: string): ISiteGroup {
+        return tag.configure(SiteGroup(this, `getByName('${groupName}')`), "sgs.getByName");
+    }
+
     /**
      * Removes the group with the specified member id from the collection
      *
      * @param id The id of the group to remove
      */
-    removeById(id: number): Promise<void>;
+    @tag("sgs.removeById")
+    public removeById(id: number): Promise<void> {
+        return spPost(this.clone(SiteGroups, `removeById('${id}')`));
+    }
+
     /**
      * Removes the cross-site group with the specified name from the collection
      *
      * @param loginName The name of the group to remove
      */
-    removeByLoginName(loginName: string): Promise<any>;
+    @tag("sgs.removeByLoginName")
+    public removeByLoginName(loginName: string): Promise<any> {
+        return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
+    }
 }
-
-export interface ISiteGroups extends _ISiteGroups, IInvokable, ISharePointQueryableCollection { }
-
+export interface ISiteGroups extends _SiteGroups { }
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
-export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGroup {
+export class _SiteGroup extends _SharePointQueryableInstance {
 
+    /**
+     * Gets the users for this group
+     *
+     */
     public get users(): ISiteUsers {
-        return clientTagMethod.configure(SiteUsers(this, "users"), "sg.users");
+        return tag.configure(SiteUsers(this, "users"), "sg.users");
     }
 
+    /**
+     * Updates the group with the given property values
+     * 
+     * @param props The group properties object of property names and values to be set for the group
+     */
     public update = this._update<IGroupUpdateResult, TypedHash<any>, any>("SP.Group", (d, p) => {
 
         let retGroup: ISiteGroup = this;
 
         if (hOP(p, "Title")) {
             /* tslint:disable-next-line no-string-literal */
-            retGroup = this.getParent(_SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
+            retGroup = this.getParent(SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
         }
 
         return {
@@ -107,27 +101,7 @@ export class _SiteGroup extends _SharePointQueryableInstance implements _ISiteGr
         };
     });
 }
-
-/**
- * Describes a single group
- *
- */
-export interface _ISiteGroup {
-    /**
-     * Gets the users for this group
-     *
-     */
-    readonly users: ISiteUsers;
-    /**
-     * Updates the group with the given property values
-     * 
-     * @param props The group properties object of property names and values to be set for the group
-     */
-    update(props: TypedHash<any>): Promise<IGroupUpdateResult>;
-}
-
-export interface ISiteGroup extends _ISiteGroup, IInvokable, ISharePointQueryableInstance { }
-
+export interface ISiteGroup extends _SiteGroup { }
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 /**

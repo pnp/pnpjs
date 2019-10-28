@@ -4,7 +4,7 @@ Comments can be accessed through either IItem or IClientsidePage instances, thou
 
 _These APIs are currently in BETA and are subject to change or may not work on all tenants._
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|

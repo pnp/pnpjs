@@ -9,6 +9,8 @@
     "include": [
         "./index.ts",
         "./src/**/*.ts",
+        "../adaljsclient/index.ts",
+        "../adaljsclient/src/**/*.ts",
         "../common/index.ts",
         "../common/src/**/*.ts",
         "../logging/index.ts",
@@ -17,6 +19,9 @@
         "../odata/src/**/*.ts"
     ],
     "references": [
+        {
+            "path": "../adaljsclient"
+        },
         {
             "path": "../common"
         },

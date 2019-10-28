@@ -41,3 +41,8 @@ export {
 export {
     extractWebUrl,
 } from "./utils/extractweburl";
+
+export {
+    stripInvalidFileFolderChars,
+    containsInvalidFileFolderChars,
+} from "./utils/file-names";

@@ -1,0 +1,18 @@
+{
+  "name": "custom-bundle-webpack",
+  "version": "1.0.0",
+  "description": "This project is an example for starting a custom bundle project using rollup.",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "webpack"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@pnp/sp": "^2.0.0-7",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  }
+}

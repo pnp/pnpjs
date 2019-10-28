@@ -2,9 +2,6 @@ import { addProp } from "@pnp/odata";
 import { _Item } from "../items/types";
 import { File, IFile } from "./types";
 
-/**
-* Extend Item
-*/
 declare module "../items/types" {
     interface _Item {
         readonly file: IFile;

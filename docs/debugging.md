@@ -8,7 +8,7 @@ The easiest way to debug the library when working on new features is using F5 in
 
 #### Creating settings.js
 
-If you have not already you need to create a settings.js files by copying settings.example.js and renaming it to settings.js.
+If you have not already you need to create a [settings.js](./concepts/settings.md) files by copying settings.example.js and renaming it to settings.js.
 
 - The first section `spsave` should be configured with a username, password, and site collection url. The user provided should be a site collection admin of the site collection you specify.
 - The `testing.sp`section will be updated with information from the [Register an Add-in](#register_an_add-in)

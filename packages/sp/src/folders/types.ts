@@ -9,23 +9,36 @@ import {
     ISharePointQueryableInstance,
     ISharePointQueryable,
     spInvokableFactory,
+    deleteableWithETag,
+    IDeleteableWithETag,
 } from "../sharepointqueryable";
 import { odataUrlFrom } from "../odata";
 import { IItem, Item } from "../items/types";
-import { IInvokable, body } from "@pnp/odata";
-import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
+import { body } from "@pnp/odata";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
+import { tag } from "../telemetry";
 
 @defaultPath("folders")
-export class _Folders extends _SharePointQueryableCollection implements _IFolders {
+export class _Folders extends _SharePointQueryableCollection {
 
+    /**
+     * Gets a folder by it's name
+     * 
+     * @param name Folder's name
+     */
     public getByName(name: string): IFolder {
-        return clientTagMethod.configure(Folder(this).concat(`('${escapeQueryStrValue(name)}')`), "fs.getByName");
+        return tag.configure(Folder(this).concat(`('${escapeQueryStrValue(name)}')`), "fs.getByName");
     }
 
-    @clientTagMethod("fs.add")
+    /**
+     * Adds a new folder at the specified URL
+     * 
+     * @param url 
+     */
+    @tag("fs.add")
     public async add(url: string): Promise<IFolderAddResult> {
 
         const data = await spPost(this.clone(Folders, `add('${escapeQueryStrValue(url)}')`));
@@ -52,74 +65,88 @@ export class _Folders extends _SharePointQueryableCollection implements _IFolder
         };
     }
 }
-
-/**
- * Describes a collection of Folder objects
- *
- */
-export interface _IFolders {
-
-    /**
-     * Gets a folder by folder name
-     * @param name Folder name
-     */
-    getByName(name: string): IFolder;
-
-    /**
-    * Adds a new folder to the current folder (relative) or any folder (absolute)
-    *
-    * @param url The relative or absolute url where the new folder will be created. Urls starting with a forward slash are absolute.
-    * @returns The new Folder and the raw response.
-    */
-    add(url: string): Promise<IFolderAddResult>;
-}
-
-export interface IFolders extends _IFolders, IInvokable, ISharePointQueryableCollection { }
-
-/**
- * Invokable factory for IFolders instances
- */
+export interface IFolders extends _Folders { }
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
-@deleteableWithETag("fo")
-export class _Folder extends _SharePointQueryableInstance implements _IFolder {
 
+export class _Folder extends _SharePointQueryableInstance {
+
+    public delete = deleteableWithETag("f");
+
+    /**
+     * Specifies the sequence in which content types are displayed.
+     *
+     */
     public get contentTypeOrder(): ISharePointQueryableCollection {
-        return clientTagMethod.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
+        return tag.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
     }
 
+    /**
+     * Gets this folder's sub folders
+     *
+     */
     public get folders(): IFolders {
         return Folders(this);
     }
 
+    /**
+     * Gets this folder's list item field values
+     *
+     */
     public get listItemAllFields(): ISharePointQueryableInstance {
-        return clientTagMethod.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
+        return tag.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
     }
 
+    /**
+     * Gets the parent folder, if available
+     *
+     */
     public get parentFolder(): IFolder {
-        return clientTagMethod.configure(Folder(this, "parentFolder"), "f.parentFolder");
+        return tag.configure(Folder(this, "parentFolder"), "f.parentFolder");
     }
 
+    /**
+     * Gets this folder's properties
+     *
+     */
     public get properties(): ISharePointQueryableInstance {
-        return clientTagMethod.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
+        return tag.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
     }
 
+    /**
+     * Gets this folder's server relative url
+     *
+     */
     public get serverRelativeUrl(): ISharePointQueryable {
-        return clientTagMethod.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
+        return tag.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
     }
 
+    /**
+     * Gets a value that specifies the content type order.
+     *
+     */
     public get uniqueContentTypeOrder(): ISharePointQueryableCollection {
-        return clientTagMethod.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
+        return tag.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
     }
 
+    /**
+     * Updates folder's properties
+     * @param props Folder's properties to update
+     */
     public update = this._update<IFolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: <any>this }));
 
-    @clientTagMethod("f.recycle")
+    /**
+     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    @tag("f.recycle")
     public recycle(): Promise<string> {
         return spPost(this.clone(Folder, "recycle"));
     }
 
-    @clientTagMethod("f.getItem")
+    /**
+     * Gets the associated list item for this folder, loading the default properties
+     */
+    @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const q = this.listItemAllFields;
@@ -128,7 +155,12 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
         return assign(Item(odataUrlFrom(d)), d);
     }
 
-    @clientTagMethod("f.moveTo")
+    /**
+     * Moves a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    @tag("f.moveTo")
     public async moveTo(destUrl: string): Promise<void> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
@@ -141,7 +173,7 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
             }));
     }
 
-    @clientTagMethod("f.moveTo")
+    @tag("f.moveTo")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
@@ -156,80 +188,7 @@ export class _Folder extends _SharePointQueryableInstance implements _IFolder {
         return shareable;
     }
 }
-
-/**
- * Describes a single Folder instance
- *
- */
-export interface _IFolder {
-    /**
-     * Specifies the sequence in which content types are displayed.
-     *
-     */
-    readonly contentTypeOrder: ISharePointQueryableCollection;
-
-    /**
-     * Gets this folder's sub folders
-     *
-     */
-    readonly folders: IFolders;
-
-    /**
-     * Gets this folder's list item field values
-     *
-     */
-    readonly listItemAllFields: ISharePointQueryableInstance;
-
-    /**
-     * Gets the parent folder, if available
-     *
-     */
-    readonly parentFolder: IFolder;
-
-    /**
-     * Gets this folder's properties
-     *
-     */
-    readonly properties: ISharePointQueryableInstance;
-
-    /**
-     * Gets this folder's server relative url
-     *
-     */
-    readonly serverRelativeUrl: ISharePointQueryable;
-
-    /**
-     * Gets a value that specifies the content type order.
-     *
-     */
-    readonly uniqueContentTypeOrder: ISharePointQueryableCollection;
-
-    /**
-     * Updates folder's properties
-     * @param props Folder's properties to update
-     */
-    update(props: TypedHash<any>): Promise<IFolderUpdateResult>;
-
-    /**
-     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    recycle(): Promise<string>;
-
-    /**
-     * Gets the associated list item for this folder, loading the default properties
-     */
-    getItem<T>(...selects: string[]): Promise<IItem & T>;
-
-    /**
-     * Moves a folder to destination path
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     */
-    moveTo(destUrl: string): Promise<void>;
-}
-
-export interface IFolder extends _IFolder, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
-
+export interface IFolder extends _Folder, IDeleteableWithETag {}
 export const Folder = spInvokableFactory<IFolder>(_Folder);
 
 /**

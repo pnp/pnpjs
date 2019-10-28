@@ -64,7 +64,7 @@ npm test -- -package graph -single groups
 
 >`--site`
 
-By default every time you run the tests a new subsite is created below the site specified in your [settings file](settings.md). You can choose to reuse a site for testing, which saves time when re-running a set of tests frequently. Testing content is not deleted after tests, so if you need to inspect the created content from testing you may wish to forgo this option.
+By default every time you run the tests a new subsite is created below the site specified in your [settings file](./concepts/settings.md). You can choose to reuse a site for testing, which saves time when re-running a set of tests frequently. Testing content is not deleted after tests, so if you need to inspect the created content from testing you may wish to forgo this option.
 
 This option can be used with any or none of the other testing options.
 

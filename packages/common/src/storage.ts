@@ -86,54 +86,41 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
      * @param getter A function which will upon execution provide the desired value
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    public getOrPut<T>(key: string, getter: () => Promise<T>, expire?: Date): Promise<T> {
+    public async getOrPut<T>(key: string, getter: () => Promise<T>, expire?: Date): Promise<T> {
+
         if (!this.enabled) {
             return getter();
         }
 
-        return new Promise((resolve) => {
+        let o = this.get<T>(key);
 
-            const o = this.get<T>(key);
+        if (o === null) {
+            o = await getter();
+            this.put(key, o, expire);
+        }
 
-            if (o == null) {
-                getter().then((d) => {
-                    this.put(key, d, expire);
-                    resolve(d);
-                });
-            } else {
-                resolve(o);
-            }
-        });
+        return o;
     }
 
     /**
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
      */
-    public deleteExpired(): Promise<void> {
+    public async deleteExpired(): Promise<void> {
 
-        return new Promise<void>((resolve, reject) => {
+        if (!this.enabled) {
+            return;
+        }
 
-            if (!this.enabled) {
-                resolve();
-            }
-
-            try {
-
-                for (let i = 0; i < this.store.length; i++) {
-                    const key = this.store.key(i);
-                    if (key !== null) {
-                        // test the stored item to see if we stored it
-                        if (/["|']?pnp["|']? ?: ?1/i.test(<string>this.store.getItem(key))) {
-                            // get those items as get will delete from cache if they are expired
-                            this.get(key);
-                        }
-                    }
+        for (let i = 0; i < this.store.length; i++) {
+            const key = this.store.key(i);
+            if (key !== null) {
+                // test the stored item to see if we stored it
+                if (/["|']?pnp["|']? ?: ?1/i.test(<string>this.store.getItem(key))) {
+                    // get those items as get will delete from cache if they are expired
+                    this.get(key);
                 }
-
-                resolve();
-
-            } catch (e) { reject(e); }
-        });
+            }
+        }
     }
 
     /**
@@ -302,9 +289,9 @@ export class PnPClientStorage {
     private getStore(name: string): PnPClientStorageWrapper {
 
         if (name === "local") {
-            return new PnPClientStorageWrapper(typeof(localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+            return new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
         }
 
-        return new PnPClientStorageWrapper(typeof(sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
+        return new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
     }
 }

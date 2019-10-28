@@ -2,9 +2,6 @@ import { addProp } from "@pnp/odata";
 import { _Item } from "../items/types";
 import { Folder, IFolder } from "./types";
 
-/**
-* Extend Web
-*/
 declare module "../items/types" {
     interface _Item {
         readonly folder: IFolder;

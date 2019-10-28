@@ -1,24 +1,36 @@
-import { defaultPath, deleteableWithETag, IDeleteableWithETag, clientTagMethod } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
+    deleteableWithETag,
+    IDeleteableWithETag,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, IInvokable, headers } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/odata";
+import { tag } from "../telemetry";
 
 @defaultPath("AttachmentFiles")
 export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo[]> {
 
+    /**
+    * Gets a Attachment File by filename
+    *
+    * @param name The name of the file, including extension.
+    */
     public getByName(name: string): IAttachment {
-        const f = clientTagMethod.configure(Attachment(this), "ats.getByName");
+        const f = tag.configure(Attachment(this), "ats.getByName");
         f.concat(`('${name}')`);
         return f;
     }
 
-    @clientTagMethod("ats.add")
+    /**
+     * Adds a new attachment to the collection. Not supported for batching.
+     *
+     * @param name The name of the file, including extension.
+     * @param content The Base64 file content.
+     */
+    @tag("ats.add")
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
         const response = await spPost(this.clone(Attachments, `add(FileName='${name}')`, false), { body: content });
         return {
@@ -27,7 +39,12 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
         };
     }
 
-    @clientTagMethod("ats.addMultiple")
+    /**
+     * Adds multiple new attachment to the collection. Not supported for batching.
+     *
+     * @param files The collection of files to add
+     */
+    @tag("ats.addMultiple")
     public async addMultiple(files: IAttachmentFileInfo[]): Promise<void> {
 
         for (let i = 0; i < files.length; i++) {
@@ -35,7 +52,12 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
         }
     }
 
-    @clientTagMethod("ats.deleteMultiple")
+    /**
+     * Delete multiple attachments from the collection. Not supported for batching.
+     *
+     * @param files The collection of files to delete
+     */
+    @tag("ats.deleteMultiple")
     public async deleteMultiple(...files: string[]): Promise<void> {
 
         for (let i = 0; i < files.length; i++) {
@@ -43,83 +65,69 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
         }
     }
 
-    @clientTagMethod("ats.recycleMultiple")
+    /**
+     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
+     *
+     * @param files The collection of files to be deleted and sent to recycle bin
+     */
+    @tag("ats.recycleMultiple")
     public async recycleMultiple(...files: string[]): Promise<void> {
         for (let i = 0; i < files.length; i++) {
             await this.getByName(files[i]).recycle();
         }
     }
 }
-
-/**
- * Describes a collection of Attachment objects
- *
- */
-export interface _IAttachments extends IInvokable<IAttachmentInfo[]>, ISharePointQueryableCollection<IAttachmentInfo[]> {
-    /**
-     * Gets a Attachment File by filename
-     *
-     * @param name The name of the file, including extension.
-     */
-    getByName(name: string): IAttachment;
-    /**
-     * Adds a new attachment to the collection. Not supported for batching.
-     *
-     * @param name The name of the file, including extension.
-     * @param content The Base64 file content.
-     */
-    add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult>;
-    /**
-     * Adds multiple new attachment to the collection. Not supported for batching.
-     *
-     * @param files The collection of files to add
-     */
-    addMultiple(files: IAttachmentFileInfo[]): Promise<void>;
-    /**
-     * Delete multiple attachments from the collection. Not supported for batching.
-     *
-     * @param files The collection of files to delete
-     */
-    deleteMultiple(...files: string[]): Promise<void>;
-    /**
-     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
-     *
-     * @param files The collection of files to be deleted and sent to recycle bin
-     */
-    recycleMultiple(...files: string[]): Promise<void>;
-}
-
-export interface IAttachments extends _IAttachments, IInvokable<IAttachmentInfo[]>, ISharePointQueryableCollection<IAttachmentInfo[]> { }
+export interface IAttachments extends _Attachments { }
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
-@deleteableWithETag("at")
-export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> implements _IAttachment {
+export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
 
-    @clientTagMethod("at.getText")
+    public delete = deleteableWithETag("at");
+
+    /**
+     * Gets the contents of the file as text
+     *
+     */
+    @tag("at.getText")
     public getText(): Promise<string> {
 
         return this.getParsed(new TextParser());
     }
 
-    @clientTagMethod("at.getBlob")
+    /**
+     * Gets the contents of the file as a blob, does not work in Node.js
+     *
+     */
+    @tag("at.getBlob")
     public getBlob(): Promise<Blob> {
 
         return this.getParsed(new BlobParser());
     }
 
-    @clientTagMethod("at.getBuffer")
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js
+     */
+    @tag("at.getBuffer")
     public getBuffer(): Promise<ArrayBuffer> {
 
         return this.getParsed(new BufferParser());
     }
 
-    @clientTagMethod("at.getJSON")
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js
+     */
+    @tag("at.getJSON")
     public getJSON(): Promise<any> {
 
         return this.getParsed(new JSONParser());
     }
 
-    @clientTagMethod("at.setContent")
+    /**
+     * Sets the content of a file. Not supported for batching
+     *
+     * @param content The value to set for the file contents
+     */
+    @tag("at.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
         await spPost(this.clone(Attachment, "$value", false), headers({ "X-HTTP-Method": "PUT" }, {
@@ -129,7 +137,12 @@ export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> i
         return Attachment(this);
     }
 
-    @clientTagMethod("at.recycle")
+    /**
+     * Delete this attachment file and send it to recycle bin
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    @tag("at.recycle")
     public recycle(eTag = "*"): Promise<void> {
 
         return spPost(this.clone(Attachment, "recycleObject"), headers({
@@ -143,45 +156,7 @@ export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> i
         return this.clone(Attachment, "$value", false).usingParser(parser)();
     }
 }
-
-/**
- * Describes a single attachment file instance
- *
- */
-export interface _IAttachment {
-    /**
-     * Gets the contents of the file as text
-     *
-     */
-    getText(): Promise<string>;
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js
-     *
-     */
-    getBlob(): Promise<Blob>;
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    getBuffer(): Promise<ArrayBuffer>;
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    getJSON(): Promise<any>;
-    /**
-     * Sets the content of a file. Not supported for batching
-     *
-     * @param content The value to set for the file contents
-     */
-    setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment>;
-    /**
-     * Delete this attachment file and send it to recycle bin
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    recycle(eTag?: string): Promise<void>;
-}
-
-export interface IAttachment extends _IAttachment, IInvokable<IAttachmentInfo>, ISharePointQueryableInstance<IAttachmentInfo>, IDeleteableWithETag { }
+export interface IAttachment extends _Attachment, IDeleteableWithETag { }
 export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
 
 export interface IAttachmentAddResult {

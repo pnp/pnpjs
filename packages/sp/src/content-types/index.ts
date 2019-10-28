@@ -7,7 +7,7 @@ export {
     ContentTypes,
     IContentType,
     IContentTypes,
-    ContentTypeAddResult,
+    IContentTypeAddResult,
     FieldLink,
     FieldLinks,
     IFieldLink,

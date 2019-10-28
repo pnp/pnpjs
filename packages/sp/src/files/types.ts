@@ -1,35 +1,26 @@
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
     ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
     SharePointQueryableInstance,
+    IDeleteableWithETag,
+    deleteableWithETag,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, IInvokable, headers } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, headers } from "@pnp/odata";
 import { assign, getGUID } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
-import { defaultPath, IDeleteableWithETag, deleteableWithETag } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-
-export interface IFileUploadProgressData {
-    uploadId: string;
-    stage: "starting" | "continue" | "finishing";
-    blockNumber: number;
-    totalBlocks: number;
-    chunkSize: number;
-    currentPointer: number;
-    fileSize: number;
-}
 
 /**
  * Describes a collection of File objects
  *
  */
 @defaultPath("files")
-export class _Files extends _SharePointQueryableCollection implements _IFiles {
+export class _Files extends _SharePointQueryableCollection {
 
     /**
      * Gets a File by filename
@@ -90,27 +81,16 @@ export class _Files extends _SharePointQueryableCollection implements _IFiles {
         };
     }
 }
-
-export interface _IFiles {
-    getByName(name: string): IFile;
-    add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<IFileAddResult>;
-    addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<IFileAddResult>;
-    addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult>;
-}
-
-export interface IFiles extends _IFiles, IInvokable, ISharePointQueryableCollection { }
-
-/**
- * Invokable factory for IFiles instances
- */
+export interface IFiles extends _Files {}
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
  * Describes a single File instance
  *
  */
-@deleteableWithETag("fi")
-export class _File extends _SharePointQueryableInstance implements _IFile {
+export class _File extends _SharePointQueryableInstance {
+
+    public delete = deleteableWithETag("fi");
 
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
@@ -410,34 +390,7 @@ export class _File extends _SharePointQueryableInstance implements _IFile {
     }
 }
 
-export interface _IFile {
-    readonly listItemAllFields: ISharePointQueryableInstance;
-    readonly versions: IVersions;
-    approve(comment?: string): Promise<void>;
-    cancelUpload(uploadId: string): Promise<void>;
-    checkin(comment?: string, checkinType?: CheckinType): Promise<void>;
-    checkout(): Promise<void>;
-    copyTo(url: string, shouldOverWrite?: boolean): Promise<void>;
-    deny(comment?: string): Promise<void>;
-    moveTo(url: string, moveOperations?: MoveOperations): Promise<void>;
-    publish(comment?: string): Promise<void>;
-    recycle(): Promise<string>;
-    undoCheckout(): Promise<void>;
-    unpublish(comment?: string): Promise<void>;
-    getText(): Promise<string>;
-    getBlob(): Promise<Blob>;
-    getBuffer(): Promise<ArrayBuffer>;
-    getJSON(): Promise<any>;
-    setContent(content: string | ArrayBuffer | Blob): Promise<IFile>;
-    getItem<T>(...selects: string[]): Promise<IItem & T>;
-    setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize?: number): Promise<IFileAddResult>;
-}
-
-export interface IFile extends _IFile, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
-
-/**
- * Invokable factory for IFile instances
- */
+export interface IFile extends _File, IDeleteableWithETag {}
 export const File = spInvokableFactory<IFile>(_File);
 
 /**
@@ -445,7 +398,7 @@ export const File = spInvokableFactory<IFile>(_File);
  *
  */
 @defaultPath("versions")
-export class _Versions extends _SharePointQueryableCollection implements _IVersions {
+export class _Versions extends _SharePointQueryableCollection {
 
     /**	
      * Gets a version by id	
@@ -509,38 +462,17 @@ export class _Versions extends _SharePointQueryableCollection implements _IVersi
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-
-export interface _IVersions {
-    getById(versionId: number): IVersion;
-    deleteAll(): Promise<void>;
-    deleteById(versionId: number): Promise<void>;
-    recycleByID(versionId: number): Promise<void>;
-    deleteByLabel(label: string): Promise<void>;
-    recycleByLabel(label: string): Promise<void>;
-    restoreByLabel(label: string): Promise<void>;
-}
-
-export interface IVersions extends _IVersions, IInvokable, ISharePointQueryableCollection { }
-
-/**
- * Invokable factory for IVersions instances
- */
+export interface IVersions extends _Versions {}
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
  * Describes a single Version instance
  *
  */
-@deleteableWithETag("ver")
-export class _Version extends _SharePointQueryableInstance implements _IVersion { }
-
-export interface _IVersion { }
-
-export interface IVersion extends _IVersion, IInvokable, ISharePointQueryableInstance, IDeleteableWithETag { }
-
-/**
- * Invokable factory for IVersion instances
- */
+export class _Version extends _SharePointQueryableInstance {
+    public delete = deleteableWithETag("ver");
+}
+export interface IVersion extends _Version, IDeleteableWithETag { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 
 export enum CheckinType {
@@ -564,4 +496,14 @@ export enum TemplateFileType {
     WikiPage = 1,
     FormPage = 2,
     ClientSidePage = 3,
+}
+
+export interface IFileUploadProgressData {
+    uploadId: string;
+    stage: "starting" | "continue" | "finishing";
+    blockNumber: number;
+    totalBlocks: number;
+    chunkSize: number;
+    currentPointer: number;
+    fileSize: number;
 }

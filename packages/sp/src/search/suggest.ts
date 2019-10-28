@@ -3,12 +3,15 @@ import { hOP, IConfigOptions } from "@pnp/common";
 import { defaultPath } from "../decorators";
 
 @defaultPath("_api/search/suggest")
-export class _SearchSuggest extends _SharePointQueryableInstance {
+export class _Suggest extends _SharePointQueryableInstance {
 
-    public async execute(query: ISearchSuggestQuery): Promise<ISearchSuggestResult> {
+    public async execute(query: ISuggestQuery): Promise<ISuggestResult> {
+
         this.mapQueryToQueryString(query);
+
         const response = await this.get();
         const mapper = hOP(response, "suggest") ? (s_1: string) => response.suggest[s_1].results : (s_2: string) => response[s_2];
+
         return {
             PeopleNames: mapper("PeopleNames"),
             PersonalResults: mapper("PersonalResults"),
@@ -16,9 +19,9 @@ export class _SearchSuggest extends _SharePointQueryableInstance {
         };
     }
 
-    private mapQueryToQueryString(query: ISearchSuggestQuery): void {
+    private mapQueryToQueryString(query: ISuggestQuery): void {
 
-        const setProp = (q: ISearchSuggestQuery) => (checkProp: string) => (sp: string) => {
+        const setProp = (q: ISuggestQuery) => (checkProp: string) => (sp: string) => {
             if (hOP(q, checkProp)) {
                 this.query.set(sp, q[checkProp].toString());
             }
@@ -42,19 +45,17 @@ export class _SearchSuggest extends _SharePointQueryableInstance {
 }
 
 export interface ISuggest {
-    (query: ISearchSuggestQuery): Promise<ISearchSuggestResult>;
+    (query: ISuggestQuery): Promise<ISuggestResult>;
 }
 
-export const Suggest: ISuggest = (query: ISearchSuggestQuery) => (new _SearchSuggest("").execute(query));
-
-export const SuggestFactory = (baseUrl: string | ISharePointQueryable, path = "", options: IConfigOptions = {}): ISuggest => (query: ISearchSuggestQuery) => {
-    return (new _SearchSuggest(baseUrl, path)).configure(options).execute(query);
+export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISuggest => (query: ISuggestQuery) => {
+    return (new _Suggest(baseUrl, "")).configure(options).execute(query);
 };
 
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
-export interface ISearchSuggestQuery {
+export interface ISuggestQuery {
 
     [key: string]: string | number | boolean;
 
@@ -118,13 +119,7 @@ export interface ISearchSuggestQuery {
     prefixMatch?: boolean;
 }
 
-export interface ISearchSuggestResult {
-    readonly PeopleNames: string[];
-    readonly PersonalResults: IPersonalResultSuggestion[];
-    readonly Queries: any[];
-}
-
-export interface IESearchSuggestResult {
+export interface ISuggestResult {
     readonly PeopleNames: string[];
     readonly PersonalResults: IPersonalResultSuggestion[];
     readonly Queries: any[];

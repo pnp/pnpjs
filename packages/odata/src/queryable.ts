@@ -295,7 +295,8 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
      */
     protected cloneTo<T extends IQueryable<any>>(target: T, settings: { includeBatch: boolean } = { includeBatch: true }): T {
 
-        target.data = Object.assign({}, cloneQueryableData(this.data), {
+        target.data = Object.assign({}, cloneQueryableData(this.data), <Partial<IQueryableData<DefaultActionType>>>{
+            batch: null,
             cloneParentCacheOptions: null,
             cloneParentWasCaching: false,
         }, cloneQueryableData(target.data));

@@ -5,11 +5,12 @@ import {
   _SharePointQueryable,
 } from "../sharepointqueryable";
 
-import { defaultPath, clientTagMethod } from "../decorators";
+import { defaultPath } from "../decorators";
 import { hOP, IFetchOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { body } from "@pnp/odata";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("_api/social.following")
 export class _Social extends _SharePointQueryableInstance implements ISocial {
@@ -18,29 +19,29 @@ export class _Social extends _SharePointQueryableInstance implements ISocial {
     return MySocial(this);
   }
 
-  @clientTagMethod("soc.getFollowedSitesUri")
+  @tag("soc.getFollowedSitesUri")
   public async getFollowedSitesUri(): Promise<string> {
     const r = await this.clone(SocialCloneFactory, "FollowedSitesUri").get();
     return r.FollowedSitesUri || r;
   }
 
-  @clientTagMethod("soc.getFollowedDocumentsUri")
+  @tag("soc.getFollowedDocumentsUri")
     public async getFollowedDocumentsUri(): Promise<string> {
     const r = await this.clone(SocialCloneFactory, "FollowedDocumentsUri").get();
     return r.FollowedDocumentsUri || r;
   }
 
-  @clientTagMethod("soc.follow")
+  @tag("soc.follow")
   public async follow(actorInfo: ISocialActorInfo): Promise<SocialFollowResult> {
     return await spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
   }
 
-  @clientTagMethod("soc.isFollowed")
+  @tag("soc.isFollowed")
   public async isFollowed(actorInfo: ISocialActorInfo): Promise<boolean> {
     return await spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
   }
 
-  @clientTagMethod("soc.stopFollowing")
+  @tag("soc.stopFollowing")
   public async stopFollowing(actorInfo: ISocialActorInfo): Promise<void> {
     return await spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
   }
@@ -103,25 +104,25 @@ const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: stri
 @defaultPath("my")
 export class _MySocial extends _SharePointQueryableInstance implements IMySocial {
 
-  @clientTagMethod("msoc.followed")
+  @tag("msoc.followed")
   public async followed(types: SocialActorTypes): Promise<ISocialActor[]> {
     const r = await this.clone(MySocialCloneFactory, `followed(types=${types})`)();
     return hOP(r, "Followed") ? r.Followed.results : r;
   }
 
-  @clientTagMethod("msoc.followedCount")
+  @tag("msoc.followedCount")
   public async followedCount(types: SocialActorTypes): Promise<number> {
     const r = await this.clone(MySocialCloneFactory, `followedcount(types=${types})`)();
     return r.FollowedCount || r;
   }
 
-  @clientTagMethod("msoc.followers")
+  @tag("msoc.followers")
   public async followers(): Promise<ISocialActor[]> {
     const r = await this.clone(MySocialCloneFactory, "followers")();
     return hOP(r, "Followers") ? r.Followers.results : r;
   }
 
-  @clientTagMethod("msoc.suggestions")
+  @tag("msoc.suggestions")
   public async suggestions(): Promise<ISocialActor[]> {
     const r = await this.clone(MySocialCloneFactory, "suggestions")();
     return hOP(r, "Suggestions") ? r.Suggestions.results : r;

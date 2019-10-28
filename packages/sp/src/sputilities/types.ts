@@ -8,7 +8,7 @@ import { metadata } from "../utils/metadata";
 import { File, IFile } from "../files/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { spPost } from "../operations";
-import { clientTagMethod } from "../decorators";
+import { tag } from "../telemetry";
 
 export class _Utilities extends _SharePointQueryable implements IUtilities {
     constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
@@ -56,11 +56,11 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
             });
         }
 
-        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "SendEmail", true), "u.sendEmail").excute<void>(params);
+        return tag.configure(this.clone(UtilitiesCloneFactory, "SendEmail", true), "u.sendEmail").excute<void>(params);
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {
-        return clientTagMethod.configure(this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true), "u.getCurrentUserEmailAddresses").excute<string>({});
+        return tag.configure(this.clone(UtilitiesCloneFactory, "GetCurrentUserEmailAddresses", true), "u.getCurrentUserEmailAddresses").excute<string>({});
     }
 
     public resolvePrincipal(input: string,
@@ -79,7 +79,7 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         };
 
         const clone = this.clone(UtilitiesCloneFactory, "ResolvePrincipalInCurrentContext", true);
-        return clientTagMethod.configure(clone, "u.ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
+        return tag.configure(clone, "u.ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
     }
 
     public searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]> {
@@ -92,7 +92,7 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         };
 
         const clone = this.clone(UtilitiesCloneFactory, "SearchPrincipalsUsingContextWeb", true);
-        return clientTagMethod.configure(clone, "u.SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
+        return tag.configure(clone, "u.SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
@@ -101,7 +101,7 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         };
 
         const clone = this.clone(UtilitiesCloneFactory, "CreateEmailBodyForInvitation", true);
-        return clientTagMethod.configure(clone, "u.CreateEmailBodyForInvitation").excute<string>(params);
+        return tag.configure(clone, "u.CreateEmailBodyForInvitation").excute<string>(params);
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<IPrincipalInfo[]> {
@@ -111,13 +111,13 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         };
 
         const clone = this.clone(UtilitiesCloneFactory, "ExpandGroupsToPrincipals", true);
-        return clientTagMethod.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
+        return tag.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
     }
 
     public async createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult> {
 
         const clone = this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true);
-        const newPage = await clientTagMethod.configure(clone, "u.CreateWikiPageInContextWeb").excute<ICreateWikiPageResult>({ parameters: info });
+        const newPage = await tag.configure(clone, "u.CreateWikiPageInContextWeb").excute<ICreateWikiPageResult>({ parameters: info });
 
         return {
             data: newPage,

@@ -12,9 +12,6 @@ export {
     AppCatalog,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         getTenantAppCatalogWeb(): Promise<IWeb>;

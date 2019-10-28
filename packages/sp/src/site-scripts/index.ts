@@ -12,9 +12,6 @@ export {
     ISiteScriptSerializationResult,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly siteScripts: ISiteScripts;

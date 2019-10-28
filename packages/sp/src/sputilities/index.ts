@@ -9,9 +9,6 @@ export {
     Utilities,
 } from "./types";
 
-/**
- * Extend rest
- */
 declare module "../rest" {
     interface SPRest {
         readonly utility: IUtilities;

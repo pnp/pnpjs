@@ -1,17 +1,18 @@
 import { assign, TypedHash, hOP } from "@pnp/common";
-import { IInvokable, body, headers } from "@pnp/odata";
+import { body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,
     ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
+    IDeleteable,
+    deleteable,
 } from "../sharepointqueryable";
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
 import { IBasePermissions } from "./types";
 import { metadata } from "../utils/metadata";
-import { defaultPath, IDeleteable, deleteable } from "../decorators";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 
 export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethods;
@@ -21,7 +22,7 @@ export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethod
  *
  */
 @defaultPath("roleassignments")
-export class _RoleAssignments extends _SharePointQueryableCollection implements _IRoleAssignments {
+export class _RoleAssignments extends _SharePointQueryableCollection {
 
     /**	
      * Gets the role assignment associated with the specified principal id from the collection.	
@@ -54,22 +55,16 @@ export class _RoleAssignments extends _SharePointQueryableCollection implements 
         return spPost(this.clone(RoleAssignments, `removeroleassignment(principalid=${principalId}, roledefid=${roleDefId})`));
     }
 }
-
-export interface _IRoleAssignments {
-    getById(id: number): IRoleAssignment;
-    add(principalId: number, roleDefId: number): Promise<void>;
-    remove(principalId: number, roleDefId: number): Promise<void>;
-}
-
-export interface IRoleAssignments extends _IRoleAssignments, IInvokable, ISharePointQueryableCollection { }
+export interface IRoleAssignments extends _RoleAssignments { }
 export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignments);
 
 /**
  * Describes a role assignment
  *
  */
-@deleteable("ra")
-export class _RoleAssignment extends _SharePointQueryableInstance implements _IRoleAssignment {
+export class _RoleAssignment extends _SharePointQueryableInstance {
+
+    public delete = deleteable("ra");
 
     /**
      * Gets the groups that directly belong to the access control list (ACL) for this securable object
@@ -87,14 +82,7 @@ export class _RoleAssignment extends _SharePointQueryableInstance implements _IR
         return SharePointQueryableCollection(this, "roledefinitionbindings");
     }
 }
-
-export interface _IRoleAssignment {
-    readonly groups: ISiteGroups;
-    readonly bindings: ISharePointQueryableCollection;
-}
-
-export interface IRoleAssignment extends _IRoleAssignment, IInvokable, ISharePointQueryableInstance, IDeleteable {}
-
+export interface IRoleAssignment extends _RoleAssignment, IDeleteable { }
 export const RoleAssignment = spInvokableFactory<IRoleAssignment>(_RoleAssignment);
 
 /**
@@ -102,7 +90,7 @@ export const RoleAssignment = spInvokableFactory<IRoleAssignment>(_RoleAssignmen
  *
  */
 @defaultPath("roledefinitions")
-export class _RoleDefinitions extends _SharePointQueryableCollection implements _IRoleDefinitions {
+export class _RoleDefinitions extends _SharePointQueryableCollection {
 
     /**	   
      * Gets the role definition with the specified id from the collection	    
@@ -161,23 +149,16 @@ export class _RoleDefinitions extends _SharePointQueryableCollection implements 
         };
     }
 }
-
-export interface _IRoleDefinitions {
-    getById(id: number): IRoleDefinition;
-    getByName(name: string): IRoleDefinition;
-    getByType(roleTypeKind: number): IRoleDefinition;
-    add(name: string, description: string, order: number, basePermissions: IBasePermissions): Promise<IRoleDefinitionAddResult>;
-}
-
-export interface IRoleDefinitions extends _IRoleDefinitions, IInvokable, ISharePointQueryableCollection {}
+export interface IRoleDefinitions extends _RoleDefinitions { }
 export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinitions);
 
 /**
  * Describes a role definition
  *
  */
-@deleteable("rd")
-export class _RoleDefinition extends _SharePointQueryableInstance implements _IRoleDefinition {
+export class _RoleDefinition extends _SharePointQueryableInstance {
+
+    public delete = deleteable("rd");
 
     /**
      * Updates this role definition with the supplied properties
@@ -198,7 +179,7 @@ export class _RoleDefinition extends _SharePointQueryableInstance implements _IR
 
         let definition: IRoleDefinition = <any>this;
         if (hOP(properties, "Name")) {
-            const parent = this.getParent<IRoleDefinitions>(_RoleDefinitions, this.parentUrl, "");
+            const parent = this.getParent<IRoleDefinitions>(RoleDefinitions, this.parentUrl, "");
             definition = parent.getByName((<string>properties["Name"]));
         }
         return {
@@ -208,12 +189,7 @@ export class _RoleDefinition extends _SharePointQueryableInstance implements _IR
     }
     /* tslint:enable */
 }
-
-export interface _IRoleDefinition {
-    update(properties: TypedHash<any>): Promise<IRoleDefinitionUpdateResult>;
-}
-
-export interface IRoleDefinition extends _IRoleDefinition, IInvokable, ISharePointQueryableInstance, IDeleteable {}
+export interface IRoleDefinition extends _RoleDefinition, IDeleteable { }
 export const RoleDefinition = spInvokableFactory<IRoleDefinition>(_RoleDefinition);
 
 export interface ISecurableMethods {

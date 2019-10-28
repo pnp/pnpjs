@@ -1,32 +1,22 @@
 import {
     _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
-    ISharePointQueryable,
     _SharePointQueryableCollection,
     _SharePointQueryable,
     spInvokableFactory,
+    deleteable,
+    IDeleteable,
 } from "../sharepointqueryable";
 import { assign, TypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { IInvokable, body, headers } from "@pnp/odata";
-import { defaultPath, deleteable, IDeleteable } from "../decorators";
+import { body, headers } from "@pnp/odata";
+import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
-
-/**
- * Result from adding a navigation node
- *
- */
-export interface INavigationNodeAddResult {
-    data: any;
-    node: INavigationNode;
-}
 
 /**
  * Represents a collection of navigation nodes
  *
  */
-export class _NavigationNodes extends _SharePointQueryableCollection implements _INavigationNodes {
+export class _NavigationNodes extends _SharePointQueryableCollection {
 
     /**	    
      * Gets a navigation node by id	
@@ -76,15 +66,7 @@ export class _NavigationNodes extends _SharePointQueryableCollection implements 
         return spPost(this.clone(NavigationNodes, "MoveAfter"), postBody);
     }
 }
-
-export interface _INavigationNodes {
-    getById(id: number): INavigationNode;
-    add(title: string, url: string, visible?: boolean): Promise<INavigationNodeAddResult>;
-    moveAfter(nodeId: number, previousNodeId: number): Promise<void>;
-}
-
-export interface INavigationNodes extends _INavigationNodes, IInvokable, ISharePointQueryableCollection {}
-
+export interface INavigationNodes extends _NavigationNodes { }
 export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationNodes);
 
 
@@ -92,8 +74,9 @@ export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationN
  * Represents an instance of a navigation node
  *
  */
-@deleteable("nn")
-export class _NavigationNode extends _SharePointQueryableInstance implements _INavigationNode {
+export class _NavigationNode extends _SharePointQueryableInstance {
+
+    public delete = deleteable("nn");
 
     /**
      * Represents the child nodes of this node
@@ -119,14 +102,7 @@ export class _NavigationNode extends _SharePointQueryableInstance implements _IN
         };
     }
 }
-
-export interface _INavigationNode {
-    readonly children: INavigationNodes;
-    update(properties: TypedHash<string | number | boolean>): Promise<INavNodeUpdateResult>;
-}
-
-export interface INavigationNode extends _INavigationNode, IInvokable, ISharePointQueryableInstance, IDeleteable {}
-
+export interface INavigationNode extends _NavigationNode, IDeleteable { }
 export const NavigationNode = spInvokableFactory<INavigationNode>(_NavigationNode);
 
 export interface INavNodeUpdateResult {
@@ -139,7 +115,7 @@ export interface INavNodeUpdateResult {
  *
  */
 @defaultPath("navigation")
-export class _Navigation extends _SharePointQueryable implements _INavigation {
+export class _Navigation extends _SharePointQueryable {
 
     /**
      * Gets the quicklaunch navigation nodes for the current context
@@ -157,20 +133,13 @@ export class _Navigation extends _SharePointQueryable implements _INavigation {
         return NavigationNodes(this, "topnavigationbar");
     }
 }
-
-export interface _INavigation {
-    readonly quicklaunch: INavigationNodes;
-    readonly topNavigationBar: INavigationNodes;
-}
-
-export interface INavigation extends _INavigation, IInvokable, ISharePointQueryable {}
-
+export interface INavigation extends _Navigation { }
 export const Navigation = spInvokableFactory<INavigation>(_Navigation);
 
 /**
  * Represents the top level navigation service
  */
-export class _NavigationService extends _SharePointQueryable implements _INavigationService {
+export class _NavigationService extends _SharePointQueryable {
 
     constructor(path: string = null) {
         super("_api/navigation", path);
@@ -208,14 +177,7 @@ export class _NavigationService extends _SharePointQueryable implements _INaviga
         }));
     }
 }
-
-export interface _INavigationService {
-    getMenuState(menuNodeKey?: string, depth?: number, mapProviderName?: string, customProperties?: string): Promise<IMenuNodeCollection>;
-    getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
-}
-
-export interface INavigationService extends _INavigationService {}
-
+export interface INavigationService extends _NavigationService { }
 export const NavigationService = (path?: string) => <INavigationService>new _NavigationService(path);
 
 export interface IMenuNode {
@@ -251,4 +213,13 @@ export interface ISerializableNavigationNode {
     ListTemplateType: number;
     AudienceIds: string[];
     Children: ISerializableNavigationNode[];
+}
+
+/**
+ * Result from adding a navigation node
+ *
+ */
+export interface INavigationNodeAddResult {
+    data: any;
+    node: INavigationNode;
 }
