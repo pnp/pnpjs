@@ -118,7 +118,7 @@ plugins:
   - search
   - markdownextradata
 extra:
-  version: '2.0.0'
+  version: '2.0.0-7'
   social:
     - type: 'twitter'
       link: 'https://twitter.com/officedevpnp'
@@ -127,5 +127,5 @@ extra:
     - type: 'link'
       link: 'https://aka.ms/sppnp'
 repo_url: http://github.com/pnp/pnpjs
-edit_uri: tree/dev/packages
+edit_uri: tree/dev/docs
 site_url: https://pnp.github.io/pnpjs/

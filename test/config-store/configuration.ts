@@ -95,6 +95,7 @@ describe("Configuration", () => {
             const p = settings.load(mockProvider);
             return p.then(
                 () => { expect.fail(null, null, "Should not resolve when provider throws!"); },
+                // tslint:disable-next-line:no-unused-expression
                 (reason) => { expect(reason).not.to.be.null; },
             );
         });
@@ -105,6 +106,7 @@ describe("Configuration", () => {
             const p = settings.load(mockProvider);
             return p.then(
                 () => { expect.fail(null, null, "Should not resolve when provider rejects!"); },
+                // tslint:disable-next-line:no-unused-expression
                 (reason) => { expect(reason).not.to.be.null; },
             );
         });
