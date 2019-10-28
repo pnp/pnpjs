@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.json",
+    "types": [
+        "adal"
+    ],
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+    ],
+    "references": [
+        {
+            "path": "../common"
+        }
+    ]
+}

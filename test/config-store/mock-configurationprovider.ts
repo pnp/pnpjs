@@ -1,4 +1,4 @@
-import { IConfigurationProvider } from "..";
+import { IConfigurationProvider } from "../../packages/config-store";
 import { TypedHash } from "@pnp/common";
 
 export default class MockConfigurationProvider implements IConfigurationProvider {

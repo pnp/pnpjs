@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2.0.0 - 2019-XX-XX
 
-_These changes represent the move from v1 libraries to v2 and begin a new changelog for the v2 tree_
+_This begins a new changelog for v2_
 
 ### Added
 
@@ -37,6 +37,7 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - common: extend renamed to assign
 - sp: client side pages breaking changes in method signatures
 - sp: breaking change to rename search classes and factories
+- common: moved adalclient to @pnp/adaljsclient to reduce bundle sizes
 
 ### Fixed
 

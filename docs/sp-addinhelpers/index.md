@@ -8,7 +8,7 @@ This module contains classes to allow use of the libraries within a SharePoint a
 
 Install the library and all dependencies,
 
-`npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/sp-addinhelpers --save`
+`npm install @pnp/sp @pnp/sp-addinhelpers --save`
 
 Now you can make requests to the host web from your add-in using the crossDomainWeb method.
 

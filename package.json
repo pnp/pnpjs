@@ -1,7 +1,7 @@
 {
   "name": "@pnp/monorepo",
   "private": true,
-  "version": "2.0.0-5",
+  "version": "2.0.0-7",
   "description": "A JavaScript library for SharePoint development.",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
@@ -53,8 +53,8 @@
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
-    "pnp-publish": "npm run package && pnpbuild -n publish",
-    "pnp-publish-beta": "npm run package && pnpbuild -n publish-beta",
+    "pnp-publish": "npm run clean && npm run package && pnpbuild -n publish",
+    "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
     "lint": "tslint ./packages/**/*.ts ./test/**/*.ts",
     "clean": "del-cli \"./?(dist|serve|site|build)\"",
     "serve": "ts-node -r tsconfig-paths/register ./tools/serve/serve.ts"

@@ -1,6 +1,4 @@
-import { BearerTokenFetchClient, IFetchOptions } from "./netutil";
-import { ISPFXContext } from "./spfxcontextinterface";
-import { isUrlAbsolute } from "./util";
+import { BearerTokenFetchClient, IFetchOptions, ISPFXContext, isUrlAbsolute } from "@pnp/common";
 // @ts-ignore
 import * as adal from "adal-angular/dist/adal.min.js";
 

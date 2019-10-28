@@ -6,7 +6,8 @@
   "typings": "./index",
   "dependencies": {
     "@microsoft/microsoft-graph-types": "1.5.0",
-    "tslib": "1.9.3",
+    "tslib": "1.10.0",
+    "@pnp/adaljs": "0.0.0-PLACEHOLDER",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER",
     "@pnp/odata": "0.0.0-PLACEHOLDER"

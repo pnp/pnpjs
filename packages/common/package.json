@@ -5,11 +5,7 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
-    "adal-angular": "1.0.17",
-    "tslib": "1.9.3"
-  },
-  "devDependencies": {
-    "@types/adal-angular": "1.0.1"
+    "tslib": "1.10.0"
   },
   "author": {
     "name": "Microsoft and other contributors"

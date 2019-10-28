@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as Collections from "@pnp/common";
-import { Settings } from "..";
+import { Settings } from "../../packages/config-store";
 import { default as MockConfigurationProvider } from "./mock-configurationprovider";
 
 describe("Configuration", () => {

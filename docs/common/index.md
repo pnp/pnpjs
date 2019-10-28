@@ -20,7 +20,6 @@ console.log(getGUID());
 
 ## Exports
 
-* [adalclient](adalclient.md)
 * [collections](collections.md)
 * [libconfig](libconfig.md)
 * [netutil](netutil.md)

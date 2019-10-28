@@ -1,14 +1,16 @@
 {
-  "name": "@pnp/sp-addinhelpers",
+  "name": "@pnp/adaljsclient",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - provides functionality for working within SharePoint add-ins",
+  "description": "pnp - provides an ADAL client for use with PnPjs",
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
+    "adal-angular": "1.0.17",
     "tslib": "1.10.0",
-    "@types/sharepoint": "2016.1.2",
-    "@pnp/common": "0.0.0-PLACEHOLDER",
-    "@pnp/sp": "0.0.0-PLACEHOLDER"
+    "@pnp/common": "0.0.0-PLACEHOLDER"
+  },
+  "devDependencies": {
+    "@types/adal-angular": "1.0.1"
   },
   "author": {
     "name": "Microsoft and other contributors"

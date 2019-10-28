@@ -1,4 +1,5 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig, IHttpClientImpl, AdalClient } from "@pnp/common";
+import { LibraryConfiguration, TypedHash, RuntimeConfig, IHttpClientImpl } from "@pnp/common";
+import { AdalClient } from "@pnp/adaljsclient";
 
 export interface GraphConfigurationPart {
     graph?: {

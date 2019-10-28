@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Logger, LogLevel, FunctionListener } from "..";
+import { Logger, LogLevel, FunctionListener } from "@pnp/logging";
 
 describe("Logging", () => {
 

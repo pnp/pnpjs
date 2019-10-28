@@ -1,23 +1,23 @@
 import { expect } from "chai";
-import { SPListConfigurationProvider } from "../..";
+import { SPListConfigurationProvider } from "../../../packages/config-store";
 import MockStorage from "../mock-storage";
-import { TypedHash }  from "@pnp/common";
-import { Web } from "@pnp/sp";
+// import { TypedHash }  from "@pnp/common";
+// import { Web, IWeb } from "@pnp/sp/src/webs";
 
 declare var global: any;
 
 describe("Configuration", () => {
 
     describe("SPListConfigurationProvider", () => {
-        let web: Web;
-        let mockData: TypedHash<string>;
-        let calledUrl: string;
+        // let web: IWeb;
+        // let mockData: TypedHash<string>;
+        // let calledUrl: string;
 
-        beforeEach(() => {
-            web = new Web("https://fake.sharepoint.com/sites/test/subsite");
-            mockData = { "key1": "value1", "key2": "value2" };
-            calledUrl = "";
-        });
+        // beforeEach(() => {
+        //     web = Web("https://fake.sharepoint.com/sites/test/subsite");
+        //     mockData = { "key1": "value1", "key2": "value2" };
+        //     calledUrl = "";
+        // });
 
         // function mockJQuery(): any {
         //     // Create a mock JQuery.ajax method, which will always return our testdata.

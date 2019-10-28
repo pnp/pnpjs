@@ -1,6 +1,6 @@
-import { PnPClientStorageWrapper, PnPClientStore, TypedHash } from "@pnp/common";
+import { PnPClientStorageWrapper, IPnPClientStore, TypedHash } from "@pnp/common";
 import { expect } from "chai";
-import { CachingConfigurationProvider, Settings } from "../..";
+import { CachingConfigurationProvider, Settings } from "@pnp/config-store";
 import { default as MockConfigurationProvider } from "../mock-configurationprovider";
 import MockStorage from "../mock-storage";
 
@@ -8,7 +8,7 @@ describe("Configuration", () => {
 
     describe("CachingConfigurationProvider", () => {
         let wrapped: MockConfigurationProvider;
-        let store: PnPClientStore;
+        let store: IPnPClientStore;
         let settings: Settings;
 
         beforeEach(() => {

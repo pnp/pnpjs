@@ -51,8 +51,8 @@ public render(): void {
 This example shows how to use the ADALClient with the @pnp/sp library to call 
 
 ```TypeScript
-import { sp } from "@pnp/sp";
-import { AdalClient } from "@pnp/common";
+import { sp } from "@pnp/sp/presets/all";
+import { AdalClient } from "@pnp/adaljsclient";
 
 // ...
 
@@ -86,7 +86,8 @@ public render(): void {
 You can also use the AdalClient to execute AAD authenticated requests to any API which is properly configured to accept the incoming tokens. This approach will only work within SharePoint Framework >= 1.6. Here we call the SharePoint REST API without the sp library as an example.
 
 ```TypeScript
-import { AdalClient, FetchOptions } from "@pnp/common";
+import { FetchOptions } from "@pnp/common";
+import { AdalClient } from "@pnp/adaljsclient";
 import { ODataDefaultParser } from "@pnp/odata";
 
 // ...
@@ -131,7 +132,7 @@ This example shows setting up and using the AdalClient to make queries using inf
 This sample uses a custom AzureAd app you have created and granted the appropriate permissions.
 
 ```TypeScript
-import { AdalClient } from "@pnp/common";
+import { AdalClient } from "@pnp/adaljsclient";
 import { graph } from "@pnp/graph";
 
 // configure the graph client
