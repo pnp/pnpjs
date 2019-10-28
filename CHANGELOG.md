@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.3.6 - 2019-10-11
+
+### Added
+
+- @pnp/sp: Added addUsingPath method to Folders [[PR](https://github.com/pnp/pnpjs/pull/870)]
+- @pnp/graph: Added manager property to user [[PR](https://github.com/pnp/pnpjs/pull/870)]
+- @pnp/sp-taxonomy: Added delete method to term [[PR](https://github.com/pnp/pnpjs/pull/870)]
+
+### Fixed
+
+- @pnp/sp: Fixed Folder.moveTo url bug ([@nsoeth](https://github.com/nsoeth)) [[PR](https://github.com/pnp/pnpjs/pull/833)]
+- @pnp/sp: Fixed for getCurrentUserEffectivePermissions and low permission users ([@koltyakov](https://github.com/koltyakov)) [[PR](https://github.com/pnp/pnpjs/pull/846)]
+- docs: Added missing hubSiteId method parameter to docs [[PR](https://github.com/pnp/pnpjs/pull/870)]
+- @pnp/sp: Fixed bug with createCommunicationSite method parsing response [[PR](https://github.com/pnp/pnpjs/pull/870)]
+
 ## 1.3.5 - 2019-08-16
 
 ### Added
