@@ -2,6 +2,8 @@ import { IConfigurationProvider } from "../configuration";
 import { TypedHash } from "@pnp/common";
 import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider";
 import { IWeb } from "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
 
 /**
  * A configuration provider which loads configuration values from a SharePoint list
