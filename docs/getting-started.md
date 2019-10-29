@@ -29,7 +29,7 @@ import { getRandomString } from "@pnp/common";
 
 ## Getting Started with SharePoint Framework
 
-The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 on-premesis please [read this note](SPFx-On-Premesis-2016.md) on a workaround for the included TypeScript version. If you are targetting SharePoint online you do not need to take any additional steps.
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 on-premises please [read this note](SPFx-On-Premesis-2016.md) on a workaround for the included TypeScript version. If you are targetting SharePoint online you do not need to take any additional steps.
 
 ### Establish Context
 
