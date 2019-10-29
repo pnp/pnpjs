@@ -1,1 +1,2 @@
-export * from "./src/addinhelpers";
+export * from "./sprequestexecutorclient";
+export * from "./sprestaddin";

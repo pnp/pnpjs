@@ -1,8 +1,8 @@
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { expect } from "chai";
-import "@pnp/sp/src/content-types";
-import "@pnp/sp/src/lists/web";
+import "@pnp/sp/content-types";
+import "@pnp/sp/lists/web";
 import { getRandomString } from "@pnp/common";
 
 describe("Content Types", function () {

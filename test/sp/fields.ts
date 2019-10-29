@@ -1,11 +1,11 @@
 
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/sites";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 import { testSettings } from "../main";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/fields";
 import {
   DateTimeFieldFormatType,
   FieldTypes,
@@ -14,7 +14,7 @@ import {
   UrlFieldFormatType,
   FieldUserSelectionMode,
   ChoiceFieldFormatType,
-} from "@pnp/sp/src/fields";
+} from "@pnp/sp/fields";
 import { getRandomString, getGUID } from "@pnp/common";
 
 describe("Fields", function () {

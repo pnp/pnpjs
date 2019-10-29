@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { Web } from "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
-import "@pnp/sp/src/site-groups/web";
-import "@pnp/sp/src/site-users/web";
+import { Web } from "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+import "@pnp/sp/site-groups/web";
+import "@pnp/sp/site-users/web";
 import { testSettings } from "../main";
 
 describe("Batching", () => {

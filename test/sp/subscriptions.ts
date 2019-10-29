@@ -2,9 +2,9 @@ import { expect } from "chai";
 import { testSettings } from "../main";
 
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/subscriptions";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/subscriptions";
 import { dateAdd } from "@pnp/common";
 
 describe("Subscriptions", function () {

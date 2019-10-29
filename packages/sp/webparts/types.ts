@@ -6,9 +6,9 @@ import {
     ISharePointQueryable,
     spInvokableFactory,
     SharePointQueryable,
+    SharePointQueryableInstance,
 } from "../sharepointqueryable";
 import { body } from "@pnp/odata";
-import { SharePointQueryableInstance } from "../sp";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
 

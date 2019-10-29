@@ -1,1 +1,1 @@
-export * from "./src/adaljsclient";
+export * from "./adalclient";

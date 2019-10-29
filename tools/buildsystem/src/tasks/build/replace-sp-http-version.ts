@@ -30,8 +30,8 @@ export async function replaceSPHttpVersion(version: string, config: BuildSchema)
         const buildConfig: TSConfig = require(config.buildTargets[i]);
         const buildRoot = path.resolve(path.dirname(config.buildTargets[i]));
 
-        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/net/sphttpclient.js"));
-        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/src/batch.js"));
+        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/net/sphttpclient.js"));
+        options.files.push(path.resolve(buildRoot, buildConfig.compilerOptions.outDir, "sp/batch.js"));
     }
 
     await replace(options);

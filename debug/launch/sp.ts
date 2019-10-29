@@ -1,7 +1,7 @@
 import { SPFetchClient } from "@pnp/nodejs";
 
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 declare var process: { exit(code?: number): void };
 

@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { testSettings } from "../main";
 
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/features";
+import "@pnp/sp/webs";
+import "@pnp/sp/features";
 
 describe("Features", () => {
 

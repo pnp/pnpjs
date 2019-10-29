@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { SearchQueryBuilder } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { SearchQueryBuilder } from "@pnp/sp/search";
 
 // we skip these tests due to permissions difficulties across environments
 describe.skip("Search", () => {

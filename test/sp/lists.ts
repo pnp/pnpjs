@@ -1,16 +1,16 @@
 import { sp, SPBatch, SPRest } from "@pnp/sp";
 import { testSettings } from "../main";
 import { expect } from "chai";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/content-types/list";
-import "@pnp/sp/src/views/list";
-import "@pnp/sp/src/folders/list";
-import "@pnp/sp/src/fields/list";
-import "@pnp/sp/src/forms/list";
-import "@pnp/sp/src/items/list";
-import "@pnp/sp/src/subscriptions/list";
-import "@pnp/sp/src/user-custom-actions/list";
-import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue } from "@pnp/sp/src/lists";
+import "@pnp/sp/lists";
+import "@pnp/sp/content-types/list";
+import "@pnp/sp/views/list";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/fields/list";
+import "@pnp/sp/forms/list";
+import "@pnp/sp/items/list";
+import "@pnp/sp/subscriptions/list";
+import "@pnp/sp/user-custom-actions/list";
+import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue } from "@pnp/sp/lists";
 import * as assert from "assert";
 import { IConfigOptions, getRandomString } from "@pnp/common";
 

@@ -7,16 +7,11 @@
         "adal"
     ],
     "include": [
-        "./index.ts",
-        "./src/**/*.ts",
-        "../adaljsclient/index.ts",
-        "../adaljsclient/src/**/*.ts",
-        "../common/index.ts",
-        "../common/src/**/*.ts",
-        "../logging/index.ts",
-        "../logging/src/**/*.ts",
-        "../odata/index.ts",
-        "../odata/src/**/*.ts"
+        "./**/*.ts",
+        "../adaljsclient/**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts"
     ],
     "references": [
         {

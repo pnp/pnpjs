@@ -2,8 +2,8 @@ import {
     SPRest,
 } from "@pnp/sp";
 
-import { Web, IWeb } from "@pnp/sp/src/webs";
-import { Site, ISite } from "@pnp/sp/src/sites";
+import { Web, IWeb } from "@pnp/sp/webs";
+import { Site, ISite } from "@pnp/sp/sites";
 
 import {
     isUrlAbsolute,
