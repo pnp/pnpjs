@@ -210,10 +210,6 @@ before(async function (): Promise<void> {
         const e = Date.now();
         console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
 
-        if ( deleteAllWebs ) {
-            await cleanUpAllSubsites();
-        }
-
         // console.log(`Setting up Graph tests...`);
         // s = Date.now();
         // await graphTestSetup(testSettings);
@@ -230,7 +226,11 @@ after(async () => {
     console.log("Ending...");
     console.log();
 
-    if (deleteWeb && testSettings.enableWebTests) {
+    if (deleteAllWebs) {
+
+        await cleanUpAllSubsites();
+
+    } else if (deleteWeb && testSettings.enableWebTests) {
 
         console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
         const w = Web(testSettings.sp.webUrl);
@@ -245,7 +245,9 @@ after(async () => {
 
         await w.delete();
         console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
+
     } else if (testSettings.enableWebTests) {
+
         console.log(`Leaving ${testSettings.sp.webUrl} alone.`);
     }
 
