@@ -587,7 +587,6 @@ export class Web extends SharePointQueryableShareableWeb {
      *
      * @param pageName Name of the new page
      * @param title Display title of the new page
-     * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
     public addClientSidePage(pageName: string, title = pageName.replace(/\.[^/.]+$/, "")): Promise<ClientSidePage> {
         return ClientSidePage.create(this, pageName, title);
