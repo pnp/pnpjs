@@ -1594,6 +1594,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../sp/site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../sp/sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1843,7 +1855,7 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { graph } from "@pnp/graph";<br />import "@pnp/graph/src/users";</td>
+<td>import { graph } from "@pnp/graph";<br />import "@pnp/graph/users";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1853,7 +1865,7 @@
 </table>
 <h2 id="current-user">Current User<a class="headerlink" href="#current-user" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/src/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">currentUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">();</span>
 </pre></div>
@@ -1861,7 +1873,7 @@
 
 <h2 id="get-all-users-in-the-organization">Get All Users in the Organization<a class="headerlink" href="#get-all-users-in-the-organization" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/src/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">allUsers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">();</span>
 </pre></div>
@@ -1869,7 +1881,7 @@
 
 <h2 id="get-a-user-by-email-address-or-user-id">Get a User by email address (or user id)<a class="headerlink" href="#get-a-user-by-email-address-or-user-id" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/src/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">matchingUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;jane@contoso.com&#39;</span><span class="p">)();</span>
 </pre></div>
@@ -1877,7 +1889,7 @@
 
 <h2 id="update-current-user">Update Current User<a class="headerlink" href="#update-current-user" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/src/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span>
     <span class="nx">displayName</span><span class="o">:</span> <span class="s1">&#39;John Doe&#39;</span>

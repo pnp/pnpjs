@@ -1528,6 +1528,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1866,7 +1878,7 @@
 <tbody>
 <tr>
 <td>Selective</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list"</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list"</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1877,11 +1889,11 @@
 <h3 id="add-a-webhook">Add a webhook<a class="headerlink" href="#add-a-webhook" title="Permanent link">&para;</a></h3>
 <p>Using this library, you can add a webhook to a specified list within the SharePoint site.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Subscriptions</span><span class="p">,</span> <span class="nx">ISubscriptions</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/subscriptions&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/subscriptions/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Subscriptions</span><span class="p">,</span> <span class="nx">ISubscriptions</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions/list&quot;</span><span class="p">;</span>
 
 <span class="c1">// This is the URL which will be called by SharePoint when there is a change in the list</span>
 <span class="kr">const</span> <span class="nx">notificationUrl</span> <span class="o">=</span> <span class="s2">&quot;&lt;notification-url&gt;&quot;</span><span class="p">;</span>
@@ -1897,9 +1909,9 @@
 <h3 id="get-all-webhooks-added-to-a-list">Get all webhooks added to a list<a class="headerlink" href="#get-all-webhooks-added-to-a-list" title="Permanent link">&para;</a></h3>
 <p>Read all the webhooks' details which are associated to the list</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/subscriptions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">();</span>
 </pre></div>
@@ -1918,7 +1930,7 @@
 <tbody>
 <tr>
 <td>Selective</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/src/subscriptions";<br />import "@pnp/sp/src/subscriptions/list"</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list"</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1928,9 +1940,9 @@
 </table>
 <h3 id="managing-a-webhook">Managing a webhook<a class="headerlink" href="#managing-a-webhook" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/subscriptions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
 
 <span class="c1">// Get details of a webhook based on its ID</span>
 <span class="kr">const</span> <span class="nx">webhookId</span> <span class="o">=</span> <span class="s2">&quot;1f029e5c-16e4-4941-b46f-67895118763f&quot;</span><span class="p">;</span>

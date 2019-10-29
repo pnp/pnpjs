@@ -1738,6 +1738,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../sp/site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sp/sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2016,7 +2028,7 @@
                 <h1 id="transition-guide">Transition Guide<a class="headerlink" href="#transition-guide" title="Permanent link">&para;</a></h1>
 <p>We have worked to make moving from @pnp library 1.<em> to 2.</em> as painless as possible, however there are some changes to how things work. The below guide we have provided an overview of what it takes to transition between the libraries. If we missed something, please let us know in the issues list so we can update the guide. Thanks!</p>
 <h2 id="installing-pnp-libraries">Installing @pnp libraries<a class="headerlink" href="#installing-pnp-libraries" title="Permanent link">&para;</a></h2>
-<p>In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them seperately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have upated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:</p>
+<p>In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them separately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have updated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:</p>
 <div class="codehilite"><pre><span></span>npm i --save @pnp/sp
 </pre></div>
 
@@ -2026,18 +2038,18 @@
 <p>To help explain let's take the example of the Web object. In v1 Web includes a reference to pretty much everything else in the entire sp library. Meaning that if you use web (and you pretty much have to) you hold a ref to all the other pieces (like Fields, Lists, ContentTypes) even if you aren't using them. Because of that tree shaking can't do anything to reduce the bundle size because it "thinks" you are using them simply because they have been imported. To solve this in v2 the Web object no longer contains references to anything, it is a bare object with a few methods. If you look at the source you will see that, for example, there is no longer a "lists" property. These properties and methods are now added through selectively importing the functionality you need:</p>
 <h3 id="selectively-import-web-lists-functionality">Selectively Import Web lists functionality<a class="headerlink" href="#selectively-import-web-lists-functionality" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="c1">// this imports the functionality for lists associated only with web</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 </pre></div>
 
 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="c1">// this imports all the functionality for lists</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 </pre></div>
@@ -2056,7 +2068,7 @@
 
 <span class="c1">// V2 way with selective imports</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientSideWebpart</span><span class="p">,</span> <span class="nx">ClientSideWebpartPropertyTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientSideWebpart</span><span class="p">,</span> <span class="nx">ClientSideWebpartPropertyTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="c1">// V2 way with preset &quot;all&quot;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ClientSideWebpart</span><span class="p">,</span> <span class="nx">ClientSideWebpartPropertyTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
@@ -2066,7 +2078,7 @@
 <h2 id="invokable-objects">Invokable Objects<a class="headerlink" href="#invokable-objects" title="Permanent link">&para;</a></h2>
 <p>Another new feature is the addition of invokable objects. Previously where you used "get()" to invoke a request you can now leave it off. We have left the .get method in place so everyone's code wasn't broken immediately upon transitioning.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="c1">// old way (still works)</span>
 <span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -2078,7 +2090,7 @@
 
 <p>The benefit is that objects can now support default actions that are not "get" but might be "post". And you save typing a few extra characters. This still work the same as with select or any of the other odata methods:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="c1">// invokable</span>
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Url&quot;</span><span class="p">)();</span>
@@ -2086,7 +2098,7 @@
 
 
 <h2 id="factory-functions-interfaces">Factory Functions &amp; Interfaces<a class="headerlink" href="#factory-functions-interfaces" title="Permanent link">&para;</a></h2>
-<p>Another change in the library is in the strcture of exports. We are no longer exporting the objects themselves, rather we are only exposing factory functions and interfaces. This allows us to decouple what developers use from our internal implementation. For folks using the fluent chain starting with sp you shouldn't need to update your code. If you are using any of the v1 classes directly you should just need to remove the "new" keyword and update the import path. The factory functions signature matches the contructor signature of the v1 objects.</p>
+<p>Another change in the library is in the structure of exports. We are no longer exporting the objects themselves, rather we are only exposing factory functions and interfaces. This allows us to decouple what developers use from our internal implementation. For folks using the fluent chain starting with sp you shouldn't need to update your code. If you are using any of the v1 classes directly you should just need to remove the "new" keyword and update the import path. The factory functions signature matches the constructor signature of the v1 objects.</p>
 <div class="codehilite"><pre><span></span><span class="c1">// v1</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
@@ -2095,7 +2107,7 @@
 <span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
 <span class="c1">// v2</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span><span class="p">,</span> <span class="nx">IWeb</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span><span class="p">,</span> <span class="nx">IWeb</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">web</span>: <span class="kt">IWeb</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;some absolute url&quot;</span><span class="p">);</span>
 
@@ -2106,7 +2118,7 @@
 <h2 id="entension-methods">Entension Methods<a class="headerlink" href="#entension-methods" title="Permanent link">&para;</a></h2>
 <p>Another new capability in v2 is the ability to extend objects and factories. This allows you to easily add methods or properties on a per-object basis. Please see the <a href="../odata/extensions/">full article on extension methods</a> describing this great new capability.</p>
 <h2 id="cdn-publishing">CDN publishing<a class="headerlink" href="#cdn-publishing" title="Permanent link">&para;</a></h2>
-<p>Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot fo ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their <a href="../concepts/custom-bundle/">own bundles</a>, optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please <a href="../concepts/custom-bundle/">review the article on creating your custom bundles</a> to see how to tailor bundles to your needs.</p>
+<p>Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot of ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their <a href="../concepts/custom-bundle/">own bundles</a>, optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please <a href="../concepts/custom-bundle/">review the article on creating your custom bundles</a> to see how to tailor bundles to your needs.</p>
 <p>Inline with this we will drop the pnpjs library for the same reason.</p>
 <h2 id="drop-client-svc-and-sp-taxonomy-libraries">Drop client-svc and sp-taxonomy libraries<a class="headerlink" href="#drop-client-svc-and-sp-taxonomy-libraries" title="Permanent link">&para;</a></h2>
 <p>These libraries were created to allow folks to access and manage SharePoint taxonomy and manage metadata. Given that there is upcoming support for taxonomy via a supported REST API we will drop these two libraries. If working with taxonomy remains a core requirement of your application and we do not yet have support for the new apis, please remain on v1 for the time being.</p>

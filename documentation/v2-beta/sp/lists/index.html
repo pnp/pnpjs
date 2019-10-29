@@ -1824,6 +1824,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2302,11 +2314,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs"; <br />import { Lists, ILists } from "@pnp/sp/src/lists";</td>
+<td>import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Lists, ILists } from "@pnp/sp/lists";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2321,8 +2333,8 @@
 <h3 id="get-list-by-id">Get List by Id<a class="headerlink" href="#get-list-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a list from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the list by Id</span>
 <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">);</span>
@@ -2338,8 +2350,8 @@
 <h3 id="get-list-by-title">Get List by Title<a class="headerlink" href="#get-list-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a list from the collection by title.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the default document library &#39;Documents&#39;</span>
 <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
@@ -2452,11 +2464,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/src/lists";</td>
+<td>import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/lists";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/lists";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/lists";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2470,7 +2482,7 @@
 </table>
 <h3 id="update-a-list">Update a list<a class="headerlink" href="#update-a-list" title="Permanent link">&para;</a></h3>
 <p>Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IListUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IListUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a TypedHash object with the properties to update</span>
 <span class="kr">const</span> <span class="nx">updateProperties</span> <span class="o">=</span> <span class="p">{</span>
@@ -2515,7 +2527,7 @@
 
 <h3 id="get-list-items-using-a-caml-query">Get list items using a CAML Query<a class="headerlink" href="#get-list-items-using-a-caml-query" title="Permanent link">&para;</a></h3>
 <p>You can get items from SharePoint using a CAML Query.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
 <span class="kr">const</span> <span class="nx">caml</span>: <span class="kt">ICamlQuery</span> <span class="o">=</span> <span class="p">{</span>
@@ -2531,7 +2543,7 @@
 
 
 <p>If you need to get and expand a lookup field, there is a spread array parameter on the getItemsByCAMLQuery. This means that you can provide multiple properties to this method depending on how many lookup fields you are working with on your list. Below is a minimal example showing how to expand one field (RoleAssignment)</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
 <span class="kr">const</span> <span class="nx">caml</span>: <span class="kt">ICamlQuery</span> <span class="o">=</span> <span class="p">{</span>
@@ -2547,7 +2559,7 @@
 
 
 <h3 id="get-list-items-changes-using-a-token">Get list items changes using a Token<a class="headerlink" href="#get-list-items-changes-using-a-token" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>  <span class="nx">IChangeLogItemQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>  <span class="nx">IChangeLogItemQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
 <span class="kr">const</span> <span class="nx">changeLogItemQuery</span>: <span class="kt">IChangeLogItemQuery</span> <span class="o">=</span> <span class="p">{</span>
@@ -2575,7 +2587,7 @@
 
 
 <h3 id="render-list-data">Render list data<a class="headerlink" href="#render-list-data" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// render list data, top 5 items</span>
 <span class="kr">const</span> <span class="nx">r</span>: <span class="kt">IRenderListData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">renderListData</span><span class="p">(</span><span class="s2">&quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">);</span>
@@ -2586,7 +2598,7 @@
 
 
 <h3 id="render-list-data-as-stream">Render list data as stream<a class="headerlink" href="#render-list-data-as-stream" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListDataParameters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListDataParameters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// setup parameters object</span>
 <span class="kr">const</span> <span class="nx">renderListDataParams</span>: <span class="kt">IRenderListDataParameters</span> <span class="o">=</span> <span class="p">{</span>
@@ -2641,11 +2653,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/content-types";</td>
+<td>import "@pnp/sp/content-types";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/content-types/list";</td>
+<td>import "@pnp/sp/content-types/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2671,11 +2683,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/fields";</td>
+<td>import "@pnp/sp/fields";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/fields/list";</td>
+<td>import "@pnp/sp/fields/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2707,11 +2719,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/folders";</td>
+<td>import "@pnp/sp/folders";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/folders/list";</td>
+<td>import "@pnp/sp/folders/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2737,11 +2749,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/forms";</td>
+<td>import "@pnp/sp/forms";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/forms/list";</td>
+<td>import "@pnp/sp/forms/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2765,11 +2777,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/items";</td>
+<td>import "@pnp/sp/items";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/items/list";</td>
+<td>import "@pnp/sp/items/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2794,11 +2806,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/views";</td>
+<td>import "@pnp/sp/views";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/views/list";</td>
+<td>import "@pnp/sp/views/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2832,11 +2844,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/subscriptions";</td>
+<td>import "@pnp/sp/subscriptions";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/subscriptions/list";</td>
+<td>import "@pnp/sp/subscriptions/list";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2862,11 +2874,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import "@pnp/sp/src/user-custom-actions";</td>
+<td>import "@pnp/sp/user-custom-actions";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import "@pnp/sp/src/user-custom-actions/web";</td>
+<td>import "@pnp/sp/user-custom-actions/web";</td>
 </tr>
 <tr>
 <td>Preset: All</td>

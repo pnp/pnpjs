@@ -1668,6 +1668,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1981,9 +1993,9 @@
 <h2 id="reading-files">Reading Files<a class="headerlink" href="#reading-files" title="Permanent link">&para;</a></h2>
 <p>Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your <a href="../../odata/parsers/">own parser</a>.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/documents/file.avi&quot;</span><span class="p">).</span><span class="nx">getBlob</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">blob</span>: <span class="kt">Blob</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
@@ -2004,10 +2016,10 @@
 
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ConsoleListener</span><span class="p">,</span> <span class="nx">Logger</span><span class="p">,</span> <span class="nx">LogLevel</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">auth</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./auth&quot;</span><span class="p">;</span>
 <span class="kd">let</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">);</span> <span class="c1">//&lt;-- used here for illustration</span>
 
@@ -2053,9 +2065,9 @@
 <h3 id="setting-associated-item-values">Setting Associated Item Values<a class="headerlink" href="#setting-associated-item-values" title="Permanent link">&para;</a></h3>
 <p>You can also update the file properties of a newly uploaded file using code similar to the below snippet:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared%20Documents/test/&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">file</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
@@ -2073,9 +2085,9 @@
 <h2 id="update-file-content">Update File Content<a class="headerlink" href="#update-file-content" title="Permanent link">&para;</a></h2>
 <p>You can of course use similar methods to update existing files as shown below:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/documents/test.txt&quot;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s2">&quot;New string content for the file.&quot;</span><span class="p">);</span>
 
@@ -2088,9 +2100,9 @@
 <h3 id="check-in">Check In<a class="headerlink" href="#check-in" title="Permanent link">&para;</a></h3>
 <p>Check in takes two optional arguments, comment and check in type.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">CheckinType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">CheckinType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// default options with empty comment and CheckinType.Major</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/shared documents/file.txt&quot;</span><span class="p">).</span><span class="nx">checkin</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2115,8 +2127,8 @@
 <h3 id="check-out">Check Out<a class="headerlink" href="#check-out" title="Permanent link">&para;</a></h3>
 <p>Check out takes no arguments.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/shared documents/file.txt&quot;</span><span class="p">).</span><span class="nx">checkout</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
@@ -2128,8 +2140,8 @@
 <h3 id="approve-and-deny">Approve and Deny<a class="headerlink" href="#approve-and-deny" title="Permanent link">&para;</a></h3>
 <p>You can also approve or deny files in libraries that use approval. Approve takes a single required argument of comment, the comment is optional for deny.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/shared documents/file.txt&quot;</span><span class="p">).</span><span class="nx">approve</span><span class="p">(</span><span class="s2">&quot;Approval Comment&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
@@ -2153,8 +2165,8 @@
 <h2 id="publish-and-unpublish">Publish and Unpublish<a class="headerlink" href="#publish-and-unpublish" title="Permanent link">&para;</a></h2>
 <p>You can both publish and unpublish a file using the library. Both methods take an optional comment argument.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// publish with no comment</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/shared documents/file.txt&quot;</span><span class="p">).</span><span class="nx">publish</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2204,9 +2216,9 @@
 <h2 id="getitem">getItem<a class="headerlink" href="#getitem" title="Permanent link">&para;</a></h2>
 <p>This method allows you to get the item associated with this file. You can optionally specify one or more select fields. The result will be merged with a new Item instance so you will have both the returned property values and chaining ability in a single object.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
@@ -2232,11 +2244,11 @@
 <p>You can also supply a generic typing parameter and the resulting type will be a union type of Item and the generic type parameter. This allows you to have proper intellisense and type checking.</p>
 <p>```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/files";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/security";</p>
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+import "@pnp/sp/items";
+import "@pnp/sp/security";</p>
 <p>// also supports typing the objects so your type will be a union type
 sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem&lt;{ Id: number, Title: string }&gt;("Id", "Title").then(item =&gt; {</p>
 <div class="codehilite"><pre><span></span>// You get intellisense and proper typing of the returned object

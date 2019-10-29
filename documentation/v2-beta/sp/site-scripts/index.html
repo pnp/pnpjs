@@ -1594,6 +1594,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1840,7 +1852,7 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/site-scripts";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-scripts";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1850,7 +1862,7 @@
 </table>
 <h2 id="create-a-new-site-script">Create a new site script<a class="headerlink" href="#create-a-new-site-script" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-designs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">sitescriptContent</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;$schema&quot;</span><span class="o">:</span> <span class="s2">&quot;schema.json&quot;</span><span class="p">,</span>
@@ -1872,7 +1884,7 @@
 
 <h2 id="retrieval">Retrieval<a class="headerlink" href="#retrieval" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-designs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
 <span class="c1">// Retrieving all site scripts</span>
 <span class="kr">const</span> <span class="nx">allSiteScripts</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">getSiteScripts</span><span class="p">();</span>
@@ -1886,7 +1898,7 @@
 
 <h2 id="update-and-delete">Update and delete<a class="headerlink" href="#update-and-delete" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-designs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
 <span class="c1">// Update</span>
 <span class="kr">const</span> <span class="nx">updatedSiteScript</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">updateSiteScript</span><span class="p">({</span> <span class="nx">Id</span><span class="o">:</span> <span class="s2">&quot;884ed56b-1aab-4653-95cf-4be0bfa5ef0a&quot;</span><span class="p">,</span> <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;New Title&quot;</span> <span class="p">});</span>
@@ -1899,7 +1911,7 @@
 
 <h2 id="get-site-script-from-a-list">Get site script from a list<a class="headerlink" href="#get-site-script-from-a-list" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-designs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
 <span class="c1">// Using the absolute URL of the list</span>
 <span class="kr">const</span> <span class="nx">ss</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteScripts</span><span class="p">.</span><span class="nx">getSiteScriptFromList</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/Lists/mylist&quot;</span><span class="p">);</span>
@@ -1911,7 +1923,7 @@
 
 <h2 id="get-site-script-from-a-web">Get site script from a web<a class="headerlink" href="#get-site-script-from-a-web" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-designs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">extractInfo</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">IncludeBranding</span>: <span class="kt">true</span><span class="p">,</span>
@@ -1962,13 +1974,13 @@
           </a>
         
         
-          <a href="../sites/" title="Sites" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../site-users/" title="Site Users" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Sites
+                Site Users
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

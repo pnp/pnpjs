@@ -1528,6 +1528,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1894,11 +1906,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/src/user-custom-actions";</td>
+<td>import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/user-custom-actions";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/user-custom-actions";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/user-custom-actions";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1908,8 +1920,8 @@
 </table>
 <h3 id="get-a-collection-of-user-custom-actions-from-a-web">Get a collection of User Custom Actions from a web<a class="headerlink" href="#get-a-collection-of-user-custom-actions-from-a-web" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">userCustomActions</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">();</span>
 </pre></div>
@@ -1917,9 +1929,9 @@
 
 <h3 id="add-a-new-user-custom-action">Add a new User Custom Action<a class="headerlink" href="#add-a-new-user-custom-action" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/user-custom-actions&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/src/user-custom-actions&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/user-custom-actions&#39;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">newValues</span>: <span class="kt">TypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;New Title&quot;</span><span class="p">,</span>
@@ -1934,8 +1946,8 @@
 
 <h3 id="get-a-user-custom-action-by-id">Get a User Custom Action by ID<a class="headerlink" href="#get-a-user-custom-action-by-id" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">uca</span>: <span class="kt">IUserCustomAction</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">);</span>
 
@@ -1945,8 +1957,8 @@
 
 <h3 id="clear-the-user-custom-action-collection">Clear the User Custom Action collection<a class="headerlink" href="#clear-the-user-custom-action-collection" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
 <span class="c1">// Site collection level</span>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
@@ -1962,9 +1974,9 @@
 <h2 id="iusercustomaction">IUserCustomAction<a class="headerlink" href="#iusercustomaction" title="Permanent link">&para;</a></h2>
 <h3 id="update-an-existing-user-custom-action">Update an existing User Custom Action<a class="headerlink" href="#update-an-existing-user-custom-action" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/user-custom-actions&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/src/user-custom-actions&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/user-custom-actions&#39;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">uca</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">);</span>
 

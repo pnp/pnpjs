@@ -1586,6 +1586,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1826,15 +1838,15 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/src/regional-settings";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/regional-settings";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings";</td>
 </tr>
 <tr>
 <td>Selective 3</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings/web";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings/web";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -1843,8 +1855,8 @@
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/regional-settings/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
 <span class="c1">// get all the web&#39;s regional settings</span>
 <span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">();</span>
@@ -1857,8 +1869,8 @@
 <h3 id="installed-languages">Installed Languages<a class="headerlink" href="#installed-languages" title="Permanent link">&para;</a></h3>
 <p>You can get a list of the installed languages in the web.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/regional-settings/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">installedLanguages</span><span class="p">();</span>
 
@@ -1870,8 +1882,8 @@
 <h3 id="timezones">TimeZones<a class="headerlink" href="#timezones" title="Permanent link">&para;</a></h3>
 <p>You can also get information about the selected timezone in the web and all of the defined timezones.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/regional-settings/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the web&#39;s configured timezone</span>
 <span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">();</span>

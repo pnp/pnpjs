@@ -1704,6 +1704,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2063,23 +2075,23 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import { IFolders, Folders } from "@pnp/sp/src/folders";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";</td>
 </tr>
 <tr>
 <td>Selective 3</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/web";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";</td>
 </tr>
 <tr>
 <td>Selective 4</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";</td>
 </tr>
 <tr>
 <td>Selective 5</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";<br/>import "@pnp/sp/src/folders/item";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2089,10 +2101,10 @@
 </table>
 <h3 id="get-folders-collection-for-various-sharepoint-objects">Get folders collection for various SharePoint objects<a class="headerlink" href="#get-folders-collection-for-various-sharepoint-objects" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// gets web&#39;s folders</span>
 <span class="kr">const</span> <span class="nx">webFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
@@ -2108,8 +2120,8 @@
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
 <p>Adds a new folder to collection of folders</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// creates a new folder for web with specified url</span>
 <span class="kr">const</span> <span class="nx">folderAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;folder url&quot;</span><span class="p">);</span>
@@ -2119,8 +2131,8 @@
 <h3 id="getbyname">getByName<a class="headerlink" href="#getbyname" title="Permanent link">&para;</a></h3>
 <p>Gets a folder instance from a collection by folder's name</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">folder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;folder name&quot;</span><span class="p">)();</span>
 </pre></div>
@@ -2139,23 +2151,23 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import { IFolders, Folders } from "@pnp/sp/src/folders";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";</td>
 </tr>
 <tr>
 <td>Selective 3</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/web";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";</td>
 </tr>
 <tr>
 <td>Selective 4</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";</td>
 </tr>
 <tr>
 <td>Selective 5</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";<br/>import "@pnp/sp/src/folders/item";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2165,10 +2177,10 @@
 </table>
 <h3 id="get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item">Get a folder object associated with different SharePoint artifacts (web, list, list item)<a class="headerlink" href="#get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 
 <span class="c1">// web&#39;s folder</span>
 <span class="kr">const</span> <span class="nx">rootFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">();</span>
@@ -2184,8 +2196,8 @@
 <h3 id="getitem">getItem<a class="headerlink" href="#getitem" title="Permanent link">&para;</a></h3>
 <p>Gets list item associated with a folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">folderItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="p">();</span>
 </pre></div>
@@ -2194,8 +2206,8 @@
 <h3 id="move">move<a class="headerlink" href="#move" title="Permanent link">&para;</a></h3>
 <p>It's possible to move a folder to a new destination within a site collection  </p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new folder</span>
 <span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
@@ -2207,8 +2219,8 @@
 <h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
 <p>Recycles a folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">recycle</span><span class="p">();</span>
 </pre></div>
@@ -2217,8 +2229,8 @@
 <h3 id="serverrelativeurl">serverRelativeUrl<a class="headerlink" href="#serverrelativeurl" title="Permanent link">&para;</a></h3>
 <p>Gets folder's server relative url</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">relUrl</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">serverRelativeUrl</span><span class="p">();</span>
 </pre></div>
@@ -2227,8 +2239,8 @@
 <h3 id="update">update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h3>
 <p>Updates folder's properties</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
         <span class="s2">&quot;Name&quot;</span><span class="o">:</span> <span class="s2">&quot;New name&quot;</span><span class="p">,</span>
@@ -2239,8 +2251,8 @@
 <h3 id="contenttypeorder">contentTypeOrder<a class="headerlink" href="#contenttypeorder" title="Permanent link">&para;</a></h3>
 <p>Gets content type order of a folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">contentTypeOrder</span><span class="p">();</span>
 </pre></div>
@@ -2249,8 +2261,8 @@
 <h3 id="folders">folders<a class="headerlink" href="#folders" title="Permanent link">&para;</a></h3>
 <p>Gets all child folders associated with the current folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">folders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
 </pre></div>
@@ -2259,9 +2271,9 @@
 <h3 id="files">files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h3>
 <p>Gets all files inside a folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files/folder&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/folder&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">();</span>
 </pre></div>
@@ -2270,8 +2282,8 @@
 <h3 id="listitemallfields">listItemAllFields<a class="headerlink" href="#listitemallfields" title="Permanent link">&para;</a></h3>
 <p>Gets this folder's list item field values</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">itemFields</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">).</span><span class="nx">listItemAllFields</span><span class="p">();</span>
 </pre></div>
@@ -2280,8 +2292,8 @@
 <h3 id="parentfolder">parentFolder<a class="headerlink" href="#parentfolder" title="Permanent link">&para;</a></h3>
 <p>Gets the parent folder, if available</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">parentFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">).</span><span class="nx">parentFolder</span><span class="p">();</span>
 </pre></div>
@@ -2290,8 +2302,8 @@
 <h3 id="properties">properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
 <p>Gets this folder's properties</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">properties</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">properties</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 </pre></div>
@@ -2300,8 +2312,8 @@
 <h3 id="uniquecontenttypeorder">uniqueContentTypeOrder<a class="headerlink" href="#uniquecontenttypeorder" title="Permanent link">&para;</a></h3>
 <p>Gets a value that specifies the content type order.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contentTypeOrder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">uniqueContentTypeOrder</span><span class="p">();</span>
 </pre></div>
@@ -2312,8 +2324,8 @@
 <h3 id="rename-a-folder">Rename a folder<a class="headerlink" href="#rename-a-folder" title="Permanent link">&para;</a></h3>
 <p>You can rename a folder by updating <code>FileLeafRef</code> property:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">folder</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">);</span>
 
@@ -2325,10 +2337,10 @@
 <h3 id="create-a-folder-with-custom-content-type">Create a folder with custom content type<a class="headerlink" href="#create-a-folder-with-custom-content-type" title="Permanent link">&para;</a></h3>
 <p>Below code creates a new folder under Document library and assigns custom folder content type to a newly created folder. Additionally it sets a field of a custom folder content type.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/folders&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">newFolderResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My New Folder&quot;</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">newFolderResult</span><span class="p">.</span><span class="nx">folder</span><span class="p">.</span><span class="nx">listItemAllFields</span><span class="p">();</span>

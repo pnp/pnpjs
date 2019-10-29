@@ -1820,6 +1820,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2293,11 +2305,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/src/clientside-pages";</td>
+<td>import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/clientside-pages";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2309,8 +2321,8 @@
 <p>You can create a new clientside page in several ways, all are equivalent.</p>
 <h3 id="create-using-iwebaddclientsidepage">Create using IWeb.addClientSidePage<a class="headerlink" href="#create-using-iwebaddclientsidepage" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage1&quot;</span><span class="p">);</span>
 
@@ -2329,9 +2341,9 @@
 
 <h3 id="create-using-createclientsidepage-method">Create using CreateClientsidePage method<a class="headerlink" href="#create-using-createclientsidepage-method" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage2&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">);</span>
 
@@ -2357,9 +2369,9 @@
 <h3 id="load-using-iwebloadclientsidepage">Load using IWeb.loadClientSidePage<a class="headerlink" href="#load-using-iwebloadclientsidepage" title="Permanent link">&para;</a></h3>
 <p>This method takes a <em>server relative</em> path to the page to load.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
 
 <span class="c1">// use from the sp.web fluent chain</span>
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">loadClientsidePage</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">);</span>
@@ -2373,9 +2385,9 @@
 <h3 id="load-using-clientsidepagefromfile">Load using ClientsidePageFromFile<a class="headerlink" href="#load-using-clientsidepagefromfile" title="Permanent link">&para;</a></h3>
 <p>This method takes an IFile instance and loads an IClientsidePage instance.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsidePageFromFile</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsidePageFromFile</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ClientsidePageFromFile</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">));</span>
 </pre></div>
@@ -2449,7 +2461,7 @@
 <h2 id="clientside-controls">Clientside Controls<a class="headerlink" href="#clientside-controls" title="Permanent link">&para;</a></h2>
 <p>Once you have your sections and columns defined you will want to add/edit controls within those columns.</p>
 <h3 id="add-text-content">Add Text Content<a class="headerlink" href="#add-text-content" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
@@ -2463,9 +2475,9 @@
 <h3 id="add-controls">Add Controls<a class="headerlink" href="#add-controls" title="Permanent link">&para;</a></h3>
 <p>Adding controls involves loading the available clientside part definitions from the server or creating a text part.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideWebpart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideWebpart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="c1">// this will be a ClientSidePageComponent array</span>
 <span class="c1">// this can be cached on the client in production scenarios</span>
@@ -2675,7 +2687,7 @@
 
 <h3 id="findcontrolbyid">findControlById<a class="headerlink" href="#findcontrolbyid" title="Permanent link">&para;</a></h3>
 <p>Finds a control within the page by id.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
@@ -2728,7 +2740,7 @@
 <h3 id="copy">copy<a class="headerlink" href="#copy" title="Permanent link">&para;</a></h3>
 <p>Creates a copy of the page, including all controls.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>

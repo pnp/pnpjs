@@ -2119,22 +2119,20 @@
 
 
 <p>You can also supply a generic typing parameter and the resulting type will be a union type of Item and the generic type parameter. This allows you to have proper intellisense and type checking.</p>
-<p>```TypeScript
-import { sp } from "@pnp/sp";
-// also supports typing the objects so your type will be a union type
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem&lt;{ Id: number, Title: string }&gt;("Id", "Title").then(item =&gt; {</p>
-<div class="codehilite"><pre><span></span>// You get intellisense and proper typing of the returned object
-console.log(`Id: ${item.Id} -- ${item.Title}`);
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// also supports typing the objects so your type will be a union type</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">Id</span>: <span class="kt">number</span><span class="p">,</span> <span class="nx">Title</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-// You can also chain directly off this item instance
-item.getCurrentUserEffectivePermissions().then(perms =&gt; {
+    <span class="c1">// You get intellisense and proper typing of the returned object</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Id: </span><span class="si">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">Id</span><span class="si">}</span><span class="sb"> -- </span><span class="si">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-    console.log(perms);
-});
+    <span class="c1">// You can also chain directly off this item instance</span>
+    <span class="nx">item</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">perms</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
 </pre></div>
-
-
-<p>});</p>
                 
                   
                 

@@ -1537,6 +1537,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../sp/site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../sp/sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1730,7 +1742,7 @@
                 <h1 id="pnpconfig-storeconfiguration">@pnp/config-store/configuration<a class="headerlink" href="#pnpconfig-storeconfiguration" title="Permanent link">&para;</a></h1>
 <p>The main class exported from the config-store package is Settings. This is the class through which you will load and access your
 settings via <a href="../providers/">providers</a>.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Settings</span><span class="p">,</span> <span class="nx">SPListConfigurationProvider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/config-store&quot;</span><span class="p">;</span>
 
 <span class="c1">// create an instance of the settings class, could be static and shared across your application</span>
@@ -1756,7 +1768,7 @@ settings via <a href="../providers/">providers</a>.</p>
 <span class="p">});</span>
 
 <span class="c1">// and finally you can load values from a configuration provider</span>
-<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SPListConfigurationProvider</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s2">&quot;myconfiglistname&quot;</span><span class="p">);</span>
 
 <span class="c1">// this will load values from the supplied list</span>

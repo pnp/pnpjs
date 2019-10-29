@@ -1526,6 +1526,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -1875,8 +1887,8 @@
 <h2 id="get-context-information-for-the-current-site-collection">Get context information for the current site collection<a class="headerlink" href="#get-context-information-for-the-current-site-collection" title="Permanent link">&para;</a></h2>
 <p>Using the library, you can get the context information of the current site collection</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IContextInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IContextInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">oContext</span>: <span class="kt">IContextInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">getContextInfo</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">oContext</span><span class="p">.</span><span class="nx">FormDigestValue</span><span class="p">);</span>
@@ -1887,8 +1899,8 @@
 <p>Using the library, you can get a list of the document libraries present in the a given web.</p>
 <p><strong>Note:</strong> Works only in SharePoint online</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IDocumentLibraryInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IDocumentLibraryInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">docLibs</span>: <span class="kt">IDocumentLibraryInformation</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">getDocumentLibraries</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/test/subsite&quot;</span><span class="p">);</span>
 
@@ -1902,7 +1914,7 @@
 <h2 id="open-web-by-id">Open Web By Id<a class="headerlink" href="#open-web-by-id" title="Permanent link">&para;</a></h2>
 <p>Because this method is a POST request you can chain off it directly. You will get back the full web properties in the data property of the return object. You can also chain directly off the returned Web instance on the web property.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">openWebById</span><span class="p">(</span><span class="s2">&quot;111ca453-90f5-482e-a381-cee1ff383c9e&quot;</span><span class="p">);</span>
 
@@ -1917,7 +1929,7 @@
 <h2 id="get-site-collection-url-from-page">Get site collection url from page<a class="headerlink" href="#get-site-collection-url-from-page" title="Permanent link">&para;</a></h2>
 <p>Using the library, you can get the site collection url by providing a page url</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">d</span>: <span class="kt">string</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">getWebUrlFromPageUrl</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/test/Pages/test.aspx&quot;</span><span class="p">);</span>
 
@@ -1928,7 +1940,7 @@
 <h2 id="access-the-root-web">Access the root web<a class="headerlink" href="#access-the-root-web" title="Permanent link">&para;</a></h2>
 <p>There are two methods to access the root web. The first, using the rootWeb property, is best for directly accessing information about that web. If you want to chain multiple operations off of the web, better to use the getRootWeb method that will ensure the web instance is created using its own Url vs. "_api/sites/rootweb" which does not work for all operations.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="c1">// use for rootweb information access</span>
 <span class="kr">const</span> <span class="nx">rootwebData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">rootWeb</span><span class="p">();</span>
@@ -2039,7 +2051,7 @@
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSite</span><span class="p">(</span>
             <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
@@ -2148,7 +2160,7 @@
 </tbody>
 </table>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createModernTeamSite</span><span class="p">(</span>
         <span class="s2">&quot;displayName&quot;</span><span class="p">,</span>
@@ -2169,8 +2181,8 @@
 <h2 id="delete-a-site-collection">Delete a site collection<a class="headerlink" href="#delete-a-site-collection" title="Permanent link">&para;</a></h2>
 <p>Using the library, you can delete a specific site collection</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Site</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Site</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
 <span class="c1">// Delete the current site</span>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
@@ -2200,7 +2212,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../site-scripts/" title="Site Scripts" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../site-users/" title="Site Users" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -2209,7 +2221,7 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Site Scripts
+                Site Users
               </span>
             </div>
           </a>

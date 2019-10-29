@@ -1592,6 +1592,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../sp/site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../sp/sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1844,9 +1856,9 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="c1">// we need to import each of the pieces we need to &quot;attach&quot; them for chaining</span>
 <span class="c1">// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items/list&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">itemData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 </pre></div>
@@ -1857,9 +1869,9 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="c1">// we need to import each of the pieces we need to &quot;attach&quot; them for chaining</span>
 <span class="c1">// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">itemData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 </pre></div>
@@ -1867,10 +1879,10 @@
 
 <p>The above two examples both work just fine but you may end up with slightly smaller bundle sizes using the first. Consider this example:</p>
 <div class="codehilite"><pre><span></span><span class="c1">// this import statement will attach content-type funcionality to list, web, and item</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/content-types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/content-types&quot;</span><span class="p">;</span>
 
 <span class="c1">// this import statement will only attach content-type functionality to web</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/content-types/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/content-types/web&quot;</span><span class="p">;</span>
 </pre></div>
 
 
@@ -1881,14 +1893,14 @@ IF you import only an interface from a sub-module AND rely on the funcionality w
 </blockquote>
 <div class="codehilite"><pre><span></span><span class="c1">// this will fail</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="c1">// do this instead</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">await</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 </pre></div>

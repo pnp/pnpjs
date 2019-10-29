@@ -1676,6 +1676,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2006,7 +2018,7 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import from "@pnp/sp/src/comments";</td>
+<td>import { sp } from "@pnp/sp";<br />import from "@pnp/sp/comments";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2018,8 +2030,8 @@
 <p>The IClientsidePage interface has three methods to provide easier access to the comments for a page, without requiring that you load the item separately.</p>
 <h3 id="add-comments">Add Comments<a class="headerlink" href="#add-comments" title="Permanent link">&para;</a></h3>
 <p>You can add a comment using the addComment method as shown</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/comments/clientside-page&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
 <span class="c1">// optionaly publish the page first</span>
@@ -2030,8 +2042,8 @@
 
 
 <h3 id="get-comments">Get Comments<a class="headerlink" href="#get-comments" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/comments/clientside-page&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
 <span class="c1">// optionaly publish the page first</span>
@@ -2049,8 +2061,8 @@
 
 
 <h3 id="getbyid">GetById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/clientside-pages&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/comments/clientside-page&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="nx">pageName</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
 <span class="c1">// optionaly publish the page first</span>
@@ -2065,10 +2077,10 @@
 <h3 id="clear-comments">Clear Comments<a class="headerlink" href="#clear-comments" title="Permanent link">&para;</a></h3>
 <h2 id="item-comments">Item Comments<a class="headerlink" href="#item-comments" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/comments/item&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/item&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/SitePages/Test_8q5L.aspx&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="p">();</span>
 
@@ -2085,8 +2097,8 @@
 
 
 <p>You can also get the comments merged with instances of the Comment class to immediately start accessing the properties and methods:</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/odata&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">ICommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/comments&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">ICommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/comments&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
@@ -2157,8 +2169,8 @@
 <h2 id="like">Like<a class="headerlink" href="#like" title="Permanent link">&para;</a></h2>
 <p>You can like items and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/comments/item&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILikeData</span><span class="p">,</span> <span class="nx">ILikedByInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/comments&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/item&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILikeData</span><span class="p">,</span> <span class="nx">ILikedByInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/comments&quot;</span><span class="p">;</span>
 
 <span class="c1">// like an item</span>
 <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>

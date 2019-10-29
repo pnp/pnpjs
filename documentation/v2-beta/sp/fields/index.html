@@ -1740,6 +1740,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -2134,11 +2146,11 @@
 <tbody>
 <tr>
 <td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs"; <br />import { Fields, IFields } from "@pnp/sp/src/fields";</td>
+<td>import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Fields, IFields } from "@pnp/sp/fields";</td>
 </tr>
 <tr>
 <td>Selective 2</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/fields";</td>
+<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/fields";</td>
 </tr>
 <tr>
 <td>Preset: All</td>
@@ -2153,8 +2165,8 @@
 <h3 id="get-field-by-id">Get Field by Id<a class="headerlink" href="#get-field-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field by Id for web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">);</span>
@@ -2172,8 +2184,8 @@
 <h3 id="get-field-by-title">Get Field by Title<a class="headerlink" href="#get-field-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection by title.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field with the title &#39;Author&#39; for web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">);</span>
@@ -2191,8 +2203,8 @@
 <h3 id="get-field-by-internal-name-or-title">Get Field by Internal Name or Title<a class="headerlink" href="#get-field-by-internal-name-or-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection regardless of if the string is the fields internal name or title which can be different.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field with the internal name &#39;ModifiedBy&#39; for web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">);</span>
@@ -2210,8 +2222,8 @@
 <h3 id="create-a-field-using-an-xml-schema">Create a Field using an XML schema<a class="headerlink" href="#create-a-field-using-an-xml-schema" title="Permanent link">&para;</a></h3>
 <p>Create a new field by defining an XML schema that assigns all the properties for the field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// define the schema for your new field, in this case a date field with a default date of today.</span>
 <span class="kr">const</span> <span class="nx">fieldSchema</span> <span class="o">=</span> <span class="sb">`&lt;Field ID=&quot;{03b09ff4-d99d-45ed-841d-3855f77a2483}&quot; StaticName=&quot;MyField&quot; Name=&quot;MyField&quot; DisplayName=&quot;My New Field&quot; FriendlyDisplayFormat=&quot;Disabled&quot; Format=&quot;DateOnly&quot; Type=&quot;DateTime&quot; Group=&quot;My Group&quot;&gt;&lt;Default&gt;[today]&lt;/Default&gt;&lt;/Field&gt;`</span><span class="p">;</span>
@@ -2232,8 +2244,8 @@
 <h3 id="add-a-new-field">Add a New Field<a class="headerlink" href="#add-a-new-field" title="Permanent link">&para;</a></h3>
 <p>Use the add method to create a new field where you define the field type</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new field called &#39;My Field&#39; in web.</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2251,8 +2263,8 @@
 <h3 id="add-a-site-field-to-a-list">Add a Site Field to a List<a class="headerlink" href="#add-a-site-field-to-a-list" title="Permanent link">&para;</a></h3>
 <p>Use the createFieldAsXml method to add a site field to a list.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new field called &#39;My Field&#39; in web.</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2267,8 +2279,8 @@
 <h3 id="add-a-text-field">Add a Text Field<a class="headerlink" href="#add-a-text-field" title="Permanent link">&para;</a></h3>
 <p>Use the addText method to create a new text field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new text field called &#39;My Field&#39; in web.</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2286,8 +2298,8 @@
 <h3 id="add-a-calculated-field">Add a Calculated Field<a class="headerlink" href="#add-a-calculated-field" title="Permanent link">&para;</a></h3>
 <p>Use the addCalculated method to create a new calculated field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new calculated field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCalculated</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;=Modified+1&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">FieldTypes</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;MyGroup&quot;</span> <span class="p">});</span>
@@ -2305,8 +2317,8 @@
 <h3 id="add-a-datetime-field">Add a Date/Time Field<a class="headerlink" href="#add-a-datetime-field" title="Permanent link">&para;</a></h3>
 <p>Use the addDateTime method to create a new date/time field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new date/time field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDateTime</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">CalendarType</span><span class="p">.</span><span class="nx">Gregorian</span><span class="p">,</span> <span class="nx">DateTimeFieldFriendlyFormatType</span><span class="p">.</span><span class="nx">Disabled</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2324,8 +2336,8 @@
 <h3 id="add-a-currency-field">Add a Currency Field<a class="headerlink" href="#add-a-currency-field" title="Permanent link">&para;</a></h3>
 <p>Use the addCurrency method to create a new currency field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new currency field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCurrency</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1033</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2343,8 +2355,8 @@
 <h3 id="add-a-multi-line-text-field">Add a Multi-line Text Field<a class="headerlink" href="#add-a-multi-line-text-field" title="Permanent link">&para;</a></h3>
 <p>Use the addMultilineText method to create a new multi-line text field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new multi-line text field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addMultilineText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2362,8 +2374,8 @@
 <h3 id="add-a-url-field">Add a URL Field<a class="headerlink" href="#add-a-url-field" title="Permanent link">&para;</a></h3>
 <p>Use the addUrl method to create a new url field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new url field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUrl</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">UrlFieldFormatType</span><span class="p">.</span><span class="nx">Hyperlink</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2381,8 +2393,8 @@
 <h3 id="add-a-user-field">Add a User Field<a class="headerlink" href="#add-a-user-field" title="Permanent link">&para;</a></h3>
 <p>Use the addUser method to create a new user field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new user field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUser</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">FieldUserSelectionMode</span><span class="p">.</span><span class="nx">PeopleOnly</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2400,8 +2412,8 @@
 <h3 id="add-a-lookup-field">Add a Lookup Field<a class="headerlink" href="#add-a-lookup-field" title="Permanent link">&para;</a></h3>
 <p>Use the addLookup method to create a new lookup field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Lookup List&quot;</span><span class="p">);</span>
 <span class="c1">// create a new lookup field called &#39;My Field&#39; based on an existing list &#39;My Lookup List&#39; showing &#39;Title&#39; field in web.</span>
@@ -2420,8 +2432,8 @@
 <h3 id="add-a-choice-field">Add a Choice Field<a class="headerlink" href="#add-a-choice-field" title="Permanent link">&para;</a></h3>
 <p>Use the addChoice method to create a new choice field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">choices</span> <span class="o">=</span> <span class="p">[</span><span class="sb">`ChoiceA`</span><span class="p">,</span> <span class="sb">`ChoiceB`</span><span class="p">,</span> <span class="sb">`ChoiceC`</span><span class="p">];</span>
 <span class="c1">// create a new choice field called &#39;My Field&#39; in web</span>
@@ -2440,8 +2452,8 @@
 <h3 id="add-a-multi-choice-field">Add a Multi-Choice Field<a class="headerlink" href="#add-a-multi-choice-field" title="Permanent link">&para;</a></h3>
 <p>Use the addMultiChoice method to create a new multi-choice field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">choices</span> <span class="o">=</span> <span class="p">[</span><span class="sb">`ChoiceA`</span><span class="p">,</span> <span class="sb">`ChoiceB`</span><span class="p">,</span> <span class="sb">`ChoiceC`</span><span class="p">];</span>
 <span class="c1">// create a new multi-choice field called &#39;My Field&#39; in web</span>
@@ -2460,8 +2472,8 @@
 <h3 id="add-a-boolean-field">Add a Boolean Field<a class="headerlink" href="#add-a-boolean-field" title="Permanent link">&para;</a></h3>
 <p>Use the addBoolean method to create a new boolean field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new boolean field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addBoolean</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2479,8 +2491,8 @@
 <h3 id="add-a-dependent-lookup-field">Add a Dependent Lookup Field<a class="headerlink" href="#add-a-dependent-lookup-field" title="Permanent link">&para;</a></h3>
 <p>Use the addDependentLookupField method to create a new dependent lookup field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new dependent lookup field called &#39;My Dep Field&#39; showing &#39;Description&#39; based on an existing &#39;My Field&#39; lookup field in web.</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">);</span>
@@ -2500,8 +2512,8 @@
 <h3 id="add-a-location-field">Add a Location Field<a class="headerlink" href="#add-a-location-field" title="Permanent link">&para;</a></h3>
 <p>Use the addLocation method to create a new location field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new location field called &#39;My Field&#39; in web</span>
 <span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLocation</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
@@ -2519,8 +2531,8 @@
 <h3 id="delete-a-field">Delete a Field<a class="headerlink" href="#delete-a-field" title="Permanent link">&para;</a></h3>
 <p>Use the delete method to delete a field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// delete one or more fields from web, returns boolean</span>
 <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
@@ -2534,8 +2546,8 @@
 <h3 id="update-a-field">Update a Field<a class="headerlink" href="#update-a-field" title="Permanent link">&para;</a></h3>
 <p>Use the addLocation method to update a field.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// update the field called &#39;My Field&#39; with a description in web, returns FieldUpdateResult</span>
 <span class="kr">const</span> <span class="nx">fieldUpdate</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span> <span class="p">});</span>
@@ -2547,8 +2559,8 @@
 <h3 id="show-a-field-in-the-display-form">Show a Field in the Display Form<a class="headerlink" href="#show-a-field-in-the-display-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInDisplayForm method to add a field to the display form.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="k">try</span> <span class="p">{</span>
   <span class="c1">// show field called &#39;My Field&#39; in display form throughout web</span>
@@ -2565,8 +2577,8 @@
 <h3 id="show-a-field-in-the-edit-form">Show a Field in the Edit Form<a class="headerlink" href="#show-a-field-in-the-edit-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInEditForm method to add a field to the edit form.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 
 <span class="k">try</span> <span class="p">{</span>
@@ -2584,8 +2596,8 @@
 <h3 id="show-a-field-in-the-new-form">Show a Field in the New Form<a class="headerlink" href="#show-a-field-in-the-new-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInNewForm method to add a field to the display form.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/fields&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="k">try</span> <span class="p">{</span>
   <span class="c1">// show field called &#39;My Field&#39; in new form throughout web</span>

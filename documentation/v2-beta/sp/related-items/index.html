@@ -1608,6 +1608,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1861,12 +1873,12 @@
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <p>Instead of copying this block of code into each sample, understand that each sample is meant to run with this supporting code to work.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">extractWebUrl</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/related-items/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/items/list&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/files/list&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/related-items/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="c1">// setup some lists (or just use existing ones this is just to show the complete process)</span>
@@ -1923,7 +1935,7 @@
 
 <h2 id="getrelateditems">getRelatedItems<a class="headerlink" href="#getrelateditems" title="Permanent link">&para;</a></h2>
 <p>Gets the related items for an item</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/related-items&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/related-items&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">sourceItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sourceList</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">targetItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">targetList</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
@@ -1956,7 +1968,7 @@
 
 <h2 id="getpageonerelateditems">getPageOneRelatedItems<a class="headerlink" href="#getpageonerelateditems" title="Permanent link">&para;</a></h2>
 <p>Gets an abbrieviated set of related items</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/related-items&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRelatedItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/related-items&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">sourceItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sourceList</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">targetItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">targetList</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>

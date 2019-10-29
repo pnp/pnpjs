@@ -1573,6 +1573,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../sites/" title="Sites" class="md-nav__link">
       Sites
     </a>
@@ -1790,25 +1802,25 @@
 <p>There are four levels where you can break inheritance and assign security: Site, Web, List, Item. All four of these objects share a common set of methods. Because of this we are showing in the examples below usage of these methods for an IList instance, but they apply across all four securable objects. In addition to the shared methods, some types have unique methods which are listed below.</p>
 <h3 id="a-note-on-selective-imports-for-security">A Note on Selective Imports for Security<a class="headerlink" href="#a-note-on-selective-imports-for-security" title="Permanent link">&para;</a></h3>
 <p>Because the method are shared you can opt to import only the methods for one of the instances. </p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/security/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/security/list&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/security/item&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/item&quot;</span><span class="p">;</span>
 </pre></div>
 
 
 <p>Possibly useful if you are trying to hyper-optimize for bundle size but it is just as easy to import the whole module:</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/security&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 </pre></div>
 
 
 <h2 id="securable-methods">Securable Methods<a class="headerlink" href="#securable-methods" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/security/list&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/src/site-users/web&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/lists&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/src/security&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 
 <span class="c1">// ensure we have a list</span>
 <span class="kr">const</span> <span class="nx">ler</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;SecurityTestingList&quot;</span><span class="p">);</span>
