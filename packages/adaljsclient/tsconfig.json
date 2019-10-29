@@ -4,10 +4,8 @@
         "adal"
     ],
     "include": [
-        "./index.ts",
-        "./src/**/*.ts",
-        "../common/index.ts",
-        "../common/src/**/*.ts",
+        "./**/*.ts",
+        "../common/**/*.ts"
     ],
     "references": [
         {

@@ -6,16 +6,11 @@
         ]
     },
     "include": [
-        "./index.ts",
-        "./src/**/*.ts",
-        "../logging/index.ts",
-        "../logging/src/**/*.ts",
-        "../common/index.ts",
-        "../common/src/**/*.ts",
-        "../odata/index.ts",
-        "../odata/src/**/*.ts",
-        "../sp/index.ts",
-        "../sp/src/**/*.ts"
+        "./**/*.ts",
+        "../logging/**/*.ts",
+        "../common/**/*.ts",
+        "../odata/**/*.ts",
+        "../sp/**/*.ts"
     ],
     "references": [
         {

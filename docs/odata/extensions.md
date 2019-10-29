@@ -27,7 +27,7 @@ Named extensions are designed to add or replace a single property or method, tho
 ```TypeScript
 import { extendGlobal } from "@pnp/odata";
 import { sp, Lists, IWeb, ILists } from "@pnp/sp/presets/all";
-import { escapeQueryStrValue } from "@pnp/sp/src/utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "@pnp/sp/utils/escapeSingleQuote";
 
 const myExtensions = {
     // override the lists property globally
@@ -70,7 +70,7 @@ You can also register a partial ProxyHandler implementation as an extension. You
 ```TypeScript
 import { extendGlobal } from "@pnp/odata";
 import { sp, Lists, IWeb, ILists } from "@pnp/sp/presets/all";
-import { escapeQueryStrValue } from "@pnp/sp/src/utils/escapeSingleQuote";
+import { escapeQueryStrValue } from "@pnp/sp/utils/escapeSingleQuote";
 
 const myExtensions = {
     get: (target, p: string | number | symbol, _receiver: any) => {
@@ -132,15 +132,15 @@ extendGlobal((op: string, _target: any, ...rest: any[]): void => {
 The pattern you will likely find most useful is the ability to extend an invokable factory. This will apply your extensions to all instances created with that factory, meaning all IWeb's or ILists's will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
 
 ```TypeScript
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import { IWeb, Web } from "@pnp/sp/src/webs";
-import { ILists, Lists } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import { IWeb, Web } from "@pnp/sp/webs";
+import { ILists, Lists } from "@pnp/sp/lists";
 import { extendFactory } from "@pnp/odata";
 import { sp } from "@pnp/sp";
 
 // declaring the module here sets up the types correctly when importing across your application
-declare module "@pnp/sp/src/webs" {
+declare module "@pnp/sp/webs" {
 
     // we need to extend the interface
     interface IWeb {
@@ -149,7 +149,7 @@ declare module "@pnp/sp/src/webs" {
 }
 
 // declaring the module here sets up the types correctly when importing across your application
-declare module "@pnp/sp/src/lists" {
+declare module "@pnp/sp/lists" {
 
     // we need to extend the interface
     interface ILists {

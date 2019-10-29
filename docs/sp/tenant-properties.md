@@ -7,7 +7,7 @@ You can set, read, and remove tenant properties using the methods shown below:
 This method MUST be called in the context of the app catalog web or you will get an access denied message.
 
 ```TypeScript
-import { Web } from "@pnp/sp/src/webs";
+import { Web } from "@pnp/sp/webs";
 
 const w = Web("https://tenant.sharepoint.com/sites/appcatalog/");
 
@@ -24,7 +24,7 @@ This method can be used from any web to retrieve values previsouly set.
 
 ```TypeScript
 import { sp, StorageEntity } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 const prop: StorageEntity = await sp.web.getStorageEntity("Test1");
 
@@ -36,7 +36,7 @@ console.log(prop.Value);
 This method MUST be called in the context of the app catalog web or you will get an access denied message.
 
 ```TypeScript
-import { Web } from "@pnp/sp/src/webs";
+import { Web } from "@pnp/sp/webs";
 
 const w = Web("https://tenant.sharepoint.com/sites/appcatalog/");
 

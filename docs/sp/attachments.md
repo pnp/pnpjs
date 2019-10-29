@@ -4,18 +4,18 @@ The ability to attach file to list items allows users to track documents outside
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/attachments";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/attachments";|
 |Preset: All|import { sp, IFeatures, Features } from "@pnp/sp/presets/all";|
 
 ## Get attachments
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
-import { IAttachmentInfo } from "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
+import { IAttachmentInfo } from "@pnp/sp/attachments";
  
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -35,11 +35,11 @@ You can add an attachment to a list item using the add method. This method takes
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
-import { IAttachmentInfo } from "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
+import { IAttachmentInfo } from "@pnp/sp/attachments";
 
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -52,11 +52,11 @@ This method allows you to pass an array of AttachmentFileInfo plain objects that
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
-import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
+import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/attachments";
 
 const list = sp.web.lists.getByTitle("MyList");
 
@@ -79,11 +79,11 @@ await list.items.getById(2).attachmentFiles.addMultiple(fileInfos);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
-import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
+import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/attachments";
 
 const list = sp.web.lists.getByTitle("MyList");
 
@@ -96,10 +96,10 @@ You can read the content of an attachment as a string, Blob, ArrayBuffer, or jso
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
 
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -121,10 +121,10 @@ You can also update the content of an attachment. This API is limited compared t
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
 
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -135,10 +135,10 @@ await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!"
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
 
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -151,10 +151,10 @@ Delete the attachment and send it to recycle bin
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
 
 let item = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -167,10 +167,10 @@ Delete multiple attachments and send them to recycle bin
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
 
 const list = sp.web.lists.getByTitle("MyList");
 

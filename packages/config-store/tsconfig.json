@@ -1,16 +1,11 @@
 {
     "extends": "../tsconfig.json",
     "include": [
-        "./index.ts",
-        "./src/**/*.ts",
-        "../common/index.ts",
-        "../common/src/**/*.ts",
-        "../logging/index.ts",
-        "../logging/src/**/*.ts",
-        "../odata/index.ts",
-        "../odata/src/**/*.ts",
-        "../sp/index.ts",
-        "../sp/src/**/*.ts"
+        "./**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts",
+        "../sp/**/*.ts"
     ],
     "references": [
         {

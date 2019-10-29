@@ -7,27 +7,27 @@ There are four levels where you can break inheritance and assign security: Site,
 Because the method are shared you can opt to import only the methods for one of the instances. 
 
 ```TypeScript
-import "@pnp/sp/src/security/web";
-import "@pnp/sp/src/security/list";
-import "@pnp/sp/src/security/item";
+import "@pnp/sp/security/web";
+import "@pnp/sp/security/list";
+import "@pnp/sp/security/item";
 ```
 
 Possibly useful if you are trying to hyper-optimize for bundle size but it is just as easy to import the whole module:
 
 ```TypeScript
-import "@pnp/sp/src/security";
+import "@pnp/sp/security";
 ```
 
 ## Securable Methods
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/security/list";
-import "@pnp/sp/src/site-users/web";
-import { IList } from "@pnp/sp/src/lists";
-import { PermissionKind } from "@pnp/sp/src/security";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/security/list";
+import "@pnp/sp/site-users/web";
+import { IList } from "@pnp/sp/lists";
+import { PermissionKind } from "@pnp/sp/security";
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");

@@ -2,9 +2,9 @@ import { getRandomString } from "@pnp/common";
 import { testSettings } from "../main";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+import { IList } from "@pnp/sp/lists";
 
 describe("Items", () => {
 

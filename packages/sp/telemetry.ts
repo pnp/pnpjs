@@ -1,4 +1,4 @@
-import { ISharePointQueryable } from "../presets/all";
+import { ISharePointQueryable } from "./sharepointqueryable";
 import { stringIsNullOrEmpty } from "@pnp/common";
 import { headers } from "@pnp/odata";
 

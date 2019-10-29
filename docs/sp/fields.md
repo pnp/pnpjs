@@ -8,8 +8,8 @@ Fields in SharePoint can be applied to both webs and lists. When referencing a w
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs"; <br />import { Fields, IFields } from "@pnp/sp/src/fields";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/fields";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Fields, IFields } from "@pnp/sp/fields";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/fields";|
 |Preset: All|import { sp, Fields, IFields } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, Fields, IFields } from "@pnp/sp/presets/core";|
 
@@ -19,8 +19,8 @@ Gets a field from the collection by id (guid). Note that the library will handle
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // get the field by Id for web
 const field = await sp.web.fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
@@ -40,8 +40,8 @@ You can also get a field from the collection by title.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // get the field with the title 'Author' for web
 const field = sp.web.fields.getByTitle("Author");
@@ -61,8 +61,8 @@ You can also get a field from the collection regardless of if the string is the 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // get the field with the internal name 'ModifiedBy' for web
 const field = sp.web.fields.getByInternalNameOrTitle("ModifiedBy");
@@ -82,8 +82,8 @@ Create a new field by defining an XML schema that assigns all the properties for
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // define the schema for your new field, in this case a date field with a default date of today.
 const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
@@ -106,8 +106,8 @@ Use the add method to create a new field where you define the field type
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new field called 'My Field' in web.
 const field = await sp.web.fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
@@ -127,8 +127,8 @@ Use the createFieldAsXml method to add a site field to a list.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new field called 'My Field' in web.
 const field = await sp.web.fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
@@ -145,8 +145,8 @@ Use the addText method to create a new text field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new text field called 'My Field' in web.
 const field = await sp.web.fields.addText("My Field", 255, { Group: "My Group" });
@@ -166,8 +166,8 @@ Use the addCalculated method to create a new calculated field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new calculated field called 'My Field' in web
 const field = await sp.web.fields.addCalculated("My Field", "=Modified+1", DateTimeFieldFormatType.DateOnly, FieldTypes.DateTime, { Group: "MyGroup" });
@@ -187,8 +187,8 @@ Use the addDateTime method to create a new date/time field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new date/time field called 'My Field' in web
 const field = await sp.web.fields.addDateTime("My Field", DateTimeFieldFormatType.DateOnly, CalendarType.Gregorian, DateTimeFieldFriendlyFormatType.Disabled, { Group: "My Group" });
@@ -208,8 +208,8 @@ Use the addCurrency method to create a new currency field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new currency field called 'My Field' in web
 const field = await sp.web.fields.addCurrency("My Field", 0, 100, 1033, { Group: "My Group" });
@@ -229,8 +229,8 @@ Use the addMultilineText method to create a new multi-line text field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new multi-line text field called 'My Field' in web
 const field = await sp.web.fields.addMultilineText("My Field", 6, true, false, false, true, { Group: "My Group" });
@@ -250,8 +250,8 @@ Use the addUrl method to create a new url field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new url field called 'My Field' in web
 const field = await sp.web.fields.addUrl("My Field", UrlFieldFormatType.Hyperlink, { Group: "My Group" });
@@ -271,8 +271,8 @@ Use the addUser method to create a new user field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new user field called 'My Field' in web
 const field = await sp.web.fields.addUser("My Field", FieldUserSelectionMode.PeopleOnly, { Group: "My Group" });
@@ -292,8 +292,8 @@ Use the addLookup method to create a new lookup field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 const list = await sp.web.lists.getByTitle("My Lookup List");
 // create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in web.
@@ -314,8 +314,8 @@ Use the addChoice method to create a new choice field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new choice field called 'My Field' in web
@@ -336,8 +336,8 @@ Use the addMultiChoice method to create a new multi-choice field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new multi-choice field called 'My Field' in web
@@ -358,8 +358,8 @@ Use the addBoolean method to create a new boolean field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new boolean field called 'My Field' in web
 const field = await sp.web.fields.addBoolean("My Field", { Group: "My Group" });
@@ -379,8 +379,8 @@ Use the addDependentLookupField method to create a new dependent lookup field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in web.
 const field = await sp.web.fields.getByTitle("My Field");
@@ -402,8 +402,8 @@ Use the addLocation method to create a new location field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // create a new location field called 'My Field' in web
 const field = await sp.web.fields.addLocation("My Field", { Group: "My Group" });
@@ -423,8 +423,8 @@ Use the delete method to delete a field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // delete one or more fields from web, returns boolean
 const result = await sp.web.fields.getByTitle("My Field").delete();
@@ -440,8 +440,8 @@ Use the addLocation method to update a field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 // update the field called 'My Field' with a description in web, returns FieldUpdateResult
 const fieldUpdate = await sp.web.fields.getByTitle("My Field").update({ Description: "My Description" });
@@ -455,8 +455,8 @@ Use the setShowInDisplayForm method to add a field to the display form.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 try {
   // show field called 'My Field' in display form throughout web
@@ -475,8 +475,8 @@ Use the setShowInEditForm method to add a field to the edit form.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 
 try {
@@ -496,8 +496,8 @@ Use the setShowInNewForm method to add a field to the display form.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/fields";
+import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 
 try {
   // show field called 'My Field' in new form throughout web

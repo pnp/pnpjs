@@ -8,16 +8,16 @@ The site groups module provides methods to manage groups for a sharepoint site.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-groups";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-groups/web";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups } from "@pnp/sp/presets/all";|
 
 
 ### Get all site groups
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups/web";
 
 // gets all site groups of the web
 const groups = await sp.web.siteGroups();
@@ -29,8 +29,8 @@ You can get the associated Owner, Member and Visitor groups of a web
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups/web";
 
 // Gets the associated visitors group of a web
 const visitorGroup = await sp.web.associatedVisitorGroup();
@@ -47,8 +47,8 @@ const ownerGroup = await sp.web.associatedOwnerGroup();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups/web";
 
 // Breaks permission inheritance and creates the default associated groups for the web
 
@@ -67,8 +67,8 @@ await sp.web.createDefaultAssociatedGroups("PnP Site", owner1, copyRoleAssignmen
 ### Create a new site group
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups/web";
 
 // Creates a new site group with the specified title
 await sp.web.siteGroups.add({"Title":"new group name"});
@@ -79,16 +79,16 @@ await sp.web.siteGroups.add({"Title":"new group name"});
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-groups";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-groups/web";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups, SiteGroup } from "@pnp/sp/presets/all";|
 
 ### Getting and updating the groups of a sharepoint web
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups";
 
 // get the group using a group id
 const groupID = 33;
@@ -112,8 +112,8 @@ await sp.web.siteGroups.removeByLoginName(groupName);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups";
 
 // get all users of group
 const groupID = 7;

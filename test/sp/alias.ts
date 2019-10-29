@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders/web";
-import "@pnp/sp/src/folders/list";
-import "@pnp/sp/src/files/web";
-import "@pnp/sp/src/files/folder";
-import "@pnp/sp/src/lists/web";
-import { Web, IWeb } from "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders/web";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/files/web";
+import "@pnp/sp/files/folder";
+import "@pnp/sp/lists/web";
+import { Web, IWeb } from "@pnp/sp/webs";
 import { testSettings } from "../main";
 import { combine } from "@pnp/common";
 

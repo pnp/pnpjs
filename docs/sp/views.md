@@ -8,17 +8,17 @@ Views define the columns, ordering, and other details we see when we look at a l
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Views, IViews } from "@pnp/sp/src/views";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/views";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Views, IViews } from "@pnp/sp/views";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/views";|
 |Preset: All|import { sp, Views, IViews } from "@pnp/sp/presents/all";|
 
 ### Get views in a list
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -36,9 +36,9 @@ const views3 = await list.views.top(3)();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -66,9 +66,9 @@ await Promise.all([
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -87,9 +87,9 @@ const result5 = await list.getView("{GUID view id}")();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -100,9 +100,9 @@ const result = await list.views.getById("{GUID view id}").fields();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -115,9 +115,9 @@ const result = await list.views.getById("{GUID view id}").update({
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const result = await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").renderAsHtml();
 ```
@@ -126,9 +126,9 @@ const result = await sp.web.lists.getByTitle("My List").views.getById("{GUID vie
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const viewXml = "...";
 
@@ -139,9 +139,9 @@ await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").setView
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const viewXml = "...";
 
@@ -154,9 +154,9 @@ await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").delete(
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 const xml = await sp.web.lists.getByTitle("My List").defaultView.fields.getSchemaXml();
 ```
@@ -165,9 +165,9 @@ const xml = await sp.web.lists.getByTitle("My List").defaultView.fields.getSchem
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.add("Created");
 ```
@@ -176,9 +176,9 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.add("Created");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.move("Created", 0);
 ```
@@ -187,9 +187,9 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.move("Created", 0);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.remove("Created");
 ```
@@ -198,9 +198,9 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.remove("Created");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.removeAll();
 ```

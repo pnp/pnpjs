@@ -10,13 +10,13 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { graph } from "@pnp/graph";<br />import "@pnp/graph/src/users";|
+|Selective 1|import { graph } from "@pnp/graph";<br />import "@pnp/graph/users";|
 |Preset: All|import { graph } from "@pnp/sp/presets/all";|
 
 ## Current User
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/src/users";
+import "@pnp/graph/users";
 
 const currentUser = await graph.me();
 ```
@@ -24,7 +24,7 @@ const currentUser = await graph.me();
 ## Get All Users in the Organization
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/src/users";
+import "@pnp/graph/users";
 
 const allUsers = await graph.users();
 ```
@@ -32,7 +32,7 @@ const allUsers = await graph.users();
 ## Get a User by email address (or user id)
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/src/users";
+import "@pnp/graph/users";
 
 const matchingUser = await graph.users.getById('jane@contoso.com')();
 ```
@@ -40,7 +40,7 @@ const matchingUser = await graph.users.getById('jane@contoso.com')();
 ## Update Current User
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/src/users";
+import "@pnp/graph/users";
 
 await graph.me.update({
     displayName: 'John Doe'

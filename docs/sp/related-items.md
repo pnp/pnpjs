@@ -8,12 +8,12 @@ Instead of copying this block of code into each sample, understand that each sam
 
 ```TypeScript
 import { sp, extractWebUrl } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/related-items/web";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
-import "@pnp/sp/src/files/list";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/related-items/web";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+import "@pnp/sp/files/list";
+import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/common";
 
 // setup some lists (or just use existing ones this is just to show the complete process)
@@ -79,7 +79,7 @@ await sp.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.Id, webUrl
 Gets the related items for an item
 
 ```TypeScript
-import { IRelatedItem } from "@pnp/sp/src/related-items";
+import { IRelatedItem } from "@pnp/sp/related-items";
 
 const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
 const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
@@ -115,7 +115,7 @@ export interface IRelatedItem {
 Gets an abbrieviated set of related items
 
 ```TypeScript
-import { IRelatedItem } from "@pnp/sp/src/related-items";
+import { IRelatedItem } from "@pnp/sp/related-items";
 
 const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
 const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);

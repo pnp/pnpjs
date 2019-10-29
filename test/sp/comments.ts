@@ -1,11 +1,11 @@
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { expect } from "chai";
-import "@pnp/sp/src/comments/clientside-page";
-import "@pnp/sp/src/comments/item";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
-import { CreateClientsidePage } from "@pnp/sp/src/clientside-pages";
+import "@pnp/sp/comments/clientside-page";
+import "@pnp/sp/comments/item";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import { getRandomString } from "@pnp/common";
 
 describe("Comments", function () {

@@ -1,7 +1,7 @@
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { expect } from "chai";
-import "@pnp/sp/src/hubsites";
+import "@pnp/sp/hubsites";
 
 describe("Hubsites", function () {
 

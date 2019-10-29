@@ -12,7 +12,7 @@ There are several ways using @pnp/sp to get a reference to an app catalog. These
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/appcatalog";
+import "@pnp/sp/appcatalog";
 
 // get the curren't context web's app catalog
 const catalog = sp.web.getAppCatalog();
@@ -24,7 +24,7 @@ console.log(apps);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/appcatalog";
+import "@pnp/sp/appcatalog";
 
 // you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
 const appCatWeb = await sp.getTenantAppCatalogWeb();
@@ -40,15 +40,15 @@ const catalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anot
 
 ```TypeScript
 // alternatively you can create a new app catalog instance directly by importing the AppCatalog class
-import { IAppCatalog, AppCatalog } from '@pnp/sp/src/appcatalog';
+import { IAppCatalog, AppCatalog } from '@pnp/sp/appcatalog';
 
 const catalog: IAppCatalog = AppCatalog("https://mytenant.sharepoint.com/sites/apps");
 ```
 
 ```TypeScript
 // and finally you can combine use of the Web and AppCatalog classes to create an AppCatalog instance from an existing Web
-import { Web } from '@pnp/sp/src/webs';
-import { AppCatalog } from '@pnp/sp/src/appcatalog';
+import { Web } from '@pnp/sp/webs';
+import { AppCatalog } from '@pnp/sp/appcatalog';
 
 const web = Web("https://mytenant.sharepoint.com/sites/apps");
 const catalog = AppCatalog(web);

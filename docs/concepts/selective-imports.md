@@ -23,9 +23,9 @@ const itemData = await sp.web.lists.items.getById(1).get();
 import { sp } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
 
 const itemData = await sp.web.lists.items.getById(1)();
 ```
@@ -37,9 +37,9 @@ Above we are being very specific in what we are importing, but you can also impo
 import { sp } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/items";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 const itemData = await sp.web.lists.items.getById(1)();
 ```
@@ -48,10 +48,10 @@ The above two examples both work just fine but you may end up with slightly smal
 
 ```TypeScript
 // this import statement will attach content-type funcionality to list, web, and item
-import "@pnp/sp/src/content-types";
+import "@pnp/sp/content-types";
 
 // this import statement will only attach content-type functionality to web
-import "@pnp/sp/src/content-types/web";
+import "@pnp/sp/content-types/web";
 ```
 
 If you only need to access content types on the web object you can reduce size by only importing that piece.
@@ -62,14 +62,14 @@ If you only need to access content types on the web object you can reduce size b
 ```TypeScript
 // this will fail
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import { IList } from "@pnp/sp/lists";
 
 // do this instead
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import { IList } from "@pnp/sp/lists";
 
 const await lists = sp.web.lists();
 ```

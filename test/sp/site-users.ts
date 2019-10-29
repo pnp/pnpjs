@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
-import "@pnp/sp/src/site-users";
+import "@pnp/sp/site-users";
 import { IInvokableTest } from "../types";
-import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/src/site-users";
+import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/common";
 

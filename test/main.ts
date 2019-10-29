@@ -9,12 +9,12 @@ import { getGUID, combine, assign } from "@pnp/common";
 // import { graph } from "@pnp/graph";
 import { SPFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
-import { Web } from "@pnp/sp/src/webs";
+import { Web } from "@pnp/sp/webs";
 
 chai.use(chaiAsPromised);
 

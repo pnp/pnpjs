@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { sp, extractWebUrl } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/related-items/web";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items/list";
-import "@pnp/sp/src/folders/list";
-import "@pnp/sp/src/files/folder";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/related-items/web";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/files/folder";
+import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/common";
 
 describe("Related Items", () => {

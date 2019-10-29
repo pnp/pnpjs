@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-groups";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups";
+import "@pnp/sp/site-users/web";
 import { getRandomString } from "@pnp/common";
-import { IGroupAddResult } from "@pnp/sp/src/site-groups";
+import { IGroupAddResult } from "@pnp/sp/site-groups";
 
 describe("Web.SiteGroups", () => {
 

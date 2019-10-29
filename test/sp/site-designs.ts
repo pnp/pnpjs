@@ -1,10 +1,10 @@
 
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-designs";
-import "@pnp/sp/src/site-users/web";
-import { ISiteDesignRun } from "@pnp/sp/src/site-designs";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-designs";
+import "@pnp/sp/site-users/web";
+import { ISiteDesignRun } from "@pnp/sp/site-designs";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 

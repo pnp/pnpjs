@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/forms";
+import "@pnp/sp/sites";
+import "@pnp/sp/lists";
+import "@pnp/sp/forms";
 import { testSettings } from "../main";
 
 describe("Forms", function () {

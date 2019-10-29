@@ -8,15 +8,15 @@ Using search you can access content throughout your organization in a secure and
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/search";<br />import { ISearchQuery, ISearchResults } from "@pnp/sp/src/search";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, ISearchResults } from "@pnp/sp/search";|
 |Preset: All|import { sp, ISearchQuery, ISearchResults } from "@pnp/sp/presets/all";|
 
 Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the ISearchQuery interface, or a SearchQueryBuilder instance.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 // text search using SharePoint default values for other parameters
 const results: ISearchResults = await sp.search("test");
@@ -52,8 +52,8 @@ You can use the searchWithCaching method to enable cache support for your search
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 sp.searchWithCaching(<ISearchQuery>{
     Querytext: "test",
@@ -81,8 +81,8 @@ Paging is controlled by a start row and page size parameter. You can specify bot
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { ISearchResults, SearchQueryBuilder } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 // this will hold our current results
 let currentResults: ISearchResults = null;
@@ -120,8 +120,8 @@ The SearchQueryBuilder allows you to build your queries in a fluent manner. It a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { SearchQueryBuilder, ISearchResults, ISearchQuery } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { SearchQueryBuilder, ISearchResults, ISearchQuery } from "@pnp/sp/search";
 
 // basic usage
 let q = SearchQueryBuilder().text("test").rowLimit(4).enablePhonetic;
@@ -153,8 +153,8 @@ Search suggest works in much the same way as search, except against the suggest 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { ISuggestQuery, ISuggestResult } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { ISuggestQuery, ISuggestResult } from "@pnp/sp/search";
 
 const results = await sp.searchSuggest("test");
 
@@ -170,8 +170,8 @@ You can also configure a search or sugest query against any valid SP url using t
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/search";
-import { Search, Suggest } from "@pnp/sp/src/search";
+import "@pnp/sp/search";
+import { Search, Suggest } from "@pnp/sp/search";
 
 // set the url for search
 const searcher = Search("https://mytenant.sharepoint.com/sites/dev");

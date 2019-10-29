@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/security";
-import "@pnp/sp/src/site-users/web";
-import { IList } from "@pnp/sp/src/lists";
-import { PermissionKind } from "@pnp/sp/src/security";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/security";
+import "@pnp/sp/site-users/web";
+import { IList } from "@pnp/sp/lists";
+import { PermissionKind } from "@pnp/sp/security";
 
 if (testSettings.enableWebTests) {
 

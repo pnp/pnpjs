@@ -2,11 +2,11 @@ import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/attachments";
-import { IList } from "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items";
+import "@pnp/sp/attachments";
+import { IList } from "@pnp/sp/lists";
 
 describe("Attachments", function () {
 
