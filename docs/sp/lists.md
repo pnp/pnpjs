@@ -8,8 +8,8 @@ Lists in SharePoint are collections of information built in a structural way usi
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs"; <br />import { Lists, ILists } from "@pnp/sp/src/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/lists";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Lists, ILists } from "@pnp/sp/lists";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";|
 |Preset: All|import { sp, Lists, ILists } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, Lists, ILists } from "@pnp/sp/presets/core";|
 
@@ -19,8 +19,8 @@ Gets a list from the collection by id (guid). Note that the library will handle 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 
 // get the list by Id
 const list = sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
@@ -38,8 +38,8 @@ You can also get a list from the collection by title.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 
 // get the default document library 'Documents'
 const list = sp.web.lists.getByTitle("Documents");
@@ -155,8 +155,8 @@ console.log(r.Title);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/src/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/lists";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/lists";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/lists";|
 |Preset: All|import { sp, List, IList } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, List, IList } from "@pnp/sp/presets/core";|
 
@@ -165,7 +165,7 @@ console.log(r.Title);
 Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")
 
 ```TypeScript
-import { IListUpdateResult } from "@pnp/sp/src/lists";
+import { IListUpdateResult } from "@pnp/sp/lists";
 
 // create a TypedHash object with the properties to update
 const updateProperties = {
@@ -214,7 +214,7 @@ console.log(r);
 You can get items from SharePoint using a CAML Query.
 
 ```TypeScript
-import { ICamlQuery } from "@pnp/sp/src/lists";
+import { ICamlQuery } from "@pnp/sp/lists";
 
 // build the caml query object (in this example, we include Title field and limit rows to 5)
 const caml: ICamlQuery = {
@@ -231,7 +231,7 @@ console.log(r);
 If you need to get and expand a lookup field, there is a spread array parameter on the getItemsByCAMLQuery. This means that you can provide multiple properties to this method depending on how many lookup fields you are working with on your list. Below is a minimal example showing how to expand one field (RoleAssignment)
 
 ```TypeScript
-import { ICamlQuery } from "@pnp/sp/src/lists";
+import { ICamlQuery } from "@pnp/sp/lists";
 
 // build the caml query object (in this example, we include Title field and limit rows to 5)
 const caml: ICamlQuery = {
@@ -248,7 +248,7 @@ console.log(r);
 ### Get list items changes using a Token
 
 ```TypeScript
-import {  IChangeLogItemQuery } from "@pnp/sp/src/lists";
+import {  IChangeLogItemQuery } from "@pnp/sp/lists";
 
 // build the caml query object (in this example, we include Title field and limit rows to 5)
 const changeLogItemQuery: IChangeLogItemQuery = {
@@ -279,7 +279,7 @@ await list.recycle();
 ### Render list data
 
 ```TypeScript
-import { IRenderListData } from "@pnp/sp/src/lists";
+import { IRenderListData } from "@pnp/sp/lists";
 
 // render list data, top 5 items
 const r: IRenderListData = await list.renderListData("<View><RowLimit>5</RowLimit></View>");
@@ -291,7 +291,7 @@ console.log(r.Row);
 ### Render list data as stream
 
 ```TypeScript
-import { IRenderListDataParameters } from "@pnp/sp/src/lists";
+import { IRenderListDataParameters } from "@pnp/sp/lists";
 
 // setup parameters object
 const renderListDataParams: IRenderListDataParameters = {
@@ -341,8 +341,8 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/src/content-types";|
-|Selective 2|import "@pnp/sp/src/content-types/list";|
+|Selective 1|import "@pnp/sp/content-types";|
+|Selective 2|import "@pnp/sp/content-types/list";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### contentTypes
@@ -357,8 +357,8 @@ const r = await list.contentTypes();
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/src/fields";|
-|Selective 2|import "@pnp/sp/src/fields/list";|
+|Selective 1|import "@pnp/sp/fields";|
+|Selective 2|import "@pnp/sp/fields/list";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### fields
@@ -381,8 +381,8 @@ await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaX
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/src/folders";|
-|Selective 2|import "@pnp/sp/src/folders/list";|
+|Selective 1|import "@pnp/sp/folders";|
+|Selective 2|import "@pnp/sp/folders/list";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### folders
@@ -398,8 +398,8 @@ const r = await list.rootFolder();
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/src/forms";|
-|Selective 2|import "@pnp/sp/src/forms/list";|
+|Selective 1|import "@pnp/sp/forms";|
+|Selective 2|import "@pnp/sp/forms/list";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### forms
@@ -412,8 +412,8 @@ const r = await list.forms();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/src/items";
-Selective 2|import "@pnp/sp/src/items/list";
+Selective 1|import "@pnp/sp/items";
+Selective 2|import "@pnp/sp/items/list";
 Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### items
@@ -428,8 +428,8 @@ const r = await list.items();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/src/views";
-Selective 2|import "@pnp/sp/src/views/list";
+Selective 1|import "@pnp/sp/views";
+Selective 2|import "@pnp/sp/views/list";
 Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### views
@@ -456,8 +456,8 @@ const view = await list.getView(defaultView.Id).select("Title")();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/src/subscriptions";
-Selective 2|import "@pnp/sp/src/subscriptions/list";
+Selective 1|import "@pnp/sp/subscriptions";
+Selective 2|import "@pnp/sp/subscriptions/list";
 Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### subscriptions
@@ -473,8 +473,8 @@ const subscriptions = await list.subscriptions();
 
 Scenario|Import Statement
 --|--
-Selective 1|import "@pnp/sp/src/user-custom-actions";
-Selective 2|import "@pnp/sp/src/user-custom-actions/web";
+Selective 1|import "@pnp/sp/user-custom-actions";
+Selective 2|import "@pnp/sp/user-custom-actions/web";
 Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ## userCustomActions

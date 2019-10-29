@@ -20,18 +20,18 @@ To help explain let's take the example of the Web object. In v1 Web includes a r
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 // this imports the functionality for lists associated only with web
-import "@pnp/sp/src/lists/web";
+import "@pnp/sp/lists/web";
 
 const r = await sp.web.lists();
 ```
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 // this imports all the functionality for lists
-import "@pnp/sp/src/lists";
+import "@pnp/sp/lists";
 
 const r = await sp.web.lists();
 ```
@@ -54,7 +54,7 @@ import {
 
 // V2 way with selective imports
 import { sp } from "@pnp/sp";
-import { ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/src/clientside-pages";
+import { ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/clientside-pages";
 
 // V2 way with preset "all"
 import { sp, ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/presets/all";
@@ -66,7 +66,7 @@ Another new feature is the addition of invokable objects. Previously where you u
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 // old way (still works)
 const r1 = sp.web.get();
@@ -79,7 +79,7 @@ The benefit is that objects can now support default actions that are not "get" b
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 // invokable
 const r = sp.web.select("Title", "Url")();
@@ -98,7 +98,7 @@ const web: Web = new Web("some absolute url");
 const r1 = web.get();
 
 // v2
-import { Web, IWeb } from "@pnp/sp/src/webs";
+import { Web, IWeb } from "@pnp/sp/webs";
 
 const web: IWeb = Web("some absolute url");
 

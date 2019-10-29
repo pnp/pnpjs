@@ -7,8 +7,8 @@ Content Types are used to define sets of columns in SharePoint.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/src/webs";<br />import { ContentTypes, IContentTypes } from "@pnp/sp/src/content-types";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/content-types";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";<br />import { ContentTypes, IContentTypes } from "@pnp/sp/content-types";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/content-types";|
 |Preset: All|import { sp, ContentTypes, IContentTypes } from "@pnp/sp/presets/all";|
 
 ### Add an existing Content Type to a collection
@@ -47,8 +47,8 @@ sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Ty
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { ContentType, IContentType } from "@pnp/sp/src/content-types";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/content-types";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { ContentType, IContentType } from "@pnp/sp/content-types";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/content-types";|
 |Preset: All|import { sp, ContentType, IContentType } from "@pnp/sp/presets/all";|
 
 [![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)

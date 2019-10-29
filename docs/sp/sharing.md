@@ -13,9 +13,9 @@ In previous versions of this library the sharing methods were part of the inheri
 To import and attach the sharing methods to all four of the sharable types include all of the sharing sub module:
 
 ```TypeScript
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 import { sp } from "@pnp/sp";
  
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
@@ -27,9 +27,9 @@ const r = await sp.web.shareWith(user.LoginName);
 Import only the web's sharing methods into the library
 
 ```TypeScript
-import "@pnp/sp/src/sharing/web";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/sharing/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 import { sp } from "@pnp/sp";
  
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
@@ -44,9 +44,9 @@ Creates a sharing link for the given resource with an optional expiration.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import { SharingLinkKind, IShareLinkResponse } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import { SharingLinkKind, IShareLinkResponse } from "@pnp/sp/sharing";
 import { dateAdd } from "@pnp/common";
 
 const result = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView);
@@ -67,11 +67,11 @@ Shares the given resource with the specified permissions (View or Edit) and opti
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders/web";
-import "@pnp/sp/src/files/web";
-import { ISharingResult, SharingRole } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders/web";
+import "@pnp/sp/files/web";
+import { ISharingResult, SharingRole } from "@pnp/sp/sharing";
 
 const result = await sp.web.shareWith("i:0#.f|membership|user@site.com");
 
@@ -104,9 +104,9 @@ Allows you to share any shareable object in a web by providing the appropriate p
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import { ISharingResult, SharingRole } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import { ISharingResult, SharingRole } from "@pnp/sp/sharing";
 
 // Share an object in this web
 const result = await sp.web.shareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt", "i:0#.f|membership|user@site.com", SharingRole.View);
@@ -132,9 +132,9 @@ await sp.web.shareObjectRaw({
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import { ISharingResult } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import { ISharingResult } from "@pnp/sp/sharing";
 
 const result = await sp.web.unshareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt");
 ```
@@ -147,10 +147,10 @@ Checks Permissions on the list of Users and returns back role the users have on 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing/folders";
-import "@pnp/sp/src/folders/web";
-import { SharingEntityPermission } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing/folders";
+import "@pnp/sp/folders/web";
+import { SharingEntityPermission } from "@pnp/sp/sharing";
 
 // check the sharing permissions for a folder
 const perms = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").checkSharingPermissions([{ alias: "i:0#.f|membership|user@site.com" }]);
@@ -164,10 +164,10 @@ Get Sharing Information.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders";
-import { ISharingInformation } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders";
+import { ISharingInformation } from "@pnp/sp/sharing";
 
 // Get the sharing information for a folder
 const info = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation();
@@ -181,10 +181,10 @@ Gets the sharing settings
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders";
-import { IObjectSharingSettings } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders";
+import { IObjectSharingSettings } from "@pnp/sp/sharing";
 
 // Gets the sharing object settings
 const settings: IObjectSharingSettings = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getObjectSharingSettings();
@@ -198,10 +198,10 @@ Unshares a given resource
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders";
-import { ISharingResult } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders";
+import { ISharingResult } from "@pnp/sp/sharing";
 
 const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshare();
 ```
@@ -212,10 +212,10 @@ const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders";
-import { ISharingResult, SharingLinkKind } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders";
+import { ISharingResult, SharingLinkKind } from "@pnp/sp/sharing";
 
 const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit);
 ```
@@ -226,10 +226,10 @@ const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/folders";
-import { SharingLinkKind } from "@pnp/sp/src/sharing";
+import "@pnp/sp/webs";
+import "@pnp/sp/sharing";
+import "@pnp/sp/folders";
+import { SharingLinkKind } from "@pnp/sp/sharing";
 
 await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit);
 
