@@ -65,7 +65,7 @@ export class _SiteUsers extends _SharePointQueryableCollection {
         return spPost(o);
     }
 
-/**
+    /**
      * Adds a user to a site collection
      *
      * @param loginName The login name of the user to add  to a site collection
