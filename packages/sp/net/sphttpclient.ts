@@ -7,7 +7,7 @@ import {
     getCtxCallback,
     IHttpClientImpl,
 } from "@pnp/common";
-import { SPRuntimeConfig } from "../config/splibconfig";
+import { SPRuntimeConfig } from "../splibconfig";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 

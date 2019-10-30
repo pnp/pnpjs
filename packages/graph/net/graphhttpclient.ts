@@ -6,7 +6,7 @@ import {
     IHttpClientImpl,
     getCtxCallback,
 } from "@pnp/common";
-import { GraphRuntimeConfig } from "../config/graphlibconfig";
+import { GraphRuntimeConfig } from "../graphlibconfig";
 
 export class GraphHttpClient implements IRequestClient {
 

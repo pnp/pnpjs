@@ -1,7 +1,7 @@
 import { SPHttpClient } from "./sphttpclient";
 import { combine, assign } from "@pnp/common";
 import { ODataParser } from "@pnp/odata";
-import { SPRuntimeConfig } from "../config/splibconfig";
+import { SPRuntimeConfig } from "../splibconfig";
 
 export class CachedDigest {
     public expiration: Date;

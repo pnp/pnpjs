@@ -1,6 +1,6 @@
 declare var global: { location: string, _spPageContextInfo?: { webAbsoluteUrl?: string, webServerRelativeUrl?: string } };
 import { combine, isUrlAbsolute, hOP } from "@pnp/common";
-import { SPRuntimeConfig } from "../config/splibconfig";
+import { SPRuntimeConfig } from "../splibconfig";
 
 /**
  * Ensures that a given url is absolute for the current web based on context

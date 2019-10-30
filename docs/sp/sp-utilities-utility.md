@@ -26,20 +26,19 @@ export interface EmailProperties {
 You must define the To, Subject, and Body values - the remaining are optional.
 
 ```TypeScript
-import { sp, EmailProperties } from "@pnp/sp";
-import { TypedHash  } from '@pnp/common';
+import { sp } from "@pnp/sp";
+import "@pnp/sp/sputilities";
+import { IEmailProperties } from "@pnp/sp/sputilities";
 
-const headers : TypedHash<string> = {
-    "content-type": "text/html"
-};
-
-const emailProps: EmailProperties = {
+const emailProps: IEmailProperties = {
     To: ["user@site.com"],
     CC: ["user2@site.com", "user3@site.com"],
-    BCC: ["user4@site.com", "user5@site.com"]
+    BCC: ["user4@site.com", "user5@site.com"],
     Subject: "This email is about...",
     Body: "Here is the body. <b>It supports html</b>",
-    AdditionalHeaders: headers
+    AdditionalHeaders: {
+        "content-type": "text/html"
+    }
 };
 
 await sp.utility.sendEmail(emailProps);
@@ -52,6 +51,7 @@ This method returns the current user's email addresses known to SharePoint.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/sputilities";
 
 let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
 
@@ -71,7 +71,8 @@ await sp.utility.sendEmail({
 Gets information about a principal that matches the specified Search criteria
 
 ```TypeScript
-import { sp , PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
+import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
+import "@pnp/sp/sputilities";
 
 let principal : IPrincipalInfo = await sp.utility.resolvePrincipal("user@site.com", PrincipalType.User, PrincipalSource.All, true, false, true);
 
@@ -83,7 +84,8 @@ console.log(principal);
 Gets information about the principals that match the specified Search criteria.
 
 ```TypeScript
-import { sp , PrincipalType, PrincipalSource, PrincipalInfo } from "@pnp/sp";
+import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
+import "@pnp/sp/sputilities";
 
 let principals : IPrincipalInfo[] = await sp.utility.searchPrincipals("john", PrincipalType.User, PrincipalSource.All,"", 10);
 
@@ -96,6 +98,7 @@ Gets the external (outside the firewall) URL to a document or resource in a site
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/sputilities";
 
 let url : string = await sp.utility.createEmailBodyForInvitation("https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx");
 console.log(url);
@@ -106,7 +109,8 @@ console.log(url);
 Resolves the principals contained within the supplied groups
 
 ```TypeScript
-import { sp , PrincipalInfo } from "@pnp/sp";
+import { sp, IPrincipalInfo } from "@pnp/sp";
+import "@pnp/sp/sputilities";
 
 let principals : IPrincipalInfo[] = await sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"]);
 console.log(principals);
@@ -119,9 +123,11 @@ console.log(principals);
 ## createWikiPage
 
 ```TypeScript
-import { sp , CreateWikiPageResult } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/sputilities";
+import { ICreateWikiPageResult } from "@pnp/sp/sputilities";
 
-let newPage : CreateWikiPageResult = await sp.utility.createWikiPage({
+let newPage : ICreateWikiPageResult = await sp.utility.createWikiPage({
     ServerRelativeUrl: "/sites/dev/SitePages/mynewpage.aspx",
     WikiHtmlContent: "This is my <b>page</b> content. It supports rich html.",
 });

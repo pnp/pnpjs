@@ -21,7 +21,7 @@ export * from "./operations";
 export {
     SPConfiguration,
     SPConfigurationPart,
-} from "./config/splibconfig";
+} from "./splibconfig";
 
 export {
     SPHttpClient,
@@ -41,6 +41,11 @@ export {
 export {
     extractWebUrl,
 } from "./utils/extractweburl";
+
+export {
+    ISPKeyValueCollection,
+    objectToSPKeyValueCollection,
+} from "./utils/objectToSPKeyValueCollection";
 
 export {
     stripInvalidFileFolderChars,

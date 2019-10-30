@@ -19,7 +19,7 @@ export {
 export {
     GraphConfiguration,
     GraphConfigurationPart,
-} from "./config/graphlibconfig";
+} from "./graphlibconfig";
 
 export * from "./types";
 
