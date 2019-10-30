@@ -21,7 +21,7 @@ export * from "./operations";
 export {
     SPConfiguration,
     SPConfigurationPart,
-} from "./config/splibconfig";
+} from "./splibconfig";
 
 export {
     SPHttpClient,

@@ -17,7 +17,7 @@ import {
 import { Settings } from "@pnp/config-store";
 import { GraphRest, graph as _graph } from "@pnp/graph";
 import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
-import { setup as _setup, PnPConfiguration } from "./config/pnplibconfig";
+import { setup as _setup, PnPConfiguration } from "./pnplibconfig";
 
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
@@ -81,10 +81,6 @@ export const log = Logger;
  */
 export const setup: (config: PnPConfiguration) => void = _setup;
 
-// /**
-//  * Expose a subset of classes from the library for public consumption
-//  */
-
 // creating this class instead of directly assigning to default fixes issue #116
 const Def = {
     /**
@@ -121,4 +117,3 @@ const Def = {
  * Enables use of the import pnp from syntax
  */
 export default Def;
-
