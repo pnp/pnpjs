@@ -9,6 +9,7 @@ import { File, IFile } from "../files/types";
 import { extractWebUrl } from "../utils/extractweburl";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
+import { objectToSPKeyValueCollection } from "../utils/objectToSPKeyValueCollection";
 
 export class _Utilities extends _SharePointQueryable implements IUtilities {
     constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
@@ -53,31 +54,11 @@ export class _Utilities extends _SharePointQueryable implements IUtilities {
         if (props.AdditionalHeaders) {
 
             params.properties = assign(params.properties, {
-                AdditionalHeaders: this.objectToSPKeyValueCollection(props.AdditionalHeaders),
+                AdditionalHeaders: objectToSPKeyValueCollection(props.AdditionalHeaders),
             });
         }
 
         return tag.configure(this.clone(UtilitiesCloneFactory, "SendEmail", true), "u.sendEmail").excute<void>(params);
-    }
-
-    private objectToSPKeyValueCollection(obj: any) {
-        // Credits to Anders Aune (https://sharepoint.stackexchange.com/questions/150833/sp-utilities-utility-sendemail-with-additional-headers-javascript)
-        // Perhaps refactor this method to a different location in the future
-        return {
-            __metadata: {
-                type: 'Collection(SP.KeyValue)'
-            },
-            results: Object.keys(obj).map(key => {
-                return {
-                    __metadata: {
-                        type: 'SP.KeyValue'
-                    },
-                    Key: key,
-                    Value: obj[key],
-                    ValueType: 'Edm.String'
-                }
-            })
-        }
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {

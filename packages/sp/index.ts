@@ -43,6 +43,11 @@ export {
 } from "./utils/extractweburl";
 
 export {
+    ISPKeyValueCollection,
+    objectToSPKeyValueCollection,
+} from "./utils/objectToSPKeyValueCollection";
+
+export {
     stripInvalidFileFolderChars,
     containsInvalidFileFolderChars,
 } from "./utils/file-names";
