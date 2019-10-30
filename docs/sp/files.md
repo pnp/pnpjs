@@ -12,16 +12,16 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.avi").getBlob().then((blob: Blob) => {});
+const blob: Blob = await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.avi").getBlob();
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.avi").getBuffer().then((buffer: ArrayBuffer) => {});
+const buffer: ArrayBuffer = await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.avi").getBuffer();
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.json").getJSON().then((json: any) => {});
+const json: any = await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.json").getJSON();
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.txt").getText().then((text: string) => {});
+const text: string = await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/file.txt").getText();
 
 // all of these also work from a file object no matter how you access it
-sp.web.getFolderByServerRelativeUrl("/sites/dev/documents").files.getByName("file.txt").getText().then((text: string) => {});
+const text2: string = await sp.web.getFolderByServerRelativeUrl("/sites/dev/documents").files.getByName("file.txt").getText();
 ```
 
 ## Adding Files
@@ -53,7 +53,7 @@ let web = Web(siteUrl);
 $(() => {
     $("#testingdiv").append("<button id='thebuttontodoit'>Do It</button>");
 
-    $("#thebuttontodoit").on('click', (e) => {
+    $("#thebuttontodoit").on('click', async (e) => {
 
         e.preventDefault();
 
@@ -64,15 +64,17 @@ $(() => {
         if (file.size <= 10485760) {
 
             // small upload
-            web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.add(file.name, file, true).then(_ => Logger.write("done"));
+            await web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.add(file.name, file, true);
+            Logger.write("done");
         } else {
 
             // large upload
-            web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.addChunked(file.name, file, data => {
+            await web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.addChunked(file.name, file, data => {
 
                 Logger.log({ data: data, level: LogLevel.Verbose, message: "progress" });
 
-            }, true).then(_ => Logger.write("done!"));
+            }, true);
+            Logger.write("done!")
         }
     });
 });
@@ -87,15 +89,11 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.add(file.name, file, true).then(f => {
-    
-    f.file.getItem().then(item => {
-
-        item.update({
-            Title: "A Title",
-            OtherField: "My Other Value"
-        });
-    });
+const file = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.add("file.name", "file", true);
+const item = await file.file.getItem();
+await item.update({
+  Title: "A Title",
+  OtherField: "My Other Value"
 });
 ```
 
@@ -109,9 +107,9 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.txt").setContent("New string content for the file.");
+await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.txt").setContent("New string content for the file.");
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.mp4").setContentChunked(file);
+await sp.web.getFileByServerRelativeUrl("/sites/dev/documents/test.mp4").setContentChunked(file);
 ```
 
 ## Check in, Check out, and Approve & Deny
@@ -129,22 +127,16 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
 // default options with empty comment and CheckinType.Major
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin().then(_ => {
-
-    console.log("File checked in!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin();
+console.log("File checked in!");
 
 // supply a comment (< 1024 chars) and using default check in type CheckinType.Major
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin("A comment").then(_ => {
-
-    console.log("File checked in!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin("A comment");
+console.log("File checked in!");
 
 // Supply both comment and check in type
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin("A comment", CheckinType.Overwrite).then(_ => {
-
-    console.log("File checked in!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkin("A comment", CheckinType.Overwrite);
+console.log("File checked in!");
 ```
 
 ### Check Out
@@ -156,10 +148,8 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkout().then(_ => {
-
-    console.log("File checked out!");
-});
+sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").checkout();
+console.log("File checked out!");
 ```
 
 ### Approve and Deny
@@ -171,22 +161,16 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").approve("Approval Comment").then(_ => {
-
-    console.log("File approved!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").approve("Approval Comment");
+console.log("File approved!");
 
 // deny with no comment
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").deny().then(_ => {
-
-    console.log("File denied!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").deny();
+console.log("File denied!");
 
 // deny with a supplied comment.
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").deny("Deny comment").then(_ => {
-
-    console.log("File denied!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").deny("Deny comment");
+console.log("File denied!");
 ```
 
 ## Publish and Unpublish
@@ -199,28 +183,20 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
 // publish with no comment
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").publish().then(_ => {
-
-    console.log("File published!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").publish();
+console.log("File published!");
 
 // publish with a supplied comment.
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").publish("Publish comment").then(_ => {
-
-    console.log("File published!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").publish("Publish comment");
+console.log("File published!");
 
 // unpublish with no comment
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").unpublish().then(_ => {
-
-    console.log("File unpublished!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").unpublish();
+console.log("File unpublished!");
 
 // unpublish with a supplied comment.
-sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").unpublish("Unpublish comment").then(_ => {
-
-    console.log("File unpublished!");
-});
+await sp.web.getFileByServerRelativeUrl("/sites/dev/shared documents/file.txt").unpublish("Unpublish comment");
+console.log("File unpublished!");
 ```
 
 ## Advanced Upload Options
@@ -259,25 +235,18 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
+import "@pnp/sp/security";
 
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem().then(item => {
+const item = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem();
+console.log(item);
 
-    console.log(item);
-});
+const item2 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem("Title", "Modified");
+console.log(item2);
 
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem("Title", "Modified").then(item => {
-
-    console.log(item);
-});
-
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem().then(item => {
-
-    // you can also chain directly off this item instance
-    item.getCurrentUserEffectivePermissions().then(perms => {
-
-        console.log(perms);
-    });
-});
+const item3 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem();
+// you can also chain directly off this item instance
+const perms = await item.getCurrentUserEffectivePermissions();
+console.log(perms);
 ```
 
 You can also supply a generic typing parameter and the resulting type will be a union type of Item and the generic type parameter. This allows you to have proper intellisense and type checking.
@@ -291,14 +260,12 @@ import "@pnp/sp/items";
 import "@pnp/sp/security";
 
 // also supports typing the objects so your type will be a union type
-sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem<{ Id: number, Title: string }>("Id", "Title").then(item => {
+const item = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem<{ Id: number, Title: string }>("Id", "Title");
 
-    // You get intellisense and proper typing of the returned object
-    console.log(`Id: ${item.Id} -- ${item.Title}`);
+// You get intellisense and proper typing of the returned object
+console.log(`Id: ${item.Id} -- ${item.Title}`);
 
-    // You can also chain directly off this item instance
-    item.getCurrentUserEffectivePermissions().then(perms => {
-
-        console.log(perms);
-    });
-});
+// You can also chain directly off this item instance
+const perms = await item.getCurrentUserEffectivePermissions();
+console.log(perms);
+```
