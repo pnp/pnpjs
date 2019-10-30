@@ -49,9 +49,8 @@ sp.setup({
 let w = new Web("{site url}");
 
 // this request will use your client.
-w.select("Title").get().then(w => {
-    console.log(w);
-});
+const result = await w.select("Title").get();
+console.log(result);
 ```
 
 ## Subclassing is Better

@@ -11,13 +11,11 @@ You can use the method without any additional configuration. We have made some d
 ```TypeScript
 import { sp } from "@pnp/sp";
 
-sp.web.lists.getByTitle("Tasks").items.usingCaching().get().then(r => {
-    console.log(r)
-});
+const r = await sp.web.lists.getByTitle("Tasks").items.usingCaching().get();
+console.log(r);
 
-sp.web.lists.getByTitle("Tasks").items.top(5).orderBy("Modified").usingCaching().get().then(r => {
-    console.log(r)
-});
+const r2 = await sp.web.lists.getByTitle("Tasks").items.top(5).orderBy("Modified").usingCaching().get();
+console.log(r2);
 ```
 
 ## Globally Configure Cache Settings

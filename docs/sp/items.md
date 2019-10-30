@@ -8,21 +8,21 @@ Getting items from a list is one of the basic actions that most applications req
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 // get all the items from a list
-sp.web.lists.getByTitle("My List").items.get().then((items: any[]) => {
-    console.log(items);
-});
+const items: any[] = await sp.web.lists.getByTitle("My List").items.get();
+console.log(items);
 
 // get a specific item by id
-sp.web.lists.getByTitle("My List").items.getById(1).get().then((item: any) => {
-    console.log(item);
-});
+const item: any = await sp.web.lists.getByTitle("My List").items.getById(1).get();
+console.log(item);
 
 // use odata operators for more efficient queries
-sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true).get().then((items: any[]) => {
-    console.log(items);
-});
+const items2: any[] = await sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true).get();
+console.log(items2);
 ```
 
 ### Get Paged Items
@@ -31,6 +31,9 @@ Working with paging can be a challenge as it is based on skip tokens and item id
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 // basic case to get paged items form a list
 let items = await sp.web.lists.getByTitle("BigList").items.getPaged();
@@ -69,6 +72,8 @@ The GetListItemChangesSinceToken method allows clients to track changes on a lis
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 
 // Using RowLimit. Enables paging
 let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({RowLimit: '5'});
@@ -90,33 +95,25 @@ be used.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-// basic usage
-sp.web.lists.getByTitle("BigList").items.getAll().then((allItems: any[]) => {
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
-    // how many did we get
-    console.log(allItems.length);
-});
+// basic usage
+const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll();
+console.log(allItems.length);
 
 // set page size
-sp.web.lists.getByTitle("BigList").items.getAll(4000).then((allItems: any[]) => {
-
-    // how many did we get
-    console.log(allItems.length);
-});
+const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll(4000);
+console.log(allItems.length);
 
 // use select and top. top will set page size and override the any value passed to getAll
-sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll().then((allItems: any[]) => {
-
-    // how many did we get
-    console.log(allItems.length);
-});
+const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll();
+console.log(allItems.length);
 
 // we can also use filter as a supported odata operation, but this will likely fail on large lists
-sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll().then((allItems: any[]) => {
-
-    // how many did we get
-    console.log(allItems.length);
-});
+const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll();
+console.log(allItems.length);
 ```
 
 ### Retrieving Lookup Fields
@@ -125,14 +122,15 @@ When working with lookup fields you need to use the expand operator along with s
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
-sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((items: any[]) => {
-    console.log(items);
-});
+const items = await sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get();
+console.log(items);
 
-sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get().then((item: any) => {
-    console.log(item);
-});
+const item = await sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get();
+console.log(item);
 ```
 
 ### Retrieving PublishingPageImage
@@ -140,30 +138,36 @@ sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/T
 The PublishingPageImage and some other publishing-related fields aren't stored in normal fields, rather in the MetaInfo field. To get these values you need to use the technique shown below, and originally outlined in [this thread](https://github.com/SharePoint/PnP-JS-Core/issues/178). Note that a lot of information can be stored in this field so will pull back potentially a significant amount of data, so limit the rows as possible to aid performance.
 
 ```TypeScript
-import { Web } from "@pnp/sp";
-
-const w = new Web("https://{publishing site url}");
-
-w.lists.getByTitle("Pages").items
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import { Web } from "@pnp/sp/webs";
+try {
+  const w = Web("https://{publishing site url}");
+  const r = await w.lists.getByTitle("Pages").items
     .select("Title", "FileRef", "FieldValuesAsText/MetaInfo")
     .expand("FieldValuesAsText")
-    .get().then(r => {
+    .get();
 
-        // look through the returned items.
-        for (var i = 0; i < r.length; i++) {
+  // look through the returned items.
+  for (var i = 0; i < r.length; i++) {
 
-            // the title field value
-            console.log(r[i].Title);
+    // the title field value
+    console.log(r[i].Title);
 
-            // find the value in the MetaInfo string using regex
-            const matches = /PublishingPageImage:SW\|(.*?)\r\n/ig.exec(r[i].FieldValuesAsText.MetaInfo);
-            if (matches !== null && matches.length > 1) {
+    // find the value in the MetaInfo string using regex
+    const matches = /PublishingPageImage:SW\|(.*?)\r\n/ig.exec(r[i].FieldValuesAsText.MetaInfo);
+    if (matches !== null && matches.length > 1) {
 
-                // this wil be the value of the PublishingPageImage field
-                console.log(matches[1]);
-            }
-        }
-    }).catch(e => { console.error(e); });
+      // this wil be the value of the PublishingPageImage field
+      console.log(matches[1]);
+    }
+  }
+}
+catch (e) {
+  console.error(e);
+}
 ```
 
 ## Add Items
@@ -171,15 +175,19 @@ w.lists.getByTitle("Pages").items
 There are several ways to add items to a list. The simplest just uses the _add_ method of the items collection passing in the properties as a plain object.
 
 ```TypeScript
-import { sp, ItemAddResult } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import { IItemAddResult } from "@pnp/sp/items";
 
 // add an item to the list
-sp.web.lists.getByTitle("My List").items.add({
-    Title: "Title",
-    Description: "Description"
-}).then((iar: ItemAddResult) => {
-    console.log(iar);
+const iar: IItemAddResult = await sp.web.lists.getByTitle("My List").items.add({
+  Title: "Title",
+  Description: "Description"
 });
+
+console.log(iar);
 ```
 
 ### Content Type
@@ -188,8 +196,11 @@ You can also set the content type id when you create an item as shown in the exa
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
-sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
+await sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
     Title: "Test 1",
     ContentTypeId: "0x01030058FD86C279252341AB303852303E4DAF"
 });
@@ -203,17 +214,20 @@ Next, you need to remember there are two types of user fields, those that take a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 import { getGUID } from "@pnp/common";
 
-sp.web.lists.getByTitle("PeopleFields").items.add({
-    Title: getGUID(),
-    User1Id: 9, // allows a single user
-    User2Id: { 
-        results: [ 16, 45 ] // allows multiple users
-    }
-}).then(i => {
-    console.log(i);
+const i = await sp.web.lists.getByTitle("PeopleFields").items.add({
+  Title: getGUID(),
+  User1Id: 9, // allows a single user
+  User2Id: {
+    results: [16, 45] // allows multiple users
+  }
 });
+
+console.log(i);
 ```
 
 If you want to update or add user field values when using **validateUpdateListItem** you need to use the form shown below. You can specify multiple values in the array.
@@ -242,38 +256,44 @@ What is said for User Fields is, in general, relevant to Lookup Fields:
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 import { getGUID } from "@pnp/common";
 
-sp.web.lists.getByTitle("LookupFields").items.add({
+await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
     MuptiLookupFieldId: { 
         results: [ 1, 56 ]  // allows multiple lookup value
     }
-}).then(console.log).catch(console.log);
+});
 ```
 
 ### Add Multiple Items
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 let list = sp.web.lists.getByTitle("rapidadd");
 
-list.getListItemEntityTypeFullName().then(entityTypeFullName => {
+const entityTypeFullName = await list.getListItemEntityTypeFullName()
 
-    let batch = sp.web.createBatch();
+let batch = sp.web.createBatch();
 
-    list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
-        console.log(b);
-    });
-
-    list.items.inBatch(batch).add({ Title: "Batch 7" }, entityTypeFullName).then(b => {
-        console.log(b);
-    });
-
-    batch.execute().then(d => console.log("Done"));
+list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
+  console.log(b);
 });
+
+list.items.inBatch(batch).add({ Title: "Batch 7" }, entityTypeFullName).then(b => {
+  console.log(b);
+});
+
+await batch.execute();
+console.log("Done");
 ```
 
 ## Update
@@ -282,34 +302,39 @@ The update method is very similar to the add method in that it takes a plain obj
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 let list = sp.web.lists.getByTitle("MyList");
 
-list.items.getById(1).update({
-    Title: "My New Title",
-    Description: "Here is a new description"
-}).then(i => {
-    console.log(i);
+const i = await list.items.getById(1).update({
+  Title: "My New Title",
+  Description: "Here is a new description"
 });
+
+console.log(i);
 ```
 
 ### Getting and updating a collection using filter
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 // you are getting back a collection here
-sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get().then((items: any[]) => {
-    // see if we got something
-    if (items.length > 0) {
-        sp.web.lists.getByTitle("MyList").items.getById(items[0].Id).update({
-            Title: "Updated Title",
-        }).then(result => {
-            // here you will have updated the item
-            console.log(JSON.stringify(result));
-        });
-    }
-});
+const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get();
+
+// see if we got something
+if (items.length > 0) {
+  const updatedItem = await sp.web.lists.getByTitle("MyList").items.getById(items[0].Id).update({
+    Title: "Updated Title",
+  });
+  
+  console.log(JSON.stringify(updatedItem));
+}
 ```
 
 ### Update Multiple Items
@@ -318,24 +343,28 @@ This approach avoids multiple calls for the same list's entity type name.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 let list = sp.web.lists.getByTitle("rapidupdate");
 
-list.getListItemEntityTypeFullName().then(entityTypeFullName => {
+const entityTypeFullName = await list.getListItemEntityTypeFullName()
 
-    let batch = sp.web.createBatch();
+let batch = sp.web.createBatch();
 
-    // note requirement of "*" eTag param - or use a specific eTag value as needed
-    list.items.getById(1).inBatch(batch).update({ Title: "Batch 6" }, "*", entityTypeFullName).then(b => {
-        console.log(b);
-    });
-
-    list.items.getById(2).inBatch(batch).update({ Title: "Batch 7" }, "*", entityTypeFullName).then(b => {
-        console.log(b);
-    });
-
-    batch.execute().then(d => console.log("Done"));
+// note requirement of "*" eTag param - or use a specific eTag value as needed
+list.items.getById(1).inBatch(batch).update({ Title: "Batch 6" }, "*", entityTypeFullName).then(b => {
+  console.log(b);
 });
+
+list.items.getById(2).inBatch(batch).update({ Title: "Batch 7" }, "*", entityTypeFullName).then(b => {
+  console.log(b);
+});
+
+await batch.execute();
+console.log("Done")
+
 ```
 
 ## Delete
@@ -344,10 +373,13 @@ Delete is as simple as calling the .delete method. It optionally takes an eTag i
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 let list = sp.web.lists.getByTitle("MyList");
 
-list.items.getById(1).delete().then(_ => {});
+await list.items.getById(1).delete();
 ```
 
 ## Resolving field names
@@ -359,22 +391,25 @@ The easiest way to get know EntityPropertyName is to use the following snippet:
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/fields";
 
-sp.web.lists
-  .getByTitle('[Lists_Title]')
-  .fields
-  .select('Title, EntityPropertyName')
-  .filter(`Hidden eq false and Title eq '[Field's_Display_Name]'`)
-  .get()
-  .then(response => {
-    console.log(response.map(field => {
-      return {
-        Title: field.Title,
-	EntityPropertyName: field.EntityPropertyName
-      };
-    }));
-  })
-  .catch(console.log);
+const response =
+  await sp.web.lists
+    .getByTitle('[Lists_Title]')
+    .fields
+    .select('Title, EntityPropertyName')
+    .filter(`Hidden eq false and Title eq '[Field's_Display_Name]'`)
+    .get();
+
+console.log(response.map(field => {
+  return {
+    Title: field.Title,
+    EntityPropertyName: field.EntityPropertyName
+  };
+}));
 ```
 
 Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used. 

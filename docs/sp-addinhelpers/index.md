@@ -30,9 +30,8 @@ const addInWenUrl = "{The add-in web url, likely from the query string}";
 const hostWebUrl = "{The host web url, likely from the query string}";
 
 // make requests into the host web via the SP.RequestExecutor
-sp.crossDomainWeb(addInWenUrl, hostWebUrl).get().then(w => {
-    console.log(JSON.stringify(w, null, 4));
-});
+const w = await sp.crossDomainWeb(addInWenUrl, hostWebUrl).get();
+console.log(JSON.stringify(w, null, 4));
 ```
 
 #Libary Topics

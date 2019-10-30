@@ -12,10 +12,8 @@ This gets a collection of all the role assignments on a given securable. The pro
 import { sp } from "@pnp/sp/presets/all";
 import { Logger } from "@pnp/logging";
 
-sp.web.roleAssignments.get().then(roles => {
-
-    Logger.writeJSON(roles);
-});
+const roles = await sp.web.roleAssignments.get();
+Logger.writeJSON(roles);
 ```
 
 ## First Unique Ancestor Securable Object
@@ -26,10 +24,8 @@ This method can be used to find the securable parent up the hierarchy that has u
 import { sp } from "@pnp/sp/presets/all";
 import { Logger } from "@pnp/logging";
 
-sp.web.firstUniqueAncestorSecurableObject.get().then(obj => {
-
-    Logger.writeJSON(obj);
-});
+const obj = await sp.web.firstUniqueAncestorSecurableObject.get();
+Logger.writeJSON(obj);
 ```
 
 ## User Effective Permissions
@@ -40,15 +36,11 @@ This method returns the BasePermissions for a given user or the current user. Th
 import { sp } from "@pnp/sp/presets/all";
 import { Logger } from "@pnp/logging";
 
-sp.web.getUserEffectivePermissions("i:0#.f|membership|user@site.com").then(perms => {
+const perms = await sp.web.getUserEffectivePermissions("i:0#.f|membership|user@site.com");
+Logger.writeJSON(perms);
 
-    Logger.writeJSON(perms);
-});
-
-sp.web.getCurrentUserEffectivePermissions().then(perms => {
-
-    Logger.writeJSON(perms);
-});
+const perms2 = await sp.web.getCurrentUserEffectivePermissions();
+Logger.writeJSON(perms2);
 ```
 
 ## User Has Permissions
@@ -58,15 +50,11 @@ Because the High and Low values in the BasePermission don't obviously mean anyth
 ```TypeScript
 import { sp, PermissionKind } from "@pnp/sp/presets/all";
 
-sp.web.userHasPermissions("i:0#.f|membership|user@site.com", PermissionKind.ApproveItems).then(perms => {
+const perms = await sp.web.userHasPermissions("i:0#.f|membership|user@site.com", PermissionKind.ApproveItems);
+console.log(perms);
 
-    console.log(perms);
-});
-
-sp.web.currentUserHasPermissions(PermissionKind.ApproveItems).then(perms => {
-
-    console.log(perms);
-});
+const perms2 = await sp.web.currentUserHasPermissions(PermissionKind.ApproveItems);
+console.log(perms2);
 ```
 
 ## Has Permissions
@@ -76,10 +64,8 @@ If you need to check multiple permissions it can be more efficient to get the Ba
 ```TypeScript
 import { sp, PermissionKind } from "@pnp/sp/presets/all";
 
-sp.web.getCurrentUserEffectivePermissions().then(perms => {
-
-    if (sp.web.hasPermissions(perms, PermissionKind.AddListItems) && sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {
-        // ...
-    }
-});
+const perms = await sp.web.getCurrentUserEffectivePermissions();
+if (sp.web.hasPermissions(perms, PermissionKind.AddListItems) && sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {
+    // ...
+}
 ```
