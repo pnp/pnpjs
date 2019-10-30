@@ -2,7 +2,7 @@ import { _GraphQueryable } from "./graphqueryable";
 import {
     setup as _setup,
     GraphConfiguration,
-} from "./config/graphlibconfig";
+} from "./graphlibconfig";
 import { GraphBatch } from "./batch";
 
 export class GraphRest extends _GraphQueryable {

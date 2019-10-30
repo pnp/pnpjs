@@ -2,7 +2,7 @@ import { IConfigOptions } from "@pnp/common";
 import {
     setup as _setup,
     SPConfiguration,
-} from "./config/splibconfig";
+} from "./splibconfig";
 
 /**
  * Root of the SharePoint REST module
