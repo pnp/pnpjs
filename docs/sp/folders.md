@@ -4,27 +4,27 @@ Folders serve as a container for your files and list items.
 
 ## IFolders
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 Represents a collection of folders. SharePoint web, list and list item have a collection of folders under their properties.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import { IFolders, Folders } from "@pnp/sp/src/folders";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/web";|
-|Selective 4|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";|
-|Selective 5|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";<br/>import "@pnp/sp/src/folders/item";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
+|Selective 4|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
+|Selective 5|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
 |Preset: All|import { sp, IFolders, Folders } from "@pnp/sp/presets/all";|
 
 ### Get folders collection for various SharePoint objects
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/items";
+import "@pnp/sp/folders";
+import "@pnp/sp/lists";
 
 // gets web's folders
 const webFolders = await sp.web.folders();
@@ -42,8 +42,8 @@ Adds a new folder to collection of folders
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 // creates a new folder for web with specified url
 const folderAddResult = await sp.web.folders.add("folder url");
@@ -55,8 +55,8 @@ Gets a folder instance from a collection by folder's name
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const folder = await sp.web.folders.getByName("folder name")();
 ```
@@ -65,25 +65,25 @@ const folder = await sp.web.folders.getByName("folder name")();
 
 Represents an instance of a SharePoint folder.
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)  
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import { IFolders, Folders } from "@pnp/sp/src/folders";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/web";|
-|Selective 4|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";|
-|Selective 5|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br/>import "@pnp/sp/src/folders/list";<br/>import "@pnp/sp/src/folders/item";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
+|Selective 4|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
+|Selective 5|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
 |Preset: All|import { sp, IFolders, Folders } from "@pnp/sp/presets/all";|
 
 ### Get a folder object associated with different SharePoint artifacts (web, list, list item)
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/items";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 // web's folder
 const rootFolder = await sp.web.rootFolder();
@@ -101,8 +101,8 @@ Gets list item associated with a folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const folderItem = await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").getItem();
 ```
@@ -113,8 +113,8 @@ It's possible to move a folder to a new destination within a site collection
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 // destination is a server-relative url of a new folder
 const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
@@ -128,8 +128,8 @@ Recycles a folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 await sp.web.rootFolder.folders.getByName("My Folder").recycle();
 ```  
@@ -140,8 +140,8 @@ Gets folder's server relative url
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const relUrl = await sp.web.rootFolder.folders.getByName("SiteAssets").serverRelativeUrl();
 ```  
@@ -152,8 +152,8 @@ Updates folder's properties
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").update({
         "Name": "New name",
@@ -166,8 +166,8 @@ Gets content type order of a folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const order = await sp.web.getFolderByServerRelativePath("Shared Documents").contentTypeOrder();
 ```
@@ -178,8 +178,8 @@ Gets all child folders associated with the current folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const folders = await sp.web.rootFolder.folders();
 ```
@@ -190,9 +190,9 @@ Gets all files inside a folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/files/folder";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+import "@pnp/sp/files/folder";
 
 const files = await sp.web.getFolderByServerRelativePath("Shared Documents").files();
 ```
@@ -203,8 +203,8 @@ Gets this folder's list item field values
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const itemFields = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").listItemAllFields();
 ```
@@ -215,8 +215,8 @@ Gets the parent folder, if available
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const parentFolder = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").parentFolder();
 ```
@@ -227,8 +227,8 @@ Gets this folder's properties
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").properties.get();
 ```
@@ -239,8 +239,8 @@ Gets a value that specifies the content type order.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const contentTypeOrder = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").uniqueContentTypeOrder();
 ```
@@ -255,8 +255,8 @@ You can rename a folder by updating `FileLeafRef` property:
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 
 const folder = sp.web.getFolderByServerRelativePath("Shared Documents/My Folder");
 
@@ -270,10 +270,10 @@ Below code creates a new folder under Document library and assigns custom folder
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/items";
+import "@pnp/sp/folders";
+import "@pnp/sp/lists";
 
 const newFolderResult = await sp.web.rootFolder.folders.getByName("Shared Documents").folders.add("My New Folder");
 const item = await newFolderResult.folder.listItemAllFields();

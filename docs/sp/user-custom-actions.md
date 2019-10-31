@@ -4,20 +4,20 @@ Represents a custom action associated with a SharePoint list, web or site collec
 
 ## IUserCustomActions
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/src/user-custom-actions";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/user-custom-actions";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/user-custom-actions";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/user-custom-actions";|
 |Preset: All|import { sp, IUserCustomActions, IUserCustomAction } from "@pnp/sp/presents/all";|
 
 ### Get a collection of User Custom Actions from a web
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
 
 const userCustomActions = sp.web.userCustomActions();
 ```
@@ -26,9 +26,9 @@ const userCustomActions = sp.web.userCustomActions();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
-import { IUserCustomActionAddResult } from '@pnp/sp/src/user-custom-actions';
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
+import { IUserCustomActionAddResult } from '@pnp/sp/user-custom-actions';
 
 const newValues: TypedHash<string> = {
     "Title": "New Title",
@@ -44,8 +44,8 @@ const response : IUserCustomActionAddResult = await sp.web.userCustomActions.add
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
 
 const uca: IUserCustomAction = sp.web.userCustomActions.getById("00000000-0000-0000-0000-000000000000");
 
@@ -56,8 +56,8 @@ const ucaData = await uca();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
 
 // Site collection level
 await sp.site.userCustomActions.clear();
@@ -75,9 +75,9 @@ await sp.web.lists.getByTitle("Documents").userCustomActions.clear();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
-import { IUserCustomActionUpdateResult } from '@pnp/sp/src/user-custom-actions';
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
+import { IUserCustomActionUpdateResult } from '@pnp/sp/user-custom-actions';
 
 const uca = sp.web.userCustomActions.getById("00000000-0000-0000-0000-000000000000");
 

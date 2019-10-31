@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2.0.0 - 2019-XX-XX
 
-_These changes represent the move from v1 libraries to v2 and begin a new changelog for the v2 tree_
+_This begins a new changelog for v2_
 
 ### Added
 
@@ -19,7 +19,7 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 ### Changed
 
 - odata: refactor Queryable
-  - remove withPipeline
+  - removed withPipeline
   - removed the action methods (get, post, put, delete)
   - introduced "invokable" concept
   - added additional methods to operate on Queryables
@@ -35,10 +35,11 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - tooling: gulp tasks rewritten in TypeScript, updated to latest
 - tooling: build system rewritten as cli
 - common: extend renamed to assign
-- sp: client side pages breaking updates in method signatures
+- sp: client side pages breaking changes in method signatures
+- sp: breaking change to rename search classes and factories
+- common: moved adalclient to @pnp/adaljsclient to reduce bundle sizes
 
 ### Fixed
-
 
 ### Removed
 
@@ -49,4 +50,5 @@ _These changes represent the move from v1 libraries to v2 and begin a new change
 - all: removed bundles from npm packages
 - tooling: removed gulp and replaced tasks with npm scripts
 - all: no longer building es5 code
+- common: removed getAttrValueFromString method
 

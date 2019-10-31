@@ -1,13 +1,13 @@
 import { expect } from "chai";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
-import "@pnp/sp/src/sputilities";
-// import { IEmailProperties } from "@pnp/sp/src/sputilities";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
+import "@pnp/sp/sputilities";
+// import { IEmailProperties } from "@pnp/sp/sputilities";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, getRandomString } from "@pnp/common";
-import { Web } from "@pnp/sp/src/webs";
+import { Web } from "@pnp/sp/webs";
 
 describe("SPUtilities", function () {
     if (testSettings.enableWebTests) {

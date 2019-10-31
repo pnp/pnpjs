@@ -1,17 +1,17 @@
 # @pnp/sp/site-scripts
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/site-scripts";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-scripts";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## Create a new site script
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 const sitescriptContent = {
     "$schema": "schema.json",
@@ -34,7 +34,7 @@ console.log(siteScript.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Retrieving all site scripts
 const allSiteScripts = await sp.siteScripts.getSiteScripts();
@@ -49,7 +49,7 @@ console.log(siteScript.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Update
 const updatedSiteScript = await sp.siteScripts.updateSiteScript({ Id: "884ed56b-1aab-4653-95cf-4be0bfa5ef0a", Title: "New Title" });
@@ -63,7 +63,7 @@ await sp.siteScripts.deleteSiteScript("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Using the absolute URL of the list
 const ss = await sp.siteScripts.getSiteScriptFromList("https://TENANT.sharepoint.com/Lists/mylist");
@@ -75,7 +75,7 @@ const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
 ## Get site script from a web
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 const extractInfo = {
     IncludeBranding: true,

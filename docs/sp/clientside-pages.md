@@ -2,12 +2,12 @@
 
 The clientside pages module allows you to created, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 | Scenario    | Import Statement                                                                                                                                                                                                    |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/src/clientside-pages"; |
-| Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/clientside-pages";                                                                                                                                           |
+| Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
+| Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
 | Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presents/all";                                        |
 
 ## Create a new Page
@@ -18,8 +18,8 @@ You can create a new clientside page in several ways, all are equivalent.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/clientside-pages/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages/web";
 
 const page = await sp.web.addClientsidePage("mypage1");
 
@@ -39,9 +39,9 @@ await page2.save();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import { Web } "@pnp/sp/src/webs";
-import { CreateClientsidePage } from "@pnp/sp/src/clientside-pages";
+import "@pnp/sp/webs";
+import { Web } "@pnp/sp/webs";
+import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 
 const page1 = await CreateClientsidePage(sp.web, "mypage2", "My Page Title");
 
@@ -71,9 +71,9 @@ This method takes a _server relative_ path to the page to load.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import { Web } "@pnp/sp/src/webs";
-import "@pnp/sp/src/clientside-pages/web";
+import "@pnp/sp/webs";
+import { Web } "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages/web";
 
 // use from the sp.web fluent chain
 const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
@@ -89,9 +89,9 @@ This method takes an IFile instance and loads an IClientsidePage instance.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { ClientsidePageFromFile } from "@pnp/sp/src/clientside-pages";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/files/web";
+import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/webs";
+import "@pnp/sp/files/web";
 
 const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/sites/dev/sitepages/mypage3.aspx"));
 ```
@@ -174,7 +174,7 @@ Once you have your sections and columns defined you will want to add/edit contro
 ### Add Text Content
 
 ```TypeScript
-import { ClientsideText } from "@pnp/sp/src/clientside-pages";
+import { ClientsideText } from "@pnp/sp/clientside-pages";
 
 // our page instance
 const page: IClientsidePage;
@@ -190,9 +190,9 @@ Adding controls involves loading the available clientside part definitions from 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/clientside-pages/web";
-import { ClientsideWebpart } from "@pnp/sp/src/clientside-pages";
+import "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages/web";
+import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
 // this will be a ClientSidePageComponent array
 // this can be cached on the client in production scenarios
@@ -429,7 +429,7 @@ await page.disableComments();
 Finds a control within the page by id.
 
 ```TypeScript
-import { ClientsideText } from "@pnp/sp/src/clientside-pages";
+import { ClientsideText } from "@pnp/sp/clientside-pages";
 
 // our page instance
 const page: IClientsidePage;
@@ -490,7 +490,7 @@ Creates a copy of the page, including all controls.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 // our page instance
 const page: IClientsidePage;

@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { getRandomString } from "@pnp/common";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/views";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 import { testSettings } from "../main";
-import { IList } from "@pnp/sp/src/lists";
+import { IList } from "@pnp/sp/lists";
 
 describe("Views", () => {
 

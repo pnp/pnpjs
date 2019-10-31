@@ -1,1 +1,2 @@
-export * from "./src/configstore";
+export * from "./configuration";
+export * from "./providers/index";

@@ -5,18 +5,18 @@ Check out [SharePoint site design and site script overview](https://docs.microso
 
 # Site Designs
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/site-designs";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-designs";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## Create a new site design
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // WebTemplate: 64 Team site template, 68 Communication site template
 const siteDesign = await sp.siteDesigns.createSiteDesign({
@@ -32,7 +32,7 @@ console.log(siteDesign.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Limited to 30 actions in a site script, but runs synchronously
 await sp.siteDesigns.applySiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8","https://contoso.sharepoint.com/sites/teamsite-pnpjs001");
@@ -45,7 +45,7 @@ const task = await sp.web.addSiteDesignTask("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Retrieving all site designs
 const allSiteDesigns = await sp.siteDesigns.getSiteDesigns();
@@ -60,7 +60,7 @@ console.log(siteDesign.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Update
 const updatedSiteDesign = await sp.siteDesigns.updateSiteDesign({ Id: "75b9d8fe-4381-45d9-88c6-b03f483ae6a8", Title: "SiteDesignUpdatedTitle001" });
@@ -73,7 +73,7 @@ await sp.siteDesigns.deleteSiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 // Get
 const rights = await sp.siteDesigns.getSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
@@ -94,7 +94,7 @@ await sp.siteDesigns.revokeSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-designs";
+import "@pnp/sp/site-designs";
 
 const runs = await sp.web.getSiteDesignRuns();
 const runs2 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.com/sites/mysite");

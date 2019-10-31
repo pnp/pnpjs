@@ -1,7 +1,7 @@
 {
   "name": "@pnp/monorepo",
   "private": true,
-  "version": "2.0.0-5",
+  "version": "2.0.0-11",
   "description": "A JavaScript library for SharePoint development.",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
@@ -42,7 +42,7 @@
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslib": "^1.9.3",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.5",
+    "typescript": "^3.6.4",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1"
@@ -53,8 +53,8 @@
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
-    "pnp-publish": "npm run package && pnpbuild -n publish",
-    "pnp-publish-beta": "npm run package && pnpbuild -n publish-beta",
+    "pnp-publish": "npm run clean && npm run package && pnpbuild -n publish",
+    "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
     "lint": "tslint ./packages/**/*.ts ./test/**/*.ts",
     "clean": "del-cli \"./?(dist|serve|site|build)\"",
     "serve": "ts-node -r tsconfig-paths/register ./tools/serve/serve.ts"

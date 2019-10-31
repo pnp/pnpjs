@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 import { testSettings } from "../main";
-import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/src/sites";
-import { IWeb } from "@pnp/sp/src/webs";
+import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
+import { IWeb } from "@pnp/sp/webs";
 import { combine } from "@pnp/common";
 
 describe("Sites", () => {

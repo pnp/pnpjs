@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { combine, dateAdd } from "@pnp/common";
-import { Web, IWeb } from "@pnp/sp/src/webs";
-import { IFolder } from "@pnp/sp/src/folders";
-import { IFile } from "@pnp/sp/src/files";
-import { IItem } from "@pnp/sp/src/items";
-import "@pnp/sp/src/lists/web";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/files";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/site-users";
-import { SharingRole, SharingLinkKind } from "@pnp/sp/src/sharing";
+import { Web, IWeb } from "@pnp/sp/webs";
+import { IFolder } from "@pnp/sp/folders";
+import { IFile } from "@pnp/sp/files";
+import { IItem } from "@pnp/sp/items";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/folders";
+import "@pnp/sp/files";
+import "@pnp/sp/sharing";
+import "@pnp/sp/site-users";
+import { SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
 
 describe("Sharing", () => {
 

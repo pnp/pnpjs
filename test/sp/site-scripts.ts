@@ -1,9 +1,9 @@
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/site-scripts";
+import "@pnp/sp/site-scripts";
 import { testSettings } from "../main";
-import { IList } from "@pnp/sp/src/lists";
+import { IList } from "@pnp/sp/lists";
 
 describe("SiteScripts", function () {
 

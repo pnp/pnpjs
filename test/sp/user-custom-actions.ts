@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/user-custom-actions";
+import "@pnp/sp/webs";
+import "@pnp/sp/user-custom-actions";
 
 describe("user-custom-actions", function () {
     if (testSettings.enableWebTests) {

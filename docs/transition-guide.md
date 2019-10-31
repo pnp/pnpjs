@@ -4,7 +4,7 @@ We have worked to make moving from @pnp library 1.* to 2.* as painless as possib
 
 ## Installing @pnp libraries
 
-In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them seperately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have upated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:
+In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them separately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have updated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:
 
 ```
 npm i --save @pnp/sp
@@ -20,18 +20,18 @@ To help explain let's take the example of the Web object. In v1 Web includes a r
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 // this imports the functionality for lists associated only with web
-import "@pnp/sp/src/lists/web";
+import "@pnp/sp/lists/web";
 
 const r = await sp.web.lists();
 ```
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 // this imports all the functionality for lists
-import "@pnp/sp/src/lists";
+import "@pnp/sp/lists";
 
 const r = await sp.web.lists();
 ```
@@ -54,7 +54,7 @@ import {
 
 // V2 way with selective imports
 import { sp } from "@pnp/sp";
-import { ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/src/clientside-pages";
+import { ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/clientside-pages";
 
 // V2 way with preset "all"
 import { sp, ClientSideWebpart, ClientSideWebpartPropertyTypes } from "@pnp/sp/presets/all";
@@ -66,7 +66,7 @@ Another new feature is the addition of invokable objects. Previously where you u
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 // old way (still works)
 const r1 = sp.web.get();
@@ -79,7 +79,7 @@ The benefit is that objects can now support default actions that are not "get" b
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
+import "@pnp/sp/webs";
 
 // invokable
 const r = sp.web.select("Title", "Url")();
@@ -87,7 +87,7 @@ const r = sp.web.select("Title", "Url")();
 
 ## Factory Functions & Interfaces
 
-Another change in the library is in the strcture of exports. We are no longer exporting the objects themselves, rather we are only exposing factory functions and interfaces. This allows us to decouple what developers use from our internal implementation. For folks using the fluent chain starting with sp you shouldn't need to update your code. If you are using any of the v1 classes directly you should just need to remove the "new" keyword and update the import path. The factory functions signature matches the contructor signature of the v1 objects.
+Another change in the library is in the structure of exports. We are no longer exporting the objects themselves, rather we are only exposing factory functions and interfaces. This allows us to decouple what developers use from our internal implementation. For folks using the fluent chain starting with sp you shouldn't need to update your code. If you are using any of the v1 classes directly you should just need to remove the "new" keyword and update the import path. The factory functions signature matches the constructor signature of the v1 objects.
 
 ```TypeScript
 // v1
@@ -98,7 +98,7 @@ const web: Web = new Web("some absolute url");
 const r1 = web.get();
 
 // v2
-import { Web, IWeb } from "@pnp/sp/src/webs";
+import { Web, IWeb } from "@pnp/sp/webs";
 
 const web: IWeb = Web("some absolute url");
 
@@ -111,7 +111,7 @@ Another new capability in v2 is the ability to extend objects and factories. Thi
 
 ## CDN publishing
 
-Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot fo ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their [own bundles](custom-bundle.md), optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please [review the article on creating your custom bundles](custom-bundle.md) to see how to tailor bundles to your needs.
+Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot of ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their [own bundles](concepts/custom-bundle.md), optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please [review the article on creating your custom bundles](concepts/custom-bundle.md) to see how to tailor bundles to your needs.
 
 Inline with this we will drop the pnpjs library for the same reason.
 

@@ -2,8 +2,7 @@
   "linterOptions": {
     "exclude": [
       "/**/node_modules/**",
-      "/**/*.d.ts",
-      "/**/*.test.ts"
+      "/**/*.d.ts"
     ]
   },
   "rules": {

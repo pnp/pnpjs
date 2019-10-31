@@ -4,14 +4,14 @@ These libraries are geared towards folks working with TypeScript but will work e
 the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
 more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
-If you need to support older browsers please review the article on [polyfills](polyfill.md) for required functionality.
+If you need to support older browsers please review the article on [polyfills](concepts/polyfill.md) for required functionality.
 
 ## Install
 
 First you will need to install those libraries you want to use in your application. Here we will install the most frequently used packages. This step applies to any 
 environment or project.
 
-`npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/graph --save`
+`npm install @pnp/sp @pnp/graph --save`
 
 Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
 for more details.
@@ -29,7 +29,7 @@ import { getRandomString } from "@pnp/common";
 
 ## Getting Started with SharePoint Framework
 
-The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 on-premesis please [read this note](SPFx-On-Premesis-2016.md) on a workaround for the included TypeScript version. If you are targetting SharePoint online you do not need to take any additional steps.
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 on-premises please [read this note](SPFx-On-Premesis-2016.md) on a workaround for the included TypeScript version. If you are targetting SharePoint online you do not need to take any additional steps.
 
 ### Establish Context
 
@@ -66,7 +66,7 @@ public onInit(): Promise<void> {
 #### Using @pnp/sp setup
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 
 // ...
 
@@ -89,7 +89,7 @@ public onInit(): Promise<void> {
 #### Using @pnp/graph setup
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graph } from "@pnp/graph/presets/all";
 
 // ...
 
@@ -112,19 +112,15 @@ public onInit(): Promise<void> {
 
 ## Connect to SharePoint from Node
 
-Because peer dependencies are not installed automatically you will need to list out each package to install. Don't worry if you forget one you will get a message
-on the command line that a peer dependency is missing. Let's for example look at installing the required libraries to connect to SharePoint from nodejs. You can see
-[./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/sp.ts) for a live example.
-
 ```
-npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp @pnp/nodejs
+npm i @pnp/sp @pnp/nodejs
 ```
 
 This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the [packages](packages.md) page.
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 import { SPFetchClient } from "@pnp/nodejs";
 ```
 
@@ -158,7 +154,7 @@ npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs
 Now we need to import what we'll need to call graph
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graph } from "@pnp/graph/presets/all";
 import { AdalFetchClient } from "@pnp/nodejs";
 ```
 
@@ -174,7 +170,7 @@ graph.setup({
 });
 
 // make a call to Graph and get all the groups
-graph.v1.groups.get().then(g => {
+graph.groups.get().then(g => {
     console.log(JSON.stringify(g, null, 4));
 });
 ```
@@ -190,7 +186,7 @@ working against unpatched versions of SharePoint 2013 as [discussed here](https:
 This is optional for 2016 or SharePoint Online.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { sp } from "@pnp/sp/presets/all";
 
 sp.setup({
   sp: {
@@ -209,8 +205,8 @@ const w = await sp.web.get();
 Using this method you create the web directly with the url you want to use as the base.
 
 ```TypeScript
-import { Web } from "@pnp/sp";
+import { Web } from "@pnp/sp/presets/all";
 
-const web = new Web("{Absolute SharePoint Web URL}");
+const web = Web("{Absolute SharePoint Web URL}");
 const w = await web.get();
 ```

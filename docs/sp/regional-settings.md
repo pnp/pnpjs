@@ -4,19 +4,19 @@ The regional settings module helps with managing dates and times across various 
 
 ## IRegionalSettings
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/src/regional-settings";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/regional-settings/web";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/regional-settings";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings/web";|
 |Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/regional-settings/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/regional-settings/web";
 
 // get all the web's regional settings
 const s = await sp.web.regionalSettings();
@@ -31,8 +31,8 @@ You can get a list of the installed languages in the web.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/regional-settings/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/regional-settings/web";
 
 const s = await sp.web.regionalSettings.installedLanguages();
 
@@ -46,8 +46,8 @@ You can also get information about the selected timezone in the web and all of t
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/regional-settings/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/regional-settings/web";
 
 // get the web's configured timezone
 const s = await sp.web.regionalSettings.timeZone();

@@ -2,12 +2,12 @@
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { testSettings } from "../main";
-import { IAppCatalog } from "@pnp/sp/src/appcatalog";
-import { IWeb, Web } from "@pnp/sp/src/webs";
+import { IAppCatalog } from "@pnp/sp/appcatalog";
+import { IWeb, Web } from "@pnp/sp/webs";
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/appcatalog";
-import "@pnp/sp/src/lists";
+import "@pnp/sp/webs";
+import "@pnp/sp/appcatalog";
+import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
 

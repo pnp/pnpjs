@@ -1,15 +1,15 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
-import "@pnp/sp/src/folders";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/lists";
-import "@pnp/sp/src/sharing";
-import "@pnp/sp/src/site-users/web";
-import "@pnp/sp/src/files";
+import "@pnp/sp/folders";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/sharing";
+import "@pnp/sp/site-users/web";
+import "@pnp/sp/files";
 import { IInvokableTest } from "../types";
-import { Web } from "@pnp/sp/src/webs";
+import { Web } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/common";
-import { SharingLinkKind } from "@pnp/sp/src/sharing";
+import { SharingLinkKind } from "@pnp/sp/sharing";
 
 describe("Folders", () => {
 

@@ -4,11 +4,11 @@ Comments can be accessed through either IItem or IClientsidePage instances, thou
 
 _These APIs are currently in BETA and are subject to change or may not work on all tenants._
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../selective-imports.md)
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import from "@pnp/sp/src/comments";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import from "@pnp/sp/comments";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## ClientsidePage Comments
@@ -20,8 +20,8 @@ The IClientsidePage interface has three methods to provide easier access to the 
 You can add a comment using the addComment method as shown
 
 ```TypeScript
-import { CreateClientsidePage } from "@pnp/sp/src/clientside-pages";
-import "@pnp/sp/src/comments/clientside-page";
+import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
 // optionaly publish the page first
@@ -33,8 +33,8 @@ const comment = await page.addComment("A test comment");
 ### Get Comments
 
 ```TypeScript
-import { CreateClientsidePage } from "@pnp/sp/src/clientside-pages";
-import "@pnp/sp/src/comments/clientside-page";
+import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
 // optionaly publish the page first
@@ -53,8 +53,8 @@ const comments = await page.getComments();
 ### GetById
 
 ```TypeScript
-import { CreateClientsidePage } from "@pnp/sp/src/clientside-pages";
-import "@pnp/sp/src/comments/clientside-page";
+import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
 // optionaly publish the page first
@@ -72,10 +72,10 @@ const commentData = await page.getCommentById(parseInt(comment.id, 10));
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/files/web";
-import "@pnp/sp/src/items";
-import "@pnp/sp/src/comments/item";
+import "@pnp/sp/webs";
+import "@pnp/sp/files/web";
+import "@pnp/sp/items";
+import "@pnp/sp/comments/item";
 
 const item = await sp.web.getFileByServerRelativeUrl("/sites/dev/SitePages/Test_8q5L.aspx").getItem();
 
@@ -96,8 +96,8 @@ const comments = await item.comments();
 You can also get the comments merged with instances of the Comment class to immediately start accessing the properties and methods:
 
 ```TypeScript
-import { spODataEntityArray } from "@pnp/sp/src/odata";
-import { Comment, ICommentData } from "@pnp/sp/src/comments";
+import { spODataEntityArray } from "@pnp/sp/odata";
+import { Comment, ICommentData } from "@pnp/sp/comments";
 
 const comments = await item.comments(spODataEntityArray<Comment, CommentData>(Comment));
 
@@ -176,8 +176,8 @@ You can like items and comments on items. See above for how to like or unlike a 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/comments/item";
-import { ILikeData, ILikedByInformation } from "@pnp/sp/src/comments";
+import "@pnp/sp/comments/item";
+import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
 
 // like an item
 await item.like();

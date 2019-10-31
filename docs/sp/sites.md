@@ -8,8 +8,8 @@ Using the library, you can get the context information of the current site colle
 
 ```Typescript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
-import { IContextInfo } from "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
+import { IContextInfo } from "@pnp/sp/sites";
 
 const oContext: IContextInfo = await sp.site.getContextInfo();
 console.log(oContext.FormDigestValue);
@@ -23,8 +23,8 @@ Using the library, you can get a list of the document libraries present in the a
 
 ```Typescript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
-import { IDocumentLibraryInformation } from "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
+import { IDocumentLibraryInformation } from "@pnp/sp/sites";
 
 const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries("https://tenant.sharepoint.com/sites/test/subsite");
 
@@ -40,7 +40,7 @@ Because this method is a POST request you can chain off it directly. You will ge
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 
 const w = await sp.site.openWebById("111ca453-90f5-482e-a381-cee1ff383c9e");
 
@@ -57,7 +57,7 @@ Using the library, you can get the site collection url by providing a page url
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 
 const d: string = await sp.site.getWebUrlFromPageUrl("https://tenant.sharepoint.com/sites/test/Pages/test.aspx");
 
@@ -70,7 +70,7 @@ There are two methods to access the root web. The first, using the rootWeb prope
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 
 // use for rootweb information access
 const rootwebData = await sp.sites.rootWeb();
@@ -105,7 +105,7 @@ Creates a modern communication site.
 ```TypeScript
 
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 
 const s = await sp.site.createCommunicationSite(
             "Title",
@@ -145,7 +145,7 @@ Creates a modern team site backed by O365 group.
 ```TypeScript
 
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
 
 const d = await sp.site.createModernTeamSite(
         "displayName",
@@ -168,8 +168,8 @@ Using the library, you can delete a specific site collection
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/sites";
-import { Site } from "@pnp/sp/src/sites";
+import "@pnp/sp/sites";
+import { Site } from "@pnp/sp/sites";
 
 // Delete the current site
 await sp.site.delete();
