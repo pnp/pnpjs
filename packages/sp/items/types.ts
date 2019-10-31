@@ -17,6 +17,7 @@ import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 /**
  * Describes a collection of Item objects
@@ -31,7 +32,7 @@ export class _Items extends _SharePointQueryableCollection {
     * @param id The integer id of the item to retrieve	
     */
     public getById(id: number): IItem {
-        return Item(this).concat(`(${id})`);
+        return tag.configure(Item(this).concat(`(${id})`), "is.getById");
     }
 
     /**
@@ -41,7 +42,7 @@ export class _Items extends _SharePointQueryableCollection {
      */
     public getItemByStringId(stringId: string): IItem {
         // creates an item with the parent list path and append out method call
-        return Item(this.parentUrl, `getItemByStringId('${stringId}')`);
+        return tag.configure(Item(this.parentUrl, `getItemByStringId('${stringId}')`), "is.getItemByStringId");
     }
 
     /**
@@ -63,6 +64,7 @@ export class _Items extends _SharePointQueryableCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
+    @tag("is.getPaged")
     public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
         return this.usingParser(new PagedItemCollectionParser<T>(this))();
     }
@@ -73,6 +75,7 @@ export class _Items extends _SharePointQueryableCollection {
      *  @param requestSize Number of items to return in each request (Default: 2000)
      *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
      */
+    @tag("is.getAll")
     public getAll(requestSize = 2000, acceptHeader = "application/json;odata=nometadata"): Promise<any[]> {
 
         Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", LogLevel.Warning);
@@ -126,6 +129,7 @@ export class _Items extends _SharePointQueryableCollection {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
+    @tag("is.add")
     public async add(properties: TypedHash<any> = {}, listItemEntityTypeFullName: string = null): Promise<IItemAddResult> {
 
         const removeDependency = this.addBatchDependency();
@@ -174,7 +178,7 @@ export class _Item extends _SharePointQueryableInstance {
      *
      */
     public get effectiveBasePermissions(): ISharePointQueryable {
-        return SharePointQueryable(this, "EffectiveBasePermissions");
+        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
     }
 
     /**
@@ -182,7 +186,7 @@ export class _Item extends _SharePointQueryableInstance {
      *
      */
     public get effectiveBasePermissionsForUI(): ISharePointQueryable {
-        return SharePointQueryable(this, "EffectiveBasePermissionsForUI");
+        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
     }
 
     /**
@@ -190,7 +194,7 @@ export class _Item extends _SharePointQueryableInstance {
      *
      */
     public get fieldValuesAsHTML(): ISharePointQueryableInstance {
-        return SharePointQueryableInstance(this, "FieldValuesAsHTML");
+        return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
     }
 
     /**
@@ -198,7 +202,7 @@ export class _Item extends _SharePointQueryableInstance {
      *
      */
     public get fieldValuesAsText(): ISharePointQueryableInstance {
-        return SharePointQueryableInstance(this, "FieldValuesAsText");
+        return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
     }
 
     /**
@@ -206,14 +210,14 @@ export class _Item extends _SharePointQueryableInstance {
      *
      */
     public get fieldValuesForEdit(): ISharePointQueryableInstance {
-        return SharePointQueryableInstance(this, "FieldValuesForEdit");
+        return tag.configure(SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
     }
 
     /**
      * Gets the collection of versions associated with this item
      */
     public get versions(): IItemVersions {
-        return ItemVersions(this);
+        return tag.configure(ItemVersions(this), "i.versions");
     }
 
     public get list(): IList {
@@ -240,10 +244,11 @@ export class _Item extends _SharePointQueryableInstance {
 
         removeDependency();
 
-        const data = await spPost(this.clone(Item).usingParser(new ItemUpdatedParser()), postBody);
+        const poster = tag.configure(this.clone(Item).usingParser(new ItemUpdatedParser()), "i.update");
+        const data = await spPost(poster, postBody);
 
         return {
-            data: data,
+            data,
             item: this,
         };
     }
@@ -251,6 +256,7 @@ export class _Item extends _SharePointQueryableInstance {
     /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
+    @tag("i.recycle")
     public recycle(): Promise<string> {
         return spPost<string>(this.clone(Item, "recycle"));
     }
@@ -261,6 +267,7 @@ export class _Item extends _SharePointQueryableInstance {
      *
      * @param action Display mode: 0: view, 1: edit, 2: mobileView, 3: interactivePreview
      */
+    @tag("i.getWopiFrameUrl")
     public async getWopiFrameUrl(action = 0): Promise<string> {
         const i = this.clone(Item, "getWOPIFrameUrl(@action)");
         i.query.set("@action", <any>action);
@@ -281,6 +288,7 @@ export class _Item extends _SharePointQueryableInstance {
      * @param formValues The fields to change and their new values.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      */
+    @tag("i.validateUpdateListItem")
     public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
         return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
     }
@@ -312,7 +320,7 @@ export class _ItemVersions extends _SharePointQueryableCollection {
      * @param versionId The id of the version to retrieve	
      */
     public getById(versionId: number): IItemVersion {
-        return ItemVersion(this).concat(`(${versionId})`);
+        return tag.configure(ItemVersion(this).concat(`(${versionId})`), "iv.getById");
     }
 }
 export interface IItemVersions extends _ItemVersions { }
@@ -348,7 +356,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = <IItems>Items(this.nextUrl, null).configureFrom(this.parent);
+            const items = tag.configure(<IItems>Items(this.nextUrl, null).configureFrom(this.parent), "ip.getNext");
             return items.getPaged<T>();
         }
 

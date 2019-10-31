@@ -15,11 +15,11 @@ nav:
     - 'SPFx On-Premises 2016': 'SPFx-On-Premesis-2016.md'
     - 'Building Docs': 'documentation.md'
   - 'Library Concepts':
+    - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'IE11 Mode': 'concepts/ie11-mode.md'
     - 'Invokables': 'concepts/invokable.md'
     - 'Polyfills': 'concepts/polyfill.md'
-    - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Settings': 'concepts/settings.md'
   - Packages:
     - Packages: 'packages.md'

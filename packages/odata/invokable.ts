@@ -1,7 +1,7 @@
 import { IQueryable, Queryable } from "./queryable";
 import { RequestContext } from "./pipeline";
 import { IFetchOptions, RuntimeConfig } from "@pnp/common";
-import { hookOr, doFactoryExtensions } from "./extensions";
+import { extensionOrDefault, doFactoryExtensions } from "./extensions";
 
 export type IHybrid<T, R = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
@@ -25,16 +25,16 @@ const invokableBinder = <T = Queryable<any>>(invoker: IInvoker<T>) => <R>(constr
 
             return new Proxy<IHybrid<T>>(doFactoryExtensions(factory, args), {
                 apply: (target: any, _thisArg: any, argArray?: any) => {
-                    return hookOr("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
+                    return extensionOrDefault("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
                 },
                 get: (target: any, p: PropertyKey, receiver: any) => {
-                    return hookOr("get", (...a: any[]) => Reflect.get(a[0], a[1], a[2]), target, p, receiver);
+                    return extensionOrDefault("get", (...a: any[]) => Reflect.get(a[0], a[1], a[2]), target, p, receiver);
                 },
                 has: (target: any, p: PropertyKey) => {
-                    return hookOr("has", (...a: any[]) => Reflect.get(a[0], a[1]), target, p);
+                    return extensionOrDefault("has", (...a: any[]) => Reflect.get(a[0], a[1]), target, p);
                 },
                 set: (target: any, p: PropertyKey, value: any, receiver: any) => {
-                    return hookOr("set", (...a: any[]) => Reflect.set(a[0], a[1], a[2], a[3]), target, p, value, receiver);
+                    return extensionOrDefault("set", (...a: any[]) => Reflect.set(a[0], a[1], a[2], a[3]), target, p, value, receiver);
                 },
             });
         }

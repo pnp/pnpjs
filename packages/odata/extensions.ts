@@ -101,7 +101,7 @@ export const doFactoryExtensions = <T extends object = {}>(factory: (args: any[]
     return o;
 };
 
-export function hookOr(op: ValidProxyMethods, or: (...args: any[]) => any, target: any, ...rest: any[]): any {
+export function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) => any, target: any, ...rest: any[]): any {
 
     if (_enableExtensions) {
 
