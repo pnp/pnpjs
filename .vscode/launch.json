@@ -31,7 +31,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [],
-      "args": []
+      "args": ["-p", "sp" ,"-s", "related-items", "--verbose", "--site", "https://318studios.sharepoint.com/sites/dev"]
     },
     {
       "name": "Debug Build System",

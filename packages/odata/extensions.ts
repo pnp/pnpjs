@@ -12,14 +12,13 @@ const globaExtensions: ExtensionType[] = [];
 const ObjExtensionsSym = Symbol("__extensions");
 
 /**
- * Creates global extensions across all invokable objets
+ * Creates global extensions across all invokable objects
  * 
  * @param e The global extensions to apply
  */
 export const extendGlobal = (e: ExtensionType | ExtensionType[]) => {
 
     _enableExtensions = true;
-
     extendCol(globaExtensions, e);
 };
 
@@ -139,7 +138,8 @@ export function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) =
 
             if (typeof r !== "undefined") {
                 // if a extension returned a result, we return that
-                // this means that extensions overrides any other extensions and no more are executed
+                // this means that this extension overrides any other extensions and no more are executed
+                // first extension in the list to return "wins"
                 return r;
             }
         }

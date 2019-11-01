@@ -2,6 +2,7 @@ import { SPFetchClient } from "@pnp/nodejs";
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/odata/debug";
 
 declare var process: { exit(code?: number): void };
 
@@ -16,7 +17,7 @@ export async function Example(settings: any) {
     },
   });
 
-  const r = await sp.web();
+  const r = await sp.web.__enableDeepTrace();
 
   console.log(JSON.stringify(r, null, 2));
 

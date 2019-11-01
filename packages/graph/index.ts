@@ -21,5 +21,7 @@ export {
     GraphConfigurationPart,
 } from "./graphlibconfig";
 
+export * from "./graphhttpclient";
+
 export * from "./types";
 

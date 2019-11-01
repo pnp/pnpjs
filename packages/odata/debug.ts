@@ -1,27 +1,30 @@
 import "./queryable";
 import { extendGlobal } from "./extensions";
 import { Logger, LogLevel } from "@pnp/logging";
+import { IQueryable } from "./queryable";
 
 declare module "./queryable" {
     /**
      * Returns the instance wrapped by the invokable proxy
      */
     interface IQueryable<DefaultActionType> {
+        __deepTrace: boolean;
         __enableDeepTrace(): void;
+        __disableDeepTrace(): void;
         __json(): <T = any>(target: T) => () => any;
     }
 
     interface Queryable<DefaultActionType> {
+        __deepTrace: boolean;
         __enableDeepTrace(): void;
+        __disableDeepTrace(): void;
         __json(): <T = any>(target: T) => () => any;
     }
 }
 
-let deepTrace = false;
-
 extendGlobal([
-    (op: string, _target: any, ...rest: any[]): void => {
-        if (deepTrace) {
+    (op: string, target: IQueryable<any>, ...rest: any[]): void => {
+        if (target.__deepTrace) {
             switch (op) {
                 case "apply":
                     Logger.write(`${op} ::> ()`, LogLevel.Info);
@@ -35,10 +38,14 @@ extendGlobal([
         }
     },
     {
-        get: (target, p: string | number | symbol, _receiver: any) => {
+        get: (target: IQueryable<any>, p: string | number | symbol, _receiver: any) => {
             switch (p) {
                 case "__enableDeepTrace":
-                    return () => { deepTrace = true; };
+                    return () => { target.__deepTrace = true; };
+                case "__disableDeepTrace":
+                    return () => { target.__deepTrace = false; };
+                case "__data":
+                    return target.data;
                 case "__json":
                     return () => {
 

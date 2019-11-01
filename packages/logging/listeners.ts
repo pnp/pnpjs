@@ -1,4 +1,4 @@
-import { ILogEntry, LogLevel, ILogListener } from "./types";
+import { ILogEntry, LogLevel, ILogListener } from "./logger";
 
 /**
  * Implementation of LogListener which logs to the console

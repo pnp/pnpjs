@@ -1,3 +1,2 @@
-export { Logger } from "./logger";
-export { ConsoleListener, FunctionListener } from "./listeners";
-export * from "./types";
+export * from "./logger";
+export * from "./listeners";

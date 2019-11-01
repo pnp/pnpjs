@@ -87,25 +87,22 @@ export class _Lists extends _SharePointQueryableCollection {
             throw Error("The ensure list method is not supported for use in a batch.");
         }
 
-        return new Promise((resolve, reject) => {
+        const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
 
-            const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+        const list: IList = this.getByTitle(addOrUpdateSettings.Title);
 
-            const list: IList = this.getByTitle(addOrUpdateSettings.Title);
+        try {
 
-            list.get().then(_ => {
+            // this will throw if the list doesn't exist
+            await list.select("Title")();
+            const data = await list.update(addOrUpdateSettings).then(r => r.data);
+            return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
 
-                list.update(addOrUpdateSettings).then(d => {
-                    resolve({ created: false, data: d, list: this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(e => reject(e));
+        } catch (e) {
 
-            }).catch(_ => {
-
-                this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then((r) => {
-                    resolve({ created: true, data: r.data, list: this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch((e) => reject(e));
-            });
-        });
+            const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
+            return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+        }
     }
 
     /**
