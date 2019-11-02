@@ -1,14 +1,16 @@
 import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/odata";
-import { SPHttpClient } from "./net/sphttpclient";
+import { SPHttpClient } from "./sphttpclient";
 import { ISharePointQueryable } from "./sharepointqueryable";
 import { IFetchOptions, mergeOptions, objectDefinedNotNull } from "@pnp/common";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 const spClientBinder = defaultPipelineBinder(() => new SPHttpClient());
 
-const send = <T>(operation: IOperation): (o: ISharePointQueryable<T>, options?: IFetchOptions) => Promise<T> => {
+const send = (method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT"): <T = any>(o: ISharePointQueryable, options?: IFetchOptions) => Promise<T> => {
 
-    return async function <R = T>(o: ISharePointQueryable<R>, options?: IFetchOptions): Promise<R> {
+    const operation: IOperation = spClientBinder(method);
+
+    return async function <T = any>(o: ISharePointQueryable, options?: IFetchOptions): Promise<T> {
 
         const data = cloneQueryableData(o.data);
         const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => { return; };
@@ -38,21 +40,21 @@ export const spGet = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOpt
         o.data.useCaching = true;
     }
 
-    return send<T>(spClientBinder("GET"))(o, options);
+    return send("GET")(o, options);
 };
 
-export const spPost = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send<T>(spClientBinder("POST"))(o, options);
+export const spPost = send("POST");
 
-export const spDelete = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send<T>(spClientBinder("DELETE"))(o, options);
+export const spDelete = send("DELETE");
 
-export const spPatch = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send<T>(spClientBinder("PATCH"))(o, options);
+export const spPatch = send("PATCH");
 
 export const spPostDelete = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => {
     const opts = Object.assign(headers({ "X-HTTP-Method": "DELETE" }), options);
-    return send<T>(spClientBinder("POST"))(o, opts);
+    return spPost<T>(o, opts);
 };
 
 export const spPostDeleteETag = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions, eTag = "*"): Promise<T> => {
     const opts = Object.assign(headers({ "X-HTTP-Method": "DELETE", "IF-Match": eTag }), options);
-    return send<T>(spClientBinder("POST"))(o, opts);
+    return spPost<T>(o, opts);
 };

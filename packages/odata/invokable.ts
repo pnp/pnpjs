@@ -1,17 +1,17 @@
-import { IQueryable, Queryable } from "./queryable";
+import { IQueryable } from "./queryable";
 import { RequestContext } from "./pipeline";
 import { IFetchOptions, RuntimeConfig } from "@pnp/common";
-import { extensionOrDefault, doFactoryExtensions } from "./extensions";
+import { extensionOrDefault, applyFactoryExtensions } from "./extensions";
 
-export type IHybrid<T, R = any> = T & {
+export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
 };
 
-export type IInvoker<R> = (this: IQueryable<R>, ...args: any[]) => Promise<R>;
+export type IInvoker<R> = (this: IQueryable, ...args: any[]) => Promise<R>;
 
-const invokableBinder = <T = Queryable<any>>(invoker: IInvoker<T>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R => {
+const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R => {
 
-    return function (...args: any[]) {
+    return (...args: any[]) => {
 
         const factory = (as: any[]) => {
             const r = Object.assign(function (...ags: any[]) { return invoker.apply(r, ags); }, new constructor(...as));
@@ -20,10 +20,11 @@ const invokableBinder = <T = Queryable<any>>(invoker: IInvoker<T>) => <R>(constr
         };
 
         if (RuntimeConfig.ie11) {
+
             return factory(args);
         } else {
 
-            return new Proxy<IHybrid<T>>(doFactoryExtensions(factory, args), {
+            return new Proxy<IHybrid<R>>(applyFactoryExtensions(factory, args), {
                 apply: (target: any, _thisArg: any, argArray?: any) => {
                     return extensionOrDefault("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
                 },
@@ -41,11 +42,9 @@ const invokableBinder = <T = Queryable<any>>(invoker: IInvoker<T>) => <R>(constr
     };
 };
 
-function defaultAction<R = any>(this: IQueryable<R>, options?: IFetchOptions): Promise<R> {
+export const invokableFactory = invokableBinder(function <R = any>(this: IQueryable<R>, options?: IFetchOptions): Promise<R> {
     return this.defaultAction(options);
-}
-
-export const invokableFactory = invokableBinder(defaultAction);
+});
 
 export interface IInvokable<R = any> {
     <T = R>(options?: Partial<RequestContext<T>>): Promise<T>;

@@ -101,7 +101,7 @@ export class _SiteUser extends _SharePointQueryableInstance {
     *
     * @param properties A plain object of property names and values to update for the user
     */
-    public update: (props: TypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, TypedHash<any>, any>("SP.User", data => ({ data, user: <any>this }));
+    public update: (props: TypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, TypedHash<any>>("SP.User", data => ({ data, user: <any>this }));
 }
 export interface ISiteUser extends _SiteUser, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);

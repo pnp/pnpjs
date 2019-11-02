@@ -1,20 +1,19 @@
-import "./queryable";
-import { extendGlobal } from "./extensions";
 import { Logger, LogLevel } from "@pnp/logging";
+import { extendGlobal } from "./extensions";
 import { IQueryable } from "./queryable";
 
 declare module "./queryable" {
     /**
      * Returns the instance wrapped by the invokable proxy
      */
-    interface IQueryable<DefaultActionType> {
+    interface IQueryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;
         __json(): <T = any>(target: T) => () => any;
     }
 
-    interface Queryable<DefaultActionType> {
+    interface Queryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;

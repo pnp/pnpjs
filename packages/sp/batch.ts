@@ -1,7 +1,7 @@
 import { Batch } from "@pnp/odata";
 import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPHttpClient } from "./net/sphttpclient";
+import { SPHttpClient } from "./sphttpclient";
 import { SPRuntimeConfig } from "./splibconfig";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 

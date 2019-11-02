@@ -71,7 +71,7 @@ function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
 /**
  * Clears all global extensions
  */
-export const clearExtensions = () => {
+export const clearGlobalExtensions = () => {
     globaExtensions.length = 0;
 };
 
@@ -89,7 +89,7 @@ export const enableExtensions = () => {
     _enableExtensions = true;
 };
 
-export const doFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
+export const applyFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
 
     let o = factory(args);
 

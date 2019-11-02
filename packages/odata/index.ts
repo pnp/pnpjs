@@ -13,7 +13,7 @@ export {
     extendObj,
     extendFactory,
     ExtensionType,
-    clearExtensions,
+    clearGlobalExtensions,
     enableExtensions,
     disableExtensions,
 } from "./extensions";

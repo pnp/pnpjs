@@ -1,5 +1,5 @@
 import { IODataParser, ODataParser } from "./parsers";
-import { IFetchOptions, IRequestClient, getGUID } from "@pnp/common";
+import { IFetchOptions, IRequestClient, getGUID, objectDefinedNotNull } from "@pnp/common";
 import { IQueryableData, cloneQueryableData } from "./queryable";
 import { PipelineMethod, pipe, getDefaultPipeline } from "./pipeline";
 
@@ -27,7 +27,7 @@ export interface IOperation {
     <ReturnType>(o: Partial<IQueryableData<ReturnType>>): Promise<ReturnType>;
 }
 
-export function operationBinder(pipes: PipelineMethod<any>[]): IClientFactoryBinder {
+export function pipelineBinder(pipes: PipelineMethod<any>[]): IClientFactoryBinder {
 
     return function (clientFactory: () => IRequestClient): IMethodBinder {
 
@@ -37,14 +37,14 @@ export function operationBinder(pipes: PipelineMethod<any>[]): IClientFactoryBin
 
                 // send the IQueryableData down the pipeline
                 return pipe(Object.assign({}, {
-                    batch: null,
+                    batch: o.batch || null,
                     batchDependency: null,
                     cachingOptions: null,
                     clientFactory,
                     cloneParentCacheOptions: null,
                     cloneParentWasCaching: false,
                     hasResult: false,
-                    isBatched: typeof o.batch !== "undefined" && o.batch !== null,
+                    isBatched: objectDefinedNotNull(o.batch),
                     method,
                     options: null,
                     parentUrl: "",
@@ -60,4 +60,4 @@ export function operationBinder(pipes: PipelineMethod<any>[]): IClientFactoryBin
     };
 }
 
-export const defaultPipelineBinder: IClientFactoryBinder = operationBinder(getDefaultPipeline());
+export const defaultPipelineBinder: IClientFactoryBinder = pipelineBinder(getDefaultPipeline());

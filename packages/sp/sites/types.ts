@@ -2,7 +2,7 @@ import { SharePointQueryable, _SharePointQueryableInstance, spInvokableFactory }
 import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
 import { hOP, jsS, assign } from "@pnp/common";
-import { SPHttpClient } from "../net/sphttpclient";
+import { SPHttpClient } from "../sphttpclient";
 import { body, headers } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";

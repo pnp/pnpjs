@@ -1,4 +1,4 @@
-import { invokableFactory, body, headers } from "@pnp/odata";
+import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
 import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
 import { Item, IItem } from "../items/types";
@@ -451,6 +451,18 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
         const itemData: T = await item.select.apply(item, selects)();
         return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
+    }
+
+    /**
+     * Extends this queryable from the provided parent 
+     * 
+     * @param parent Parent queryable from which we will derive a base url
+     * @param path Additional path
+     */
+    protected assign(parent: IQueryable<any>, path?: string) {
+        this.data.parentUrl = parent.data.url;
+        this.data.url = combine(this.data.parentUrl, path || "");
+        this.configureFrom(parent);
     }
 
     protected getCanvasContent1(): string {

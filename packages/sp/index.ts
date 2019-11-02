@@ -25,7 +25,7 @@ export {
 
 export {
     SPHttpClient,
-} from "./net/sphttpclient";
+} from "./sphttpclient";
 
 export {
     SPRest,
