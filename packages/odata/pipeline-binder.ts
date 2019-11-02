@@ -3,10 +3,6 @@ import { IFetchOptions, IRequestClient, getGUID, objectDefinedNotNull } from "@p
 import { IQueryableData, cloneQueryableData } from "./queryable";
 import { PipelineMethod, pipe, getDefaultPipeline } from "./pipeline";
 
-/**
- * Methods which operate on queryables
- */
-
 export interface IRequestOptions<T> extends IFetchOptions {
     parser: IODataParser<T>;
 }
@@ -27,12 +23,16 @@ export interface IOperation {
     <ReturnType>(o: Partial<IQueryableData<ReturnType>>): Promise<ReturnType>;
 }
 
+// first we bind the pipeline we will use for all requests within this closure
 export function pipelineBinder(pipes: PipelineMethod<any>[]): IClientFactoryBinder {
 
+    // then we bind the client factory we'll use (typically done in an implementing library such as sp)
     return function (clientFactory: () => IRequestClient): IMethodBinder {
 
+        // then we create a binder we can apply for each type of method (GET, POST, etc.)
         return function (method: string): IOperation {
 
+            // finally we get a function back to which we can pass an IQueryableData instance and execute the request it defines
             return function <ReturnType = any>(o: Partial<IQueryableData<ReturnType>>): Promise<ReturnType> {
 
                 // send the IQueryableData down the pipeline

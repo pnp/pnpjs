@@ -89,6 +89,12 @@ export const enableExtensions = () => {
     _enableExtensions = true;
 };
 
+/**
+ * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
+ * 
+ * @param factory 
+ * @param args 
+ */
 export const applyFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
 
     let o = factory(args);
@@ -133,7 +139,6 @@ export function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) =
 
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
                 r = Reflect.get(h, op)(target, ...rest);
-
             }
 
             if (typeof r !== "undefined") {

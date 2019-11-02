@@ -7,7 +7,7 @@ export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
 };
 
-export type IInvoker<R> = (this: IQueryable, ...args: any[]) => Promise<R>;
+export type IInvoker<R> = (this: IQueryable<any>, ...args: any[]) => Promise<R>;
 
 const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R => {
 
