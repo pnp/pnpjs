@@ -1,5 +1,4 @@
 import { isFunc, hOP } from "@pnp/common";
-import { HttpRequestError } from "./errors";
 
 export interface IODataParser<T> {
     hydrate?: (d: any) => T;
