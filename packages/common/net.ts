@@ -27,9 +27,10 @@ export interface IRequestClient {
     delete(url: string, options?: IFetchOptions): Promise<Response>;
 }
 
-export function mergeHeaders(target: Headers, source: any): void {
-    if (source !== undefined && source !== null) {
-        const temp = <any>new Request("", { headers: source });
+export function mergeHeaders(target: Headers, source: HeadersInit): void {
+
+    if (objectDefinedNotNull(source)) {
+        const temp = new Request("", { headers: source });
         temp.headers.forEach((value: string, name: string) => {
             target.append(name, value);
         });
@@ -49,7 +50,9 @@ export function mergeOptions(target: IConfigOptions, source: IConfigOptions): vo
  * Makes requests using the global/window fetch API
  */
 export class FetchClient implements IHttpClientImpl {
+
     public fetch(url: string, options: IFetchOptions): Promise<Response> {
+
         return global.fetch(url, options);
     }
 }

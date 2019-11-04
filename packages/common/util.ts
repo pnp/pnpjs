@@ -64,9 +64,8 @@ export function combine(...paths: string[]): string {
  */
 export function getRandomString(chars: number): string {
     const text = new Array(chars);
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (let i = 0; i < chars; i++) {
-        text[i] = possible.charAt(Math.floor(Math.random() * possible.length));
+        text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
     }
     return text.join("");
 }
@@ -75,20 +74,15 @@ export function getRandomString(chars: number): string {
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 /* tslint:disable no-bitwise */
 export function getGUID(): string {
     let d = Date.now();
-    if (typeof performance !== "undefined" && typeof performance.now === "function") {
-        d += performance.now(); // use high-precision timer if available
-    }
-    const guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         const r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
         return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
     });
-    return guid;
 }
 /* tslint:enable */
 
@@ -97,8 +91,8 @@ export function getGUID(): string {
  *
  * @param cf The thing to test for functionness
  */
-export function isFunc(cf: any): boolean {
-    return typeof cf === "function";
+export function isFunc(f: any): boolean {
+    return typeof f === "function";
 }
 
 /**
@@ -114,11 +108,7 @@ export function objectDefinedNotNull(obj: any): boolean {
 */
 export function isArray(array: any): boolean {
 
-    if (Array.isArray) {
-        return Array.isArray(array);
-    }
-
-    return array && typeof array.length === "number" && array.constructor === Array;
+    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
 }
 
 /**

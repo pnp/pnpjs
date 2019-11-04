@@ -1,6 +1,6 @@
 import { IFetchOptions, mergeOptions, objectDefinedNotNull } from "@pnp/common";
 import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/odata";
-import { GraphHttpClient } from "./net/graphhttpclient";
+import { GraphHttpClient } from "./graphhttpclient";
 import { IGraphQueryable } from "./graphqueryable";
 
 const graphClientBinder = defaultPipelineBinder(() => new GraphHttpClient());

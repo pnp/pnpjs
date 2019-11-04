@@ -276,18 +276,6 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
     }
 
     /**
-     * Extends this queryable from the provided parent 
-     * 
-     * @param parent Parent queryable from which we will derive a base url
-     * @param path Additional path
-     */
-    protected assign(parent: IQueryable<any>, path?: string) {
-        this.data.parentUrl = parent.data.url;
-        this.data.url = combine(this.data.parentUrl, path || "");
-        this.configureFrom(parent);
-    }
-
-    /**
      * Clones this instance's data to target
      * 
      * @param target Instance to which data is written

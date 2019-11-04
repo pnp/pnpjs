@@ -62,6 +62,6 @@ BuildSystem.launch({}, async (env: LiftOff.LiftoffEnv) => {
 
         default:
 
-            throw Error(`Unrecognized role ${config[0].role} in config.`);
+            throw Error(`Unrecognized role in config.`);
     }
 });

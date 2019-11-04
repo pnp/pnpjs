@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { dateAdd, combine, getRandomString, getGUID, isFunc, isArray, assign, getCtxCallback } from "@pnp/common";
+import { dateAdd, combine, getRandomString, getGUID, isFunc, isArray, assign, getCtxCallback, objectDefinedNotNull, isUrlAbsolute, stringIsNullOrEmpty, jsS, hOP, getHashCode } from "@pnp/common";
 
 // tslint:disable:no-unused-expression
 
-describe("extend", function () {
+describe("assign", function () {
 
     it("Should extend an object with odd fields", function () {
 
@@ -121,7 +121,7 @@ describe("dateAdd", function () {
     });
 });
 
-describe("combinePaths", function () {
+describe("combine", function () {
     it("Should combine the paths '/path/', 'path2', 'path3' and '/path4' to be path/path2/path3/path4", function () {
         expect(combine("/path/", "path2", "path3", "/path4")).to.eq("path/path2/path3/path4");
     });
@@ -161,9 +161,18 @@ describe("getGUID", function () {
     it("Should produce a GUID matching the expected pattern", function () {
         expect(getGUID()).to.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i);
     });
+    it("Should produce a GUID matching the expected pattern", function () {
+        expect(getGUID()).to.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i);
+    });
+    it("Should produce a GUID matching the expected pattern", function () {
+        expect(getGUID()).to.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i);
+    });
+    it("Should produce a GUID matching the expected pattern", function () {
+        expect(getGUID()).to.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i);
+    });
 });
 
-describe("isFunction", function () {
+describe("isFunc", function () {
     it("Should find that a function is a function", function () {
         expect(isFunc(function () { return; })).to.be.true;
     });
@@ -173,6 +182,25 @@ describe("isFunction", function () {
         expect(isFunc(null)).to.be.false;
         expect(isFunc(undefined)).to.be.false;
     });
+});
+
+describe("objectDefinedNotNull", function () {
+
+    it("defined", function () {
+
+        return expect(objectDefinedNotNull({})).to.be.true;
+    });
+
+    it("null", function () {
+
+        return expect(objectDefinedNotNull(null)).to.be.false;
+    });
+
+    it("undefined", function () {
+
+        return expect(objectDefinedNotNull(undefined)).to.be.false;
+    });
+
 });
 
 describe("isArray", function () {
@@ -186,5 +214,63 @@ describe("isArray", function () {
         expect(isArray(3)).to.be.false;
         expect(isArray({})).to.be.false;
         expect(isArray(undefined)).to.be.false;
+    });
+});
+
+describe("isUrlAbsolute", function () {
+    it("Yes", function () {
+        expect(isUrlAbsolute("https://something.com")).to.be.true;
+    });
+
+    it("Yes", function () {
+        expect(isUrlAbsolute("//something.com")).to.be.true;
+    });
+
+    it("Yes", function () {
+        expect(isUrlAbsolute("http://something.com")).to.be.true;
+    });
+
+    it("No", function () {
+        expect(isUrlAbsolute("/sites/dev")).to.be.false;
+    });
+
+    it("No", function () {
+        expect(isUrlAbsolute("sites/dev")).to.be.false;
+    });
+
+    it("Empty", function () {
+        expect(isUrlAbsolute("")).to.be.false;
+    });
+});
+
+describe("stringIsNullOrEmpty", function () {
+    it("Yes", function () {
+        expect(stringIsNullOrEmpty(null)).to.be.true;
+    });
+
+    it("Yes", function () {
+        expect(stringIsNullOrEmpty("")).to.be.true;
+    });
+
+    it("No", function () {
+        expect(stringIsNullOrEmpty("not empty")).to.be.false;
+    });
+});
+
+describe("jsS", function () {
+    it("Sucess", function () {
+        expect(jsS({ test: true })).to.eq(`{"test":true}`);
+    });
+});
+
+describe("hOP", function () {
+    it("Success", function () {
+        expect(hOP({ test: true }, "test")).to.be.true;
+    });
+});
+
+describe("getHashCode", function () {
+    it("Success", function () {
+        expect(getHashCode("test string value")).to.be.a("number");
     });
 });
