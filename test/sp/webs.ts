@@ -109,18 +109,18 @@ describe("Web", () => {
             return expect(p).to.eventually.be.fulfilled;
         });
 
-        // commenting out this test as the code hasn't changed in years and it takes longer than any other test
-        //     it(".applyTheme", function () {
+        // skipping this test as the code hasn't changed in years and it takes longer than any other test
+        it.skip(".applyTheme", function () {
 
-        //         // this takes a long time to process
-        //         this.timeout(60000);
+            // this takes a long time to process
+            this.timeout(60000);
 
-        //         const index = testSettings.sp.url.indexOf("/sites/");
-        //         const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-        //         const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+            const index = testSettings.sp.url.indexOf("/sites/");
+            const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+            const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
-        //         return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
-        //     });
+            return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
+        });
 
         it(".applyWebTemplate", async function () {
 
@@ -161,7 +161,8 @@ describe("Web", () => {
             return expect(result.web.delete()).to.eventually.be.fulfilled;
         });
 
-        it("storage entity", async function () {
+        // skip due to permissions in various testing environments
+        it.skip("storage entity", async function () {
 
             const key = `testingkey_${getRandomString(4)}`;
             const value = "Test Value";
@@ -177,7 +178,8 @@ describe("Web", () => {
             return expect(v.Value).to.equal(value);
         });
 
-        it("storage entity with '", async function () {
+        // skip due to permissions in various testing environments
+        it.skip("storage entity with '", async function () {
 
             const key = `testingkey'${getRandomString(4)}`;
             const value = "Test Value";
@@ -193,7 +195,8 @@ describe("Web", () => {
             return expect(v.Value).to.equal(value);
         });
 
-        describe("appcatalog", () => {
+        // skipping due to permissions issues across testing tenants
+        describe.skip("appcatalog", () => {
 
             it(".getAppCatalog", async function () {
 

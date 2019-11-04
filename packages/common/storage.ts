@@ -164,6 +164,11 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
     private cacheExpirationHandler(): void {
+
+        if (!this.enabled) {
+            return;
+        }
+
         this.deleteExpired().then(_ => {
 
             // call ourself in the future

@@ -1,6 +1,6 @@
 export * from "./batch";
 export * from "./caching";
-export * from "./extenders";
+export * from "./add-prop";
 export * from "./invokable-binder";
 export * from "./pipeline-binder";
 export * from "./parsers";
@@ -15,4 +15,4 @@ export {
     clearGlobalExtensions,
     enableExtensions,
     disableExtensions,
-} from "./extensions";
+} from "./invokable-extensions";

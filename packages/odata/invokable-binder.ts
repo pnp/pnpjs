@@ -1,7 +1,7 @@
 import { IQueryable } from "./queryable";
 import { RequestContext } from "./pipeline";
 import { IFetchOptions, RuntimeConfig } from "@pnp/common";
-import { extensionOrDefault, applyFactoryExtensions } from "./extensions";
+import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions";
 
 export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;

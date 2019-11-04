@@ -1,5 +1,5 @@
 import { Logger, LogLevel } from "@pnp/logging";
-import { extendGlobal } from "./extensions";
+import { extendGlobal } from "./invokable-extensions";
 import { IQueryable } from "./queryable";
 
 declare module "./queryable" {
