@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.3.7 - 2019-11-08
+
+### Added
+
+- @pnp/graph: Added functionality to set mailnickname for new teams ([@frnk01](https://github.com/frnk01)) [[PR](https://github.com/pnp/pnpjs/pull/913)]
+- @pnp/sp: Adds support for including query params with renderListDataAsStream [[PR](https://github.com/pnp/pnpjs/pull/916)]
+
+### Fixed
+
+- docs: Fixed broken sp getItem code sample ([@garrytrinder](https://github.com/garrytrinder)) [[PR](https://github.com/pnp/pnpjs/pull/875)]
+- @pnp/sp: Fixed code comment for addClientSitePage method ([@olemp](https://github.com/olemp)) [[PR](https://github.com/pnp/pnpjs/pull/879)]
+- docs: Fixed typo in docs ([@Noradrex](https://github.com/Noradrex)) [[PR](https://github.com/pnp/pnpjs/pull/885)]
+- @pnp/sp: Fixes an issue with promoting pages before they are published [[PR](https://github.com/pnp/pnpjs/pull/916)]
+
 ## 1.3.6 - 2019-10-11
 
 ### Added

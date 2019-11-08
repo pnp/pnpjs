@@ -371,15 +371,22 @@ export class List extends SharePointQueryableSecurable {
      *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
      */
-    public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null): Promise<any> {
+    public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
 
         const postBody = {
             overrideParameters: extend(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: extend(metadata("SP.RenderListDataParameters"), parameters),
         };
 
-        return this.clone(List, "RenderListDataAsStream", true).postCore({
+        const clone = this.clone(List, "RenderListDataAsStream", true);
+
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach((v, k) => clone.query.set(k, v));
+        }
+
+        return clone.postCore({
             body: jsS(postBody),
         });
     }
