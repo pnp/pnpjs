@@ -37,7 +37,7 @@ Then create
 ```TypeSCript
 import { graph } from "@pnp/graph";
 
-const createdGroupTeam = await graph.teams.create('Groupname', 'description', 'OwnerId',{ 
+const createdGroupTeam = await graph.teams.create('Groupname', 'mailNickname', 'description', 'OwnerId',{ 
 "memberSettings": {
     "allowCreateUpdateChannels": true
 },
@@ -91,7 +91,7 @@ const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 import { graph } from "@pnp/graph";
 
 const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
-'Cloned','description','apps,tabs,settings,channels,members','public');
+'Cloned','mailNickname','description','apps,tabs,settings,channels,members','public');
 
 ```
 ## Get all channels of a Team
