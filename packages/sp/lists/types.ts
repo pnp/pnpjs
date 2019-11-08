@@ -1,4 +1,4 @@
-import { assign, TypedHash, hOP } from "@pnp/common";
+import { assign, TypedHash, hOP, jsS } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -254,16 +254,25 @@ export class _List extends _SharePointQueryableInstance {
      *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
      */
     @tag("l.AsStream")
-    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null): Promise<any> {
+    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
 
         const postBody = body({
             overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: assign(metadata("SP.RenderListDataParameters"), parameters),
         });
 
-        return spPost(this.clone(List, "RenderListDataAsStream", true), postBody);
+        const clone = this.clone(List, "RenderListDataAsStream", true);
+
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach((v, k) => clone.query.set(k, v));
+        }
+
+        return spPost(clone, {
+            body: jsS(postBody),
+        });
     }
 
     /**
