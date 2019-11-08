@@ -1930,7 +1930,7 @@ So the owner Id is important, and you could just get the users Ids from</p>
 <p>Then create</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">createdGroupTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;Groupname&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;OwnerId&#39;</span><span class="p">,{</span> 
+<span class="kr">const</span> <span class="nx">createdGroupTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;Groupname&#39;</span><span class="p">,</span> <span class="s1">&#39;mailNickname&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;OwnerId&#39;</span><span class="p">,{</span> 
 <span class="s2">&quot;memberSettings&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;allowCreateUpdateChannels&quot;</span><span class="o">:</span> <span class="kc">true</span>
 <span class="p">},</span>
@@ -1982,7 +1982,7 @@ So the owner Id is important, and you could just get the users Ids from</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">clonedTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">cloneTeam</span><span class="p">(</span>
-<span class="s1">&#39;Cloned&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;apps,tabs,settings,channels,members&#39;</span><span class="p">,</span><span class="s1">&#39;public&#39;</span><span class="p">);</span>
+<span class="s1">&#39;Cloned&#39;</span><span class="p">,</span><span class="s1">&#39;mailNickname&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;apps,tabs,settings,channels,members&#39;</span><span class="p">,</span><span class="s1">&#39;public&#39;</span><span class="p">);</span>
 </pre></div>
 
 

@@ -715,6 +715,17 @@ export class ClientSidePage extends SharePointQueryable {
 
     private async promoteNewsImpl(method: string): Promise<boolean> {
 
+        // per bug #858 if we promote before we have ever published the last published date will
+        // forever not be updated correctly in the modern news webpart. Because this will affect very
+        // few folks we just go ahead and publish for them here as that is likely what they intended.
+        if (stringIsNullOrEmpty(this.json.VersionInfo.LastVersionCreatedBy)) {
+            const lastPubData = new Date(this.json.VersionInfo.LastVersionCreated);
+            // no modern page should reasonable be published before the year 2000 :)
+            if (lastPubData.getFullYear() < 2000) {
+                await this.save(true);
+            }
+        }
+
         if (this.json.Id === null) {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }

@@ -11,10 +11,11 @@ export class Teams extends GraphQueryableCollection {
     /**
      * Creates a new team and associated Group with the given information
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param ownerId Add an owner with a user id from the graph
      */
-    public create(name: string, description = "", ownerId: string, teamProperties: TeamProperties = {}): Promise<TeamCreateResult> {
+    public create(name: string, mailNickname: string, description = "", ownerId: string, teamProperties: TeamProperties = {}): Promise<TeamCreateResult> {
 
         const groupProps = {
             "description": description && description.length > 0 ? description : "",
@@ -23,7 +24,7 @@ export class Teams extends GraphQueryableCollection {
             ],
         };
 
-        return graph.groups.add(name, name, GroupType.Office365, groupProps).then((gar: GroupAddResult) => {
+        return graph.groups.add(name, mailNickname, GroupType.Office365, groupProps).then((gar: GroupAddResult) => {
             return gar.group.createTeam(teamProperties).then(data => {
                 return {
                     data: data,
@@ -116,17 +117,18 @@ export class Team extends GraphQueryableInstance<TeamProperties> {
     /**
      * Clones this Team
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private 
      */
     // TODO:: update properties to be typed once type is available in graph-types
-    public cloneTeam(name: string, description = "", partsToClone: string, visibility: string): Promise<TeamUpdateResult> {
+    public cloneTeam(name: string, mailNickname: string, description = "", partsToClone: string, visibility: string): Promise<TeamUpdateResult> {
 
         const postBody = {
             description: description ? description : "",
             displayName: name,
-            mailNickname: name,
+            mailNickname: mailNickname,
             partsToClone: partsToClone,
             visibility: visibility,
         };
