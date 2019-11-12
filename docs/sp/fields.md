@@ -306,6 +306,14 @@ const r = await field.select("Id")();
 
 // log the field Id to console
 console.log(r.Id);
+
+// **
+// Adding a lookup that supports multiple values takes two calls:
+const fieldAddResult = await sp.web.fields.addLookup("Test Lookup 124", "GUID", "Title");
+
+await fieldAddResult.field.update({
+    AllowMultipleValues: true,
+}, "SP.FieldLookup");
 ```
 
 ### Add a Choice Field
