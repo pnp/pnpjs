@@ -122,10 +122,16 @@ export class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
      */
     public add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<TaskAddResult> {
 
-        let postBody = extend({
+        let postBody = {
             planId: planId,
             title: title,
-        }, assignments);
+        };
+
+        if (assignments) {
+            postBody = extend(postBody, {
+                assignments: assignments,
+            });
+        }
 
         if (bucketId) {
             postBody = extend(postBody, {
