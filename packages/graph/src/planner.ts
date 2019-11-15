@@ -125,7 +125,13 @@ export class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
         let postBody = extend({
             planId: planId,
             title: title,
-        }, assignments);
+        });
+
+        if (assignments) {
+            postBody = extend(postBody, {
+                assignments: assignments,
+            });
+        }
 
         if (bucketId) {
             postBody = extend(postBody, {
