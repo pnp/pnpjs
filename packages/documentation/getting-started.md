@@ -109,6 +109,31 @@ public onInit(): Promise<void> {
 
 ```
 
+#### Establish Context with an SPFx Service
+
+Because you do not have access to the full context object within a service you need to setup things slightly differently. This works for the sp library, but not the graph library as we don't have access to the AAD token provider from the full context.
+
+```TypeScript
+export class SampleService implements ISampleService {
+
+  public static readonly serviceKey : ServiceKey<ISampleService> = ServiceKey.create<ISampleService>('SPFx:SampleService', SampleService);    
+  
+  constructor(serviceScope : ServiceScope) {
+    serviceScope.whenFinished(() => {  
+      const pageContext = serviceScope.consume(PageContext.serviceKey);  
+      
+       sp.setup({
+         sp : {
+          baseUrl : pageContext.web.absoluteUrl
+         }
+       });
+    });
+  }
+  public getLists(): Promise<any[]> {
+    return sp.web.lists.get();
+  }
+}
+```
 
 ## Connect to SharePoint from Node
 
