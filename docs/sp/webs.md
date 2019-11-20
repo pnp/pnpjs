@@ -19,7 +19,8 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 Using the library you can add a web to another web's collection of subwebs. The simplest usage requires only a title and url. This will result in a team site with all of the default settings. You can also provide other settings such as description, template, language, and inherit permissions.
 
 ```TypeScript
-import { sp, IWebAddResult } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { IWebAddResult } from "@pnp/sp/webs";
 
 const result = await sp.web.webs.add("title", "subweb1");
 
@@ -35,7 +36,8 @@ result.web.select("Title").get().then((w: IWebAddResult)  => {
 ```
 
 ```TypeScript
-import { sp, IWebAddResult } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { IWebAddResult } from "@pnp/sp/webs";
 
 // create a German language wiki site with title, url, description, which does not inherit permissions
 sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w: IWebAddResult) => {
@@ -87,7 +89,7 @@ const r = await sp.web();
 **Create a web instance using the factory function**
 
 ```TypeScript
-import { Web } from "@pnp/sp/web";
+import { Web } from "@pnp/sp/webs";
 
 const web = Web("https://something.sharepoint.com/sites/dev");
 const r = await web();

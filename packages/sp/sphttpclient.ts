@@ -1,4 +1,3 @@
-import { DigestCache } from "./digestcache";
 import {
     assign,
     mergeHeaders,
@@ -6,20 +5,23 @@ import {
     IRequestClient,
     getCtxCallback,
     IHttpClientImpl,
+    combine,
+    dateAdd,
 } from "@pnp/common";
-import { SPRuntimeConfig } from "../splibconfig";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
+import { SPRuntimeConfig } from "./splibconfig";
+import { extractWebUrl } from "./utils/extractweburl";
+import { tag } from "./telemetry";
+import { ODataParser } from "@pnp/odata";
 
 export class SPHttpClient implements IRequestClient {
 
-    private _digestCache: DigestCache;
+    private _digestCache: IGetDigest;
 
     constructor(private _impl: IHttpClientImpl = SPRuntimeConfig.fetchClientFactory()) {
-        this._digestCache = new DigestCache(this);
+        this._digestCache = getDigestFactory(this);
     }
 
-    public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
+    public async fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
 
         let opts = assign(options, { cache: "no-cache", credentials: "same-origin" }, true);
 
@@ -60,16 +62,11 @@ export class SPHttpClient implements IRequestClient {
 
         opts = assign(opts, { headers: headers });
 
-        if (opts.method && opts.method.toUpperCase() !== "GET") {
+        // if we have either a request digest or an authorization header we don't need a digest
+        if (opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization")) {
 
-            // if we have either a request digest or an authorization header we don't need a digest
-            if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
-                return this._digestCache.getDigest(extractWebUrl(url))
-                    .then((digest) => {
-                        headers.append("X-RequestDigest", digest);
-                        return this.fetchRaw(url, opts);
-                    });
-            }
+            const digest = await this._digestCache(extractWebUrl(url));
+            headers.append("X-RequestDigest", digest);
         }
 
         return this.fetchRaw(url, opts);
@@ -82,11 +79,11 @@ export class SPHttpClient implements IRequestClient {
         mergeHeaders(rawHeaders, options.headers);
         options = assign(options, { headers: rawHeaders });
 
-        const retry = (ctx: RetryContext): void => {
+        const retry = (ctx: IRetryContext): void => {
 
             // handles setting the proper timeout for a retry
             const setRetry = (response: Response) => {
-                let delay;
+                let delay: number;
 
                 if (response.headers.has("Retry-After")) {
                     // if we have gotten a header, use that value as the delay value
@@ -133,15 +130,13 @@ export class SPHttpClient implements IRequestClient {
 
         return new Promise((resolve, reject) => {
 
-            const retryContext: RetryContext = {
+            retry.call(this, <IRetryContext>{
                 attempts: 0,
                 delay: 100,
                 reject: reject,
                 resolve: resolve,
                 retryCount: 7,
-            };
-
-            retry.call(this, retryContext);
+            });
         });
     }
 
@@ -166,10 +161,62 @@ export class SPHttpClient implements IRequestClient {
     }
 }
 
-interface RetryContext {
+interface IRetryContext {
     attempts: number;
     delay: number;
     reject: (reason?: any) => void;
     resolve: (value?: Response | PromiseLike<Response>) => void;
     retryCount: number;
+}
+
+interface ICachedDigest {
+    expiration: Date;
+    value: string;
+}
+
+interface IGetDigest {
+    (webUrl: string): Promise<string>;
+}
+
+// allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
+const digests = new Map<string, ICachedDigest>();
+
+function getDigestFactory(client: SPHttpClient): IGetDigest {
+
+    return async (webUrl: string) => {
+
+        const cachedDigest: ICachedDigest = digests.get(webUrl);
+
+        if (cachedDigest !== undefined) {
+            const now = new Date();
+            if (now < cachedDigest.expiration) {
+                return cachedDigest.value;
+            }
+        }
+
+        const url = combine(webUrl, "/_api/contextinfo");
+
+        const headers = {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose;charset=utf-8",
+        };
+
+        const resp = await client.fetchRaw(url, {
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: assign(headers, SPRuntimeConfig.headers, true),
+            method: "POST",
+        });
+
+        const parsed = await (new ODataParser()).parse(resp).then(r => r.GetContextWebInformation);
+
+        const newCachedDigest: ICachedDigest = {
+            expiration: dateAdd(new Date(), "second", parsed.FormDigestTimeoutSeconds),
+            value: parsed.FormDigestValue,
+        };
+
+        digests.set(webUrl, newCachedDigest);
+
+        return newCachedDigest.value;
+    };
 }

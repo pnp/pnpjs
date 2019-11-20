@@ -1,4 +1,4 @@
-import { assign, TypedHash, hOP } from "@pnp/common";
+import { assign, TypedHash, hOP, jsS } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -87,25 +87,22 @@ export class _Lists extends _SharePointQueryableCollection {
             throw Error("The ensure list method is not supported for use in a batch.");
         }
 
-        return new Promise((resolve, reject) => {
+        const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
 
-            const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+        const list: IList = this.getByTitle(addOrUpdateSettings.Title);
 
-            const list: IList = this.getByTitle(addOrUpdateSettings.Title);
+        try {
 
-            list.get().then(_ => {
+            // this will throw if the list doesn't exist
+            await list.select("Title")();
+            const data = await list.update(addOrUpdateSettings).then(r => r.data);
+            return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
 
-                list.update(addOrUpdateSettings).then(d => {
-                    resolve({ created: false, data: d, list: this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(e => reject(e));
+        } catch (e) {
 
-            }).catch(_ => {
-
-                this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then((r) => {
-                    resolve({ created: true, data: r.data, list: this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch((e) => reject(e));
-            });
-        });
+            const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
+            return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+        }
     }
 
     /**
@@ -257,16 +254,25 @@ export class _List extends _SharePointQueryableInstance {
      *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
      */
     @tag("l.AsStream")
-    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null): Promise<any> {
+    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
 
         const postBody = body({
             overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: assign(metadata("SP.RenderListDataParameters"), parameters),
         });
 
-        return spPost(this.clone(List, "RenderListDataAsStream", true), postBody);
+        const clone = this.clone(List, "RenderListDataAsStream", true);
+
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach((v, k) => clone.query.set(k, v));
+        }
+
+        return spPost(clone, {
+            body: jsS(postBody),
+        });
     }
 
     /**

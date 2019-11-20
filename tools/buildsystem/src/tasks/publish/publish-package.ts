@@ -23,7 +23,7 @@ export function publishPackage(version: string, config: PublishSchema): Promise<
             exec("npm publish --access public",
                 {
                     cwd: path.resolve(publishRoot, packageFolders[i]),
-                }, (error, stdout, stderr) => {
+                }, (error, _stdout, _stderr) => {
 
                     if (error === null) {
                         log(`${colors.bgGreen(" ")} Published ${packagePath}`);

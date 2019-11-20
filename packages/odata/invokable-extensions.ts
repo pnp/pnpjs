@@ -12,43 +12,42 @@ const globaExtensions: ExtensionType[] = [];
 const ObjExtensionsSym = Symbol("__extensions");
 
 /**
- * Creates global extensions across all invokable objets
+ * Creates global extensions across all invokable objects
  * 
  * @param e The global extensions to apply
  */
 export const extendGlobal = (e: ExtensionType | ExtensionType[]) => {
 
     _enableExtensions = true;
-
     extendCol(globaExtensions, e);
 };
 
 /**
- * Applies the supplied extensions to the single instance
+ * Applies the supplied extensions to a single instance
  * 
- * @param o Object to which extensions are applied
- * @param e Extensions to apply
+ * @param target Object to which extensions are applied
+ * @param extensions Extensions to apply
  */
-export const extendObj = <T extends object>(o: T, e: ExtensionType | ExtensionType[]): T => {
+export const extendObj = <T extends object>(target: T, extensions: ExtensionType | ExtensionType[]): T => {
 
     _enableExtensions = true;
 
-    if (!Reflect.has(o, ObjExtensionsSym)) {
-        Reflect.set(o, ObjExtensionsSym, []);
+    if (!Reflect.has(target, ObjExtensionsSym)) {
+        Reflect.set(target, ObjExtensionsSym, []);
     }
 
-    extendCol(<ExtensionType[]>Reflect.get(o, ObjExtensionsSym), e);
+    extendCol(<ExtensionType[]>Reflect.get(target, ObjExtensionsSym), extensions);
 
-    return o;
+    return target;
 };
 
 /**
  * Allows applying extensions to all instances created from the supplied factory
  * 
- * @param factory 
- * @param h 
+ * @param factory The Invokable Factory method to extend
+ * @param extensions Extensions to apply
  */
-export const extendFactory = <T extends (...args: any[]) => any>(factory: T, e: ExtensionType | ExtensionType[]): void => {
+export const extendFactory = <T extends (...args: any[]) => any>(factory: T, extensions: ExtensionType | ExtensionType[]): void => {
 
     _enableExtensions = true;
 
@@ -56,7 +55,7 @@ export const extendFactory = <T extends (...args: any[]) => any>(factory: T, e: 
         (<any>factory).__proto__[ObjExtensionsSym] = [];
     }
 
-    extendCol((<any>factory).__proto__[ObjExtensionsSym], e);
+    extendCol((<any>factory).__proto__[ObjExtensionsSym], extensions);
 };
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
@@ -72,7 +71,7 @@ function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
 /**
  * Clears all global extensions
  */
-export const clearExtensions = () => {
+export const clearGlobalExtensions = () => {
     globaExtensions.length = 0;
 };
 
@@ -90,7 +89,13 @@ export const enableExtensions = () => {
     _enableExtensions = true;
 };
 
-export const doFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
+/**
+ * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
+ * 
+ * @param factory 
+ * @param args 
+ */
+export const applyFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
 
     let o = factory(args);
 
@@ -101,46 +106,46 @@ export const doFactoryExtensions = <T extends object = {}>(factory: (args: any[]
     return o;
 };
 
-export function hookOr(op: ValidProxyMethods, or: (...args: any[]) => any, target: any, ...rest: any[]): any {
+export function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) => any, target: any, ...rest: any[]): any {
 
     if (_enableExtensions) {
 
-        const ec: ExtensionType[] = [];
+        const extensions: ExtensionType[] = [];
 
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            ec.push(...Reflect.get(target, ObjExtensionsSym));
+            extensions.push(...Reflect.get(target, ObjExtensionsSym));
         }
 
         // second we need to process any global extensions
-        ec.push(...globaExtensions);
+        extensions.push(...globaExtensions);
 
-        for (let i = 0; i < ec.length; i++) {
-            const h = ec[i];
+        for (let i = 0; i < extensions.length; i++) {
+            const extension = extensions[i];
 
-            let r = undefined;
+            let result = undefined;
 
-            if (isFunc(h)) {
+            if (isFunc(extension)) {
 
                 // this extension is a function which we call
-                r = (<any>h)(op, target, ...rest);
+                result = (<any>extension)(op, target, ...rest);
 
-            } else if (op === "get" && Reflect.has(h, rest[0])) {
+            } else if (op === "get" && Reflect.has(extension, rest[0])) {
 
                 // this extension is a named extension meaning we are overriding a specific method/property
-                r = Reflect.get(h, rest[0], target);
+                result = Reflect.get(extension, rest[0], target);
 
-            } else if (Reflect.has(h, op)) {
+            } else if (Reflect.has(extension, op)) {
 
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                r = Reflect.get(h, op)(target, ...rest);
-
+                result = Reflect.get(extension, op)(target, ...rest);
             }
 
-            if (typeof r !== "undefined") {
+            if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
-                // this means that extensions overrides any other extensions and no more are executed
-                return r;
+                // this means that this extension overrides any other extensions and no more are executed
+                // first extension in the list to return "wins"
+                return result;
             }
         }
     }

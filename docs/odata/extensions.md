@@ -214,18 +214,21 @@ const items = await lists.getByTitle("LookupList").items();
 console.log(JSON.stringify(items.length, null, 2));
 ```
 
-## Enable and Disable Extensions
+## Enable & Disable Extensions and Clear Global Extensions
 
 Extensions are automatically enabled when you set an extension through any of the above outlined methods. You can disable and enable extensions on demand if needed.
 
 ```TypeScript
-import { enableExtensions, disableExtensions } from "@pnp/odata";
+import { enableExtensions, disableExtensions, clearGlobalExtensions } from "@pnp/odata";
 
 // disable Extensions
 disableExtensions();
 
 // enable Extensions
 enableExtensions();
+
+// clear all the globally registered extensions
+clearGlobalExtensions();
 ```
 
 ## Order of Operations

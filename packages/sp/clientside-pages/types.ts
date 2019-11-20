@@ -1,4 +1,4 @@
-import { invokableFactory, body, headers } from "@pnp/odata";
+import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
 import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
 import { Item, IItem } from "../items/types";
@@ -453,6 +453,18 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
     }
 
+    /**
+     * Extends this queryable from the provided parent 
+     * 
+     * @param parent Parent queryable from which we will derive a base url
+     * @param path Additional path
+     */
+    protected assign(parent: IQueryable<any>, path?: string) {
+        this.data.parentUrl = parent.data.url;
+        this.data.url = combine(this.data.parentUrl, path || "");
+        this.configureFrom(parent);
+    }
+
     protected getCanvasContent1(): string {
         return JSON.stringify(this.getControls());
     }
@@ -544,6 +556,17 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
         if (this.json.Id === null) {
             throw Error("The id for this page is null.");
+        }
+
+        // per bug #858 if we promote before we have ever published the last published date will
+        // forever not be updated correctly in the modern news webpart. Because this will affect very
+        // few folks we just go ahead and publish for them here as that is likely what they intended.
+        if (stringIsNullOrEmpty(this.json.VersionInfo.LastVersionCreatedBy)) {
+            const lastPubData = new Date(this.json.VersionInfo.LastVersionCreated);
+            // no modern page should reasonable be published before the year 2000 :)
+            if (lastPubData.getFullYear() < 2000) {
+                await this.save(true);
+            }
         }
 
         return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));

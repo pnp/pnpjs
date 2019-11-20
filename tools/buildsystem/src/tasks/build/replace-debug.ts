@@ -36,7 +36,8 @@ export async function replaceDebug(version: string, config: BuildSchema): Promis
         const sourceRoot = path.resolve(path.dirname(config.buildTargets[i]));
         const outDir = buildConfig.compilerOptions.outDir;
 
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/net/sphttpclient.js"));
+        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/sphttpclient.js"));
+        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "graph/graphhttpclient.js"));
         optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/batch.js"));
 
         requireOptionsCollection.push(Object.assign({}, optionsRequireTemplate, {
@@ -44,7 +45,7 @@ export async function replaceDebug(version: string, config: BuildSchema): Promis
                 path.resolve(sourceRoot, outDir, "**/*.js"),
                 path.resolve(sourceRoot, outDir, "**/*.d.ts"),
             ],
-            to: (match) => {
+            to: (match: string) => {
                 const m = /require\(['|"]@pnp\/([\w-\/]*?)['|"]/ig.exec(match);
                 return `require("${path.resolve(sourceRoot, outDir, `packages/${m[1]}`).replace(/\\/g, "/")}"`;
             },

@@ -23,7 +23,7 @@ export function publishBetaPackage(version: string, config: PublishSchema): Prom
             exec("npm publish --tag beta --access public",
                 {
                     cwd: path.resolve(publishRoot, packageFolders[i]),
-                }, (error, stdout, stderr) => {
+                }, (error, stdout, _stderr) => {
 
                     if (error === null) {
                         log(`${colors.bgGreen(" ")} Published BETA ${packagePath}`);

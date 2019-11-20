@@ -6,7 +6,7 @@ import {
     IHttpClientImpl,
     getCtxCallback,
 } from "@pnp/common";
-import { GraphRuntimeConfig } from "../graphlibconfig";
+import { GraphRuntimeConfig } from "./graphlibconfig";
 
 export class GraphHttpClient implements IRequestClient {
 
@@ -29,6 +29,11 @@ export class GraphHttpClient implements IRequestClient {
 
         if (!headers.has("Content-Type")) {
             headers.append("Content-Type", "application/json");
+        }
+
+        if (!headers.has("SdkVersion")) {
+            // this marks the requests for understanding by the service
+            headers.append("SdkVersion", "PnPCoreJS/$$Version$$");
         }
 
         const opts = assign(options, { headers: headers });

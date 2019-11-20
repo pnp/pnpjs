@@ -133,6 +133,21 @@ const item = await sp.web.lists.getByTitle("LookupList").items.getById(1).select
 console.log(item);
 ```
 
+### Filter using Metadata fields
+
+To filter on a metadata field you must use the getItemsByCAMLQuery method as $filter does not support these fields.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+
+const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
+    ViewXml: `<View><Query><Where><Eq><FieldRef Name="MetaData"/><Value Type="TaxonomyFieldType">Term 2</Value></Eq></Where></Query></View>`,
+});
+```
+
+
 ### Retrieving PublishingPageImage
 
 The PublishingPageImage and some other publishing-related fields aren't stored in normal fields, rather in the MetaInfo field. To get these values you need to use the technique shown below, and originally outlined in [this thread](https://github.com/SharePoint/PnP-JS-Core/issues/178). Note that a lot of information can be stored in this field so will pull back potentially a significant amount of data, so limit the rows as possible to aid performance.

@@ -86,7 +86,7 @@ export class _SiteGroup extends _SharePointQueryableInstance {
      * 
      * @param props The group properties object of property names and values to be set for the group
      */
-    public update = this._update<IGroupUpdateResult, TypedHash<any>, any>("SP.Group", (d, p) => {
+    public update = this._update<IGroupUpdateResult, TypedHash<any>>("SP.Group", (d, p) => {
 
         let retGroup: ISiteGroup = this;
 

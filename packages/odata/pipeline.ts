@@ -53,11 +53,7 @@ export function setResult<T = any>(context: RequestContext<T>, value: any): Prom
  */
 function next<T = any>(c: RequestContext<T>): Promise<RequestContext<T>> {
 
-    if (c.pipes.length > 0) {
-        return c.pipes.shift()!(c);
-    } else {
-        return Promise.resolve(c);
-    }
+    return c.pipes.length > 0 ? c.pipes.shift()(c) : Promise.resolve(c);
 }
 
 /**

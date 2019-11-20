@@ -1,9 +1,8 @@
 export * from "./batch";
 export * from "./caching";
-export * from "./errors";
-export * from "./extenders";
-export * from "./invokable";
-export * from "./operation-binder";
+export * from "./add-prop";
+export * from "./invokable-binder";
+export * from "./pipeline-binder";
 export * from "./parsers";
 export * from "./pipeline";
 export * from "./queryable";
@@ -13,7 +12,7 @@ export {
     extendObj,
     extendFactory,
     ExtensionType,
-    clearExtensions,
+    clearGlobalExtensions,
     enableExtensions,
     disableExtensions,
-} from "./extensions";
+} from "./invokable-extensions";

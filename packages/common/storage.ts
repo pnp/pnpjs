@@ -18,12 +18,18 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
      * @constructor
      */
     constructor(private store: Storage, public defaultTimeoutMinutes = -1) {
+
         this.enabled = this.test();
+
         // if the cache timeout is enabled call the handler
         // this will clear any expired items and set the timeout function
         if (RuntimeConfig.enableCacheExpiration) {
             this.cacheExpirationHandler();
         }
+    }
+
+    public static bind(store: Storage): IPnPClientStore {
+        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
     }
 
     /**
@@ -43,7 +49,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
             return null;
         }
 
-        const persistable = JSON.parse(o!);
+        const persistable = JSON.parse(o);
 
         if (new Date(persistable.expiration) <= new Date()) {
             this.delete(key);
@@ -117,7 +123,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
                 // test the stored item to see if we stored it
                 if (/["|']?pnp["|']? ?: ?1/i.test(<string>this.store.getItem(key))) {
                     // get those items as get will delete from cache if they are expired
-                    this.get(key);
+                    await this.get(key);
                 }
             }
         }
@@ -158,13 +164,16 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
     private cacheExpirationHandler(): void {
+
+        if (!this.enabled) {
+            return;
+        }
+
         this.deleteExpired().then(_ => {
 
             // call ourself in the future
             setTimeout(getCtxCallback(this, this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
-        }).catch(e => {
-            console.error(e);
-        });
+        }).catch(console.error);
     }
 }
 
@@ -268,7 +277,7 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
-            this._local = this.getStore("local");
+            this._local = PnPClientStorageWrapper.bind(localStorage);
         }
 
         return this._local;
@@ -280,18 +289,9 @@ export class PnPClientStorage {
     public get session(): IPnPClientStore {
 
         if (this._session === null) {
-            this._session = this.getStore("session");
+            this._session = PnPClientStorageWrapper.bind(sessionStorage);
         }
 
         return this._session;
-    }
-
-    private getStore(name: string): PnPClientStorageWrapper {
-
-        if (name === "local") {
-            return new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
-        }
-
-        return new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
     }
 }

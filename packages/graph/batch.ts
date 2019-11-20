@@ -2,7 +2,7 @@ import { Batch, ODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { assign, jsS, isUrlAbsolute } from "@pnp/common";
 import { GraphRuntimeConfig } from "./graphlibconfig";
-import { GraphHttpClient } from "./net/graphhttpclient";
+import { GraphHttpClient } from "./graphhttpclient";
 
 interface GraphBatchRequestFragment {
     id: string;

@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2.0.0 - 2019-XX-XX
 
-_This begins a new changelog for v2_
-
 ### Added
 
 - odata: added IQueryableData
@@ -25,6 +23,7 @@ _This begins a new changelog for v2_
   - added additional methods to operate on Queryables
   - all inheriting methods updated with interfaces and factory functions
   - remove ODataQueryable and merged into Queryable
+  - created binding functions for invokables and operations
 - sp & graph: libraries can be selectively imported
 - all: updated internals to use await
 - all: interfaces prefixed with "I"
@@ -37,7 +36,7 @@ _This begins a new changelog for v2_
 - common: extend renamed to assign
 - sp: client side pages breaking changes in method signatures
 - sp: breaking change to rename search classes and factories
-- common: moved adalclient to @pnp/adaljsclient to reduce bundle sizes
+- common: moved adalclient to @pnp/adaljsclient to reduce size of common
 
 ### Fixed
 
