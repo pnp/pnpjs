@@ -47,7 +47,7 @@ import { setup as pnpSetup } from "@pnp/common";
 
 // ...
 
-public onInit(): Promise<void> {
+protected onInit(): Promise<void> {
 
   return super.onInit().then(_ => {
 
@@ -70,7 +70,7 @@ import { sp } from "@pnp/sp/presets/all";
 
 // ...
 
-public onInit(): Promise<void> {
+protected onInit(): Promise<void> {
 
   return super.onInit().then(_ => {
 
@@ -86,6 +86,26 @@ public onInit(): Promise<void> {
 
 ```
 
+The sp setup also supports passing just the SPFx context object directly as this is the most common case
+
+```TypeScript
+import { sp } from "@pnp/sp/presets/all";
+
+// ...
+
+protected async onInit(): Promise<void> {
+
+  await super.onInit();
+
+  // other init code may be present
+  
+  sp.setup(this.context);
+}
+
+// ...
+
+```
+
 #### Using @pnp/graph setup
 
 ```TypeScript
@@ -93,7 +113,7 @@ import { graph } from "@pnp/graph/presets/all";
 
 // ...
 
-public onInit(): Promise<void> {
+protected onInit(): Promise<void> {
 
   return super.onInit().then(_ => {
 

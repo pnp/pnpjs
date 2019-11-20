@@ -1,18 +1,6 @@
-import { BearerTokenFetchClient, IFetchOptions, ISPFXContext, isUrlAbsolute } from "@pnp/common";
+import { BearerTokenFetchClient, IFetchOptions, ISPFXContext, isUrlAbsolute, SPFxAdalClient , getADALResource } from "@pnp/common";
 // @ts-ignore
 import * as adal from "adal-angular/dist/adal.min.js";
-
-/**
- * Parses out the root of the request url to use as the resource when getting the token
- * 
- * After: https://gist.github.com/jlong/2428561
- * @param url The url to parse
- */
-function getResource(url: string): string {
-    const parser = <HTMLAnchorElement>document.createElement("a");
-    parser.href = url;
-    return `${parser.protocol}//${parser.hostname}`;
-}
 
 /**
  * Azure AD Client for use in the browser
@@ -71,7 +59,7 @@ export class AdalClient extends BearerTokenFetchClient {
         }
 
         // the url we are calling is the resource
-        const token = await this.getToken(getResource(url));
+        const token = await this.getToken(getADALResource(url));
         this.token = token;
         return super.fetch(url, options);
     }
@@ -179,43 +167,5 @@ export class AdalClient extends BearerTokenFetchClient {
         });
 
         return this._loginPromise;
-    }
-}
-
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-export class SPFxAdalClient extends BearerTokenFetchClient {
-
-    /**
-     * 
-     * @param context provide the appropriate SPFx Context object
-     */
-    constructor(private context: ISPFXContext) {
-        super(null);
-    }
-
-    /**
-     * Executes a fetch request using the supplied url and options
-     * 
-     * @param url Absolute url of the request
-     * @param options Any options
-     */
-    public async fetch(url: string, options: IFetchOptions): Promise<Response> {
-
-        const token = await this.getToken(getResource(url));
-        this.token = token;
-        return super.fetch(url, options);
-    }
-
-    /**
-     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-     * 
-     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
-     */
-    public async getToken(resource: string): Promise<string> {
-
-        const provider = await this.context.aadTokenProviderFactory.getTokenProvider();
-        return provider.getToken(resource);
     }
 }
