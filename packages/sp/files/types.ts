@@ -297,7 +297,7 @@ export class _File extends _SharePointQueryableInstance {
      * @param progress A callback function which can be used to track the progress of the upload
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
-    public setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
+    public async setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
 
         if (progress === undefined) {
             progress = () => null;
@@ -310,20 +310,17 @@ export class _File extends _SharePointQueryableInstance {
         // start the chain with the first fragment
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks: blockCount });
 
-        let chain = this.startUpload(uploadId, file.slice(0, chunkSize));
+        let chain = await this.startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
         for (let i = 2; i < blockCount; i++) {
-            chain = chain.then(pointer => {
-                progress({ uploadId, blockNumber: i, chunkSize, currentPointer: pointer, fileSize, stage: "continue", totalBlocks: blockCount });
-                return this.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
-            });
+            const pointer = chain;
+            progress({ uploadId, blockNumber: i, chunkSize, currentPointer: pointer, fileSize, stage: "continue", totalBlocks: blockCount });
+            chain = await this.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
         }
-
-        return chain.then(pointer => {
-            progress({ uploadId, blockNumber: blockCount, chunkSize, currentPointer: pointer, fileSize, stage: "finishing", totalBlocks: blockCount });
-            return this.finishUpload(uploadId, pointer, file.slice(pointer));
-        });
+        const pointer2 = chain;
+        progress({ uploadId, blockNumber: blockCount, chunkSize, currentPointer: pointer2, fileSize, stage: "finishing", totalBlocks: blockCount });
+        return this.finishUpload(uploadId, pointer2, file.slice(pointer2));
     }
 
     /**
@@ -475,17 +472,30 @@ export class _Version extends _SharePointQueryableInstance {
 export interface IVersion extends _Version, IDeleteableWithETag { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 
+/**
+ * Types for document check in. 
+ * Minor = 0
+ * Major = 1
+ * Overwrite = 2
+ */
 export enum CheckinType {
     Minor = 0,
     Major = 1,
     Overwrite = 2,
 }
-
+/**
+ * Describes file and result
+ */
 export interface IFileAddResult {
     file: IFile;
     data: any;
 }
 
+/**
+ * File move opertions
+ * Overwrite = 1
+ * AllowBrokenThickets = 8
+ */
 export enum MoveOperations {
     Overwrite = 1,
     AllowBrokenThickets = 8,
@@ -498,6 +508,9 @@ export enum TemplateFileType {
     ClientSidePage = 3,
 }
 
+/**
+ * Describes SharePoint file upload progress data
+ */
 export interface IFileUploadProgressData {
     uploadId: string;
     stage: "starting" | "continue" | "finishing";

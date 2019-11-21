@@ -7,6 +7,9 @@ declare module "../items/types" {
         readonly file: IFile;
     }
     interface IItem {
+        /**
+         * File in sharepoint site
+         */
         readonly file: IFile;
     }
 }
