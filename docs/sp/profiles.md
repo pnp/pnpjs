@@ -8,6 +8,7 @@ Profiles is accessed directly from the root sp object.
 
 ```typescript
 import { sp } from "@pnp/sp";
+sp.profiles
 ```
 
 ## Get edit profile link for the current user
@@ -36,7 +37,7 @@ console.log("Is my Following list Public =" + isPubic);
 
 ## Find out if the current user is followed by another user
 
-Provides a boolean that indicates if the current users is followed by a specific user. Accepts login name as a parameter.
+Provides a boolean that indicates if the current users is followed by a specific user.
 
 ```typescript
 amIFollowedBy(loginName: string): Promise<boolean>
@@ -50,7 +51,7 @@ console.log("Is " + loginName + " following me? " + isFollowedBy);
 
 ## Find out if I am following a specific user
 
-Provides a boolean that indicates if the current users is followed by a specific user. Accepts login name as a parameter.
+Provides a boolean that indicates if the current users is followed by a specific user.
 
 ```typescript
 amIFollowing(loginName: string): Promise<boolean>
@@ -77,7 +78,7 @@ console.log(tags);
 
 ## Get followers for a specific user
 
-Gets the people who are following the specified user. Accepts login name as a parameter.
+Gets the people who are following the specified user. 
 
 ```typescript
 getFollowersFor(loginName: string): Promise<any[]>
@@ -131,8 +132,6 @@ console.log("Account Name: " + profile.userProperties.AccountName);
 
 ## Gets people specified user is following
 
-Accepts login name as a parameter.
-
 ```typescript
 getPeopleFollowedBy(loginName: string): Promise<any[]>
 ```
@@ -146,8 +145,6 @@ folowers.forEach((value) => {
 ```
 
 ## Gets properties for a specified user
-
-Accepts login name as a parameter.
 
 ```typescript
 getPropertiesFor(loginName: string): Promise<any>
@@ -189,9 +186,6 @@ tags.Items.forEach((tag) => {
 
 ## Gets specified user profile property for the specified user
 
-Accepts login name as a parameter.
-Accepts property name as a parameter.
-
 ```typescript
 getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<string>
 ```
@@ -206,7 +200,6 @@ console.log(property);
 ## Hide specific user from list of suggested people
 
 Removes the specified user from the user's list of suggested people to follow.
-Accepts login name as a parameter.
 
 ```typescript
 hideSuggestion(loginName: string): Promise<void>
@@ -220,8 +213,8 @@ await sp.profiles.hideSuggestion(loginName);
 ## Is one user following another
 
 Indicates whether the first user is following the second user.
-Accepts the account name of the user who might be following the followee.
-Accepts the account name of the user who might be followed by the follower.
+First parameter is the account name of the user who might be following the followee.
+Second parameter is the account name of the user who might be followed by the follower.
 
 ```typescript
 isFollowing(follower: string, followee: string): Promise<boolean>
@@ -334,7 +327,7 @@ await sp.profiles.createPersonalSite();
 
 ## Make all profile data public or private
 
-Set the privacy settings for all social data. Accepts boolean for privacy setting.
+Set the privacy settings for all social data.
 
 ```typescript
 shareAllSocialData(share: boolean): Promise<void>
