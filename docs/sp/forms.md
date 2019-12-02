@@ -1,4 +1,4 @@
-# @pnp/sp/lists
+# @pnp/sp/forms
 
 Forms in SharePoint are the Display, New, and Edit forms associated with a list. 
 
