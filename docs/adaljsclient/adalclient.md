@@ -48,7 +48,7 @@ public render(): void {
 
 #### Calling the SharePoint API
 
-This example shows how to use the ADALClient with the @pnp/sp library to call 
+This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD.
 
 ```TypeScript
 import { sp } from "@pnp/sp/presets/all";
@@ -64,7 +64,7 @@ public onInit(): Promise<void> {
     sp.setup({
       spfxContext: this.context,
       sp: {
-        fetchClientFactory: () => ,
+        fetchClientFactory: () => AdalClient.fromSPFxContext(this.context),
       },
     });
 

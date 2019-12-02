@@ -31,5 +31,3 @@ export function stripInvalidFileFolderChars(input: string, replacer = "", onPrem
         return input.replace(InvalidFileFolderNameCharsOnlineRegex, replacer);
     }
 }
-
-// TODO:: global method to steralize filename inputs

@@ -1,4 +1,5 @@
 import { assign, objectDefinedNotNull } from "./util";
+import { ISPFXContext } from "./spfxcontextinterface";
 
 declare var global: { fetch(url: string, options: any): Promise<Response> };
 
@@ -47,6 +48,16 @@ export function mergeOptions(target: IConfigOptions, source: IConfigOptions): vo
 }
 
 /**
+ * Parses out the root of the request url to use as the resource when getting the token
+ * 
+  * @param url The url to parse
+ */
+export function getADALResource(url: string): string {
+    const u = new URL(url);
+    return `${u.protocol}//${u.hostname}`;
+}
+
+/**
  * Makes requests using the global/window fetch API
  */
 export class FetchClient implements IHttpClientImpl {
@@ -85,5 +96,43 @@ export class BearerTokenFetchClient extends FetchClient {
         options.headers = headers;
 
         return super.fetch(url, options);
+    }
+}
+
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+export class SPFxAdalClient extends BearerTokenFetchClient {
+
+    /**
+     * 
+     * @param context provide the appropriate SPFx Context object
+     */
+    constructor(private context: ISPFXContext) {
+        super(null);
+    }
+
+    /**
+     * Executes a fetch request using the supplied url and options
+     * 
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    public async fetch(url: string, options: IFetchOptions): Promise<Response> {
+
+        const token = await this.getToken(getADALResource(url));
+        this.token = token;
+        return super.fetch(url, options);
+    }
+
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     * 
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    public async getToken(resource: string): Promise<string> {
+
+        const provider = await this.context.aadTokenProviderFactory.getTokenProvider();
+        return provider.getToken(resource);
     }
 }

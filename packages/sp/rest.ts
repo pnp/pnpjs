@@ -1,4 +1,4 @@
-import { IConfigOptions } from "@pnp/common";
+import { IConfigOptions, ISPFXContext } from "@pnp/common";
 import {
     setup as _setup,
     SPConfiguration,
@@ -33,8 +33,15 @@ export class SPRest {
      * 
      * @param config The SharePoint configuration to apply
      */
-    public setup(config: SPConfiguration) {
-        _setup(config);
+    public setup(config: SPConfiguration | ISPFXContext) {
+
+        if ((<ISPFXContext>config).pageContext) {
+            _setup({
+                spfxContext: <ISPFXContext>config,
+            });
+        } else {
+            _setup(<SPConfiguration>config);
+        }
     }
 }
 
