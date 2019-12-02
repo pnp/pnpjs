@@ -18,7 +18,7 @@ editProfileLink(): Promise<string>
 ```
 
 ```typescript
-const editProfileLink = await sp.profiles.editProfileLink;
+const editProfileLink = await sp.profiles.editProfileLink();
 console.log("My edit profile link =" + editProfileLink);
 ```
 
@@ -31,7 +31,7 @@ isMyPeopleListPublic(): Promise<boolean>
 ```
 
 ```typescript
-const isPublic = await sp.profiles.editProfileLink;
+const isPublic = await sp.profiles.isMyPeopleListPublic();
 console.log("Is my Following list Public =" + isPubic);
 ```
 
@@ -101,7 +101,7 @@ myFollowers(): ISharePointQueryableCollection
 ```
 
 ```typescript
-const folowers = await sp.profiles.myFollowers;
+const folowers = await sp.profiles.myFollowers();
 console.log(folowers);
 ```
 
@@ -178,7 +178,7 @@ trendingTags(): Promise<IHashTagCollection>
 ```
 
 ```typescript
-const tags = await sp.profiles.trendingTags;
+const tags = await sp.profiles.trendingTags();
 tags.Items.forEach((tag) => {
   console.log(tag);
 });
@@ -300,7 +300,7 @@ ownerUserProfile(): Promise<IUserProfile>
 ```
 
 ```typescript
-const profile = await sp.profiles.ownerUserProfile;
+const profile = await sp.profiles.ownerUserProfile();
 console.log(profile);
 ```
 
@@ -311,7 +311,7 @@ userProfile(): Promise<any>
 ```
 
 ```typescript
-const profile = await sp.profiles.userProfile;
+const profile = await sp.profiles.userProfile();
 console.log(profile);
 ```
 
