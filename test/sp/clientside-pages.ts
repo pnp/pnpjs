@@ -6,8 +6,9 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/files";
-import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages";
 import { Web } from "@pnp/sp/webs";
+import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages";
+
 
 describe("Clientside Pages", () => {
 
