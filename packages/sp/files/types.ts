@@ -8,7 +8,7 @@ import {
     deleteableWithETag,
 } from "../sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers } from "@pnp/odata";
-import { assign, getGUID } from "@pnp/common";
+import { assign, getGUID, isFunc } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath } from "../decorators";
@@ -299,28 +299,26 @@ export class _File extends _SharePointQueryableInstance {
      */
     public async setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        if (progress === undefined) {
+        if (!isFunc(progress)) {
             progress = () => null;
         }
 
         const fileSize = file.size;
-        const blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
+        const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
-        // start the chain with the first fragment
-        progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks: blockCount });
-
-        let chain = await this.startUpload(uploadId, file.slice(0, chunkSize));
+        // report that we are starting
+        progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });
+        let currentPointer = await this.startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
-        for (let i = 2; i < blockCount; i++) {
-            const pointer = chain;
-            progress({ uploadId, blockNumber: i, chunkSize, currentPointer: pointer, fileSize, stage: "continue", totalBlocks: blockCount });
-            chain = await this.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
+        for (let i = 2; i < totalBlocks; i++) {
+            progress({ uploadId, blockNumber: i, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
+            currentPointer = await this.continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
         }
-        const pointer2 = chain;
-        progress({ uploadId, blockNumber: blockCount, chunkSize, currentPointer: pointer2, fileSize, stage: "finishing", totalBlocks: blockCount });
-        return this.finishUpload(uploadId, pointer2, file.slice(pointer2));
+
+        progress({ uploadId, blockNumber: totalBlocks, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
+        return this.finishUpload(uploadId, currentPointer, file.slice(currentPointer));
     }
 
     /**
