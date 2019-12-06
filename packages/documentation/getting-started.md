@@ -109,6 +109,53 @@ public onInit(): Promise<void> {
 
 ```
 
+#### Establish Context with an SPFx Service
+
+Because you do not have access to the full context object within a service you need to setup things slightly differently. This works for the sp library, but not the graph library as we don't have access to the AAD token provider from the full context.
+
+```TypeScript
+import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
+import { PageContext } from "@microsoft/sp-page-context";
+import { AadTokenProviderFactory } from "@microsoft/sp-http";
+import { sp } from "@pnp/sp";
+
+export interface ISampleService {
+  getLists(): Promise<any[]>;
+}
+
+export class SampleService {
+
+  public static readonly serviceKey: ServiceKey<ISampleService> = ServiceKey.create<ISampleService>('SPFx:SampleService', SampleService);
+
+  constructor(serviceScope: ServiceScope) {
+
+    serviceScope.whenFinished(() => {
+
+      const pageContext = serviceScope.consume(PageContext.serviceKey);
+      const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
+
+      // we need to "spoof" the context object with the parts we need for PnPjs
+      sp.setup({
+        spfxContext: {
+          aadTokenProviderFactory: tokenProviderFactory,
+          pageContext: pageContext,
+        }
+      });
+
+      // This approach also works if you do not require AAD tokens
+      // you don't need to do both
+      // sp.setup({
+      //   sp : {
+      //     baseUrl : pageContext.web.absoluteUrl
+      //   }
+      // });
+    });
+  }
+  public getLists(): Promise<any[]> {
+    return sp.web.lists.get();
+  }
+}
+```
 
 ## Connect to SharePoint from Node
 
