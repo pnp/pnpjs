@@ -482,7 +482,7 @@ export class Web extends SharePointQueryableShareableWeb {
     }
 
     /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     * Returns the collection of changes from the change log that have occurred within the web, based on the specified query
      *
      * @param query The change query
      */
