@@ -1,6 +1,6 @@
 // **************************************************************
 // By creating this file we can abstract all our custom sharepoint logic into extension methods
-// kept here, and invoked cleanly without our components. This has the advantage of only needing
+// kept here, and invoked cleanly within our components. This has the advantage of only needing
 // to import the functionality once within your project while still maintaining the smaller
 // package size enabled by selective imports. We can also add methods using extensions to any
 // of the instance factories allowing us to reuse our code within our project easily - and if done

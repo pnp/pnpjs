@@ -7,6 +7,9 @@ declare module "../folders/types" {
         readonly files: IFiles;
     }
     interface IFolder {
+        /**
+         * Folder containing files
+         */
         readonly files: IFiles;
     }
 }
