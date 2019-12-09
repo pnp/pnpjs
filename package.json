@@ -33,7 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
     "node-fetch": "^2.5.0",
-    "nyc": "^14.1.0",
+    "nyc": "^14.1.1",
     "prettyjson": "^1.2.1",
     "string-replace-loader": "^2.1.1",
     "ts-loader": "^6.0.0",
