@@ -64,6 +64,8 @@ nav:
       - Parsers: 'odata/parsers.md'
       - Pipeline: 'odata/pipeline.md'
       - Queryable: 'odata/queryable.md'
+    - pnpjs:
+      - pnpjs: 'pnpjs/index.md'
     - sp:
       - sp: 'sp/index.md'
       - 'Alias Parameters': 'sp/alias-parameters.md'
