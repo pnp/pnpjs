@@ -8,7 +8,7 @@ import {
     deleteableWithETag,
 } from "../sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers } from "@pnp/odata";
-import { assign, getGUID, isFunc } from "@pnp/common";
+import { assign, getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath } from "../decorators";
@@ -50,6 +50,39 @@ export class _Files extends _SharePointQueryableCollection {
     }
 
     /**
+     * Adds a file using the pound percent safe methods
+     * 
+     * @param url Excoded url of the file
+     * @param content The file content
+     * @param parameters Additional parameters to control method behavior
+     */
+    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
+
+        const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
+
+        if (parameters) {
+            if (parameters.Overwrite) {
+                path.push(",Overwrite=true");
+            }
+            if (parameters.AutoCheckoutOnInvalidData) {
+                path.push(",AutoCheckoutOnInvalidData=true");
+            }
+            if (!stringIsNullOrEmpty(parameters.XorHash)) {
+                path.push(`,XorHash=${escapeQueryStrValue(parameters.XorHash)}`);
+            }
+        }
+
+        path.push(")");
+
+        const resp = await spPost(Files(this, path.join("")), { body: content });
+
+        return {
+            data: resp,
+            file: this.getByName(url),
+        };
+    }
+
+    /**
      * Uploads a file. Not supported for batching
      *
      * @param url The folder-relative url of the file.
@@ -81,7 +114,7 @@ export class _Files extends _SharePointQueryableCollection {
         };
     }
 }
-export interface IFiles extends _Files {}
+export interface IFiles extends _Files { }
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
@@ -385,7 +418,7 @@ export class _File extends _SharePointQueryableInstance {
     }
 }
 
-export interface IFile extends _File, IDeleteableWithETag {}
+export interface IFile extends _File, IDeleteableWithETag { }
 export const File = spInvokableFactory<IFile>(_File);
 
 /**
@@ -457,7 +490,7 @@ export class _Versions extends _SharePointQueryableCollection {
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-export interface IVersions extends _Versions {}
+export interface IVersions extends _Versions { }
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -517,4 +550,19 @@ export interface IFileUploadProgressData {
     chunkSize: number;
     currentPointer: number;
     fileSize: number;
+}
+
+export interface IAddUsingPathProps {
+    /**
+     * Overwrite the file if it exists
+     */
+    Overwrite: boolean;
+    /**
+     * specifies whether to auto checkout on invalid Data. It'll be useful if the list contains validation whose requirements upload will not be able to meet.
+     */
+    AutoCheckoutOnInvalidData?: boolean;
+    /**
+     * Specifies a XOR hash of the file data which should be used to ensure end-2-end data integrity, base64 representation
+     */
+    XorHash?: string;
 }

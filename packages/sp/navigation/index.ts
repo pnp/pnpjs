@@ -1,6 +1,5 @@
 import { SPRest } from "../rest";
-import { Navigation, INavigation } from "./types";
-import { addProp } from "@pnp/odata";
+import { NavigationService, INavigationService } from "./types";
 
 import "./web";
 
@@ -22,8 +21,14 @@ export {
 
 declare module "../rest" {
     interface SPRest {
-        readonly navigation: INavigation;
+        readonly navigation: INavigationService;
     }
 }
 
-addProp(SPRest, "navigation", Navigation);
+Reflect.defineProperty(SPRest.prototype, "navigation", {
+    configurable: true,
+    enumerable: true,
+    get: function (this: SPRest) {
+        return NavigationService().configure(this._options);
+    },
+});

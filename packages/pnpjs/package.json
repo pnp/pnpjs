@@ -1,7 +1,7 @@
 {
   "name": "@pnp/pnpjs",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - rollup library of core functionality (mimics sp-pnp-js)",
+  "description": "pnp - rollup library of all functionality",
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
@@ -9,7 +9,6 @@
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/odata": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER",
-    "@pnp/graph": "0.0.0-PLACEHOLDER",
     "@pnp/config-store": "0.0.0-PLACEHOLDER",
     "@pnp/sp-addinhelpers": "0.0.0-PLACEHOLDER",
     "tslib": "1.10.0"

@@ -1,21 +1,26 @@
-import {  resolve } from "path";
-import { exec } from "child_process";
+import * as wp from "webpack";
 
-const webpackPath = resolve("./node_modules/.bin/webpack");
+export function webpack(config: wp.Configuration): () => Promise<void> {
 
-export function webpack(): Promise<void> {
+    return () => {
 
-    return new Promise((res, reject) => {
+        return new Promise((res, reject) => {
 
-        // exec webpack in the root of the project, the webpack.config.js file handles all configuration
-        exec(`${webpackPath}`, (error, stdout) => {
+            wp(config, (err, stats) => {
 
-            if (error === null) {
+                if (err || stats.hasErrors()) {
+                    console.error("Webpack exited with errors");
+                    console.error(stats.toString());
+                    reject(err);
+                }
+
+                if (stats.hasWarnings()) {
+                    console.warn("Webpack exited with warnings");
+                    console.warn(stats.toString());
+                }
+
                 res();
-            } else {
-                console.error(error);
-                reject(stdout);
-            }
+            });
         });
-    });
+    };
 }

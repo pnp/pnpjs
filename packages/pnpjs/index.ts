@@ -15,19 +15,16 @@ import {
     sanitizeGuid,
 } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
-import { GraphRest, graph as _graph } from "@pnp/graph";
 import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
 import { setup as _setup, PnPConfiguration } from "./pnplibconfig";
 
-/**
- * Root class of the Patterns and Practices namespace, provides an entry point to the library
- */
+// trigger attachment of all functionality to mimic the previous pnpjs impl
+import "@pnp/sp/presets/all";
 
 /**
  * Re-export everything from the dependencies to match the previous pattern
  */
-export * from "@pnp/sp";
-export * from "@pnp/graph";
+export * from "@pnp/sp/presets/all";
 export * from "@pnp/common";
 export * from "@pnp/logging";
 export * from "@pnp/config-store";
@@ -57,11 +54,6 @@ export const util = {
 export const sp = <SPRestAddIn>_sp;
 
 /**
- * Provides access to the Microsoft Graph REST interface
- */
-export const graph = <GraphRest>_graph;
-
-/**
  * Provides access to local and session storage
  */
 export const storage: PnPClientStorage = new PnPClientStorage();
@@ -81,16 +73,12 @@ export const log = Logger;
  */
 export const setup: (config: PnPConfiguration) => void = _setup;
 
-// creating this class instead of directly assigning to default fixes issue #116
+// creating this class instead of directly assigning to default fixes a previous issue
 const Def = {
     /**
      * Global configuration instance to which providers can be added
      */
     config: config,
-    /**
-     * Provides access to the Microsoft Graph REST interface
-     */
-    graph: graph,
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */

@@ -1,6 +1,6 @@
-import { Sort, ReorderingRule, SearchProperty, SearchQuery, ISearchQueryBuilder } from "@pnp/sp";
+import { ISort, IReorderingRule, ISearchProperty, ISearchQuery, ISearchBuilder } from "@pnp/sp/search";
 
-export function SearchQueryBuilder(queryText = "", _query = {}): ISearchQueryBuilder {
+export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder {
     return new SearchQueryBuilderImpl(queryText, _query);
 }
 
@@ -121,7 +121,7 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ HiddenConstraints: constraints });
     }
 
-    public sortList(...sorts: Sort[]): this {
+    public sortList(...sorts: ISort[]): this {
         return this.extendQuery({ SortList: sorts });
     }
 
@@ -149,7 +149,7 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ QueryTag: tags });
     }
 
-    public properties(...properties: SearchProperty[]): this {
+    public properties(...properties: ISearchProperty[]): this {
         return this.extendQuery({ Properties: properties });
     }
 
@@ -161,7 +161,7 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ QueryTemplatePropertiesUrl: url });
     }
 
-    public reorderingRules(...rules: ReorderingRule[]): this {
+    public reorderingRules(...rules: IReorderingRule[]): this {
         return this.extendQuery({ ReorderingRules: rules });
     }
 
@@ -193,8 +193,8 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ SummaryLength: len });
     }
 
-    public toSearchQuery(): SearchQuery {
-        return <SearchQuery>this._query;
+    public toSearchQuery(): ISearchQuery {
+        return <ISearchQuery>this._query;
     }
 
     private extendQuery(part: any): this {

@@ -17,8 +17,8 @@ export {
 export {
     ISuggest,
     IPersonalResultSuggestion,
-    ISuggestQuery as ISearchSuggestQuery,
-    ISuggestResult as ISearchSuggestResult,
+    ISuggestQuery,
+    ISuggestResult,
     Suggest,
 } from "./suggest";
 
