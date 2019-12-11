@@ -83,7 +83,7 @@ nav:
       - Hubsites: 'sp/hubsites.md'
       - 'List Items': 'sp/items.md'
       - Lists: 'sp/lists.md'      
-      - 'Navigation Service': 'sp/navigation-service.md'
+      - 'Navigation': 'sp/navigation.md'
       - Permissions: 'sp/permissions.md'
       - Profiles: 'sp/profiles.md'
       - 'Regional Settings': 'sp/regional-settings.md'

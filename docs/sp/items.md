@@ -1,5 +1,13 @@
 # @pnp/sp/items
 
+[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/items";<br />
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: Core|import { sp } from "@pnp/sp/presets/core";|
+
 ## GET
 
 Getting items from a list is one of the basic actions that most applications require. This is made easy through the library and the following examples demonstrate these actions.
