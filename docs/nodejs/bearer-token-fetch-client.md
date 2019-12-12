@@ -4,11 +4,11 @@ The BearerTokenFetchClient class allows you to easily specify your own Bearer to
 
 ```TypeScript
 import { BearerTokenFetchClient } from "@pnp/nodejs";
-import { graph } from "@pnp/graph/presets/all";
+import { sp } from "@pnp/sp/presets/all";
 
-// setup the client using graph setup function
-graph.setup({
-    graph: {
+// setup the client using sp setup function
+sp.setup({
+    sp: {
         fetchClientFactory: () => {
             return new BearerTokenFetchClient("{Bearer Token}");
         },
@@ -16,7 +16,7 @@ graph.setup({
 });
 
 // execute a library request as normal
-const g = await graph.groups.get();
+const g = await sp.web.get();
 
 console.log(JSON.stringify(g, null, 4));
 ```

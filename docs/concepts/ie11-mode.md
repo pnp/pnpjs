@@ -1,6 +1,6 @@
 # IE11 Mode
 
-Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to [invoke](./invokable.md) method chains.
+Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to [invoke](./invokable.md) method chains or use [extensions](../odata/extensions.md).
 
 ```TypeScript
 import { sp } from "@pnp/sp";

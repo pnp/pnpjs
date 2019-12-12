@@ -12,7 +12,7 @@ npm i --save @pnp/sp
 
 ## Selective Imports
 
-Another big change in v2 is the ability to selectively import the pieces you need from the libraries. This allows you to have smaller bundles and works well with tree-shaking. It does require you to have more import statements, which can potentially be a bit confusing at first. The selective imports apply to the sp and graph libraries.
+Another big change in v2 is the ability to selectively import the pieces you need from the libraries. This allows you to have smaller bundles and works well with tree-shaking. It does require you to have more import statements, which can potentially be a bit confusing at first.
 
 To help explain let's take the example of the Web object. In v1 Web includes a reference to pretty much everything else in the entire sp library. Meaning that if you use web (and you pretty much have to) you hold a ref to all the other pieces (like Fields, Lists, ContentTypes) even if you aren't using them. Because of that tree shaking can't do anything to reduce the bundle size because it "thinks" you are using them simply because they have been imported. To solve this in v2 the Web object no longer contains references to anything, it is a bare object with a few methods. If you look at the source you will see that, for example, there is no longer a "lists" property. These properties and methods are now added through selectively importing the functionality you need:
 
@@ -40,7 +40,7 @@ Each of the docs pages shows the selective import paths for each sub-module (lis
 
 ### Presets
 
-In addition to the ability to selectively import functionality you can import presets. This allows you to import an entire set of functionality in a single line. At launch the sp library will support two presets "all" and "core" with the graph library supporting "all". **Using the "all" preset will match the functionality of v1.** This can save you time in transitioning your projects so you can update to selective imports later. For new projects we recommend using the selective imports from day 1.
+In addition to the ability to selectively import functionality you can import presets. This allows you to import an entire set of functionality in a single line. At launch the sp library will support two presets "all" and "core". **Using the "all" preset will match the functionality of v1.** This can save you time in transitioning your projects so you can update to selective imports later. For new projects we recommend using the selective imports from day 1.
 
 To update your V1 projects to V2 you can replace all instances of "@pnp/sp" with "@pnp/sp/presets/all" and things should work as before (though some class names or other things may have changed, please review the change log and the rest of this guide).
 

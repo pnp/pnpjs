@@ -24,11 +24,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - all inheriting methods updated with interfaces and factory functions
   - remove ODataQueryable and merged into Queryable
   - created binding functions for invokables and operations
-- sp & graph: libraries can be selectively imported
+- sp: libraries can be selectively imported
 - all: updated internals to use await
 - all: interfaces prefixed with "I"
 - odata: an empty request pipeline now throws an error
-- sp & graph: updated clone to use factory methods
+- sp: updated clone to use factory methods
 - sp: changed signature of createDefaultAssociatedGroups
 - sp: all query string params are escaped within the library
 - tooling: gulp tasks rewritten in TypeScript, updated to latest
@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
+- graph: removed all support for calling the graph API as required by the MS Graph Product Group
 - odata: removed "as" method from SharePoint & Graph Queryable
 - sp: removed WebInfos class
 - sp: removed InstalledLanguages class

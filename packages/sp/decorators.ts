@@ -18,11 +18,3 @@ export function defaultPath(path: string) {
         };
     };
 }
-
- // TODO::?
-// performance tracking method decorator
-// redirect to graph api
-
-
-
-

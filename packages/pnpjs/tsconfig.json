@@ -12,7 +12,6 @@
         "../logging/**/*.ts",
         "../odata/**/*.ts",
         "../sp/**/*.ts",
-        "../graph/**/*.ts",
         "../config-store/**/*.ts",
         "../sp-addinhelpers/**/*.ts"
     ],
@@ -31,9 +30,6 @@
         },
         {
             "path": "../sp"
-        },
-        {
-            "path": "../graph"
         },
         {
             "path": "../config-store"
