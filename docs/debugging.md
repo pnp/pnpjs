@@ -12,7 +12,6 @@ If you have not already you need to create a [settings.js](./concepts/settings.m
 
 - The first section `spsave` should be configured with a username, password, and site collection url. The user provided should be a site collection admin of the site collection you specify.
 - The `testing.sp`section will be updated with information from the [Register an Add-in](#register_an_add-in)
-- The `testing.graph` section will be updated with information from the [Create App Registration for Graph Testing](#create_app_registration_for_graph_testing)
 
 #### Register an Add-in
 
@@ -166,9 +165,7 @@ For example if you wanted to serve the @pnp/sp package for testing you would use
 
 `gulp serve --p sp`
 
-This will serve a bundle of the sp functionality along with all dependencies and place a global variable named "pnp.{packagename}", in this case pnp.sp. This will be
-true for each package, if you served just the graph package the global would be pnp.graph. This mirrors how the umd modules are built in the distributed npm packages
-to allow testing with matching packages.
+This will serve a bundle of the sp functionality along with all dependencies and place a global variable named "pnp.{packagename}", in this case pnp.sp.
 
 ### Next Steps
 

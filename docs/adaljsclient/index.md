@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
 
-The adaljsclient modules provides an adaljs client for use with the PnPjs sp or graph libraries. It wraps the adaljs functionality from adal-angular in a form consumable by PnPjs.
+The adaljsclient modules provides an adaljs client for use with the PnPjs sp library. It wraps the adaljs functionality from adal-angular in a form consumable by PnPjs.
 
 ## Getting Started
 

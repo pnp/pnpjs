@@ -8,11 +8,6 @@ var settings = {
             url: "{ site collection url }",
             notificationUrl: "{ notification url }",
         },
-        graph: {
-            tenant: "{tenant.onmicrosoft.com}",
-            id: "{your app id}",
-            secret: "{your secret}"
-        },
     }
 }
 

@@ -37,7 +37,6 @@ export async function replaceDebug(version: string, config: BuildSchema): Promis
         const outDir = buildConfig.compilerOptions.outDir;
 
         optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/sphttpclient.js"));
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "graph/graphhttpclient.js"));
         optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/batch.js"));
 
         requireOptionsCollection.push(Object.assign({}, optionsRequireTemplate, {

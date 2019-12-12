@@ -19,9 +19,6 @@
             "path": "./config-store"
         },
         {
-            "path": "./graph"
-        },
-        {
             "path": "./logging"
         },
         {

@@ -1,6 +1,6 @@
 # Selective Imports
 
-As the libraries have grown to support more of the SharePoint and Graph API they have also grown in size. On one hand this is good as more functionality becomes available but you had to include lots of code you didn't use if you were only doing simple operations. To solve this we introduced selective imports in v2. This allows you to only import the parts of the sp or graph library you need, allowing you to greatly reduce your overall solution bundle size - and enables [treeshaking](https://github.com/rollup/rollup#tree-shaking).
+As the libraries have grown to support more of the SharePoint and Graph API they have also grown in size. On one hand this is good as more functionality becomes available but you had to include lots of code you didn't use if you were only doing simple operations. To solve this we introduced selective imports in v2. This allows you to only import the parts of the sp library you need, allowing you to greatly reduce your overall solution bundle size - and enables [treeshaking](https://github.com/rollup/rollup#tree-shaking).
 
 This concept works well with [custom bundling](./custom-bundle.md) to create a shared package tailored exactly to your needs.
 
@@ -96,16 +96,6 @@ import { sp } from "@pnp/sp/presets/core";
 
 // sp.* exists as it did in v1, tree shaking will not work
 const lists = await sp.web.lists();
-```
-
-## Graph
-
-The graph library contains a single preset, "all" mimicing the v1 structure.
-
-```TypeScript
-import { sp } from "@pnp/graph/presets/all";
-
-// graph.* exists as it did in v1, tree shaking will not work
 ```
 
 > While we may look to add additional presets in the future you are encouraged to look at making your own [custom bundles](./custom-bundle.md) as a perferred solution.

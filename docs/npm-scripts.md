@@ -55,9 +55,6 @@ You can also run a specific file with a package. This option _must_ be used with
 ```cmd
 # run only sp web tests
 npm test -- -p sp -s web
-
-# run only graph groups tests
-npm test -- -package graph -single groups
 ```
 
 **Specify a Site**
