@@ -128,7 +128,7 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
     /**
      * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
      * 
-     * @param resource Resource for which a token is to be requested
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
     public async getToken(resource: string): Promise<string> {
 
