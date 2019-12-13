@@ -2,6 +2,8 @@
 
 Often times data doesn't change that quickly, especially in the case of rolling up corporate news or upcoming events. These types of things can be cached for minutes if not hours. To help make caching easy you just need to insert the usingCaching method in your chain. This only applies to get requests. The usingCaching method can be used with the inBatch method as well to cache the results of batched requests.
 
+The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/odata base classes, such as @pnp/graph.
+
 ## Basic example
 
 You can use the method without any additional configuration. We have made some default choices for you and will discuss ways to override them later. The below code will get the items from the list, first checking the cache for the value. You can also use it with OData operators such as top and orderBy. The usingCaching() should always be the last method in the chain before the get() (OR if you are using [[batching]] these methods can be transposed, more details below).
