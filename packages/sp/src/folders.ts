@@ -180,6 +180,25 @@ export class Folder extends SharePointQueryableShareableFolder {
             });
         });
     }
+
+    /**
+     * Copies a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    public copyTo(destUrl: string): Promise<void> {
+        return this.select("ServerRelativeUrl").get().then(({ ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl }) => {
+            const webBaseUrl = extractWebUrl(absoluteUrl);
+            const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+            const f = new Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()");
+            return f.postCore({
+                body: jsS({
+                    destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                    srcUrl: `${hostUrl}${srcUrl}`,
+                }),
+            });
+        });
+    }
 }
 
 export interface FolderAddResult {
