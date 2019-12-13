@@ -22,7 +22,7 @@ import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 
 @defaultPath("folders")
-export class _Folders extends _SharePointQueryableCollection {
+export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Gets a folder by it's name
@@ -69,7 +69,7 @@ export interface IFolders extends _Folders { }
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 
-export class _Folder extends _SharePointQueryableInstance {
+export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     public delete = deleteableWithETag("f");
 
@@ -188,7 +188,7 @@ export class _Folder extends _SharePointQueryableInstance {
         return shareable;
     }
 }
-export interface IFolder extends _Folder, IDeleteableWithETag {}
+export interface IFolder extends _Folder, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
 
 /**
@@ -221,4 +221,17 @@ export interface IFolderUpdateResult {
      * Additional data from the server 
      */
     data: any;
+}
+
+export interface IFolderInfo {
+    Exists: boolean;
+    IsWOPIEnabled: boolean;
+    ItemCount: number;
+    Name: string;
+    ProgID: string | null;
+    ServerRelativeUrl: string;
+    TimeCreated: string;
+    TimeLastModified: string;
+    UniqueId: string;
+    WelcomePage: string;
 }

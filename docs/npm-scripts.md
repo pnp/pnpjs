@@ -77,8 +77,19 @@ npm test -- -p sp -s web --site https://some.site.com/sites/dev
 If you include this flag the testing web will be deleted once tests are complete. Useful for local testing where you do not need to inspect the web once the tests are complete. Works with any of the other options, be careful when specifying a web using `--site` as it will be deleted.
 
 ```cmd
-# run only sp web tests with a certain site
+# clean up our testing site
 npm test -- --cleanup
+```
+
+**Logging**
+
+>`--logging`
+
+If you include this flag a console logger will be subscribed and the log level will be set to Info. This will provide console output for all the requests being made during testing. This flag is compatible with all other flags - however unless you are trying to debug a specific test this will produce a lot of chatty output.
+
+```cmd
+# enable logging during testing
+npm test -- --logging
 ```
 
 ## build

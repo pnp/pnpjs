@@ -1,4 +1,4 @@
-// import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
+import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { getGUID, combine, assign } from "@pnp/common";
 import { SPFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
@@ -12,11 +12,6 @@ import { Web } from "@pnp/sp/webs";
 chai.use(chaiAsPromised);
 
 declare var process: any;
-
-// optionally enable logging in verbose mode for all testing requests. (generates a lot of info)
-// or set any of the other logging levels
-// Logger.activeLogLevel = LogLevel.Verbose;
-// Logger.subscribe(new ConsoleListener());
 
 export interface ISettingsTestingPart {
     enableWebTests: boolean;
@@ -39,6 +34,7 @@ let mode = "cmd";
 let site: string = null;
 let skipWeb = false;
 let deleteWeb = false;
+let logging = false;
 const deleteAllWebs = false;
 
 for (let i = 0; i < process.argv.length; i++) {
@@ -61,6 +57,11 @@ for (let i = 0; i < process.argv.length; i++) {
     if (/^--cleanup/i.test(arg)) {
         deleteWeb = true;
     }
+    if (/^--logging/i.test(arg)) {
+        logging = true;
+        Logger.activeLogLevel = LogLevel.Info;
+        Logger.subscribe(new ConsoleListener());
+    }
 }
 
 console.log(`*****************************`);
@@ -69,6 +70,7 @@ console.log(`mode: ${mode}`);
 console.log(`site: ${site}`);
 console.log(`skipWeb: ${skipWeb}`);
 console.log(`deleteWeb: ${deleteWeb}`);
+console.log(`logging: ${logging}`);
 console.log(`*****************************`);
 
 switch (mode) {
