@@ -36,6 +36,7 @@ node_modules
 debug/launch/*
 !debug/launch/main.ts
 !debug/launch/sp.ts
+!debug/launch/graph.ts
 !debug/launch/tsconfig.json
 
 debug/serve/*

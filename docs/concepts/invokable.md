@@ -28,14 +28,14 @@ spPost(sp.web);
 But things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:
 
 ```TypeScript
-import { body } from "@pnp/odata";
 import { sp, spPost, SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/fields/web";
 
 // call our made up example method
-spPost(SharePointQueryable(sp.web.fields, "MagicFieldCreationMethod"), body({
-    Field: Value,
-    Field2: Value,
+spPost(SharePointQueryable(sp.web.fields, "MagicFieldCreationMethod"), {
+    body: JSON.stringify({
+        // ... this would be the post body
+    }),
 });
 ```

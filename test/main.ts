@@ -1,5 +1,12 @@
+/**
+ * Howdy, graph testing is meant to be commented out.
+ * We aren't going to implement tests for the graph library at this time.
+ */
+
+
 // import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { getGUID, combine, assign } from "@pnp/common";
+// import { graph } from "@pnp/graph";
 import { SPFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -20,6 +27,11 @@ declare var process: any;
 
 export interface ISettingsTestingPart {
     enableWebTests: boolean;
+    graph?: {
+        id: string;
+        secret: string;
+        tenant: string;
+    };
     sp?: {
         webUrl?: string;
         id: string;
@@ -78,6 +90,11 @@ switch (mode) {
         settings = {
             testing: {
                 enableWebTests: true,
+                graph: {
+                    id: "",
+                    secret: "",
+                    tenant: "",
+                },
                 sp: {
                     id: process.env.PnPTesting_ClientId,
                     notificationUrl: process.env.PnPTesting_NotificationUrl || null,
@@ -161,6 +178,22 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
     });
 }
 
+// function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
+
+//     return new Promise((resolve) => {
+
+//         graph.setup({
+//             graph: {
+//                 fetchClientFactory: () => {
+//                     return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
+//                 },
+//             },
+//         });
+
+//         resolve();
+//     });
+// }
+
 export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
 
 before(async function (): Promise<void> {
@@ -176,6 +209,12 @@ before(async function (): Promise<void> {
         await spTestSetup(testSettings);
         const e = Date.now();
         console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+
+        // console.log(`Setting up Graph tests...`);
+        // s = Date.now();
+        // await graphTestSetup(testSettings);
+        // e = Date.now();
+        // console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
     }
 });
 
