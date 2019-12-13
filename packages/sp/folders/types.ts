@@ -172,8 +172,9 @@ export class _Folder extends _SharePointQueryableInstance {
                 srcUrl: `${hostUrl}${srcUrl}`,
             }));
     }
+    
 
-    @tag("f.moveTo")
+    @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
