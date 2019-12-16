@@ -10,6 +10,8 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+> If the bug is URL related, please ensure you have read the [getting started guide](https://pnp.github.io/pnpjs/documentation/getting-started/), specifically the section explaining establishing context. 
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
