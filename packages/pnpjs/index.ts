@@ -17,18 +17,21 @@ import {
 import { Settings } from "@pnp/config-store";
 import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
 import { setup as _setup, PnPConfiguration } from "./pnplibconfig";
+import { graph as _graph } from "@pnp/graph";
 
 // trigger attachment of all functionality to mimic the previous pnpjs impl
 import "@pnp/sp/presets/all";
+import "@pnp/graph/presets/all";
 
 /**
  * Re-export everything from the dependencies to match the previous pattern
  */
-export * from "@pnp/sp/presets/all";
 export * from "@pnp/common";
 export * from "@pnp/logging";
 export * from "@pnp/config-store";
 export * from "@pnp/odata";
+export * from "./sp-ns";
+export * from "./graph-ns";
 
 /**
  * Utility methods
@@ -52,6 +55,11 @@ export const util = {
  * Provides access to the SharePoint REST interface
  */
 export const sp = <SPRestAddIn>_sp;
+
+/**
+ * Provides access to the SharePoint REST interface
+ */
+export const graph = _graph;
 
 /**
  * Provides access to local and session storage
@@ -78,27 +86,31 @@ const Def = {
     /**
      * Global configuration instance to which providers can be added
      */
-    config: config,
+    config,
+    /**
+     * Provides access to the Graph REST interface
+     */
+    graph,
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */
-    log: log,
+    log,
+    /**
+     * Provides access global setup method
+     */
+    setup,
+    /**
+     * Provides access to the SharePoint REST interface
+     */
+    sp,
     /**
      * Provides access to local and session storage
      */
-    setup: setup,
-    /**
-     * Provides access to the REST interface
-     */
-    sp: sp,
-    /**
-     * Provides access to local and session storage
-     */
-    storage: storage,
+    storage,
     /**
      * Utility methods
      */
-    util: util,
+    util,
 };
 
 /**

@@ -31,11 +31,15 @@ document.onreadystatechange = async function() {
 
 ## Access Library Features
 
-Within the bundle all of the classes and methods are exported at the root object. So if you need to access say the "Web" factory you can do so:
+Within the bundle all of the classes and methods are exported at the root object, with the exports from sp and graph libraries contained with NS variables to avoid naming conflicts. So if you need to access say the "Web" factory you can do so:
 
 ```JavaScript
-const web = pnp.Web("https://something.sharepoint.com");
+const web = pnp.SPNS.Web("https://something.sharepoint.com");
 const lists = await web.lists();
+```
+
+```JavaScript
+pnp.GraphNS.*
 ```
 
 Individual libraries can also be accessed for their exports:

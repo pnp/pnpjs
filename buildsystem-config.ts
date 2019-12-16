@@ -88,6 +88,11 @@ export default <ConfigCollection>[
                         libraryTarget: "umd",
                         path: resolve("./dist/packages/pnpjs/dist"),
                     },
+                    performance: {
+                        // we are making a big package, but this is designed to be non-optimal
+                        maxAssetSize: 300000,
+                        maxEntrypointSize: 300000,
+                    },
                     plugins: [
                         new wp.BannerPlugin({
                             banner,
