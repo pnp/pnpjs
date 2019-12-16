@@ -173,7 +173,25 @@ export class _Folder extends _SharePointQueryableInstance {
             }));
     }
 
-    @tag("f.moveTo")
+    /**
+     * Copies a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    @tag("f.copyTo")
+    public async copyTo(destUrl: string): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+            body({
+                destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                srcUrl: `${hostUrl}${srcUrl}`,
+            }));
+    }
+
+    @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
