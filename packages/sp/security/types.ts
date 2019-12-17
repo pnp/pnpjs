@@ -1,4 +1,4 @@
-import { assign, TypedHash, hOP } from "@pnp/common";
+import { assign, hOP } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
@@ -14,6 +14,7 @@ import { IBasePermissions } from "./types";
 import { metadata } from "../utils/metadata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethods;
 
@@ -22,7 +23,7 @@ export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethod
  *
  */
 @defaultPath("roleassignments")
-export class _RoleAssignments extends _SharePointQueryableCollection {
+export class _RoleAssignments extends _SharePointQueryableCollection<IRoleAssignmentInfo[]> {
 
     /**	
      * Gets the role assignment associated with the specified principal id from the collection.	
@@ -40,8 +41,8 @@ export class _RoleAssignments extends _SharePointQueryableCollection {
      * @param roleDefId The id of the role definition that defines the permissions to assign
      *
      */
-    public add(principalId: number, roleDefId: number): Promise<void> {
-        return spPost(this.clone(RoleAssignments, `addroleassignment(principalid=${principalId}, roledefid=${roleDefId})`));
+    public async add(principalId: number, roleDefId: number): Promise<void> {
+        await spPost(this.clone(RoleAssignments, `addroleassignment(principalid=${principalId}, roledefid=${roleDefId})`));
     }
 
     /**
@@ -51,8 +52,8 @@ export class _RoleAssignments extends _SharePointQueryableCollection {
      * @param roleDefId The id of the role definition in the role assignment
      *
      */
-    public remove(principalId: number, roleDefId: number): Promise<void> {
-        return spPost(this.clone(RoleAssignments, `removeroleassignment(principalid=${principalId}, roledefid=${roleDefId})`));
+    public async remove(principalId: number, roleDefId: number): Promise<void> {
+        await spPost(this.clone(RoleAssignments, `removeroleassignment(principalid=${principalId}, roledefid=${roleDefId})`));
     }
 }
 export interface IRoleAssignments extends _RoleAssignments { }
@@ -62,7 +63,7 @@ export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignm
  * Describes a role assignment
  *
  */
-export class _RoleAssignment extends _SharePointQueryableInstance {
+export class _RoleAssignment extends _SharePointQueryableInstance<IRoleAssignmentInfo> {
 
     public delete = deleteable("ra");
 
@@ -71,7 +72,7 @@ export class _RoleAssignment extends _SharePointQueryableInstance {
      *
      */
     public get groups(): ISiteGroups {
-        return SiteGroups(this, "groups");
+        return tag.configure(SiteGroups(this, "groups"), "ra.groups");
     }
 
     /**
@@ -90,7 +91,7 @@ export const RoleAssignment = spInvokableFactory<IRoleAssignment>(_RoleAssignmen
  *
  */
 @defaultPath("roledefinitions")
-export class _RoleDefinitions extends _SharePointQueryableCollection {
+export class _RoleDefinitions extends _SharePointQueryableCollection<IRoleDefinitionInfo[]> {
 
     /**	   
      * Gets the role definition with the specified id from the collection	    
@@ -118,7 +119,7 @@ export class _RoleDefinitions extends _SharePointQueryableCollection {
      * @param roleTypeKind The roletypekind of the role definition (None=0, Guest=1, Reader=2, Contributor=3, WebDesigner=4, Administrator=5, Editor=6, System=7)
      *
      */
-    public getByType(roleTypeKind: number): IRoleDefinition {
+    public getByType(roleTypeKind: RoleTypeKind): IRoleDefinition {
         return RoleDefinition(this, `getbytype(${roleTypeKind})`);
     }
 
@@ -156,7 +157,7 @@ export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinit
  * Describes a role definition
  *
  */
-export class _RoleDefinition extends _SharePointQueryableInstance {
+export class _RoleDefinition extends _SharePointQueryableInstance<IRoleDefinitionInfo> {
 
     public delete = deleteable("rd");
 
@@ -166,7 +167,7 @@ export class _RoleDefinition extends _SharePointQueryableInstance {
      * @param properties A plain object hash of values to update for the role definition
      */
     /* tslint:disable no-string-literal */
-    public async update(properties: TypedHash<any>): Promise<IRoleDefinitionUpdateResult> {
+    public async update(properties: Partial<IRoleDefinitionInfo>): Promise<IRoleDefinitionUpdateResult> {
 
         const s = ["BasePermissions"];
         if (hOP(properties, s[0]) !== undefined) {
@@ -226,6 +227,22 @@ export interface IBasePermissions {
     Low: number;
     High: number;
 }
+
+export interface IRoleAssignmentInfo {
+    PrincipalId: number;
+}
+
+export interface IRoleDefinitionInfo {
+    BasePermissions: IBasePermissions;
+    Description: string;
+    Hidden: boolean;
+    Id: number;
+    Name: string;
+    Order: number;
+    RoleTypeKind: RoleTypeKind;
+}
+
+export type RoleTypeKind = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export enum PermissionKind {
 

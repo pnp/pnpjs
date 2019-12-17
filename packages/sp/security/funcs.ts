@@ -34,16 +34,16 @@ export async function getCurrentUserEffectivePermissions(this: SecurableQueryabl
  * @param copyRoleAssignments If true the permissions are copied from the current parent scope
  * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
  */
-export function breakRoleInheritance(this: SecurableQueryable, copyRoleAssignments = false, clearSubscopes = false): Promise<any> {
-    return spPost(this.clone(SharePointQueryable, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
+export async function breakRoleInheritance(this: SecurableQueryable, copyRoleAssignments = false, clearSubscopes = false): Promise<void> {
+    await spPost(this.clone(SharePointQueryable, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
 }
 
 /**
  * Removes the local role assignments so that it re-inherit role assignments from the parent object.
  *
  */
-export function resetRoleInheritance(this: SecurableQueryable): Promise<any> {
-    return spPost(this.clone(SharePointQueryable, "resetroleinheritance"));
+export async function resetRoleInheritance(this: SecurableQueryable): Promise<void> {
+    await spPost(this.clone(SharePointQueryable, "resetroleinheritance"));
 }
 
 /**

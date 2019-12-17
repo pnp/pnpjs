@@ -27,4 +27,3 @@ _Item.prototype.resetRoleInheritance = resetRoleInheritance;
 _Item.prototype.userHasPermissions = userHasPermissions;
 _Item.prototype.currentUserHasPermissions = currentUserHasPermissions;
 _Item.prototype.hasPermissions = hasPermissions;
-
