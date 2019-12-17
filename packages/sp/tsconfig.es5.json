@@ -11,7 +11,9 @@
         "../logging/index.ts",
         "../logging/src/**/*.ts",
         "../odata/index.ts",
-        "../odata/src/**/*.ts"
+        "../odata/src/**/*.ts",
+        "../sp-clientsvc/index.ts",
+        "../sp-clientsvc/src/**/*.ts"
     ],
     "references": [
         {
@@ -22,6 +24,9 @@
         },
         {
             "path": "../odata/tsconfig.es5.json"
+        },
+        {
+            "path": "../sp-clientsvc/tsconfig.es5.json"
         }
     ]
 }
