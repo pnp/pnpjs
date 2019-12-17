@@ -1,4 +1,4 @@
-import { assign, TypedHash, hOP, jsS } from "@pnp/common";
+import { assign, hOP, jsS } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -20,7 +20,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
 
 @defaultPath("lists")
-export class _Lists extends _SharePointQueryableCollection {
+export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
 
     /**
      * Gets a list from the collection by guid id
@@ -51,7 +51,7 @@ export class _Lists extends _SharePointQueryableCollection {
      * @param additionalSettings Will be passed as part of the list creation body
      */
     @tag("ls.add")
-    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListAddResult> {
+    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: Partial<IListInfo> = {}): Promise<IListAddResult> {
 
         const addSettings = Object.assign({
             "AllowContentTypes": enableContentTypes,
@@ -81,7 +81,7 @@ export class _Lists extends _SharePointQueryableCollection {
         desc = "",
         template = 100,
         enableContentTypes = false,
-        additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListEnsureResult> {
+        additionalSettings: Partial<IListInfo> = {}): Promise<IListEnsureResult> {
 
         if (this.hasBatch) {
             throw Error("The ensure list method is not supported for use in a batch.");
@@ -126,7 +126,7 @@ export class _Lists extends _SharePointQueryableCollection {
 export interface ILists extends _Lists { }
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
-export class _List extends _SharePointQueryableInstance {
+export class _List extends _SharePointQueryableInstance<IListInfo> {
 
     public delete = deleteableWithETag("l");
 
@@ -169,7 +169,7 @@ export class _List extends _SharePointQueryableInstance {
      * @param eTag Value used in the IF-Match header, by default "*"
      */
     @tag("l.update")
-    public async update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<IListUpdateResult> {
+    public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListUpdateResult> {
 
         const postBody = body(assign({
             "__metadata": { "type": "SP.List" },
@@ -581,4 +581,40 @@ export enum ControlMode {
     Display = 1,
     Edit = 2,
     New = 3,
+}
+
+export interface IListInfo {
+    EnableRequestSignOff: boolean;
+    EnableVersioning: boolean;
+    EntityTypeName: string;
+    ExemptFromBlockDownloadOfNonViewableFiles: boolean;
+    FileSavePostProcessingEnabled: boolean;
+    ForceCheckout: boolean;
+    HasExternalDataSource: boolean;
+    Hidden: boolean;
+    Id: string;
+    ImagePath: { DecodedUrl: string; };
+    ImageUrl: string;
+    IrmEnabled: boolean;
+    IrmExpire: boolean;
+    IrmReject: boolean;
+    IsApplicationList: boolean;
+    IsCatalog: boolean;
+    IsPrivate: boolean;
+    ItemCount: number;
+    LastItemDeletedDate: string;
+    LastItemModifiedDate: string;
+    LastItemUserModifiedDate: string;
+    ListExperienceOptions: number;
+    ListItemEntityTypeFullName: string;
+    MajorVersionLimit: number;
+    MajorWithMinorVersionsLimit: number;
+    MultipleDataList: boolean;
+    NoCrawl: boolean;
+    ParentWebPath: { DecodedUrl: string; };
+    ParentWebUrl: string;
+    ParserDisabled: boolean;
+    ServerTemplateCanCreateFolders: boolean;
+    TemplateFeatureId: string;
+    Title: string;
 }

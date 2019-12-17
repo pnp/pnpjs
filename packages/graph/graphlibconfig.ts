@@ -1,4 +1,4 @@
-import { LibraryConfiguration, TypedHash, RuntimeConfig, IHttpClientImpl } from "@pnp/common";
+import { ILibraryConfiguration, TypedHash, RuntimeConfig, IHttpClientImpl } from "@pnp/common";
 import { AdalClient } from "@pnp/adaljsclient";
 
 export interface GraphConfigurationPart {
@@ -15,7 +15,7 @@ export interface GraphConfigurationPart {
     };
 }
 
-export interface GraphConfiguration extends LibraryConfiguration, GraphConfigurationPart { }
+export interface GraphConfiguration extends ILibraryConfiguration, GraphConfigurationPart { }
 
 export function setup(config: GraphConfiguration): void {
     RuntimeConfig.assign(config);

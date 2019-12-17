@@ -10,7 +10,7 @@ import { SPBatch } from "../batch";
 import { tag } from "../telemetry";
 
 @defaultPath("features")
-export class _Features extends _SharePointQueryableCollection {
+export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
 
     /**
      * Adds (activates) the specified feature
@@ -62,7 +62,7 @@ export class _Features extends _SharePointQueryableCollection {
 export interface IFeatures extends _Features {}
 export const Features = spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _SharePointQueryableInstance {
+export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
 
     /**
      * Removes (deactivates) the feature
@@ -90,6 +90,10 @@ export const Feature = spInvokableFactory<IFeature>(_Feature);
  * Result from adding (activating) a feature to the collection
  */
 export interface IFeatureAddResult {
-    data: any;
+    data: IFeatureInfo;
     feature: IFeature;
+}
+
+export interface IFeatureInfo {
+    DefinitionId: string;
 }

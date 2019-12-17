@@ -1,7 +1,7 @@
 import { TypedHash, mergeMaps, objectToMap } from "./collections";
 import { ISPFXContext } from "./spfxcontextinterface";
 
-export interface LibraryConfiguration {
+export interface ILibraryConfiguration {
 
     /**
      * Allows caching to be global disabled, default: false
@@ -39,7 +39,7 @@ export interface LibraryConfiguration {
     ie11?: boolean;
 }
 
-export function setup(config: LibraryConfiguration): void {
+export function setup(config: ILibraryConfiguration): void {
     RuntimeConfig.assign(config);
 }
 

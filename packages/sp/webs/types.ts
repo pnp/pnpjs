@@ -22,7 +22,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
 
 @defaultPath("webs")
-export class _Webs extends _SharePointQueryableCollection<any[]> {
+export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
 
     /**
      * Adds a new web to the collection
@@ -66,7 +66,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  *
  */
 @defaultPath("_api/web")
-export class _Web extends _SharePointQueryableInstance {
+export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 
     public delete = deleteable("w");
 
@@ -110,7 +110,7 @@ export class _Web extends _SharePointQueryableInstance {
      * Gets a collection of WebInfos for this web's subwebs
      *
      */
-    public get webinfos(): ISharePointQueryableCollection<IWebInfo[]> {
+    public get webinfos(): ISharePointQueryableCollection<IWebInfosData[]> {
         return tag.configure(SharePointQueryableCollection(this, "webinfos"), "w.webinfos");
     }
 
@@ -252,7 +252,7 @@ export const Web = spInvokableFactory<IWeb>(_Web);
  *
  */
 export interface IWebAddResult {
-    data: any;
+    data: IWebInfo;
     web: IWeb;
 }
 
@@ -265,7 +265,7 @@ export interface IWebUpdateResult {
     web: IWeb;
 }
 
-export interface IWebInfo {
+export interface IWebInfosData {
     Configuration: number;
     Created: string;
     Description: string;
@@ -273,9 +273,6 @@ export interface IWebInfo {
     Language: number;
     LastItemModifiedDate: string;
     LastItemUserModifiedDate: string;
-    "odata.editLink": string;
-    "odata.id": string;
-    "odata.type": string;
     ServerRelativeUrl: string;
     Title: string;
     WebTemplate: string;
@@ -286,4 +283,52 @@ export interface IStorageEntity {
     Value: string | null;
     Comment: string | null;
     Description: string | null;
+}
+
+export interface IWebInfo {
+    AlternateCssUrl: string;
+    AppInstanceId: string;
+    ClassicWelcomePage: string | null;
+    Configuration: number;
+    Created: string;
+    CurrentChangeToken: { StringValue: string; };
+    CustomMasterUrl: string;
+    Description: string;
+    DesignPackageId: string;
+    DocumentLibraryCalloutOfficeWebAppPreviewersDisabled: boolean;
+    EnableMinimalDownload: boolean;
+    FooterEmphasis: number;
+    FooterEnabled: boolean;
+    FooterLayout: number;
+    HeaderEmphasis: number;
+    HeaderLayout: number;
+    HorizontalQuickLaunch: boolean;
+    Id: string;
+    IsHomepageModernized: boolean;
+    IsMultilingual: boolean;
+    IsRevertHomepageLinkHidden: boolean;
+    Language: number;
+    LastItemModifiedDate: string;
+    LastItemUserModifiedDate: string;
+    MasterUrl: string;
+    MegaMenuEnabled: boolean;
+    NavAudienceTargetingEnabled: boolean;
+    NoCrawl: boolean;
+    ObjectCacheEnabled: boolean;
+    OverwriteTranslationsOnChange: boolean;
+    QuickLaunchEnabled: boolean;
+    RecycleBinEnabled: boolean;
+    ResourcePath: { DecodedUrl: string; };
+    SearchScope: number;
+    ServerRelativeUrl: string;
+    SiteLogoUrl: string | null;
+    SyndicationEnabled: boolean;
+    TenantAdminMembersCanShare: number;
+    Title: string;
+    TreeViewEnabled: boolean;
+    UIVersion: number;
+    UIVersionConfigurationEnabled: boolean;
+    Url: string;
+    WebTemplate: string;
+    WelcomePage: string;
 }

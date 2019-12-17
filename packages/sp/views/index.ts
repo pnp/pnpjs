@@ -9,4 +9,6 @@ export {
     Views,
     IViewAddResult,
     IViewUpdateResult,
+    IViewInfo,
+    ViewScope,
 } from "./types";

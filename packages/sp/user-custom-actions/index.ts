@@ -9,4 +9,7 @@ export {
     IUserCustomActionUpdateResult,
     UserCustomAction,
     UserCustomActions,
+    IUserCustomActionInfo,
+    UserCustomActionRegistrationType,
+    UserCustomActionScope,
 } from "./types";

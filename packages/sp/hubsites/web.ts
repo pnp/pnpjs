@@ -25,7 +25,7 @@ declare module "../webs/types" {
     }
 }
 
-_Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): Promise<Partial<IHubSiteWebData>> {
+_Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): Promise<IHubSiteWebData> {
     const data = await this.clone(Web, `hubSiteData(${forceRefresh})`)();
     if (typeof data === "string") {
         return JSON.parse(data);

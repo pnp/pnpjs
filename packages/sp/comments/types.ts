@@ -12,7 +12,7 @@ import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
 @defaultPath("comments")
-export class _Comments extends _SharePointQueryableCollection<ICommentData[]> {
+export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new comment to this collection
@@ -20,10 +20,10 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> {
      * @param info Comment information to add
      */
     @tag("coms.add")
-    public async add(info: string | ICommentInfo): Promise<IComment & ICommentData> {
+    public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {
-            info = { text: info };
+            info = <ICommentInfo>{ text: info };
         }
 
         const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
@@ -52,7 +52,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentData[]> {
 export interface IComments extends _Comments {}
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
-export class _Comment extends _SharePointQueryableInstance<ICommentData> {
+export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
 
     /**
      * A comment's replies
@@ -89,7 +89,7 @@ export interface IComment extends _Comment {}
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 @defaultPath("replies")
-export class _Replies extends _SharePointQueryableCollection<ICommentData[]> {
+export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new reply to this collection
@@ -97,10 +97,10 @@ export class _Replies extends _SharePointQueryableCollection<ICommentData[]> {
      * @param info Comment information to add
      */
     @tag("reps.add")
-    public async add(info: string | ICommentInfo): Promise<IComment & ICommentData> {
+    public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {
-            info = { text: info };
+            info = <ICommentInfo>{ text: info };
         }
 
         const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
@@ -131,7 +131,7 @@ export interface ICommentAuthorData {
 /**
  * Defines the information for a comment
  */
-export interface ICommentData {
+export interface ICommentInfo {
     author: ICommentAuthorData;
     createdDate: string;
     id: string;
@@ -140,22 +140,14 @@ export interface ICommentData {
     itemId: number;
     likeCount: number;
     listId: string;
-    mentions: any | null;
-    parentId: string;
-    replyCount: number;
-    text: string;
-}
-
-/**
- * Defines a comment's core info
- */
-export interface ICommentInfo {
-    text: string;
-    mentions?: {
+    mentions: {
         loginName: string;
         email: string;
         name: string;
-    };
+    } | null;
+    parentId: string;
+    replyCount: number;
+    text: string;
 }
 
 export interface ILikeData {

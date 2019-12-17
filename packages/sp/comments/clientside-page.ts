@@ -1,15 +1,15 @@
 import { _ClientsidePage } from "../clientside-pages/types";
-import { ICommentInfo, ICommentData, IComment, _Comment, Comment, ILikedByInformation } from "./types";
+import { ICommentInfo, ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types";
 import { spODataEntity } from "../odata";
 import { tag } from "../telemetry";
 import { IItemUpdateResult, Item } from "../items";
 
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {
-        addComment(info: string | ICommentInfo): Promise<IComment & ICommentData>;
-        getCommentById(id: string | number): Promise<IComment & ICommentData>;
+        addComment(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;
+        getCommentById(id: string | number): Promise<IComment & ICommentInfo>;
         clearComments(): Promise<boolean>;
-        getComments(): Promise<ICommentData[]>;
+        getComments(): Promise<ICommentInfo[]>;
         like(): Promise<void>;
         unlike(): Promise<void>;
         getLikedByInformation(): Promise<ILikedByInformation>;
@@ -23,12 +23,12 @@ declare module "../clientside-pages/types" {
          * 
          * @param info The comment information
          */
-        addComment(info: string | ICommentInfo): Promise<IComment & ICommentData>;
+        addComment(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;
         /**
          * 
          * @param id gets a comment by id
          */
-        getCommentById(id: string | number): Promise<IComment & ICommentData>;
+        getCommentById(id: string | number): Promise<IComment & ICommentInfo>;
         /**
          * Deletes all comments for this page
          */
@@ -36,7 +36,7 @@ declare module "../clientside-pages/types" {
         /**
          * Gets all the comments for this page
          */
-        getComments(): Promise<ICommentData[]>;
+        getComments(): Promise<ICommentInfo[]>;
         /**
          * Like this page
          */
@@ -60,13 +60,13 @@ declare module "../clientside-pages/types" {
     }
 }
 
-_ClientsidePage.prototype.addComment = async function (this: _ClientsidePage, info: string | ICommentInfo): Promise<IComment & ICommentData> {
+_ClientsidePage.prototype.addComment = async function (this: _ClientsidePage, info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
 
     const item = await this.getItem();
     return item.comments.add(info);
 };
 
-_ClientsidePage.prototype.getCommentById = async function (this: _ClientsidePage, id: string | number): Promise<IComment & ICommentData> {
+_ClientsidePage.prototype.getCommentById = async function (this: _ClientsidePage, id: string | number): Promise<IComment & ICommentInfo> {
 
     const item = await this.getItem();
     return item.comments.getById(id).usingParser(spODataEntity(Comment))();
@@ -78,7 +78,7 @@ _ClientsidePage.prototype.clearComments = async function (this: _ClientsidePage)
     return item.comments.clear();
 };
 
-_ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): Promise<ICommentData[]> {
+_ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): Promise<ICommentInfo[]> {
 
     const item = await this.getItem();
     return tag.configure(item, "").comments();

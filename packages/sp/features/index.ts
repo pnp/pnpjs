@@ -7,4 +7,5 @@ export {
     Features,
     IFeatures,
     IFeatureAddResult,
+    IFeatureInfo,
 } from "./types";

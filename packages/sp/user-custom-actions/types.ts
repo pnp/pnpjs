@@ -10,9 +10,10 @@ import { body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
+import { IBasePermissions } from "../security";
 
 @defaultPath("usercustomactions")
-export class _UserCustomActions extends _SharePointQueryableCollection {
+export class _UserCustomActions extends _SharePointQueryableCollection<IUserCustomActionInfo[]> {
 
     /**	   
      * Returns the user custom action with the specified id	     
@@ -48,7 +49,7 @@ export class _UserCustomActions extends _SharePointQueryableCollection {
 export interface IUserCustomActions extends _UserCustomActions { }
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
-export class _UserCustomAction extends _SharePointQueryableInstance {
+export class _UserCustomAction extends _SharePointQueryableInstance<IUserCustomActionInfo> {
 
     public delete = deleteable("uca");
 
@@ -90,4 +91,39 @@ export interface IUserCustomActionUpdateResult {
      * The updated UserCustomAction
      */
     action: IUserCustomAction;
+}
+
+export enum UserCustomActionRegistrationType {
+    None,
+    List,
+    ContentType,
+    ProgId,
+    FileType,
+}
+
+export enum UserCustomActionScope {
+    Unknown,
+    Site = 2,
+    Web,
+    List,
+}
+
+export interface IUserCustomActionInfo {
+    CommandUIExtension: string;
+    Description: string;
+    Group: string;
+    Id: string;
+    ImageUrl: string;
+    Location: string;
+    Name: string;
+    RegistrationId: string;
+    RegistrationType: UserCustomActionRegistrationType;
+    Rights: IBasePermissions;
+    Scope: UserCustomActionScope;
+    ScriptBlock: string;
+    ScriptSrc: string;
+    Sequence: number;
+    Title: string;
+    Url: string;
+    VersionOfUserCustomAction: string;
 }
