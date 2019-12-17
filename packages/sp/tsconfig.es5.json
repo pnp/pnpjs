@@ -24,9 +24,6 @@
         },
         {
             "path": "../odata/tsconfig.es5.json"
-        },
-        {
-            "path": "../sp-clientsvc/tsconfig.es5.json"
         }
     ]
 }
