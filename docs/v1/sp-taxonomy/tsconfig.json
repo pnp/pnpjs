@@ -1,0 +1,37 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "strictNullChecks": false
+    },
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts",
+        "../common/index.ts",
+        "../common/src/**/*.ts",
+        "../logging/index.ts",
+        "../logging/src/**/*.ts",
+        "../odata/index.ts",
+        "../odata/src/**/*.ts",
+        "../sp/index.ts",
+        "../sp/src/**/*.ts",
+        "../sp-clientsvc/index.ts",
+        "../sp-clientsvc/src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../logging"
+        },
+        {
+            "path": "../odata"
+        },
+        {
+            "path": "../sp"
+        },
+        {
+            "path": "../sp-clientsvc"
+        }
+    ]
+}

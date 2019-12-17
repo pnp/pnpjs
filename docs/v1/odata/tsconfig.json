@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "./index.ts",
+        "./src/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common"
+        },
+        {
+            "path": "../logging"
+        }
+    ]
+}

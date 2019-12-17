@@ -16,4 +16,6 @@ export {
     IBasePermissions,
     PermissionKind,
     SecurableQueryable,
+    IRoleAssignmentInfo,
+    IRoleDefinitionInfo,
 } from "./types";

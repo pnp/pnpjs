@@ -1,0 +1,29 @@
+{
+  "name": "@pnp/sp-taxonomy",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "pnp - Provides a fluent API to work with SharePoint taxonomy",
+  "main": "./index.js",
+  "typings": "./index",
+  "dependencies": {
+    "tslib": "1.10.0"
+  },
+  "peerDependencies": {
+    "@pnp/logging": "0.0.0-PLACEHOLDER",
+    "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/odata": "0.0.0-PLACEHOLDER",
+    "@pnp/sp": "0.0.0-PLACEHOLDER",
+    "@pnp/sp-clientsvc": "0.0.0-PLACEHOLDER"
+  },
+  "author": {
+    "name": "Microsoft and other contributors"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnp/pnp/issues"
+  },
+  "homepage": "https://github.com/pnp/pnp",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pnp/pnp"
+  }
+}

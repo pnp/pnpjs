@@ -2,6 +2,8 @@
 
 There are four levels where you can break inheritance and assign security: Site, Web, List, Item. All four of these objects share a common set of methods. Because of this we are showing in the examples below usage of these methods for an IList instance, but they apply across all four securable objects. In addition to the shared methods, some types have unique methods which are listed below.
 
+> Site permissions are managed on the root web of the site collection.
+
 ### A Note on Selective Imports for Security
 
 Because the method are shared you can opt to import only the methods for one of the instances. 
@@ -33,7 +35,7 @@ import { PermissionKind } from "@pnp/sp/security";
 const ler = await sp.web.lists.ensure("SecurityTestingList");
 const list: IList = ler.list;
 
-// role assignments
+// role assignments (see section below)
 await list.roleAssignments();
 
 // data will represent one of the possible parents Site, Web, or List
@@ -51,6 +53,116 @@ const v: boolean = list.userHasPermissions(users[0].LoginName, PermissionKind.Ad
 
 // currentUserHasPermissions
 const v2: boolean = list.currentUserHasPermissions(PermissionKind.AddListItems)
+
+// breakRoleInheritance
+await list.breakRoleInheritance();
+// copy existing permissions
+await list.breakRoleInheritance(true);
+// copy existing permissions and reset all child securables to the new permissions
+await list.breakRoleInheritance(true, true);
+
+// resetRoleInheritance
+await list.resetRoleInheritance();
 ```
 
+## Web Specific methods
 
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/security/web";
+
+// role definitions (see section below)
+const defs = await sp.web.roleDefinitions();
+```
+
+## Role Assignments
+
+Allows you to list and manipulate the set of role assignments for the given securable. Again we show usage using list, but the examples apply to web and item as well.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/security/web";
+import "@pnp/sp/site-users/web";
+import { IList } from "@pnp/sp/lists";
+import { PermissionKind } from "@pnp/sp/security";
+
+// ensure we have a list
+const ler = await sp.web.lists.ensure("SecurityTestingList");
+const list: IList = ler.list;
+
+// list role assignments
+const assignments = await list.roleAssignments();
+
+// add a role assignment
+const defs = await sp.web.roleDefinitions();
+const user = await sp.web.currentUser();
+const r = await list.roleAssignments.add(user.Id, defs[0].Id);
+
+// remove a role assignment
+const ras = await list.roleAssignments();
+// filter/find the role assignment you want to remove
+// here we just grab the first
+const ra = ras.find(v => true);
+const r = await list.roleAssignments.remove(ra.Id);
+
+// read role assignment info
+const info = await list.roleAssignments.getById(ra.Id)();
+
+// get the groups
+const info2 = await list.roleAssignments.getById(ra.Id).groups();
+
+// get the bindings
+const info3 = await list.roleAssignments.getById(ra.Id).bindings();
+
+// delete a role assignment (same as remove)
+const ras = await list.roleAssignments();
+// filter/find the role assignment you want to remove
+// here we just grab the first
+const ra = ras.find(v => true);
+
+// delete it
+await list.roleAssignments.getById(ra.Id).delete();
+```
+
+## Role Definitions
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/security/web";
+
+// read role definitions
+const defs = await sp.web.roleDefinitions();
+
+// get by id
+const def = await sp.web.roleDefinitions.getById(5)();
+const def = await sp.web.roleDefinitions.getById(5).select("Name", "Order")();
+
+// get by name
+const def = await sp.web.roleDefinitions.getByName("Full Control")();
+const def = await sp.web.roleDefinitions.getByName("Full Control").select("Name", "Order")();
+
+// get by type
+const def = await sp.web.roleDefinitions.getByName(5)();
+const def = await sp.web.roleDefinitions.getByName(5).select("Name", "Order")();
+
+// add
+// name The new role definition's name
+// description The new role definition's description
+// order The order in which the role definition appears
+// basePermissions The permissions mask for this role definition
+const rdar = await sp.web.roleDefinitions.add("title", "description", 99, { High: 1, Low: 2 });
+
+
+
+// the following methods work on a single role def, you can use any of the three getBy methods, here we use getById as an example
+
+// delete 
+await sp.web.roleDefinitions.getById(5).delete();
+
+// update
+const res = sp.web.roleDefinitions.getById(5).update({ Name: "New Name" });
+```
