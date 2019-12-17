@@ -270,11 +270,38 @@ export class ClientSidePage extends SharePointQueryable {
         this._layoutPart.properties.showPublishDate = value;
     }
 
+    public get hasVerticalSection(): boolean {
+        return this.sections.findIndex(s => s.layoutIndex === 2) > -1;
+    }
+
+    public get verticalSection(): CanvasSection | null {
+        if (this.hasVerticalSection) {
+            return this.addVerticalSection();
+        }
+        return null;
+    }
+
     /**
      * Add a section to this page
      */
     public addSection(): CanvasSection {
-        const section = new CanvasSection(this, getNextOrder(this.sections));
+        const section = new CanvasSection(this, getNextOrder(this.sections), 1);
+        this.sections.push(section);
+        return section;
+    }
+
+    /**
+     * Add a section to this page
+     */
+    public addVerticalSection(): CanvasSection {
+
+        // we can only have one vertical section so we find it if it exists
+        const sectionIndex = this.sections.findIndex(s => s.layoutIndex === 2);
+        if (sectionIndex > -1) {
+            return this.sections[sectionIndex];
+        }
+
+        const section = new CanvasSection(this, getNextOrder(this.sections), 2);
         this.sections.push(section);
         return section;
     }
@@ -742,13 +769,13 @@ export class ClientSidePage extends SharePointQueryable {
      * 
      * @param control The control to merge
      */
-    private mergePartToTree(control: any, positionData: IClientSideControlPositionData): void {
+    private mergePartToTree(control: any, positionData: IPosition): void {
 
-        let section: CanvasSection = null;
         let column: CanvasColumn = null;
         let sectionFactor: CanvasColumnFactor = 12;
         let sectionIndex = 0;
         let zoneIndex = 0;
+        let layoutIndex = 1;
 
         // handle case where we don't have position data (shouldn't happen?)
         if (positionData) {
@@ -761,21 +788,16 @@ export class ClientSidePage extends SharePointQueryable {
             if (hOP(positionData, "sectionFactor")) {
                 sectionFactor = positionData.sectionFactor;
             }
+            if (hOP(positionData, "layoutIndex")) {
+                layoutIndex = positionData.layoutIndex;
+            }
         }
 
-        const sections = this.sections.filter(s => s.order === zoneIndex);
-        if (sections.length < 1) {
-            section = new CanvasSection(this, zoneIndex);
-            this.sections.push(section);
-        } else {
-            section = sections[0];
-        }
-
-        section.emphasis = control.data.emphasis && control.data.emphasis.zoneEmphasis ? control.data.emphasis.zoneEmphasis : 0;
+        const section = this.getOrCreateSection(zoneIndex, layoutIndex, control.data.emphasis.zoneEmphasis || 0);
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
-            column = section.addColumn(sectionFactor);
+            column = section.addColumn(sectionFactor, layoutIndex);
         } else {
             column = columns[0];
         }
@@ -793,19 +815,33 @@ export class ClientSidePage extends SharePointQueryable {
     private mergeColumnToTree(column: CanvasColumn): void {
 
         const order = hOP(column.data, "position") && hOP(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
+        const layoutIndex = hOP(column.data, "position") && hOP(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
+        const section = this.getOrCreateSection(order, layoutIndex, column.data.emphasis.zoneEmphasis || 0);
+        column.section = section;
+        section.columns.push(column);
+    }
+
+    /**
+     * Handle the logic to get or create a section based on the supplied order and layoutIndex
+     * 
+     * @param order Section order
+     * @param layoutIndex Layout Index (1 === normal, 2 === vertical section)
+     * @param emphasis The section emphasis
+     */
+    private getOrCreateSection(order: number, layoutIndex: number, emphasis: 0 | 1 | 2 | 3): CanvasSection {
+
         let section: CanvasSection = null;
-        const sections = this.sections.filter(s => s.order === order);
+        const sections = this.sections.filter(s => s.order === order && s.layoutIndex === layoutIndex);
 
         if (sections.length < 1) {
-            section = new CanvasSection(this, order);
-            section.emphasis = column.data.emphasis.zoneEmphasis || 0;
-            this.sections.push(section);
+            section = layoutIndex === 2 ? this.addVerticalSection() : this.addSection();
+            section.order = order;
+            section.emphasis = emphasis;
         } else {
             section = sections[0];
         }
 
-        column.section = section;
-        section.columns.push(column);
+        return section;
     }
 
     private getItem<T>(...selects: string[]): Promise<Item & T> {
@@ -829,10 +865,12 @@ export class CanvasSection {
     private _memId: string;
 
     private _order: number;
+    private _layoutIndex: number;
 
-    constructor(protected page: ClientSidePage, order: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
+    constructor(protected page: ClientSidePage, order: number, layoutIndex: number, public columns: CanvasColumn[] = [], private _emphasis: 0 | 1 | 2 | 3 = 0) {
         this._memId = getGUID();
         this._order = order;
+        this._layoutIndex = layoutIndex;
     }
 
     public get order(): number {
@@ -843,6 +881,17 @@ export class CanvasSection {
         this._order = value;
         for (let i = 0; i < this.columns.length; i++) {
             this.columns[i].data.position.zoneIndex = value;
+        }
+    }
+
+    public get layoutIndex(): number {
+        return this._layoutIndex;
+    }
+
+    public set layoutIndex(value: number) {
+        this._layoutIndex = value;
+        for (let i = 0; i < this.columns.length; i++) {
+            this.columns[i].data.position.layoutIndex = value;
         }
     }
 
@@ -861,10 +910,11 @@ export class CanvasSection {
     /**
      * Adds a new column to this section
      */
-    public addColumn(factor: CanvasColumnFactor): CanvasColumn {
+    public addColumn(factor: CanvasColumnFactor, layoutIndex = 1): CanvasColumn {
         const column = new CanvasColumn();
         column.section = this;
         column.data.position.zoneIndex = this.order;
+        column.data.position.layoutIndex = layoutIndex;
         column.data.position.sectionFactor = factor;
         column.order = getNextOrder(this.columns);
         this.columns.push(column);
@@ -940,6 +990,7 @@ export class CanvasColumn {
         this.data.position.sectionIndex = value;
         for (let i = 0; i < this.controls.length; i++) {
             this.controls[i].data.position.zoneIndex = this.data.position.zoneIndex;
+            this.controls[i].data.position.layoutIndex = this.data.position.layoutIndex;
             this.controls[i].data.position.sectionIndex = value;
         }
     }
@@ -1060,6 +1111,7 @@ export class ClientSideText extends ColumnControl<IClientSideTextData> {
         this.data.position.controlIndex = getNextOrder(col.controls);
         this.data.position.zoneIndex = col.data.position.zoneIndex;
         this.data.position.sectionIndex = col.order;
+        this.data.position.layoutIndex = col.data.position.layoutIndex;
     }
 }
 
@@ -1073,6 +1125,7 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
         id: null,
         position: {
             controlIndex: 1,
+            layoutIndex: 1,
             sectionFactor: 12,
             sectionIndex: 1,
             zoneIndex: 1,
@@ -1153,6 +1206,7 @@ export class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
     protected onColumnChange(col: CanvasColumn): void {
         this.data.position = {
             controlIndex: getNextOrder(col.controls),
+            layoutIndex: col.data.position.layoutIndex,
             sectionFactor: col.factor,
             sectionIndex: col.data.position.sectionIndex,
             zoneIndex: col.data.position.zoneIndex,
@@ -1296,30 +1350,20 @@ export interface IClientSidePageColumnData extends IClientSideControlBaseData {
     controlType: 0;
     displayMode: number;
     emphasis: IClientControlEmphasis;
-    position: {
-        zoneIndex: number;
-        sectionIndex: number;
-        sectionFactor: CanvasColumnFactor;
-        layoutIndex: number;
-    };
+    position: IPosition;
 }
 
-interface IClientSideControlPositionData {
+interface IPosition {
     zoneIndex: number;
     sectionIndex: number;
-    controlIndex: number;
+    controlIndex?: number;
     sectionFactor?: CanvasColumnFactor;
+    layoutIndex: number;
 }
 
 export interface IClientSideTextData extends ICanvasControlBaseData {
     controlType: 4;
-    position: {
-        zoneIndex: number;
-        sectionIndex: number;
-        controlIndex: number;
-        sectionFactor?: CanvasColumnFactor;
-        layoutIndex: number;
-    };
+    position: IPosition;
     anchorComponentId: string;
     editorType: "CKEditor";
     addedFromPersistedData: boolean;
@@ -1328,12 +1372,7 @@ export interface IClientSideTextData extends ICanvasControlBaseData {
 
 export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasControlBaseData {
     controlType: 3;
-    position: {
-        zoneIndex: number;
-        sectionIndex: number;
-        controlIndex: number;
-        sectionFactor?: CanvasColumnFactor;
-    };
+    position: IPosition;
     webPartId: string;
     reservedHeight: number;
     reservedWidth: number;
