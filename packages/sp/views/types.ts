@@ -188,7 +188,7 @@ export interface IViewInfo {
     RequiresClientIntegration: boolean;
     RowLimit: number;
     Scope: ViewScope;
-    ServerRelativePath: { DecodedUrl: string; }
+    ServerRelativePath: { DecodedUrl: string; };
     ServerRelativeUrl: string;
     StyleId: string | null;
     TabularView: boolean;
