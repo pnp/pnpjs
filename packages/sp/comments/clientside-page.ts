@@ -1,5 +1,5 @@
 import { _ClientsidePage } from "../clientside-pages/types";
-import { ICommentInfo, ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types";
+import { ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types";
 import { spODataEntity } from "../odata";
 import { tag } from "../telemetry";
 import { IItemUpdateResult, Item } from "../items";

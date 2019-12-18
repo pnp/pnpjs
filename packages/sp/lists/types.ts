@@ -1,4 +1,4 @@
-import { assign, hOP, jsS } from "@pnp/common";
+import { assign, hOP } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -270,9 +270,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             queryParams.forEach((v, k) => clone.query.set(k, v));
         }
 
-        return spPost(clone, {
-            body: jsS(postBody),
-        });
+        return spPost(clone, postBody);
     }
 
     /**

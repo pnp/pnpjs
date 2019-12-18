@@ -205,7 +205,7 @@ describe("file", () => {
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
             await files.add(name, "Some test text content.");
             await files.getByName(name).setContent("different.");
-            const file = files.getByName(name).getText();
+            const file = await files.getByName(name).getText();
             expect(file).to.eq("different.");
         });
 

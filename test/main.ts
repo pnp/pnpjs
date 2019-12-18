@@ -13,6 +13,7 @@ import { Web } from "@pnp/sp/webs";
 chai.use(chaiAsPromised);
 
 declare var process: any;
+const testStart = Date.now();
 
 export interface ISettingsTestingPart {
     enableWebTests: boolean;
@@ -219,7 +220,10 @@ after(async () => {
     console.log();
     console.log();
     console.log();
+    console.log();
     console.log("Ending...");
+    const testEnd = Date.now();
+    console.log(`Testing completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds.`);
     console.log();
 
     if (deleteAllWebs) {
