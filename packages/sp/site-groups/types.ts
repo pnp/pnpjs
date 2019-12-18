@@ -100,6 +100,15 @@ export class _SiteGroup extends _SharePointQueryableInstance {
             group: retGroup,
         };
     });
+
+    /**
+     * Set the owner of a group using a user id
+     * @param userId the id of the user that will be set as the owner of the current group
+     */
+    @tag("sg.setUserAsOwner")
+    public async setUserAsOwner(userId: number): Promise<any> {
+        return await spPost(this.clone(SiteGroup, `SetUserAsOwner(${userId})`));
+    }
 }
 export interface ISiteGroup extends _SiteGroup { }
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);

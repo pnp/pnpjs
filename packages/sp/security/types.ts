@@ -10,7 +10,6 @@ import {
     deleteable,
 } from "../sharepointqueryable";
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
-import { IBasePermissions } from "./types";
 import { metadata } from "../utils/metadata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
