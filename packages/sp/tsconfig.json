@@ -11,9 +11,7 @@
         "../logging/index.ts",
         "../logging/src/**/*.ts",
         "../odata/index.ts",
-        "../odata/src/**/*.ts",
-        "../sp-clientsvc/index.ts",
-        "../sp-clientsvc/src/**/*.ts"
+        "../odata/src/**/*.ts"
     ],
     "references": [
         {
