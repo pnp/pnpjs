@@ -122,7 +122,7 @@ const users = await sp.web.siteGroups.getById(groupID).users();
 
 ### Updating the owner of a site group
 
-Unfortunately for now setting the owner of a group as another SharePoint group is currently unsupported in REST. Setting the owner as a user is supported.
+Unfortunately for now setting the owner of a group as another or same SharePoint group is currently unsupported in REST. Setting the owner as a user is supported.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
