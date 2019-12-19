@@ -16,8 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - @pnp/graph: Fixed bug in adding tasks to planner ([@JMTeamway](https://github.com/JMTeamway)) [[PR](https://github.com/pnp/pnpjs/pull/929)]
 - @pnp/sp: Fix bug containsInvalidFileFolderChars ([@juliemturner](https://github.com/juliemturner)) [[PR](https://github.com/pnp/pnpjs/pull/933)]
 
-JMTeamway
-
 ## 1.3.7 - 2019-11-08
 
 ### Added
