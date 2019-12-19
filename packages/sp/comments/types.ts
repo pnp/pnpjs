@@ -39,7 +39,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
      * @param id Id of the comment to load
      */
     public getById(id: string | number): IComment {
-        return Comment(this).concat(`(${id})`);
+        return tag.configure(Comment(this).concat(`(${id})`), "coms.getById");
     }
 
     /**

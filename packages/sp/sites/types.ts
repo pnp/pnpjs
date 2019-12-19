@@ -10,6 +10,7 @@ import { SPBatch } from "../batch";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { IChangeQuery } from "../types";
 import { tag } from "../telemetry";
+import { metadata } from "../utils/metadata";
 
 @defaultPath("_api/site")
 export class _Site extends _SharePointQueryableInstance {
@@ -97,7 +98,7 @@ export class _Site extends _SharePointQueryableInstance {
     @tag("si.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        const postBody = body({ "query": assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     }
 
@@ -160,9 +161,7 @@ export class _Site extends _SharePointQueryableInstance {
         const postBody =
             body({
                 "request":
-                    assign({
-                        "__metadata": { "type": "Microsoft.SharePoint.Portal.SPSiteCreationRequest" },
-                    }, props),
+                    assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), props),
             },
                 headers({
                     "Accept": "application/json;odata=verbose",

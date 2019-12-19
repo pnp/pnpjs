@@ -5,6 +5,7 @@ import { CachingOptions, body } from "@pnp/odata";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types";
 import { spPost } from "../operations";
 import { defaultPath } from "../decorators";
+import { tag } from "../telemetry";
 
 const funcs = new Map<string, string>([
     ["text", "Querytext"],
@@ -91,6 +92,7 @@ export class _Search extends _SharePointQueryableInstance {
     /**
      * @returns Promise
      */
+    @tag("se.execute")
     public async execute(queryInit: SearchQueryInit): Promise<SearchResults> {
 
         const query = this.parseQuery(queryInit);

@@ -1,10 +1,12 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
 import { hOP, IConfigOptions } from "@pnp/common";
 import { defaultPath } from "../decorators";
+import { tag } from "../telemetry";
 
 @defaultPath("_api/search/suggest")
 export class _Suggest extends _SharePointQueryableInstance {
 
+    @tag("su.execute")
     public async execute(query: ISuggestQuery): Promise<ISuggestResult> {
 
         this.mapQueryToQueryString(query);

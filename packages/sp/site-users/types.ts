@@ -12,6 +12,7 @@ import { body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { PrincipalType } from "../types";
+import { tag } from "../telemetry";
 
 @defaultPath("siteusers")
 export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> {
@@ -22,7 +23,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      * @param id The id of the user to retrieve
      */
     public getById(id: number): ISiteUser {
-        return SiteUser(this, `getById(${id})`);
+        return tag.configure(SiteUser(this, `getById(${id})`), "sus.getById");
     }
 
     /**
@@ -31,7 +32,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      * @param email The email address of the user to retrieve
      */
     public getByEmail(email: string): ISiteUser {
-        return SiteUser(this, `getByEmail('${email}')`);
+        return tag.configure(SiteUser(this, `getByEmail('${email}')`), "sus.getByEmail");
     }
 
     /**
@@ -40,7 +41,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      * @param loginName The login name of the user to retrieve
      */
     public getByLoginName(loginName: string): ISiteUser {
-        return SiteUser(this).concat(`('!@v::${encodeURIComponent(loginName)}')`);
+        return tag.configure(SiteUser(this).concat(`('!@v::${encodeURIComponent(loginName)}')`), "sus.getByLoginName");
     }
 
     /**
@@ -48,6 +49,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      *
      * @param id The id of the user to remove
      */
+    @tag("sus.remId")
     public removeById(id: number): Promise<any> {
         return spPost(this.clone(SiteUsers, `removeById(${id})`));
     }
@@ -57,6 +59,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      *
      * @param loginName The login name of the user to remove
      */
+    @tag("sus.remLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
         const o = this.clone(SiteUsers, `removeByLoginName(@v)`);
         o.query.set("@v", `'${encodeURIComponent(loginName)}'`);
@@ -69,8 +72,8 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      * @param loginName The login name of the user to add  to a site collection
      *
      */
+    @tag("sus.add")
     public async add(loginName: string): Promise<ISiteUser> {
-
         await spPost(this.clone(SiteUsers, null), body(assign(metadata("SP.User"), { LoginName: loginName })));
         return this.getByLoginName(loginName);
     }
@@ -91,7 +94,7 @@ export class _SiteUser extends _SharePointQueryableInstance<ISiteUserInfo> {
      *
      */
     public get groups(): ISiteGroups {
-        return SiteGroups(this, "groups");
+        return tag.configure(SiteGroups(this, "groups"), "su.groups");
     }
 
     /**

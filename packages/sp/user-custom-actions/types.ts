@@ -11,6 +11,7 @@ import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
 import { IBasePermissions } from "../security";
+import { metadata } from "../utils/metadata";
 
 @defaultPath("usercustomactions")
 export class _UserCustomActions extends _SharePointQueryableCollection<IUserCustomActionInfo[]> {
@@ -31,7 +32,7 @@ export class _UserCustomActions extends _SharePointQueryableCollection<IUserCust
      */
     @tag("ucas.add")
     public async add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult> {
-        const data = await spPost(this, body(assign({ __metadata: { "type": "SP.UserCustomAction" } }, properties)));
+        const data = await spPost(this, body(assign(metadata("SP.UserCustomAction"), properties)));
         return {
             action: this.getById(data.Id),
             data,

@@ -31,7 +31,6 @@ export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
      */
     @tag("hs.getSite")
     public async getSite(): Promise<ISite> {
-
         const d = await this.select("SiteUrl")();
         return Site(d.SiteUrl);
     }

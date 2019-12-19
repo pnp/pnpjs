@@ -28,8 +28,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
      * @param id The Id of the list (GUID)
      */
     public getById(id: string): IList {
-
-        return tag.configure(List(this).concat(`('${id}')`), "l.getById");
+        return tag.configure(List(this).concat(`('${id}')`), "ls.getById");
     }
 
     /**
@@ -38,7 +37,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return tag.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "l.getByTitle");
+        return tag.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "ls.getByTitle");
     }
 
     /**
@@ -135,7 +134,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      *
      */
     public get effectiveBasePermissions(): ISharePointQueryable {
-        return SharePointQueryable(this, "EffectiveBasePermissions");
+        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
     }
 
     /**
@@ -143,7 +142,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      *
      */
     public get eventReceivers(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "EventReceivers");
+        return tag.configure(SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
     }
 
     /**
@@ -151,7 +150,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      *
      */
     public get relatedFields(): ISharePointQueryable {
-        return SharePointQueryable(this, "getRelatedFields");
+        return tag.configure(SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
     }
 
     /**
@@ -159,7 +158,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      *
      */
     public get informationRightsManagementSettings(): ISharePointQueryable {
-        return SharePointQueryable(this, "InformationRightsManagementSettings");
+        return tag.configure(SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
     }
 
     /**
@@ -171,9 +170,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     @tag("l.update")
     public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListUpdateResult> {
 
-        const postBody = body(assign({
-            "__metadata": { "type": "SP.List" },
-        }, properties), headers({
+        const postBody = body(assign(metadata("SP.List"), properties), headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
@@ -199,7 +196,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     @tag("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        return spPost(this.clone(List, "getchanges"), body({ query: assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
+        return spPost(this.clone(List, "getchanges"), body({ query: assign(metadata("SP.ChangeQuery"), query) }));
     }
 
     /**
@@ -211,7 +208,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ "query": assign({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
+        return spPost(q.expand.apply(q, expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
     }
 
     /**
@@ -222,7 +219,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
-        return spPost(o, body({ "query": assign({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
+        return spPost(o, body({ "query": assign(metadata("SP.ChangeLogItemQuery"), query) }));
     }
 
     /**

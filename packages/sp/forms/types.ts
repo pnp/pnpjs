@@ -5,6 +5,7 @@ import {
 } from "../sharepointqueryable";
 import { defaultPath } from "../decorators";
 import { PageType } from "../types";
+import { tag } from "../telemetry";
 
 /**
  * Describes a collection of Form objects
@@ -18,7 +19,7 @@ export class _Forms extends _SharePointQueryableCollection<IFormInfo[]> {
      * @param id The guid id of the item to retrieve	
      */
     public getById(id: string): IForm {
-        return Form(this).concat(`('${id}')`);
+        return tag.configure(Form(this).concat(`('${id}')`), "fos.getById");
     }
 }
 export interface IForms extends _Forms { }

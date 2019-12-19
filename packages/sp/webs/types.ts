@@ -83,9 +83,9 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      *
      */
     @tag("w.getParentWeb")
-    public getParentWeb(): Promise<IOpenWebByIdResult> {
-        return spGet(this.select("ParentWeb/Id").expand("ParentWeb"))
-            .then(({ ParentWeb }) => ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null);
+    public async getParentWeb(): Promise<IOpenWebByIdResult> {
+        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
+        return ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
     }
 
     /**
@@ -103,7 +103,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * Allows access to the web's all properties collection
      */
     public get allProperties(): ISharePointQueryableInstance {
-        return this.clone(SharePointQueryableInstance, "allproperties");
+        return tag.configure(this.clone(SharePointQueryableInstance, "allproperties"), "w.allprops");
     }
 
     /**
@@ -189,8 +189,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
-
-        const postBody = body({ "query": assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     }
 

@@ -129,7 +129,7 @@ describe("Batching", () => {
                 order.push(2);
             });
 
-            web.siteGroups.getById(groupId).users.inBatch(batch).get().then(() => {
+            web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
                 order.push(3);
             });
 
