@@ -471,8 +471,8 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc></loc>
-     
+     <loc>https://pnp.github.io/pnpjs/v1/</loc>
+     <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
