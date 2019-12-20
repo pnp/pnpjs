@@ -1,8 +1,8 @@
 # Workaround for SPFx TypeScript Version
 
-_Note this article applies to version 1.4.1 SharePoint Framework projects targetting on-premesis only._
+_Note this article applies to version 1.4.1 SharePoint Framework projects targetting on-premises only._
 
-When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premesis it installs TypeScript version 2.2.2. Unfortunately this library relies on 2.4.2 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.
+When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premises it installs TypeScript version 2.2.2. Unfortunately this library relies on 2.4.2 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.
 
 1. Open package-lock.json
 2. Search for `"typescript": "2.2.2"`
