@@ -114,11 +114,11 @@ theme:
   custom_dir: 'docs/theme'
   palette:
     primary: 'blue'
-  logo: 'docs/img/Logo.png'
+  logo: 'img/Logo.png'
   feature:
     tabs: true
 extra_css:
-  - 'docs/css/extra.css'
+  - 'css/extra.css'
 markdown_extensions:
   - admonition
   - codehilite:
@@ -129,7 +129,6 @@ plugins:
   - search
   - markdownextradata
 extra:
-  version: '2.0.0-7'
   social:
     - type: 'twitter'
       link: 'https://twitter.com/officedevpnp'
