@@ -123,6 +123,14 @@ export class SiteGroup extends SharePointQueryableInstance {
             group: retGroup,
         };
     });
+
+    /**
+     * Set the owner of a group using a user id
+     * @param userId the id of the user that will be set as the owner of the current group
+     */
+    public async setUserAsOwner(userId: number): Promise<any> {
+        return this.clone(SiteGroup, `SetUserAsOwner(${userId})`).postCore();
+    }
 }
 
 export interface SiteGroupAddResult {
