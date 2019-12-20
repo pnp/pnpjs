@@ -1,5 +1,5 @@
 import {
-    LibraryConfiguration,
+    ILibraryConfiguration,
     TypedHash,
     RuntimeConfig,
     IHttpClientImpl,
@@ -26,7 +26,7 @@ export interface SPConfigurationPart {
     };
 }
 
-export interface SPConfiguration extends LibraryConfiguration, SPConfigurationPart { }
+export interface SPConfiguration extends ILibraryConfiguration, SPConfigurationPart { }
 
 export function setup(config: SPConfiguration): void {
     RuntimeConfig.assign(config);

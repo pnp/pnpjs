@@ -9,7 +9,7 @@ import { Site, ISite } from "../sites/types";
 import { tag } from "../telemetry";
 
 @defaultPath("_api/hubsites")
-export class _HubSites extends _SharePointQueryableCollection<Partial<IHubSiteData>[]> {
+export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
 
     /**	    
      * Gets a Hub Site from the collection by id	     
@@ -24,14 +24,13 @@ export class _HubSites extends _SharePointQueryableCollection<Partial<IHubSiteDa
 export interface IHubSites extends _HubSites { }
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
-export class _HubSite extends _SharePointQueryableInstance<Partial<IHubSiteData>> {
+export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
 
     /**
      * Gets the ISite instance associated with this hubsite
      */
     @tag("hs.getSite")
     public async getSite(): Promise<ISite> {
-
         const d = await this.select("SiteUrl")();
         return Site(d.SiteUrl);
     }
@@ -39,7 +38,7 @@ export class _HubSite extends _SharePointQueryableInstance<Partial<IHubSiteData>
 export interface IHubSite extends _HubSite { }
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
-export interface IHubSiteData {
+export interface IHubSiteInfo {
     ID: string;
     Title: string;
     SiteId: string;

@@ -138,12 +138,15 @@ describe("Clientside Pages", () => {
 
             let page: IClientsidePage;
 
-            before(async function () {
+            this.beforeEach(async function () {
                 this.timeout(0);
                 page = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
             });
 
             it("Default section, 2 empty columns", async function () {
+
+                page.sections = [];
+                await page.save();
 
                 if (page.sections.length < 1) {
                     page.addSection();
@@ -162,6 +165,35 @@ describe("Clientside Pages", () => {
                 expect(page.sections[0].columns.length === 2);
                 expect(page.sections[0].columns[0].factor === 6);
                 expect(page.sections[0].columns[1].factor === 6);
+            });
+
+            it("vertical section", async function () {
+
+                page.sections = [];
+                await page.save();
+
+                if (page.sections.length < 1) {
+                    page.addSection();
+                }
+
+                page.sections[0].addColumn(6);
+                page.sections[0].addColumn(6);
+
+                const vertSection = page.addVerticalSection();
+                vertSection.addControl(new ClientsideText("Hello."));
+                vertSection.addControl(new ClientsideText("I'm second."));
+
+                // save
+                await page.save();
+
+                // reload
+                await page.load();
+
+                // tslint:disable-next-line:no-unused-expression
+                expect(page.hasVerticalSection).to.be.true;
+                expect(page.verticalSection.columns[0].controls.length).to.eq(2);
+                const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
+                expect(ctrl.text).to.match(/I'm second\./);
             });
         });
 

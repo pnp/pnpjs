@@ -12,4 +12,6 @@ export {
     FieldLinks,
     IFieldLink,
     IFieldLinks,
+    IContentTypeInfo,
+    IFieldLinkInfo,
 } from "./types";

@@ -8,7 +8,7 @@ export {
     HubSite,
     HubSites,
     IHubSite,
-    IHubSiteData,
+    IHubSiteInfo,
     IHubSiteWebData,
     IHubSites,
 } from "./types";

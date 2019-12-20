@@ -5,4 +5,5 @@ export {
     Forms,
     IForm,
     IForms,
+    IFormInfo,
 } from "./types";

@@ -17,6 +17,7 @@ export {
     IMenuNode,
     IMenuNodeCollection,
     ISerializableNavigationNode,
+    INavNodeInfo,
 } from "./types";
 
 declare module "../rest" {

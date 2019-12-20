@@ -11,6 +11,7 @@ export {
     Webs,
     IWebInfo,
     IStorageEntity,
+    IWebInfosData,
 } from "./types";
 
 declare module "../rest" {

@@ -9,4 +9,5 @@ export {
     Folders,
     IFolder,
     IFolders,
+    IFolderInfo,
 } from "./types";

@@ -4,7 +4,6 @@ import {
   spInvokableFactory,
   _SharePointQueryable,
 } from "../sharepointqueryable";
-
 import { defaultPath } from "../decorators";
 import { hOP, IFetchOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";

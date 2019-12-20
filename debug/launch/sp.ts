@@ -2,8 +2,6 @@ import { SPFetchClient } from "@pnp/nodejs";
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/sp/site-users/web";
-import "@pnp/sp/security/web";
 
 declare var process: { exit(code?: number): void };
 
@@ -18,17 +16,9 @@ export async function Example(settings: any) {
     },
   });
 
-  
-  const defs = await sp.web.roleAssignments();
+  const w = await sp.web();
 
-  const def = defs.find(v => true);
-
-
-  const user = await sp.web.currentUser();
-
-  const r = await sp.web.roleAssignments.add(user.Id, defs[0].Id);
-
-  console.log(JSON.stringify(defs, null, 2));
+  console.log(JSON.stringify(w, null, 2));
 
   process.exit();
 }

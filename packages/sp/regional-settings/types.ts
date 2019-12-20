@@ -9,6 +9,7 @@ import {
 import { defaultPath } from "../decorators";
 import { spODataEntity } from "../odata";
 import { spPost } from "../operations";
+import { tag } from "../telemetry";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {
@@ -17,21 +18,21 @@ export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSet
      * Gets the collection of languages used in a server farm.
      */
     public get installedLanguages(): ISharePointQueryableCollection<IInstalledLanguageInfo[]> {
-        return SharePointQueryableCollection(this, "installedlanguages");
+        return tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.installedLanguages");
     }
 
     /**
      * Gets time zone
      */
     public get timeZone(): ITimeZone {
-        return TimeZone(this);
+        return tag.configure(TimeZone(this), "rs.tz");
     }
 
     /**
      * Gets time zones
      */
     public get timeZones(): ITimeZones {
-        return TimeZones(this);
+        return tag.configure(TimeZones(this), "rs.tzs");
     }
 }
 export interface IRegionalSettings extends _RegionalSettings { }
@@ -45,6 +46,7 @@ export class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInfo> {
      *
      * @param utcTime UTC Time as Date or ISO String
      */
+    @tag("tz.utcToLocalTime")
     public async utcToLocalTime(utcTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -64,6 +66,7 @@ export class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInfo> {
      *
      * @param localTime Local Time as Date or ISO String
      */
+    @tag("tz.localTimeToUTC")
     public async localTimeToUTC(localTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -90,6 +93,7 @@ export class _TimeZones extends _SharePointQueryableCollection<ITimeZoneInfo[]> 
      *
      * @param id The integer id of the timezone to retrieve
      */
+    @tag("tzs.getById")
     public getById(id: number): Promise<ITimeZone & ITimeZoneInfo> {
         // do the post and merge the result into a TimeZone instance so the data and methods are available
         return spPost(this.clone(TimeZones, `GetById(${id})`).usingParser(spODataEntity(TimeZone)));

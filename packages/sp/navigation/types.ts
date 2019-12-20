@@ -17,7 +17,7 @@ import { tag } from "../telemetry";
  * Represents a collection of navigation nodes
  *
  */
-export class _NavigationNodes extends _SharePointQueryableCollection<INavNodeData[]> {
+export class _NavigationNodes extends _SharePointQueryableCollection<INavNodeInfo[]> {
 
     /**	    
      * Gets a navigation node by id	
@@ -77,7 +77,7 @@ export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationN
  * Represents an instance of a navigation node
  *
  */
-export class _NavigationNode extends _SharePointQueryableInstance<INavNodeData> {
+export class _NavigationNode extends _SharePointQueryableInstance<INavNodeInfo> {
 
     public delete = deleteable("nn");
 
@@ -94,7 +94,7 @@ export class _NavigationNode extends _SharePointQueryableInstance<INavNodeData> 
      * @param properties Properties used to update this node
      */
     @tag("nn.update")
-    public async update(properties: Partial<INavNodeData>): Promise<INavNodeUpdateResult> {
+    public async update(properties: Partial<INavNodeInfo>): Promise<INavNodeUpdateResult> {
 
         const postBody = body(assign(metadata("SP.NavigationNode"), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
@@ -229,14 +229,14 @@ export interface ISerializableNavigationNode {
  *
  */
 export interface INavigationNodeAddResult {
-    data: any;
+    data: INavNodeInfo;
     node: INavigationNode;
 }
 
 /**
  * Represents the information describing a navigation node
  */
-export interface INavNodeData {
+export interface INavNodeInfo {
     AudienceIds: string[] | null;
     Id: number;
     IsDocLib: boolean;

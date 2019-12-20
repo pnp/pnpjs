@@ -55,6 +55,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
      * @param serverRelativeUrl The server relative url of the new folder to create
      * @param overwrite True to overwrite an existing folder, default false
      */
+    @tag("fs.addUsingPath")
     public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
 
         const data = await spPost(this.clone(Folders, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));

@@ -16,4 +16,6 @@ export {
     IVersions,
     Version,
     Versions,
+    IAddUsingPathProps,
+    IFileInfo,
 } from "./types";

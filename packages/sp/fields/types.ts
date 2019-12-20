@@ -11,7 +11,7 @@ import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
 @defaultPath("fields")
-export class _Fields extends _SharePointQueryableCollection implements IFields {
+export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
   /**	
    * Gets a field from the collection by id	
@@ -435,7 +435,7 @@ export class _Fields extends _SharePointQueryableCollection implements IFields {
 export interface IFields extends _Fields { }
 export const Fields = spInvokableFactory<IFields>(_Fields);
 
-export class _Field extends _SharePointQueryableInstance implements IField {
+export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
 
   /**
    * Updates this field instance with the supplied properties
@@ -444,7 +444,7 @@ export class _Field extends _SharePointQueryableInstance implements IField {
    * @param fieldType The type value, required to update child field type properties
    */
   @tag("f.update")
-  public async update(properties: TypedHash<string | number | boolean>, fieldType = "SP.Field"): Promise<IFieldUpdateResult> {
+  public async update(properties: Partial<IFieldInfo>, fieldType = "SP.Field"): Promise<IFieldUpdateResult> {
 
     const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
@@ -480,14 +480,14 @@ export class _Field extends _SharePointQueryableInstance implements IField {
     return spPost(this.clone(Field, `setshowinnewform(${show})`));
   }
 }
-export interface IField extends _Field {}
+export interface IField extends _Field { }
 export const Field = spInvokableFactory<IField>(_Field);
 
 /**
  * This interface defines the result of adding a field
  */
 export interface IFieldAddResult {
-  data: any;
+  data: Partial<IFieldInfo>;
   field: IField;
 }
 
@@ -495,7 +495,7 @@ export interface IFieldAddResult {
  * This interface defines the result of updating a field
  */
 export interface IFieldUpdateResult {
-  data: any;
+  data: Partial<IFieldInfo>;
   field: IField;
 }
 
@@ -631,4 +631,38 @@ export interface IFieldCreationProperties extends TypedHash<string | number | bo
 export enum ChoiceFieldFormatType {
   Dropdown,
   RadioButtons,
+}
+
+export interface IFieldInfo {
+  DefaultFormula: string | null;
+  DefaultValue: string | null;
+  Description: string;
+  Direction: string;
+  EnforceUniqueValues: boolean;
+  EntityPropertyName: string;
+  FieldTypeKind: FieldTypes;
+  Filterable: boolean;
+  FromBaseType: boolean;
+  Group: string;
+  Hidden: boolean;
+  Id: string;
+  Indexed: boolean;
+  IndexStatus: number;
+  InternalName: string;
+  JSLink: string;
+  PinnedToFiltersPane: boolean;
+  ReadOnlyField: boolean;
+  Required: boolean;
+  SchemaXml: string;
+  Scope: string;
+  Sealed: boolean;
+  ShowInFiltersPane: number;
+  Sortable: boolean;
+  StaticName: string;
+  Title: string;
+  TypeAsString: string;
+  TypeDisplayName: string;
+  TypeShortDescription: string;
+  ValidationFormula: string | null;
+  ValidationMessage: string | null;
 }

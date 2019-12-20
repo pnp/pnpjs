@@ -1,4 +1,4 @@
-import { assign, TypedHash, hOP, jsS } from "@pnp/common";
+import { assign, hOP } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -20,7 +20,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
 
 @defaultPath("lists")
-export class _Lists extends _SharePointQueryableCollection {
+export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
 
     /**
      * Gets a list from the collection by guid id
@@ -28,8 +28,7 @@ export class _Lists extends _SharePointQueryableCollection {
      * @param id The Id of the list (GUID)
      */
     public getById(id: string): IList {
-
-        return tag.configure(List(this).concat(`('${id}')`), "l.getById");
+        return tag.configure(List(this).concat(`('${id}')`), "ls.getById");
     }
 
     /**
@@ -38,7 +37,7 @@ export class _Lists extends _SharePointQueryableCollection {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return tag.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "l.getByTitle");
+        return tag.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "ls.getByTitle");
     }
 
     /**
@@ -51,7 +50,7 @@ export class _Lists extends _SharePointQueryableCollection {
      * @param additionalSettings Will be passed as part of the list creation body
      */
     @tag("ls.add")
-    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListAddResult> {
+    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: Partial<IListInfo> = {}): Promise<IListAddResult> {
 
         const addSettings = Object.assign({
             "AllowContentTypes": enableContentTypes,
@@ -81,7 +80,7 @@ export class _Lists extends _SharePointQueryableCollection {
         desc = "",
         template = 100,
         enableContentTypes = false,
-        additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IListEnsureResult> {
+        additionalSettings: Partial<IListInfo> = {}): Promise<IListEnsureResult> {
 
         if (this.hasBatch) {
             throw Error("The ensure list method is not supported for use in a batch.");
@@ -126,7 +125,7 @@ export class _Lists extends _SharePointQueryableCollection {
 export interface ILists extends _Lists { }
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
-export class _List extends _SharePointQueryableInstance {
+export class _List extends _SharePointQueryableInstance<IListInfo> {
 
     public delete = deleteableWithETag("l");
 
@@ -135,7 +134,7 @@ export class _List extends _SharePointQueryableInstance {
      *
      */
     public get effectiveBasePermissions(): ISharePointQueryable {
-        return SharePointQueryable(this, "EffectiveBasePermissions");
+        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
     }
 
     /**
@@ -143,7 +142,7 @@ export class _List extends _SharePointQueryableInstance {
      *
      */
     public get eventReceivers(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "EventReceivers");
+        return tag.configure(SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
     }
 
     /**
@@ -151,7 +150,7 @@ export class _List extends _SharePointQueryableInstance {
      *
      */
     public get relatedFields(): ISharePointQueryable {
-        return SharePointQueryable(this, "getRelatedFields");
+        return tag.configure(SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
     }
 
     /**
@@ -159,7 +158,7 @@ export class _List extends _SharePointQueryableInstance {
      *
      */
     public get informationRightsManagementSettings(): ISharePointQueryable {
-        return SharePointQueryable(this, "InformationRightsManagementSettings");
+        return tag.configure(SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
     }
 
     /**
@@ -169,11 +168,9 @@ export class _List extends _SharePointQueryableInstance {
      * @param eTag Value used in the IF-Match header, by default "*"
      */
     @tag("l.update")
-    public async update(properties: TypedHash<string | number | boolean>, eTag = "*"): Promise<IListUpdateResult> {
+    public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListUpdateResult> {
 
-        const postBody = body(assign({
-            "__metadata": { "type": "SP.List" },
-        }, properties), headers({
+        const postBody = body(assign(metadata("SP.List"), properties), headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
@@ -199,7 +196,7 @@ export class _List extends _SharePointQueryableInstance {
     @tag("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        return spPost(this.clone(List, "getchanges"), body({ query: assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }));
+        return spPost(this.clone(List, "getchanges"), body({ query: assign(metadata("SP.ChangeQuery"), query) }));
     }
 
     /**
@@ -211,7 +208,7 @@ export class _List extends _SharePointQueryableInstance {
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ "query": assign({ "__metadata": { "type": "SP.CamlQuery" } }, query) }));
+        return spPost(q.expand.apply(q, expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
     }
 
     /**
@@ -222,7 +219,7 @@ export class _List extends _SharePointQueryableInstance {
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
-        return spPost(o, body({ "query": assign({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }));
+        return spPost(o, body({ "query": assign(metadata("SP.ChangeLogItemQuery"), query) }));
     }
 
     /**
@@ -270,9 +267,7 @@ export class _List extends _SharePointQueryableInstance {
             queryParams.forEach((v, k) => clone.query.set(k, v));
         }
 
-        return spPost(clone, {
-            body: jsS(postBody),
-        });
+        return spPost(clone, postBody);
     }
 
     /**
@@ -581,4 +576,40 @@ export enum ControlMode {
     Display = 1,
     Edit = 2,
     New = 3,
+}
+
+export interface IListInfo {
+    EnableRequestSignOff: boolean;
+    EnableVersioning: boolean;
+    EntityTypeName: string;
+    ExemptFromBlockDownloadOfNonViewableFiles: boolean;
+    FileSavePostProcessingEnabled: boolean;
+    ForceCheckout: boolean;
+    HasExternalDataSource: boolean;
+    Hidden: boolean;
+    Id: string;
+    ImagePath: { DecodedUrl: string; };
+    ImageUrl: string;
+    IrmEnabled: boolean;
+    IrmExpire: boolean;
+    IrmReject: boolean;
+    IsApplicationList: boolean;
+    IsCatalog: boolean;
+    IsPrivate: boolean;
+    ItemCount: number;
+    LastItemDeletedDate: string;
+    LastItemModifiedDate: string;
+    LastItemUserModifiedDate: string;
+    ListExperienceOptions: number;
+    ListItemEntityTypeFullName: string;
+    MajorVersionLimit: number;
+    MajorWithMinorVersionsLimit: number;
+    MultipleDataList: boolean;
+    NoCrawl: boolean;
+    ParentWebPath: { DecodedUrl: string; };
+    ParentWebUrl: string;
+    ParserDisabled: boolean;
+    ServerTemplateCanCreateFolders: boolean;
+    TemplateFeatureId: string;
+    Title: string;
 }

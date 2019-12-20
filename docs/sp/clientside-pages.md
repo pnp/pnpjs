@@ -4,11 +4,11 @@ The clientside pages module allows you to created, edit, and delete modern Share
 
 [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
-| Scenario    | Import Statement                                                                                                                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scenario    | Import Statement                                                                                                                                                                                                |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
 | Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
-| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presents/all";                                        |
+| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presents/all";                                    |
 
 ## Create a new Page
 
@@ -135,6 +135,29 @@ page.sections[1].addColumn(8);
 
 // publish our changes
 await page.save();
+```
+
+### Vertical Section
+
+The vertical section, if on the page is stored within the sections array, but you can access it slightly differently to make things easier.
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// add or get a vertical section (handles case where section already exists)
+const vertSection = page.addVerticalSection();
+
+// if you know or want to test if a vertical section is present:
+if (page.hasVerticalSection) {
+
+    // access the vertical section (this method will NOT create the section if it does not exist)
+    page.verticalSection.addControl(new ClientsideText("hello"));
+} else {
+    
+    const vertSection = page.addVerticalSection();
+    section.addControl(new ClientsideText("hello"));
+}
 ```
 
 ### Reorder Sections
