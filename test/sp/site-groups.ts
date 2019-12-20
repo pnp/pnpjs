@@ -7,21 +7,23 @@ import "@pnp/sp/site-users/web";
 import { getRandomString } from "@pnp/common";
 import { IGroupAddResult } from "@pnp/sp/site-groups";
 
-describe("Web.SiteGroups", () => {
+describe.only("Web.SiteGroups", () => {
 
     if (testSettings.enableWebTests) {
 
         let newGroup: IGroupAddResult;
         let testuser = "";
+        let testuserId: number;
 
         before(async function () {
             this.timeout(0);
             const groupName = `test_new_sitegroup_${getRandomString(6)}`;
             newGroup = await sp.web.siteGroups.add({ "Title": groupName });
 
-            const users = await sp.web.siteUsers.top(1).select("LoginName")<{ LoginName: string }[]>();
-
+            const users = await sp.web.siteUsers.top(1).select("LoginName,Id")<{ LoginName: string, Id: number }[]>();
+            const usersSPUser = await sp.web.siteUsers.filter("PrincipalType eq 1").select("Id").top(1)<{ LoginName: string, Id: number }[]>();
             testuser = users[0].LoginName;
+            testuserId = usersSPUser[0].Id;
         });
 
         it("siteGroups()", function () {
@@ -89,5 +91,8 @@ describe("Web.SiteGroups", () => {
             return expect(p).to.be.eventually.fulfilled;
         });
 
+        it("SiteGroup.setUserAsOwner()", async function () {
+            return expect(sp.web.siteGroups.getById(newGroup.data.Id).setUserAsOwner(testuserId)).to.be.eventually.fulfilled;
+        });
     }
 });

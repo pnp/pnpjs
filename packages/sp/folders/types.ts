@@ -22,7 +22,7 @@ import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 
 @defaultPath("folders")
-export class _Folders extends _SharePointQueryableCollection {
+export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Gets a folder by it's name
@@ -69,7 +69,7 @@ export interface IFolders extends _Folders { }
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 
-export class _Folder extends _SharePointQueryableInstance {
+export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     public delete = deleteableWithETag("f");
 
@@ -173,7 +173,25 @@ export class _Folder extends _SharePointQueryableInstance {
             }));
     }
 
-    @tag("f.moveTo")
+    /**
+     * Copies a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    @tag("f.copyTo")
+    public async copyTo(destUrl: string): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+            body({
+                destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                srcUrl: `${hostUrl}${srcUrl}`,
+            }));
+    }
+
+    @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
@@ -188,7 +206,7 @@ export class _Folder extends _SharePointQueryableInstance {
         return shareable;
     }
 }
-export interface IFolder extends _Folder, IDeleteableWithETag {}
+export interface IFolder extends _Folder, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
 
 /**
@@ -221,4 +239,17 @@ export interface IFolderUpdateResult {
      * Additional data from the server 
      */
     data: any;
+}
+
+export interface IFolderInfo {
+    Exists: boolean;
+    IsWOPIEnabled: boolean;
+    ItemCount: number;
+    Name: string;
+    ProgID: string | null;
+    ServerRelativeUrl: string;
+    TimeCreated: string;
+    TimeLastModified: string;
+    UniqueId: string;
+    WelcomePage: string;
 }

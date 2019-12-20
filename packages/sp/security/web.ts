@@ -32,12 +32,3 @@ _Web.prototype.resetRoleInheritance = resetRoleInheritance;
 _Web.prototype.userHasPermissions = userHasPermissions;
 _Web.prototype.currentUserHasPermissions = currentUserHasPermissions;
 _Web.prototype.hasPermissions = hasPermissions;
-
-
-
-
-
-
-
-
-

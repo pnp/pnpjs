@@ -53,7 +53,6 @@ describe("Web", () => {
                 { desc: ".siteUserInfoList", test: sp.web.siteUserInfoList },
                 { desc: ".defaultDocumentLibrary", test: sp.web.defaultDocumentLibrary },
                 { desc: ".customListTemplates", test: sp.web.customListTemplates },
-                { desc: ".navigation", test: sp.web.navigation },
                 { desc: ".siteUsers", test: sp.web.siteUsers },
                 { desc: ".siteGroups", test: sp.web.siteGroups },
                 { desc: ".folders", test: sp.web.folders },
@@ -78,6 +77,12 @@ describe("Web", () => {
                 const { test, desc } = testObj;
                 it(desc, () => expect((<any>test)()).to.eventually.be.fulfilled);
             });
+        });
+
+        it(".navigation", async function () {
+
+            await sp.web.navigation.quicklaunch();
+            await sp.web.navigation.topNavigationBar();
         });
 
         it(".getParentWeb", async function () {

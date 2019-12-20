@@ -122,6 +122,21 @@ const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
 await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").moveTo(destinationUrl);
 ```  
 
+### copy
+
+It's possible to copy a folder to a new destination within a site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+// destination is a server-relative url of a new folder
+const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
+
+await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").copyTo(destinationUrl);
+```  
+
 ### recycle
 
 Recycles a folder

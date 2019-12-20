@@ -97,6 +97,20 @@ await item.update({
 });
 ```
 
+## AddUsingPath
+
+If you need to support the percent or pound characters you can use the addUsingPath method of IFiles
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+
+const file = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file%#%.name", "content");
+```
+
+
 ## Update File Content
 
 You can of course use similar methods to update existing files as shown below:

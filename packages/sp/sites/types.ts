@@ -8,6 +8,7 @@ import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";
 import { SPBatch } from "../batch";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { IChangeQuery } from "../types";
 import { tag } from "../telemetry";
 
 @defaultPath("_api/site")
@@ -86,6 +87,18 @@ export class _Site extends _SharePointQueryableInstance {
         q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
+    }
+
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
+     */
+    @tag("si.getChanges")
+    public getChanges(query: IChangeQuery): Promise<any> {
+
+        const postBody = body({ "query": assign({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        return spPost(this.clone(Web, "getchanges"), postBody);
     }
 
     /**

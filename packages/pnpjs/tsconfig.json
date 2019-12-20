@@ -7,6 +7,7 @@
     },
     "include": [
         "./**/*.ts",
+        "../adaljsclient/**/*.ts",
         "../common/**/*.ts",
         "../logging/**/*.ts",
         "../odata/**/*.ts",
@@ -16,6 +17,9 @@
         "../sp-addinhelpers/**/*.ts"
     ],
     "references": [
+        {
+            "path": "../adaljsclient"
+        },
         {
             "path": "../common"
         },

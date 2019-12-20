@@ -13,10 +13,8 @@ import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { PrincipalType } from "../types";
 
-
-
 @defaultPath("siteusers")
-export class _SiteUsers extends _SharePointQueryableCollection {
+export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> {
 
     /**
      * Gets a user from the collection by id
@@ -84,7 +82,7 @@ export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
  * Describes a single user
  *
  */
-export class _SiteUser extends _SharePointQueryableInstance {
+export class _SiteUser extends _SharePointQueryableInstance<ISiteUserInfo> {
 
     public delete = deleteable("su");
 
@@ -105,6 +103,17 @@ export class _SiteUser extends _SharePointQueryableInstance {
 }
 export interface ISiteUser extends _SiteUser, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
+
+export interface ISiteUserInfo extends ISiteUserProps {
+
+    Expiration: string;
+    IsEmailAuthenticationGuestUser: boolean;
+    UserId: {
+        NameId: string;
+        NameIdIssuer: string;
+    };
+    UserPrincipalName: string | null;
+}
 
 /**
  * Describes a single user properties

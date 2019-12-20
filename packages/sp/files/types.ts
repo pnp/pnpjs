@@ -8,7 +8,7 @@ import {
     deleteableWithETag,
 } from "../sharepointqueryable";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers } from "@pnp/odata";
-import { assign, getGUID, isFunc } from "@pnp/common";
+import { assign, getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath } from "../decorators";
@@ -20,7 +20,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
  *
  */
 @defaultPath("files")
-export class _Files extends _SharePointQueryableCollection {
+export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
     /**
      * Gets a File by filename
@@ -28,7 +28,10 @@ export class _Files extends _SharePointQueryableCollection {
      * @param name The name of the file, including extension.
      */
     public getByName(name: string): IFile {
-        return File(this).concat(`('${name}')`);
+        if (/\%#/.test(name)) {
+            throw Error("For file names containing % or # please use web.getFileByServerRelativePath");
+        }
+        return File(this).concat(`('${escapeQueryStrValue(name)}')`);
     }
 
     /**
@@ -40,12 +43,45 @@ export class _Files extends _SharePointQueryableCollection {
      * @returns The new File and the raw response.
      */
     public async add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IFileAddResult> {
-        const response = spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
+        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });
         return {
             data: response,
             file: this.getByName(url),
+        };
+    }
+
+    /**
+     * Adds a file using the pound percent safe methods
+     * 
+     * @param url Excoded url of the file
+     * @param content The file content
+     * @param parameters Additional parameters to control method behavior
+     */
+    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
+
+        const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
+
+        if (parameters) {
+            if (parameters.Overwrite) {
+                path.push(",Overwrite=true");
+            }
+            if (parameters.AutoCheckoutOnInvalidData) {
+                path.push(",AutoCheckoutOnInvalidData=true");
+            }
+            if (!stringIsNullOrEmpty(parameters.XorHash)) {
+                path.push(`,XorHash=${escapeQueryStrValue(parameters.XorHash)}`);
+            }
+        }
+
+        path.push(")");
+
+        const resp: IFileInfo = await spPost(Files(this, path.join("")), { body: content });
+
+        return {
+            data: resp,
+            file: File(odataUrlFrom(resp)),
         };
     }
 
@@ -77,18 +113,18 @@ export class _Files extends _SharePointQueryableCollection {
         const response = await spPost(this.clone(Files, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`, false));
         return {
             data: response,
-            file: this.getByName(fileUrl),
+            file: File(odataUrlFrom(response)),
         };
     }
 }
-export interface IFiles extends _Files {}
+export interface IFiles extends _Files { }
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
  * Describes a single File instance
  *
  */
-export class _File extends _SharePointQueryableInstance {
+export class _File extends _SharePointQueryableInstance<IFileInfo> {
 
     public delete = deleteableWithETag("fi");
 
@@ -385,7 +421,7 @@ export class _File extends _SharePointQueryableInstance {
     }
 }
 
-export interface IFile extends _File, IDeleteableWithETag {}
+export interface IFile extends _File, IDeleteableWithETag { }
 export const File = spInvokableFactory<IFile>(_File);
 
 /**
@@ -457,7 +493,7 @@ export class _Versions extends _SharePointQueryableCollection {
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-export interface IVersions extends _Versions {}
+export interface IVersions extends _Versions { }
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -486,7 +522,7 @@ export enum CheckinType {
  */
 export interface IFileAddResult {
     file: IFile;
-    data: any;
+    data: IFileInfo;
 }
 
 /**
@@ -517,4 +553,43 @@ export interface IFileUploadProgressData {
     chunkSize: number;
     currentPointer: number;
     fileSize: number;
+}
+
+export interface IAddUsingPathProps {
+    /**
+     * Overwrite the file if it exists
+     */
+    Overwrite: boolean;
+    /**
+     * specifies whether to auto checkout on invalid Data. It'll be useful if the list contains validation whose requirements upload will not be able to meet.
+     */
+    AutoCheckoutOnInvalidData?: boolean;
+    /**
+     * Specifies a XOR hash of the file data which should be used to ensure end-2-end data integrity, base64 representation
+     */
+    XorHash?: string;
+}
+
+export interface IFileInfo {
+    CheckInComment: string;
+    CheckOutType: number;
+    ContentTag: string;
+    CustomizedPageStatus: number;
+    ETag: string;
+    Exists: boolean;
+    IrmEnabled: boolean;
+    Length: string;
+    Level: number;
+    LinkingUri: string | null;
+    LinkingUrl: string;
+    MajorVersion: number;
+    MinorVersion: number;
+    Name: string;
+    ServerRelativeUrl: string;
+    TimeCreated: string;
+    TimeLastModified: string;
+    Title: string | null;
+    UIVersion: number;
+    UIVersionLabel: string;
+    UniqueId: string;
 }

@@ -64,6 +64,8 @@ nav:
       - Parsers: 'odata/parsers.md'
       - Pipeline: 'odata/pipeline.md'
       - Queryable: 'odata/queryable.md'
+    - pnpjs:
+      - pnpjs: 'pnpjs/index.md'
     - sp:
       - sp: 'sp/index.md'
       - 'Alias Parameters': 'sp/alias-parameters.md'
@@ -81,7 +83,7 @@ nav:
       - Hubsites: 'sp/hubsites.md'
       - 'List Items': 'sp/items.md'
       - Lists: 'sp/lists.md'      
-      - 'Navigation Service': 'sp/navigation-service.md'
+      - 'Navigation': 'sp/navigation.md'
       - Permissions: 'sp/permissions.md'
       - Profiles: 'sp/profiles.md'
       - 'Regional Settings': 'sp/regional-settings.md'
@@ -106,6 +108,8 @@ nav:
       - sp-addinhelpers: 'sp-addinhelpers/index.md'
       - SPRequestExecutorClient:  'sp-addinhelpers/sp-request-executor-client.md'
       - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
+  - Version 1 Docs:
+    - Home: 'v1/index.md'
 theme:
   name: 'material'
   custom_dir: 'docs/theme'
