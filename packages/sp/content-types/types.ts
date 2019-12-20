@@ -15,7 +15,7 @@ import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
 @defaultPath("contenttypes")
-export class _ContentTypes extends _SharePointQueryableCollection {
+export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeInfo[]> {
 
     /**
      * Adds an existing contenttype to a content type collection
@@ -70,11 +70,11 @@ export class _ContentTypes extends _SharePointQueryableCollection {
         return { contentType: this.getById(data.id), data };
     }
 }
-export interface IContentTypes extends _ContentTypes {}
+export interface IContentTypes extends _ContentTypes { }
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 
-export class _ContentType extends _SharePointQueryableInstance implements IContentType {
+export class _ContentType extends _SharePointQueryableInstance<IContentTypeInfo> {
 
     public delete = deleteable("ct");
 
@@ -106,7 +106,7 @@ export class _ContentType extends _SharePointQueryableInstance implements IConte
         return tag.configure(SharePointQueryableCollection(this, "workflowAssociations"), "ct.workflowAssociations");
     }
 }
-export interface IContentType extends _ContentType, IDeleteable {}
+export interface IContentType extends _ContentType, IDeleteable { }
 export const ContentType = spInvokableFactory<IContentType>(_ContentType);
 
 /**
@@ -114,11 +114,36 @@ export const ContentType = spInvokableFactory<IContentType>(_ContentType);
  */
 export interface IContentTypeAddResult {
     contentType: IContentType;
-    data: any;
+    data: Partial<IContentTypeInfo>;
+}
+
+export interface IContentTypeInfo {
+    Description: string;
+    DisplayFormTemplateName: string;
+    DisplayFormUrl: string;
+    DocumentTemplate: string;
+    DocumentTemplateUrl: string;
+    EditFormTemplateName: string;
+    EditFormUrl: string;
+    Group: string;
+    Hidden: boolean;
+    Id: { StringValue: string; };
+    JSLink: string;
+    MobileDisplayFormUrl: string;
+    MobileEditFormUrl: string;
+    MobileNewFormUrl: string;
+    Name: string;
+    NewFormTemplateName: string;
+    NewFormUrl: string;
+    ReadOnly: boolean;
+    SchemaXml: string;
+    Scope: string;
+    Sealed: boolean;
+    StringId: string;
 }
 
 @defaultPath("fieldlinks")
-export class _FieldLinks extends _SharePointQueryableCollection {
+export class _FieldLinks extends _SharePointQueryableCollection<IFieldLinkInfo[]> {
 
     /**
     *  Gets a FieldLink by GUID id	
@@ -129,9 +154,17 @@ export class _FieldLinks extends _SharePointQueryableCollection {
         return tag.configure(FieldLink(this).concat(`(guid'${id}')`), "fls.getById");
     }
 }
-export interface IFieldLinks extends _FieldLinks {}
+export interface IFieldLinks extends _FieldLinks { }
 export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
 
-export class _FieldLink extends _SharePointQueryableInstance { }
+export class _FieldLink extends _SharePointQueryableInstance<IFieldLinkInfo> { }
 export interface IFieldLink extends _FieldLink { }
 export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
+
+export interface IFieldLinkInfo {
+    FieldInternalName: string | null;
+    Hidden: boolean;
+    Id: string;
+    Name: string;
+    Required: boolean;
+}

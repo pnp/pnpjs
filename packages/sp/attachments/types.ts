@@ -161,7 +161,7 @@ export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
 
 export interface IAttachmentAddResult {
     file: IAttachment;
-    data: any;
+    data: IAttachmentFileInfo;
 }
 
 export interface IAttachmentFileInfo {

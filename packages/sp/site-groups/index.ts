@@ -7,4 +7,5 @@ export {
     ISiteGroups,
     SiteGroup,
     SiteGroups,
+    ISiteGroupInfo,
 } from "./types";

@@ -12,7 +12,7 @@ import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
 @defaultPath("sitegroups")
-export class _SiteGroups extends _SharePointQueryableCollection {
+export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {
 
     /**	
      * Gets a group from the collection by id	
@@ -71,7 +71,7 @@ export class _SiteGroups extends _SharePointQueryableCollection {
 export interface ISiteGroups extends _SiteGroups { }
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
-export class _SiteGroup extends _SharePointQueryableInstance {
+export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
 
     /**
      * Gets the users for this group
@@ -129,4 +129,19 @@ export interface IGroupUpdateResult {
 export interface IGroupAddResult {
     group: ISiteGroup;
     data: any;
+}
+
+export interface ISiteGroupInfo {
+    AllowMembersEditMembership: boolean;
+    AllowRequestToJoinLeave: boolean;
+    AutoAcceptRequestToJoinLeave: boolean;
+    Description: string;
+    Id: number;
+    IsHiddenInUI: boolean;
+    LoginName: string;
+    OnlyAllowMembersViewMembership: boolean;
+    OwnerTitle: string;
+    PrincipalType: number;
+    RequestToJoinLeaveEmailSetting: string | null;
+    Title: string;
 }

@@ -17,7 +17,6 @@ const banner = [
     " */",
 ].join("\n");
 
-
 export default <ConfigCollection>[
     <BuildSchema>{
 

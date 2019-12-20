@@ -19,4 +19,5 @@ export {
     IFieldCreationProperties,
     UrlFieldFormatType,
     IXmlSchemaFieldCreationInformation,
+    IFieldInfo,
 } from "./types";

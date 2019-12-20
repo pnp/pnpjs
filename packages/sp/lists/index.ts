@@ -17,4 +17,5 @@ export {
     IRenderListData,
     IRenderListDataOptions,
     IRenderListDataParameters,
+    IListInfo,
 } from "./types";

@@ -35,7 +35,7 @@ describe("Lists", function () {
 
         it(".add 2", function () {
             const title = `pnp testing add 2`;
-            return expect(sp.web.lists.add(title, title, 101, true, { OnQuickLaunch: true })).to.eventually.be.fulfilled;
+            return expect(sp.web.lists.add(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
         it(".ensure", async function () {
@@ -51,18 +51,18 @@ describe("Lists", function () {
         it(".ensure fail update already existing list", async function () {
             const title = `pnp testing ensure fail update already existing list`;
             await sp.web.lists.ensure(title);
-            return expect(sp.web.lists.ensure(title, title, 100, false, { RandomPropertyThatDoesntExistOnObject: "RandomValue" })).to.eventually.be.rejected;
+            return expect(sp.web.lists.ensure(title, title, 100, false, <any>{ RandomPropertyThatDoesntExistOnObject: "RandomValue" })).to.eventually.be.rejected;
         });
 
         it(".ensure with additional settings", async function () {
             const title = `pnp testing ensure with additional settings`;
-            return expect(sp.web.lists.ensure(title, title, 101, true, { OnQuickLaunch: true })).to.eventually.be.fulfilled;
+            return expect(sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
         it(".ensure existing list with additional settings", async function () {
             const title = `pnp testing ensure existing list with additional settings`;
             await sp.web.lists.ensure(title);
-            return expect(sp.web.lists.ensure(title, title, 101, true, { OnQuickLaunch: true })).to.eventually.be.fulfilled;
+            return expect(sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
         it(".ensure already existing list", async function () {

@@ -30,14 +30,14 @@ declare module "../sites/types" {
     }
 }
 
-_Site.prototype.joinHubSite = function (this: _Site, siteId: string): Promise<void> {
-    return spPost(this.clone(Site, `joinHubSite('${siteId}')`));
+_Site.prototype.joinHubSite = async function (this: _Site, siteId: string): Promise<void> {
+    await spPost(this.clone(Site, `joinHubSite('${siteId}')`));
 };
 
-_Site.prototype.registerHubSite = function (this: _Site): Promise<void> {
-    return spPost(this.clone(Site, `registerHubSite`));
+_Site.prototype.registerHubSite = async function (this: _Site): Promise<void> {
+    await spPost(this.clone(Site, `registerHubSite`));
 };
 
-_Site.prototype.unRegisterHubSite = function (this: _Site): Promise<void> {
-    return spPost(this.clone(Site, `unRegisterHubSite`));
+_Site.prototype.unRegisterHubSite = async function (this: _Site): Promise<void> {
+    await spPost(this.clone(Site, `unRegisterHubSite`));
 };

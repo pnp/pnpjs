@@ -1,4 +1,11 @@
-# @pnp/sp/social
+# @pnp/sp/ - social
+
+[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/social";|
+|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 The social API allows you to track followed sites, people, and docs. Note, many of these methods only work with the context of a logged in user, and not
 with app-only permissions.
@@ -9,6 +16,7 @@ Gets a URI to a site that lists the current user's followed sites.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/social";
 
 const uri = await sp.social.getFollowedSitesUri();
 ```
@@ -19,6 +27,7 @@ Gets a URI to a site that lists the current user's followed documents.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/social";
 
 const uri = await sp.social.getFollowedDocumentsUri();
 ```
@@ -28,7 +37,8 @@ const uri = await sp.social.getFollowedDocumentsUri();
 Makes the current user start following a user, document, site, or tag
 
 ```TypeScript
-import { sp, SocialActorType } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { SocialActorType } from "@pnp/sp/social";
 
 // follow a site
 const r1 = await sp.social.follow({
@@ -64,7 +74,8 @@ const r4 = await sp.social.follow({
 Indicates whether the current user is following a specified user, document, site, or tag
 
 ```TypeScript
-import { sp, SocialActorType } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { SocialActorType } from "@pnp/sp/social";
 
 // pass the same social actor struct as shown in follow example for each type
 const r = await sp.social.isFollowed({
@@ -78,7 +89,8 @@ const r = await sp.social.isFollowed({
 Makes the current user stop following a user, document, site, or tag
 
 ```TypeScript
-import { sp, SocialActorType } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { SocialActorType } from "@pnp/sp/social";
 
 // pass the same social actor struct as shown in follow example for each type
 const r = await sp.social.stopFollowing({
@@ -95,6 +107,7 @@ Gets this user's social information
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/social";
 
 const r = await sp.social.my.get();
 ```
@@ -104,7 +117,8 @@ const r = await sp.social.my.get();
 Gets users, documents, sites, and tags that the current user is following based on the supplied flags.
 
 ```TypeScript
-import { sp, SocialActorTypes } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { SocialActorType } from "@pnp/sp/social";
 
 // get all the followed documents
 const r1 = await sp.social.my.followed(SocialActorTypes.Document);
@@ -121,7 +135,8 @@ const r3 = await sp.social.my.followed(SocialActorTypes.Site | SocialActorTypes.
 Works as followed but returns on the count of actors specifed by the query
 
 ```TypeScript
-import { sp, SocialActorTypes } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { SocialActorType } from "@pnp/sp/social";
 
 // get the followed documents count
 const r = await sp.social.my.followedCount(SocialActorTypes.Document);
@@ -133,6 +148,7 @@ Gets the users who are following the current user.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/social";
 
 // get the followed documents count
 const r = await sp.social.my.followers();
@@ -144,6 +160,7 @@ Gets users who the current user might want to follow.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/social";
 
 // get the followed documents count
 const r = await sp.social.my.suggestions();

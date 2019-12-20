@@ -72,7 +72,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
+        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
 
         const r = await spPost(adder, {
             body: content, headers: {

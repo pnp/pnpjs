@@ -134,7 +134,7 @@ export class _RoleDefinitions extends _SharePointQueryableCollection<IRoleDefini
     public async add(name: string, description: string, order: number, basePermissions: IBasePermissions): Promise<IRoleDefinitionAddResult> {
 
         const postBody = body({
-            BasePermissions: assign({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: assign(metadata("SP.BasePermissions"), basePermissions),
             Description: description,
             Name: name,
             Order: order,
@@ -170,7 +170,7 @@ export class _RoleDefinition extends _SharePointQueryableInstance<IRoleDefinitio
 
         const s = ["BasePermissions"];
         if (hOP(properties, s[0]) !== undefined) {
-            properties[s[0]] = assign({ __metadata: { type: "SP." + s[0] } }, properties[s[0]]);
+            properties[s[0]] = assign(metadata(`SP.${s[0]}`), properties[s[0]]);
         }
 
         const postBody = body(assign(metadata("SP.RoleDefinition"), properties), headers({ "X-HTTP-Method": "MERGE" }));

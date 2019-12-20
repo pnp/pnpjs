@@ -13,7 +13,7 @@ import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
 @defaultPath("views")
-export class _Views extends _SharePointQueryableCollection {
+export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
 
     /**	  
      * Gets a view by guid id	    
@@ -59,7 +59,7 @@ export class _Views extends _SharePointQueryableCollection {
 export interface IViews extends _Views { }
 export const Views = spInvokableFactory<IViews>(_Views);
 
-export class _View extends _SharePointQueryableInstance {
+export class _View extends _SharePointQueryableInstance<IViewInfo> {
 
     public delete = deleteable("vw");
 
@@ -97,7 +97,7 @@ export interface IView extends _View, IDeleteable { }
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SharePointQueryableCollection {
+export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: string; }> {
 
     /**
      * Gets a value that specifies the XML schema that represents the collection.
@@ -151,10 +151,55 @@ export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
 
 export interface IViewAddResult {
     view: IView;
-    data: any;
+    data: IViewInfo;
 }
 
 export interface IViewUpdateResult {
     view: IView;
-    data: any;
+    data: IViewInfo;
+}
+
+export enum ViewScope {
+    DefaultValue,
+    Recursive,
+    RecursiveAll,
+    FilesOnly,
+}
+
+export interface IViewInfo {
+    EditorModified: boolean;
+    Formats: string | null;
+    Hidden: boolean;
+    HtmlSchemaXml: string;
+    Id: string;
+    ImageUrl: string;
+    IncludeRootFolder: boolean;
+    JSLink: string;
+    ListViewXml: string;
+    Method: string | null;
+    MobileDefaultView: boolean;
+    MobileView: boolean;
+    ModerationType: string | null;
+    NewDocumentTemplates: string;
+    OrderedView: boolean;
+    Paged: boolean;
+    PersonalView: boolean;
+    ReadOnlyView: boolean;
+    RequiresClientIntegration: boolean;
+    RowLimit: number;
+    Scope: ViewScope;
+    ServerRelativePath: { DecodedUrl: string; };
+    ServerRelativeUrl: string;
+    StyleId: string | null;
+    TabularView: boolean;
+    Threaded: boolean;
+    Title: string;
+    Toolbar: string;
+    ToolbarTemplateName: string | null;
+    ViewData: string | null;
+    ViewJoins: string | null;
+    ViewProjectedFields: { SchemaXml: string } | null;
+    ViewQuery: string;
+    ViewType: string;
+    VisualizationInfo: any | null;
 }
