@@ -1,10 +1,10 @@
 import { assign, ITypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
-import { body, IInvokable } from "@pnp/odata";
-import { _GraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
+import { body } from "@pnp/odata";
+import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
-import { _DirectoryObject, IDirectoryObject, _DirectoryObjects } from "../directory-objects/types";
+import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types";
 
 export enum GroupType {
     /**
@@ -26,28 +26,45 @@ export enum GroupType {
  */
 @deleteable()
 @updateable()
-export class _Group extends _DirectoryObject<IGroupType> implements _IGroup {
-
+export class _Group extends _DirectoryObject<IGroupType> {
+    /**
+     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
     public addFavorite(): Promise<void> {
         return graphPost(this.clone(Group, "addFavorite"));
     }
-
+    /**
+     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
     public removeFavorite(): Promise<void> {
         return graphPost(this.clone(Group, "removeFavorite"));
     }
-
+    /**
+     * Reset the unseenCount of all the posts that the current user has not seen since their last visit
+     */
     public resetUnseenCount(): Promise<void> {
         return graphPost(this.clone(Group, "resetUnseenCount"));
     }
-
+    /**
+     * Calling this method will enable the current user to receive email notifications for this group,
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
     public subscribeByMail(): Promise<void> {
         return graphPost(this.clone(Group, "subscribeByMail"));
     }
-
+    /**
+     * Calling this method will prevent the current user from receiving email notifications for this group
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
     public unsubscribeByMail(): Promise<void> {
         return graphPost(this.clone(Group, "unsubscribeByMail"));
     }
-
+    /**
+     * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
+     * 
+     * @param start Start date and time of the time range
+     * @param end End date and time of the time range
+     */
     public getCalendarView(start: Date, end: Date): Promise<IEventType[]> {
 
         const view = this.clone(Group, "calendarView");
@@ -56,43 +73,7 @@ export class _Group extends _DirectoryObject<IGroupType> implements _IGroup {
         return view();
     }
 }
-export interface _IGroup {
-    /**
-     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
-     */
-    addFavorite(): Promise<void>;
-
-    /**
-     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
-     */
-    removeFavorite(): Promise<void>;
-
-    /**
-     * Reset the unseenCount of all the posts that the current user has not seen since their last visit
-     */
-    resetUnseenCount(): Promise<void>;
-
-    /**
-     * Calling this method will enable the current user to receive email notifications for this group,
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
-     */
-    subscribeByMail(): Promise<void>;
-
-    /**
-     * Calling this method will prevent the current user from receiving email notifications for this group
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
-     */
-    unsubscribeByMail(): Promise<void>;
-
-    /**
-     * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
-     * 
-     * @param start Start date and time of the time range
-     * @param end End date and time of the time range
-     */
-    getCalendarView(start: Date, end: Date): Promise<IEventType[]>;
-}
-export interface IGroup extends _IGroup, IInvokable, IDeleteable, IUpdateable, IDirectoryObject<IGroupType> { }
+export interface IGroup extends _Group, IDeleteable, IUpdateable { }
 export const Group = graphInvokableFactory<IGroup>(_Group);
 
 /**
@@ -101,7 +82,7 @@ export const Group = graphInvokableFactory<IGroup>(_Group);
  */
 @defaultPath("groups")
 @getById(Group)
-export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements _IGroups {
+export class _Groups extends _GraphQueryableCollection<IGroupType[]> {
 
     /**
      * Create a new group as specified in the request body.
@@ -136,8 +117,7 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
         };
     }
 }
-export interface _IGroups { }
-export interface IGroups extends _IGroups, IInvokable, IGetById<IGroup>, IGraphQueryableCollection<IGroupType[]> { }
+export interface IGroups extends _Groups, IGetById<IGroup> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
 
 /**

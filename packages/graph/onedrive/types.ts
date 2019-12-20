@@ -10,7 +10,7 @@ import {
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { assign, combine } from "@pnp/common";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators";
-import { IInvokable, body } from "@pnp/odata";
+import { body } from "@pnp/odata";
 import { graphPatch, graphGet, graphPut } from "../operations";
 
 /**
@@ -18,7 +18,7 @@ import { graphPatch, graphGet, graphPut } from "../operations";
  *
  */
 @defaultPath("drive")
-export class _Drive extends _GraphQueryableInstance<IDriveType> implements _IDrive {
+export class _Drive extends _GraphQueryableInstance<IDriveType> {
 
     public get root(): IRoot {
         return Root(this);
@@ -40,13 +40,7 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> implements _IDri
         return DriveItem(this, combine("items", id));
     }
 }
-export interface _IDrive {
-    readonly root: IRoot;
-    readonly list: IGraphQueryableInstance;
-    readonly recent: IDriveItems;
-    readonly sharedWithMe: IDriveItems;
-}
-export interface IDrive extends _IDrive, IInvokable, IGraphQueryableInstance<IDriveType> {}
+export interface IDrive extends _Drive {}
 export const Drive = graphInvokableFactory<IDrive>(_Drive);
 
 /**
@@ -55,9 +49,8 @@ export const Drive = graphInvokableFactory<IDrive>(_Drive);
  */
 @defaultPath("drives")
 @getById(Drive)
-export class _Drives extends _GraphQueryableCollection<IDriveType[]> implements _IDrives { }
-export interface _IDrives { }
-export interface IDrives extends _IDrives, IInvokable, IGetById<IDrive>, IGraphQueryableCollection<IDriveType[]> { }
+export class _Drives extends _GraphQueryableCollection<IDriveType[]> { }
+export interface IDrives extends _Drives, IGetById<IDrive> { }
 export const Drives = graphInvokableFactory<IDrives>(_Drives);
 
 /**
@@ -65,7 +58,7 @@ export const Drives = graphInvokableFactory<IDrives>(_Drives);
  *
  */
 @defaultPath("root")
-export class _Root extends _GraphQueryableInstance<IDrive> implements _IRoot {
+export class _Root extends _GraphQueryableInstance<IDrive> {
 
     public get children(): IDriveItems {
         return DriveItems(this, "children");
@@ -81,12 +74,7 @@ export class _Root extends _GraphQueryableInstance<IDrive> implements _IRoot {
         return GraphQueryableCollection(this, "thumbnails");
     }
 }
-export interface _IRoot {
-    readonly children: IDriveItems;
-    readonly thumbnails: IGraphQueryableCollection;
-    search(query: string): Promise<any>;
-}
-export interface IRoot extends _IRoot, IInvokable, IGraphQueryableInstance<IDrive> {}
+export interface IRoot extends _Root {}
 export const Root = graphInvokableFactory<IRoot>(_Root);
 
 /**
@@ -95,7 +83,7 @@ export const Root = graphInvokableFactory<IRoot>(_Root);
  */
 @deleteable()
 @updateable()
-export class _DriveItem extends _GraphQueryableInstance<any> implements _IDriveItem {
+export class _DriveItem extends _GraphQueryableInstance<any> {
 
     public get children(): IDriveItems {
         return DriveItems(this, "children");
@@ -123,14 +111,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> implements _IDriveI
         });
     }
 }
-export interface _IDriveItem {
-    readonly children: IDriveItems;
-    readonly thumbnails: IGraphQueryableCollection;
-    readonly versions: IGraphQueryableCollection<IDriveItemVersionInfo>;
-    move(parentReference: { id: "string" }, name: string): Promise<void>;
-    getContent(): Promise<any>;
-}
-export interface IDriveItem extends _IDriveItem, IInvokable, IDeleteable, IUpdateable, IGraphQueryableInstance<any> {}
+export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable {}
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
 
 /**
@@ -138,9 +119,8 @@ export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
  *
  */
 @getById(DriveItem)
-export class _DriveItems extends _GraphQueryableCollection implements _IDriveItems { }
-export interface _IDriveItems { }
-export interface IDriveItems extends _IDriveItems, IInvokable, IGetById<IDriveItem>, IGraphQueryableCollection { }
+export class _DriveItems extends _GraphQueryableCollection { }
+export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> { }
 export const DriveItems = graphInvokableFactory<IDriveItems>(_DriveItems);
 
 /**

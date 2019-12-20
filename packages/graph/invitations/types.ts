@@ -1,7 +1,7 @@
 import { ITypedHash, assign } from "@pnp/common";
-import { body, IInvokable } from "@pnp/odata";
+import { body } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath } from "../decorators";
 import { graphPost } from "../operations";
 
@@ -9,7 +9,7 @@ import { graphPost } from "../operations";
  * Invitations
  */
 @defaultPath("invitations")
-export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> implements _IInvitations {
+export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> {
 
     /**
      * Create a new Invitation via invitation manager.
@@ -27,10 +27,7 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> i
         return { data };
     }
 }
-export interface _IInvitations {
-    create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: ITypedHash<any>): Promise<IInvitationAddResult>;
-}
-export interface IInvitations extends _IInvitations, IInvokable, IGraphQueryableCollection<IInvitationType[]> {}
+export interface IInvitations extends _Invitations {}
 export const Invitations = graphInvokableFactory<IInvitations>(_Invitations);
 
 /**

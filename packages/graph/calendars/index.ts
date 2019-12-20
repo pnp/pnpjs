@@ -4,7 +4,7 @@ export {
     Calendar,
     Calendars,
     Event,
-    EventAddResult,
+    IEventAddResult,
     Events,
     ICalendar,
     ICalendars,
