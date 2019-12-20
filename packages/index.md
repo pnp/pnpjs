@@ -23,8 +23,6 @@ These articles provide general guidance for working with the libraries. If you a
 
 Patterns and Practices client side libraries (PnPjs) are comprised of the packages listed below. All of the packages are published as a set and depend on their peers within the @pnp scope.
 
-The latest published version is **{{version}}**.
-
 |     ||  | 
 | ---| -------------|-------------|
 | @pnp/| | | 
