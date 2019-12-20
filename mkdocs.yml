@@ -108,7 +108,7 @@ nav:
       - SPRequestExecutorClient:  'sp-addinhelpers/sp-request-executor-client.md'
       - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
   - Version 1 Docs:
-    - Home: 'v1/index.md'
+    - Home: 'v1/index.html'
 theme:
   name: 'material'
   custom_dir: 'docs/theme'
