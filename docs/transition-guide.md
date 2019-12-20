@@ -113,7 +113,7 @@ Another new capability in v2 is the ability to extend objects and factories. Thi
 
 Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot of ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their [own bundles](concepts/custom-bundle.md), optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please [review the article on creating your custom bundles](concepts/custom-bundle.md) to see how to tailor bundles to your needs.
 
-Inline with this we will drop the pnpjs library for the same reason.
+The PnPjs bundle will remain, though it is designed only for backwards compatibility and we strongly recommend creating your own bundles, or directly importing the libraries into your projects using selective imports.
 
 ## Drop client-svc and sp-taxonomy libraries
 
