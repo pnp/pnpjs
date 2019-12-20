@@ -1,5 +1,5 @@
 import { _GraphQueryableCollection, IGraphQueryableCollection, _GraphQueryableInstance, IGraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
-import { TypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
@@ -36,7 +36,7 @@ export class _Contacts extends _GraphQueryableCollection<IContactType[]> impleme
         surName: string,
         emailAddresses: IEmailAddressType[],
         businessPhones: string[],
-        additionalProperties: TypedHash<any> = {}): Promise<IContactAddResult> {
+        additionalProperties: ITypedHash<any> = {}): Promise<IContactAddResult> {
 
         const postBody = assign({ businessPhones, emailAddresses, givenName, surName }, additionalProperties);
 
@@ -54,7 +54,7 @@ export interface _IContacts {
         surName: string,
         emailAddresses: IEmailAddressType[],
         businessPhones: string[],
-        additionalProperties: TypedHash<any>): Promise<IContactAddResult>;
+        additionalProperties: ITypedHash<any>): Promise<IContactAddResult>;
 }
 export interface IContacts extends _IContacts, IInvokable, IGetById<IContact>, IGraphQueryableCollection<IContactType[]> {}
 export const Contacts = graphInvokableFactory<IContacts>(_Contacts);

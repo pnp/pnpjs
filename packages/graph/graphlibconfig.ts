@@ -1,4 +1,4 @@
-import { ILibraryConfiguration, TypedHash, RuntimeConfig, IHttpClientImpl } from "@pnp/common";
+import { ILibraryConfiguration, ITypedHash, RuntimeConfig, IHttpClientImpl } from "@pnp/common";
 import { AdalClient } from "@pnp/adaljsclient";
 
 export interface GraphConfigurationPart {
@@ -6,7 +6,7 @@ export interface GraphConfigurationPart {
         /**
          * Any headers to apply to all requests
          */
-        headers?: TypedHash<string>;
+        headers?: ITypedHash<string>;
 
         /**
          * Defines a factory method used to create fetch clients
@@ -23,7 +23,7 @@ export function setup(config: GraphConfiguration): void {
 
 export class GraphRuntimeConfigImpl {
 
-    public get headers(): TypedHash<string> {
+    public get headers(): ITypedHash<string> {
 
         const graphPart = RuntimeConfig.get("graph");
         if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {

@@ -1,4 +1,4 @@
-import { TypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/common";
 import {
     PlannerPlan as IPlannerPlanType,
     PlannerTask as IPlannerTaskType,
@@ -111,7 +111,7 @@ export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> implem
      * @param assignments Assign the task
      * @param bucketId Id of Bucket
      */
-    public async add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<ITaskAddResult> {
+    public async add(planId: string, title: string, assignments?: ITypedHash<any>, bucketId?: string): Promise<ITaskAddResult> {
 
         let postBody = assign({
             planId,
@@ -133,7 +133,7 @@ export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> implem
     }
 }
 export interface _ITasks {
-    add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<ITaskAddResult>;
+    add(planId: string, title: string, assignments?: ITypedHash<any>, bucketId?: string): Promise<ITaskAddResult>;
 }
 export interface ITasks extends _ITasks, IInvokable, IGetById<ITask>, IGraphQueryableCollection<IPlannerTaskType[]> {}
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);

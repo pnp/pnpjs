@@ -1,4 +1,4 @@
-import { TypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/common";
 import { body, IInvokable } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
@@ -18,7 +18,7 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> i
      * @param inviteRedirectUrl The URL user should be redirected to once the invitation is redeemed.
      * @param additionalProperties A plain object collection of additional properties you want to set in the invitation
      */
-    public async create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any> = {}): Promise<IInvitationAddResult> {
+    public async create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: ITypedHash<any> = {}): Promise<IInvitationAddResult> {
 
         const postBody = assign({ inviteRedirectUrl, invitedUserEmailAddress }, additionalProperties);
 
@@ -28,7 +28,7 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> i
     }
 }
 export interface _IInvitations {
-    create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: TypedHash<any>): Promise<IInvitationAddResult>;
+    create(invitedUserEmailAddress: string, inviteRedirectUrl: string, additionalProperties: ITypedHash<any>): Promise<IInvitationAddResult>;
 }
 export interface IInvitations extends _IInvitations, IInvokable, IGraphQueryableCollection<IInvitationType[]> {}
 export const Invitations = graphInvokableFactory<IInvitations>(_Invitations);

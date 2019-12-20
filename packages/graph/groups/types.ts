@@ -1,4 +1,4 @@
-import { assign, TypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body, IInvokable } from "@pnp/odata";
 import { _GraphQueryableInstance, _GraphQueryableCollection, IGraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
@@ -111,7 +111,7 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> implements 
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: TypedHash<any> = {}): Promise<IGroupAddResult> {
+    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: ITypedHash<any> = {}): Promise<IGroupAddResult> {
 
         let postBody = assign({
             displayName: name,

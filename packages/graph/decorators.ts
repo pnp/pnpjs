@@ -1,7 +1,7 @@
 import { IGraphQueryable } from "./graphqueryable";
 import { graphDelete, graphPatch, graphPost } from "./operations";
 import { body } from "@pnp/odata";
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -48,14 +48,14 @@ export function updateable() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: TypedHash<any>): Promise<void> {
+            public update(this: IGraphQueryable, props: ITypedHash<any>): Promise<void> {
                 return graphPatch(this, body(props));
             }
         };
     };
 }
 
-export interface IUpdateable<T = TypedHash<any>> {
+export interface IUpdateable<T = ITypedHash<any>> {
     /**
      * Update the properties of an event object
      * 
@@ -78,7 +78,7 @@ export function addable() {
     };
 }
 
-export interface IAddable<T = TypedHash<any>, R = { id: string }> {
+export interface IAddable<T = ITypedHash<any>, R = { id: string }> {
     /**
      * Adds a new item to this collection
      * 
