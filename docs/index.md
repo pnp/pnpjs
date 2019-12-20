@@ -7,7 +7,7 @@ _Animation of the library in use, note intellisense help in building your querie
 
 ## General Guidance
 
-These articles provide general guidance for working with the libraries. If you are migrating from _sp-pnp-js_ please review the [transition guide](transition-guide.md).
+These articles provide general guidance for working with the libraries. If you are migrating from v1 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Getting Started Contributing](getting-started-dev.md)
