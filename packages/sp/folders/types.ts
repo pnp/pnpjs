@@ -1,4 +1,4 @@
-import { assign, TypedHash, isUrlAbsolute } from "@pnp/common";
+import { assign, ITypedHash, isUrlAbsolute } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -134,7 +134,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Updates folder's properties
      * @param props Folder's properties to update
      */
-    public update = this._update<IFolderUpdateResult, TypedHash<any>>("SP.Folder", data => ({ data, folder: <any>this }));
+    public update = this._update<IFolderUpdateResult, ITypedHash<any>>("SP.Folder", data => ({ data, folder: <any>this }));
 
     /**
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.

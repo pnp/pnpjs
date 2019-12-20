@@ -1,4 +1,4 @@
-import { TypedHash } from "./collections";
+import { ITypedHash } from "./collections";
 
 /**
  * Gets a callback function which will maintain context across async calls.
@@ -120,7 +120,7 @@ export function isArray(array: any): boolean {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export function assign<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite = false,
+export function assign<T extends ITypedHash<any> = any, S extends ITypedHash<any> = any>(target: T, source: S, noOverwrite = false,
     filter: (propName: string) => boolean = () => true): T & S {
 
     if (!objectDefinedNotNull(source)) {

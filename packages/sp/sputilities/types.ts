@@ -1,5 +1,5 @@
 import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable";
-import { assign, TypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/common";
 import { SPBatch } from "../batch";
 import { ICachingOptions, body } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
@@ -248,7 +248,7 @@ export interface IEmailProperties {
     /**
      * The additional headers appened to the request in key/value pairs.
      */
-    AdditionalHeaders?: TypedHash<string>;
+    AdditionalHeaders?: ITypedHash<string>;
 
     /**
      * The from address of the email.

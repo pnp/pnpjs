@@ -6,7 +6,7 @@ import {
     deleteable,
 } from "../sharepointqueryable";
 import { SiteGroups, ISiteGroups } from "../site-groups/types";
-import { TypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
@@ -102,7 +102,7 @@ export class _SiteUser extends _SharePointQueryableInstance<ISiteUserInfo> {
     *
     * @param properties A plain object of property names and values to update for the user
     */
-    public update: (props: TypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, TypedHash<any>>("SP.User", data => ({ data, user: <any>this }));
+    public update: (props: ITypedHash<any>) => Promise<IUserUpdateResult> = this._update<IUserUpdateResult, ITypedHash<any>>("SP.User", data => ({ data, user: <any>this }));
 }
 export interface ISiteUser extends _SiteUser, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);

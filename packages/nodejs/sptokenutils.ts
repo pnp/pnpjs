@@ -2,7 +2,7 @@ declare var require: (path: string) => any;
 const u: any = require("url");
 const nodeFetch = require("node-fetch").default;
 import * as jwt from "jsonwebtoken";
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types";
 
 class MapCacheManager implements ITokenCacheManager {
@@ -24,9 +24,9 @@ class MapCacheManager implements ITokenCacheManager {
 
 const tokenCache: ITokenCacheManager = new MapCacheManager();
 
-export async function validateProviderHostedRequestToken(requestToken: string, clientSecret: string): Promise<TypedHash<string>> {
+export async function validateProviderHostedRequestToken(requestToken: string, clientSecret: string): Promise<ITypedHash<string>> {
 
-    return new Promise<TypedHash<string>>((resolve, reject) => {
+    return new Promise<ITypedHash<string>>((resolve, reject) => {
 
         const secret = Buffer.from(clientSecret, "base64");
 

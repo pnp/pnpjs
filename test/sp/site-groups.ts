@@ -7,7 +7,7 @@ import "@pnp/sp/site-users/web";
 import { getRandomString } from "@pnp/common";
 import { IGroupAddResult } from "@pnp/sp/site-groups";
 
-describe.only("Web.SiteGroups", () => {
+describe("Web.SiteGroups", () => {
 
     if (testSettings.enableWebTests) {
 

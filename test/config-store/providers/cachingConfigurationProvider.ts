@@ -1,4 +1,4 @@
-import { PnPClientStorageWrapper, IPnPClientStore, TypedHash } from "@pnp/common";
+import { PnPClientStorageWrapper, IPnPClientStore, ITypedHash } from "@pnp/common";
 import { expect } from "chai";
 import { CachingConfigurationProvider, Settings } from "@pnp/config-store";
 import { default as MockConfigurationProvider } from "../mock-configurationprovider";
@@ -12,7 +12,7 @@ describe("Configuration", () => {
         let settings: Settings;
 
         beforeEach(() => {
-            const mockValues: TypedHash<string> = {
+            const mockValues: ITypedHash<string> = {
                 "key1": "value1",
                 "key2": "value2",
             };
@@ -33,7 +33,7 @@ describe("Configuration", () => {
         it("Returns cached values", () => {
             const provider = new CachingConfigurationProvider(wrapped, "cacheKey", store);
             return settings.load(provider).then(() => {
-                const updatedValues: TypedHash<string> = {
+                const updatedValues: ITypedHash<string> = {
                     "key1": "update1",
                     "key2": "update2",
                 };
@@ -49,7 +49,7 @@ describe("Configuration", () => {
             store.enabled = false;
             const provider = new CachingConfigurationProvider(wrapped, "cacheKey", store);
             return settings.load(provider).then(() => {
-                const updatedValues: TypedHash<string> = {
+                const updatedValues: ITypedHash<string> = {
                     "key1": "update1",
                     "key2": "update2",
                 };

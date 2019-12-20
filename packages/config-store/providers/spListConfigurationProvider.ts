@@ -1,5 +1,5 @@
 import { IConfigurationProvider } from "../configuration";
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider";
 import { IWeb } from "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
@@ -23,9 +23,9 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
     /**
      * Loads the configuration values from the SharePoint list
      *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
      */
-    public getConfiguration(): Promise<TypedHash<string>> {
+    public getConfiguration(): Promise<ITypedHash<string>> {
 
         return this.web.lists.getByTitle(this.listTitle).items.select(this.keyFieldName, this.valueFieldName)<any[]>()
             .then((data: any[]) => data.reduce((c: any, item: any) => {

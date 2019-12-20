@@ -1,6 +1,6 @@
 import {
     ILibraryConfiguration,
-    TypedHash,
+    ITypedHash,
     RuntimeConfig,
     IHttpClientImpl,
     FetchClient,
@@ -12,7 +12,7 @@ export interface SPConfigurationPart {
         /**
          * Any headers to apply to all requests
          */
-        headers?: TypedHash<string>;
+        headers?: ITypedHash<string>;
 
         /**
          * The base url used for all requests
@@ -34,7 +34,7 @@ export function setup(config: SPConfiguration): void {
 
 export class SPRuntimeConfigImpl {
 
-    public get headers(): TypedHash<string> {
+    public get headers(): ITypedHash<string> {
 
         const spPart = RuntimeConfig.get("sp");
         if (spPart !== undefined && spPart.headers !== undefined) {

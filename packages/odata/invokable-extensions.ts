@@ -1,10 +1,10 @@
-import { isFunc, isArray, TypedHash } from "@pnp/common";
+import { isFunc, isArray, ITypedHash } from "@pnp/common";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
 export type ExtensionDelegateType<T extends object> = { (op: string, target: T, ...rest: any[]): void };
 
-export type ExtensionType<T extends object = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | TypedHash<any>;
+export type ExtensionType<T extends object = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
 
 let _enableExtensions = false;
 const globaExtensions: ExtensionType[] = [];

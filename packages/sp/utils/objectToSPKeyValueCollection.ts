@@ -1,5 +1,5 @@
 import { metadata } from "./metadata";
-import { TypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/common";
 
 export interface ISPKeyValueCollection {
     __metadata: {
@@ -20,7 +20,7 @@ export interface ISPKeyValueCollection {
  * 
  * @param obj The plain object defining the properties
  */
-export function objectToSPKeyValueCollection(obj: TypedHash<string | number | boolean>): ISPKeyValueCollection {
+export function objectToSPKeyValueCollection(obj: ITypedHash<string | number | boolean>): ISPKeyValueCollection {
 
     return <ISPKeyValueCollection>assign(metadata("Collection(SP.KeyValue)"), {
         results: Object.keys(obj).map(key => assign(metadata("SP.KeyValue"), {

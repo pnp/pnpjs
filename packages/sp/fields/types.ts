@@ -3,7 +3,7 @@ import {
   _SharePointQueryableCollection,
   spInvokableFactory,
 } from "../sharepointqueryable";
-import { assign, TypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { body, headers } from "@pnp/odata";
 import { defaultPath } from "../decorators";
@@ -614,7 +614,7 @@ export enum FieldUserSelectionMode {
   PeopleOnly = 0,
 }
 
-export interface IFieldCreationProperties extends TypedHash<string | number | boolean> {
+export interface IFieldCreationProperties extends ITypedHash<string | number | boolean> {
   DefaultFormula?: string;
   Description?: string;
   EnforceUniqueValues?: boolean;

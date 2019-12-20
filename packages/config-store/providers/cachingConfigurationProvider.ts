@@ -1,5 +1,5 @@
 import { IConfigurationProvider } from "../configuration";
-import { TypedHash, IPnPClientStore, PnPClientStorage } from "@pnp/common";
+import { ITypedHash, IPnPClientStore, PnPClientStorage } from "@pnp/common";
 
 /**
  * A caching provider which can wrap other non-caching providers
@@ -33,9 +33,9 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
     /**
      * Loads the configuration values either from the cache or from the wrapped provider
      *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
      */
-    public getConfiguration(): Promise<TypedHash<string>> {
+    public getConfiguration(): Promise<ITypedHash<string>> {
         // Cache not available, pass control to the wrapped provider
         if ((!this.store) || (!this.store.enabled)) {
             return this.wrappedProvider.getConfiguration();

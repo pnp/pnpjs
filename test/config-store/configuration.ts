@@ -28,7 +28,7 @@ describe("Configuration", () => {
 
         it("Apply a hash and retrieve one of the values", () => {
 
-            const hash: Collections.TypedHash<string> = {
+            const hash: Collections.ITypedHash<string> = {
                 "key1": "value1",
                 "key2": "value2",
             };
@@ -40,12 +40,12 @@ describe("Configuration", () => {
 
         it("Apply a hash, apply a second hash overwritting a value and get back the new value", () => {
 
-            const hash1: Collections.TypedHash<string> = {
+            const hash1: Collections.ITypedHash<string> = {
                 "key1": "value1",
                 "key2": "value2",
             };
 
-            const hash2: Collections.TypedHash<string> = {
+            const hash2: Collections.ITypedHash<string> = {
                 "key1": "value3",
                 "key2": "value4",
             };
@@ -60,7 +60,7 @@ describe("Configuration", () => {
 
             const obj = { "prop1": "prop1value", "prop2": "prop2value" };
 
-            const hash: Collections.TypedHash<string> = {
+            const hash: Collections.ITypedHash<string> = {
                 "key1": "value1",
                 "key2": "value2",
                 "key3": JSON.stringify(obj),
@@ -72,7 +72,7 @@ describe("Configuration", () => {
         });
 
         it("loads settings from a configuration provider", () => {
-            const mockValues: Collections.TypedHash<string> = {
+            const mockValues: Collections.ITypedHash<string> = {
                 "key2": "value_from_provider_2",
                 "key3": "value_from_provider_3",
             };

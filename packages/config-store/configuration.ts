@@ -1,4 +1,4 @@
-import { TypedHash, mergeMaps, objectToMap, jsS } from "@pnp/common";
+import { ITypedHash, mergeMaps, objectToMap, jsS } from "@pnp/common";
 
 /**
  * Interface for configuration providers
@@ -9,7 +9,7 @@ export interface IConfigurationProvider {
     /**
      * Gets the configuration from the provider
      */
-    getConfiguration(): Promise<TypedHash<string>>;
+    getConfiguration(): Promise<ITypedHash<string>>;
 }
 
 /**
@@ -49,9 +49,9 @@ export class Settings {
     /**
      * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
      *
-     * @param {TypedHash<any>} hash The set of values to add
+     * @param {ITypedHash<any>} hash The set of values to add
      */
-    public apply(hash: TypedHash<any>): Promise<void> {
+    public apply(hash: ITypedHash<any>): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             try {
                 this._settings = mergeMaps(this._settings, objectToMap(hash));

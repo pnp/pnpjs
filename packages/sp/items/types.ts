@@ -9,7 +9,7 @@ import {
     deleteableWithETag,
     IDeleteableWithETag,
 } from "../sharepointqueryable";
-import { assign, TypedHash, hOP } from "@pnp/common";
+import { assign, ITypedHash, hOP } from "@pnp/common";
 import { IListItemFormUpdateValue, List } from "../lists/types";
 import { ODataParser, body, headers } from "@pnp/odata";
 import { IList } from "../lists";
@@ -130,7 +130,7 @@ export class _Items extends _SharePointQueryableCollection {
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
     @tag("is.add")
-    public async add(properties: TypedHash<any> = {}, listItemEntityTypeFullName: string = null): Promise<IItemAddResult> {
+    public async add(properties: ITypedHash<any> = {}, listItemEntityTypeFullName: string = null): Promise<IItemAddResult> {
 
         const removeDependency = this.addBatchDependency();
 
@@ -231,7 +231,7 @@ export class _Item extends _SharePointQueryableInstance {
      * @param eTag Value used in the IF-Match header, by default "*"
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async update(properties: TypedHash<any>, eTag = "*", listItemEntityTypeFullName: string = null): Promise<IItemUpdateResult> {
+    public async update(properties: ITypedHash<any>, eTag = "*", listItemEntityTypeFullName: string = null): Promise<IItemUpdateResult> {
 
         const removeDependency = this.addBatchDependency();
 

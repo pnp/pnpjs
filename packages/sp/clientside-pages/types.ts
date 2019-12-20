@@ -1,5 +1,5 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
-import { TypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
+import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
 import { IFile } from "../files/types";
 import { Item, IItem } from "../items/types";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
@@ -1191,7 +1191,7 @@ interface IClientSidePageComponentManifest {
         groupId: string;
         iconImageUrl: string;
         officeFabricIconFontName: string;
-        properties: TypedHash<any>;
+        properties: ITypedHash<any>;
         title: { default: string };
 
     }[];
@@ -1256,10 +1256,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            "htmlStrings": TypedHash<string>;
-            "searchablePlainTexts": TypedHash<string>;
-            "imageSources": TypedHash<string>;
-            "links": TypedHash<string>;
+            "htmlStrings": ITypedHash<string>;
+            "searchablePlainTexts": ITypedHash<string>;
+            "imageSources": ITypedHash<string>;
+            "links": ITypedHash<string>;
         };
         dataVersion: string;
         properties: PropertiesType;
@@ -1279,10 +1279,10 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        htmlStrings: TypedHash<string>;
-        searchablePlainTexts: TypedHash<string>;
-        imageSources: TypedHash<string>;
-        links: TypedHash<string>;
+        htmlStrings: ITypedHash<string>;
+        searchablePlainTexts: ITypedHash<string>;
+        imageSources: ITypedHash<string>;
+        links: ITypedHash<string>;
         customMetadata?: {
             imageSource?: {
                 siteId: string;

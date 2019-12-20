@@ -1,4 +1,4 @@
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 import { body } from "@pnp/odata";
 import {
     SharePointQueryableCollection,
@@ -56,7 +56,7 @@ export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeIn
         name: string,
         description = "",
         group = "Custom Content Types",
-        additionalSettings: TypedHash<string | number | boolean> = {}): Promise<IContentTypeAddResult> {
+        additionalSettings: ITypedHash<string | number | boolean> = {}): Promise<IContentTypeAddResult> {
 
         const postBody = body(Object.assign(metadata("SP.ContentType"), {
             "Description": description,

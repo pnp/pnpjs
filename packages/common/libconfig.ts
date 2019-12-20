@@ -1,4 +1,4 @@
-import { TypedHash, mergeMaps, objectToMap } from "./collections";
+import { ITypedHash, mergeMaps, objectToMap } from "./collections";
 import { ISPFXContext } from "./spfxcontextinterface";
 
 export interface ILibraryConfiguration {
@@ -72,7 +72,7 @@ export class RuntimeConfigImpl {
      * 
      * @param config The set of properties to add to the globa configuration instance
      */
-    public assign(config: TypedHash<any>): void {
+    public assign(config: ITypedHash<any>): void {
         this._v = mergeMaps(this._v, objectToMap(config));
     }
 

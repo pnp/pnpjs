@@ -1,4 +1,4 @@
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 import { body } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
@@ -41,7 +41,7 @@ export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
      * @param additionalSettings Will be passed as part of the view creation body
      */
     @tag("vs.add")
-    public async add(title: string, personalView = false, additionalSettings: TypedHash<any> = {}): Promise<IViewAddResult> {
+    public async add(title: string, personalView = false, additionalSettings: ITypedHash<any> = {}): Promise<IViewAddResult> {
 
         const postBody = body(Object.assign(metadata("SP.View"), {
             "PersonalView": personalView,
@@ -72,7 +72,7 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    public update: any = this._update<IViewUpdateResult, TypedHash<any>>("SP.View", data => ({ data, view: <any>this }));
+    public update: any = this._update<IViewUpdateResult, ITypedHash<any>>("SP.View", data => ({ data, view: <any>this }));
 
     /**
      * Returns the list view as HTML.

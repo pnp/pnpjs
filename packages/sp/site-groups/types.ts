@@ -4,7 +4,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable";
 import { SiteUsers, ISiteUsers } from "../site-users/types";
-import { assign, TypedHash, hOP } from "@pnp/common";
+import { assign, ITypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
@@ -28,7 +28,7 @@ export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]
      *
      * @param properties The group properties object of property names and values to be set for the group
      */
-    public async add(properties: TypedHash<any>): Promise<IGroupAddResult> {
+    public async add(properties: ITypedHash<any>): Promise<IGroupAddResult> {
 
         const postBody = body(assign(metadata("SP.Group"), properties));
 
@@ -86,7 +86,7 @@ export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
      * 
      * @param props The group properties object of property names and values to be set for the group
      */
-    public update = this._update<IGroupUpdateResult, TypedHash<any>>("SP.Group", (d, p) => {
+    public update = this._update<IGroupUpdateResult, ITypedHash<any>>("SP.Group", (d, p) => {
 
         let retGroup: ISiteGroup = this;
 

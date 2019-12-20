@@ -1,4 +1,4 @@
-import { assign, TypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     _SharePointQueryableInstance,
@@ -128,7 +128,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * @param properties A plain object hash of values to update for the web
      */
     @tag("w.update")
-    public async update(properties: TypedHash<any>): Promise<IWebUpdateResult> {
+    public async update(properties: ITypedHash<any>): Promise<IWebUpdateResult> {
 
         const postBody = body(assign(metadata("SP.Web"), properties), headers({ "X-HTTP-Method": "MERGE" }));
 

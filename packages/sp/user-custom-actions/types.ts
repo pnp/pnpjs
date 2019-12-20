@@ -5,7 +5,7 @@ import {
     deleteable,
     IDeleteable,
 } from "../sharepointqueryable";
-import { assign, TypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/common";
 import { body } from "@pnp/odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
@@ -31,7 +31,7 @@ export class _UserCustomActions extends _SharePointQueryableCollection<IUserCust
      * @param properties The information object of property names and values which define the new user custom action
      */
     @tag("ucas.add")
-    public async add(properties: TypedHash<any>): Promise<IUserCustomActionAddResult> {
+    public async add(properties: ITypedHash<any>): Promise<IUserCustomActionAddResult> {
         const data = await spPost(this, body(assign(metadata("SP.UserCustomAction"), properties)));
         return {
             action: this.getById(data.Id),
@@ -59,7 +59,7 @@ export class _UserCustomAction extends _SharePointQueryableInstance<IUserCustomA
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    public update: any = this._update<IUserCustomActionUpdateResult, TypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
+    public update: any = this._update<IUserCustomActionUpdateResult, ITypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
 }
 export interface IUserCustomAction extends _UserCustomAction, IDeleteable { }
 export const UserCustomAction = spInvokableFactory<IUserCustomAction>(_UserCustomAction);

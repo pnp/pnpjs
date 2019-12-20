@@ -8,7 +8,7 @@ declare var Object: {
 /**
  * Interface defining an object with a known property type
  */
-export interface TypedHash<T> {
+export interface ITypedHash<T> {
     [key: string]: T;
 }
 
