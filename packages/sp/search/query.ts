@@ -175,7 +175,7 @@ export interface ISearch {
 }
 
 export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl, "")).configure(options).execute(queryInit);
+    return (new _Search(baseUrl)).configure(options).execute(queryInit);
 };
 
 export class SearchResults {
