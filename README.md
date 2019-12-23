@@ -12,7 +12,7 @@ Please see the [Getting Started guide](https://pnp.github.io/pnpjs/getting-start
 
 ## Documentation
 
-Please review the [documentation](https://pnp.github.io/pnpjs/) for the PnPJS libraries. This
+Please review the [documentation](https://pnp.github.io/pnpjs/) for the PnPjs libraries. This
 site is updated with each release. If cannot find what you need, please let us know by logging an [documentation request](https://github.com/pnp/pnpjs/issues).
 
 ## Authors
