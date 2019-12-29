@@ -40,7 +40,7 @@ await page2.save();
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { Web } "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 
 const page1 = await CreateClientsidePage(sp.web, "mypage2", "My Page Title");
@@ -72,7 +72,7 @@ This method takes a _server relative_ path to the page to load.
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { Web } "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
 // use from the sp.web fluent chain
@@ -219,7 +219,7 @@ import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
 // this will be a ClientSidePageComponent array
 // this can be cached on the client in production scenarios
-const partDefs = await sp.web.getClientSideWebParts();
+const partDefs = await sp.web.getClientsideWebParts();
 
 // find the definition we want, here by id
 const partDef = partDefs.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa");
