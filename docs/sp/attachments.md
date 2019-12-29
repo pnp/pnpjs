@@ -11,22 +11,23 @@ The ability to attach file to list items allows users to track documents outside
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IAttachmentInfo } from "@pnp/sp/attachments";
+import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
-import { IAttachmentInfo } from "@pnp/sp/attachments";
  
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 // get all the attachments
-const info: IAttachmentInfo[] = item.attachmentFiles();
+const info: IAttachmentInfo[] = await item.attachmentFiles();
 
 // get a single file by file name
-const info2: IAttachmentInfo = item.attachmentFiles.getByName("file.txt")();
+const info2: IAttachmentInfo = await item.attachmentFiles.getByName("file.txt")();
 
 // select specific properties using odata operators and use Pick to type the result
-const info3: Pick<IAttachmentInfo, "ServerRelativeUrl">[] = item.attachmentFiles.select("ServerRelativeUrl")();
+const info3: Pick<IAttachmentInfo, "ServerRelativeUrl">[] = await item.attachmentFiles.select("ServerRelativeUrl")();
 ```
 
 ## Add an Attachment
@@ -35,13 +36,13 @@ You can add an attachment to a list item using the add method. This method takes
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IItem } from "@pnp/sp/items";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
-import { IAttachmentInfo } from "@pnp/sp/attachments";
 
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 await item.attachmentFiles.add("file2.txt", "Here is my content");
 ```
@@ -52,13 +53,14 @@ This method allows you to pass an array of AttachmentFileInfo plain objects that
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IList } from "@pnp/sp/lists/types";
+import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
-import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/attachments";
 
-const list = sp.web.lists.getByTitle("MyList");
+const list: IList = await sp.web.lists.getByTitle("MyList")();
 
 var fileInfos: IAttachmentFileInfo[] = [];
 
@@ -79,13 +81,13 @@ await list.items.getById(2).attachmentFiles.addMultiple(fileInfos);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IList } from "./@pnp/sp/lists/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
-import { IAttachmentInfo, IAttachmentFileInfo } from "@pnp/sp/attachments";
 
-const list = sp.web.lists.getByTitle("MyList");
+const list: IList = await sp.web.lists.getByTitle("MyList")();
 
 await list.items.getById(2).attachmentFiles.deleteMultiple("1.txt", "2.txt");
 ```
@@ -96,12 +98,13 @@ You can read the content of an attachment as a string, Blob, ArrayBuffer, or jso
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 const text = await item.attachmentFiles.getByName("file.txt").getText();
 
@@ -121,12 +124,13 @@ You can also update the content of an attachment. This API is limited compared t
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!");
 ```
@@ -135,12 +139,13 @@ await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!"
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 await item.attachmentFiles.getByName("file2.txt").delete();
 ```
@@ -151,14 +156,15 @@ Delete the attachment and send it to recycle bin
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item = sp.web.lists.getByTitle("MyList").items.getById(1);
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
-item.attachmentFiles.getByName("file2.txt").recycle();
+await item.attachmentFiles.getByName("file2.txt").recycle();
 ```
 
 ## Recycle Multiple Attachments
@@ -167,12 +173,13 @@ Delete multiple attachments and send them to recycle bin
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import { IList } from "@pnp/sp/lists/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const list = sp.web.lists.getByTitle("MyList");
+const list: IList = await sp.web.lists.getByTitle("MyList")();
 
 await list.items.getById(2).attachmentFiles.recycleMultiple("1.txt","2.txt");
 ```
