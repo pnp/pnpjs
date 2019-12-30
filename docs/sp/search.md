@@ -8,18 +8,18 @@ Using search you can access content throughout your organization in a secure and
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, ISearchResults } from "@pnp/sp/search";|
-|Preset: All|import { sp, ISearchQuery, ISearchResults } from "@pnp/sp/presets/all";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, SearchResults } from "@pnp/sp/search";|
+|Preset: All|import { sp, ISearchQuery, SearchResults } from "@pnp/sp/presets/all";|
 
 Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the ISearchQuery interface, or a SearchQueryBuilder instance.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
-import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 // text search using SharePoint default values for other parameters
-const results: ISearchResults = await sp.search("test");
+const results: SearchResults = await sp.search("test");
 
 console.log(results.ElapsedTime);
 console.log(results.RowCount);
@@ -27,7 +27,7 @@ console.log(results.PrimarySearchResults);
 
 
 // define a search query object matching the ISearchQuery interface
-const results2: ISearchResults = await sp.search(<ISearchQuery>{
+const results2: SearchResults = await sp.search(<ISearchQuery>{
     Querytext: "test",
     RowLimit: 10,
     EnableInterleaving: true,
@@ -53,13 +53,13 @@ You can use the searchWithCaching method to enable cache support for your search
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
-import { ISearchQuery, ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 sp.searchWithCaching(<ISearchQuery>{
     Querytext: "test",
     RowLimit: 10,
     EnableInterleaving: true,
-}).then((r: ISearchResults) => {
+}).then((r: SearchResults) => {
 
     console.log(r.ElapsedTime);
     console.log(r.RowCount);
@@ -82,10 +82,10 @@ Paging is controlled by a start row and page size parameter. You can specify bot
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
-import { ISearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
 // this will hold our current results
-let currentResults: ISearchResults = null;
+let currentResults: SearchResults = null;
 let page = 1;
 
 // triggered on page load or through some other means
@@ -121,7 +121,7 @@ The SearchQueryBuilder allows you to build your queries in a fluent manner. It a
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
-import { SearchQueryBuilder, ISearchResults, ISearchQuery } from "@pnp/sp/search";
+import { SearchQueryBuilder, SearchResults, ISearchQuery } from "@pnp/sp/search";
 
 // basic usage
 let q = SearchQueryBuilder().text("test").rowLimit(4).enablePhonetic;
@@ -131,7 +131,7 @@ sp.search(q).then(h => { /* ... */ });
 // provide a default query text at creation
 let q2 = SearchQueryBuilder("text").rowLimit(4).enablePhonetic;
 
-const results: ISearchResults = await sp.search(q2);
+const results: SearchResults = await sp.search(q2);
 
 // provide query text and a template for
 // shared settings across queries that can
