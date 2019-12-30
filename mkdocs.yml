@@ -137,5 +137,5 @@ extra:
     - type: 'link'
       link: 'https://aka.ms/sppnp'
 repo_url: http://github.com/pnp/pnpjs
-edit_uri: tree/dev/docs
+edit_uri: tree/version-2/docs
 site_url: https://pnp.github.io/pnpjs/
