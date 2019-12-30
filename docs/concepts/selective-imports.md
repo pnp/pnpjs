@@ -13,7 +13,7 @@ If you would prefer to not worry about selective imports please see the section 
 // meaning treeshaking couldn't reduce the size
 import { sp } from "@pnp/sp";
 
-const itemData = await sp.web.lists.items.getById(1).get();
+const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1).get();
 ```
 
 ## New Way 
@@ -27,7 +27,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 
-const itemData = await sp.web.lists.items.getById(1)();
+const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
 ```
 
 Above we are being very specific in what we are importing, but you can also import entire sub-modules and be slightly less specific
@@ -41,7 +41,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-const itemData = await sp.web.lists.items.getById(1)();
+const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
 ```
 
 The above two examples both work just fine but you may end up with slightly smaller bundle sizes using the first. Consider this example:
@@ -71,7 +71,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import { IList } from "@pnp/sp/lists";
 
-const await lists = sp.web.lists();
+const lists = await sp.web.lists();
 ```
 
 ## Presets

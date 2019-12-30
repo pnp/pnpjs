@@ -51,7 +51,7 @@ export interface ISuggest {
 }
 
 export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISuggest => (query: ISuggestQuery) => {
-    return (new _Suggest(baseUrl, "")).configure(options).execute(query);
+    return (new _Suggest(baseUrl)).configure(options).execute(query);
 };
 
 /**

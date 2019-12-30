@@ -13,36 +13,38 @@ There are several ways using @pnp/sp to get a reference to an app catalog. These
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
+import "@pnp/sp/webs";
 
 // get the curren't context web's app catalog
-const catalog = sp.web.getAppCatalog();
+const catalog = await sp.web.getAppCatalog()();
 
 // you can also chain off the app catalog
-const apps = await sp.web.getAppCatalog().get();
+const apps = await sp.web.getAppCatalog()();
 console.log(apps);
 ```
 
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
+import "@pnp/sp/webs";
 
 // you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
-const appCatWeb = await sp.getTenantAppCatalogWeb();
-const appCatalog = appCatWeb.getAppCatalog();
+const appCatWeb = await sp.getTenantAppCatalogWeb()();
+const appCatalog = await appCatWeb.getAppCatalog()();
 
 // you can get the tenant app catalog (or any app catalog) by passing in a url
 // get the tenant app catalog
-const tenantCatalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog");
+const tenantCatalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog")();
 
 // get a different app catalog
-const catalog = sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite");
+const catalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite")();
 ```
 
 ```TypeScript
 // alternatively you can create a new app catalog instance directly by importing the AppCatalog class
 import { IAppCatalog, AppCatalog } from '@pnp/sp/appcatalog';
 
-const catalog: IAppCatalog = AppCatalog("https://mytenant.sharepoint.com/sites/apps");
+const catalog: IAppCatalog = await AppCatalog("https://mytenant.sharepoint.com/sites/apps")();
 ```
 
 ```TypeScript
@@ -51,7 +53,7 @@ import { Web } from '@pnp/sp/webs';
 import { AppCatalog } from '@pnp/sp/appcatalog';
 
 const web = Web("https://mytenant.sharepoint.com/sites/apps");
-const catalog = AppCatalog(web);
+const catalog = await AppCatalog(web)();
 ```
 
 The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.
