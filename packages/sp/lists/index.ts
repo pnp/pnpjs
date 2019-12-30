@@ -15,7 +15,7 @@ export {
     IListItemCollectionPosition,
     IListItemFormUpdateValue,
     IRenderListData,
-    IRenderListDataOptions,
+    RenderListDataOptions,
     IRenderListDataParameters,
     IListInfo,
 } from "./types";

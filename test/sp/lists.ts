@@ -10,7 +10,7 @@ import "@pnp/sp/forms/list";
 import "@pnp/sp/items/list";
 import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
-import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue } from "@pnp/sp/lists";
+import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue, RenderListDataOptions } from "@pnp/sp/lists";
 import * as assert from "assert";
 import { IConfigOptions, getRandomString } from "@pnp/common";
 
@@ -238,16 +238,21 @@ describe("List", function () {
         });
 
         it(".renderListDataAsStream", async function () {
+
             const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListDataAsStream");
-            await listEnsure.list.items.add({
-                Title: "Item 1",
-            });
-            await listEnsure.list.items.add({
-                Title: "Item 2",
-            });
-            await listEnsure.list.items.add({
-                Title: "Item 3",
-            });
+
+            if (listEnsure.created) {
+                await listEnsure.list.items.add({
+                    Title: "Item 1",
+                });
+                await listEnsure.list.items.add({
+                    Title: "Item 2",
+                });
+                await listEnsure.list.items.add({
+                    Title: "Item 3",
+                });
+            }
+
             const renderListDataParams: IRenderListDataParameters = {
                 ViewXml: "<View><RowLimit>5</RowLimit></View>",
             };
@@ -255,8 +260,45 @@ describe("List", function () {
             return expect(listEnsure.list.renderListDataAsStream(renderListDataParams)).to.eventually.have.property("Row").that.is.not.empty;
         });
 
+        it(".renderListDataAsStream - advanced options", async function () {
+
+            const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListDataAsStream");
+
+            if (listEnsure.created) {
+                await listEnsure.list.items.add({
+                    Title: "Item 1",
+                });
+                await listEnsure.list.items.add({
+                    Title: "Item 2",
+                });
+                await listEnsure.list.items.add({
+                    Title: "Item 3",
+                });
+            }
+
+            const renderListDataParams: IRenderListDataParameters = {
+                AddRequiredFields: true,
+                RenderOptions: [
+                    RenderListDataOptions.ContextInfo,
+                    RenderListDataOptions.ListSchema,
+                    RenderListDataOptions.MenuView,
+                    RenderListDataOptions.FileSystemItemId,
+                    RenderListDataOptions.QuickLaunch,
+                    RenderListDataOptions.Spotlight,
+                    RenderListDataOptions.Visualization,
+                    RenderListDataOptions.ViewMetadata,
+                    RenderListDataOptions.DisableAutoHyperlink,
+                ],
+                ViewXml: "<View><RowLimit>5</RowLimit></View>",
+            };
+
+            return expect(listEnsure.list.renderListDataAsStream(renderListDataParams)).to.eventually.be.fulfilled;
+        });
+
         it(".renderListFormData", async function () {
+
             const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListFormData");
+
             await listEnsure.list.items.add({
                 Title: "Item 1",
             });

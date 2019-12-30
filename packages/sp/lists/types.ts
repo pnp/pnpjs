@@ -1,4 +1,4 @@
-import { assign, hOP } from "@pnp/common";
+import { assign, hOP, isArray } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -256,6 +256,10 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     @tag("l.AsStream")
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
 
+        if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
+            parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
+        }
+
         const postBody = body({
             overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: assign(metadata("SP.RenderListDataParameters"), parameters),
@@ -494,7 +498,7 @@ export interface IListFormData {
 /**
  * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
  */
-export enum IRenderListDataOptions {
+export enum RenderListDataOptions {
     None = 0,
     ContextInfo = 1,
     ListData = 2,
@@ -517,16 +521,21 @@ export enum IRenderListDataOptions {
  * Represents the parameters to be used to render list data as JSON string in the RenderListDataAsStream method of IList.
  */
 export interface IRenderListDataParameters {
+    AddRequiredFields?: boolean;
     AllowMultipleValueFilterForTaxonomyFields?: boolean;
+    AudienceTarget?: boolean;
     DatesInUtc?: boolean;
+    DeferredRender?: boolean;
     ExpandGroups?: boolean;
     FirstGroupOnly?: boolean;
     FolderServerRelativeUrl?: string;
     ImageFieldsToTryRewriteToCdnUrls?: string;
+    MergeDefaultView?: boolean;
+    OriginalDate?: boolean;
     OverrideViewXml?: string;
     Paging?: string;
-    RenderOptions?: IRenderListDataOptions;
     ReplaceGroup?: boolean;
+    RenderOptions?: RenderListDataOptions[] | number;
     ViewXml?: string;
 }
 
