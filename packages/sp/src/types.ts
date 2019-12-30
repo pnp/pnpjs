@@ -1471,7 +1471,7 @@ export interface RenderListDataParameters {
     ImageFieldsToTryRewriteToCdnUrls?: string;
     OverrideViewXml?: string;
     Paging?: string;
-    RenderOptions?: RenderListDataOptions;
+    RenderOptions?: RenderListDataOptions[] | number;
     ReplaceGroup?: boolean;
     ViewXml?: string;
 }
