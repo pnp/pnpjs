@@ -113,7 +113,7 @@ export class _Site extends _SharePointQueryableInstance {
         const data = await spPost(this.clone(Site, `openWebById('${webId}')`));
         return {
             data,
-            web: Web(odataUrlFrom(data)),
+            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
         };
     }
 
