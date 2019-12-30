@@ -6,8 +6,8 @@ import { Forms } from "./forms";
 import { Subscriptions } from "./subscriptions";
 import { SharePointQueryable, SharePointQueryableCollection, defaultPath } from "./sharepointqueryable";
 import { SharePointQueryableSecurable } from "./sharepointqueryablesecurable";
-import { extend, TypedHash, hOP, jsS } from "@pnp/common";
-import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters, ListItemFormUpdateValue } from "./types";
+import { extend, TypedHash, hOP, jsS, isArray } from "@pnp/common";
+import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters, ListItemFormUpdateValue, RenderListDataOptions } from "./types";
 import { UserCustomActions } from "./usercustomactions";
 import { odataUrlFrom } from "./odata";
 import { Folder } from "./folders";
@@ -374,6 +374,10 @@ export class List extends SharePointQueryableSecurable {
      * @param queryParams Allows setting of query parameters
      */
     public renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
+
+        if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
+            parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
+        }
 
         const postBody = {
             overrideParameters: extend(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
