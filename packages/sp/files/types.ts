@@ -211,7 +211,8 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 
     /**
-     * Copies the file by path to destination path
+     * Copies the file by path to destination path.
+     * Also works with different site collections.
      *
      * @param destUrl The absolute url or server relative url of the destination file path to copy to.
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
@@ -275,6 +276,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
 
     /**
      * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
      *
      * @param destUrl The absolute url or server relative url of the destination file path to move to.
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?

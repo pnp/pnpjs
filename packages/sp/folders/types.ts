@@ -176,6 +176,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     /**
      * Moves a folder by path to destination path
+     * Also works with different site collections.
      *
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
@@ -231,6 +232,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     /**
      * Copies a folder by path to destination path
+     * Also works with different site collections.
      *
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
