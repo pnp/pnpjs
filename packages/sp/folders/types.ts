@@ -175,6 +175,43 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     }
 
     /**
+     * Moves a folder by path to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    @tag("f.moveByPath")
+    public async moveByPath(destUrl: string, KeepBoth = false): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
+            body({
+                destPath: {
+                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+                options: {
+                    KeepBoth: KeepBoth,
+                    ResetAuthorAndCreatedOnCopy: true,
+                    ShouldBypassSharedLocks: true,
+                    __metadata: {
+                        type: "SP.MoveCopyOptions",
+                    },
+                },
+                srcPath: {
+                    DecodedUrl: `${hostUrl}${srcUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+            }));
+    }
+
+    /**
      * Copies a folder to destination path
      *
      * @param destUrl Absolute or relative URL of the destination path
@@ -189,6 +226,43 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
                 srcUrl: `${hostUrl}${srcUrl}`,
+            }));
+    }
+
+    /**
+     * Copies a folder by path to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    @tag("f.copyByPath")
+    public async copyByPath(destUrl: string, KeepBoth = false): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
+            body({
+                destPath: {
+                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+                options: {
+                    KeepBoth: KeepBoth,
+                    ResetAuthorAndCreatedOnCopy: true,
+                    ShouldBypassSharedLocks: true,
+                    __metadata: {
+                        type: "SP.MoveCopyOptions",
+                    },
+                },
+                srcPath: {
+                    DecodedUrl: `${hostUrl}${srcUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
             }));
     }
 
@@ -243,6 +317,7 @@ export interface IFolderUpdateResult {
 }
 
 export interface IFolderInfo {
+    readonly "odata.id": string;
     Exists: boolean;
     IsWOPIEnabled: boolean;
     ItemCount: number;
