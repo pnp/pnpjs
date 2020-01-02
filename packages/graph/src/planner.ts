@@ -149,12 +149,12 @@ export class Task extends GraphQueryableInstance<IPlannerTask> {
     /**
      * Deletes this Task
      */
-    public delete(eTag = "*"): Promise<void> {
+    public delete(eTag: string): Promise<void> {
         return this.deleteCore({
             headers: {
                 "If-Match": eTag,
             },
-        });
+        );
     }
 
     /**
