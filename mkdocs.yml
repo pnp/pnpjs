@@ -11,7 +11,7 @@ nav:
     - 'Npm Scripts': 'npm-scripts.md'
     - 'Debugging': 'debugging.md'
     - 'Debugging Tests': 'debug-tests.md'    
-    - 'SPFx On-Premises 2016': 'SPFx-on-premises-2016.md'
+    - 'SPFx On-Premises': 'SPFx-on-premises.md'
     - 'Building Docs': 'documentation.md'
   - 'Library Concepts':
     - 'Selective Imports': 'concepts/selective-imports.md'

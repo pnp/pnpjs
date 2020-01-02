@@ -33,7 +33,7 @@ export class SPRest {
      * 
      * @param config The SharePoint configuration to apply
      */
-    public setup(config: SPConfiguration | ISPFXContext) {
+    public setup(config: SPConfiguration | ISPFXContext | any) {
 
         if ((<ISPFXContext>config).pageContext) {
             _setup({
