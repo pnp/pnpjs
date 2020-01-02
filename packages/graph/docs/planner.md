@@ -122,7 +122,8 @@ Using the delete() you can get delete a Task.
 ```TypeScript
 import { graph } from "@pnp/graph";
 
-const delTask = await graph.planner.tasks.getById('taskId').delete();
+const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
+
 
 ```
 
