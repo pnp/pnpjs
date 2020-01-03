@@ -48,9 +48,9 @@ export interface LibraryConfiguration {
 The class which implements the runtime configuration management as well as sets the default values used within the library. At its heart lies a [Dictionary](collections.md)
 used to track the configuration values. The keys will match the values in the interface or plain object passed to the extend method.
 
-### extend
+### assign
 
-The extend method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any 
+The assign method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any 
 existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please 
 see the section below "Using RuntimeConfig within your application". Note there are no methods to remove/clear the global config as it should be considered fairly static
 as frequent updates may have unpredictable side effects as it is a global shared object. Generally it should be set at the start of your application.
