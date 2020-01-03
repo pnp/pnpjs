@@ -7,12 +7,13 @@ import { extractWebUrl } from "./utils/extractweburl";
 export function odataUrlFrom(candidate: any): string {
 
     const parts: string[] = [];
-    const s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata"];
+    const s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
 
     if (hOP(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
-        // webs return an absolute url in the editLink
-        if (hOP(candidate, s[1])) {
-            parts.push(candidate[s[1]]);
+
+        // webs return an absolute url in the id
+        if (hOP(candidate, s[4])) {
+            parts.push(candidate[s[4]]);
         } else if (hOP(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
@@ -25,7 +26,7 @@ export function odataUrlFrom(candidate: any): string {
 
             // some entities return an abosolute url in the editlink while for others it is relative
             // without the _api. This code is meant to handle both situations
-            const editLink = isUrlAbsolute(candidate[s[1]]) ?  candidate[s[1]].split("_api")[1] : candidate[s[1]];
+            const editLink = isUrlAbsolute(candidate[s[1]]) ? candidate[s[1]].split("_api")[1] : candidate[s[1]];
 
             parts.push(extractWebUrl(candidate[s[3]]), "_api", editLink);
         } else if (hOP(candidate, s[1])) {
