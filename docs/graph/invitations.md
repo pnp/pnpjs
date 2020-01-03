@@ -9,6 +9,7 @@ We need the email address of the user being invited and the URL user should be r
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/invitations"
 
 const invitationResult = await graph.invitations.create('external.user@emailadress.com', 'https://tenant.sharepoint.com/sites/redirecturi');
 

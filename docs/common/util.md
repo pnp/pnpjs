@@ -89,13 +89,13 @@ Determines if an object is defined and not null.
 
 Determines if a supplied variable represents an array.
 
-## extend
+## assign
 
 Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwritting of existing
 properties.
 
 ```TypeScript
-import { extend } from "@pnp/common";
+import { assign } from "@pnp/common";
 
 let obj1 = {
     prop: 1,
@@ -107,10 +107,10 @@ const obj2 = {
     prop3: 9,
 };
 
-const example1 = extend(obj1, obj2);
+const example1 = assign(obj1, obj2);
 // example1 = { prop: 4, prop2: 2, prop3: 9 }
 
-const example2 = extend(obj1, obj2, true);
+const example2 = assign(obj1, obj2, true);
 // example2 = { prop: 1, prop2: 2, prop3: 9 }
 ```
 
