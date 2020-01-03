@@ -1,6 +1,8 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 import { testSettings } from "../main";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
@@ -39,6 +41,12 @@ describe("Sites", () => {
             const oWeb = await sp.site.rootWeb();
             const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
             return expect(webIDResult).to.haveOwnProperty("data");
+        });
+
+        it(".openWebById - chainable", async function () {
+            const oWeb = await sp.site.rootWeb();
+            const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
+            return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
         });
     }
 });

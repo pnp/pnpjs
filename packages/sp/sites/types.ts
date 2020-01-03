@@ -11,6 +11,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { IChangeQuery } from "../types";
 import { tag } from "../telemetry";
 import { metadata } from "../utils/metadata";
+import { extractWebUrl } from "../utils/extractweburl";
 
 @defaultPath("_api/site")
 export class _Site extends _SharePointQueryableInstance {
@@ -113,7 +114,7 @@ export class _Site extends _SharePointQueryableInstance {
         const data = await spPost(this.clone(Site, `openWebById('${webId}')`));
         return {
             data,
-            web: Web(odataUrlFrom(data)),
+            web: Web(extractWebUrl(odataUrlFrom(data))),
         };
     }
 
