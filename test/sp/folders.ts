@@ -71,6 +71,22 @@ describe("Folder", () => {
             return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName(folderName).copyTo(copyToUrl)).to.eventually.be.fulfilled;
         });
 
+        it("moves folder to a new destination by path", async function () {
+            const folderName = `test2_${getRandomString(5)}`;
+            await web.rootFolder.folders.getByName("SiteAssets").folders.add(folderName);
+            const { ServerRelativeUrl: srcUrl } = await web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+            const moveToUrl = `${srcUrl}/SiteAssets/moved_${getRandomString(5)}`;
+            return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName(folderName).moveByPath(moveToUrl, true)).to.eventually.be.fulfilled;
+        });
+
+        it("copies folder to a new destination by path", async function () {
+            const folderName = `test2_${getRandomString(5)}`;
+            await web.rootFolder.folders.getByName("SiteAssets").folders.add(folderName);
+            const { ServerRelativeUrl: srcUrl } = await web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+            const copyToUrl = `${srcUrl}/SiteAssets/copied_${getRandomString(5)}`;
+            return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName(folderName).copyByPath(copyToUrl, true)).to.eventually.be.fulfilled;
+        });
+
         it("recycles folder", async function () {
             await web.rootFolder.folders.getByName("SiteAssets").folders.add("test3");
             return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName("test").recycle()).to.eventually.be.fulfilled;

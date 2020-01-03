@@ -81,6 +81,7 @@ $(() => {
 ```
 
 ### Setting Associated Item Values
+
 You can also update the file properties of a newly uploaded file using code similar to the below snippet:
 
 ```TypeScript
@@ -109,7 +110,6 @@ import "@pnp/sp/folders";
 
 const file = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file%#%.name", "content");
 ```
-
 
 ## Update File Content
 
@@ -282,4 +282,64 @@ console.log(`Id: ${item.Id} -- ${item.Title}`);
 // You can also chain directly off this item instance
 const perms = await item.getCurrentUserEffectivePermissions();
 console.log(perms);
+```
+
+### move
+
+It's possible to move a file to a new destination within a site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+// destination is a server-relative url of a new file
+const destinationUrl = `sites/dev/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").moveTo(destinationUrl);
+```  
+
+### copy
+
+It's possible to copy a file to a new destination within a site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+// destination is a server-relative url of a new file
+const destinationUrl = `sites/dev/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyTo(destinationUrl, false);
+```  
+
+### move by path
+
+It's possible to move a file to a new destination within the same or a different site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+// destination is a server-relative url of a new file
+const destinationUrl = `sites/dev2/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").moveByPath(destinationUrl, false, true);
+```  
+
+### copy by path
+
+It's possible to copy a file to a new destination within the same or a different site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+// destination is a server-relative url of a new file
+const destinationUrl = `sites/dev2/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyByPath(destinationUrl, false, true);
 ```
