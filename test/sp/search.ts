@@ -31,4 +31,10 @@ describe.skip("Search", () => {
 
         return expect(sp.searchSuggest({ querytext: "test" })).to.eventually.be.fulfilled;
     });
+
+    it(".getpage", async function () {
+
+        const result = await sp.search("test");
+        return expect(result.getPage(1)).to.eventually.be.fulfilled;
+    });
 });

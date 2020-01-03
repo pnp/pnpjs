@@ -133,7 +133,7 @@ export class _Search extends _SharePointQueryableInstance {
         }
 
         const data = await spPost(this, postBody);
-        return new SearchResults(data, this.toUrl(), query);
+        return new SearchResults(data, this.parentUrl, query);
     }
 
     /**
