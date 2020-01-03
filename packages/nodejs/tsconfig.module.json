@@ -1,0 +1,16 @@
+{
+    "extends": "../tsconfig.module.json",
+    "include": [
+        "./**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.module.json"
+        },
+        {
+            "path": "../logging/tsconfig.module.json"
+        }
+    ]
+}

@@ -31,6 +31,7 @@ export default <ConfigCollection>[
         // these tsconfig files will all be transpiled per the settings in the file
         buildTargets: [
             resolve("./packages/tsconfig.json"),
+            resolve("./packages/tsconfig.module.json"),
         ],
 
         postBuildTasks: [
@@ -45,6 +46,7 @@ export default <ConfigCollection>[
         role: "package",
 
         packageTargets: [{
+            moduleTarget: resolve("./packages/tsconfig.module.json"),
             outDir: resolve("./dist/packages/"),
             packageTarget: resolve("./packages/tsconfig.json"),
         }],
@@ -53,7 +55,8 @@ export default <ConfigCollection>[
 
         packageTasks: [
             // order matters here
-            Tasks.Package.copyBuiltFiles,
+            Tasks.Package.copyMainFiles,
+            Tasks.Package.copyModuleFiles,
             Tasks.Package.copyStaticAssets,
             Tasks.Package.writePackageFiles,
         ],
@@ -89,8 +92,8 @@ export default <ConfigCollection>[
                     },
                     performance: {
                         // we are making a big package, but this is designed to be non-optimal
-                        maxAssetSize: 300000,
-                        maxEntrypointSize: 300000,
+                        maxAssetSize: 400000,
+                        maxEntrypointSize: 400000,
                     },
                     plugins: [
                         new wp.BannerPlugin({

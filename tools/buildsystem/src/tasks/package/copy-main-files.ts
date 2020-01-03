@@ -10,7 +10,7 @@ interface TSConfig {
     };
 }
 
-export function copyBuiltFiles(_version: string, config: PackageSchema) {
+export function copyMainFiles(_version: string, config: PackageSchema) {
 
     const promises: Promise<void>[] = [];
 
