@@ -38,6 +38,7 @@ export interface PackageTaskScoped {
 
 export interface PackageTargetMap {
     packageTarget: string;
+    moduleTarget?: string;
     outDir: string;
 }
 

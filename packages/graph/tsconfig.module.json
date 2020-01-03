@@ -1,0 +1,30 @@
+{
+    "extends": "../tsconfig.module.json",
+    "compilerOptions": {
+        "strictNullChecks": false
+    },
+    "types": [
+        "adal"
+    ],
+    "include": [
+        "./**/*.ts",
+        "../adaljsclient/**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../adaljsclient/tsconfig.module.json"
+        },
+        {
+            "path": "../common/tsconfig.module.json"
+        },
+        {
+            "path": "../logging/tsconfig.module.json"
+        },
+        {
+            "path": "../odata/tsconfig.module.json"
+        }
+    ]
+}

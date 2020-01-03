@@ -1,0 +1,45 @@
+{
+    "extends": "../tsconfig.module.json",
+    "compilerOptions": {
+        "types": [
+            "sharepoint"
+        ]
+    },
+    "include": [
+        "./**/*.ts",
+        "../adaljsclient/**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts",
+        "../sp/**/*.ts",
+        "../graph/**/*.ts",
+        "../config-store/**/*.ts",
+        "../sp-addinhelpers/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../adaljsclient/tsconfig.module.json"
+        },
+        {
+            "path": "../common/tsconfig.module.json"
+        },
+        {
+            "path": "../logging/tsconfig.module.json"
+        },
+        {
+            "path": "../odata/tsconfig.module.json"
+        },
+        {
+            "path": "../sp/tsconfig.module.json"
+        },
+        {
+            "path": "../graph/tsconfig.module.json"
+        },
+        {
+            "path": "../config-store/tsconfig.module.json"
+        },
+        {
+            "path": "../sp-addinhelpers/tsconfig.module.json"
+        }
+    ]
+}

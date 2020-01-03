@@ -4,4 +4,4 @@ const { join } = require("path");
 
 const isDirectory = (root, dirName) => lstatSync(join(root, dirName)).isDirectory();
 
-export default (root) => readdirSync(root).filter(dirName => isDirectory(root, dirName));
+export default (root): string[] => readdirSync(root).filter(dirName => isDirectory(root, dirName));
