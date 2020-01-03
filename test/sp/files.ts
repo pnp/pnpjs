@@ -189,6 +189,36 @@ describe("file", () => {
             return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
         });
 
+        it("copyByPath", async function () {
+
+            const rand = getRandomString(4);
+            const name = `Testing copyByPath - ${rand}.txt`;
+            await files.add(name, getRandomString(42));
+            const folderData = await sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const name2 = `I Copied - ${rand}.aspx`;
+            const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+            await files.getByName(name).copyByPath(path, true);
+
+            // tslint:disable-next-line:no-unused-expression
+            return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
+        });
+
+        it("moveByPath", async function () {
+
+            const rand = getRandomString(4);
+            const name = `Testing moveByPath - ${rand}.txt`;
+            await files.add(name, getRandomString(42));
+            const folderData = await sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const name2 = `I Copied - ${rand}.aspx`;
+            const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+            await files.getByName(name).moveByPath(path, true);
+
+            // tslint:disable-next-line:no-unused-expression
+            return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
+        });
+
         it("recycle", async function () {
 
             const name = `Testing Recycle - ${getRandomString(4)}.txt`;

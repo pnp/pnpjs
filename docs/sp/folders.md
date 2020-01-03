@@ -137,6 +137,36 @@ const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
 await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").copyTo(destinationUrl);
 ```  
 
+### move by path
+
+It's possible to move a folder to a new destination within the same or a different site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+// destination is a server-relative url of a new folder
+const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
+
+await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").moveByPath(destinationUrl, true);
+```  
+
+### copy by path
+
+It's possible to copy a folder to a new destination within the same or a different site collection  
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+// destination is a server-relative url of a new folder
+const destinationUrl = `sites/my-site/SiteAssets/new-folder`;
+
+await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").copyByPath(destinationUrl, true);
+```  
+
 ### recycle
 
 Recycles a folder

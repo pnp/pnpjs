@@ -7,13 +7,14 @@ import {
     IDeleteableWithETag,
     deleteableWithETag,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, headers } from "@pnp/odata";
-import { assign, getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common";
+import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
+import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 
 /**
@@ -210,6 +211,45 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 
     /**
+     * Copies the file by path to destination path.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to copy to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    @tag("fi.copyByPath")
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+            body({
+                destPath: {
+                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+                options: {
+                    KeepBoth: KeepBoth,
+                    ResetAuthorAndCreatedOnCopy: true,
+                    ShouldBypassSharedLocks: true,
+                    __metadata: {
+                        type: "SP.MoveCopyOptions",
+                    },
+                },
+                srcPath: {
+                    DecodedUrl: `${hostUrl}${srcUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+            }));
+    }
+
+    /**
      * Denies approval for a file that was submitted for content approval.
      * Only documents in lists that are enabled for content approval can be denied.
      *
@@ -232,6 +272,45 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     @tag("fi.moveTo")
     public moveTo(url: string, moveOperations = MoveOperations.Overwrite): Promise<void> {
         return spPost(this.clone(File, `moveTo(newurl='${escapeQueryStrValue(url)}',flags=${moveOperations})`));
+    }
+
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    @tag("fi.moveByPath")
+    public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
+
+        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
+        const webBaseUrl = extractWebUrl(absoluteUrl);
+        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+        await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+            body({
+                destPath: {
+                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+                options: {
+                    KeepBoth: KeepBoth,
+                    ResetAuthorAndCreatedOnCopy: false,
+                    ShouldBypassSharedLocks: true,
+                    __metadata: {
+                        type: "SP.MoveCopyOptions",
+                    },
+                },
+                srcPath: {
+                    DecodedUrl: `${hostUrl}${srcUrl}`,
+                    __metadata: {
+                        type: "SP.ResourcePath",
+                    },
+                },
+            }));
     }
 
     /**
@@ -600,6 +679,7 @@ export interface IAddUsingPathProps {
 }
 
 export interface IFileInfo {
+    readonly "odata.id": string;
     CheckInComment: string;
     CheckOutType: number;
     ContentTag: string;
