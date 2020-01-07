@@ -156,7 +156,7 @@ export class Task extends GraphQueryableInstance<IPlannerTask> {
             headers: {
                 "If-Match": eTag,
             },
-        );
+        });
     }
 
     /**
