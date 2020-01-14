@@ -105,7 +105,7 @@ const web: IWeb = Web("some absolute url");
 const r2 = web();
 ```
 
-## Entension Methods
+## Extension Methods
 
 Another new capability in v2 is the ability to extend objects and factories. This allows you to easily add methods or properties on a per-object basis. Please see the [full article on extension methods](odata/extensions.md) describing this great new capability.
 
