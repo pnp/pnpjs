@@ -1,7 +1,6 @@
 import { IGraphQueryable } from "./graphqueryable";
 import { graphDelete, graphPatch, graphPost } from "./operations";
-import { body } from "@pnp/odata";
-import { ITypedHash } from "@pnp/common";
+import { body, headers } from "@pnp/odata";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -42,26 +41,74 @@ export interface IDeleteable {
 }
 
 /**
+ * Adds the delete method to the tagged class
+ */
+export function deleteableWithETag() {
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public delete(this: IGraphQueryable, eTag = "*"): Promise<void> {
+                return graphDelete(this, headers({
+                        "If-Match": eTag,
+                }));
+            }
+        };
+    };
+}
+
+export interface IDeleteableWithETag {
+    /**
+     * Delete this instance
+     */
+    delete(eTag?: string): Promise<void>;
+}
+
+/**
  * Adds the update method to the tagged class
  */
 export function updateable() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: ITypedHash<any>): Promise<void> {
+            public update(this: IGraphQueryable, props: any): Promise<void> {
                 return graphPatch(this, body(props));
             }
         };
     };
 }
 
-export interface IUpdateable<T = ITypedHash<any>> {
+export interface IUpdateable<T = any> {
     /**
      * Update the properties of an event object
      * 
      * @param props Set of properties to update
      */
     update(props: T): Promise<void>;
+}
+
+/**
+ * Adds the update method to the tagged class
+ */
+export function updateableWithETag() {
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public update(this: IGraphQueryable, props: any, eTag = "*"): Promise<void> {
+                return graphPatch(this, body(props, headers({
+                    "If-Match": eTag,
+                })));
+            }
+        };
+    };
+}
+
+export interface IUpdateableWithETag<T = any> {
+    /**
+     * Update the properties of an event object
+     * 
+     * @param props Set of properties to update
+     */
+    update(props: T, eTag?: string): Promise<void>;
 }
 
 /**
@@ -78,7 +125,7 @@ export function addable() {
     };
 }
 
-export interface IAddable<T = ITypedHash<any>, R = { id: string }> {
+export interface IAddable<T = any, R = { id: string }> {
     /**
      * Adds a new item to this collection
      * 
