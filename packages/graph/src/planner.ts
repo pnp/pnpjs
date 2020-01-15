@@ -157,7 +157,7 @@ export class Task extends GraphQueryableInstance<IPlannerTask> {
      * 
      * @param eTag Up to date eTag of Task to update
      */
-    public delete(eTag: string): Promise<void> {
+    public delete(eTag = "*"): Promise<void> {
         return this.deleteCore({
             headers: {
                 "If-Match": eTag,
