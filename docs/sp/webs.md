@@ -4,7 +4,7 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 
 ## IWebs
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -12,7 +12,6 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";|
 |Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, Webs, IWebs } from "@pnp/sp/presets/core";|
-
 
 ### Add Web
 
@@ -48,7 +47,7 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w:
 
 ## IWeb
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -59,7 +58,7 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w:
 
 ### Access a Web
 
-There are several ways to access a web instance, each of these methods is equivelent in that you will have an IWeb instance to work with. All of the examples below use a variable named "web" which represents an IWeb instance - regardless of how it was initially accessed.
+There are several ways to access a web instance, each of these methods is equivalent in that you will have an IWeb instance to work with. All of the examples below use a variable named "web" which represents an IWeb instance - regardless of how it was initially accessed.
 
 **Access the web from the imported "sp" object using selective import:**
 
@@ -335,8 +334,7 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 |Selective 2|import "@pnp/sp/client-side-pages/web";|
 |Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
 
-# TODO (need to update code to latest from 1.x branch)
-
+## TODO (need to update code to latest from 1.x branch)
 
 ## content-type imports
 
@@ -646,11 +644,11 @@ const data: IRelatedItem[] = await manager.getRelatedItems("{list name}", 4);
 
 ## security imports
 
-# TODO:: link to the security page and document all there, no need to duplicate
+## TODO:: link to the security page and document all there, no need to duplicate
 
 ## sharing imports
 
-# TODO:: link to the sharing page and document all there, no need to duplicate
+## TODO:: link to the sharing page and document all there, no need to duplicate
 
 ## site-groups imports
 

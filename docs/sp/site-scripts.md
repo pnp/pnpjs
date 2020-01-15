@@ -1,7 +1,6 @@
 # @pnp/sp/site-scripts
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
-
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md)
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-scripts";|
@@ -26,7 +25,7 @@ const sitescriptContent = {
 };
 
 const siteScript = await sp.siteScripts.createSiteScript("Title", "description", sitescriptContent);
-    
+
 console.log(siteScript.Title);
 ```
 
@@ -73,6 +72,7 @@ const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
 ```
 
 ## Get site script from a web
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/site-designs";

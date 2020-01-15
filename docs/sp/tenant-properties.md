@@ -16,11 +16,11 @@ await w.setStorageEntity("Test1", "Value 1");
 
 // specify optional description and comments
 await w.setStorageEntity("Test2", "Value 2", "description", "comments");
-``` 
+```
 
 ## getStorageEntity
 
-This method can be used from any web to retrieve values previsouly set.
+This method can be used from any web to retrieve values previously set.
 
 ```TypeScript
 import { sp, StorageEntity } from "@pnp/sp";

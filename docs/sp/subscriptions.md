@@ -1,16 +1,15 @@
 # @pnp/sp/subscriptions
 
-Webhooks on a SharePoint list are used to notify any change in the list, to other applications using a push model. This module provides methods to add, update or delete webhooks on a particlar SharePoint list or library.
+Webhooks on a SharePoint list are used to notify any change in the list, to other applications using a push model. This module provides methods to add, update or delete webhooks on a particular SharePoint list or library.
 
 ## ISubscriptions
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 | Scenario    | Import Statement                                                                                                                                                                                                           |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
 | Preset: All | import {sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/presets/all";                                                                                            |
-
 
 ### Add a webhook
 
@@ -51,7 +50,7 @@ const res = await sp.web.lists.getByTitle("Documents").subscriptions();
 
 This interface provides the methods for managing a particular webhook.
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 | Scenario    | Import Statement                                                                                                                                                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

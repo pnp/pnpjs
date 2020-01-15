@@ -1,6 +1,7 @@
 # @pnp/graph/subscriptions
 
 The ability to manage subscriptions is a capability introduced in version 1.2.9 of @pnp/graph. A subscription allows a client app to receive notifications about changes to data in Microsoft Graph. Currently, subscriptions are enabled for the following resources:
+
 * Mail, events, and contacts from Outlook.
 * Conversations from Office Groups.
 * Drive root items from OneDrive.
@@ -21,8 +22,7 @@ const subscriptions = await graph.subscriptions();
 
 ## Create a new Subscription
 
-Using the subscriptions.add(). Creating a subscription requires read scope to the resource. For example, to get notifications messages, your app needs the Mail.Read permission. 
-To learn more about the scopes visit [this](https://docs.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) url.
+Using the subscriptions.add(). Creating a subscription requires read scope to the resource. For example, to get notifications messages, your app needs the Mail.Read permission. To learn more about the scopes visit [this](https://docs.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) url.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -43,6 +43,7 @@ import "@pnp/graph/subscriptions"
 const subscription = await graph.subscriptions.getById('subscriptionId')();
 
 ```
+
 ## Delete a Subscription
 
 Using the subscriptions.getById().delete() you can remove one of the Subscriptions

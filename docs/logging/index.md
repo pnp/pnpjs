@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40pnp%2Flogging.svg)](https://badge.fury.io/js/%40pnp%2Flogging)
 
-The logging module provides light weight subscribable and extensiable logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.
+The logging module provides light weight subscribable and extensible logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ The logging framework is centered on the Logger class to which any number of lis
 
 ```TypeScript
 /**
- * Interface that defines a log listner
+ * Interface that defines a log listener
  *
  */
 export interface LogListener {
@@ -25,14 +25,14 @@ export interface LogListener {
      *
      * @param entry The information to be logged
      */
-    log(entry: LogEntry): void;
+    log(entry: ILogEntry): void;
 }
 
 /**
  * Interface that defines a log entry
  *
  */
-export interface LogEntry {
+export interface ILogEntry {
     /**
      * The main message to be logged
      */
@@ -93,7 +93,7 @@ Logger.log({
 ## Log an error
 
 There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
-instance pased in, the level will be 'Error', and the message will be the Error instance's message property.
+instance passed in, the level will be 'Error', and the message will be the Error instance's message property.
 
 ```TypeScript
 const e = Error("An Error");
@@ -135,10 +135,10 @@ The FunctionListener allows you to wrap any functionality by creating a function
 import {
     Logger,
     FunctionListener,
-    LogEntry
+    ILogEntry
 } from "@pnp/logging";
 
-let listener = new FunctionListener((entry: LogEntry) => {
+let listener = new FunctionListener((entry: ILogEntry) => {
 
     // pass all logging data to an existing framework
     MyExistingCompanyLoggingFramework.log(entry.message);
@@ -155,14 +155,14 @@ If desirable for your project you can create a custom listener to perform any lo
 import {
     Logger,
     LogListener,
-    LogEntry
+    ILogEntry
 } from "@pnp/logging";
 
 class MyListener implements LogListener {
 
-    log(entry: LogEntry): void {
+    log(entry: ILogEntry): void {
         // here you would do something with the entry
-    }    
+    }
 }
 
 Logger.subscribe(new MyListener());

@@ -1,11 +1,10 @@
 # @pnp/sp - Aliased Parameters
 
-Within the @pnp/sp api you can alias any of the parameters so they will be written into the querystring. This is most helpful if you are hitting up against the 
-url length limits when working with files and folders.
+Within the @pnp/sp api you can alias any of the parameters so they will be written into the querystring. This is most helpful if you are hitting up against the url length limits when working with files and folders.
 
 To alias a parameter you include the label name, a separator ("::") and the value in the string. You also need to prepend a "!" to the string to trigger the replacement. You can see this below, as well as the string that will be generated. Labels must start with a "@" followed by a letter. It is also your responsibility to ensure that the aliases you supply do not conflict, for example if you use "@p1" you should use "@p2" for a second parameter alias in the same query.
 
-### Construct a parameter alias
+## Construct a parameter alias
 
 Pattern: !@{label name}::{value}
 

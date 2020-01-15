@@ -5,9 +5,9 @@ SharePoint Framework's permissions.
 
 ## Setup and Use inside SharePoint Framework
 
-Using the SharePoint Framework is the prefered way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on yoru behalf. You can also read more about how this process works and the necessary SPFx configurations in the [SharePoint Framework 1.6 release notes](https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi). This method only work for SharePoint Framework >= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.
+Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the [SharePoint Framework 1.6 release notes](https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi). This method only work for SharePoint Framework >= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.
 
-#### Calling the graph api
+### Calling the graph api
 
 By providing the context in the onInit we can create the adal client from known information.  
 
@@ -36,7 +36,7 @@ public render(): void {
   this.domElement.innerHTML = `Hello, I am creating a team named "${teamName}" for you...`;
 
   graph.teams.create(teamName, "This is a description").then(t => {
-    
+
     this.domElement.innerHTML += "done!";
 
   }).catch(e => {
