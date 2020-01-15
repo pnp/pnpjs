@@ -1,7 +1,8 @@
-import "core-js/modules/es.promise";
-import "core-js/modules/es.array.iterator";
-import "core-js/modules/es.array.from";
-import "core-js/modules/es.array.fill";
-import "core-js/features/reflect";
-import "core-js/features/map";
+import "core-js/stable/array/from";
+import "core-js/stable/array/fill";
+import "core-js/stable/array/iterator";
+import "core-js/stable/promise";
+import "core-js/stable/reflect";
+import "es6-map/implement";
+import "core-js/stable/symbol";
 import "whatwg-fetch";
