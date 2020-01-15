@@ -48,9 +48,9 @@ export interface LibraryConfiguration {
 The class which implements the runtime configuration management as well as sets the default values used within the library. At its heart lies a [Dictionary](collections.md)
 used to track the configuration values. The keys will match the values in the interface or plain object passed to the extend method.
 
-### extend
+### assign
 
-The extend method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any 
+The assign method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any 
 existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please 
 see the section below "Using RuntimeConfig within your application". Note there are no methods to remove/clear the global config as it should be considered fairly static
 as frequent updates may have unpredictable side effects as it is a global shared object. Generally it should be set at the start of your application.
@@ -60,7 +60,7 @@ import { RuntimeConfig } from "@pnp/common";
 
 // add your custom keys to the global configuration
 // note you can use object hashes as values
-RuntimeConfig.extend({
+RuntimeConfig.assign({
    "myKey1": "value 1",
    "myKey2": {
        "subKey": "sub value 1",
@@ -78,7 +78,7 @@ If you have a set of properties you will access very frequently it may be desira
 do so you will need to create an interface for your configration (optional) and a wrapper class for RuntimeConfig to expose your properties
 
 ```TypeScript
-import { LibraryConfiguration, RuntimeConfig } from "@pnp/common";
+import { ILibraryConfiguration, RuntimeConfig, ITypedHash } from "@pnp/common";
 
 // first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because
 // TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.
@@ -101,14 +101,14 @@ interface MyConfigurationPart {
 }
 
 // now create a combined interface
-interface MyConfiguration extends LibraryConfiguration, MyConfigurationPart { }
+interface MyConfiguration extends ILibraryConfiguration, MyConfigurationPart { }
 
 
 // now create a wrapper object and expose your properties
 class MyRuntimeConfigImpl {
 
     // exposing a nested property
-    public get prop1(): TypedHash<string> {
+    public get prop1(): ITypedHash<string> {
 
         const myPart = RuntimeConfig.get("my");
         if (myPart !== null && typeof myPart !== "undefined" && typeof myPart.prop1 !== "undefined") {
@@ -122,7 +122,7 @@ class MyRuntimeConfigImpl {
     public get myProp1(): string | null {
 
         let myProp1 = RuntimeConfig.get("myProp1");
-        
+
         if (myProp1 === null) {
             myProp1 = "some default value";
         }
@@ -131,7 +131,7 @@ class MyRuntimeConfigImpl {
     }
 
     setup(config: MyConfiguration): void {
-        RuntimeConfig.extend(config);
+        RuntimeConfig.assign(config);
     }
 }
 

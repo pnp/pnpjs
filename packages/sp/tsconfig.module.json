@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.module.json",
+    "compilerOptions": {
+        "strictNullChecks": false
+    },
+    "include": [
+        "./**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts",
+        "./presets/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.module.json"
+        },
+        {
+            "path": "../logging/tsconfig.module.json"
+        },
+        {
+            "path": "../odata/tsconfig.module.json"
+        }
+    ]
+}

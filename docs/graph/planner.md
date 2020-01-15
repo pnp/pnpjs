@@ -10,8 +10,9 @@ Planner.plans is not an available endpoint, you need to get a specific Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const plan = await graph.planner.plans.getById('planId');
+const plan = await graph.planner.plans.getById('planId')();
 
 ```
 
@@ -21,6 +22,7 @@ Using the planner.plans.add() you can create a new Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
 
@@ -28,32 +30,35 @@ const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
 
 ## Get Tasks in Plan
 
-Using the tasks.get() you can get the Tasks in a Plan.
+Using the tasks() you can get the Tasks in a Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const planTasks = await graph.planner.plans.getById('planId').tasks.get();
+const planTasks = await graph.planner.plans.getById('planId').tasks();
 
 ```
 
 ## Get Buckets in Plan
 
-Using the buckets.get() you can get the Buckets in a Plan.
+Using the buckets() you can get the Buckets in a Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const planBuckets = await graph.planner.plans.getById('planId').buckets.get();
+const planBuckets = await graph.planner.plans.getById('planId').buckets();
 
 ```
 
 ## Get Details in Plan
 
-Using the details.get() you can get the details in a Plan.
+Using the details() you can get the details in a Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const planDetails = await graph.planner.plans.getById('planId').details.get();
 
@@ -65,6 +70,7 @@ Using the delete() you can get delete a Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const delPlan = await graph.planner.plans.getById('planId').delete();
 
@@ -76,6 +82,7 @@ Using the update() you can get update a Plan.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title'});
 
@@ -88,8 +95,9 @@ Planner.tasks is not an available endpoint, you need to get a specific Task.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const task = await graph.planner.tasks.getById('taskId');
+const task = await graph.planner.tasks.getById('taskId')();
 
 ```
 
@@ -99,6 +107,7 @@ Using the planner.tasks.add() you can create a new Task.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const newTask = await graph.planner.tasks.add('planId', 'title');
 
@@ -106,10 +115,11 @@ const newTask = await graph.planner.tasks.add('planId', 'title');
 
 ## Get Details in Task
 
-Using the details.get() you can get the details in a Task.
+Using the details() you can get the details in a Task.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const taskDetails = await graph.planner.tasks.getById('taskId').details.get();
 
@@ -121,6 +131,7 @@ Using the delete() you can get delete a Task.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const delTask = await graph.planner.tasks.getById('taskId').delete();
 
@@ -132,6 +143,7 @@ Using the update() you can get update a Task.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const updTask = await graph.planner.tasks.getById('taskId').update({properties});
 
@@ -144,8 +156,9 @@ planner.buckets is not an available endpoint, you need to get a specific Bucket.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const bucket = await graph.planner.buckets.getById('bucketId');
+const bucket = await graph.planner.buckets.getById('bucketId')();
 
 ```
 
@@ -155,6 +168,7 @@ Using the planner.buckets.add() you can create a new Bucket.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const newBucket = await graph.planner.buckets.add('name', 'planId');
 
@@ -166,6 +180,7 @@ Using the update() you can get update a Bucket.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const updBucket = await graph.planner.buckets.getById('bucketId').update({name: "Name"});
 
@@ -177,6 +192,7 @@ Using the delete() you can get delete a Bucket.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
 const delBucket = await graph.planner.buckets.getById('bucketId').delete();
 
@@ -184,11 +200,12 @@ const delBucket = await graph.planner.buckets.getById('bucketId').delete();
 
 ## Get Bucket Tasks
 
-Using the tasks.get() you can get Tasks in a Bucket.
+Using the tasks() you can get Tasks in a Bucket.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/planner"
 
-const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks.get();
+const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
 
 ```

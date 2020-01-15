@@ -4,22 +4,13 @@ export interface ISPFXGraphHttpClient {
 
 export interface ISPFXContext {
 
-    aadTokenProviderFactory: {
+    aadTokenProviderFactory?: {
         getTokenProvider(): Promise<{
             getToken(resource: string): Promise<string>;
         }>;
     };
 
     pageContext: {
-        aadInfo: {
-            tenantId: {
-                toString(): string,
-            },
-        }
-        legacyPageContext: {
-            aadTenantId: string,
-            msGraphEndpointUrl: string,
-        },
         web: {
             absoluteUrl: string,
         },

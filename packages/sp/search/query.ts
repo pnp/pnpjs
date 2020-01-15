@@ -82,6 +82,8 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
         });
 }
 
+const queryRegex = /_api\/search\/postquery$/i;
+
 /**
  * Describes the search API
  *
@@ -124,7 +126,7 @@ export class _Search extends _SharePointQueryableInstance {
 
             if (objectDefinedNotNull(this.data.cachingOptions)) {
                 // if our key ends in the postquery url we overwrite it
-                if (/\/_api\/search\/postquery$/i.test(this.data.cachingOptions.key)) {
+                if (queryRegex.test(this.data.cachingOptions.key)) {
                     this.data.cachingOptions.key = cacheKey;
                 }
             } else {
@@ -186,6 +188,7 @@ export class SearchResults {
         private _raw: ISearchResponse = null,
         private _primary: ISearchResult[] = null) {
 
+        this._url = this._url.replace(queryRegex, "");
         this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
     }
 
