@@ -154,15 +154,22 @@ export class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
 export class Task extends GraphQueryableInstance<IPlannerTask> {
     /**
      * Deletes this Task
+     * 
+     * @param eTag Up to date eTag of Task to update
      */
-    public delete(): Promise<void> {
-        return this.deleteCore();
+    public delete(eTag = "*"): Promise<void> {
+        return this.deleteCore({
+            headers: {
+                "If-Match": eTag,
+            },
+        });
     }
 
     /**
      * Update the properties of a Task
      * 
      * @param properties Set of properties of this Task to update
+     * @param eTag Up to date eTag of Task to update
      */
     public update(properties: IPlannerTask, eTag = "*"): Promise<void> {
 
