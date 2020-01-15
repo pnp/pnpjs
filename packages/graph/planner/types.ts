@@ -7,7 +7,7 @@ import {
 } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/odata";
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { updateable, IUpdateable, deleteable, IDeleteable, getById, IGetById } from "../decorators";
+import { updateable, IUpdateable, deleteable, IDeleteable, getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";
 
@@ -78,10 +78,10 @@ export const Plans = graphInvokableFactory<IPlans>(_Plans);
 /**
  * Task
  */
-@updateable()
-@deleteable()
+@updateableWithETag()
+@deleteableWithETag()
 export class _Task extends _GraphQueryableInstance<IPlannerTaskType> { }
-export interface ITask extends _Task, IUpdateable<IPlannerTaskType>, IDeleteable { }
+export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag { }
 export const Task = graphInvokableFactory<ITask>(_Task);
 
 /**
