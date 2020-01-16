@@ -2,6 +2,7 @@
 :: Publish script for PnPjs
 ::
 @echo off
+cls
 echo.
 echo Starting publish for PnPjs
 cd ../..
@@ -16,24 +17,25 @@ git checkout version-2
 git pull
 git checkout master
 git pull
-get merge version-2
+git merge version-2
 
 ::
 :: ensure we have the latest deps
 ::
-npm ci
+rmdir node_modules /S /Q 
+call npm install
 
 ::
 :: update the version
 ::
-npm version patch
+call npm version patch
 git push
 
 ::
 :: publish the packages
 ::
-npm run clean
-npm run package
+call npm run clean
+call npm run package
 pnpbuild -n publish
 
 ::
