@@ -29,12 +29,12 @@ describe("Lists", function () {
         });
 
         it(".add 1", function () {
-            const title = `pnp testing add 1`;
+            const title = `pnp testing add 1 ${getRandomString(4)}`;
             return expect(sp.web.lists.add(title, title)).to.eventually.be.fulfilled;
         });
 
         it(".add 2", function () {
-            const title = `pnp testing add 2`;
+            const title = `pnp testing add 2 ${getRandomString(4)}`;
             return expect(sp.web.lists.add(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
@@ -344,7 +344,7 @@ describe("List", function () {
 
         it(".addValidateUpdateItemUsingPath", async function () {
             const listTitle = `pnp testing addValidateUpdateItemUsingPath`;
-            const listAddRes = await sp.web.lists.add(listTitle);
+            const listAddRes = await sp.web.lists.ensure(listTitle);
 
             const testList = await listAddRes.list.select("ParentWebUrl").get<{ ParentWebUrl: string }>();
 
@@ -356,10 +356,11 @@ describe("List", function () {
                 },
             ];
 
-            await listAddRes.list.rootFolder.folders.add("PnPTestAddFolder2");
+            const folderName = `PnPTestAddFolder2 ${getRandomString(4)}`;
+            await listAddRes.list.rootFolder.folders.add(folderName);
 
             return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-                `${testList.ParentWebUrl}/Lists/${listTitle}/PnPTestAddFolder2`)).to.eventually.be.fulfilled;
+                `${testList.ParentWebUrl}/Lists/${listTitle}/${folderName}`)).to.eventually.be.fulfilled;
         });
 
         it(".contentTypes", function () {
