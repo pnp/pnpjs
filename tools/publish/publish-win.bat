@@ -50,7 +50,7 @@ git checkout master
 git pull
 git checkout version-2
 git pull
-get merge master
+git merge master
 git push
 
 ::
