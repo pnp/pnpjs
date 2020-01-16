@@ -51,34 +51,39 @@ function runPublishScript() {
     const script = [];
 
     // merge dev -> master
+    // script.push(
+    //     "git checkout dev",
+    //     "git pull",
+    //     "git checkout master",
+    //     "git pull",
+    //     "git merge dev",
+    //     "npm install");
+
+    // ensure we are on version-1 branch
     script.push(
-        "git checkout dev",
-        "git pull",
-        "git checkout master",
-        "git pull",
-        "git merge dev",
+        "git checkout version-1",
         "npm install");
 
     // version here to all subsequent actions have the new version available in package.json
     script.push("npm version patch");
 
-    // push the updates to master (version info)
+    // push the updates to version-1 (version info)
     script.push("git push");
 
     // package and publish to npm
     script.push("gulp publish:packages");
 
     // merge master back to dev for updated version #
-    script.push(
-        "git checkout master",
-        "git pull",
-        "git checkout dev",
-        "git pull",
-        "git merge master",
-        "git push");
+    // script.push(
+    //     "git checkout master",
+    //     "git pull",
+    //     "git checkout dev",
+    //     "git pull",
+    //     "git merge master",
+    //     "git push");
 
-    // always leave things on the dev branch
-    script.push("git checkout dev");
+    // always leave things on the version-1 branch
+    script.push("git checkout version-1");
 
     return chainCommands(script);
 }
@@ -98,7 +103,7 @@ gulp.task("publish-beta", (done) => {
     chainCommands([
 
         // beta releases are done from dev branch
-        "git checkout dev",
+        "git checkout version-1",
 
         // update package version
         "npm version prerelease",
@@ -110,29 +115,12 @@ gulp.task("publish-beta", (done) => {
         "gulp publish:packages-beta",
 
         // always leave things on the dev branch
-        "git checkout dev",
+        "git checkout version-1",
 
     ]).then(done).catch(done);
 });
 
 gulp.task("publish", ["clean", "clean-build"], (done) => {
 
-    runPublishScript().then(_ => {
-
-        // now the version number will be updated in this package
-        const updatedPkg = require("../../package.json");
-
-        // here we need to update the version in the mkdocs.yml file
-        replace({
-            files: [path.resolve(projectRoot, "mkdocs.yml")],
-            from: /version: '[0-9\.-]+'/ig,
-            to: `version: '${updatedPkg.version}'`,
-        });
-
-        // update the docs site
-        exec("mkdocs gh-deploy", { stdio: "inherit" });
-
-        done();
-
-    }).catch(done);
+    runPublishScript().then(done).catch(done);
 });
