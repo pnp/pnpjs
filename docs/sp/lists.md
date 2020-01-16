@@ -4,7 +4,7 @@ Lists in SharePoint are collections of information built in a structural way usi
 
 ## ILists
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -151,7 +151,7 @@ console.log(r.Title);
 
 ## IList
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -333,10 +333,11 @@ const formValues: IListItemFormUpdateValue[] = [
                     FieldValue: title,
                 },
             ];
-            
+
 list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${list.Title}/MyFolder`)
 
 ```
+
 ## content-types imports
 
 |Scenario|Import Statement|
@@ -348,6 +349,7 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 ### contentTypes
 
 Get all content types for a list
+
 ```TypeScript
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.contentTypes();
@@ -450,7 +452,7 @@ const view = await list.getView(defaultView.Id).select("Title")();
 
 ## security imports
 
-# TODO:: link to the security page and document all there, no need to duplicate
+## TODO:: link to the security page and document all there, no need to duplicate
 
 ## subscriptions imports
 

@@ -44,7 +44,7 @@ await sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, t
 
 ## addSingleLinkToUrl
 
-This method adds a link to task item based on a url. The listname and item id are to the task item, the url is to the related item/document.
+This method adds a link to task item based on a url. The list name and item id are to the task item, the url is to the related item/document.
 
 ```TypeScript
 // get a file's server relative url in some manner, here we add one
@@ -57,7 +57,7 @@ await sp.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file
 
 ## addSingleLinkFromUrl
 
-This method adds a link to task item based on a url. The listname and item id are to related item, the url is to task item to which the related reference is being added. I haven't found a use case for this method.
+This method adds a link to task item based on a url. The list name and item id are to related item, the url is to task item to which the related reference is being added. I haven't found a use case for this method.
 
 ## deleteSingleLink
 
@@ -112,7 +112,7 @@ export interface IRelatedItem {
 
 ## getPageOneRelatedItems
 
-Gets an abbrieviated set of related items
+Gets an abbreviated set of related items
 
 ```TypeScript
 import { IRelatedItem } from "@pnp/sp/related-items";
@@ -132,4 +132,3 @@ const items: IRelatedItem[] = await sp.web.relatedItems.getPageOneRelatedItems(s
 
 // items.length === 2
 ```
-

@@ -65,7 +65,7 @@ console.log("Am I following " + loginName + "? " + following);
 
 ## Get the tags I follow
 
-Gets the tags the current user is following. Accepts max count, defalt is 20.
+Gets the tags the current user is following. Accepts max count, default is 20.
 
 ```typescript
 getFollowedTags(maxCount = 20): Promise<string[]>
@@ -78,7 +78,7 @@ console.log(tags);
 
 ## Get followers for a specific user
 
-Gets the people who are following the specified user. 
+Gets the people who are following the specified user.
 
 ```typescript
 getFollowersFor(loginName: string): Promise<any[]>
@@ -86,8 +86,8 @@ getFollowersFor(loginName: string): Promise<any[]>
 
 ```typescript
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
-const folowers = await sp.profiles.getFollowersFor(loginName);
-folowers.forEach((value) => {
+const followers = await sp.profiles.getFollowersFor(loginName);
+followers.forEach((value) => {
   console.log(value);
 });
 ```
@@ -139,7 +139,7 @@ getPeopleFollowedBy(loginName: string): Promise<any[]>
 ```typescript
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const folowers = await sp.profiles.getFollowersFor(loginName);
-folowers.forEach((value) => {
+followers.forEach((value) => {
   console.log(value);
 });
 ```
@@ -355,7 +355,7 @@ const result = await sp.profiles.clientPeoplePickerSearchUser({
 console.log(result);
 ```
 
-## Searc a user or group
+## Search a user or group
 
 Searches for users or groups using specified query parameters
 

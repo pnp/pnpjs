@@ -54,7 +54,7 @@ function stuffisloaded() {
   pnp.sp.web.select("Title").get()
     .then(function(data){
       document.getElementById("main").innerText=data.Title;
-  })   
+  })
   .catch(function(err){  
     document.getElementById("main").innerText=err;
   });
@@ -68,10 +68,10 @@ function stuffisloaded() {
 
 If you are using a module loader you need to load the following two files as well. You can do this form a CDN or your style library.
 
-1. Download the **es6-promises** polyfill from https://github.com/stefanpenner/es6-promise and upload it to your style library.
-2. Download the **fetch** polyfill from https://github.com/github/fetch and upload it to your style library.
-2. Download the **corejs** polyfill from https://github.com/zloirock/core-js and upload it to your style library.
-3. Update your module loader to set these files as dependencies before the pnp library is opened.
+1. Download the **es6-promises** polyfill from [https://github.com/stefanpenner/es6-promise](https://github.com/stefanpenner/es6-promise) and upload it to your style library.
+1. Download the **fetch** polyfill from [https://github.com/github/fetch](https://github.com/github/fetch) and upload it to your style library.
+1. Download the **corejs** polyfill from [https://github.com/zloirock/core-js](https://github.com/zloirock/core-js) and upload it to your style library.
+1. Update your module loader to set these files as dependencies before the pnp library is opened.
 
 One issue you still may see is that you get errors that certain libraries are undefined when you try to run your code. This is because your code is running before
 these libraries are loaded. You need to ensure that all dependencies are loaded **before** making use of the pnp libraries.

@@ -83,9 +83,9 @@ batch.execute().then(() => console.log("All done!"));
 
 ## Implement Custom Caching
 
-You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achive this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern [as discussed here](https://github.com/pnp/pnpjs/issues/371).
+You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achieve this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern [as discussed here](https://github.com/pnp/pnpjs/issues/371).
 
-### Implement caching helper method:
+### Implement caching helper method
 
 We create a map to act as our cache storage and a function to wrap the request caching logic
 

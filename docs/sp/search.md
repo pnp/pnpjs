@@ -2,9 +2,9 @@
 
 Using search you can access content throughout your organization in a secure and consistent manner. The library provides support for searching and suggest - as well as some interfaces and helper classes to make building your queries and processing responses easier.
 
-# Search
+## Search
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -72,7 +72,7 @@ const builder = SearchQueryBuilder("test").rowLimit(3);
 // supply a search query builder and caching options
 const results2 = await sp.searchWithCaching(builder, { key: "mykey", expiration: dateAdd(new Date(), "month", 1) });
 
-console.log(rresults2.TotalRows);
+console.log(results2.TotalRows);
 ```
 
 ## Paging with SearchResults.getPage
@@ -135,7 +135,7 @@ const results: SearchResults = await sp.search(q2);
 
 // provide query text and a template for
 // shared settings across queries that can
-// be overwitten by individual builders
+// be overwritten by individual builders
 const appSearchSettings: ISearchQuery = {
     EnablePhonetic: true,
     HiddenConstraints: "reports"
@@ -147,7 +147,7 @@ const results2 = await sp.search(q3);
 const results3 = sp.search(q4);
 ```
 
-# Search Suggest
+## Search Suggest
 
 Search suggest works in much the same way as search, except against the suggest end point. It takes a string or a plain object that matches ISuggestQuery.
 
@@ -164,9 +164,9 @@ const results2 = await sp.searchSuggest(<ISuggestQuery>{
 });
 ```
 
-# Search Factory
+## Search Factory
 
-You can also configure a search or sugest query against any valid SP url using the factory methods.
+You can also configure a search or suggest query against any valid SP url using the factory methods.
 
 ```TypeScript
 import { sp } from "@pnp/sp";

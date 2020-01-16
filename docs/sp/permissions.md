@@ -59,7 +59,7 @@ console.log(perms2);
 
 ## Has Permissions
 
-If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below. 
+If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below.
 
 ```TypeScript
 import { sp, PermissionKind } from "@pnp/sp/presets/all";

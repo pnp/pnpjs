@@ -1,6 +1,6 @@
 # @pnp/sp - navigation
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## Navigation Service
 
@@ -12,9 +12,10 @@
 
 The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site. It will return an exception if the SiteMapProvider cannot be found on the site, the SiteMapProvider does not implement the IEditableSiteMapProvider interface or the SiteMapNode key cannot be found within the provider hierarchy.
 
-The IEditableSiteMapProvider also supports Custom Properties which is an optional feature. What will be return in the custom properties is up to the IEditableSiteMapProvider implementation and can differ for for each SiteMapProvider implementation. The custom properties can be requested by providing a comma seperated string of property names like: property1,property2,property3\\,containingcomma
+The IEditableSiteMapProvider also supports Custom Properties which is an optional feature. What will be return in the custom properties is up to the IEditableSiteMapProvider implementation and can differ for for each SiteMapProvider implementation. The custom properties can be requested by providing a comma separated string of property names like: property1,property2,property3\\,containingcomma
 
-NOTE: the , seperator can be escaped using the \ as escape character as done in the example above. The string above would split like:
+NOTE: the , separator can be escaped using the \ as escape character as done in the example above. The string above would split like:
+
 * property1
 * property2
 * property3,containingcomma
@@ -46,7 +47,7 @@ const key = await sp.navigation.getMenuNodeKey("/sites/dev/Lists/SPPnPJSExampleL
 
 ## Web Navigation
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|

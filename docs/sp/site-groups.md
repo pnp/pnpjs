@@ -4,7 +4,7 @@ The site groups module provides methods to manage groups for a sharepoint site.
 
 ## ISiteGroups
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -12,8 +12,8 @@ The site groups module provides methods to manage groups for a sharepoint site.
 |Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups } from "@pnp/sp/presets/all";|
 
-
 ### Get all site groups
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -65,6 +65,7 @@ await sp.web.createDefaultAssociatedGroups("PnP Site", owner1, copyRoleAssignmen
 ```
 
 ### Create a new site group
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -73,9 +74,10 @@ import "@pnp/sp/site-groups/web";
 // Creates a new site group with the specified title
 await sp.web.siteGroups.add({"Title":"new group name"});
 ```
+
 ## ISiteGroup
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -100,7 +102,7 @@ grp = await sp.web.siteGroups.getByName(groupName)();
 
 // update a group
 await sp.web.siteGroups.getById(groupID).update({"Title": "New Group Title"});
-    
+
 // delete a group from the site using group id
 await sp.web.siteGroups.removeById(groupID);
 

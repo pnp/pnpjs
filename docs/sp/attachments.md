@@ -17,7 +17,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
- 
+
 let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
 
 // get all the attachments

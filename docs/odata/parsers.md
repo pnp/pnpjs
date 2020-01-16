@@ -51,7 +51,7 @@ Specialized parser used to parse the response using the .blob() method with no o
 
 ## JSONParser
 
-Specialized parser used to parse the response using the .json() method with no other processing. Used primarily for files. 
+Specialized parser used to parse the response using the .json() method with no other processing. Used primarily for files.
 
 ## BufferParser
 
@@ -59,7 +59,7 @@ Specialized parser used to parse the response using the .arrayBuffer() [node] fo
 
 ## LambdaParser
 
-Allows you to pass in any handler function you want, called if the request does not result in an error that ransforms the raw, unread request into the result type.
+Allows you to pass in any handler function you want, called if the request does not result in an error that transforms the raw, unread request into the result type.
 
 ```TypeScript
 import { LambdaParser } from "@pnp/odata";

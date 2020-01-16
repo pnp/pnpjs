@@ -1,6 +1,6 @@
 # @pnp/sp/ - social
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -132,7 +132,7 @@ const r3 = await sp.social.my.followed(SocialActorTypes.Site | SocialActorTypes.
 
 ### followedCount
 
-Works as followed but returns on the count of actors specifed by the query
+Works as followed but returns on the count of actors specified by the query
 
 ```TypeScript
 import { sp } from "@pnp/sp";

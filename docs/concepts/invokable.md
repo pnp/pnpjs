@@ -7,7 +7,7 @@ For folks who have been using the library since the early days you are familiar 
 const lists = await sp.web.lists.get();
 ```
 
-Starting with v2 this is no longer required, you can invoke the object directly to execute the default acion for that class - typically a get.
+Starting with v2 this is no longer required, you can invoke the object directly to execute the default action for that class - typically a get.
 
 ```TypeScript
 const lists = await sp.web.lists();
