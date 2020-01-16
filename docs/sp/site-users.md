@@ -4,7 +4,7 @@ The site users module provides methods to manage users for a sharepoint site.
 
 ## ISiteUsers
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -12,8 +12,8 @@ The site users module provides methods to manage users for a sharepoint site.
 |Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-users/web";|
 |Preset: All|import {sp, SiteUsers } from "@pnp/sp/presets/all";|
 
+### Get all site user
 
-### Get all site users
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -23,6 +23,7 @@ const users = await sp.web.siteUsers();
 ```
 
 ### Get Current user
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -32,6 +33,7 @@ let user = await sp.web.currentUser;
 ```
 
 ### Get user by id
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -42,6 +44,7 @@ user = await sp.web.getUserById(id);
 ```
 
 ### Ensure user
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -53,7 +56,7 @@ result = await sp.web.ensureUser(username);
 
 ## ISiteUser
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -62,6 +65,7 @@ result = await sp.web.ensureUser(username);
 |Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|
 
 ### Get user Groups
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -70,7 +74,8 @@ import "@pnp/sp/src/site-users/web";
 let groups = await sp.web.currentUser.groups();
 ```
 
-### Add user to Site colection
+### Add user to Site collection
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -83,6 +88,7 @@ await users.add(user.data.LoginName);
 ```
 
 ### Get user
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -99,6 +105,7 @@ const user = await sp.web.siteUsers.getByLoginName("userLoginName");
 ```
 
 ### Update user
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -110,6 +117,7 @@ await sp.web.currentUser.update(userProps);
 ```
 
 ### Remove user
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/src/webs";
@@ -121,7 +129,6 @@ await sp.web.siteUsers.removeById(6);
 // remove user by LoginName
 await sp.web.siteUsers.removeByLoginName(6);
 ```
-
 
 ## ISiteUserProps
 
@@ -143,49 +150,49 @@ interface ISiteUserProps {
 
     /**
      * Contains Site user email
-     * 
+     *
      */
     Email: string;
 
     /**
      * Contains Site user Id
-     * 
+     *
      */
     Id: number;
 
     /**
      * Site user IsHiddenInUI
-     * 
+     *
      */
     IsHiddenInUI: boolean;
 
     /**
-     * Site user IsShareByEmailGuestUser 
-     * 
+     * Site user IsShareByEmailGuestUser
+     *
      */
     IsShareByEmailGuestUser: boolean;
 
     /**
-     * Describes if Site user Is Site Admin 
-     * 
+     * Describes if Site user Is Site Admin
+     *
      */
     IsSiteAdmin: boolean;
 
     /**
      * Site user LoginName
-     * 
+     *
      */
     LoginName: string;
 
     /**
      * Site user Principal type
-     * 
+     *
      */
     PrincipalType: number | PrincipalType;
 
     /**
      * Site user Title
-     * 
+     *
      */
     Title: string;
 }

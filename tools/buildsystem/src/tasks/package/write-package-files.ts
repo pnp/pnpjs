@@ -41,7 +41,9 @@ export function writePackageFiles(version: string, config: PackageSchema) {
 
             pkg.version = version;
             pkg.main = `./index.js`;
-            pkg.module = `./module/index.js`;
+            if (packageTarget.moduleTarget) {
+                pkg.module = `./module/index.js`;
+            }
 
             // update our peer dependencies and dependencies placeholder if needed
             for (const key in pkg.peerDependencies) {

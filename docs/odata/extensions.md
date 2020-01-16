@@ -4,7 +4,7 @@ _introduced in 2.0.0_
 
 Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting some custom functionality. Extensions work with any [invokable](../concepts/invokable.md). You can control just about any behavior of the library with extensions.
 
-> Extensions do not work in ie11 compatability mode. This is by design.
+> Extensions do not work in ie11 compatibility mode. This is by design.
 
 ## Types of Extensions
 
@@ -110,7 +110,7 @@ Globally registering an extension allows you to inject functionality into every 
 ```TypeScript
 import { extendGlobal } from "@pnp/odata";
 
-// we can add a logging method to very verbosly track what things are called in our application
+// we can add a logging method to very verbosely track what things are called in our application
 extendGlobal((op: string, _target: any, ...rest: any[]): void => {
         switch (op) {
             case "apply":
@@ -122,14 +122,14 @@ extendGlobal((op: string, _target: any, ...rest: any[]): void => {
                 Logger.write(`${op} ::> ${rest[0]}`, LogLevel.Info);
                 break;
             default:
-                Logger.write(`unkown ${op}`, LogLevel.Info);
+                Logger.write(`unknown ${op}`, LogLevel.Info);
         }
 });
 ```
 
 ### Factory Registration
 
-The pattern you will likely find most useful is the ability to extend an invokable factory. This will apply your extensions to all instances created with that factory, meaning all IWeb's or ILists's will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
+The pattern you will likely find most useful is the ability to extend an invokable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
 
 ```TypeScript
 import "@pnp/sp/webs";

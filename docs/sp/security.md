@@ -4,9 +4,9 @@ There are four levels where you can break inheritance and assign security: Site,
 
 > Site permissions are managed on the root web of the site collection.
 
-### A Note on Selective Imports for Security
+## A Note on Selective Imports for Security
 
-Because the method are shared you can opt to import only the methods for one of the instances. 
+Because the method are shared you can opt to import only the methods for one of the instances.
 
 ```TypeScript
 import "@pnp/sp/security/web";
@@ -160,7 +160,7 @@ const rdar = await sp.web.roleDefinitions.add("title", "description", 99, { High
 
 // the following methods work on a single role def, you can use any of the three getBy methods, here we use getById as an example
 
-// delete 
+// delete
 await sp.web.roleDefinitions.getById(5).delete();
 
 // update

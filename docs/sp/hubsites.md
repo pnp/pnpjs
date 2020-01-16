@@ -4,7 +4,7 @@ This module helps you with working with hubsites in your tenant.
 
 ## IHubSites
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |
@@ -57,7 +57,6 @@ const siteData = await site();
 console.log(siteData.Title);
 ```
 
-
 ### Get HubSite data for a web
 
 ```TypeScript
@@ -71,7 +70,6 @@ const webData: IHubSiteWebData = await sp.web.hubSiteData();
 // you can also force a refresh of the hubsite data
 const webData2: IHubSiteWebData = await sp.web.hubSiteData(true);
 ```
-
 
 ### syncHubSiteTheme
 
@@ -101,7 +99,7 @@ import "@pnp/sp/hubsites/site";
 // join a site to a hubsite
 await sp.site.joinHubSite("{parent hub site id}");
 
-// remove a site from a hubsite 
+// remove a site from a hubsite
 await sp.site.joinHubSite("00000000-0000-0000-0000-000000000000");
 ```
 
@@ -120,7 +118,7 @@ await sp.site.registerHubSite();
 
 ### unRegisterHubSite
 
-Unregisters the current site collection as hub site collection.
+Un-registers the current site collection as hub site collection.
 
 ```TypeScript
 import { sp } from "@pnp/sp";

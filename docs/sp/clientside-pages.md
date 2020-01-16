@@ -2,7 +2,7 @@
 
 The clientside pages module allows you to created, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
 
-[![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 | Scenario    | Import Statement                                                                                                                                                                                                |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -154,7 +154,7 @@ if (page.hasVerticalSection) {
     // access the vertical section (this method will NOT create the section if it does not exist)
     page.verticalSection.addControl(new ClientsideText("hello"));
 } else {
-    
+
     const vertSection = page.addVerticalSection();
     section.addControl(new ClientsideText("hello"));
 }
@@ -420,7 +420,7 @@ const page: IClientsidePage;
 
 await page.discardPageCheckout();
 ```
-    
+
 ### promoteToNews
 
 Promotes the page as a news article
@@ -532,7 +532,7 @@ pageCopy2.save();
 
 ### setBannerImage
 
-Sets the banner image url and optionally additional properties. Similar to setting the bannerImageUrl property, however allows you to set additional properties if needed. If you do not need to set the additional properties they are equivelent.
+Sets the banner image url and optionally additional properties. Similar to setting the bannerImageUrl property, however allows you to set additional properties if needed. If you do not need to set the additional properties they are equivalent.
 
 ```TypeScript
 // our page instance

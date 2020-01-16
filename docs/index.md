@@ -22,12 +22,12 @@ Patterns and Practices client side libraries (PnPjs) are comprised of the packag
 
 The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon).
 
-|     ||  | 
+|     ||  |
 | ---| -------------|-------------|
-| @pnp/| | | 
-|| [adaljsclient](adaljsclient/index.md)  | Provides shared functionality across all pnp libraries | 
-|| [common](common/index.md)  | Provides shared functionality across all pnp libraries | 
-|| [config-store](config-store/index.md) | Provides a way to manage configuration within your application | 
+| @pnp/| | |
+|| [adaljsclient](adaljsclient/index.md)  | Provides shared functionality across all pnp libraries |
+|| [common](common/index.md)  | Provides shared functionality across all pnp libraries |
+|| [config-store](config-store/index.md) | Provides a way to manage configuration within your application |
 || [graph](graph/index.md) | Provides a fluent api for working with Microsoft Graph |
 || [logging](logging/index.md) | Light-weight, subscribable logging framework |
 || [nodejs](nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
@@ -39,8 +39,8 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 
 Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any contructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
 
-
 ## Code of Conduct
+
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ### "Sharing is Caring"
@@ -48,4 +48,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) program*.
 
 ### Disclaimer
+
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

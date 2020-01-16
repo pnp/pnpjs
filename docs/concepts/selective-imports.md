@@ -4,7 +4,7 @@ As the libraries have grown to support more of the SharePoint and Graph API they
 
 This concept works well with [custom bundling](./custom-bundle.md) to create a shared package tailored exactly to your needs.
 
-If you would prefer to not worry about selective imports please see the section on (presets)[#presets].
+If you would prefer to not worry about selective imports please see the section on [presets](#presets).
 
 ## Old way
 
@@ -16,10 +16,10 @@ import { sp } from "@pnp/sp";
 const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1).get();
 ```
 
-## New Way 
+## New Way
 
 ```TypeScript
-// the sp var now has almost nothing attached at import time and relies on 
+// the sp var now has almost nothing attached at import time and relies on
 import { sp } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
@@ -33,7 +33,7 @@ const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-00000000000
 Above we are being very specific in what we are importing, but you can also import entire sub-modules and be slightly less specific
 
 ```TypeScript
-// the sp var now has almost nothing attached at import time and relies on 
+// the sp var now has almost nothing attached at import time and relies on
 import { sp } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
@@ -47,7 +47,7 @@ const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-00000000000
 The above two examples both work just fine but you may end up with slightly smaller bundle sizes using the first. Consider this example:
 
 ```TypeScript
-// this import statement will attach content-type funcionality to list, web, and item
+// this import statement will attach content-type functionality to list, web, and item
 import "@pnp/sp/content-types";
 
 // this import statement will only attach content-type functionality to web
@@ -57,7 +57,7 @@ import "@pnp/sp/content-types/web";
 If you only need to access content types on the web object you can reduce size by only importing that piece.
 
 > **Gotcha**
-> IF you import only an interface from a sub-module AND rely on the funcionality within that module you need to include two seperate imports. The reason being that during testing it will pull the default imports (because we are using ts-node) but the interface only import statement will be stripped when it is transpiled.
+> If you import only an interface from a sub-module AND rely on the functionality within that module you need to include two separate imports. The reason being that during testing it will pull the default imports (because we are using ts-node) but the interface only import statement will be stripped when it is transpiled.
 
 ```TypeScript
 // this will fail
@@ -100,7 +100,7 @@ const lists = await sp.web.lists();
 
 ## Graph
 
-The graph library contains a single preset, "all" mimicing the v1 structure.
+The graph library contains a single preset, "all" mimicking the v1 structure.
 
 ```TypeScript
 import { sp } from "@pnp/graph/presets/all";
@@ -108,4 +108,4 @@ import { sp } from "@pnp/graph/presets/all";
 // graph.* exists as it did in v1, tree shaking will not work
 ```
 
-> While we may look to add additional presets in the future you are encouraged to look at making your own [custom bundles](./custom-bundle.md) as a perferred solution.
+> While we may look to add additional presets in the future you are encouraged to look at making your own [custom bundles](./custom-bundle.md) as a preferred solution.

@@ -1,6 +1,6 @@
 # @pnp/nodejs/providerhostedrequestcontext
 
-The ProviderHostedRequestcontext enables the creation of provider-hosted add-ins built in node.js to use pnpjs to interact with SharePoint. The context is associated to a SharePoint user, allowing requests to be made by the add-in on the behalf of the user.
+The `ProviderHostedRequestContext` enables the creation of provider-hosted add-ins built in node.js to use pnpjs to interact with SharePoint. The context is associated to a SharePoint user, allowing requests to be made by the add-in on the behalf of the user.
 
 The usage of this class assumes the provider-hosted add-in is called from SharePoint with a valid SPAppToken. This is typically done by means of accessing /_layouts/15/AppRedirect.aspx with the app's client ID and app's redirect URI.
 

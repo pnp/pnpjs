@@ -140,7 +140,7 @@ Using this pattern you can create and preserve multiple debugging scenarios in s
 
 You can also serve files locally to debug in a browser through two methods. The first will serve code using ./debug/serve/main.ts as the entry. Meaning you can easily
 write code and test it in the browser. The second method allows you to serve a single package (bundled with all dependencies) for in browser testing. Both methods serve
-the file from https://localhost:8080/assets/pnp.js, allowing you to create a single page in your tenant for in browser testing.
+the file from `https://localhost:8080/assets/pnp.js`, allowing you to create a single page in your tenant for in browser testing.
 
 ### Start the local serve
 
@@ -166,7 +166,7 @@ For example if you wanted to serve the @pnp/sp package for testing you would use
 
 `gulp serve --p sp`
 
-This will serve a bundle of the sp functionality along with all dependencies and place a global variable named "pnp.{packagename}", in this case pnp.sp. This will be
+This will serve a bundle of the sp functionality along with all dependencies and place a global variable named "pnp.{package name}", in this case pnp.sp. This will be
 true for each package, if you served just the graph package the global would be pnp.graph. This mirrors how the umd modules are built in the distributed npm packages
 to allow testing with matching packages.
 

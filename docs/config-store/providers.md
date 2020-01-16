@@ -4,7 +4,7 @@ Currently there is a single provider included in the library, but contributions 
 
 ## SPListConfigurationProvider
 
-This provider is based on a SharePoint list and read all of the rows and makes them available as a TypedHash<string>. By default the column names used are Title for key and "Value" for value, but you can update these as needed. Additionally the settings class supports the idea of last value in wins - so you can easily load multiple configurations. This helps to support a common scenario in the enterprise where you might have one main list for global configuration but some settings can be set at the web level. In this case you would first load the global, then the local settings and any local values will take precedence.
+This provider is based on a SharePoint list and read all of the rows and makes them available as a `TypedHash<string>`. By default the column names used are Title for key and "Value" for value, but you can update these as needed. Additionally the settings class supports the idea of last value in wins - so you can easily load multiple configurations. This helps to support a common scenario in the enterprise where you might have one main list for global configuration but some settings can be set at the web level. In this case you would first load the global, then the local settings and any local values will take precedence.
 
 ```TypeScript
 import { Web } from "@pnp/sp/presets/all";
@@ -40,4 +40,3 @@ const wrappedProvider = provider.asCaching();
 // use that wrapped provider to populate the settings
 await settings.load(wrappedProvider);
 ```
-

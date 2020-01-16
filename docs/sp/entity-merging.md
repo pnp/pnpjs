@@ -1,6 +1,6 @@
 # @pnp/sp - entity merging
 
-Sometimes when we make a query entity's data we would like then to immediately run other commands on the returned entity. To have data returned as its represending type we make use of the _spODataEntity_ and _spODataEntityArray_ parsers. The below approach works for all instance types such as List, Web, Item, or Field as examples.
+Sometimes when we make a query entity's data we would like then to immediately run other commands on the returned entity. To have data returned as its representing type we make use of the _spODataEntity_ and _spODataEntityArray_ parsers. The below approach works for all instance types such as List, Web, Item, or Field as examples.
 
 ## Request a single entity
 
@@ -9,14 +9,14 @@ If we are loading a single entity we use the _spODataEntity_ method. Here we sho
 ```TypeScript
 import { sp, spODataEntity, Item } from "@pnp/sp/presets/all";
 
-// interface defining the returned properites
+// interface defining the returned properties
 interface MyProps {
     Id: number;
 }
 
 try {
 
-    // get a list item laoded with data and merged into an instance of Item
+    // get a list item loaded with data and merged into an instance of Item
     const item = await sp.web.lists.getByTitle("ListTitle").items.getById(1).get(spODataEntity<Item, MyProps>(Item));
 
     // log the item id, all properties specified in MyProps will be type checked
@@ -39,7 +39,7 @@ The same pattern works when requesting a collection of objects with the exceptio
 ```TypeScript
 import { sp, spODataEntityArray, Item } from "@pnp/sp/presets/all";
 
-// interface defining the returned properites
+// interface defining the returned properties
 interface MyProps {
     Id: number;
     Title: string;
@@ -47,7 +47,7 @@ interface MyProps {
 
 try {
 
-    // get a list item laoded with data and merged into an instance of Item
+    // get a list item loaded with data and merged into an instance of Item
     const items = await sp.web.lists.getByTitle("ListTitle").items.select("Id", "Title").get(spODataEntityArray<Item, MyProps>(Item));
 
     Logger.write(`Item id: ${items.length}`);

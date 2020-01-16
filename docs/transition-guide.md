@@ -6,9 +6,7 @@ We have worked to make moving from @pnp library 1.* to 2.* as painless as possib
 
 In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them separately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have updated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:
 
-```
-npm i --save @pnp/sp
-```
+`npm i --save @pnp/sp`
 
 ## Selective Imports
 
@@ -105,7 +103,7 @@ const web: IWeb = Web("some absolute url");
 const r2 = web();
 ```
 
-## Entension Methods
+## Extension Methods
 
 Another new capability in v2 is the ability to extend objects and factories. This allows you to easily add methods or properties on a per-object basis. Please see the [full article on extension methods](odata/extensions.md) describing this great new capability.
 

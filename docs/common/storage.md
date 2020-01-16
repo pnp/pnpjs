@@ -1,7 +1,6 @@
 # @pnp/common/storage
 
-This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with
-a non-persistent in memory polyfill. Optionally through configuratrion you can activate expiration. Sample usage is shown below.
+This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.
 
 ## PnPClientStorage
 
@@ -75,7 +74,7 @@ storage.local.deleteExpired().then(_ => {
 });
 ```
 
-The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout. 
+The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout.
 
 ```TypeScript
 

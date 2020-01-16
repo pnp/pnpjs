@@ -1,6 +1,6 @@
 # @pnp/sp/items
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -74,7 +74,7 @@ if (items.hasNext) {
 }
 ```
 
-### getListItemChangesSinceToken 
+### getListItemChangesSinceToken
 
 The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.
 
@@ -98,8 +98,7 @@ let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceTo
 
 ### Get All Items
 
-Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
-be used.
+Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -154,7 +153,6 @@ const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
     ViewXml: `<View><Query><Where><Eq><FieldRef Name="MetaData"/><Value Type="TaxonomyFieldType">Term 2</Value></Eq></Where></Query></View>`,
 });
 ```
-
 
 ### Retrieving PublishingPageImage
 
@@ -271,10 +269,11 @@ const result = await sp.web.lists.getByTitle("UserFieldList").items.getById(1).v
 ### Lookup Fields
 
 What is said for User Fields is, in general, relevant to Lookup Fields:
+
 - Lookup Field types:
   - Single-valued lookup
   - Multiple-valued lookup
-- `Id` suffix should be appended to the end of lookup's `EntityPropertyName` in payloads
+- `Id` suffix should be appended to the end of lookups `EntityPropertyName` in payloads
 - Numeric Ids for lookups' items should be passed as values
 
 ```TypeScript
@@ -287,7 +286,7 @@ import { getGUID } from "@pnp/common";
 await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
-    MuptiLookupFieldId: { 
+    MuptiLookupFieldId: {
         results: [ 1, 56 ]  // allows multiple lookup value
     }
 });
@@ -435,4 +434,4 @@ console.log(response.map(field => {
 }));
 ```
 
-Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used. 
+Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used.

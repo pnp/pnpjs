@@ -91,17 +91,18 @@ Creates a modern communication site.
 | Title | string | yes | The title of the site to create. |
 | lcid | number | yes | The default language to use for the site. |
 | shareByEmailEnabled | boolean | yes | If set to true, it will enable sharing files via Email. By default it is set to false |
-| url | string | yes | The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site. |
+| url | string | yes | The fully qualified URL (e.g. `https://yourtenant.sharepoint.com/sites/mysitecollection`) of the site. |
 | description | string | no | The description of the communication site. |
-| classification | string | no | The Site classification to use. For instance "Contoso Classified". See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-| siteDesignId | string | no | The Guid of the site design to be used. 
-||||You can use the below default OOTB GUIDs: 
+| classification | string | no | The Site classification to use. For instance "Contoso Classified". See [https://www.youtube.com/watch?v=E-8Z2ggHcS0](https://www.youtube.com/watch?v=E-8Z2ggHcS0) for more information
+| siteDesignId | string | no | The Guid of the site design to be used.
+||||You can use the below default OOTB GUIDs:
 ||||Topic: null
 ||||                               Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
-||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
+||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc
 | hubSiteId | string | no | The Guid of the already existing Hub site
 | Owner| string | no | Required when using app-only context. Owner principal name e.g. user@tenant.onmicrosoft.com
 |
+
 ```TypeScript
 
 import { sp } from "@pnp/sp";
@@ -133,14 +134,14 @@ Creates a modern team site backed by O365 group.
 | isPublic | boolean | yes | Defines whether the Office 365 Group will be public (default), or private. |
 | lcid | number | yes | The language to use for the site. If not specified will default to English (1033). |
 | description | string | no | The description of the modern team site. |
-| classification | string | no | The Site classification to use. For instance "Contoso Classified". See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+| classification | string | no | The Site classification to use. For instance "Contoso Classified". See [https://www.youtube.com/watch?v=E-8Z2ggHcS0](https://www.youtube.com/watch?v=E-8Z2ggHcS0) for more information
 | owners | string array (string[]) | no | The Owners of the site to be created
-|hubSiteId|	string	| no | The Guid of the already existing Hub site
-| siteDesignId | string | no | The Guid of the site design to be used. 
-||||You can use the below default OOTB GUIDs: 
+|hubSiteId|string| no | The Guid of the already existing Hub site
+| siteDesignId | string | no | The Guid of the site design to be used.
+||||You can use the below default OOTB GUIDs:
 ||||Topic: null
 ||||                               Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
-||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
+||||                               Blank: f6cc5403-0d63-442e-96c0-285923709ffc
 
 ```TypeScript
 
@@ -154,9 +155,9 @@ const d = await sp.site.createModernTeamSite(
         1033,
         "description",
         "HBI",
-        ["user1@tenant.onmicrosoft.com","user2@tenant.onmicrosoft.com","user3@tenant.onmicrosoft.com"], 
-        "a00ec589-ea9f-4dba-a34e-67e78d41e509",       
-        "f6cc5403-0d63-442e-96c0-285923709ffc"        
+        ["user1@tenant.onmicrosoft.com","user2@tenant.onmicrosoft.com","user3@tenant.onmicrosoft.com"],
+        "a00ec589-ea9f-4dba-a34e-67e78d41e509",
+        "f6cc5403-0d63-442e-96c0-285923709ffc"
         );
 
 console.log(d);

@@ -4,9 +4,9 @@
 
 One of the newer abilities in SharePoint is the ability to share webs, files, or folders with both internal and external folks. It is important to remember that these settings are managed at the tenant level and ? override anything you may supply as an argument to these methods. If you receive an _InvalidOperationException_ when using these methods please check your tenant sharing settings to ensure sharing is not blocked before ?submitting an issue.
 
-## Selective Import
+## Imports
 
-In previous versions of this library the sharing methods were part of the inheritence stack for SharePointQueryable objects. Starting with v2 this is no longer the case and they are now selectively importable. There are four objects within the SharePoint heirarchy that support sharing: Item, File, Folder, and Web. You can import the sharing merthods for all of them, or for individual objects.
+In previous versions of this library the sharing methods were part of the inheritance stack for SharePointQueryable objects. Starting with v2 this is no longer the case and they are now selectively importable. There are four objects within the SharePoint hierarchy that support sharing: Item, File, Folder, and Web. You can import the sharing methods for all of them, or for individual objects.
 
 ### Import All
 
@@ -17,7 +17,7 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { sp } from "@pnp/sp";
- 
+
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
 const r = await sp.web.shareWith(user.LoginName);
 ```
@@ -31,7 +31,7 @@ import "@pnp/sp/sharing/web";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { sp } from "@pnp/sp";
- 
+
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
 const r = await sp.web.shareWith(user.LoginName);
 ```
@@ -63,7 +63,7 @@ console.log(JSON.stringify(result2, null, 2));
 
 **Applies to: Item, Folder, File, Web**
 
-Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the loginnames parameter or an array of loginnames. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.
+Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the `loginnames` parameter or an array of `loginnames`. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.
 
 ```TypeScript
 import { sp } from "@pnp/sp";

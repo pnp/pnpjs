@@ -34,7 +34,7 @@ const w = await sp.crossDomainWeb(addInWenUrl, hostWebUrl).get();
 console.log(JSON.stringify(w, null, 4));
 ```
 
-#Libary Topics
+## Library Topics
 
 * [SPRequestExecutorClient](sp-request-executor-client.md)
 * [SPRestAddIn](sp-rest-addin.md)
