@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.3.9 - 2020-01-16
+
+### Added
+
+- @pnp/sp: Added multiple render options to renderListAsDataStream [[PR](https://github.com/pnp/pnpjs/pull/981)]
+- @pnp/sp: Added moveByPath and copyByPath to file and folder ([@joelfmrodrigues](https://github.com/joelfmrodrigues)) [[PR](https://github.com/pnp/pnpjs/pull/963)]
+
+### Fixed
+
+- @pnp/graph: Fixed If-Match header for Task delete ([@JMTeamway](https://github.com/JMTeamway)) [[PR](https://github.com/pnp/pnpjs/pull/995)]
+
 ## 1.3.8 - 2019-12-09
 
 ### Added
