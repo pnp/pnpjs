@@ -4,7 +4,7 @@ Comments can be accessed through either IItem or IClientsidePage instances, thou
 
 _These APIs are currently in BETA and are subject to change or may not work on all tenants._
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -24,20 +24,20 @@ import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
-// optionaly publish the page first
+// optionally publish the page first
 await page.save();
 
 const comment = await page.addComment("A test comment");
 ```
 
-### Get Comments
+### Get Page Comments
 
 ```TypeScript
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
-// optionaly publish the page first
+// optionally publish the page first
 await page.save();
 
 await page.addComment("A test comment");
@@ -57,7 +57,7 @@ import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
 const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
-// optionaly publish the page first
+// optionally publish the page first
 await page.save();
 
 const comment = await page.addComment("A test comment");
@@ -66,7 +66,6 @@ const commentData = await page.getCommentById(parseInt(comment.id, 10));
 ```
 
 ### Clear Comments
-
 
 ## Item Comments
 
@@ -87,7 +86,7 @@ The below examples use a variable named "item" which is taken to represent an II
 
 ## Comments
 
-### Get Comments
+### Get Item Comments
 
 ```TypeScript
 const comments = await item.comments();

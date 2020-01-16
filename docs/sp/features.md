@@ -1,10 +1,10 @@
 # @pnp/sp/features
 
-Features module provides method to get the details of activated features. And to activate/deactive features scoped at Site Collection and Web.
+Features module provides method to get the details of activated features. And to activate/deactivate features scoped at Site Collection and Web.
 
 ## IFeatures
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 Represents a collection of features. SharePoint Site and Web will have collection of features
 
@@ -50,6 +50,7 @@ res = await sp.web.features.add(webFeatureId, true);
 ### remove
 
 Removes (deactivates) the specified feature from the SharePoint Site or Web
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -65,7 +66,7 @@ res = await sp.web.features.remove(webFeatureId, true);
 
 Represents an instance of a SharePoint feature.
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|

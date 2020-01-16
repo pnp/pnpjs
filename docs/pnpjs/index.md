@@ -2,7 +2,7 @@
 
 This package is a rollup package of all the other libraries for scenarios where you would prefer to access all of the code from a single file. Examples would be importing a single file into a script editor webpart or using the library in other ways that benefit from a single file. You will not be able to take advantage of selective imports using this bundle.
 
-> Our recommendation is to import the packages directly into your project, or to [create a custom bundle](../concepts/custom-bundle.md). This package is mostly provided to help folks with back-compat needs.
+> Our recommendation is to import the packages directly into your project, or to [create a custom bundle](../concepts/custom-bundle.md). This package is mostly provided to help folks with back-compatibility needs.
 
 ## Script Editor Webpart
 
@@ -48,6 +48,3 @@ Individual libraries can also be accessed for their exports:
 pnp.Logger.subscribe(new pnp.ConsoleListener());
 pnp.log.write("hello");
 ```
-
-
-

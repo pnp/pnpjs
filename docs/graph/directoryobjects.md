@@ -1,7 +1,7 @@
 # @pnp/graph/directoryObjects
 
-
 ## The groups and directory roles for the user
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
@@ -13,6 +13,7 @@ const memberOf2 = await graph.me.memberOf();
 ```
 
 ## Return all the groups the user, group or directoryObject is a member of
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
@@ -24,9 +25,10 @@ const memberGroups2 = await graph.me.getMemberGroups();
 
 const memberGroups3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberGroups();
 
-
 ```
-## Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of.
+
+## Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
@@ -38,8 +40,11 @@ const memberObjects2 = await graph.me.getMemberObjects();
 
 const memberObjects3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
 ```
+
 ## Check for membership in a specified list of groups
+
 And returns from that list those groups of which the specified user, group, or directory object is a member
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
@@ -53,6 +58,7 @@ const checkedMembers3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d
 ```
 
 ## Get directoryObject by Id
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/directory-objects"
@@ -61,8 +67,8 @@ const dirObject = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-
 
 ```
 
-
 ## Delete directoryObject
+
 ```TypeScript
 import { graph } from "@pnp/graph";
 

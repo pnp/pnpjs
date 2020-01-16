@@ -1,9 +1,10 @@
 # @pnp/sp/content-types
+
 Content Types are used to define sets of columns in SharePoint.
 
 ## IContentTypes
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 |Scenario|Import Statement|
 |--|--|
@@ -51,7 +52,7 @@ sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Ty
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/content-types";|
 |Preset: All|import { sp, ContentType, IContentType } from "@pnp/sp/presets/all";|
 
-[![](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ### Get the field links
 
@@ -87,7 +88,7 @@ const d = await sp.web.contentTypes.getById("0x0101").parent();
 console.log(d.Name)
 ```
 
-### Get Content Type Workflow associations 
+### Get Content Type Workflow associations
 
 ```TypeScript
 // get workflow associations from built in Content Type Document (Id: "0x0101")

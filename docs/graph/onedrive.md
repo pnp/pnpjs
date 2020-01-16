@@ -112,6 +112,7 @@ const itemChildren = await graph.me.drives.getById('driveId').root.items.getById
 ```
 
 ## Add folder or item
+
 Using the add you can add a folder or an item
 
 ```TypeScript
@@ -150,7 +151,7 @@ const item = await graph.me.drives.getById('driveId').items.getById('itemId');
 
 ```
 
-## Get thumbnails 
+## Get thumbnails
 
 Using the thumbnails.get() you get the thumbnails
 
@@ -163,7 +164,7 @@ const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').
 
 ```
 
-## Delete drive item 
+## Delete drive item
 
 Using the delete() you delete the current item
 
@@ -176,7 +177,7 @@ const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').
 
 ```
 
-## Update drive item 
+## Update drive item
 
 Using the update() you update the current item
 
@@ -189,7 +190,7 @@ const update = await graph.me.drives.getById('driveId').items.getById('itemId').
 
 ```
 
-## Move drive item 
+## Move drive item
 
 Using the move() you move the current item, and optionally update it
 

@@ -47,7 +47,7 @@ callback2(); // returns 10 (6 + 4)
 
 ## dateAdd
 
-Manipulates a date, please see the [Stackoverflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
+Manipulates a date, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
 
 ## combine
 
@@ -65,7 +65,7 @@ const paths2 = combine("/also/", "/works", "with/", "/relative\\");
 
 ## getRandomString
 
-Gets a random string consiting of the number of characters requested.
+Gets a random string consisting of the number of characters requested.
 
 ```TypeScript
 import { getRandomString } from "@pnp/common";
@@ -75,7 +75,7 @@ const randomString = getRandomString(10);
 
 ## getGUID
 
-Creates a random guid, please see the [Stackoverflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken. 
+Creates a random guid, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken.
 
 ## isFunc
 
@@ -91,7 +91,7 @@ Determines if a supplied variable represents an array.
 
 ## assign
 
-Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwritting of existing
+Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwriting of existing
 properties.
 
 ```TypeScript
@@ -151,7 +151,7 @@ public static loadStylesheet(path: string, avoidCache: boolean): void {
 /**
  * Tests if a url param exists
  *
- * @param name The name of the url paramter to check
+ * @param name The name of the url parameter to check
  */
 public static urlParamExists(name: string): boolean {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -162,7 +162,7 @@ public static urlParamExists(name: string): boolean {
 /**
  * Gets a url param value by name
  *
- * @param name The name of the paramter for which we want the value
+ * @param name The name of the parameter for which we want the value
  */
 public static getUrlParamByName(name: string): string {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -174,7 +174,7 @@ public static getUrlParamByName(name: string): string {
 /**
  * Gets a url param by name and attempts to parse a bool value
  *
- * @param name The name of the paramter for which we want the boolean value
+ * @param name The name of the parameter for which we want the boolean value
  */
 public static getUrlParamBoolByName(name: string): boolean {
     const p = this.getUrlParamByName(name);

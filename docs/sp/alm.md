@@ -2,7 +2,7 @@
 
 The ALM api allows you to manage app installations both in the tenant app catalog and individual site app catalogs. Some of the methods are still in beta and as such may change in the future. This article outlines how to call this api using @pnp/sp. Remember all these actions are bound by permissions so it is likely most users will not have the rights to perform these ALM actions.
 
-### Understanding the App Catalog Heirarchy
+## Understanding the App Catalog Hierarchy
 
 Before you begin provisioning applications it is important to understand the relationship between a local web catalog and the tenant app catalog. Some of the methods described below only work within the context of the tenant app catalog web, such as adding an app to the catalog and the app actions retract, remove, and deploy. You can install, uninstall, and upgrade an app in any web. [Read more in the official documentation](https://docs.microsoft.com/en-us/sharepoint/dev/apis/alm-api-for-spfx-add-ins).
 
@@ -15,7 +15,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-// get the curren't context web's app catalog
+// get the current context web's app catalog
 const catalog = await sp.web.getAppCatalog()();
 
 // you can also chain off the app catalog
@@ -82,9 +82,9 @@ const blob = new Blob();
 const r = await catalog.add("myapp.app", blob);
 
 // this is at its core a file add operation so you have access to the response data as well
-// as a File isntance representing the created file
+// as a File instance representing the created file
 console.log(JSON.stringify(r.data, null, 4));
-    
+
 // all file operations are available
 const nameData = await r.file.select("Name").get();
 ```

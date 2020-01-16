@@ -32,7 +32,7 @@ npm test
 
 There are several options you can provide to the test command. All of these need to be separated using a "--" double hyphen so they are passed to the spawned sub-commands.
 
-**Test a Single Package**
+#### Test a Single Package
 
 >`--package` or `-p`
 
@@ -46,7 +46,7 @@ npm test -- -p sp
 npm test -- -package logging
 ```
 
-**Run a Single Test File**
+#### Run a Single Test File
 
 >`--single` or `--s`
 
@@ -60,7 +60,7 @@ npm test -- -p sp -s web
 npm test -- -package graph -single groups
 ```
 
-**Specify a Site**
+#### Specify a Site
 
 >`--site`
 
@@ -73,7 +73,7 @@ This option can be used with any or none of the other testing options.
 npm test -- -p sp -s web --site https://some.site.com/sites/dev
 ```
 
-**Cleanup**
+#### Cleanup
 
 >`--cleanup`
 
@@ -84,7 +84,7 @@ If you include this flag the testing web will be deleted once tests are complete
 npm test -- --cleanup
 ```
 
-**Logging**
+#### Logging
 
 >`--logging`
 
@@ -105,7 +105,7 @@ npm run build
 
 ## package
 
-Invokes the pnpbuild cli to create the package directories under the dist folder. This will allow you to see excactly what will end up in the npm packages once they are published.
+Invokes the pnpbuild cli to create the package directories under the dist folder. This will allow you to see exactly what will end up in the npm packages once they are published.
 
 ```cmd
 npm run package

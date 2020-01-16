@@ -48,6 +48,7 @@ const contact = await graph.users.getById('user@tenant.onmicrosoft.com').contact
 const contact2 = await graph.me.contacts.getById('userId')();
 
 ```
+
 ## Delete a Contact
 
 Using the delete you can remove one of the users Contacts in Outlook
@@ -122,6 +123,7 @@ const contactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').c
 const contactFolder2 = await graph.me.contactFolders.getById('folderId')();
 
 ```
+
 ## Delete a Contact Folder
 
 Using the delete you can remove one of the users Contact Folders in Outlook
@@ -213,6 +215,7 @@ const childFolder2 = await graph.me.contactFolders.getById('<id>').childFolders.
 ```
 
 ## Add Contact in Child Folder of Contact Folder
+
 Using contacts.add in the Child Folder of a Contact Folder, adds a new Contact to that folder
 
 ```TypeScript
@@ -226,4 +229,3 @@ const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').co
 const addedContact2 = await graph.me.contactFolders.getById('<id>').childFolders.getById('folderId').contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
 ```
-

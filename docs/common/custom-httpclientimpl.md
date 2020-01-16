@@ -57,8 +57,6 @@ console.log(result);
 
 You can of course inherit from one of the implementations available within the @pnp scope if you just need to say add a header or need to do _something_ to every request sent. Perhaps some advanced logging. This approach will save you from needing to fully write a fetch implementation.
 
-# A FINAL NOTE
+## A FINAL NOTE
 
 Whatever you do, **do not** write a client that uses a client id and secret and exposes them on the client side. Client Id and Secret should only ever be used on a server, never exposed to clients as anyone with those values has the full permissions granted to that id and secret.
-
-
