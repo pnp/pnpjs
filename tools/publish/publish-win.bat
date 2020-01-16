@@ -28,7 +28,7 @@ call npm install
 ::
 :: update the version
 ::
-call npm version patch
+:: call npm version patch
 git push
 
 ::
@@ -36,7 +36,7 @@ git push
 ::
 call npm run clean
 call npm run package
-call pnpbuild -n publish
+call pnpbuild -n build
 
 ::
 :: update the documentation
@@ -58,4 +58,4 @@ git push
 ::
 git checkout version-2
 
-echo "All done :)"
+echo All done :)
