@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pnp.github.io/pnpjs/SPFx-on-premises-2016/">
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/SPFx-on-premises/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>SPFx On-Premises 2016 - PnP/PnPjs</title>
+        <title>SPFx On-Premises - PnP/PnPjs</title>
       
     
     
@@ -102,7 +102,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#workaround-for-spfx-typescript-version" tabindex="1" class="md-skip">
+      <a href="../#workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -128,7 +128,7 @@
                 PnP/PnPjs
               </span>
               <span class="md-header-nav__topic">
-                SPFx On-Premises 2016
+                SPFx On-Premises
               </span>
             
           
@@ -460,8 +460,8 @@
       
     
     
-    <a href="./" title="SPFx On-Premises 2016" class="md-nav__link md-nav__link--active">
-      SPFx On-Premises 2016
+    <a href="./" title="SPFx On-Premises" class="md-nav__link md-nav__link--active">
+      SPFx On-Premises
     </a>
     
   </li>
@@ -1807,43 +1807,36 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/SPFx-on-premises-2016.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/SPFx-on-premises.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="workaround-for-spfx-typescript-version">Workaround for SPFx TypeScript Version<a class="headerlink" href="#workaround-for-spfx-typescript-version" title="Permanent link">&para;</a></h1>
-<p><em>Note this article applies to version 1.4.1 SharePoint Framework projects targetting on-premises only.</em></p>
-<p>When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premises it installs TypeScript version 2.2.2. Unfortunately this library relies on 2.4.2 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.</p>
-<ol>
-<li>Open package-lock.json</li>
-<li>Search for <code>"typescript": "2.2.2"</code></li>
-<li>Replace "2.2.2" with "2.4.2"</li>
-<li>Search for the next "typescript" occurance and replace the block with:</li>
-</ol>
-<div class="codehilite"><pre><span></span><span class="s2">&quot;typescript&quot;</span><span class="err">:</span> <span class="p">{</span>
-  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2.4.2&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;resolved&quot;</span><span class="p">:</span> <span class="s2">&quot;https://registry.npmjs.org/typescript/-/typescript-2.4.2.tgz&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;integrity&quot;</span><span class="p">:</span> <span class="s2">&quot;sha1-+DlfhdRZJ2BnyYiqQYN6j4KHCEQ=&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;dev&quot;</span><span class="p">:</span> <span class="kc">true</span>
-<span class="p">}</span>
+                <h1 id="workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019">Workaround for on-premises SPFx TypeScript Version (SharePoint 2016 or 2019)<a class="headerlink" href="#workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019" title="Permanent link">&para;</a></h1>
+<p><em>Note this article applies to version 1.4.1 SharePoint Framework projects targeting on-premises only.</em></p>
+<p>When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premises it installs TypeScript version 2.2.2 (SP2016) or 2.4.2/2.4.1 (SP2019). Unfortunately this library relies on 3.6.4 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.</p>
+<div class="codehilite"><pre><span></span>npm i
+npm i -g rimraf <span class="c1"># used to remove the node_modules folder (much better/faster)</span>
 </pre></div>
 
 
-<p><img alt="Replacement blocks highlighted" src="../img/SPFx-On-Premesis-2016-1.png" /></p>
 <ol>
-<li>Remove node_modules folder <code>rm -rf node_modules/</code></li>
+<li>Ensure that the <strong>@pnp/sp</strong> package is already installed <code>npm i @pnp/sp</code></li>
+<li>Remove the package-lock.json file &amp; node_modules <code>rimraf node_modules</code> folder and execute <code>npm install</code></li>
+<li>Open package-lock.json from the root folder</li>
+<li>Search for <code>"typescript"</code> or similar with version 2.4.1 (SP2019) 2.2.2 (SP2016)</li>
+<li>Replace "2.4.1" or "2.2.2" with "3.6.4"</li>
+<li>Search for the next <code>"typescript"</code> occurrence and replace the block with:</li>
+</ol>
+<p><code>JSON
+    "typescript": {
+      "version": "3.6.4",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
+      "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
+      "dev": true
+    }</code></p>
+<ol>
+<li>Remove node_modules folder <code>rimraf node_modules</code></li>
 <li>Run <code>npm install</code></li>
 </ol>
-<p>This can be checked with:</p>
-<div class="codehilite"><pre><span></span>npm list typescript
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>+-- @microsoft/sp-build-web@1.1.0
-| `-- @microsoft/gulp-core-build-typescript@3.1.1
-|   +-- @microsoft/api-extractor@2.3.8
-|   | `-- typescript@2.4.2
-|   `-- typescript@2.4.2
-</pre></div>
                 
                   
                 
@@ -1932,7 +1925,7 @@
       
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/SPFx-on-premises-2016/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/SPFx-on-premises/" alt="spacer" />
 
   </body>
 </html>

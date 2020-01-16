@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -680,7 +680,8 @@
     Calling the graph api
   </a>
   
-</li>
+    <nav class="md-nav">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#calling-the-sharepoint-api" title="Calling the SharePoint API" class="md-nav__link">
@@ -693,6 +694,11 @@
   <a href="#calling-the-any-api" title="Calling the any API" class="md-nav__link">
     Calling the any API
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1898,7 +1904,8 @@
     Calling the graph api
   </a>
   
-</li>
+    <nav class="md-nav">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#calling-the-sharepoint-api" title="Calling the SharePoint API" class="md-nav__link">
@@ -1911,6 +1918,11 @@
   <a href="#calling-the-any-api" title="Calling the any API" class="md-nav__link">
     Calling the any API
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1962,15 +1974,15 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/adaljsclient/adalclient.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/adaljsclient/adalclient.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpcommonadalclient">@pnp/common/adalclient<a class="headerlink" href="#pnpcommonadalclient" title="Permanent link">&para;</a></h1>
 <p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
 SharePoint Framework's permissions.</p>
 <h2 id="setup-and-use-inside-sharepoint-framework">Setup and Use inside SharePoint Framework<a class="headerlink" href="#setup-and-use-inside-sharepoint-framework" title="Permanent link">&para;</a></h2>
-<p>Using the SharePoint Framework is the prefered way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on yoru behalf. You can also read more about how this process works and the necessary SPFx configurations in the <a href="https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi">SharePoint Framework 1.6 release notes</a>. This method only work for SharePoint Framework &gt;= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.</p>
-<h4 id="calling-the-graph-api">Calling the graph api<a class="headerlink" href="#calling-the-graph-api" title="Permanent link">&para;</a></h4>
+<p>Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the <a href="https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi">SharePoint Framework 1.6 release notes</a>. This method only work for SharePoint Framework &gt;= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.</p>
+<h3 id="calling-the-graph-api">Calling the graph api<a class="headerlink" href="#calling-the-graph-api" title="Permanent link">&para;</a></h3>
 <p>By providing the context in the onInit we can create the adal client from known information.  </p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>

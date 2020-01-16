@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -2002,19 +2002,19 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/logging/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/logging/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnplogging">@pnp/logging<a class="headerlink" href="#pnplogging" title="Permanent link">&para;</a></h1>
 <p><a href="https://badge.fury.io/js/%40pnp%2Flogging"><img alt="npm version" src="https://badge.fury.io/js/%40pnp%2Flogging.svg" /></a></p>
-<p>The logging module provides light weight subscribable and extensiable logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.</p>
+<p>The logging module provides light weight subscribable and extensible logging framework which is used internally and available for use in your projects. This article outlines how to setup logging and use the various loggers.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>Install the logging module, it has no other dependencies</p>
 <p><code>npm install @pnp/logging --save</code></p>
 <h2 id="understanding-the-logging-framework">Understanding the Logging Framework<a class="headerlink" href="#understanding-the-logging-framework" title="Permanent link">&para;</a></h2>
 <p>The logging framework is centered on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the <em>LogListener</em> interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface as a parameter.</p>
 <div class="codehilite"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * Interface that defines a log listner</span>
+<span class="cm"> * Interface that defines a log listener</span>
 <span class="cm"> *</span>
 <span class="cm"> */</span>
 <span class="kr">export</span> <span class="kr">interface</span> <span class="nx">LogListener</span> <span class="p">{</span>
@@ -2023,14 +2023,14 @@
 <span class="cm">     *</span>
 <span class="cm">     * @param entry The information to be logged</span>
 <span class="cm">     */</span>
-    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">LogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span><span class="p">;</span>
+    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Interface that defines a log entry</span>
 <span class="cm"> *</span>
 <span class="cm"> */</span>
-<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">LogEntry</span> <span class="p">{</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ILogEntry</span> <span class="p">{</span>
     <span class="cm">/**</span>
 <span class="cm">     * The main message to be logged</span>
 <span class="cm">     */</span>
@@ -2088,7 +2088,7 @@
 
 <h2 id="log-an-error">Log an error<a class="headerlink" href="#log-an-error" title="Permanent link">&para;</a></h2>
 <p>There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
-instance pased in, the level will be 'Error', and the message will be the Error instance's message property.</p>
+instance passed in, the level will be 'Error', and the message will be the Error instance's message property.</p>
 <div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;An Error&quot;</span><span class="p">);</span>
 
 <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
@@ -2120,10 +2120,10 @@ instance pased in, the level will be 'Error', and the message will be the Error 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>
     <span class="nx">Logger</span><span class="p">,</span>
     <span class="nx">FunctionListener</span><span class="p">,</span>
-    <span class="nx">LogEntry</span>
+    <span class="nx">ILogEntry</span>
 <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">listener</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FunctionListener</span><span class="p">((</span><span class="nx">entry</span>: <span class="kt">LogEntry</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nx">listener</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FunctionListener</span><span class="p">((</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// pass all logging data to an existing framework</span>
     <span class="nx">MyExistingCompanyLoggingFramework</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
@@ -2138,14 +2138,14 @@ instance pased in, the level will be 'Error', and the message will be the Error 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>
     <span class="nx">Logger</span><span class="p">,</span>
     <span class="nx">LogListener</span><span class="p">,</span>
-    <span class="nx">LogEntry</span>
+    <span class="nx">ILogEntry</span>
 <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
 <span class="kr">class</span> <span class="nx">MyListener</span> <span class="kr">implements</span> <span class="nx">LogListener</span> <span class="p">{</span>
 
-    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">LogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// here you would do something with the entry</span>
-    <span class="p">}</span>    
+    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">new</span> <span class="nx">MyListener</span><span class="p">());</span>

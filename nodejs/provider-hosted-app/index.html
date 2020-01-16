@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1809,11 +1809,11 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/nodejs/provider-hosted-app.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/nodejs/provider-hosted-app.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpnodejsproviderhostedrequestcontext">@pnp/nodejs/providerhostedrequestcontext<a class="headerlink" href="#pnpnodejsproviderhostedrequestcontext" title="Permanent link">&para;</a></h1>
-<p>The ProviderHostedRequestcontext enables the creation of provider-hosted add-ins built in node.js to use pnpjs to interact with SharePoint. The context is associated to a SharePoint user, allowing requests to be made by the add-in on the behalf of the user.</p>
+<p>The <code>ProviderHostedRequestContext</code> enables the creation of provider-hosted add-ins built in node.js to use pnpjs to interact with SharePoint. The context is associated to a SharePoint user, allowing requests to be made by the add-in on the behalf of the user.</p>
 <p>The usage of this class assumes the provider-hosted add-in is called from SharePoint with a valid SPAppToken. This is typically done by means of accessing /_layouts/15/AppRedirect.aspx with the app's client ID and app's redirect URI.</p>
 <p><strong>Note</strong>: To support concurrent requests by different users and/or add-ins on different tenants, do not use the <code>SPFetchClient</code> class. Instead, use the more generic <code>NodeFetchClient</code> class. The downside is that you have to manually configure each request to use the desired user/app context.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">SPRest</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>

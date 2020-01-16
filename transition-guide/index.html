@@ -420,8 +420,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entension-methods" title="Entension Methods" class="md-nav__link">
-    Entension Methods
+  <a href="#extension-methods" title="Extension Methods" class="md-nav__link">
+    Extension Methods
   </a>
   
 </li>
@@ -572,8 +572,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entension-methods" title="Entension Methods" class="md-nav__link">
-    Entension Methods
+  <a href="#extension-methods" title="Extension Methods" class="md-nav__link">
+    Extension Methods
   </a>
   
 </li>
@@ -664,8 +664,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -2052,8 +2052,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entension-methods" title="Entension Methods" class="md-nav__link">
-    Entension Methods
+  <a href="#extension-methods" title="Extension Methods" class="md-nav__link">
+    Extension Methods
   </a>
   
 </li>
@@ -2095,17 +2095,14 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/transition-guide.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/transition-guide.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="transition-guide">Transition Guide<a class="headerlink" href="#transition-guide" title="Permanent link">&para;</a></h1>
 <p>We have worked to make moving from @pnp library 1.<em> to 2.</em> as painless as possible, however there are some changes to how things work. The below guide we have provided an overview of what it takes to transition between the libraries. If we missed something, please let us know in the issues list so we can update the guide. Thanks!</p>
 <h2 id="installing-pnp-libraries">Installing @pnp libraries<a class="headerlink" href="#installing-pnp-libraries" title="Permanent link">&para;</a></h2>
 <p>In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them separately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have updated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:</p>
-<div class="codehilite"><pre><span></span>npm i --save @pnp/sp
-</pre></div>
-
-
+<p><code>npm i --save @pnp/sp</code></p>
 <h2 id="selective-imports">Selective Imports<a class="headerlink" href="#selective-imports" title="Permanent link">&para;</a></h2>
 <p>Another big change in v2 is the ability to selectively import the pieces you need from the libraries. This allows you to have smaller bundles and works well with tree-shaking. It does require you to have more import statements, which can potentially be a bit confusing at first. The selective imports apply to the sp and graph libraries.</p>
 <p>To help explain let's take the example of the Web object. In v1 Web includes a reference to pretty much everything else in the entire sp library. Meaning that if you use web (and you pretty much have to) you hold a ref to all the other pieces (like Fields, Lists, ContentTypes) even if you aren't using them. Because of that tree shaking can't do anything to reduce the bundle size because it "thinks" you are using them simply because they have been imported. To solve this in v2 the Web object no longer contains references to anything, it is a bare object with a few methods. If you look at the source you will see that, for example, there is no longer a "lists" property. These properties and methods are now added through selectively importing the functionality you need:</p>
@@ -2188,7 +2185,7 @@
 </pre></div>
 
 
-<h2 id="entension-methods">Entension Methods<a class="headerlink" href="#entension-methods" title="Permanent link">&para;</a></h2>
+<h2 id="extension-methods">Extension Methods<a class="headerlink" href="#extension-methods" title="Permanent link">&para;</a></h2>
 <p>Another new capability in v2 is the ability to extend objects and factories. This allows you to easily add methods or properties on a per-object basis. Please see the <a href="../odata/extensions/">full article on extension methods</a> describing this great new capability.</p>
 <h2 id="cdn-publishing">CDN publishing<a class="headerlink" href="#cdn-publishing" title="Permanent link">&para;</a></h2>
 <p>Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot of ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their <a href="../concepts/custom-bundle/">own bundles</a>, optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please <a href="../concepts/custom-bundle/">review the article on creating your custom bundles</a> to see how to tailor bundles to your needs.</p>

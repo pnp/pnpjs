@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1544,8 +1544,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#selective-import" title="Selective Import" class="md-nav__link">
-    Selective Import
+  <a href="#imports" title="Imports" class="md-nav__link">
+    Imports
   </a>
   
     <nav class="md-nav">
@@ -1559,7 +1559,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#selective-import_1" title="Selective Import" class="md-nav__link">
+  <a href="#selective-import" title="Selective Import" class="md-nav__link">
     Selective Import
   </a>
   
@@ -1922,8 +1922,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#selective-import" title="Selective Import" class="md-nav__link">
-    Selective Import
+  <a href="#imports" title="Imports" class="md-nav__link">
+    Imports
   </a>
   
     <nav class="md-nav">
@@ -1937,7 +1937,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#selective-import_1" title="Selective Import" class="md-nav__link">
+  <a href="#selective-import" title="Selective Import" class="md-nav__link">
     Selective Import
   </a>
   
@@ -2034,7 +2034,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/sp/sharing.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/sp/sharing.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpspsharing">@pnp/sp/sharing<a class="headerlink" href="#pnpspsharing" title="Permanent link">&para;</a></h1>
@@ -2042,8 +2042,8 @@
 <p><strong><em>Note: This API is still considered "beta" meaning it may change and some behaviors may differ across tenants by version. It is also supported only in SharePoint Online.</em></strong></p>
 </blockquote>
 <p>One of the newer abilities in SharePoint is the ability to share webs, files, or folders with both internal and external folks. It is important to remember that these settings are managed at the tenant level and ? override anything you may supply as an argument to these methods. If you receive an <em>InvalidOperationException</em> when using these methods please check your tenant sharing settings to ensure sharing is not blocked before ?submitting an issue.</p>
-<h2 id="selective-import">Selective Import<a class="headerlink" href="#selective-import" title="Permanent link">&para;</a></h2>
-<p>In previous versions of this library the sharing methods were part of the inheritence stack for SharePointQueryable objects. Starting with v2 this is no longer the case and they are now selectively importable. There are four objects within the SharePoint heirarchy that support sharing: Item, File, Folder, and Web. You can import the sharing merthods for all of them, or for individual objects.</p>
+<h2 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h2>
+<p>In previous versions of this library the sharing methods were part of the inheritance stack for SharePointQueryable objects. Starting with v2 this is no longer the case and they are now selectively importable. There are four objects within the SharePoint hierarchy that support sharing: Item, File, Folder, and Web. You can import the sharing methods for all of them, or for individual objects.</p>
 <h3 id="import-all">Import All<a class="headerlink" href="#import-all" title="Permanent link">&para;</a></h3>
 <p>To import and attach the sharing methods to all four of the sharable types include all of the sharing sub module:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
@@ -2056,7 +2056,7 @@
 </pre></div>
 
 
-<h3 id="selective-import_1">Selective Import<a class="headerlink" href="#selective-import_1" title="Permanent link">&para;</a></h3>
+<h3 id="selective-import">Selective Import<a class="headerlink" href="#selective-import" title="Permanent link">&para;</a></h3>
 <p>Import only the web's sharing methods into the library</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
@@ -2090,7 +2090,7 @@
 
 <h2 id="sharewith">shareWith<a class="headerlink" href="#sharewith" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File, Web</strong></p>
-<p>Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the loginnames parameter or an array of loginnames. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.</p>
+<p>Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the <code>loginnames</code> parameter or an array of <code>loginnames</code>. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>

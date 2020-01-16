@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1894,12 +1894,11 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/common/storage.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/common/storage.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpcommonstorage">@pnp/common/storage<a class="headerlink" href="#pnpcommonstorage" title="Permanent link">&para;</a></h1>
-<p>This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with
-a non-persistent in memory polyfill. Optionally through configuratrion you can activate expiration. Sample usage is shown below.</p>
+<p>This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.</p>
 <h2 id="pnpclientstorage">PnPClientStorage<a class="headerlink" href="#pnpclientstorage" title="Permanent link">&para;</a></h2>
 <p>The main export of this module, contains properties representing local and session storage.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
@@ -1966,7 +1965,7 @@ from an instance of PnPClientStorage as shown below. These examples all use loca
 </pre></div>
 
 
-<p>The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout. </p>
+<p>The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="nx">setup</span><span class="p">({</span>

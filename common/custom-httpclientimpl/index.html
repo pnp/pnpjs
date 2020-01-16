@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -737,6 +737,13 @@
         <li class="md-nav__item">
   <a href="#subclassing-is-better" title="Subclassing is Better" class="md-nav__link">
     Subclassing is Better
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-final-note" title="A FINAL NOTE" class="md-nav__link">
+    A FINAL NOTE
   </a>
   
 </li>
@@ -1852,6 +1859,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#a-final-note" title="A FINAL NOTE" class="md-nav__link">
+    A FINAL NOTE
+  </a>
+  
+</li>
+      
       
       
       
@@ -1868,7 +1882,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/common/custom-httpclientimpl.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/common/custom-httpclientimpl.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="custom-httpclientimpl">Custom HttpClientImpl<a class="headerlink" href="#custom-httpclientimpl" title="Permanent link">&para;</a></h1>
@@ -1919,7 +1933,7 @@
 
 <h2 id="subclassing-is-better">Subclassing is Better<a class="headerlink" href="#subclassing-is-better" title="Permanent link">&para;</a></h2>
 <p>You can of course inherit from one of the implementations available within the @pnp scope if you just need to say add a header or need to do <em>something</em> to every request sent. Perhaps some advanced logging. This approach will save you from needing to fully write a fetch implementation.</p>
-<h1 id="a-final-note">A FINAL NOTE<a class="headerlink" href="#a-final-note" title="Permanent link">&para;</a></h1>
+<h2 id="a-final-note">A FINAL NOTE<a class="headerlink" href="#a-final-note" title="Permanent link">&para;</a></h2>
 <p>Whatever you do, <strong>do not</strong> write a client that uses a client id and secret and exposes them on the client side. Client Id and Secret should only ever be used on a server, never exposed to clients as anyone with those values has the full permissions granted to that id and secret.</p>
                 
                   

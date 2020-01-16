@@ -469,6 +469,47 @@
     options
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-a-single-package" title="Test a Single Package" class="md-nav__link">
+    Test a Single Package
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-single-test-file" title="Run a Single Test File" class="md-nav__link">
+    Run a Single Test File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specify-a-site" title="Specify a Site" class="md-nav__link">
+    Specify a Site
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleanup" title="Cleanup" class="md-nav__link">
+    Cleanup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" title="Logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -545,8 +586,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1911,6 +1952,47 @@
     options
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-a-single-package" title="Test a Single Package" class="md-nav__link">
+    Test a Single Package
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-single-test-file" title="Run a Single Test File" class="md-nav__link">
+    Run a Single Test File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specify-a-site" title="Specify a Site" class="md-nav__link">
+    Specify a Site
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleanup" title="Cleanup" class="md-nav__link">
+    Cleanup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" title="Logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -1962,7 +2044,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/npm-scripts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/npm-scripts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="supported-npm-scripts">Supported NPM Scripts<a class="headerlink" href="#supported-npm-scripts" title="Permanent link">&para;</a></h1>
@@ -1988,7 +2070,7 @@
 
 <h3 id="options">options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
 <p>There are several options you can provide to the test command. All of these need to be separated using a "--" double hyphen so they are passed to the spawned sub-commands.</p>
-<p><strong>Test a Single Package</strong></p>
+<h4 id="test-a-single-package">Test a Single Package<a class="headerlink" href="#test-a-single-package" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--package</code> or <code>-p</code></p>
 </blockquote>
@@ -2001,7 +2083,7 @@ npm test -- -package logging
 </pre></div>
 
 
-<p><strong>Run a Single Test File</strong></p>
+<h4 id="run-a-single-test-file">Run a Single Test File<a class="headerlink" href="#run-a-single-test-file" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--single</code> or <code>--s</code></p>
 </blockquote>
@@ -2014,7 +2096,7 @@ npm test -- -package graph -single groups
 </pre></div>
 
 
-<p><strong>Specify a Site</strong></p>
+<h4 id="specify-a-site">Specify a Site<a class="headerlink" href="#specify-a-site" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--site</code></p>
 </blockquote>
@@ -2025,7 +2107,7 @@ npm test -- -p sp -s web --site https://some.site.com/sites/dev
 </pre></div>
 
 
-<p><strong>Cleanup</strong></p>
+<h4 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--cleanup</code></p>
 </blockquote>
@@ -2035,7 +2117,7 @@ npm test -- --cleanup
 </pre></div>
 
 
-<p><strong>Logging</strong></p>
+<h4 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--logging</code></p>
 </blockquote>
@@ -2052,7 +2134,7 @@ npm test -- --logging
 
 
 <h2 id="package">package<a class="headerlink" href="#package" title="Permanent link">&para;</a></h2>
-<p>Invokes the pnpbuild cli to create the package directories under the dist folder. This will allow you to see excactly what will end up in the npm packages once they are published.</p>
+<p>Invokes the pnpbuild cli to create the package directories under the dist folder. This will allow you to see exactly what will end up in the npm packages once they are published.</p>
 <div class="codehilite"><pre><span></span>npm run package
 </pre></div>
 

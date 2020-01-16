@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -2128,11 +2128,11 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/sp/items.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/sp/items.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpspitems">@pnp/sp/items<a class="headerlink" href="#pnpspitems" title="Permanent link">&para;</a></h1>
-<p><a href="../../concepts/invokable/"><img alt="" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
+<p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <table>
 <thead>
 <tr>
@@ -2236,8 +2236,7 @@
 
 
 <h3 id="get-all-items">Get All Items<a class="headerlink" href="#get-all-items" title="Permanent link">&para;</a></h3>
-<p>Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should 
-be used.</p>
+<p>Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
@@ -2391,12 +2390,14 @@ be used.</p>
 
 
 <h3 id="lookup-fields">Lookup Fields<a class="headerlink" href="#lookup-fields" title="Permanent link">&para;</a></h3>
-<p>What is said for User Fields is, in general, relevant to Lookup Fields:
-- Lookup Field types:
-  - Single-valued lookup
-  - Multiple-valued lookup
-- <code>Id</code> suffix should be appended to the end of lookup's <code>EntityPropertyName</code> in payloads
-- Numeric Ids for lookups' items should be passed as values</p>
+<p>What is said for User Fields is, in general, relevant to Lookup Fields:</p>
+<ul>
+<li>Lookup Field types:</li>
+<li>Single-valued lookup</li>
+<li>Multiple-valued lookup</li>
+<li><code>Id</code> suffix should be appended to the end of lookups <code>EntityPropertyName</code> in payloads</li>
+<li>Numeric Ids for lookups' items should be passed as values</li>
+</ul>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
@@ -2406,7 +2407,7 @@ be used.</p>
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupFields&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
     <span class="nx">Title</span>: <span class="kt">getGUID</span><span class="p">(),</span>
     <span class="nx">LookupFieldId</span>: <span class="kt">2</span><span class="p">,</span>       <span class="c1">// allows a single lookup value</span>
-    <span class="nx">MuptiLookupFieldId</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="nx">MuptiLookupFieldId</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">results</span><span class="o">:</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">56</span> <span class="p">]</span>  <span class="c1">// allows multiple lookup value</span>
     <span class="p">}</span>
 <span class="p">});</span>
@@ -2543,7 +2544,7 @@ Field's <code>EntityPropertyName</code> value should be used.</p>
 </pre></div>
 
 
-<p>Lookup fields' names should be ended with additional <code>Id</code> suffix. E.g. for <code>Editor</code> EntityPropertyName <code>EditorId</code> should be used. </p>
+<p>Lookup fields' names should be ended with additional <code>Id</code> suffix. E.g. for <code>Editor</code> EntityPropertyName <code>EditorId</code> should be used.</p>
                 
                   
                 

@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1272,26 +1272,32 @@
     Construct a parameter alias
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#example-without-aliasing" title="Example without aliasing" class="md-nav__link">
     Example without aliasing
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#example-with-aliasing" title="Example with aliasing" class="md-nav__link">
     Example with aliasing
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#example-with-aliasing-and-batching" title="Example with aliasing and batching" class="md-nav__link">
     Example with aliasing and batching
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1857,26 +1863,32 @@
     Construct a parameter alias
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#example-without-aliasing" title="Example without aliasing" class="md-nav__link">
     Example without aliasing
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#example-with-aliasing" title="Example with aliasing" class="md-nav__link">
     Example with aliasing
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#example-with-aliasing-and-batching" title="Example with aliasing and batching" class="md-nav__link">
     Example with aliasing and batching
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1896,14 +1908,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/sp/alias-parameters.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/sp/alias-parameters.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpsp-aliased-parameters">@pnp/sp - Aliased Parameters<a class="headerlink" href="#pnpsp-aliased-parameters" title="Permanent link">&para;</a></h1>
-<p>Within the @pnp/sp api you can alias any of the parameters so they will be written into the querystring. This is most helpful if you are hitting up against the 
-url length limits when working with files and folders.</p>
+<p>Within the @pnp/sp api you can alias any of the parameters so they will be written into the querystring. This is most helpful if you are hitting up against the url length limits when working with files and folders.</p>
 <p>To alias a parameter you include the label name, a separator ("::") and the value in the string. You also need to prepend a "!" to the string to trigger the replacement. You can see this below, as well as the string that will be generated. Labels must start with a "@" followed by a letter. It is also your responsibility to ensure that the aliases you supply do not conflict, for example if you use "@p1" you should use "@p2" for a second parameter alias in the same query.</p>
-<h3 id="construct-a-parameter-alias">Construct a parameter alias<a class="headerlink" href="#construct-a-parameter-alias" title="Permanent link">&para;</a></h3>
+<h2 id="construct-a-parameter-alias">Construct a parameter alias<a class="headerlink" href="#construct-a-parameter-alias" title="Permanent link">&para;</a></h2>
 <p>Pattern: !@{label name}::{value}</p>
 <p>Example: "!@p1::\sites\dev" or "!@p2::\text.txt"</p>
 <h3 id="example-without-aliasing">Example without aliasing<a class="headerlink" href="#example-without-aliasing" title="Permanent link">&para;</a></h3>

@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1908,7 +1908,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/odata/core.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/odata/core.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpodatacore">@pnp/odata/core<a class="headerlink" href="#pnpodatacore" title="Permanent link">&para;</a></h1>
@@ -1916,7 +1916,7 @@
 <h2 id="processhttpclientresponseexception">ProcessHttpClientResponseException<a class="headerlink" href="#processhttpclientresponseexception" title="Permanent link">&para;</a></h2>
 <p>The exception thrown when a response is returned and cannot be processed.</p>
 <h2 id="interface-odataparser">interface ODataParser<T><a class="headerlink" href="#interface-odataparser" title="Permanent link">&para;</a></h2>
-<p>Base interface used to descibe a class that that will parse incoming responses. It takes a single type parameter representing the type of the
+<p>Base interface used to describe a class that that will parse incoming responses. It takes a single type parameter representing the type of the
 value to be returned. It has two methods, one is optional:</p>
 <ul>
 <li>parse(r: Response): Promise<T> - main method use to parse a response and return a Promise resolving to an object of type T</li>
@@ -1942,7 +1942,7 @@ cases.</p>
 
                 <span class="c1">// now we add our custom parsing here</span>
                 <span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">txt</span> <span class="o">=&gt;</span> <span class="p">{</span>
-                    <span class="c1">// here we call a madeup function to parse the result</span>
+                    <span class="c1">// here we call a made up function to parse the result</span>
                     <span class="c1">// this is where we would do our parsing as required</span>
                     <span class="nx">myCustomerUnencode</span><span class="p">(</span><span class="nx">txt</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="p">{</span>
                         <span class="nx">resolve</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>

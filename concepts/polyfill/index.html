@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1934,7 +1934,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/concepts/polyfill.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/concepts/polyfill.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link">&para;</a></h1>
@@ -1980,7 +1980,7 @@ control, so please ensure you understand any associated risks.</p>
   <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
       <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">).</span><span class="nx">innerText</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">Title</span><span class="p">;</span>
-  <span class="p">})</span>   
+  <span class="p">})</span>
   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>  
     <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">).</span><span class="nx">innerText</span><span class="o">=</span><span class="nx">err</span><span class="p">;</span>
   <span class="p">});</span>
@@ -1994,9 +1994,9 @@ control, so please ensure you understand any associated risks.</p>
 <h2 id="module-loader">Module Loader<a class="headerlink" href="#module-loader" title="Permanent link">&para;</a></h2>
 <p>If you are using a module loader you need to load the following two files as well. You can do this form a CDN or your style library.</p>
 <ol>
-<li>Download the <strong>es6-promises</strong> polyfill from https://github.com/stefanpenner/es6-promise and upload it to your style library.</li>
-<li>Download the <strong>fetch</strong> polyfill from https://github.com/github/fetch and upload it to your style library.</li>
-<li>Download the <strong>corejs</strong> polyfill from https://github.com/zloirock/core-js and upload it to your style library.</li>
+<li>Download the <strong>es6-promises</strong> polyfill from <a href="https://github.com/stefanpenner/es6-promise">https://github.com/stefanpenner/es6-promise</a> and upload it to your style library.</li>
+<li>Download the <strong>fetch</strong> polyfill from <a href="https://github.com/github/fetch">https://github.com/github/fetch</a> and upload it to your style library.</li>
+<li>Download the <strong>corejs</strong> polyfill from <a href="https://github.com/zloirock/core-js">https://github.com/zloirock/core-js</a> and upload it to your style library.</li>
 <li>Update your module loader to set these files as dependencies before the pnp library is opened.</li>
 </ol>
 <p>One issue you still may see is that you get errors that certain libraries are undefined when you try to run your code. This is because your code is running before

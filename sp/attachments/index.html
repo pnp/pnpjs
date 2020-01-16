@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1966,7 +1966,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/sp/attachments.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/sp/attachments.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpspattachments">@pnp/sp/attachments<a class="headerlink" href="#pnpspattachments" title="Permanent link">&para;</a></h1>
@@ -1991,35 +1991,36 @@
 </table>
 <h2 id="get-attachments">Get attachments<a class="headerlink" href="#get-attachments" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
 <span class="c1">// get all the attachments</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">IAttachmentInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">IAttachmentInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">();</span>
 
 <span class="c1">// get a single file by file name</span>
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">IAttachmentInfo</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">IAttachmentInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)();</span>
 
 <span class="c1">// select specific properties using odata operators and use Pick to type the result</span>
-<span class="kr">const</span> <span class="nx">info3</span>: <span class="kt">Pick</span><span class="o">&lt;</span><span class="nx">IAttachmentInfo</span><span class="p">,</span> <span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="o">&gt;</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info3</span>: <span class="kt">Pick</span><span class="o">&lt;</span><span class="nx">IAttachmentInfo</span><span class="p">,</span> <span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="o">&gt;</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="p">)();</span>
 </pre></div>
 
 
 <h2 id="add-an-attachment">Add an Attachment<a class="headerlink" href="#add-an-attachment" title="Permanent link">&para;</a></h2>
 <p>You can add an attachment to a list item using the add method. This method takes either a string, Blob, or ArrayBuffer.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
 <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;Here is my content&quot;</span><span class="p">);</span>
 </pre></div>
@@ -2028,13 +2029,14 @@
 <h2 id="add-multiple">Add Multiple<a class="headerlink" href="#add-multiple" title="Permanent link">&para;</a></h2>
 <p>This method allows you to pass an array of AttachmentFileInfo plain objects that will be added one at a time as attachments. Essentially automating the promise chaining.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentFileInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span><span class="p">,</span> <span class="nx">IAttachmentFileInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">)();</span>
 
 <span class="kd">var</span> <span class="nx">fileInfos</span>: <span class="kt">IAttachmentFileInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -2054,13 +2056,13 @@
 
 <h2 id="delete-multiple">Delete Multiple<a class="headerlink" href="#delete-multiple" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./@pnp/sp/lists/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span><span class="p">,</span> <span class="nx">IAttachmentFileInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">)();</span>
 
 <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">deleteMultiple</span><span class="p">(</span><span class="s2">&quot;1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;2.txt&quot;</span><span class="p">);</span>
 </pre></div>
@@ -2069,12 +2071,13 @@
 <h2 id="read-attachment-content">Read Attachment Content<a class="headerlink" href="#read-attachment-content" title="Permanent link">&para;</a></h2>
 <p>You can read the content of an attachment as a string, Blob, ArrayBuffer, or json using the methods supplied.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
 <span class="kr">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">).</span><span class="nx">getText</span><span class="p">();</span>
 
@@ -2092,12 +2095,13 @@
 <h2 id="update-attachment-content">Update Attachment Content<a class="headerlink" href="#update-attachment-content" title="Permanent link">&para;</a></h2>
 <p>You can also update the content of an attachment. This API is limited compared to the full file API - so if you need to upload large files consider using a document library.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
 <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s2">&quot;My new content!!!&quot;</span><span class="p">);</span>
 </pre></div>
@@ -2105,12 +2109,13 @@
 
 <h2 id="delete-attachment">Delete Attachment<a class="headerlink" href="#delete-attachment" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
 <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 </pre></div>
@@ -2119,26 +2124,28 @@
 <h2 id="recycle-attachment">Recycle Attachment<a class="headerlink" href="#recycle-attachment" title="Permanent link">&para;</a></h2>
 <p>Delete the attachment and send it to recycle bin</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
 
-<span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="nx">recycle</span><span class="p">();</span>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="nx">recycle</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="recycle-multiple-attachments">Recycle Multiple Attachments<a class="headerlink" href="#recycle-multiple-attachments" title="Permanent link">&para;</a></h2>
 <p>Delete multiple attachments and send them to recycle bin</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists/types&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">)();</span>
 
 <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">recycleMultiple</span><span class="p">(</span><span class="s2">&quot;1.txt&quot;</span><span class="p">,</span><span class="s2">&quot;2.txt&quot;</span><span class="p">);</span>
 </pre></div>

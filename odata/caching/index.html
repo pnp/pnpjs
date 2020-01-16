@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1148,8 +1148,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#implement-caching-helper-method" title="Implement caching helper method:" class="md-nav__link">
-    Implement caching helper method:
+  <a href="#implement-caching-helper-method" title="Implement caching helper method" class="md-nav__link">
+    Implement caching helper method
   </a>
   
 </li>
@@ -1923,8 +1923,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#implement-caching-helper-method" title="Implement caching helper method:" class="md-nav__link">
-    Implement caching helper method:
+  <a href="#implement-caching-helper-method" title="Implement caching helper method" class="md-nav__link">
+    Implement caching helper method
   </a>
   
 </li>
@@ -1964,7 +1964,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/odata/caching.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/odata/caching.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpodatacaching">@pnp/odata/caching<a class="headerlink" href="#pnpodatacaching" title="Permanent link">&para;</a></h1>
@@ -2040,8 +2040,8 @@
 
 
 <h2 id="implement-custom-caching">Implement Custom Caching<a class="headerlink" href="#implement-custom-caching" title="Permanent link">&para;</a></h2>
-<p>You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achive this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern <a href="https://github.com/pnp/pnpjs/issues/371">as discussed here</a>.</p>
-<h3 id="implement-caching-helper-method">Implement caching helper method:<a class="headerlink" href="#implement-caching-helper-method" title="Permanent link">&para;</a></h3>
+<p>You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achieve this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern <a href="https://github.com/pnp/pnpjs/issues/371">as discussed here</a>.</p>
+<h3 id="implement-caching-helper-method">Implement caching helper method<a class="headerlink" href="#implement-caching-helper-method" title="Permanent link">&para;</a></h3>
 <p>We create a map to act as our cache storage and a function to wrap the request caching logic</p>
 <div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span><span class="p">();</span>
 

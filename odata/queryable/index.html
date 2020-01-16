@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1184,8 +1184,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#abstract-class-odataqueryable" title="abstract class ODataQueryable" class="md-nav__link">
-    abstract class ODataQueryable
+  <a href="#abstract-class-odataqueryablebatchtype-extends-odatabatch" title="abstract class ODataQueryable&lt;BatchType extends ODataBatch&gt;" class="md-nav__link">
+    abstract class ODataQueryable&lt;BatchType extends ODataBatch&gt;
   </a>
   
 </li>
@@ -1921,8 +1921,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#abstract-class-odataqueryable" title="abstract class ODataQueryable" class="md-nav__link">
-    abstract class ODataQueryable
+  <a href="#abstract-class-odataqueryablebatchtype-extends-odatabatch" title="abstract class ODataQueryable&lt;BatchType extends ODataBatch&gt;" class="md-nav__link">
+    abstract class ODataQueryable&lt;BatchType extends ODataBatch&gt;
   </a>
   
 </li>
@@ -2032,20 +2032,19 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/odata/queryable.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/odata/queryable.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpodataqueryable">@pnp/odata/queryable<a class="headerlink" href="#pnpodataqueryable" title="Permanent link">&para;</a></h1>
 <p>The Queryable class is the base class for all of the libraries building fluent request apis.</p>
-<h2 id="abstract-class-odataqueryable">abstract class ODataQueryable<BatchType extends ODataBatch><a class="headerlink" href="#abstract-class-odataqueryable" title="Permanent link">&para;</a></h2>
-<p>This class takes a single type parameter represnting the type of the batch implementation object. If your api will not support batching 
-you can create a dummy class here and simply not use the batching calls.</p>
+<h2 id="abstract-class-odataqueryablebatchtype-extends-odatabatch">abstract class <code>ODataQueryable&lt;BatchType extends ODataBatch&gt;</code><a class="headerlink" href="#abstract-class-odataqueryablebatchtype-extends-odatabatch" title="Permanent link">&para;</a></h2>
+<p>This class takes a single type parameter representing the type of the batch implementation object. If your api will not support batching you can create a dummy class here and simply not use the batching calls.</p>
 <h2 id="properties">properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
 <h3 id="query">query<a class="headerlink" href="#query" title="Permanent link">&para;</a></h3>
 <p>Provides access to the query string builder for this url</p>
 <h2 id="public-methods">public methods<a class="headerlink" href="#public-methods" title="Permanent link">&para;</a></h2>
 <h3 id="concat">concat<a class="headerlink" href="#concat" title="Permanent link">&para;</a></h3>
-<p>Directly concatonates the supplied string to the current url, not normalizing "/" chars</p>
+<p>Directly concatenates the supplied string to the current url, not normalizing "/" chars</p>
 <h3 id="configure">configure<a class="headerlink" href="#configure" title="Permanent link">&para;</a></h3>
 <p>Sets custom options for current object and all derived objects accessible via chaining</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ConfigOptions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
@@ -2086,11 +2085,11 @@ you can create a dummy class here and simply not use the batching calls.</p>
 <h3 id="inbatch">inBatch<a class="headerlink" href="#inbatch" title="Permanent link">&para;</a></h3>
 <p>Adds this query to the supplied batch</p>
 <h3 id="tourl">toUrl<a class="headerlink" href="#tourl" title="Permanent link">&para;</a></h3>
-<p>Gets the currentl url</p>
+<p>Gets the current url</p>
 <h3 id="abstract-tourlandquery">abstract toUrlAndQuery()<a class="headerlink" href="#abstract-tourlandquery" title="Permanent link">&para;</a></h3>
 <p>When implemented by an inheriting class will build the full url with appropriate query string used to make the actual request</p>
 <h2 id="get">get<a class="headerlink" href="#get" title="Permanent link">&para;</a></h2>
-<p>Execute the current request. Takes an optional type parameter allowing for the typing of the value or the user of parsers that will create specific object intances.</p>
+<p>Execute the current request. Takes an optional type parameter allowing for the typing of the value or the user of parsers that will create specific object instances.</p>
                 
                   
                 

@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -755,8 +755,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#extend" title="extend" class="md-nav__link">
-    extend
+  <a href="#assign" title="assign" class="md-nav__link">
+    assign
   </a>
   
 </li>
@@ -1874,8 +1874,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#extend" title="extend" class="md-nav__link">
-    extend
+  <a href="#assign" title="assign" class="md-nav__link">
+    assign
   </a>
   
 </li>
@@ -1908,13 +1908,11 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/common/libconfig.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/common/libconfig.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpcommonlibconfig">@pnp/common/libconfig<a class="headerlink" href="#pnpcommonlibconfig" title="Permanent link">&para;</a></h1>
-<p>Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core
-configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and
-contains the global configuration shared across the libraries. You can also extend the configuration for use within your own applications.</p>
+<p>Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and contains the global configuration shared across the libraries. You can also extend the configuration for use within your own applications.</p>
 <h2 id="libraryconfiguration-interface">LibraryConfiguration Interface<a class="headerlink" href="#libraryconfiguration-interface" title="Permanent link">&para;</a></h2>
 <p>Defines the shared configurable values used across the library as shown below. Each of these has a default value as shown below</p>
 <div class="codehilite"><pre><span></span><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">LibraryConfiguration</span> <span class="p">{</span>
@@ -1955,16 +1953,16 @@ contains the global configuration shared across the libraries. You can also exte
 <h2 id="runtimeconfigimpl">RuntimeConfigImpl<a class="headerlink" href="#runtimeconfigimpl" title="Permanent link">&para;</a></h2>
 <p>The class which implements the runtime configuration management as well as sets the default values used within the library. At its heart lies a <a href="../collections/">Dictionary</a>
 used to track the configuration values. The keys will match the values in the interface or plain object passed to the extend method.</p>
-<h3 id="extend">extend<a class="headerlink" href="#extend" title="Permanent link">&para;</a></h3>
-<p>The extend method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any 
-existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please 
+<h3 id="assign">assign<a class="headerlink" href="#assign" title="Permanent link">&para;</a></h3>
+<p>The assign method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any
+existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please
 see the section below "Using RuntimeConfig within your application". Note there are no methods to remove/clear the global config as it should be considered fairly static
 as frequent updates may have unpredictable side effects as it is a global shared object. Generally it should be set at the start of your application.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="c1">// add your custom keys to the global configuration</span>
 <span class="c1">// note you can use object hashes as values</span>
-<span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">assign</span><span class="p">({</span>
    <span class="s2">&quot;myKey1&quot;</span><span class="o">:</span> <span class="s2">&quot;value 1&quot;</span><span class="p">,</span>
    <span class="s2">&quot;myKey2&quot;</span><span class="o">:</span> <span class="p">{</span>
        <span class="s2">&quot;subKey&quot;</span><span class="o">:</span> <span class="s2">&quot;sub value 1&quot;</span><span class="p">,</span>
@@ -1979,8 +1977,8 @@ as frequent updates may have unpredictable side effects as it is a global shared
 
 <h2 id="using-runtimeconfig-within-your-application">Using RuntimeConfig within your Application<a class="headerlink" href="#using-runtimeconfig-within-your-application" title="Permanent link">&para;</a></h2>
 <p>If you have a set of properties you will access very frequently it may be desirable to implement your own configuration object and expose those values as properties. To
-do so you will need to create an interface for your configration (optional) and a wrapper class for RuntimeConfig to expose your properties</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LibraryConfiguration</span><span class="p">,</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+do so you will need to create an interface for your configuration (optional) and a wrapper class for RuntimeConfig to expose your properties</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">RuntimeConfig</span><span class="p">,</span> <span class="nx">ITypedHash</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="c1">// first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because</span>
 <span class="c1">// TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.</span>
@@ -2003,14 +2001,14 @@ do so you will need to create an interface for your configration (optional) and 
 <span class="p">}</span>
 
 <span class="c1">// now create a combined interface</span>
-<span class="kr">interface</span> <span class="nx">MyConfiguration</span> <span class="kr">extends</span> <span class="nx">LibraryConfiguration</span><span class="p">,</span> <span class="nx">MyConfigurationPart</span> <span class="p">{</span> <span class="p">}</span>
+<span class="kr">interface</span> <span class="nx">MyConfiguration</span> <span class="kr">extends</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">MyConfigurationPart</span> <span class="p">{</span> <span class="p">}</span>
 
 
 <span class="c1">// now create a wrapper object and expose your properties</span>
 <span class="kr">class</span> <span class="nx">MyRuntimeConfigImpl</span> <span class="p">{</span>
 
     <span class="c1">// exposing a nested property</span>
-    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">prop1</span><span class="p">()</span><span class="o">:</span> <span class="nx">TypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">prop1</span><span class="p">()</span><span class="o">:</span> <span class="nx">ITypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="p">{</span>
 
         <span class="kr">const</span> <span class="nx">myPart</span> <span class="o">=</span> <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;my&quot;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">myPart</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">myPart</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">myPart</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
@@ -2020,7 +2018,7 @@ do so you will need to create an interface for your configration (optional) and 
         <span class="k">return</span> <span class="p">{};</span>
     <span class="p">}</span>
 
-    <span class="c1">// exposing a root level proeprty</span>
+    <span class="c1">// exposing a root level property</span>
     <span class="kr">public</span> <span class="nx">get</span> <span class="nx">myProp1</span><span class="p">()</span><span class="o">:</span> <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="p">{</span>
 
         <span class="kd">let</span> <span class="nx">myProp1</span> <span class="o">=</span> <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;myProp1&quot;</span><span class="p">);</span>
@@ -2033,7 +2031,7 @@ do so you will need to create an interface for your configration (optional) and 
     <span class="p">}</span>
 
     <span class="nx">setup</span><span class="p">(</span><span class="nx">config</span>: <span class="kt">MyConfiguration</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+        <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 

@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -2050,159 +2050,191 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/graph/contacts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/graph/contacts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpgraphcontacts">@pnp/graph/contacts<a class="headerlink" href="#pnpgraphcontacts" title="Permanent link">&para;</a></h1>
 <p>The ability to manage contacts and folders in Outlook is a capability introduced in version 1.2.2 of @pnp/graph. Through the methods described
 you can add and edit both contacts and folders in a users Outlook.</p>
 <h2 id="get-all-of-the-contacts">Get all of the Contacts<a class="headerlink" href="#get-all-of-the-contacts" title="Permanent link">&para;</a></h2>
-<p>Using the contacts.get() you can get the users contacts from Outlook</p>
+<p>Using the contacts() you can get the users contacts from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">contacts</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contacts</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">contacts</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contacts2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="add-a-new-contact">Add a new Contact<a class="headerlink" href="#add-a-new-contact" title="Permanent link">&para;</a></h2>
 <p>Using the contacts.add() you can a add Contact to the users Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">EmailAddress</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/microsoft-graph-types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">addedContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
 
-<span class="kr">const</span> <span class="nx">addedContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
+<span class="kr">const</span> <span class="nx">addedContact2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
 </pre></div>
 
 
 <h2 id="get-contact-by-id">Get Contact by Id<a class="headerlink" href="#get-contact-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the contacts.getById() you can get one of the users Contacts in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">contact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">contact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">)();</span>
 
-<span class="kr">const</span> <span class="nx">contact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">contact2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">)();</span>
 </pre></div>
 
 
 <h2 id="delete-a-contact">Delete a Contact<a class="headerlink" href="#delete-a-contact" title="Permanent link">&para;</a></h2>
 <p>Using the delete you can remove one of the users Contacts in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">delContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">delContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">delContact2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="update-a-contact">Update a Contact<a class="headerlink" href="#update-a-contact" title="Permanent link">&para;</a></h2>
 <p>Using the update you can update one of the users Contacts in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">updContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">birthday</span><span class="o">:</span> <span class="s2">&quot;1986-05-30&quot;</span> <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">updContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">birthday</span><span class="o">:</span> <span class="s2">&quot;1986-05-30&quot;</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">updContact2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">birthday</span><span class="o">:</span> <span class="s2">&quot;1986-05-30&quot;</span> <span class="p">});</span>
 </pre></div>
 
 
 <h2 id="get-all-of-the-contact-folders">Get all of the Contact Folders<a class="headerlink" href="#get-all-of-the-contact-folders" title="Permanent link">&para;</a></h2>
 <p>Using the contactFolders.get() you can get the users Contact Folders from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">contactFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contactFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">contactFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contactFolders2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="add-a-new-contact-folder">Add a new Contact Folder<a class="headerlink" href="#add-a-new-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using the contactFolders.add() you can a add Contact Folder to the users Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">addedContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">addedContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">addedContactFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
 </pre></div>
 
 
 <h2 id="get-contact-folder-by-id">Get Contact Folder by Id<a class="headerlink" href="#get-contact-folder-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the contactFolders.getById() you can get one of the users Contact Folders in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">contactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">contactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">)();</span>
 
-<span class="kr">const</span> <span class="nx">contactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">contactFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">)();</span>
 </pre></div>
 
 
 <h2 id="delete-a-contact-folder">Delete a Contact Folder<a class="headerlink" href="#delete-a-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using the delete you can remove one of the users Contact Folders in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">delContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">delContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">delContactFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="update-a-contact-folder">Update a Contact Folder<a class="headerlink" href="#update-a-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using the update you can update one of the users Contact Folders in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">updContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span> <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">updContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">updContactFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span> <span class="p">});</span>
 </pre></div>
 
 
 <h2 id="get-all-of-the-contacts-from-the-contact-folder">Get all of the Contacts from the Contact Folder<a class="headerlink" href="#get-all-of-the-contacts-from-the-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using the contacts.get() in the Contact Folder gets the users Contact from the folder.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">contactsInContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contactsInContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">contactsInContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">contactsInContactFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="get-child-folders-of-the-contact-folder">Get Child Folders of the Contact Folder<a class="headerlink" href="#get-child-folders-of-the-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using the childFolders.get() you can get the Child Folders of the current Contact Folder from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">childFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">childFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">childFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">childFolders2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">();</span>
 </pre></div>
 
 
 <h2 id="add-a-new-child-folder">Add a new Child Folder<a class="headerlink" href="#add-a-new-child-folder" title="Permanent link">&para;</a></h2>
 <p>Using the childFolders.add() you can a add Child Folder in a Contact Folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">addedChildFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">addedChildFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">addedChildFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;displayName&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;ParentFolderId&gt;&#39;</span><span class="p">);</span>
 </pre></div>
 
 
 <h2 id="get-child-folder-by-id">Get Child Folder by Id<a class="headerlink" href="#get-child-folder-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the childFolders.getById() you can get one of the users Child Folders in Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
-<span class="kr">const</span> <span class="nx">childFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">childFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">)();</span>
 
-<span class="kr">const</span> <span class="nx">childFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">childFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">)();</span>
 </pre></div>
 
 
 <h2 id="add-contact-in-child-folder-of-contact-folder">Add Contact in Child Folder of Contact Folder<a class="headerlink" href="#add-contact-in-child-folder-of-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Using contacts.add in the Child Folder of a Contact Folder, adds a new Contact to that folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">EmailAddress</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./@microsoft/microsoft-graph-types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/contacts&quot;</span>
 
 <span class="kr">const</span> <span class="nx">addedContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
 
-<span class="kr">const</span> <span class="nx">addedContact</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
+<span class="kr">const</span> <span class="nx">addedContact2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Pavel&#39;</span><span class="p">,</span> <span class="s1">&#39;Bansky&#39;</span><span class="p">,</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">EmailAddress</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;pavelb@fabrikam.onmicrosoft.com&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Pavel Bansky&#39;</span> <span class="p">}],</span> <span class="p">[</span><span class="s1">&#39;+1 732 555 0102&#39;</span><span class="p">]);</span>
 </pre></div>
                 
                   

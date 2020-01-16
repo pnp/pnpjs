@@ -450,8 +450,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../SPFx-on-premises-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
-      SPFx On-Premises 2016
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
     </a>
   </li>
 
@@ -1640,8 +1640,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#searc-a-user-or-group" title="Searc a user or group" class="md-nav__link">
-    Searc a user or group
+  <a href="#search-a-user-or-group" title="Search a user or group" class="md-nav__link">
+    Search a user or group
   </a>
   
 </li>
@@ -2168,8 +2168,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#searc-a-user-or-group" title="Searc a user or group" class="md-nav__link">
-    Searc a user or group
+  <a href="#search-a-user-or-group" title="Search a user or group" class="md-nav__link">
+    Search a user or group
   </a>
   
 </li>
@@ -2190,7 +2190,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/docs/sp/profiles.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/sp/profiles.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="pnpspprofiles">@pnp/sp/profiles<a class="headerlink" href="#pnpspprofiles" title="Permanent link">&para;</a></h1>
@@ -2248,7 +2248,7 @@
 
 
 <h2 id="get-the-tags-i-follow">Get the tags I follow<a class="headerlink" href="#get-the-tags-i-follow" title="Permanent link">&para;</a></h2>
-<p>Gets the tags the current user is following. Accepts max count, defalt is 20.</p>
+<p>Gets the tags the current user is following. Accepts max count, default is 20.</p>
 <div class="codehilite"><pre><span></span><span class="nx">getFollowedTags</span><span class="p">(</span><span class="nx">maxCount</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">[]</span><span class="o">&gt;</span>
 </pre></div>
 
@@ -2259,14 +2259,14 @@
 
 
 <h2 id="get-followers-for-a-specific-user">Get followers for a specific user<a class="headerlink" href="#get-followers-for-a-specific-user" title="Permanent link">&para;</a></h2>
-<p>Gets the people who are following the specified user. </p>
+<p>Gets the people who are following the specified user.</p>
 <div class="codehilite"><pre><span></span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="p">[]</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">folowers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
-<span class="nx">folowers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">followers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">followers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
@@ -2313,7 +2313,7 @@
 
 <div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
 <span class="kr">const</span> <span class="nx">folowers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
-<span class="nx">folowers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">followers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
@@ -2507,7 +2507,7 @@ Emails The email addresses of the users to provision sites for</p>
 </pre></div>
 
 
-<h2 id="searc-a-user-or-group">Searc a user or group<a class="headerlink" href="#searc-a-user-or-group" title="Permanent link">&para;</a></h2>
+<h2 id="search-a-user-or-group">Search a user or group<a class="headerlink" href="#search-a-user-or-group" title="Permanent link">&para;</a></h2>
 <p>Searches for users or groups using specified query parameters</p>
 <div class="codehilite"><pre><span></span><span class="nx">clientPeoplePickerSearchUser</span><span class="p">(</span><span class="nx">queryParams</span>: <span class="kt">IClientPeoplePickerQueryParameters</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">IPeoplePickerEntity</span><span class="p">[]</span><span class="o">&gt;</span>
 </pre></div>
