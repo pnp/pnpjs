@@ -53,7 +53,7 @@
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "package": "npm run build && pnpbuild -n package",
-    "pnp-publish": "npm run clean && npm run package && pnpbuild -n publish",
+    "pnp-publish": "cd tools/publish && publish-win.bat",
     "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
     "lint": "tslint ./packages/**/*.ts ./test/**/*.ts",
     "clean": "del-cli \"./?(dist|serve|site|build)\"",
