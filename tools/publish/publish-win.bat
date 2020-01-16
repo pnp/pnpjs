@@ -36,12 +36,12 @@ git push
 ::
 call npm run clean
 call npm run package
-pnpbuild -n publish
+call pnpbuild -n publish
 
 ::
 :: update the documentation
 ::
-mkdocs --gh-deploy
+mkdocs gh-deploy
 
 ::
 :: merge master into version-2 branch
