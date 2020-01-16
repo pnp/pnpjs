@@ -18,11 +18,12 @@ import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
-import { IBasePermissions } from "../security";
-import { IFieldInfo } from "../fields";
-import { IFormInfo } from "../forms";
-import { IFolderInfo } from "../folders";
-import { IUserCustomActionInfo, IViewInfo } from "../presets/all";
+import { IBasePermissions } from "../security/types";
+import { IFieldInfo } from "../fields/types";
+import { IFormInfo } from "../forms/types";
+import { IFolderInfo } from "../folders/types";
+import { IViewInfo } from "../views/types";
+import { IUserCustomActionInfo } from "../user-custom-actions/types";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
