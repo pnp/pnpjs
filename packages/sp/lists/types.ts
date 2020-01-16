@@ -18,6 +18,12 @@ import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { tag } from "../telemetry";
+import { IBasePermissions } from "../security/types";
+import { IFieldInfo } from "../fields/types";
+import { IFormInfo } from "../forms/types";
+import { IFolderInfo } from "../folders/types";
+import { IViewInfo } from "../views/types";
+import { IUserCustomActionInfo } from "../user-custom-actions/types";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
@@ -588,23 +594,62 @@ export enum ControlMode {
 }
 
 export interface IListInfo {
+    AllowContentTypes: boolean;
+    AllowDeletion: boolean;
+    BaseTemplate: number;
+    BaseType: any;
+    BrowserFileHandling: any;
+    ContentTypes: any[];
+    ContentTypesEnabled: boolean;
+    CrawlNonDefaultViews: boolean;
+    CreatablesInfo: any;
+    Created: string;
+    CurrentChangeToken: any;
+    CustomActionElements: any[];
+    DataSource: any;
+    DefaultContentApprovalWorkflowId: string;
+    DefaultDisplayFormUrl: string;
+    DefaultEditFormUrl: string;
+    DefaultNewFormUrl: string;
+    DefaultView: any;
+    DefaultViewPath: any;
+    DefaultViewUrl: string;
+    Description: string;
+    DescriptionResource: any;
+    Direction: string;
+    DocumentTemplateUrl: string;
+    DraftVersionVisibility: any;
+    EffectiveBasePermissions: IBasePermissions;
+    EffectiveBasePermissionsForUI: IBasePermissions;
+    EnableAssignToEmail: boolean;
+    EnableAttachments: boolean;
+    EnableFolderCreation: boolean;
+    EnableMinorVersions: boolean;
+    EnableModeration: boolean;
     EnableRequestSignOff: boolean;
     EnableVersioning: boolean;
     EntityTypeName: string;
+    EventReceivers: any[];
+    ExcludeFromOfflineClient: boolean;
     ExemptFromBlockDownloadOfNonViewableFiles: boolean;
+    Fields: Partial<IFieldInfo>[];
     FileSavePostProcessingEnabled: boolean;
     ForceCheckout: boolean;
+    Forms: IFormInfo[];
     HasExternalDataSource: boolean;
     Hidden: boolean;
     Id: string;
     ImagePath: { DecodedUrl: string; };
     ImageUrl: string;
+    InformationRightsManagementSettings: any[];
     IrmEnabled: boolean;
     IrmExpire: boolean;
     IrmReject: boolean;
     IsApplicationList: boolean;
     IsCatalog: boolean;
     IsPrivate: boolean;
+    IsSiteAssetsLibrary: boolean;
+    IsSystemList: boolean;
     ItemCount: number;
     LastItemDeletedDate: string;
     LastItemModifiedDate: string;
@@ -615,10 +660,20 @@ export interface IListInfo {
     MajorWithMinorVersionsLimit: number;
     MultipleDataList: boolean;
     NoCrawl: boolean;
+    OnQuickLaunch: boolean;
     ParentWebPath: { DecodedUrl: string; };
     ParentWebUrl: string;
     ParserDisabled: boolean;
+    ReadSecurity: number;
+    RootFolder: IFolderInfo;
+    SchemaXml: string;
     ServerTemplateCanCreateFolders: boolean;
     TemplateFeatureId: string;
     Title: string;
+    UserCustomActions: IUserCustomActionInfo[];
+    ValidationFormula: string;
+    ValidationMessage: string;
+    Views: IViewInfo[];
+    WorkflowAssociations: any[];
+    WriteSecurity: number;
 }
