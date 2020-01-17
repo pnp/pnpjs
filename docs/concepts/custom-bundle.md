@@ -7,7 +7,6 @@ Scenarios could include:
 - Deploying a company-wide PnPjs custom bundle shared by all your components so it only needs to be downloaded once.
 - Creating SPFx libraries either for one project or a single project
 - Create a single library containing the PnPjs code you need bundled along with your customer [extensions](../odata/extensions.md).
-- TODO:: more examples
 
 ## Create a custom bundle
 
