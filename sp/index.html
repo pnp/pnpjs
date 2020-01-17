@@ -1893,11 +1893,12 @@
 <p><code>npm install @pnp/sp --save</code></p>
 <p>Import the library into your application and access the root sp object</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="p">(</span><span class="kd">function</span> <span class="nx">main() {</span>
 
     <span class="c1">// here we will load the current web&#39;s title</span>
-    <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Web Title: </span><span class="si">${</span><span class="nx">w</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
     <span class="p">});</span>
@@ -1910,6 +1911,7 @@
 <p><code>npm install @pnp/sp --save</code></p>
 <p>Import the library into your application, update OnInit, and access the root sp object in render</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
 
@@ -1932,7 +1934,7 @@
     <span class="c1">// A simple loading message</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Loading...`</span><span class="p">;</span>
 
-    <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`Web Title: </span><span class="si">${</span><span class="nx">w</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
     <span class="p">});</span>
@@ -1945,6 +1947,7 @@
 <p><code>npm install @pnp/sp @pnp/nodejs --save</code></p>
 <p>Import the library into your application, setup the node client, make a request</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
 <span class="c1">// do this once per page load</span>
@@ -1957,7 +1960,7 @@
 <span class="p">});</span>
 
 <span class="c1">// now make any calls you need using the configured client</span>
-<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Web Title: </span><span class="si">${</span><span class="nx">w</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <span class="p">});</span>
