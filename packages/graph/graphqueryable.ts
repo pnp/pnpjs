@@ -81,7 +81,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
     public get<T = GetType>(options?: IFetchOptions): Promise<T> {
         return graphGet<T>(<any>this, options);
     }
-    
+
     /**
      * Gets the full url with query information
      *
