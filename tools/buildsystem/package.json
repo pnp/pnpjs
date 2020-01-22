@@ -1,6 +1,6 @@
 {
   "name": "@pnp/buildsystem",
-  "version": "2.1.1",
+  "version": "2.2.1",
   "bin": {
     "pnpbuild": "./bin/buildsystem.js"
   },
@@ -16,13 +16,14 @@
     "gulp": "^4.0.2",
     "interpret": "^1.2.0",
     "liftoff": "^3.1.0",
+    "mkdirp": "^0.5.1",
     "pump": "^3.0.0",
     "replace-in-file": "^4.2.0",
     "yargs": "^14.2.0"
   },
   "peerDependencies": {},
   "engines": {
-    "node": "^8.9.4"
+    "node": ">=8.9.4"
   },
   "author": {
     "name": "Microsoft and other contributors"
@@ -42,8 +43,11 @@
     "prepublish": "npm run build"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.6",
     "@types/interpret": "^1.1.1",
     "@types/liftoff": "^2.5.0",
+    "@types/mkdirp": "^0.5.2",
+    "@types/pump": "^1.1.0",
     "@types/yargs": "^13.0.0",
     "del-cli": "^1.1.0"
   }
