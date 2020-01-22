@@ -30,13 +30,13 @@ export default <ConfigCollection>[
 
         // these tsconfig files will all be transpiled per the settings in the file
         buildTargets: [
-            resolve("./packages/tsconfig.json"),
-            resolve("./packages/tsconfig.module.json"),
+            resolve("./packages/tsconfig.esm.json"),
+            resolve("./packages/tsconfig.cjs.json"),
         ],
 
         postBuildTasks: [
-            // this task is scoped to the sp files within the task
-            Tasks.Build.replaceSPHttpVersion,
+            // this task is scoped to the files within the task
+            Tasks.Build.replaceVersion,
         ],
     },
     <PackageSchema>{
@@ -45,72 +45,76 @@ export default <ConfigCollection>[
 
         role: "package",
 
-        packageTargets: [{
-            moduleTarget: resolve("./packages/tsconfig.module.json"),
-            outDir: resolve("./dist/packages/"),
-            packageTarget: resolve("./packages/tsconfig.json"),
-        }],
-
         prePackageTasks: [],
 
-        packageTasks: [
-            // order matters here
-            Tasks.Package.copyMainFiles,
-            Tasks.Package.copyModuleFiles,
-            Tasks.Package.copyStaticAssets,
-            Tasks.Package.writePackageFiles,
+        packageTargets: [
+            {
+                outDir: resolve("./dist/packages/"),
+                target: resolve("./packages/tsconfig.esm.json"),
+                tasks: [
+                    Tasks.Package.createCopyTargetFiles(),
+                    Tasks.Package.createCopyTargetFiles(
+                        resolve("./packages/tsconfig.cjs.json"),
+                        "commonjs"),
+                    Tasks.Package.copyStaticAssets,
+                    Tasks.Package.createWritePackageFiles((p) => {
+                        return Object.assign({}, p, {
+                            funding: {
+                                "type" : "individual",
+                                "url" : "https://github.com/sponsors/patrick-rodgers/",
+                            },
+                            type: "module",
+                        });
+                    }),
+                ],
+            },
         ],
 
         postPackageTasks: [
-            {
-                // create the pnpjs bundle rolling up all library functionality
-                // we re-build it from the original ts source so that the source map will allow
-                // folks to see the orignal source when debugging
-                task: webpack({
-                    devtool: "source-map",
-                    entry: resolve("./packages/pnpjs/index.ts"),
-                    mode: "production",
-                    module: {
-                        rules: [
-                            {
-                                test: /\.ts$/,
-                                use: [{
-                                    loader: "ts-loader",
-                                    options: {
-                                        configFile: resolve("./packages/pnpjs/tsconfig.json"),
-                                        // we can't use transpile only mode, webpack produces a ton of warnings (errors in 5)
-                                    },
-                                }],
-                            },
-                        ],
-                    },
-                    output: {
-                        filename: "pnp.js",
-                        library: "pnp",
-                        libraryTarget: "umd",
-                        path: resolve("./dist/packages/pnpjs/dist"),
-                    },
-                    performance: {
-                        // we are making a big package, but this is designed to be non-optimal
-                        maxAssetSize: 400000,
-                        maxEntrypointSize: 400000,
-                    },
-                    plugins: [
-                        new wp.BannerPlugin({
-                            banner,
-                            raw: true,
-                        }),
+            webpack({
+                devtool: "source-map",
+                entry: resolve("./packages/pnpjs/index.ts"),
+                mode: "production",
+                module: {
+                    rules: [
+                        {
+                            test: /\.ts$/,
+                            use: [{
+                                loader: "ts-loader",
+                                options: {
+                                    configFile: resolve("./packages/pnpjs/tsconfig.esm.json"),
+                                    // we can't use transpile only mode, webpack produces a ton of warnings (errors in 5)
+                                },
+                            }],
+                        },
                     ],
-                    resolve: {
-                        extensions: [".ts", ".tsx", ".js", ".json"],
-                        plugins: [new TsconfigPathsPlugin({ configFile: resolve("./packages/pnpjs/tsconfig.json") })],
-                    },
-                    stats: {
-                        assets: false,
-                        colors: true,
-                    },
-                }),
-            },
+                },
+                output: {
+                    filename: "pnp.js",
+                    library: "pnp",
+                    libraryTarget: "umd",
+                    path: resolve("./dist/packages/pnpjs/dist"),
+                },
+                performance: {
+                    // we are making a big package, but this is designed to be non-optimal
+                    maxAssetSize: 400000,
+                    maxEntrypointSize: 400000,
+                },
+                plugins: [
+                    new wp.BannerPlugin({
+                        banner,
+                        raw: true,
+                    }),
+                ],
+                resolve: {
+                    extensions: [".ts", ".tsx", ".js", ".json"],
+                    plugins: [new TsconfigPathsPlugin({ configFile: resolve("./packages/pnpjs/tsconfig.esm.json") })],
+                },
+                stats: {
+                    assets: false,
+                    colors: true,
+                },
+            }),
         ],
     },
     <PublishSchema>{

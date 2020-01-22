@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../tsconfig.cjs.json",
     "compilerOptions": {
         "types": [
             "sharepoint"
@@ -18,28 +18,28 @@
     ],
     "references": [
         {
-            "path": "../adaljsclient"
+            "path": "../adaljsclient/tsconfig.cjs.json"
         },
         {
-            "path": "../common"
+            "path": "../common/tsconfig.cjs.json"
         },
         {
-            "path": "../logging"
+            "path": "../logging/tsconfig.cjs.json"
         },
         {
-            "path": "../odata"
+            "path": "../odata/tsconfig.cjs.json"
         },
         {
-            "path": "../sp"
+            "path": "../sp/tsconfig.cjs.json"
         },
         {
-            "path": "../graph"
+            "path": "../graph/tsconfig.cjs.json"
         },
         {
-            "path": "../config-store"
+            "path": "../config-store/tsconfig.cjs.json"
         },
         {
-            "path": "../sp-addinhelpers"
+            "path": "../sp-addinhelpers/tsconfig.cjs.json"
         }
     ]
 }

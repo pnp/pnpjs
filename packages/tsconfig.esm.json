@@ -1,0 +1,42 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "../build/packages/esm",
+        "module": "esnext",
+        "lib": [
+            "es2015",
+            "dom"
+        ]
+    },
+    "include": [],
+    "references": [
+        {
+            "path": "./common/tsconfig.esm.json"
+        },
+        {
+            "path": "./config-store/tsconfig.esm.json"
+        },
+        {
+            "path": "./graph/tsconfig.esm.json"
+        },
+        {
+            "path": "./logging/tsconfig.esm.json"
+        },
+        {
+            "path": "./nodejs/tsconfig.esm.json"
+        },
+        {
+            "path": "./odata/tsconfig.esm.json"
+        },
+        {
+            "path": "./pnpjs/tsconfig.esm.json"
+        },
+        {
+            "path": "./sp/tsconfig.esm.json"
+        },
+        {
+            "path": "./sp-addinhelpers/tsconfig.esm.json"
+        }
+    ]
+}

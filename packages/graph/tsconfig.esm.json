@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../tsconfig.esm.json",
     "compilerOptions": {
         "strictNullChecks": false
     },
@@ -15,16 +15,16 @@
     ],
     "references": [
         {
-            "path": "../adaljsclient"
+            "path": "../adaljsclient/tsconfig.esm.json"
         },
         {
-            "path": "../common"
+            "path": "../common/tsconfig.esm.json"
         },
         {
-            "path": "../logging"
+            "path": "../logging/tsconfig.esm.json"
         },
         {
-            "path": "../odata"
+            "path": "../odata/tsconfig.esm.json"
         }
     ]
 }

@@ -1,0 +1,42 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "../build/packages/cjs",
+        "module": "commonjs",
+        "lib": [
+            "es2015",
+            "dom"
+        ]
+    },
+    "include": [],
+    "references": [
+        {
+            "path": "./common/tsconfig.cjs.json"
+        },
+        {
+            "path": "./config-store/tsconfig.cjs.json"
+        },
+        {
+            "path": "./graph/tsconfig.cjs.json"
+        },
+        {
+            "path": "./logging/tsconfig.cjs.json"
+        },
+        {
+            "path": "./nodejs/tsconfig.cjs.json"
+        },
+        {
+            "path": "./odata/tsconfig.cjs.json"
+        },
+        {
+            "path": "./pnpjs/tsconfig.cjs.json"
+        },
+        {
+            "path": "./sp/tsconfig.cjs.json"
+        },
+        {
+            "path": "./sp-addinhelpers/tsconfig.cjs.json"
+        }
+    ]
+}

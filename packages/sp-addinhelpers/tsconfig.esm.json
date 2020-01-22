@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.module.json",
+    "extends": "../tsconfig.esm.json",
     "compilerOptions": {
         "types": [
             "sharepoint"
@@ -14,10 +14,10 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.module.json"
+            "path": "../common/tsconfig.esm.json"
         },
         {
-            "path": "../sp/tsconfig.module.json"
+            "path": "../sp/tsconfig.esm.json"
         }
     ]
 }
