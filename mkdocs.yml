@@ -13,6 +13,7 @@ nav:
     - 'Debugging Tests': 'debug-tests.md'    
     - 'SPFx On-Premises': 'SPFx-on-premises.md'
     - 'Building Docs': 'documentation.md'
+    - 'Working in Nodejs': 'nodejs-support.md'
   - 'Library Concepts':
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Custom Bundle': 'concepts/custom-bundle.md'

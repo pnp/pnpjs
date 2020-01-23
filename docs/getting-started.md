@@ -180,14 +180,16 @@ export class SampleService {
 
 ## Connect to SharePoint from Node
 
-`npm i @pnp/sp @pnp/nodejs`
+> Please see the [main article on how we support node versions]() that require commonjs modules.
+
+`npm i @pnp/sp-commonjs @pnp/nodejs-commonjs`
 
 This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the [packages](packages.md) page.
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
-import { SPFetchClient } from "@pnp/nodejs";
+import { sp } from "@pnp/sp-commonjs";
+import { SPFetchClient } from "@pnp/nodejs-commonjs";
 ```
 
 Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.
@@ -213,13 +215,13 @@ sp.web.select("Title", "Description").get().then(w => {
 Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
 [./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/graph.ts) for a live example.
 
-`npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs`
+`npm i @pnp/graph-commonjs @pnp/nodejs-commonjs`
 
 Now we need to import what we'll need to call graph
 
 ```TypeScript
-import { graph } from "@pnp/graph/presets/all";
-import { AdalFetchClient } from "@pnp/nodejs";
+import { graph } from "@pnp/graph-commonjs";
+import { AdalFetchClient } from "@pnp/nodejs-commonjs";
 ```
 
 Now we can make our graph calls after setting up the Adal client. Note you'll need to setup an AzureAD App registration with the necessary permissions.

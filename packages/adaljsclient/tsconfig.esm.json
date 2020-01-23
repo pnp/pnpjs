@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.module.json",
+    "extends": "../tsconfig.esm.json",
     "types": [
         "adal"
     ],
@@ -9,7 +9,7 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.module.json"
+            "path": "../common/tsconfig.esm.json"
         }
     ]
 }

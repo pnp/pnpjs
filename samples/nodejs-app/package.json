@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-app",
+  "version": "1.0.0",
+  "description": "Sample nodejs app using PnPjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc -p . && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@pnp/nodejs-commonjs": "^2.0.2-5",
+    "@pnp/sp-commonjs": "^2.0.2-5"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
+}

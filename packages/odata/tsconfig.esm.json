@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.esm.json",
+    "include": [
+        "./**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../common/tsconfig.esm.json"
+        },
+        {
+            "path": "../logging/tsconfig.esm.json"
+        }
+    ]
+}

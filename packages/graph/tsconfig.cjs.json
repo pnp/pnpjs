@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.module.json",
+    "extends": "../tsconfig.cjs.json",
     "compilerOptions": {
         "strictNullChecks": false
     },
@@ -15,16 +15,16 @@
     ],
     "references": [
         {
-            "path": "../adaljsclient/tsconfig.module.json"
+            "path": "../adaljsclient/tsconfig.cjs.json"
         },
         {
-            "path": "../common/tsconfig.module.json"
+            "path": "../common/tsconfig.cjs.json"
         },
         {
-            "path": "../logging/tsconfig.module.json"
+            "path": "../logging/tsconfig.cjs.json"
         },
         {
-            "path": "../odata/tsconfig.module.json"
+            "path": "../odata/tsconfig.cjs.json"
         }
     ]
 }
