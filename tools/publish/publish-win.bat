@@ -36,7 +36,7 @@ git push
 ::
 call npm run clean
 call npm run package
-call pnpbuild -n build
+call pnpbuild -n publish
 
 ::
 :: update the documentation
