@@ -49,22 +49,74 @@ export default <ConfigCollection>[
 
         packageTargets: [
             {
-                outDir: resolve("./dist/packages/"),
+                outDir: resolve("./dist/packages/esm"),
                 target: resolve("./packages/tsconfig.esm.json"),
                 tasks: [
                     Tasks.Package.createCopyTargetFiles(),
-                    Tasks.Package.createCopyTargetFiles(
-                        resolve("./packages/tsconfig.cjs.json"),
-                        "commonjs"),
                     Tasks.Package.copyStaticAssets,
                     Tasks.Package.createWritePackageFiles((p) => {
                         return Object.assign({}, p, {
                             funding: {
-                                "type" : "individual",
-                                "url" : "https://github.com/sponsors/patrick-rodgers/",
+                                "type": "individual",
+                                "url": "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "module",
                         });
+                    }),
+                ],
+            },
+            {
+                outDir: resolve("./dist/packages/commonjs"),
+                target: resolve("./packages/tsconfig.cjs.json"),
+                tasks: [
+                    Tasks.Package.createCopyTargetFiles("", "", [function(file, _enconding, cb) {
+                        // we need to rewrite all the requires that use @pnp/something to be @pnp/something-commonjs
+
+                        if (/\.js$|\.d\.ts$/i.test(file.path)) {
+
+                            const content: string = file.contents.toString("utf8");
+                            file.contents = Buffer.from(content.replace(/"\@pnp\/(\w*?)"/ig, `"@pnp/$1-commonjs"`));
+                        }
+
+                        cb(null, file);
+                    }]),
+                    Tasks.Package.copyStaticAssets,
+                    Tasks.Package.createWritePackageFiles(p => {
+
+                        const newP = Object.assign({}, p, {
+                            funding: {
+                                "type": "individual",
+                                "url": "https://github.com/sponsors/patrick-rodgers/",
+                            },
+                            type: "commonjs",
+                        });
+
+                        // selective imports don't work in commonjs or matter for nodejs
+                        // so we retarget main to the preset for these libraries (and update typings pointer)
+                        if (newP.name.match(/\/sp$|\/graph$/)) {
+                            newP.main = "./presets/all.js";
+                            newP.typings = "./presets/all";
+                        }
+
+                        // update name field to include -commonjs
+                        newP.name = `${newP.name}-commonjs`;
+
+                        // and we need to rewrite the dependencies to point to the commonjs ones
+                        if (newP.dependencies) {
+                            const newDeps = {};
+                            for (const key in newP.dependencies) {
+
+                                if (key.startsWith("@pnp/")) {
+                                    newDeps[`${key}-commonjs`] = newP.dependencies[key];
+                                } else {
+                                    newDeps[key] = newP.dependencies[key];
+                                }
+                            }
+
+                            newP.dependencies = newDeps;
+                        }
+
+                        return newP;
                     }),
                 ],
             },
@@ -93,7 +145,7 @@ export default <ConfigCollection>[
                     filename: "pnp.js",
                     library: "pnp",
                     libraryTarget: "umd",
-                    path: resolve("./dist/packages/pnpjs/dist"),
+                    path: resolve("./dist/packages/esm/pnpjs/dist"),
                 },
                 performance: {
                     // we are making a big package, but this is designed to be non-optimal
@@ -123,7 +175,10 @@ export default <ConfigCollection>[
 
         role: "publish",
 
-        packageRoot: resolve("./dist/packages"),
+        packageRoots: [
+            resolve("./dist/packages/esm"),
+            resolve("./dist/packages/commonjs"),
+        ],
 
         prePublishTasks: [],
 
@@ -156,7 +211,10 @@ export default <ConfigCollection>[
 
         role: "publish",
 
-        packageRoot: resolve("./dist/packages"),
+        packageRoots: [
+            resolve("./dist/packages/esm"),
+            resolve("./dist/packages/commonjs"),
+        ],
 
         prePublishTasks: [],
 

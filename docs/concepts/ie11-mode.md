@@ -2,12 +2,16 @@
 
 Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to [invoke](./invokable.md) method chains.
 
+> If you are supporting IE 11, please see the article on [polyfills](./polyfill.md).
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 
-// set ie 11 mode
 sp.setup({
+  // set ie 11 mode
   ie11: true,
+  // only needed when working within SharePoint Framework
+  spfxContext: this.context
 });
 ```
 

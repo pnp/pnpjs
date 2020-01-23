@@ -69,7 +69,7 @@ export interface PublishSchema extends BaseSchema {
 
     role: "publish";
 
-    packageRoot: string;
+    packageRoots: string[];
 
     prePublishTasks: PublishTask[];
 
