@@ -734,6 +734,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../nodejs-support/" title="Working in Nodejs" class="md-nav__link">
+      Working in Nodejs
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2335,11 +2347,14 @@ you are already importing the sp variable from @pnp/sp or the graph variable fro
 
 
 <h2 id="connect-to-sharepoint-from-node">Connect to SharePoint from Node<a class="headerlink" href="#connect-to-sharepoint-from-node" title="Permanent link">&para;</a></h2>
-<p><code>npm i @pnp/sp @pnp/nodejs</code></p>
+<blockquote>
+<p>Please see the <a href="">main article on how we support node versions</a> that require commonjs modules.</p>
+</blockquote>
+<p><code>npm i @pnp/sp-commonjs @pnp/nodejs-commonjs</code></p>
 <p>This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the <a href="../packages/">packages</a> page.
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
 </pre></div>
 
 
@@ -2363,10 +2378,10 @@ Once these are installed you need to import them into your project, to communica
 <h2 id="connect-to-microsoft-graph-from-node">Connect to Microsoft Graph From Node<a class="headerlink" href="#connect-to-microsoft-graph-from-node" title="Permanent link">&para;</a></h2>
 <p>Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
 <a href="https://github.com/pnp/pnpjs/blob/master/debug/launch/graph.ts">./debug/launch/graph.ts</a> for a live example.</p>
-<p><code>npm i @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs</code></p>
+<p><code>npm i @pnp/graph-commonjs @pnp/nodejs-commonjs</code></p>
 <p>Now we need to import what we'll need to call graph</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
 </pre></div>
 
 

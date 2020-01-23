@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pnp.github.io/pnpjs/getting-started-dev/">
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/nodejs-support/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>Contributing - PnP/PnPjs</title>
+        <title>Working in Nodejs - PnP/PnPjs</title>
       
     
     
@@ -102,7 +102,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#contribution-guide" tabindex="1" class="md-skip">
+      <a href="../#working-in-nodejs" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -128,7 +128,7 @@
                 PnP/PnPjs
               </span>
               <span class="md-header-nav__topic">
-                Contributing
+                Working in Nodejs
               </span>
             
           
@@ -402,56 +402,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Contributing
-      </label>
-    
-    <a href="./" title="Contributing" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../getting-started-dev/" title="Contributing" class="md-nav__link">
       Contributing
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#contributor-guidance" title="Contributor Guidance" class="md-nav__link">
-    Contributor Guidance
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setup-your-development-environment" title="Setup your development environment" class="md-nav__link">
-    Setup your development environment
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -519,11 +474,90 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../nodejs-support/" title="Working in Nodejs" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Working in Nodejs
+      </label>
+    
+    <a href="./" title="Working in Nodejs" class="md-nav__link md-nav__link--active">
       Working in Nodejs
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#commonjs-libraries" title="CommonJS Libraries" class="md-nav__link">
+    CommonJS Libraries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-libraries" title="Install Libraries" class="md-nav__link">
+    Install Libraries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexts" title="index.ts" class="md-nav__link">
+    index.ts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-tsconfigjson" title="Add a tsconfig.json" class="md-nav__link">
+    Add a tsconfig.json
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-an-script-to-packagejson" title="Add an script to package.json" class="md-nav__link">
+    Add an script to package.json
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-it" title="Run It!" class="md-nav__link">
+    Run It!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -1849,16 +1883,50 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#contributor-guidance" title="Contributor Guidance" class="md-nav__link">
-    Contributor Guidance
+  <a href="#commonjs-libraries" title="CommonJS Libraries" class="md-nav__link">
+    CommonJS Libraries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-libraries" title="Install Libraries" class="md-nav__link">
+    Install Libraries
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#setup-your-development-environment" title="Setup your development environment" class="md-nav__link">
-    Setup your development environment
+        
+          <li class="md-nav__item">
+  <a href="#indexts" title="index.ts" class="md-nav__link">
+    index.ts
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-tsconfigjson" title="Add a tsconfig.json" class="md-nav__link">
+    Add a tsconfig.json
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-an-script-to-packagejson" title="Add an script to package.json" class="md-nav__link">
+    Add an script to package.json
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-it" title="Run It!" class="md-nav__link">
+    Run It!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1878,66 +1946,111 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/getting-started-dev.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/nodejs-support.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="contribution-guide">Contribution Guide<a class="headerlink" href="#contribution-guide" title="Permanent link">&para;</a></h1>
-<p>Thank you for your interest in contributing to our work. This guide should help you get started, please let us know if you have any questions.</p>
-<h2 id="contributor-guidance">Contributor Guidance<a class="headerlink" href="#contributor-guidance" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Target your pull requests to the <strong>version-2</strong> branch</li>
-<li>Add/Update any relevant docs articles in the relevant package's docs folder related to your changes</li>
-<li>Include a test for any new functionality and ensure all existing tests are passing by running <code>npm test</code></li>
-<li>Ensure tslint checks pass by typing <code>npm run lint</code></li>
-<li>Keep your PRs as simple as possible and describe the changes to help the reviewer understand your work</li>
-<li>If you have an idea for a larger change to the library please <a href="https://github.com/pnp/pnpjs/issues">open an issue</a> and let's discuss before you invest many hours - these are very welcome but want to ensure it is something we can merge before you spend the time :)</li>
-</ul>
+                <h1 id="working-in-nodejs">Working in Nodejs<a class="headerlink" href="#working-in-nodejs" title="Permanent link">&para;</a></h1>
+<p>As outlined on the <a href="../getting-started/#connect-to-sharepoint-from-node">getting started page</a> you can easily use the library with Nodejs, but there are some key differences you need to consider.</p>
+<p>But first a little history, you can skip this part if you just want to see how things work but felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this <a href="https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling">following the available guidance</a> but ultimately it didn't work across all node versions and we unpublished 2.0.1.</p>
+<h2 id="commonjs-libraries">CommonJS Libraries<a class="headerlink" href="#commonjs-libraries" title="Permanent link">&para;</a></h2>
+<p>Because of the difficulties of working with es modules in node we recommend using our mirror packages providing commonjs modules. These can be installed by using the package name and appending -commonjs, such as:</p>
+<div class="codehilite"><pre><span></span>npm install @pnp/sp-commonjs @pnp/nodejs-commonjs
+</pre></div>
+
+
+<p>These packages are built from the same source and released at the same time so all updates are included with each release. The only difference is that for the sp-commonjs and graph-commonjs packages we target the "all" preset as the entry point. This makes things a little easier in node where bundle sizes aren't an issue. You can see this in the <a href="https://github.com/pnp/pnpjs/tree/version-2/samples/nodejs-app">nodejs-app sample</a>. Here is that sample explained fully:</p>
+<h3 id="install-libraries">Install Libraries<a class="headerlink" href="#install-libraries" title="Permanent link">&para;</a></h3>
+<p>We want to make a simple request to SharePoint so we need to first install the modules we need:</p>
+<div class="codehilite"><pre><span></span>npm install @pnp/sp-commonjs @pnp/nodejs-commonjs --save
+</pre></div>
+
+
+<p>We will also install TypeScript:</p>
+<div class="codehilite"><pre><span></span>npm install typescript --save-dev
+</pre></div>
+
+
+<h3 id="indexts">index.ts<a class="headerlink" href="#indexts" title="Permanent link">&para;</a></h3>
+<p>We will create an index.ts file and add the following code. You will need to update the site url, client id, and client secret to your values. This should be done using a settings file or something like Azure KeyVault for production, but for this example it is good enough.</p>
+<div class="codehilite"><pre><span></span><span class="c1">// our imports come from the -commonjs libs</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
+
+<span class="c1">// we call setup to use the node client</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{ site url }&quot;</span><span class="p">,</span> <span class="s2">&quot;{ client id }&quot;</span><span class="p">,</span> <span class="s2">&quot;{ client secret }&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">makeRequest() {</span>
+
+    <span class="c1">// make a request to get the web&#39;s details</span>
+    <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// get past no await at root of app</span>
+<span class="nx">makeRequest</span><span class="p">();</span>
+</pre></div>
+
+
 <blockquote>
-<p>If you need to target a PR for version 1, please target the "version-1" branch</p>
+<p>Don't forget you will need to <a href="https://pnp.github.io/pnpjs/debugging/#register-an-add-in">register an app</a> to get the client id and secret.</p>
 </blockquote>
-<h2 id="setup-your-development-environment">Setup your development environment<a class="headerlink" href="#setup-your-development-environment" title="Permanent link">&para;</a></h2>
-<p>These steps will help you get your environment setup for contributing to the core library.</p>
-<ol>
-<li>
-<p>Install <a href="https://code.visualstudio.com/">Visual Studio Code</a> - this is the development environment we will use. It is similar to a light-weight Visual Studio designed for each editing of client file types such as .ts and .js. (Note that if you prefer you can use Visual Studio).</p>
-</li>
-<li>
-<p>Install <a href="https://nodejs.org/en/download/">Node JS</a> - this provides two key capabilities; the first is the nodejs server which will act as our development server (think iisexpress), the second is npm a package manager (think nuget).</p>
-</li>
-<li>
-<p>On Windows: Install <a href="https://www.python.org/downloads/release/python-2710/">Python v2.7.10</a> - this is used by some of the plug-ins and build tools inside Node JS - (Python v3.x.x is not supported by those modules). If Visual Studio is not installed on the client in addition to this C++ runtime is required. Please see <a href="https://github.com/nodejs/node-gyp/blob/master/README.md">node-gyp Readme</a></p>
-</li>
-<li>
-<p>Install a console emulator of your choice, for Windows <a href="http://cmder.net/">Cmder</a> is popular. If installing Cmder choosing the full option will allow you to use git for windows. Whatever option you choose we will refer in the rest of the guide to "console" as the thing you installed in this step.</p>
-</li>
-<li>
-<p>Install the tslint extension in VS Code:</p>
-<ol>
-<li>Press Shift + Ctrl + "p" to open the command panel</li>
-<li>Begin typing "install extension" and select the command when it appears in view</li>
-<li>Begin typing "tslint" and select the package when it appears in view</li>
-<li>Restart Code after installation</li>
-</ol>
-</li>
-<li>
-<p>Install the gulp command line globally by typing the following code in your console <code>npm install -g gulp-cli</code></p>
-</li>
-<li>
-<p>Now we need to fork and clone the git repository. This can be done using your <a href="https://help.github.com/articles/fork-a-repo/">console</a> or using your preferred Git GUI tool.</p>
-</li>
-<li>
-<p>Once you have the code locally, navigate to the root of the project in your console. Type the following command:</p>
-</li>
-</ol>
-<p><code>npm install</code> - installs all of the npm package dependencies (may take awhile the first time)</p>
-<ol>
-<li>
-<p>Copy settings.example.js in the root of your project to settings.js. Edit settings.js to reflect your personal environment (username, password, siteUrl, etc.).</p>
-</li>
-<li>
-<p>Then you can follow the guidance in the <a href="../debugging/">debugging</a> article to get started testing right away!</p>
-</li>
-</ol>
+<h3 id="add-a-tsconfigjson">Add a tsconfig.json<a class="headerlink" href="#add-a-tsconfigjson" title="Permanent link">&para;</a></h3>
+<p>Not strictly necessary but very useful to include a tsconfig.json to control how tsc transpiles your code to JavaScript</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;compilerOptions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;module&quot;</span><span class="p">:</span> <span class="s2">&quot;commonjs&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;esnext&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;moduleResolution&quot;</span><span class="p">:</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;declaration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;outDir&quot;</span><span class="p">:</span> <span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;skipLibCheck&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;sourceMap&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;lib&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;dom&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;esnext&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;./index.ts&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="add-an-script-to-packagejson">Add an script to package.json<a class="headerlink" href="#add-an-script-to-packagejson" title="Permanent link">&para;</a></h3>
+<p>We add the "start" script to the default package.json</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nodejs-app&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample nodejs app using PnPjs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;index.js&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;tsc -p . &amp;&amp; node dist/index.js&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;license&quot;</span><span class="p">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0.2-5&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;@pnp/sp-commonjs&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0.2-5&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;typescript&quot;</span><span class="p">:</span> <span class="s2">&quot;^3.7.5&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="run-it">Run It!<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h3>
+<p>You can now run your program using:</p>
+<div class="codehilite"><pre><span></span>npm start
+</pre></div>
                 
                   
                 
@@ -1958,7 +2071,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../transition-guide/" title="Transition Guide" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../documentation/" title="Building Docs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1967,19 +2080,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Transition Guide
+                Building Docs
               </span>
             </div>
           </a>
         
         
-          <a href="../npm-scripts/" title="Npm Scripts" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../concepts/selective-imports/" title="Selective Imports" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Npm Scripts
+                Selective Imports
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -2026,7 +2139,7 @@
       
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/getting-started-dev/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/nodejs-support/" alt="spacer" />
 
   </body>
 </html>

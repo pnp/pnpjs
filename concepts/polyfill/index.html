@@ -468,6 +468,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs-support/" title="Working in Nodejs" class="md-nav__link">
+      Working in Nodejs
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -605,20 +617,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#polyfill-service" title="Polyfill Service" class="md-nav__link">
-    Polyfill Service
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#module-loader" title="Module Loader" class="md-nav__link">
-    Module Loader
-  </a>
   
 </li>
       
@@ -1904,20 +1902,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#polyfill-service" title="Polyfill Service" class="md-nav__link">
-    Polyfill Service
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#module-loader" title="Module Loader" class="md-nav__link">
-    Module Loader
-  </a>
-  
-</li>
-      
       
       
       
@@ -1939,13 +1923,16 @@
                 
                 <h1 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link">&para;</a></h1>
 <p>These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality. There are several ways to include this missing functionality.</p>
+<blockquote>
+<p>If you are supporting IE11 you should <a href="../ie11-mode/">enable IE11 mode</a>, which will result in reduced functionality.</p>
+</blockquote>
 <h2 id="ie-11-polyfill-package">IE 11 Polyfill package<a class="headerlink" href="#ie-11-polyfill-package" title="Permanent link">&para;</a></h2>
 <p>We created a package you can use to include the needed functionality without having to determine what polyfills are required. Also, this package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you need to support IE 11.</p>
 <h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
-<p><code>npm install --save @pnp/polyfill-ie11</code></p>
+<p><code>npm install @pnp/polyfill-ie11 --save</code></p>
 <h3 id="use">Use<a class="headerlink" href="#use" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="sb">`ID gt 6000`</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">l</span> <span class="o">=&gt;</span> <span class="sb">`</span><span class="si">${</span><span class="nx">l</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">&lt;br /&gt;`</span><span class="p">);</span>
@@ -1957,7 +1944,7 @@
 <p>Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version for IE 11 as shown below.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">SearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/searchquerybuilder&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ISearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ISearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="c1">// works in IE11 and other browsers</span>
 <span class="kr">const</span> <span class="nx">builder</span>: <span class="kt">ISearchQueryBuilder</span> <span class="o">=</span> <span class="nx">SearchQueryBuilder</span><span class="p">().</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">);</span>
@@ -1966,41 +1953,6 @@
   <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
-
-
-<h2 id="polyfill-service">Polyfill Service<a class="headerlink" href="#polyfill-service" title="Permanent link">&para;</a></h2>
-<p>If acceptable to your design and security requirements you can use a service to provide missing functionality. This loads scripts from a service outside of your and our
-control, so please ensure you understand any associated risks.</p>
-<p>To use this option you need to wrap the code in a function, here called "stuffisloaded". Then you need to add another script tag as shown below that will load what you need from the polyfill service. Note the parameter "callback" takes our function name.</p>
-<div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/pnp-pnpjs/1.2.1/pnpjs.es5.umd.bundle.min.js&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="c1">// this function will be executed once the polyfill is loaded.</span>
-<span class="kd">function</span> <span class="nx">stuffisloaded</span><span class="p">()</span> <span class="p">{</span>
-
-  <span class="nx">pnp</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">).</span><span class="nx">innerText</span><span class="o">=</span><span class="nx">data</span><span class="p">.</span><span class="nx">Title</span><span class="p">;</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>  
-    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">).</span><span class="nx">innerText</span><span class="o">=</span><span class="nx">err</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">}</span>
-<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="c">&lt;!-- This script tag loads the required polyfills from the service --&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.polyfill.io/v2/polyfill.min.js?callback=stuffisloaded&amp;features=es6,fetch,Map&amp;flags=always,gated&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-
-
-<h2 id="module-loader">Module Loader<a class="headerlink" href="#module-loader" title="Permanent link">&para;</a></h2>
-<p>If you are using a module loader you need to load the following two files as well. You can do this form a CDN or your style library.</p>
-<ol>
-<li>Download the <strong>es6-promises</strong> polyfill from <a href="https://github.com/stefanpenner/es6-promise">https://github.com/stefanpenner/es6-promise</a> and upload it to your style library.</li>
-<li>Download the <strong>fetch</strong> polyfill from <a href="https://github.com/github/fetch">https://github.com/github/fetch</a> and upload it to your style library.</li>
-<li>Download the <strong>corejs</strong> polyfill from <a href="https://github.com/zloirock/core-js">https://github.com/zloirock/core-js</a> and upload it to your style library.</li>
-<li>Update your module loader to set these files as dependencies before the pnp library is opened.</li>
-</ol>
-<p>One issue you still may see is that you get errors that certain libraries are undefined when you try to run your code. This is because your code is running before
-these libraries are loaded. You need to ensure that all dependencies are loaded <strong>before</strong> making use of the pnp libraries.</p>
                 
                   
                 

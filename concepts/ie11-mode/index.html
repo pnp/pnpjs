@@ -468,6 +468,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs-support/" title="Working in Nodejs" class="md-nav__link">
+      Working in Nodejs
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1857,11 +1869,16 @@
                 
                 <h1 id="ie11-mode">IE11 Mode<a class="headerlink" href="#ie11-mode" title="Permanent link">&para;</a></h1>
 <p>Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to <a href="../invokable/">invoke</a> method chains.</p>
+<blockquote>
+<p>If you are supporting IE 11, please see the article on <a href="../polyfill/">polyfills</a>.</p>
+</blockquote>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="c1">// set ie 11 mode</span>
 <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="c1">// set ie 11 mode</span>
   <span class="nx">ie11</span>: <span class="kt">true</span><span class="p">,</span>
+  <span class="c1">// only needed when working within SharePoint Framework</span>
+  <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
 <span class="p">});</span>
 </pre></div>
 
