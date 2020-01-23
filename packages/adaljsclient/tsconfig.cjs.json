@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../tsconfig.cjs.json",
     "types": [
         "adal"
     ],
@@ -9,7 +9,7 @@
     ],
     "references": [
         {
-            "path": "../common"
+            "path": "../common/tsconfig.cjs.json"
         }
     ]
 }

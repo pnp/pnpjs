@@ -14,11 +14,12 @@ Import the library into your application and access the root sp object
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
 
 (function main() {
 
     // here we will load the current web's title
-    sp.web.select("Title").get().then(w => {
+    sp.web.select("Title")().then(w => {
 
         console.log(`Web Title: ${w.Title}`);
     });
@@ -35,6 +36,7 @@ Import the library into your application, update OnInit, and access the root sp 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
 
 // ...
 
@@ -57,7 +59,7 @@ public render(): void {
     // A simple loading message
     this.domElement.innerHTML = `Loading...`;
 
-    sp.web.select("Title").get().then(w => {
+    sp.web.select("Title")().then(w => {
 
         this.domElement.innerHTML = `Web Title: ${w.Title}`;
     });
@@ -74,6 +76,7 @@ Import the library into your application, setup the node client, make a request
 
 ```TypeScript
 import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
 import { SPFetchClient } from "@pnp/nodejs";
 
 // do this once per page load
@@ -86,7 +89,7 @@ sp.setup({
 });
 
 // now make any calls you need using the configured client
-sp.web.select("Title").get().then(w => {
+sp.web.select("Title")().then(w => {
 
     console.log(`Web Title: ${w.Title}`);
 });

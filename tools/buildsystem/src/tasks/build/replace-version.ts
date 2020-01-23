@@ -16,7 +16,7 @@ interface TSConfig {
  * @param version The version number
  * @param ctx The build context 
  */
-export async function replaceSPHttpVersion(version: string, config: BuildSchema): Promise<void> {
+export async function replaceVersion(version: string, config: BuildSchema): Promise<void> {
 
     const options = {
         files: [],

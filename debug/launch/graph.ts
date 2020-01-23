@@ -1,5 +1,6 @@
 import { Logger, LogLevel } from "../../packages/logging";
 import { graph } from "../../packages/graph";
+import "../../packages/graph/groups";
 import { AdalFetchClient } from "../../packages/nodejs";
 
 declare var process: { exit(code?: number): void };

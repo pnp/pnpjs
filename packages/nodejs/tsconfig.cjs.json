@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.module.json",
+    "extends": "../tsconfig.cjs.json",
     "include": [
         "./**/*.ts",
         "../common/**/*.ts",
@@ -7,10 +7,10 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.module.json"
+            "path": "../common/tsconfig.cjs.json"
         },
         {
-            "path": "../logging/tsconfig.module.json"
+            "path": "../logging/tsconfig.cjs.json"
         }
     ]
 }

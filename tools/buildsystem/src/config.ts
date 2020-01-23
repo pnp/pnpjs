@@ -29,32 +29,29 @@ export interface BuildSchema extends BaseSchema {
 
 // define package related types
 
-export type PackageFunction = (version?: string, config?: PackageSchema, packages?: string[]) => Promise<void>;
+export type PrePackageTask = () => Promise<void>;
 
-export interface PackageTaskScoped {
-    packages: string[];
-    task: PackageFunction;
-}
+export type PostPackageTask = () => Promise<void>;
+
+export type PackageFunction = (target: PackageTargetMap, version?: string) => Promise<void>;
+
+export type PackageTask = PackageFunction;
 
 export interface PackageTargetMap {
-    packageTarget: string;
-    moduleTarget?: string;
+    target: string;
     outDir: string;
+    tasks: PackageTask[];
 }
-
-export type PackageTask = PackageFunction | PackageTaskScoped;
 
 export interface PackageSchema extends BaseSchema {
 
     role: "package";
 
+    prePackageTasks: PrePackageTask[];
+
     packageTargets: PackageTargetMap[];
 
-    prePackageTasks: PackageTask[];
-
-    packageTasks: PackageTask[];
-
-    postPackageTasks: PackageTask[];
+    postPackageTasks: PostPackageTask[];
 }
 
 // define the publish types
@@ -72,7 +69,7 @@ export interface PublishSchema extends BaseSchema {
 
     role: "publish";
 
-    packageRoot: string;
+    packageRoots: string[];
 
     prePublishTasks: PublishTask[];
 

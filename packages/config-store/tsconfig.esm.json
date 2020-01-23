@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../tsconfig.esm.json",
     "include": [
         "./**/*.ts",
         "../common/**/*.ts",
@@ -9,13 +9,13 @@
     ],
     "references": [
         {
-            "path": "../common"
+            "path": "../common/tsconfig.esm.json"
         },
         {
-            "path": "../logging"
+            "path": "../logging/tsconfig.esm.json"
         },
         {
-            "path": "../sp"
+            "path": "../sp/tsconfig.esm.json"
         }
     ]
 }

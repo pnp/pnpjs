@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.module.json",
+    "extends": "../tsconfig.esm.json",
     "compilerOptions": {
         "types": [
             "sharepoint"
@@ -18,28 +18,28 @@
     ],
     "references": [
         {
-            "path": "../adaljsclient/tsconfig.module.json"
+            "path": "../adaljsclient/tsconfig.esm.json"
         },
         {
-            "path": "../common/tsconfig.module.json"
+            "path": "../common/tsconfig.esm.json"
         },
         {
-            "path": "../logging/tsconfig.module.json"
+            "path": "../logging/tsconfig.esm.json"
         },
         {
-            "path": "../odata/tsconfig.module.json"
+            "path": "../odata/tsconfig.esm.json"
         },
         {
-            "path": "../sp/tsconfig.module.json"
+            "path": "../sp/tsconfig.esm.json"
         },
         {
-            "path": "../graph/tsconfig.module.json"
+            "path": "../graph/tsconfig.esm.json"
         },
         {
-            "path": "../config-store/tsconfig.module.json"
+            "path": "../config-store/tsconfig.esm.json"
         },
         {
-            "path": "../sp-addinhelpers/tsconfig.module.json"
+            "path": "../sp-addinhelpers/tsconfig.esm.json"
         }
     ]
 }

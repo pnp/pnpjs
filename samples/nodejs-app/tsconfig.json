@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "moduleResolution": "node",
+        "declaration": true,
+        "outDir": "dist",
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "lib": [
+            "dom",
+            "esnext"
+        ]
+    },
+    "files": [
+        "./index.ts"
+    ]
+}

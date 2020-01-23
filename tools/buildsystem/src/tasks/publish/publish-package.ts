@@ -5,36 +5,39 @@ import * as path from "path";
 import getSubDirNames from "../../lib/getSubDirectoryNames";
 const log = require("fancy-log");
 
-export function publishPackage(version: string, config: PublishSchema): Promise<any> {
+export function publishPackage(_version: string, config: PublishSchema): Promise<any> {
 
     const promises: Promise<void>[] = [];
 
-    const publishRoot = path.resolve(config.packageRoot);
-    const packageFolders = getSubDirNames(publishRoot).filter(name => name !== "documentation");
+    config.packageRoots.forEach(packageRoot => {
 
-    for (let i = 0; i < packageFolders.length; i++) {
+        const publishRoot = path.resolve(packageRoot);
+        const packageFolders = getSubDirNames(publishRoot);
 
-        promises.push(new Promise((resolve, reject) => {
+        for (let i = 0; i < packageFolders.length; i++) {
 
-            const packagePath = path.resolve(publishRoot, packageFolders[i]);
+            promises.push(new Promise((resolve, reject) => {
 
-            log(`${colors.bgBlue(" ")} Publishing ${packagePath}`);
+                const packagePath = path.resolve(publishRoot, packageFolders[i]);
 
-            exec("npm publish --access public",
-                {
-                    cwd: path.resolve(publishRoot, packageFolders[i]),
-                }, (error, _stdout, _stderr) => {
+                log(`${colors.bgBlue(" ")} Publishing ${packagePath}`);
 
-                    if (error === null) {
-                        log(`${colors.bgGreen(" ")} Published ${packagePath}`);
-                        resolve();
-                    } else {
-                        console.error(error);
-                        reject(error);
-                    }
-                });
-        }));
-    }
+                exec("npm publish --access public",
+                    {
+                        cwd: path.resolve(publishRoot, packageFolders[i]),
+                    }, (error, _stdout, _stderr) => {
+
+                        if (error === null) {
+                            log(`${colors.bgGreen(" ")} Published ${packagePath}`);
+                            resolve();
+                        } else {
+                            console.error(error);
+                            reject(error);
+                        }
+                    });
+            }));
+        }
+    });
 
     return Promise.all(promises);
 }
