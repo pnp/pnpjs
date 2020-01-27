@@ -47,6 +47,7 @@ export * from "../hubsites";
 export * from "../items";
 export * from "../lists";
 export * from "../navigation";
+export { spODataEntity, spODataEntityArray } from "../odata";
 export * from "../profiles";
 export * from "../regional-settings";
 export * from "../related-items";
