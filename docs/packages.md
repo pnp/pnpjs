@@ -3,7 +3,7 @@
 The following packages comprise the Patterns and Practices client side libraries. All of the packages are published as a set and depend on their peers within
 the @pnp scope.
 
-The latest published version is **{{version}}**.
+The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon).
 
 |     ||  |
 | ---| -------------|-------------|
