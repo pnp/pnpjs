@@ -1,5 +1,4 @@
-import { graph } from "./rest";
-import { Group, GroupType, GroupAddResult } from "./groups";
+import { Group, GroupType, GroupAddResult, Groups } from "./groups";
 import { GraphQueryableInstance, defaultPath, GraphQueryableCollection } from "./graphqueryable";
 import { TeamProperties, TabsConfiguration } from "./types";
 import { ODataParser, ODataDefaultParser } from "@pnp/odata";
@@ -24,7 +23,7 @@ export class Teams extends GraphQueryableCollection {
             ],
         };
 
-        return graph.groups.add(name, mailNickname, GroupType.Office365, groupProps).then((gar: GroupAddResult) => {
+        return (new Groups(this)).add(name, mailNickname, GroupType.Office365, groupProps).then((gar: GroupAddResult) => {
             return gar.group.createTeam(teamProperties).then(data => {
                 return {
                     data: data,
