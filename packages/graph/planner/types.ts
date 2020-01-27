@@ -38,8 +38,8 @@ export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 /**
  * Plan
  */
-@updateable()
-@deleteable()
+@updateableWithETag()
+@deleteableWithETag()
 export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
 
     public get tasks(): ITasks {
@@ -50,7 +50,7 @@ export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
         return Buckets(this);
     }
 }
-export interface IPlan extends _Plan, IUpdateable<IPlannerPlanType>, IDeleteable { }
+export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag { }
 export const Plan = graphInvokableFactory<IPlan>(_Plan);
 
 @defaultPath("plans")
@@ -133,7 +133,7 @@ export class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> {
         return Tasks(this);
     }
 }
-export interface IBucket extends _Bucket, IUpdateable<IPlannerBucketType>, IDeleteable { }
+export interface IBucket extends _Bucket, IUpdateableWithETag<IPlannerBucketType>, IDeleteableWithETag { }
 export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
 
 

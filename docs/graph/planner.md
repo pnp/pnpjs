@@ -72,7 +72,7 @@ Using the delete() you can get delete a Plan.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const delPlan = await graph.planner.plans.getById('planId').delete();
+const delPlan = await graph.planner.plans.getById('planId').delete('planEtag');
 
 ```
 
@@ -84,7 +84,7 @@ Using the update() you can get update a Plan.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title'});
+const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
 
 ```
 
@@ -133,7 +133,7 @@ Using the delete() you can get delete a Task.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const delTask = await graph.planner.tasks.getById('taskId').delete();
+const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
 
 ```
 
@@ -145,7 +145,7 @@ Using the update() you can get update a Task.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const updTask = await graph.planner.tasks.getById('taskId').update({properties});
+const updTask = await graph.planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
 
 ```
 
@@ -182,7 +182,7 @@ Using the update() you can get update a Bucket.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const updBucket = await graph.planner.buckets.getById('bucketId').update({name: "Name"});
+const updBucket = await graph.planner.buckets.getById('bucketId').update({name: "Name", eTag:'bucketEtag'});
 
 ```
 
@@ -194,7 +194,7 @@ Using the delete() you can get delete a Bucket.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const delBucket = await graph.planner.buckets.getById('bucketId').delete();
+const delBucket = await graph.planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
 
 ```
 
