@@ -1,6 +1,7 @@
 # @pnp/sp/site-scripts
 
-[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md)
+[![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
+
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-scripts";|
