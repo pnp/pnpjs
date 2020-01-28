@@ -11,6 +11,7 @@ declare module "./queryable" {
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;
         __json(): <T = any>(target: T) => () => any;
+        __unwrap(): any;
     }
 
     interface Queryable<DefaultActionType = any> {
@@ -18,6 +19,7 @@ declare module "./queryable" {
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;
         __json(): <T = any>(target: T) => () => any;
+        __unwrap(): any;
     }
 }
 
@@ -45,6 +47,8 @@ extendGlobal([
                     return () => { target.__deepTrace = false; };
                 case "__data":
                     return target.data;
+                case "__unwrap":
+                    return () => target;
                 case "__json":
                     return () => {
 
