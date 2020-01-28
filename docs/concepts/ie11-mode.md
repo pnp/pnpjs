@@ -1,8 +1,17 @@
 # IE11 Mode
 
-Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to [invoke](./invokable.md) method chains.
+Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Configuring the library will allow it to work within IE11, however at a possibly reduced level of functionality depending on your use case. Please see the list below of known limitations.
 
-> If you are supporting IE 11, please see the article on [polyfills](./polyfill.md).
+## Limitations
+
+When required to use IE11 mode there is certain functionality which may not work correctly or at all.
+
+- Unavailable: [Extension Methods](./../odata/extensions.md)
+- Unavailable: [OData Debugging](./../odata/debug.md)
+
+## Configure IE11 Mode
+
+To enable IE11 Mode set the ie11 flag to true in the setup object. Optionally supply the context object when working in [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview).
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -14,6 +23,8 @@ sp.setup({
   spfxContext: this.context
 });
 ```
+
+> If you are supporting IE 11, please see the article on required [polyfills](./polyfill.md).
 
 ## A note on ie11 mode and support
 
