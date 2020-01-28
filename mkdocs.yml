@@ -61,6 +61,7 @@ nav:
       - core: 'odata/core.md'
       - 'OData Batching': 'odata/odata-batch.md'
       - 'Extending an OData library': 'odata/extensions.md'
+      - 'Debugging Proxy Objects': 'odata/debug.md'
       - Parsers: 'odata/parsers.md'
       - Pipeline: 'odata/pipeline.md'
       - Queryable: 'odata/queryable.md'
