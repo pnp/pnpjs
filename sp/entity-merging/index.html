@@ -1143,6 +1143,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../odata/debug/" title="Debugging Proxy Objects" class="md-nav__link">
+      Debugging Proxy Objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../odata/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
@@ -1350,6 +1362,13 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#importing-spodataentity-and-spodataentityarray" title="Importing spODataEntity and spODataEntityArray" class="md-nav__link">
+    Importing spODataEntity and spODataEntityArray
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#request-a-single-entity" title="Request a single entity" class="md-nav__link">
@@ -1851,6 +1870,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#importing-spodataentity-and-spodataentityarray" title="Importing spODataEntity and spODataEntityArray" class="md-nav__link">
+    Importing spODataEntity and spODataEntityArray
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#request-a-single-entity" title="Request a single entity" class="md-nav__link">
     Request a single entity
   </a>
@@ -1885,9 +1911,25 @@
                 
                 <h1 id="pnpsp-entity-merging">@pnp/sp - entity merging<a class="headerlink" href="#pnpsp-entity-merging" title="Permanent link">&para;</a></h1>
 <p>Sometimes when we make a query entity's data we would like then to immediately run other commands on the returned entity. To have data returned as its representing type we make use of the <em>spODataEntity</em> and <em>spODataEntityArray</em> parsers. The below approach works for all instance types such as List, Web, Item, or Field as examples.</p>
+<h2 id="importing-spodataentity-and-spodataentityarray">Importing spODataEntity and spODataEntityArray<a class="headerlink" href="#importing-spodataentity-and-spodataentityarray" title="Permanent link">&para;</a></h2>
+<p>You can import spODataEntity and spODataEntityArray in two ways, depending on your use case. The simplest way is to use the presets/all import as shown in the examples. The downside of this approach is that you can't take advantage of selective imports.</p>
+<p>If you want to take advantage of selective imports while using either of the entity parsers you can use:</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntity</span><span class="p">,</span> <span class="nx">spODataEntityArray</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+</pre></div>
+
+
+<p>The full selective import for the first sample would be:</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntity</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+</pre></div>
+
+
 <h2 id="request-a-single-entity">Request a single entity<a class="headerlink" href="#request-a-single-entity" title="Permanent link">&para;</a></h2>
 <p>If we are loading a single entity we use the <em>spODataEntity</em> method. Here we show loading a list item using the Item class and a simple get query.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntity</span><span class="p">,</span> <span class="nx">Item</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntity</span><span class="p">,</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="c1">// interface defining the returned properties</span>
 <span class="kr">interface</span> <span class="nx">MyProps</span> <span class="p">{</span>
@@ -1897,7 +1939,7 @@
 <span class="k">try</span> <span class="p">{</span>
 
     <span class="c1">// get a list item loaded with data and merged into an instance of Item</span>
-    <span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;ListTitle&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="nx">spODataEntity</span><span class="o">&lt;</span><span class="nx">Item</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;ListTitle&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">usingParser</span><span class="p">(</span><span class="nx">spODataEntity</span><span class="o">&lt;</span><span class="nx">IItem</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">))();</span>
 
     <span class="c1">// log the item id, all properties specified in MyProps will be type checked</span>
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`Item id: </span><span class="si">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">Id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
@@ -1915,7 +1957,7 @@
 
 <h2 id="request-a-collection">Request a collection<a class="headerlink" href="#request-a-collection" title="Permanent link">&para;</a></h2>
 <p>The same pattern works when requesting a collection of objects with the exception of using the <em>spODataEntityArray</em> method.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Item</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="c1">// interface defining the returned properties</span>
 <span class="kr">interface</span> <span class="nx">MyProps</span> <span class="p">{</span>
@@ -1926,7 +1968,7 @@
 <span class="k">try</span> <span class="p">{</span>
 
     <span class="c1">// get a list item loaded with data and merged into an instance of Item</span>
-    <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;ListTitle&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Item</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;OrderByList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">usingParser</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">IItem</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">))();</span>
 
     <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`Item id: </span><span class="si">${</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
