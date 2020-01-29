@@ -1,12 +1,12 @@
 # Polyfills
 
-These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality. There are several ways to include this missing functionality.
+These libraries may make use of some features not found in older browsers. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality.
 
-> If you are supporting IE11 you should [enable IE11 mode](./ie11-mode.md), which will result in reduced functionality.
+> If you are supporting IE11 [enable IE11 mode](./ie11-mode.md).
 
 ## IE 11 Polyfill package
 
-We created a package you can use to include the needed functionality without having to determine what polyfills are required. Also, this package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you need to support IE 11.
+We created a package you can use to include the needed functionality without having to determine what polyfills are required. This package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you are required to support IE 11.
 
 ### Install
 
@@ -25,7 +25,7 @@ sp.web.lists.getByTitle("BigList").items.filter(`ID gt 6000`).get().then(r => {
 
 ### SearchQueryBuilder
 
-Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version for IE 11 as shown below.
+Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version as shown below.
 
 ```TypeScript
 import "@pnp/polyfill-ie11";
