@@ -6,6 +6,8 @@ export {
     IUsers,
     User,
     Users,
+    IPeople,
+    People,
 } from "./types";
 
 declare module "../rest" {

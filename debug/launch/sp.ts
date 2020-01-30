@@ -1,5 +1,5 @@
 import { SPFetchClient } from "@pnp/nodejs";
-
+import { Logger, LogLevel } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 
@@ -18,7 +18,11 @@ export async function Example(settings: any) {
 
   const w = await sp.web();
 
-  console.log(JSON.stringify(w, null, 2));
+  Logger.log({
+    data: w,
+    level: LogLevel.Info,
+    message: "List of Web Data",
+  });
 
-  process.exit();
+  process.exit(0);
 }
