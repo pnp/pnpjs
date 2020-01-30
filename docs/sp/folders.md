@@ -290,10 +290,6 @@ import "@pnp/sp/folders";
 const contentTypeOrder = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").uniqueContentTypeOrder();
 ```
 
-## sharing imports
-
-## TODO:: link to the sharing page and document all there, no need to duplicate
-
 ### Rename a folder
 
 You can rename a folder by updating `FileLeafRef` property:
@@ -328,4 +324,17 @@ await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
     MyFolderField: "field value",
     Title: "My New Folder",
 });
+```
+
+### getFolderById
+
+You can get a folder by Id from a web.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+import { IFolder } from "@pnp/sp/folders";
+
+const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 ```

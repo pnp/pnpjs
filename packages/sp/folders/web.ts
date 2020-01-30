@@ -9,6 +9,7 @@ declare module "../webs/types" {
         readonly rootFolder: IFolder;
         getFolderByServerRelativeUrl(folderRelativeUrl: string): IFolder;
         getFolderByServerRelativePath(folderRelativeUrl: string): IFolder;
+        getFolderById(uniqueId: string): IFolder;
     }
     interface IWeb {
 
@@ -36,6 +37,13 @@ declare module "../webs/types" {
          * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
          */
         getFolderByServerRelativePath(folderRelativeUrl: string): IFolder;
+
+        /**
+         * Gets a folder by id
+         *
+         * @param uniqueId The UniqueId of the folder
+         */
+        getFolderById(uniqueId: string): IFolder;
     }
 }
 
@@ -48,4 +56,8 @@ _Web.prototype.getFolderByServerRelativeUrl = function (this: _Web, folderRelati
 
 _Web.prototype.getFolderByServerRelativePath = function (this: _Web, folderRelativeUrl: string): IFolder {
     return Folder(this, `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(folderRelativeUrl)}')`);
+};
+
+_Web.prototype.getFolderById = function (this: _Web, uniqueId: string): IFolder {
+    return Folder(this, `getFolderById('${uniqueId}')`);
 };
