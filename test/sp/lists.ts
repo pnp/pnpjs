@@ -346,7 +346,7 @@ describe("List", function () {
             const listTitle = `pnp testing addValidateUpdateItemUsingPath`;
             const listAddRes = await sp.web.lists.ensure(listTitle);
 
-            const testList = await listAddRes.list.select("ParentWebUrl").get<{ ParentWebUrl: string }>();
+            const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
             const title = `PnPTest_ListAddValidateUpdateItemUsingPath`;
             const formValues: IListItemFormUpdateValue[] = [
@@ -361,6 +361,28 @@ describe("List", function () {
 
             return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
                 `${testList.ParentWebUrl}/Lists/${listTitle}/${folderName}`)).to.eventually.be.fulfilled;
+        });
+
+        it(".addValidateUpdateItemUsingPath Folder", async function () {
+
+            const listTitle = `pnp testing addValidateUpdateItemUsingPath2`;
+            const listAddRes = await sp.web.lists.ensure(listTitle, "", 101);
+
+            const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
+
+            const title = `PnPTest_ListAddValidateUpdateItemUsingPath`;
+            const formValues: IListItemFormUpdateValue[] = [
+                {
+                    FieldName: "Title",
+                    FieldValue: title,
+                },
+            ];
+
+            return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
+                `${testList.ParentWebUrl}/${listTitle}`, true, "", {
+                leafName: "MyFolder",
+                objectType: 1,
+            })).to.eventually.be.fulfilled;
         });
 
         it(".contentTypes", function () {

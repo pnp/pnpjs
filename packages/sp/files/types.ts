@@ -16,6 +16,7 @@ import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
+import { toResourcePath } from "../utils/toResourcePath";
 
 /**
  * Describes a collection of File objects
@@ -226,12 +227,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
         await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: {
-                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
-                    __metadata: {
-                        type: "SP.ResourcePath",
-                    },
-                },
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
                     KeepBoth: KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
@@ -240,12 +236,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: {
-                    DecodedUrl: `${hostUrl}${srcUrl}`,
-                    __metadata: {
-                        type: "SP.ResourcePath",
-                    },
-                },
+                srcPath: toResourcePath(`${hostUrl}${srcUrl}`),
             }));
     }
 
@@ -290,12 +281,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
         await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: {
-                    DecodedUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
-                    __metadata: {
-                        type: "SP.ResourcePath",
-                    },
-                },
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
                     KeepBoth: KeepBoth,
                     ResetAuthorAndCreatedOnCopy: false,
@@ -304,12 +290,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: {
-                    DecodedUrl: `${hostUrl}${srcUrl}`,
-                    __metadata: {
-                        type: "SP.ResourcePath",
-                    },
-                },
+                srcPath: toResourcePath(`${hostUrl}${srcUrl}`),
             }));
     }
 
