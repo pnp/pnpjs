@@ -113,6 +113,14 @@ describe("files", () => {
             const far = await files.addTemplateFile(path, TemplateFileType.StandardPage);
             return expect(far.file()).to.eventually.be.fulfilled;
         });
+
+        it("getFileById", async function () {
+
+            const name = `Testing getFileById - ${getRandomString(4)}.txt`;
+            const far = await files.add(name, "Some test text content.");
+            const fileById = await sp.web.getFileById(far.data.UniqueId).select("UniqueId")();
+            return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
+        });
     }
 });
 

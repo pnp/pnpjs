@@ -176,5 +176,11 @@ describe("Folder", () => {
             await web.rootFolder.folders.getByName("SiteAssets").folders.add("test12");
             return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName("test12").shareWith(login)).to.eventually.be.fulfilled;
         });
+
+        it("getFolderById", async function () {
+            const folderInfo = await web.rootFolder.select("UniqueId")();
+            const folderByIdInfo = await web.getFolderById(folderInfo.UniqueId).select("UniqueId")();
+            return expect(folderInfo.UniqueId).to.eq(folderByIdInfo.UniqueId);
+        });
     }
 });

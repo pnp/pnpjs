@@ -343,3 +343,16 @@ const destinationUrl = `sites/dev2/SiteAssets/new-file.docx`;
 
 await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyByPath(destinationUrl, false, true);
 ```
+
+### getFileById
+
+You can get a file by Id from a web.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import { IFile } from "@pnp/sp/files";
+
+const file: IFile = sp.web.getFileById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
+```

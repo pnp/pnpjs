@@ -50,3 +50,15 @@ await graph.me.update({
     displayName: 'John Doe'
 });
 ```
+
+## People
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const people = await graph.me.people();
+
+// get the top 3 people
+const people = await graph.me.people.top(3)();
+```

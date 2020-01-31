@@ -1,4 +1,4 @@
-import { assign, hOP, isArray } from "@pnp/common";
+import { assign, hOP, isArray, objectDefinedNotNull } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -24,6 +24,7 @@ import { IFormInfo } from "../forms/types";
 import { IFolderInfo } from "../folders/types";
 import { IViewInfo } from "../views/types";
 import { IUserCustomActionInfo } from "../user-custom-actions/types";
+import { toResourcePath } from "../utils/toResourcePath";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
@@ -316,7 +317,8 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * @param formValues The fields to change and their new values.
      * @param decodedUrl Path decoded url; folder's server relative path.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param comment Optional check in comment.
+     * @param checkInComment Optional check in comment.
+     * @param additionalProps Optional set of additional properties LeafName new document file name, 
      */
     @tag("l.addValidateUpdateItemUsingPath")
     public async addValidateUpdateItemUsingPath(
@@ -324,19 +326,38 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
         decodedUrl: string,
         bNewDocumentUpdate = false,
         checkInComment?: string,
+        additionalProps?: {
+            /**
+             * If creating a document or folder, the name
+             */
+            leafName?: string,
+            /**
+             * 0: File, 1: Folder, 2: Web
+             */
+            objectType?: 0 | 1 | 2,
+        },
     ): Promise<IListItemFormUpdateValue[]> {
+
+        const addProps: any = {
+            FolderPath: toResourcePath(decodedUrl),
+        };
+
+        if (objectDefinedNotNull(additionalProps)) {
+
+            if (additionalProps.leafName) {
+                addProps.LeafName = toResourcePath(additionalProps.leafName);
+            }
+
+            if (additionalProps.objectType) {
+                addProps.UnderlyingObjectType = additionalProps.objectType;
+            }
+        }
 
         const res = await spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
             bNewDocumentUpdate,
             checkInComment,
             formValues,
-            listItemCreateInfo: {
-                FolderPath: {
-                    DecodedUrl: decodedUrl,
-                    __metadata: { type: "SP.ResourcePath" },
-                },
-                __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
-            },
+            listItemCreateInfo: assign(metadata("SP.ListItemCreationInformationUsingPath"), addProps),
         }));
 
         return hOP(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res;
