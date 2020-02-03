@@ -112,8 +112,8 @@ export class SPHttpClient implements RequestClient {
 
             }).catch((response: Response) => {
 
-                if (response.status === 503) {
-                    // http status code 503, we can retry this
+                if (response.status === 503 || response.status === 504) {
+                    // http status code 503 or 504, we can retry this
                     setRetry(response);
                 } else {
                     ctx.reject(response);
