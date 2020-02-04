@@ -276,9 +276,11 @@ const page: IClientsidePage;
 const value = page.bannerImageUrl;
 
 // set the value
-page.bannerImageUrl = "https://absolute/path/to/your/image/in/your/web/image.png";
+page.bannerImageUrl = "/server/relative/path/to/image.png";
 await page.save();
 ```
+
+> Banner images need to exist within the same site collection as the page where you want to use them.
 
 ### topicHeader
 
@@ -534,17 +536,19 @@ pageCopy2.save();
 
 Sets the banner image url and optionally additional properties. Similar to setting the bannerImageUrl property, however allows you to set additional properties if needed. If you do not need to set the additional properties they are equivalent.
 
+> Banner images need to exist within the same site collection as the page where you want to use them.
+
 ```TypeScript
 // our page instance
 const page: IClientsidePage;
 
-page.setBannerImage("https://absolute/path/to/image.png");
+page.setBannerImage("/server/relative/path/to/image.png");
 
 // save the changes
-page.save();
+await page.save();
 
 // set additional props
-page.setBannerImage("https://absolute/path/to/image.png", {
+page.setBannerImage("/server/relative/path/to/image.png", {
     altText: "Image description",
     imageSourceType: 2,
     translateX: 30,
@@ -552,5 +556,41 @@ page.setBannerImage("https://absolute/path/to/image.png", {
 });
 
 // save the changes
-page.save();
+await page.save();
+```
+
+This sample show the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the `file` - likely from a file input or similar.
+
+```TypeScript
+import { SPFetchClient } from "@pnp/nodejs";
+import { join } from "path";
+import { readFileSync } from "fs";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+import "@pnp/sp/clientside-pages";
+
+// configure your node options
+sp.setup({
+  sp: {
+    fetchClientFactory: () => {
+      return new SPFetchClient("{Site Url}", "{Client Id}", "{Client Secret}");
+    },
+  },
+});
+
+// add the banner image
+const dirname = join("C:/path/to/file", "img-file.jpg");
+const file: Uint8Array = new Uint8Array(readFileSync(dirname));
+const far = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents").files.add("banner.jpg", file, true);
+
+// add the page
+const page = await sp.web.addClientsidePage("MyPage", "Page Title");
+
+// set the banner image
+page.setBannerImage(far.data.ServerRelativeUrl);
+
+// publish the page
+await page.save();
 ```
