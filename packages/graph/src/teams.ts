@@ -234,7 +234,7 @@ export class Tabs extends GraphQueryableCollection {
     public add(name: string, appUrl: string, properties: TabsConfiguration): Promise<TabCreateResult> {
 
         const postBody = extend({
-            name: name,
+            displayName: name,
             "teamsApp@odata.bind": appUrl,
         }, properties);
 
