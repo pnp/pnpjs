@@ -136,7 +136,7 @@ export class _Tabs extends _GraphQueryableCollection {
     public async add(name: string, appUrl: string, properties: ITabsConfiguration): Promise<ITabCreateResult> {
 
         const postBody = assign({
-            name,
+            displayName: name,
             "teamsApp@odata.bind": appUrl,
         }, properties);
 
