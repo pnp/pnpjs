@@ -54,7 +54,8 @@ export class GraphHttpClient implements IRequestClient {
 
                 // Check if request was throttled - http status code 429
                 // Check if request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
+                // Check if request failed due to gateway timeout - http status code 504
+                if (response.status !== 429 && response.status !== 503 && response.status !== 504) {
                     ctx.reject(response);
                 }
 
