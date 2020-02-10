@@ -8,16 +8,16 @@ The site users module provides methods to manage users for a sharepoint site.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-users/web";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers } from "@pnp/sp/presets/all";|
 
 ### Get all site user
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 const users = await sp.web.siteUsers();
 ```
@@ -26,8 +26,8 @@ const users = await sp.web.siteUsers();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 let user = await sp.web.currentUser;
 ```
@@ -36,8 +36,8 @@ let user = await sp.web.currentUser;
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 const id = 6;
 user = await sp.web.getUserById(id);
@@ -47,8 +47,8 @@ user = await sp.web.getUserById(id);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 const username = "usernames@microsoft.com";
 result = await sp.web.ensureUser(username);
@@ -60,16 +60,16 @@ result = await sp.web.ensureUser(username);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/src/webs";<br />import "@pnp/sp/src/site-users/web";|
+|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|
 
 ### Get user Groups
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 let groups = await sp.web.currentUser.groups();
 ```
@@ -78,8 +78,8 @@ let groups = await sp.web.currentUser.groups();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 const user = await sp.web.ensureUser("userLoginname")
 const users = await sp.web.siteUsers;
@@ -91,8 +91,8 @@ await users.add(user.data.LoginName);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 // get user object by id
 const user = await sp.web.siteUsers.getById(6);
@@ -108,8 +108,8 @@ const user = await sp.web.siteUsers.getByLoginName("userLoginName");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 let userProps = await sp.web.currentUser.get();
 userProps.Title = "New title";
@@ -120,8 +120,8 @@ await sp.web.currentUser.update(userProps);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/src/webs";
-import "@pnp/sp/src/site-users/web";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
 
 // remove user by id
 await sp.web.siteUsers.removeById(6);
