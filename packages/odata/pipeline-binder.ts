@@ -37,8 +37,9 @@ export function pipelineBinder(pipes: PipelineMethod<any>[]): IClientFactoryBind
 
                 // send the IQueryableData down the pipeline
                 return pipe(Object.assign({}, {
-                    batch: o.batch || null,
+                    batch: null,
                     batchDependency: null,
+                    batchIndex: -1,
                     cachingOptions: null,
                     clientFactory,
                     cloneParentCacheOptions: null,

@@ -63,6 +63,7 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
 
 export interface IQueryableData<DefaultActionType = any> {
     batch: Batch | null;
+    batchIndex: number;
     batchDependency: () => void | null;
     cachingOptions: ICachingOptions | null;
     cloneParentCacheOptions: ICachingOptions | null;
@@ -229,12 +230,12 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
      */
     public inBatch(batch: Batch): this {
 
-        if (this.batch !== null) {
+        if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
 
         if (objectDefinedNotNull(batch)) {
-            this.data.batch = batch;
+            batch.track(this);
         }
 
         return this;

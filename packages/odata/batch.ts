@@ -1,7 +1,9 @@
 import { IFetchOptions, getGUID } from "@pnp/common";
 import { IODataParser } from "./parsers";
+import { IQueryable } from "./queryable";
+import { IRequestContext } from "./pipeline";
 
-export interface ODataBatchRequestInfo {
+export interface IODataBatchRequestInfo {
     url: string;
     method: string;
     options: IFetchOptions;
@@ -9,18 +11,21 @@ export interface ODataBatchRequestInfo {
     resolve: ((d: any) => void) | null;
     reject: ((error: any) => void) | null;
     id: string;
+    index: number;
 }
 
 export abstract class Batch {
 
     protected _deps: Promise<void>[];
-    protected _reqs: ODataBatchRequestInfo[];
+    protected _reqs: IODataBatchRequestInfo[];
     protected _rDeps: Promise<void>[];
+    private _index: number;
 
     constructor(private _batchId = getGUID()) {
         this._reqs = [];
         this._deps = [];
         this._rDeps = [];
+        this._index = -1;
     }
 
     public get batchId(): string {
@@ -30,30 +35,46 @@ export abstract class Batch {
     /**
      * The requests contained in this batch
      */
-    protected get requests(): ODataBatchRequestInfo[] {
-        return this._reqs;
+    protected get requests(): IODataBatchRequestInfo[] {
+        // we sort these each time this is accessed
+        return this._reqs.sort((info1, info2) => info1.index - info2.index);
     }
 
     /**
+     * Not meant for use directly
      * 
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
+     * @param batchee The IQueryable for this batch to track in order
      */
-    public add<T>(url: string, method: string, options: IFetchOptions, parser: IODataParser<T>, id: string): Promise<T> {
+    public track(batchee: IQueryable<any>): void {
 
-        const info: ODataBatchRequestInfo = {
-            id,
-            method: method.toUpperCase(),
-            options,
-            parser,
+        batchee.data.batch = this;
+
+        // we need to track the order requests are added to the batch to ensure we always
+        // operate on them in order
+        if (typeof batchee.data.batchIndex === "undefined" || batchee.data.batchIndex < 0) {
+            batchee.data.batchIndex = ++this._index;
+        }
+    }
+
+    /**
+     * Adds the given request context to the batch for execution
+     * 
+     * @param context Details of the request to batch
+     */
+    public add<T = any>(context: IRequestContext<T>): Promise<T> {
+
+        const info: IODataBatchRequestInfo = {
+            id: context.requestId,
+            index: context.batchIndex,
+            method: context.method.toUpperCase(),
+            options: context.options,
+            parser: context.parser,
             reject: null,
             resolve: null,
-            url,
+            url: context.url,
         };
 
+        // we create a new promise that will be resolved within the batch
         const p = new Promise<T>((resolve, reject) => {
             info.resolve = resolve;
             info.reject = reject;

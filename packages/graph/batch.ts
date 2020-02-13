@@ -1,4 +1,4 @@
-import { Batch, ODataBatchRequestInfo } from "@pnp/odata";
+import { Batch, IODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { assign, jsS, isUrlAbsolute } from "@pnp/common";
 import { GraphRuntimeConfig } from "./graphlibconfig";
@@ -73,7 +73,7 @@ export class GraphBatch extends Batch {
         return url;
     }
 
-    private static formatRequests(requests: ODataBatchRequestInfo[]): GraphBatchRequestFragment[] {
+    private static formatRequests(requests: IODataBatchRequestInfo[]): GraphBatchRequestFragment[] {
 
         return requests.map((reqInfo, index) => {
 
@@ -115,7 +115,7 @@ export class GraphBatch extends Batch {
         });
     }
 
-    private static parseResponse(requests: ODataBatchRequestInfo[], graphResponse: GraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
+    private static parseResponse(requests: IODataBatchRequestInfo[], graphResponse: GraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
 
         return new Promise((resolve) => {
 

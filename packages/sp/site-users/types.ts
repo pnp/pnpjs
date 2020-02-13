@@ -74,7 +74,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      */
     @tag("sus.add")
     public async add(loginName: string): Promise<ISiteUser> {
-        await spPost(this.clone(SiteUsers, null), body(assign(metadata("SP.User"), { LoginName: loginName })));
+        await spPost(this, body(assign(metadata("SP.User"), { LoginName: loginName })));
         return this.getByLoginName(loginName);
     }
 }

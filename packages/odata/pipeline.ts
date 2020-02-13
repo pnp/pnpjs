@@ -6,7 +6,7 @@ import { IQueryableData } from "./queryable";
 /**
  * Defines the context for a given request to be processed in the pipeline
  */
-export interface RequestContext<ReturnType> extends IQueryableData<ReturnType> {
+export interface IRequestContext<ReturnType> extends IQueryableData<ReturnType> {
     result?: ReturnType;
     clientFactory: () => IRequestClient;
     hasResult: boolean;
@@ -15,14 +15,14 @@ export interface RequestContext<ReturnType> extends IQueryableData<ReturnType> {
     method: string;
 }
 
-export type PipelineMethod<ReturnType> = (c: RequestContext<ReturnType>) => Promise<RequestContext<ReturnType>>;
+export type PipelineMethod<ReturnType> = (c: IRequestContext<ReturnType>) => Promise<IRequestContext<ReturnType>>;
 
 /**
  * Resolves the context's result value
  *
  * @param context The current context
  */
-function returnResult<T = any>(context: RequestContext<T>): Promise<T> {
+function returnResult<T = any>(context: IRequestContext<T>): Promise<T> {
 
     Logger.log({
         data: Logger.activeLogLevel === LogLevel.Verbose ? context.result : {},
@@ -36,9 +36,9 @@ function returnResult<T = any>(context: RequestContext<T>): Promise<T> {
 /**
  * Sets the result on the context
  */
-export function setResult<T = any>(context: RequestContext<T>, value: any): Promise<RequestContext<T>> {
+export function setResult<T = any>(context: IRequestContext<T>, value: any): Promise<IRequestContext<T>> {
 
-    return new Promise<RequestContext<T>>((resolve) => {
+    return new Promise<IRequestContext<T>>((resolve) => {
 
         context.result = value;
         context.hasResult = true;
@@ -51,7 +51,7 @@ export function setResult<T = any>(context: RequestContext<T>, value: any): Prom
  *
  * @param c The current request context
  */
-function next<T = any>(c: RequestContext<T>): Promise<RequestContext<T>> {
+function next<T = any>(c: IRequestContext<T>): Promise<IRequestContext<T>> {
 
     return c.pipes.length > 0 ? c.pipes.shift()(c) : Promise.resolve(c);
 }
@@ -61,7 +61,7 @@ function next<T = any>(c: RequestContext<T>): Promise<RequestContext<T>> {
  *
  * @param context Current context
  */
-export function pipe<T = any>(context: RequestContext<T>): Promise<T> {
+export function pipe<T = any>(context: IRequestContext<T>): Promise<T> {
 
     if (context.pipes.length < 1) {
         Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Request pipeline contains no methods!`, LogLevel.Error);
@@ -102,7 +102,7 @@ export function requestPipelineMethod(alwaysRun = false) {
             Logger.write(`[${args[0].requestId}] (${(new Date()).getTime()}) Calling request pipeline method ${propertyKey}.`, LogLevel.Verbose);
 
             // then chain the next method in the context's pipeline - allows for dynamic pipeline
-            return method.apply(target, args).then((ctx: RequestContext<any>) => next(ctx));
+            return method.apply(target, args).then((ctx: IRequestContext<any>) => next(ctx));
         };
     };
 }
@@ -116,8 +116,8 @@ export class PipelineMethods {
      * Logs the start of the request
      */
     @requestPipelineMethod(true)
-    public static logStart<T = any>(context: RequestContext<T>): Promise<RequestContext<T>> {
-        return new Promise<RequestContext<T>>(resolve => {
+    public static logStart<T = any>(context: IRequestContext<T>): Promise<IRequestContext<T>> {
+        return new Promise<IRequestContext<T>>(resolve => {
 
             Logger.log({
                 data: Logger.activeLogLevel === LogLevel.Info ? {} : context,
@@ -133,9 +133,9 @@ export class PipelineMethods {
      * Handles caching of the request
      */
     @requestPipelineMethod()
-    public static caching<T = any>(context: RequestContext<T>): Promise<RequestContext<T>> {
+    public static caching<T = any>(context: IRequestContext<T>): Promise<IRequestContext<T>> {
 
-        return new Promise<RequestContext<T>>(resolve => {
+        return new Promise<IRequestContext<T>>(resolve => {
 
             // handle caching, if applicable
             if (context.useCaching) {
@@ -149,15 +149,19 @@ export class PipelineMethods {
 
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
+
                     // check if we have the data in cache and if so resolve the promise and return
                     let data = cacheOptions.store.get(cacheOptions.key);
+
                     if (data !== null) {
-                        // ensure we clear any held batch dependency we are resolving from the cache
+
                         Logger.log({
                             data: Logger.activeLogLevel === LogLevel.Info ? {} : data,
                             level: LogLevel.Info,
                             message: `[${context.requestId}] (${(new Date()).getTime()}) Value returned from cache.`,
                         });
+
+                        // ensure we clear any held batch dependency we are resolving from the cache
                         if (isFunc(context.batchDependency)) {
                             context.batchDependency();
                         }
@@ -184,14 +188,13 @@ export class PipelineMethods {
      * Sends the request
      */
     @requestPipelineMethod()
-    public static send<T = any>(context: RequestContext<T>): Promise<RequestContext<T>> {
+    public static send<T = any>(context: IRequestContext<T>): Promise<IRequestContext<T>> {
 
-        return new Promise<RequestContext<T>>((resolve, reject) => {
+        return new Promise<IRequestContext<T>>((resolve, reject) => {
             // send or batch the request
             if (context.isBatched) {
 
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                const p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
+                const p = context.batch.add(context);
 
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 if (isFunc(context.batchDependency)) {
@@ -223,9 +226,9 @@ export class PipelineMethods {
      * Logs the end of the request
      */
     @requestPipelineMethod(true)
-    public static logEnd<T = any>(context: RequestContext<T>): Promise<RequestContext<T>> {
+    public static logEnd<T = any>(context: IRequestContext<T>): Promise<IRequestContext<T>> {
 
-        return new Promise<RequestContext<T>>(resolve => {
+        return new Promise<IRequestContext<T>>(resolve => {
 
             if (context.isBatched) {
 

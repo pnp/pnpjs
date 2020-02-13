@@ -32,12 +32,9 @@ export function mergeHeaders(target: Headers, source: HeadersInit): void {
 
     if (objectDefinedNotNull(source)) {
         const temp = new Request("", { headers: source });
-        // adding _another_ check for bad input based on #1017
-        if (temp && temp.headers) {
-            temp.headers.forEach((value: string, name: string) => {
-                target.append(name, value);
-            });
-        }
+        temp.headers.forEach((value: string, name: string) => {
+            target.append(name, value);
+        });
     }
 }
 
