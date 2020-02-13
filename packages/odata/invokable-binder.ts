@@ -1,5 +1,5 @@
 import { IQueryable } from "./queryable";
-import { RequestContext } from "./pipeline";
+import { IRequestContext } from "./pipeline";
 import { IFetchOptions, RuntimeConfig } from "@pnp/common";
 import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions";
 
@@ -32,7 +32,7 @@ const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor:
                     return extensionOrDefault("get", (...a: any[]) => Reflect.get(a[0], a[1], a[2]), target, p, receiver);
                 },
                 has: (target: any, p: PropertyKey) => {
-                    return extensionOrDefault("has", (...a: any[]) => Reflect.get(a[0], a[1]), target, p);
+                    return extensionOrDefault("has", (...a: any[]) => Reflect.has(a[0], a[1]), target, p);
                 },
                 set: (target: any, p: PropertyKey, value: any, receiver: any) => {
                     return extensionOrDefault("set", (...a: any[]) => Reflect.set(a[0], a[1], a[2], a[3]), target, p, value, receiver);
@@ -47,5 +47,5 @@ export const invokableFactory = invokableBinder(function <R = any>(this: IQuerya
 });
 
 export interface IInvokable<R = any> {
-    <T = R>(options?: Partial<RequestContext<T>>): Promise<T>;
+    <T = R>(options?: Partial<IRequestContext<T>>): Promise<T>;
 }

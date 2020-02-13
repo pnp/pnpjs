@@ -2,7 +2,7 @@
 
 _introduced in 2.0.0_
 
-Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting some custom functionality. Extensions work with any [invokable](../concepts/invokable.md). You can control just about any behavior of the library with extensions.
+Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invokable](../concepts/invokable.md). You can control any behavior of the library with extensions.
 
 > Extensions do not work in ie11 compatibility mode. This is by design.
 
@@ -15,7 +15,7 @@ There are three types of Extensions available as well as three methods for regis
 The first type is a simple function with a signature:
 
 ```TypeScript
-(op: string, target: T, ...rest: any[]): void
+(op: "apply" | "get" | "has" | "set", target: T, ...rest: any[]): void
 ```
 
 This function is passed the current operation as the first argument, currently one of "apply", "get", "has", or "set". The second argument is the target instance upon which the operation is being invoked. The remaining parameters vary by the operation being performed, but will match their respective ProxyHandler method signatures.
@@ -25,19 +25,19 @@ This function is passed the current operation as the first argument, currently o
 Named extensions are designed to add or replace a single property or method, though you can register multiple using the same object. These extensions are defined by using an object which has the property/methods you want to override described. Registering named extensions globally will override that operation to all invokables.
 
 ```TypeScript
-import { extendGlobal } from "@pnp/odata";
-import { sp, Lists, IWeb, ILists } from "@pnp/sp/presets/all";
-import { escapeQueryStrValue } from "@pnp/sp/utils/escapeSingleQuote";
+import { extendFactory } from "@pnp/odata";
+import { sp, List, Lists, IWeb, ILists, List, IList, Web } from "@pnp/sp/presets/all";
+import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 
+// create a plain object with the props and methods we want to add/change
 const myExtensions = {
-    // override the lists property globally
+    // override the lists property
     get lists(this: IWeb): ILists {
         // we will always order our lists by title and select just the Title for ALL calls (just as an example)
         return Lists(this).orderBy("Title").select("Title");
     },
-    // override the getByTitle method globally (NOTE: this will also override and break any other method named getByTitle such as views.getByTitle)
-    // this is done here as an example. It is better to do this type of extension on a per-object or factory basis.
-    getByTitle: function (this: ILists, title: string) {
+    // override the getByTitle method
+    getByTitle: function (this: ILists, title: string): IList {
         // in our example our list has moved, so we rewrite the request on the fly
         if (title === "List1") {
             return List(this, `getByTitle('List2')`);
@@ -50,7 +50,7 @@ const myExtensions = {
 };
 
 // register all the named Extensions
-extendGlobal(myExtensions);
+extendFactory(Web, myExtensions);
 
 // this will use our extension to ensure the lists are ordered
 const lists = await sp.web.lists();
@@ -68,8 +68,8 @@ console.log(JSON.stringify(items.length, null, 2));
 You can also register a partial ProxyHandler implementation as an extension. You can implement one or more of the ProxyHandler methods as needed. Here we implement the same override of getByTitle globally. This is the most complicated method of creating an extension and assumes an understanding of how ProxyHandlers work.
 
 ```TypeScript
-import { extendGlobal } from "@pnp/odata";
-import { sp, Lists, IWeb, ILists } from "@pnp/sp/presets/all";
+import { extendFactory } from "@pnp/odata";
+import { sp, Lists, IWeb, ILists, Web } from "@pnp/sp/presets/all";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeSingleQuote";
 
 const myExtensions = {
@@ -91,7 +91,7 @@ const myExtensions = {
     },
 };
 
-extendGlobal(myExtensions);
+extendFactory(Web, myExtensions);
 
 const lists = sp.web.lists;
 const items = await lists.getByTitle("LookupList").items();
@@ -139,8 +139,8 @@ import { ILists, Lists } from "@pnp/sp/lists";
 import { extendFactory } from "@pnp/odata";
 import { sp } from "@pnp/sp";
 
-// declaring the module here sets up the types correctly when importing across your application
-declare module "@pnp/sp/webs" {
+// sets up the types correctly when importing across your application
+declare module "@pnp/sp/webs/types" {
 
     // we need to extend the interface
     interface IWeb {
@@ -148,8 +148,8 @@ declare module "@pnp/sp/webs" {
     }
 }
 
-// declaring the module here sets up the types correctly when importing across your application
-declare module "@pnp/sp/lists" {
+// sets up the types correctly when importing across your application
+declare module "@pnp/sp/lists/types" {
 
     // we need to extend the interface
     interface ILists {
@@ -172,11 +172,11 @@ extendFactory(Lists, {
 });
 
 // regardless of how we access the web and lists collections our extensions remain with all new instance based on
-const web = Web("https://318studios.sharepoint.com/sites/dev/");
+const web = Web("https://tenant.sharepoint.com/sites/dev/");
 const lists1 = await web.orderedLists();
 console.log(JSON.stringify(lists1, null, 2));
 
-const lists2 = await Web("https://318studios.sharepoint.com/sites/dev/").orderedLists();
+const lists2 = await Web("https://tenant.sharepoint.com/sites/dev/").orderedLists();
 console.log(JSON.stringify(lists2, null, 2));
 
 const lists3 = await sp.web.orderedLists();
