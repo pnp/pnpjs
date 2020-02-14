@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.3.10 - 2020-02-14
+
+### Added
+
+- @pnp/sp & @pnp/graph: Added retry on 504 error ([@mrebuffet](https://github.com/mrebuffet)) [[PR](https://github.com/pnp/pnpjs/pull/1052)] 
+
+### Fixed
+
+- @pnp/graph: Use correct GraphQueryable instance while creating a group for a Team ([@RoelVB](https://github.com/RoelVB)) [[PR](https://github.com/pnp/pnpjs/pull/1022)]
+- docs: Missing await added to example ([@holylander](https://github.com/holylander)) [[PR](https://github.com/pnp/pnpjs/pull/1044)]
+- @pnp/graph: Fixed displayName property ([@RoelVB](https://github.com/RoelVB)) [[PR](https://github.com/pnp/pnpjs/pull/1055)]
+
+
 ## 1.3.9 - 2020-01-16
 
 ### Added
