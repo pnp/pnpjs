@@ -2665,11 +2665,14 @@
 <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">bannerImageUrl</span><span class="p">;</span>
 
 <span class="c1">// set the value</span>
-<span class="nx">page</span><span class="p">.</span><span class="nx">bannerImageUrl</span> <span class="o">=</span> <span class="s2">&quot;https://absolute/path/to/your/image/in/your/web/image.png&quot;</span><span class="p">;</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">bannerImageUrl</span> <span class="o">=</span> <span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">;</span>
 <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 </pre></div>
 
 
+<blockquote>
+<p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
+</blockquote>
 <h3 id="topicheader">topicHeader<a class="headerlink" href="#topicheader" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
@@ -2892,16 +2895,19 @@
 
 <h3 id="setbannerimage">setBannerImage<a class="headerlink" href="#setbannerimage" title="Permanent link">&para;</a></h3>
 <p>Sets the banner image url and optionally additional properties. Similar to setting the bannerImageUrl property, however allows you to set additional properties if needed. If you do not need to set the additional properties they are equivalent.</p>
+<blockquote>
+<p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
+</blockquote>
 <div class="codehilite"><pre><span></span><span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;https://absolute/path/to/image.png&quot;</span><span class="p">);</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">);</span>
 
 <span class="c1">// save the changes</span>
-<span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
 <span class="c1">// set additional props</span>
-<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;https://absolute/path/to/image.png&quot;</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">altText</span><span class="o">:</span> <span class="s2">&quot;Image description&quot;</span><span class="p">,</span>
     <span class="nx">imageSourceType</span>: <span class="kt">2</span><span class="p">,</span>
     <span class="nx">translateX</span>: <span class="kt">30</span><span class="p">,</span>
@@ -2909,7 +2915,42 @@
 <span class="p">});</span>
 
 <span class="c1">// save the changes</span>
-<span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</pre></div>
+
+
+<p>This sample show the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the <code>file</code> - likely from a file input or similar.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">join</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;path&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">readFileSync</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+
+<span class="c1">// configure your node options</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{Site Url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{Client Id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{Client Secret}&quot;</span><span class="p">);</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="c1">// add the banner image</span>
+<span class="kr">const</span> <span class="nx">dirname</span> <span class="o">=</span> <span class="nx">join</span><span class="p">(</span><span class="s2">&quot;C:/path/to/file&quot;</span><span class="p">,</span> <span class="s2">&quot;img-file.jpg&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">file</span>: <span class="kt">Uint8Array</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">dirname</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;banner.jpg&quot;</span><span class="p">,</span> <span class="nx">file</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="c1">// add the page</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;MyPage&quot;</span><span class="p">,</span> <span class="s2">&quot;Page Title&quot;</span><span class="p">);</span>
+
+<span class="c1">// set the banner image</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="nx">far</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">ServerRelativeUrl</span><span class="p">);</span>
+
+<span class="c1">// publish the page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 </pre></div>
                 
                   

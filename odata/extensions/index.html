@@ -2033,7 +2033,7 @@
                 
                 <h1 id="extensions">Extensions<a class="headerlink" href="#extensions" title="Permanent link">&para;</a></h1>
 <p><em>introduced in 2.0.0</em></p>
-<p>Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting some custom functionality. Extensions work with any <a href="../../concepts/invokable/">invokable</a>. You can control just about any behavior of the library with extensions.</p>
+<p>Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any <a href="../../concepts/invokable/">invokable</a>. You can control any behavior of the library with extensions.</p>
 <blockquote>
 <p>Extensions do not work in ie11 compatibility mode. This is by design.</p>
 </blockquote>
@@ -2041,26 +2041,26 @@
 <p>There are three types of Extensions available as well as three methods for registration. You can register any type of extension with any of the registration options.</p>
 <h3 id="function-extensions">Function Extensions<a class="headerlink" href="#function-extensions" title="Permanent link">&para;</a></h3>
 <p>The first type is a simple function with a signature:</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nx">op</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">target</span>: <span class="kt">T</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span>: <span class="kt">any</span><span class="p">[])</span><span class="o">:</span> <span class="k">void</span>
+<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nx">op</span><span class="o">:</span> <span class="s2">&quot;apply&quot;</span> <span class="o">|</span> <span class="s2">&quot;get&quot;</span> <span class="o">|</span> <span class="s2">&quot;has&quot;</span> <span class="o">|</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span> <span class="nx">target</span>: <span class="kt">T</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span>: <span class="kt">any</span><span class="p">[])</span><span class="o">:</span> <span class="k">void</span>
 </pre></div>
 
 
 <p>This function is passed the current operation as the first argument, currently one of "apply", "get", "has", or "set". The second argument is the target instance upon which the operation is being invoked. The remaining parameters vary by the operation being performed, but will match their respective ProxyHandler method signatures.</p>
 <h3 id="named-extensions">Named Extensions<a class="headerlink" href="#named-extensions" title="Permanent link">&para;</a></h3>
 <p>Named extensions are designed to add or replace a single property or method, though you can register multiple using the same object. These extensions are defined by using an object which has the property/methods you want to override described. Registering named extensions globally will override that operation to all invokables.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendGlobal</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">escapeQueryStrValue</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/utils/escapeSingleQuote&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">IList</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">escapeQueryStrValue</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/utils/escapeQueryStrValue&quot;</span><span class="p">;</span>
 
+<span class="c1">// create a plain object with the props and methods we want to add/change</span>
 <span class="kr">const</span> <span class="nx">myExtensions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1">// override the lists property globally</span>
+    <span class="c1">// override the lists property</span>
     <span class="nx">get</span> <span class="nx">lists</span><span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">IWeb</span><span class="p">)</span><span class="o">:</span> <span class="nx">ILists</span> <span class="p">{</span>
         <span class="c1">// we will always order our lists by title and select just the Title for ALL calls (just as an example)</span>
         <span class="k">return</span> <span class="nx">Lists</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="c1">// override the getByTitle method globally (NOTE: this will also override and break any other method named getByTitle such as views.getByTitle)</span>
-    <span class="c1">// this is done here as an example. It is better to do this type of extension on a per-object or factory basis.</span>
-    <span class="nx">getByTitle</span>: <span class="kt">function</span> <span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">title</span>: <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// override the getByTitle method</span>
+    <span class="nx">getByTitle</span>: <span class="kt">function</span> <span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">title</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">IList</span> <span class="p">{</span>
         <span class="c1">// in our example our list has moved, so we rewrite the request on the fly</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">title</span> <span class="o">===</span> <span class="s2">&quot;List1&quot;</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;List2&#39;)`</span><span class="p">);</span>
@@ -2073,7 +2073,7 @@
 <span class="p">};</span>
 
 <span class="c1">// register all the named Extensions</span>
-<span class="nx">extendGlobal</span><span class="p">(</span><span class="nx">myExtensions</span><span class="p">);</span>
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Web</span><span class="p">,</span> <span class="nx">myExtensions</span><span class="p">);</span>
 
 <span class="c1">// this will use our extension to ensure the lists are ordered</span>
 <span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
@@ -2089,8 +2089,8 @@
 
 <h3 id="proxyhandler-extensions">ProxyHandler Extensions<a class="headerlink" href="#proxyhandler-extensions" title="Permanent link">&para;</a></h3>
 <p>You can also register a partial ProxyHandler implementation as an extension. You can implement one or more of the ProxyHandler methods as needed. Here we implement the same override of getByTitle globally. This is the most complicated method of creating an extension and assumes an understanding of how ProxyHandlers work.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendGlobal</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">escapeQueryStrValue</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/utils/escapeSingleQuote&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">myExtensions</span> <span class="o">=</span> <span class="p">{</span>
@@ -2112,7 +2112,7 @@
     <span class="p">},</span>
 <span class="p">};</span>
 
-<span class="nx">extendGlobal</span><span class="p">(</span><span class="nx">myExtensions</span><span class="p">);</span>
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Web</span><span class="p">,</span> <span class="nx">myExtensions</span><span class="p">);</span>
 
 <span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">;</span>
 <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">();</span>
@@ -2154,8 +2154,8 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-<span class="c1">// declaring the module here sets up the types correctly when importing across your application</span>
-<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span> <span class="p">{</span>
+<span class="c1">// sets up the types correctly when importing across your application</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/webs/types&quot;</span> <span class="p">{</span>
 
     <span class="c1">// we need to extend the interface</span>
     <span class="kr">interface</span> <span class="nx">IWeb</span> <span class="p">{</span>
@@ -2163,8 +2163,8 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c1">// declaring the module here sets up the types correctly when importing across your application</span>
-<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span> <span class="p">{</span>
+<span class="c1">// sets up the types correctly when importing across your application</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/lists/types&quot;</span> <span class="p">{</span>
 
     <span class="c1">// we need to extend the interface</span>
     <span class="kr">interface</span> <span class="nx">ILists</span> <span class="p">{</span>
@@ -2187,11 +2187,11 @@
 <span class="p">});</span>
 
 <span class="c1">// regardless of how we access the web and lists collections our extensions remain with all new instance based on</span>
-<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://318studios.sharepoint.com/sites/dev/&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/&quot;</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">lists1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">orderedLists</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-<span class="kr">const</span> <span class="nx">lists2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://318studios.sharepoint.com/sites/dev/&quot;</span><span class="p">).</span><span class="nx">orderedLists</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">lists2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/&quot;</span><span class="p">).</span><span class="nx">orderedLists</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
 <span class="kr">const</span> <span class="nx">lists3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">orderedLists</span><span class="p">();</span>

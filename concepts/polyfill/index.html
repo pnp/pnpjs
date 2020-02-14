@@ -1934,12 +1934,12 @@
                 
                 
                 <h1 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link">&para;</a></h1>
-<p>These libraries may make use of some features not found in older browsers, mainly fetch, Map, and Proxy. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality. There are several ways to include this missing functionality.</p>
+<p>These libraries may make use of some features not found in older browsers. This primarily affects Internet Explorer 11, which requires that we provide this missing functionality.</p>
 <blockquote>
-<p>If you are supporting IE11 you should <a href="../ie11-mode/">enable IE11 mode</a>, which will result in reduced functionality.</p>
+<p>If you are supporting IE11 <a href="../ie11-mode/">enable IE11 mode</a>.</p>
 </blockquote>
 <h2 id="ie-11-polyfill-package">IE 11 Polyfill package<a class="headerlink" href="#ie-11-polyfill-package" title="Permanent link">&para;</a></h2>
-<p>We created a package you can use to include the needed functionality without having to determine what polyfills are required. Also, this package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you need to support IE 11.</p>
+<p>We created a package you can use to include the needed functionality without having to determine what polyfills are required. This package is independent of the other @pnp/* packages and does not need to be updated monthly unless we introduce additional polyfills and publish a new version. This package is only needed if you are required to support IE 11.</p>
 <h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
 <p><code>npm install @pnp/polyfill-ie11 --save</code></p>
 <h3 id="use">Use<a class="headerlink" href="#use" title="Permanent link">&para;</a></h3>
@@ -1953,7 +1953,7 @@
 
 
 <h3 id="searchquerybuilder">SearchQueryBuilder<a class="headerlink" href="#searchquerybuilder" title="Permanent link">&para;</a></h3>
-<p>Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version for IE 11 as shown below.</p>
+<p>Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version as shown below.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">SearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/searchquerybuilder&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ISearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>

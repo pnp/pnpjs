@@ -563,6 +563,20 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#limitations" title="Limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-ie11-mode" title="Configure IE11 Mode" class="md-nav__link">
+    Configure IE11 Mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#a-note-on-ie11-mode-and-support" title="A note on ie11 mode and support" class="md-nav__link">
     A note on ie11 mode and support
   </a>
@@ -1854,6 +1868,20 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#limitations" title="Limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-ie11-mode" title="Configure IE11 Mode" class="md-nav__link">
+    Configure IE11 Mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#a-note-on-ie11-mode-and-support" title="A note on ie11 mode and support" class="md-nav__link">
     A note on ie11 mode and support
   </a>
@@ -1880,10 +1908,15 @@
                 
                 
                 <h1 id="ie11-mode">IE11 Mode<a class="headerlink" href="#ie11-mode" title="Permanent link">&para;</a></h1>
-<p>Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Using this mode will remove certain features from the library, such as the ability to <a href="../invokable/">invoke</a> method chains.</p>
-<blockquote>
-<p>If you are supporting IE 11, please see the article on <a href="../polyfill/">polyfills</a>.</p>
-</blockquote>
+<p>Starting with v2 we have made the decision to no longer support IE11. Because we know this affects folks we have introduced IE11 compatibility mode. Configuring the library will allow it to work within IE11, however at a possibly reduced level of functionality depending on your use case. Please see the list below of known limitations.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<p>When required to use IE11 mode there is certain functionality which may not work correctly or at all.</p>
+<ul>
+<li>Unavailable: <a href="../../odata/extensions/">Extension Methods</a></li>
+<li>Unavailable: <a href="../../odata/debug/">OData Debugging</a></li>
+</ul>
+<h2 id="configure-ie11-mode">Configure IE11 Mode<a class="headerlink" href="#configure-ie11-mode" title="Permanent link">&para;</a></h2>
+<p>To enable IE11 Mode set the ie11 flag to true in the setup object. Optionally supply the context object when working in <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview">SharePoint Framework</a>.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
@@ -1895,6 +1928,9 @@
 </pre></div>
 
 
+<blockquote>
+<p>If you are supporting IE 11, please see the article on required <a href="../polyfill/">polyfills</a>.</p>
+</blockquote>
 <h2 id="a-note-on-ie11-mode-and-support">A note on ie11 mode and support<a class="headerlink" href="#a-note-on-ie11-mode-and-support" title="Permanent link">&para;</a></h2>
 <p>Because IE11 is no longer a primary supported browser our policy moving forward will be doing our best not to break anything in ie11 mode, but not all features will work and new features may never come to ie11 mode. Also, if you find an ie11 bug we expect you to work with us on helping to fix it. If you aren't willing to invest some time to support an old browser it seems we shouldn't either.</p>
                 
