@@ -56,6 +56,7 @@
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "cbuild": "npm run clean && pnpbuild -n build",
     "package": "npm run build && pnpbuild -n package",
+    "just-publish": "pnpbuild -n publish",
     "pnp-publish": "cd tools/publish && publish-win.bat",
     "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
     "lint": "tslint ./packages/**/*.ts ./test/**/*.ts",
