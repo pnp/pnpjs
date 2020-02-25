@@ -77,8 +77,8 @@ describe("SiteDesigns", function () {
 
             createdSiteDesignIds.push(sd.Id);
 
-            return expect(sp.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.url),
-                `site design '${title}' should've been applied to site '${testSettings.sp.url}'`).to.eventually.be.fulfilled;
+            return expect(sp.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.webUrl),
+                `site design '${title}' should've been applied to site '${testSettings.sp.webUrl}'`).to.eventually.be.fulfilled;
         });
 
         it("updates a site designs", async function () {
@@ -166,7 +166,7 @@ describe("SiteDesigns", function () {
 
             createdSiteDesignIds.push(sd.Id);
 
-            return expect(sp.siteDesigns.addSiteDesignTask(testSettings.sp.url, sd.Id),
+            return expect(sp.siteDesigns.addSiteDesignTask(testSettings.sp.webUrl, sd.Id),
                 `site design task should've been created with absolute web url`).to.eventually.be.fulfilled;
         });
 

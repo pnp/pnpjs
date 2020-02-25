@@ -7,14 +7,19 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { IInvokableTest } from "../types";
-import { Web } from "@pnp/sp/webs";
+import { Web, IWeb } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/common";
 import { SharingLinkKind } from "@pnp/sp/sharing";
+import { sp } from "@pnp/sp";
 
 describe("Folders", () => {
 
     if (testSettings.enableWebTests) {
-        const web = Web(testSettings.sp.url);
+
+        let web: IWeb = null;
+        before(function () {
+            web = Web(testSettings.sp.webUrl);
+        });
 
         it("adds new folder", function () {
             const name = `test_${getRandomString(4)}`;
@@ -32,16 +37,19 @@ describe("Folder", () => {
 
     if (testSettings.enableWebTests) {
 
-        const web = Web(testSettings.sp.url);
+        let web: IWeb = null;
+        before(function () {
+            web = Web(testSettings.sp.webUrl);
+        });
 
         describe("Invokable Properties", () => {
 
             const tests: IInvokableTest[] = [
-                { desc: ".rootFolder:web", test: web.rootFolder },
-                { desc: ".folders:web", test: web.folders },
-                { desc: ".rootFolder:list", test: web.lists.getByTitle("Site Pages").rootFolder },
-                { desc: ".folders:list", test: web.lists.getByTitle("Site Pages").rootFolder.folders },
-                { desc: ".folder:item", test: web.lists.getByTitle("Site Pages").items.getById(1).folder },
+                { desc: ".rootFolder:web", test: sp.web.rootFolder },
+                { desc: ".folders:web", test: sp.web.folders },
+                { desc: ".rootFolder:list", test: sp.web.lists.getByTitle("Site Pages").rootFolder },
+                { desc: ".folders:list", test: sp.web.lists.getByTitle("Site Pages").rootFolder.folders },
+                { desc: ".folder:item", test: sp.web.lists.getByTitle("Site Pages").items.getById(1).folder },
             ];
 
             tests.forEach((testObj) => {
