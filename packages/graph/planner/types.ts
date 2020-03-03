@@ -126,8 +126,8 @@ export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 /**
  * Bucket
  */
-@updateable()
-@deleteable()
+@updateableWithETag()
+@deleteableWithETag()
 export class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> {
     public get tasks(): ITasks {
         return Tasks(this);
