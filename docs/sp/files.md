@@ -294,7 +294,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
 // destination is a server-relative url of a new file
-const destinationUrl = `sites/dev/SiteAssets/new-file.docx`;
+const destinationUrl = `/sites/dev/SiteAssets/new-file.docx`;
 
 await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").moveTo(destinationUrl);
 ```  
@@ -309,7 +309,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
 // destination is a server-relative url of a new file
-const destinationUrl = `sites/dev/SiteAssets/new-file.docx`;
+const destinationUrl = `/sites/dev/SiteAssets/new-file.docx`;
 
 await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyTo(destinationUrl, false);
 ```  
