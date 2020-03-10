@@ -236,7 +236,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: toResourcePath(`${hostUrl}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${hostUrl}${srcUrl}`),
             }));
     }
 
@@ -290,7 +290,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: toResourcePath(`${hostUrl}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${hostUrl}${srcUrl}`),
             }));
     }
 
