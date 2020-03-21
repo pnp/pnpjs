@@ -8,7 +8,7 @@ Profiles is accessed directly from the root sp object.
 
 ```typescript
 import { sp } from "@pnp/sp";
-import "@pnp/sp.profiles";
+import "@pnp/sp/profiles";
 ```
 
 ## Get edit profile link for the current user
