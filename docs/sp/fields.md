@@ -48,9 +48,9 @@ import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
 // get the field with the title 'Author' for web
-const field: IField = await sp.web.fields.getByTitle("Author")();
+const field: IField = sp.web.fields.getByTitle("Author");
 // get the field with the title 'Author' for list 'My List'
-const field2: IField = sp.web.lists.getByTitle("My List").fields.getByTitle("Author");
+const field2: IFieldInfo = await sp.web.lists.getByTitle("My List").fields.getByTitle("Author")();
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.select("Id")();
