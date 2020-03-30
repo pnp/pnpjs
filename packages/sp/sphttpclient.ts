@@ -86,8 +86,8 @@ export class SPHttpClient implements IRequestClient {
                 let delay: number;
 
                 if (response.headers.has("Retry-After")) {
-                    // if we have gotten a header, use that value as the delay value
-                    delay = parseInt(response.headers.get("Retry-After"), 10);
+                    // if we have gotten a header, use that value as the delay value in seconds
+                    delay = parseInt(response.headers.get("Retry-After"), 10) * 1000;
                 } else {
                     // grab our current delay
                     delay = ctx.delay;
