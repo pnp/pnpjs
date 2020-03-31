@@ -25,9 +25,9 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/fields";
 
 // get the field by Id for web
-const field: IField = await sp.web.fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483")();
+const field: IField = sp.web.fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
 // get the field by Id for list 'My List'
-const field2: IField = await sp.web.lists.getByTitle("My List").fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483")();
+const field2: IFieldInfo = await sp.web.lists.getByTitle("My List").fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483")();
 
 // we can use this 'field' variable to execute more queries on the field:
 const r = await field.select("Title")();
@@ -48,9 +48,9 @@ import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
 // get the field with the title 'Author' for web
-const field: IField = await sp.web.fields.getByTitle("Author")();
+const field: IField = sp.web.fields.getByTitle("Author");
 // get the field with the title 'Author' for list 'My List'
-const field2: IField = await sp.web.lists.getByTitle("My List").fields.getByTitle("Author")();
+const field2: IFieldInfo = await sp.web.lists.getByTitle("My List").fields.getByTitle("Author")();
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.select("Id")();
@@ -71,9 +71,9 @@ import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
 // get the field with the internal name 'ModifiedBy' for web
-const field: IField = await sp.web.fields.getByInternalNameOrTitle("ModifiedBy")();
+const field: IField = sp.web.fields.getByInternalNameOrTitle("ModifiedBy");
 // get the field with the internal name 'ModifiedBy' for list 'My List'
-const field2: IField = await sp.web.lists.getByTitle("My List").fields.getByInternalNameOrTitle("ModifiedBy")();
+const field2: IFieldInfo = await sp.web.lists.getByTitle("My List").fields.getByInternalNameOrTitle("ModifiedBy")();
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.select("Id")();
@@ -97,12 +97,12 @@ import "@pnp/sp/fields";
 const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
 
 // create the new field in the web
-const field: IField = await sp.web.fields.createFieldAsXml(fieldSchema);
+const field: IFieldAddResult = await sp.web.fields.createFieldAsXml(fieldSchema);
 // create the new field in the list 'My List'
-const field2: IField = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(fieldSchema);
+const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(fieldSchema);
 
 // we can use this 'field' variable to run more queries on the list:
-const r = await field.select("Id")();
+const r = await field.field.select("Id")();
 
 // log the field Id to console
 console.log(r.Id);
@@ -120,12 +120,12 @@ import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
 // create a new field called 'My Field' in web.
-const field: IField = await sp.web.fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
+const field: IFieldAddResult = await sp.web.fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
 // create a new field called 'My Field' in the list 'My List'
-const field: IField = await sp.web.lists.getByTitle("My List").fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
+const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.add("My Field", "SP.FieldText", { FieldTypeKind: 3, Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
-const r = await field.select("Id")();
+const r = await field.field.select("Id")();
 
 // log the field Id to console
 console.log(r.Id);
