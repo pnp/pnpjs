@@ -22,10 +22,11 @@ export async function getUserEffectivePermissions(this: SecurableQueryable, logi
  */
 export async function getCurrentUserEffectivePermissions(this: SecurableQueryable): Promise<IBasePermissions> {
 
-    // remove need to reference Web here, which created a circular build issue
-    const w = SharePointQueryableInstance("_api/web", "currentuser");
-    const user = await w.configureFrom(this).select("LoginName")<{ LoginName: string }>();
-    return getUserEffectivePermissions.call(this, user.LoginName);
+    const q = this.clone(SharePointQueryable, "EffectiveBasePermissions");
+    return q.get<any>().then(r => {
+        // handle verbose mode
+        return hOP(r, "EffectiveBasePermissions") ? r.EffectiveBasePermissions : r;
+    });
 }
 
 /**
