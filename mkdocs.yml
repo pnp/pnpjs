@@ -73,6 +73,7 @@ nav:
       - 'ALM api': 'sp/alm.md'
       - Attachments: 'sp/attachments.md'
       - 'Client-side Pages': 'sp/clientside-pages.md'
+      - 'Column Defaults': 'sp/column-defaults.md'
       - 'Comments and Likes': 'sp/comments-likes.md'
       - 'Content Types': 'sp/content-types.md'
       - 'Entity Merging': 'sp/entity-merging.md'

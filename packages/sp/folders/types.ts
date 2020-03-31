@@ -1,4 +1,4 @@
-import { assign, ITypedHash, isUrlAbsolute, isArray } from "@pnp/common";
+import { assign, ITypedHash, isUrlAbsolute } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -21,8 +21,6 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
-import { Web } from "../webs/types";
-import "../lists/web";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
@@ -250,153 +248,9 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
             }));
     }
 
-    @tag("f.getDefVal")
-    public async getDefaultColumnValues(): Promise<IFieldDefault[]> {
-
-        const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string; }>();
-        const { ServerRelativePath: serRelPath } = await this.select("ServerRelativePath")<{ ServerRelativePath: IResourcePath }>();
-
-        const web = Web(extractWebUrl(odataUrlFrom(folderProps)));
-        const docLib = web.lists.getById(folderProps.vti_x005f_listname);
-
-        // and we return the defaults associated with this folder's server relative path only
-        // if you want all the defaults use list.getDefaultColumnValues()
-        return (await docLib.getDefaultColumnValues()).filter(v => v.path.toLowerCase() === serRelPath.DecodedUrl.toLowerCase());
-    }
-
     /**
-     * 
-     * Sets the default column values for this folder
-     * 
-     * @param fieldDefaults The values to set including field name and appropriate value
-     * @param merge If true (default) existing values will be updated and new values added, otherwise all defaults are replaced for this folder
+     * Gets the shareable item associated with this folder
      */
-    @tag("f.setDefVal")
-    public async setDefaultColumnValues(fieldDefaults: IFieldDefaultProps[], merge = true): Promise<void> {
-
-        // we start by figuring out where we are
-        const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string; }>();
-
-        // now we create a web, list and batch to get some info we need
-        const web = Web(extractWebUrl(odataUrlFrom(folderProps)));
-        const docLib = web.lists.getById(folderProps.vti_x005f_listname);
-        const batch = web.createBatch();
-
-        const vals: {
-            folderPath?: string;
-            fieldDefs?: { name: string, type: string }[];
-        } = {};
-
-        this.select("ServerRelativePath").inBatch(batch)().then(i => {
-            vals.folderPath = i.ServerRelativePath.DecodedUrl;
-        });
-
-        SharePointQueryableCollection(docLib, "fields").select("InternalName", "TypeAsString")
-            .filter("Hidden ne true")
-            .inBatch(batch)<{ InternalName: string, TypeAsString: string }[]>().then(fs => fs.map(f => ({
-                name: f.InternalName,
-                type: f.TypeAsString,
-            }))).then(fieldDefs => {
-                assign(vals, { fieldDefs });
-            });
-
-        await batch.execute();
-
-        // @ts-ignore
-        const defaultsToUpdate: {
-            name: string;
-            value: string;
-        }[] = fieldDefaults.map(fieldDefault => {
-
-            const index = vals.fieldDefs.findIndex(fd => fd.name === fieldDefault.name);
-
-            if (index < 0) {
-                throw Error(`Field '${fieldDefault.name}' does not exist in the list. Please check the internal field name. Failed to set defaults.`);
-            }
-
-            const fieldDef = vals.fieldDefs[index];
-            let value = "";
-
-            switch (fieldDef.type) {
-                case "Boolean":
-                case "Currency":
-                case "Text":
-                case "DateTime":
-                case "Number":
-                case "Choice":
-                case "User":
-                    if (isArray(fieldDefault.value)) {
-                        throw Error(`The type '${fieldDef.type}' does not support multiple values.`);
-                    }
-                    value = `${fieldDefault.value}`;
-                    break;
-
-                case "MultiChoice":
-                    if (isArray(fieldDefault.value)) {
-                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";");
-                    } else {
-                        value = `${fieldDefault.value}`;
-                    }
-                    break;
-
-                case "UserMulti":
-                    if (isArray(fieldDefault.value)) {
-                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";#");
-                    } else {
-                        value = `${fieldDefault.value}`;
-                    }
-                    break;
-
-                case "Taxonomy":
-                    if (isArray(fieldDefault.value)) {
-                        throw Error(`The type '${fieldDef.type}' does not support multiple values.`);
-                    } else {
-                        value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
-                    }
-                    break;
-
-                case "TaxonomyMulti":
-                    if (isArray(fieldDefault.value)) {
-                        value = (<{ wssId: string, termName: string, termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
-                    }
-                    value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
-                    break;
-            }
-
-            return {
-                name: fieldDefault.name,
-                value,
-            };
-        });
-
-        // at this point we should have all the defaults to update
-        // and we need to get all the defaults to update the entire doc
-        const existingDefaults = await docLib.getDefaultColumnValues();
-
-        // we filter all defaults to remove any associated with this folder if merge is false
-        // @ts-ignore
-        const filteredExistingDefaults = merge ? existingDefaults : existingDefaults.filter(f => f.serverRelativePath !== vals.folderPath);
-
-        // we update / add any new defaults from those passed to this method
-        defaultsToUpdate.forEach(d => {
-
-            const existing = filteredExistingDefaults.find(ed => ed.name === d.name && ed.path === vals.folderPath);
-
-            if (existing) {
-                existing.value = d.value;
-            } else {
-                filteredExistingDefaults.push({
-                    name: d.name,
-                    path: vals.folderPath,
-                    value: d.value,
-                });
-            }
-        });
-
-        // after this operation filteredExistingDefaults should contain all the value we want to write to the file
-        await docLib.setDefaultColumnValues(filteredExistingDefaults);
-    }
-
     @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
@@ -460,24 +314,4 @@ export interface IFolderInfo {
     TimeLastModified: string;
     UniqueId: string;
     WelcomePage: string;
-}
-
-export type AllowedDefaultColumnValues = number | string | boolean | { wssId: string, termName: string, termId: string };
-
-export interface IFieldDefaultProps {
-    /**
-     * Internal name of the field
-     */
-    name: string;
-    /**
-     * The value of the field to set
-     */
-    value: AllowedDefaultColumnValues | AllowedDefaultColumnValues[];
-}
-
-export interface IFieldDefault extends IFieldDefaultProps {
-    /**
-     * The unencoded server relative path for this default
-     */
-    path: string;
 }
