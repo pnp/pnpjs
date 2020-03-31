@@ -7,7 +7,7 @@ import {
 } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/odata";
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { updateable, deleteable, getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators";
+import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";
 
