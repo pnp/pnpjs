@@ -120,9 +120,9 @@ describe("Web", () => {
             // this takes a long time to process
             this.timeout(60000);
 
-            const index = testSettings.sp.url.indexOf("/sites/");
-            const colorUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-            const fontUrl = "/" + combine(testSettings.sp.url.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+            const index = testSettings.sp.webUrl.indexOf("/sites/");
+            const colorUrl = "/" + combine(testSettings.sp.webUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+            const fontUrl = "/" + combine(testSettings.sp.webUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
             return expect(sp.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
         });

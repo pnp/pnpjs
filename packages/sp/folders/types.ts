@@ -20,7 +20,7 @@ import { spPost } from "../operations";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
-import { toResourcePath } from "../utils/toResourcePath";
+import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
@@ -151,9 +151,8 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
-        const q = this.listItemAllFields;
+        const q = await this.listItemAllFields();
         const d = await q.select.apply(q, selects)();
-
         return assign(Item(odataUrlFrom(d)), d);
     }
 
@@ -249,6 +248,9 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
             }));
     }
 
+    /**
+     * Gets the shareable item associated with this folder
+     */
     @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
@@ -307,6 +309,7 @@ export interface IFolderInfo {
     Name: string;
     ProgID: string | null;
     ServerRelativeUrl: string;
+    ServerRelativePath: IResourcePath;
     TimeCreated: string;
     TimeLastModified: string;
     UniqueId: string;

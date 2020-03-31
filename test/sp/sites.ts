@@ -27,14 +27,14 @@ describe("Sites", () => {
         });
 
         it(".getDocumentLibraries", async function () {
-            const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries(testSettings.sp.url);
+            const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries(testSettings.sp.webUrl);
             return docLibs.forEach((docLib) => { expect(docLib).to.haveOwnProperty("Title"); });
         });
 
         it(".getWebUrlFromPageUrl", async function () {
-            const path = combine(testSettings.sp.url, "SitePages", "Home.aspx");
+            const path = combine(testSettings.sp.webUrl, "SitePages", "Home.aspx");
             const webUrl: string = await sp.site.getWebUrlFromPageUrl(path);
-            return expect(webUrl).to.be.equal(testSettings.sp.url);
+            return expect(webUrl).to.be.equal(testSettings.sp.webUrl);
         });
 
         it(".openWebById", async function () {
@@ -61,11 +61,11 @@ describe("Sites", () => {
 //             await sp.site.createCommunicationSite(
 //                 "commSite" + randomNum, 1033,
 //                 false,
-//                 testSettings.sp.url + "/sites/commSite" + randomNum,
+//                 testSettings.sp.webUrl + "/sites/commSite" + randomNum,
 //                 "TestModernTeamSite01", "HBI",
 //                 "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
 //                 ownersEmailID);
-//             const oSite = Site(testSettings.sp.url + "/sites/commSite" + randomNum);
+//             const oSite = Site(testSettings.sp.webUrl + "/sites/commSite" + randomNum);
 //             return expect(oSite.delete()).to.eventually.be.fulfilled;
 //         });
 //     }
@@ -90,7 +90,7 @@ describe("Sites", () => {
 //             expect(sp.site.createCommunicationSite(
 //                 "commSite" + randomNum, 1033,
 //                 false,
-//                 testSettings.sp.url + "/sites/commSite" + randomNum,
+//                 testSettings.sp.webUrl + "/sites/commSite" + randomNum,
 //                 "TestModernTeamSite01", "HBI",
 //                 "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
 //                 ownersEmailID)).to.eventually.be.fulfilled;
