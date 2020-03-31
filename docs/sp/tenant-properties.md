@@ -23,10 +23,9 @@ await w.setStorageEntity("Test2", "Value 2", "description", "comments");
 This method can be used from any web to retrieve values previously set.
 
 ```TypeScript
-import { sp, StorageEntity } from "@pnp/sp";
-import "@pnp/sp/webs";
+import { sp, IStorageEntity } from "@pnp/sp/presets/all";
 
-const prop: StorageEntity = await sp.web.getStorageEntity("Test1");
+const prop: IStorageEntity = await sp.web.getStorageEntity("Test1");
 
 console.log(prop.Value);
 ```
