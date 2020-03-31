@@ -452,7 +452,13 @@ const view = await list.getView(defaultView.Id).select("Title")();
 
 ## security imports
 
-## TODO:: link to the security page and document all there, no need to duplicate
+To work with list security, you can import the list methods as follows:
+
+```TypeScript
+import "@pnp/sp/security/list";
+```
+
+For more information on how to call security methods for lists, please refer to the [@pnp/sp/security](security.md) documentation.
 
 ## subscriptions imports
 
