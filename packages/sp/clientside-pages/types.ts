@@ -1,8 +1,8 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
-import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute } from "@pnp/common";
+import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
 import { IFile } from "../files/types";
 import { Item, IItem } from "../items/types";
-import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
+import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable";
 import { metadata } from "../utils/metadata";
 import { List } from "../lists/types";
 import { odataUrlFrom } from "../odata";
@@ -97,6 +97,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
             id: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             instanceId: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             properties: {
+                authorByline: [],
                 authors: [],
                 layoutType: "FullWidthImage",
                 showPublishDate: false,
@@ -182,6 +183,14 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     public get hasVerticalSection(): boolean {
         return this.sections.findIndex(s => s.layoutIndex === 2) > -1;
+    }
+
+    public get authorByLine(): string | null {
+        if (isArray(this.json.AuthorByline) && this.json.AuthorByline.length > 0) {
+            return this.json.AuthorByline[0];
+        }
+
+        return null;
     }
 
     public get verticalSection(): CanvasSection | null {
@@ -463,6 +472,53 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
                 this._layoutPart.properties.altText = props.altText;
             }
         }
+    }
+
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     * 
+     * @param authorId The integer id of the user to set as the author
+     */
+    public async setAuthorById(authorId: number): Promise<void> {
+
+        // get logins and send to loginname method?
+        const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+            .configureFrom(this)
+            .filter(`Id eq ${authorId}`)
+            .select("LoginName")<{ LoginName: string }[]>();
+
+        if (userLoginData.length < 1) {
+            throw Error(`Could not find user with id ${authorId}.`);
+        }
+
+        return this.setAuthorByLoginName(userLoginData[0].LoginName);
+    }
+
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     * 
+     * @param authorLoginName The login name of the user (ex: i:0#.f|membership|name@tenant.com)
+     */
+    public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
+
+        // get logins and send to loginname method?
+        const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+            .configureFrom(this)
+            .filter(`LoginName eq '${encodeURIComponent(authorLoginName)}'`)
+            .select("UserPrincipalName", "Title")<{ UserPrincipalName: string, Title: string }[]>();
+
+        if (userLoginData.length < 1) {
+            throw Error(`Could not find user with login name '${authorLoginName}'.`);
+        }
+
+        this.json.AuthorByline = [authorLoginName];
+        this._layoutPart.properties.authorByline = [authorLoginName];
+        this._layoutPart.properties.authors = [{
+            id: authorLoginName,
+            name: userLoginData[0].Title,
+            role: "",
+            upn: userLoginData[0].UserPrincipalName,
+        }];
     }
 
     /**
@@ -1301,9 +1357,9 @@ interface ILayoutPartsContent {
         showTopicHeader: boolean;
         showPublishDate: boolean;
         topicHeader: string;
+        authorByline: string[];
         authors: {
             id: string,
-            email: string;
             upn: string;
             name: string;
             role: string;

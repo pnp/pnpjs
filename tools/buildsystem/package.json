@@ -50,5 +50,9 @@
     "@types/pump": "^1.1.0",
     "@types/yargs": "^13.0.0",
     "del-cli": "^1.1.0"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/patrick-rodgers/"
   }
 }

@@ -58,9 +58,9 @@ describe("Folder", () => {
             });
         });
 
-        it("gets folder item", async function () {
-            await web.rootFolder.folders.getByName("SiteAssets").folders.add("test");
-            return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName("test").getItem()).to.eventually.be.fulfilled;
+        it.only("gets folder item", async function () {
+            const far = await web.rootFolder.folders.getByName("SiteAssets").folders.add("test");
+            return expect(far.folder.getItem()).to.eventually.be.fulfilled;
         });
 
         it("moves folder to a new destination", async function () {

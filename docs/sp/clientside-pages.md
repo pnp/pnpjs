@@ -386,6 +386,32 @@ page.showPublishDate = false;
 await page.save();
 ```
 
+### Get / Set author details
+
+_Added in 2.0.4_
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// get the author details (string | null)
+const value = page.authorByLine;
+
+// set the author by user id
+const user = await web.currentUser.select("Id", "LoginName")();
+const userId = user.Id;
+const userLogin = user.LoginName;
+
+await page.setAuthorById(userId);
+await page.save();
+
+await page.setAuthorByLoginName(userLogin);
+await page.save();
+```
+
+> you must still save the page after setting the author to persit your changes as shown in the example
+
+
 ### load
 
 Loads the page from the server, will overwrite any local unsaved changes.

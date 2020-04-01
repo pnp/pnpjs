@@ -3,10 +3,11 @@ import { testSettings } from "../main";
 import { getRandomString, combine } from "@pnp/common";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/site-users";
 import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/files";
-import { Web } from "@pnp/sp/webs";
+import { Web, IWeb } from "@pnp/sp/webs";
 import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages";
 
 
@@ -216,6 +217,51 @@ describe("Clientside Pages", () => {
 
             it(".getLikedByInformation", function () {
                 return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
+            });
+        });
+
+        describe("author", function () {
+
+            let web: IWeb;
+            let page: IClientsidePage;
+            let userId: number;
+            let pageUrl: string;
+            let userLogin: string;
+
+            before(async function () {
+                this.timeout(0);
+                web = Web(testSettings.sp.webUrl);
+                page = await web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
+                await page.save();
+                // we need the updated url info from the published page so we re-load things.
+                await page.load();
+
+                const serverRelUrl = (await web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+                pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+
+                const user = await web.currentUser.select("Id", "LoginName")();
+                userId = user.Id;
+                userLogin = user.LoginName;
+            });
+
+            it(".setAuthorById()", async function () {
+
+                await page.setAuthorById(userId);
+                await page.save();
+
+                const page2 = await web.loadClientsidePage(pageUrl);
+
+                expect(page2.authorByLine).to.eq(userLogin);
+            });
+
+            it(".setAuthorByLoginName()", async function () {
+
+                await page.setAuthorByLoginName(userLogin);
+                await page.save();
+
+                const page2 = await web.loadClientsidePage(pageUrl);
+
+                expect(page2.authorByLine).to.eq(userLogin);
             });
         });
     }
