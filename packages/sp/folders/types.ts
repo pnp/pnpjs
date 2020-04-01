@@ -150,10 +150,8 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
-
-        const q = await this.listItemAllFields();
-        const d = await q.select.apply(q, selects)();
-        return assign(Item(odataUrlFrom(d)), d);
+        const q = await this.listItemAllFields.select(...selects)();
+        return assign(Item(odataUrlFrom(q)), q);
     }
 
     /**
