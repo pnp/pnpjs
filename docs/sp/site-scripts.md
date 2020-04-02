@@ -11,7 +11,7 @@
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
 const sitescriptContent = {
     "$schema": "schema.json",
@@ -34,7 +34,7 @@ console.log(siteScript.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
 // Retrieving all site scripts
 const allSiteScripts = await sp.siteScripts.getSiteScripts();
@@ -49,7 +49,7 @@ console.log(siteScript.Title);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
 // Update
 const updatedSiteScript = await sp.siteScripts.updateSiteScript({ Id: "884ed56b-1aab-4653-95cf-4be0bfa5ef0a", Title: "New Title" });
@@ -63,7 +63,7 @@ await sp.siteScripts.deleteSiteScript("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
 // Using the absolute URL of the list
 const ss = await sp.siteScripts.getSiteScriptFromList("https://TENANT.sharepoint.com/Lists/mylist");
@@ -76,7 +76,7 @@ const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
 const extractInfo = {
     IncludeBranding: true,
@@ -92,3 +92,29 @@ const ss = await sp.siteScripts.getSiteScriptFromWeb("https://TENANT.sharepoint.
 // Using the PnPjs web object to fetch the site script from a specific web
 const ss2 = await sp.web.getSiteScript(extractInfo);
 ```
+
+## Execute Site Script Action
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/site-designs";
+
+const siteScript = "your site script...";
+
+const ss = await sp.siteScripts.executeSiteScriptAction(siteScript);
+```
+
+### Execute site script for a specific web
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import { SiteScripts } "@pnp/sp/site-designs";
+
+const siteScript = "your site script...";
+
+const scriptService = SiteScripts("https://absolute/url/to/web");
+
+const ss = await scriptService.executeSiteScriptAction(siteScript);
+```
+
+
