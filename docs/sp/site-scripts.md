@@ -97,9 +97,9 @@ const ss2 = await sp.web.getSiteScript(extractInfo);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/site-designs";
+import "@pnp/sp/site-scripts";
 
-const siteScript = "your site script...";
+const siteScript = "your site script action...";
 
 const ss = await sp.siteScripts.executeSiteScriptAction(siteScript);
 ```
@@ -108,13 +108,11 @@ const ss = await sp.siteScripts.executeSiteScriptAction(siteScript);
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { SiteScripts } "@pnp/sp/site-designs";
+import { SiteScripts } "@pnp/sp/site-scripts";
 
-const siteScript = "your site script...";
+const siteScript = "your site script action...";
 
 const scriptService = SiteScripts("https://absolute/url/to/web");
 
 const ss = await scriptService.executeSiteScriptAction(siteScript);
 ```
-
-
