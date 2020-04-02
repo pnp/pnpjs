@@ -1,7 +1,6 @@
 import { assign, objectDefinedNotNull } from "./util";
 import { ISPFXContext } from "./spfxcontextinterface";
-
-declare var global: { fetch(url: string, options: any): Promise<Response> };
+import { safeGlobal } from "./safe-global";
 
 export interface IConfigOptions {
     headers?: string[][] | { [key: string]: string } | Headers;
@@ -64,7 +63,7 @@ export class FetchClient implements IHttpClientImpl {
 
     public fetch(url: string, options: IFetchOptions): Promise<Response> {
 
-        return global.fetch(url, options);
+        return safeGlobal.fetch(url, options);
     }
 }
 

@@ -1,5 +1,4 @@
-declare var global: { location: string, _spPageContextInfo?: { webAbsoluteUrl?: string, webServerRelativeUrl?: string } };
-import { combine, isUrlAbsolute, hOP } from "@pnp/common";
+import { combine, isUrlAbsolute, hOP, safeGlobal } from "@pnp/common";
 import { SPRuntimeConfig } from "../splibconfig";
 
 /**
@@ -22,19 +21,19 @@ export function toAbsoluteUrl(candidateUrl: string): Promise<string> {
             return resolve(combine(SPRuntimeConfig.baseUrl, candidateUrl));
         }
 
-        if (global._spPageContextInfo !== undefined) {
+        if (safeGlobal._spPageContextInfo !== undefined) {
 
             // operating in classic pages
-            if (hOP(global._spPageContextInfo, "webAbsoluteUrl")) {
-                return resolve(combine(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
-            } else if (hOP(global._spPageContextInfo, "webServerRelativeUrl")) {
-                return resolve(combine(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+            if (hOP(safeGlobal._spPageContextInfo, "webAbsoluteUrl")) {
+                return resolve(combine(safeGlobal._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+            } else if (hOP(safeGlobal._spPageContextInfo, "webServerRelativeUrl")) {
+                return resolve(combine(safeGlobal._spPageContextInfo.webServerRelativeUrl, candidateUrl));
             }
         }
 
         // does window.location exist and have a certain path part in it?
-        if (global.location !== undefined) {
-            const baseUrl = global.location.toString().toLowerCase();
+        if (safeGlobal.location !== undefined) {
+            const baseUrl = safeGlobal.location.toString().toLowerCase();
             ["/_layouts/", "/siteassets/"].forEach((s: string) => {
                 const index = baseUrl.indexOf(s);
                 if (index > 0) {
