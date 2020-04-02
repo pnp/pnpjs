@@ -684,7 +684,8 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
             }
         }
 
-        const section = this.getOrCreateSection(zoneIndex, layoutIndex, control.data.emphasis.zoneEmphasis || 0);
+        const zoneEmphasis = control.data?.emphasis?.zoneEmphasis ?? 0;
+        const section = this.getOrCreateSection(zoneIndex, layoutIndex, zoneEmphasis);
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
         if (columns.length < 1) {
