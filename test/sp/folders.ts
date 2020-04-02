@@ -58,7 +58,7 @@ describe("Folder", () => {
             });
         });
 
-        it.only("gets folder item", async function () {
+        it("gets folder item", async function () {
             const far = await web.rootFolder.folders.getByName("SiteAssets").folders.add("test");
             return expect(far.folder.getItem()).to.eventually.be.fulfilled;
         });

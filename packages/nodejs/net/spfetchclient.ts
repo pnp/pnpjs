@@ -1,5 +1,4 @@
-declare var global: any;
-import { IHttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
+import { IHttpClientImpl, combine, isUrlAbsolute, safeGlobal } from "@pnp/common";
 import { NodeFetchClient } from "./nodefetchclient";
 import { getAddInOnlyAccessToken } from "../sptokenutils";
 import { SPOAuthEnv, AuthToken } from "../types";
@@ -7,7 +6,7 @@ import { SPOAuthEnv, AuthToken } from "../types";
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
  */
-export class SPFetchClient  implements IHttpClientImpl  {
+export class SPFetchClient implements IHttpClientImpl {
 
     protected token: AuthToken | null = null;
 
@@ -19,7 +18,8 @@ export class SPFetchClient  implements IHttpClientImpl  {
         protected _realm = "",
         protected _fetchClient: IHttpClientImpl = new NodeFetchClient()) {
 
-        global._spPageContextInfo = {
+        // this is a patch to ensure we can resolve urls correctly with in the sp library's toAbsoluteUrl util function
+        safeGlobal._spPageContextInfo = {
             webAbsoluteUrl: siteUrl,
         };
     }
@@ -73,7 +73,7 @@ export class SPFetchClient  implements IHttpClientImpl  {
 
         const url = `https://${this.getAuthHostUrl(this.authEnv)}/metadata/json/1?realm=${realm}`;
 
-        const r = await this._fetchClient.fetch(url, { method: "GET"});
+        const r = await this._fetchClient.fetch(url, { method: "GET" });
         const json: { endpoints: { protocol: string, location: string }[] } = await r.json();
 
         const eps = json.endpoints.filter(ep => ep.protocol === "OAuth2");
