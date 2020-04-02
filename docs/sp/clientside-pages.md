@@ -466,7 +466,7 @@ Used to control the availability of comments on a page
 
 ```TypeScript
 // you need to import the comments sub-module or use the all preset
-import "@pnp/sp/comments";
+import "@pnp/sp/comments/clientside-page";
 
 // our page instance
 const page: IClientsidePage;

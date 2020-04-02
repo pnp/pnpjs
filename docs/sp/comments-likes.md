@@ -50,6 +50,24 @@ await page.addComment("A test comment");
 const comments = await page.getComments();
 ```
 
+### enableComments & disableComments
+
+Used to control the availability of comments on a page
+
+```TypeScript
+// you need to import the comments sub-module or use the all preset
+import "@pnp/sp/comments/clientside-page";
+
+// our page instance
+const page: IClientsidePage;
+
+// turn on comments
+await page.enableComments();
+
+// turn off comments
+await page.disableComments();
+```
+
 ### GetById
 
 ```TypeScript
