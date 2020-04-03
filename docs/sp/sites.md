@@ -108,7 +108,7 @@ Creates a modern communication site.
 import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 
-const s = await sp.site.createCommunicationSite(
+const result = await sp.site.createCommunicationSite(
             "Title",
             1033,
             true,
@@ -120,6 +120,25 @@ const s = await sp.site.createCommunicationSite(
             "user@TENANT.onmicrosoft.com");
 
 ```
+
+### Create from Props
+
+You may need to supply additional parameters such as WebTemplate, to do so please use the `createCommunicationSiteFromProps` method.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/sites";
+
+// in this case you supply a single struct deinfing the creation props
+const result = await sp.site.createCommunicationSiteFromProps({
+  Owner: "patrick@three18studios.com",
+  Title: "A Test Site",
+  Url: "https://318studios.sharepoint.com/sites/commsite2",
+  WebTemplate: "STS#3",
+});
+```
+
 
 ## Create a modern team site
 
@@ -148,7 +167,7 @@ Creates a modern team site backed by O365 group.
 import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 
-const d = await sp.site.createModernTeamSite(
+const result = await sp.site.createModernTeamSite(
         "displayName",
         "alias",
         true,
@@ -161,6 +180,23 @@ const d = await sp.site.createModernTeamSite(
         );
 
 console.log(d);
+```
+
+### Create from Props
+
+You may need to supply additional parameters, to do so please use the `createModernTeamSiteFromProps` method.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/sites";
+
+// in this case you supply a single struct deinfing the creation props
+const result = await sp.site.createModernTeamSiteFromProps({
+  alias: "JenniferGarner",
+  displayName: "A Test Site",
+  owners: ["patrick@three18studios.com"],
+});
 ```
 
 ## Delete a site collection

@@ -7,6 +7,8 @@ import {
     objectDefinedNotNull,
 } from "@pnp/common";
 
+export const emptyGuid = "00000000-0000-0000-0000-000000000000";
+
 export interface SPConfigurationPart {
     sp?: {
         /**

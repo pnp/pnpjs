@@ -22,6 +22,7 @@ import {
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
 import { RoleDefinitions } from "../security/types";
+import { emptyGuid } from "../splibconfig";
 
 /**
  * Shares an object based on the supplied options
@@ -155,7 +156,7 @@ export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLink
  * @param kind The kind of link to be deleted.
  * @param shareId
  */
-export function unshareLink(this: ShareableQueryable, linkKind: SharingLinkKind, shareId = "00000000-0000-0000-0000-000000000000"): Promise<void> {
+export function unshareLink(this: ShareableQueryable, linkKind: SharingLinkKind, shareId = emptyGuid): Promise<void> {
 
     return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
 }

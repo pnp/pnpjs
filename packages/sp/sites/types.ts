@@ -1,9 +1,8 @@
 import { SharePointQueryable, _SharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
 import { defaultPath } from "../decorators";
 import { Web, IWeb } from "../webs/types";
-import { hOP, jsS, assign } from "@pnp/common";
-import { SPHttpClient } from "../sphttpclient";
-import { body, headers } from "@pnp/odata";
+import { hOP, assign } from "@pnp/common";
+import { body } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { spPost } from "../operations";
 import { SPBatch } from "../batch";
@@ -12,6 +11,7 @@ import { IChangeQuery } from "../types";
 import { tag } from "../telemetry";
 import { metadata } from "../utils/metadata";
 import { extractWebUrl } from "../utils/extractweburl";
+import { emptyGuid } from "../splibconfig";
 
 @defaultPath("_api/site")
 export class _Site extends _SharePointQueryableInstance {
@@ -132,20 +132,22 @@ export class _Site extends _SharePointQueryableInstance {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc 
+     * @param hubSiteId The id of the hub site to which the new site should be associated
+     * @param owner Optional owner value, required if executing the method in app only mode
      */
     public async createCommunicationSite(
         title: string,
         lcid = 1033,
         shareByEmailEnabled = false,
         url: string,
-        description = "",
-        classification = "",
-        siteDesignId = "00000000-0000-0000-0000-000000000000",
-        hubSiteId = "00000000-0000-0000-0000-000000000000",
+        description?: string,
+        classification?: string,
+        siteDesignId?: string,
+        hubSiteId?: string,
         owner?: string,
-    ): Promise<void> {
+    ): Promise<ISiteCreationResponse> {
 
-        const props = {
+        return this.createCommunicationSiteFromProps({
             Classification: classification,
             Description: description,
             HubSiteId: hubSiteId,
@@ -155,25 +157,28 @@ export class _Site extends _SharePointQueryableInstance {
             SiteDesignId: siteDesignId,
             Title: title,
             Url: url,
+        });
+    }
+
+    public async createCommunicationSiteFromProps(props: ICreateCommSiteProps): Promise<ISiteCreationResponse> {
+
+        // handle defaults
+        const p = Object.assign({}, {
+            Classification: "",
+            Description: "",
+            HubSiteId: emptyGuid,
+            Lcid: 1033,
+            ShareByEmailEnabled: false,
+            SiteDesignId: emptyGuid,
             WebTemplate: "SITEPAGEPUBLISHING#0",
-            WebTemplateExtensionId: "00000000-0000-0000-0000-000000000000",
-        };
+            WebTemplateExtensionId: emptyGuid,
+        }, props);
 
-        const postBody =
-            body({
-                "request":
-                    assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), props),
-            },
-                headers({
-                    "Accept": "application/json;odata=verbose",
-                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                }));
+        const postBody = body({
+            "request": assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
+        });
 
-        const d: any = await this.getRootWeb();
-        const client = new SPHttpClient();
-        const methodUrl = `${d.parentUrl}/_api/SPSiteManager/Create`;
-        const r = await client.post(methodUrl, postBody);
-        return await r.json();
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody);
     }
 
     /**
@@ -190,46 +195,61 @@ export class _Site extends _SharePointQueryableInstance {
     public async createModernTeamSite(
         displayName: string,
         alias: string,
-        isPublic = true,
-        lcid = 1033,
-        description = "",
-        classification = "",
+        isPublic?: boolean,
+        lcid?: number,
+        description?: string,
+        classification?: string,
         owners?: string[],
-        hubSiteId = "00000000-0000-0000-0000-000000000000",
+        hubSiteId?: string,
         siteDesignId?: string,
-    ): Promise<void> {
+    ): Promise<ISiteCreationResponse> {
+
+        return this.createModernTeamSiteFromProps({
+            alias,
+            classification,
+            description,
+            displayName,
+            hubSiteId,
+            isPublic,
+            lcid,
+            owners,
+            siteDesignId,
+        });
+    }
+
+    public async createModernTeamSiteFromProps(props: ICreateTeamSiteProps): Promise<ISiteCreationResponse> {
+
+        // handle defaults
+        const p = Object.assign({}, {
+            classification: "",
+            description: "",
+            hubSiteId: emptyGuid,
+            isPublic: true,
+            lcid: 1033,
+            owners: [],
+        }, props);
 
         const postBody = {
-            alias: alias,
-            displayName: displayName,
-            isPublic: isPublic,
+            alias: p.alias,
+            displayName: p.displayName,
+            isPublic: p.isPublic,
             optionalParams: {
-                Classification: classification,
+                Classification: p.classification,
                 CreationOptions: {
-                    "results": [`SPSiteLanguage:${lcid}`, `HubSiteId:${hubSiteId}`],
+                    "results": [`SPSiteLanguage:${p.lcid}`, `HubSiteId:${p.hubSiteId}`],
                 },
-                Description: description,
+                Description: p.description,
                 Owners: {
-                    "results": owners ? owners : [],
+                    "results": p.owners,
                 },
             },
         };
 
-        if (siteDesignId) {
-            postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${siteDesignId}`);
+        if (p.siteDesignId) {
+            postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${p.siteDesignId}`);
         }
 
-        const d: any = await this.getRootWeb();
-        const client = new SPHttpClient();
-        const methodUrl = `${d.parentUrl}/_api/GroupSiteManager/CreateGroupEx`;
-        const r = await client.post(methodUrl, {
-            body: jsS(postBody),
-            headers: {
-                "Accept": "application/json;odata=verbose",
-                "Content-Type": "application/json;odata=verbose;charset=utf-8",
-            },
-        });
-        return await r.json();
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody));
     }
 }
 export interface ISite extends _Site { }
@@ -264,4 +284,36 @@ export interface IDocumentLibraryInformation {
     ModifiedFriendlyDisplay?: string;
     ServerRelativeUrl?: string;
     Title?: string;
+}
+
+export interface ICreateCommSiteProps {
+    Classification?: string;
+    Description?: string;
+    HubSiteId?: string;
+    Lcid?: number;
+    Owner?: string;
+    ShareByEmailEnabled?: boolean;
+    SiteDesignId?: string;
+    Title: string;
+    Url: string;
+    WebTemplate?: "SITEPAGEPUBLISHING#0" | "STS#3";
+    WebTemplateExtensionId?: string;
+}
+
+export interface ICreateTeamSiteProps {
+    displayName: string;
+    alias: string;
+    isPublic?: boolean;
+    lcid?: number;
+    description?: string;
+    classification?: string;
+    owners?: string[];
+    hubSiteId?: string;
+    siteDesignId?: string;
+}
+
+export interface ISiteCreationResponse {
+    "SiteId": string;
+    "SiteStatus": 0 | 1 | 2 | 3;
+    "SiteUrl": string;
 }
