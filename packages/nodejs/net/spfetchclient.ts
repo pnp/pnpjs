@@ -32,6 +32,11 @@ export class SPFetchClient implements IHttpClientImpl {
 
         options.headers.set("Authorization", `Bearer ${token.access_token}`);
 
+        if (!options.headers.has("User-Agent")) {
+            // this marks the requests for understanding by the service
+            options.headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs");
+        }
+
         const uri = !isUrlAbsolute(url) ? combine(this.siteUrl, url) : url;
 
         return this._fetchClient.fetch(uri, options);
