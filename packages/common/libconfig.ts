@@ -105,11 +105,7 @@ export class RuntimeConfigImpl {
     }
 
     public get ie11(): boolean {
-        const v = this.get(s[6]);
-        if (v) {
-            console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
-        }
-        return v;
+        return this.get(s[6]);
     }
 }
 

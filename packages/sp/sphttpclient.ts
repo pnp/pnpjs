@@ -54,12 +54,6 @@ export class SPHttpClient implements IRequestClient {
             headers.append("X-ClientService-ClientTag", clientTag);
         }
 
-        if (!headers.has("User-Agent")) {
-            // this marks the requests for understanding by the service
-            // does not work in browsers
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/$$Version$$");
-        }
-
         opts = assign(opts, { headers: headers });
 
         // if we have either a request digest or an authorization header we don't need a digest

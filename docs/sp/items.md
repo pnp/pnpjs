@@ -389,6 +389,21 @@ console.log("Done")
 
 ```
 
+## Recycle
+
+To send an item to the recycle bin use recycle.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+let list = sp.web.lists.getByTitle("MyList");
+
+const recycleBinIdentifier = await list.items.getById(1).recycle();
+```
+
 ## Delete
 
 Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.
