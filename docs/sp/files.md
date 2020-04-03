@@ -24,6 +24,26 @@ const text: string = await sp.web.getFileByServerRelativeUrl("/sites/dev/documen
 const text2: string = await sp.web.getFolderByServerRelativeUrl("/sites/dev/documents").files.getByName("file.txt").getText();
 ```
 
+### getFileByUrl
+
+_Added in 2.0.4_
+
+This method supports opening files form sharing links or absolute urls. The file must reside in the through which you are trying to open the file.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files/web";
+
+const url = "{absolute file url OR sharing url}";
+
+// file is an IFile and supports all the file operations
+const file = sp.web.getFileByUrl(url);
+
+// for example
+const fileContent = await file.getText();
+```
+
 ## Adding Files
 
 Likewise you can add files using one of two methods, add or addChunked. The second is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.
@@ -38,7 +58,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { auth } from "./auth";
-let $ = require("jquery"); //<-- used here for illustration
+let $ = require("jquery"); // <-- used here for illustration
 
 let siteUrl = "https://mytenant.sharepoint.com/sites/dev";
 
