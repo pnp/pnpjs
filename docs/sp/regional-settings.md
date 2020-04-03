@@ -34,11 +34,10 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings/web";
 
-const s = await sp.web.regionalSettings.installedLanguages();
-
-// you can select which fields to return as well
-const s = await sp.web.regionalSettings.installedLanguages.select("DisplayName")();
+const s = await sp.web.regionalSettings.getInstalledLanguages();
 ```
+
+> The installedLanguages property accessor is deprecated after 2.0.4 in favor of getInstalledLanguages and will be removed in future versions.
 
 ### TimeZones
 
@@ -70,3 +69,41 @@ const s6 = await sp.web.regionalSettings.timeZone.localTimeToUTC(new Date());
 const s6 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date())
 const s7 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date(2019, 6, 10, 10, 0, 0, 0))
 ```
+
+### Title and Description Resources
+
+_Added in 2.0.4_
+
+Some objects allow you to read language specific title information as shown in the following sample. This applies to Web, List, Field, Content Type, and User Custom Actions.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/regional-settings";
+
+//
+// The below methods appears on
+// - Web
+// - List
+// - Field
+// - ContentType
+// - User Custom Action
+//
+// after you import @pnp/sp/regional-settings
+//
+// you can also import just parts of the regional settings:
+// import "@pnp/sp/regional-settings/web";
+// import "@pnp/sp/regional-settings/list";
+// import "@pnp/sp/regional-settings/content-type";
+// import "@pnp/sp/regional-settings/field";
+// import "@pnp/sp/regional-settings/user-custom-actions";
+
+
+const title = await sp.web.titleResource("en-us");
+const title2 = await sp.web.titleResource("de-de");
+
+const description = await sp.web.descriptionResource("en-us");
+const description2 = await sp.web.descriptionResource("de-de");
+```
+
+> You can only read the values through the REST API, not set the value.

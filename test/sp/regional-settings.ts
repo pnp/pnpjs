@@ -16,8 +16,8 @@ describe("Regional Settings", () => {
             return expect(sp.web.regionalSettings.select("DecimalSeparator", "ListSeparator", "IsUIRightToLeft")()).to.eventually.be.fulfilled;
         });
 
-        it("installedLanguages", function () {
-            return expect(sp.web.regionalSettings.installedLanguages()).to.eventually.be.fulfilled;
+        it("getInstalledLanguages", function () {
+            return expect(sp.web.regionalSettings.getInstalledLanguages()).to.eventually.be.fulfilled;
         });
 
         it("timeZones", function () {
@@ -47,6 +47,16 @@ describe("Regional Settings", () => {
 
         it("timeZone.utcToLocalTime", function () {
             return expect(sp.web.regionalSettings.timeZone.utcToLocalTime(new Date())).to.eventually.be.fulfilled;
+        });
+
+        it("handle language based titleResource", function () {
+
+            return expect(sp.web.titleResource("en-us")).to.eventually.be.fulfilled;
+        });
+
+        it("handle language based descriptionResource", function () {
+
+            return expect(sp.web.descriptionResource("en-us")).to.eventually.be.fulfilled;
         });
     }
 });

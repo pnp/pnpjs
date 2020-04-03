@@ -16,9 +16,11 @@ export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSet
 
     /**
      * Gets the collection of languages used in a server farm.
+     * ** Please use getInstalledLanguages instead of this method **
      */
-    public get installedLanguages(): ISharePointQueryableCollection<IInstalledLanguageInfo[]> {
-        return tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.installedLanguages");
+    public get installedLanguages(): ISharePointQueryableCollection<{ Items: IInstalledLanguageInfo[] }> {
+        console.warn("Deprecated: RegionalSettings.installedLanguages is deprecated, please use RegionalSettings.getInstalledLanguages");
+        return <any>tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.installedLanguages");
     }
 
     /**
@@ -33,6 +35,14 @@ export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSet
      */
     public get timeZones(): ITimeZones {
         return tag.configure(TimeZones(this), "rs.tzs");
+    }
+
+    /**
+     * Gets the collection of languages used in a server farm.
+     */
+    public async getInstalledLanguages(): Promise<IInstalledLanguageInfo[]> {
+        const results: { Items: IInstalledLanguageInfo[] } = await tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.getInstalledLanguages")();
+        return results.Items;
     }
 }
 export interface IRegionalSettings extends _RegionalSettings { }
@@ -151,4 +161,15 @@ export interface ITimeZoneInfo {
         DaylightBias: number;
         StandardBias: number;
     };
+}
+
+export interface IUserResources {
+    /**
+     * Gets the resource string for the title
+     */
+    titleResource(cultureName: string): Promise<string>;
+    /**
+     * Gets the resource string for the title description
+     */
+    descriptionResource(cultureName: string): Promise<string>;
 }
