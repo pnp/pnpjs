@@ -7,6 +7,7 @@ declare module "../webs/types" {
         getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;
         getFileByServerRelativePath(fileRelativeUrl: string): IFile;
         getFileById(uniqueId: string): IFile;
+        getFileByUrl(fileUrl: string): IFile;
     }
     interface IWeb {
 
@@ -30,6 +31,13 @@ declare module "../webs/types" {
          * @param uniqueId The UniqueId of the file
          */
         getFileById(uniqueId: string): IFile;
+
+        /**
+         * Gets a file from a sharing link or absolute url
+         * 
+         * @param fileUrl Absolute url of the file to get
+         */
+        getFileByUrl(fileUrl: string): IFile;
     }
 }
 
@@ -43,4 +51,8 @@ _Web.prototype.getFileByServerRelativePath = function (this: _Web, fileRelativeU
 
 _Web.prototype.getFileById = function (this: _Web, uniqueId: string): IFile {
     return File(this, `getFileById('${uniqueId}')`);
+};
+
+_Web.prototype.getFileByUrl = function (this: _Web, fileUrl: string): IFile {
+    return File(this, `getFileByUrl('!@p1::${escapeQueryStrValue(fileUrl)}')`);
 };

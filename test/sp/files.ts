@@ -40,6 +40,13 @@ describe("files", () => {
             return expect(sp.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
         });
 
+        it("getByUrl", async function () {
+
+            const item = await sp.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
+            const urlData = await item.select("EncodedAbsUrl")();
+            return expect(sp.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
+        });
+
         it("add", async function () {
 
             const name = `Testing Add - ${getRandomString(4)}.txt`;
@@ -252,7 +259,7 @@ describe("file", () => {
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
             await files.add(name, "Some test text content.");
             const item = await files.getByName(name).getItem();
-           return expect(item()).to.eventually.be.fulfilled;
+            return expect(item()).to.eventually.be.fulfilled;
         });
     }
 });
