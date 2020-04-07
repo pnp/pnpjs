@@ -8,7 +8,7 @@ import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/files";
 import { Web, IWeb } from "@pnp/sp/webs";
-import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages";
+import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage, PromotedState } from "@pnp/sp/clientside-pages";
 
 
 describe("Clientside Pages", () => {
@@ -23,6 +23,16 @@ describe("Clientside Pages", () => {
         it("CreateClientSidePage", function () {
 
             return expect(CreateClientsidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+        });
+
+        it("web.addClientSidePage - promoted state 1", async function () {
+            const p = await Web(testSettings.sp.webUrl).addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`, "A Title", "Article", PromotedState.PromoteOnPublish);
+            return expect(p.save(true)).to.eventually.be.fulfilled;
+        });
+
+        it("CreateClientSidePage - promoted state 1", async function () {
+            const p = await CreateClientsidePage(Web(testSettings.sp.webUrl), `TestingAdd_${getRandomString(4)}.aspx`, "title", "Article", PromotedState.PromoteOnPublish);
+            return expect(p.save(true)).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage - SingleWebPartAppPage", function () {
