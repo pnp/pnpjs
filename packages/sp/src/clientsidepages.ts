@@ -119,8 +119,14 @@ export class ClientSidePage extends SharePointQueryable {
      * @param pageName Filename of the page, such as "page"
      * @param title The display title of the page
      * @param pageLayoutType Layout type of the page to use
+     * @param promotedState Allows you to set the promoted state of a page when creating
      */
-    public static async create(web: Web | List, pageName: string, title: string, pageLayoutType: ClientSidePageLayoutType = "Article"): Promise<ClientSidePage> {
+    public static async create(
+        web: Web | List,
+        pageName: string,
+        title: string,
+        pageLayoutType: ClientSidePageLayoutType = "Article",
+        promotedState: PromotedState = 0): Promise<ClientSidePage> {
 
         // patched because previously we used the full page name with the .aspx at the end
         // this allows folk's existing code to work after the re-write to the new API
@@ -133,6 +139,7 @@ export class ClientSidePage extends SharePointQueryable {
         const pageInitData = await ClientSidePage.initFrom(web, "_api/sitepages/pages").postCore<IPageData>({
             body: jsS(Object.assign(metadata("SP.Publishing.SitePage"), {
                 PageLayoutType: pageLayoutType,
+                PromotedState: promotedState,
             })),
         });
 
@@ -596,10 +603,11 @@ export class ClientSidePage extends SharePointQueryable {
      * @param pageName The file name of the new page
      * @param title The title of the new page
      * @param publish If true the page will be published
+     * @param promotedState Allows you to set the promoted state of a page when making a copy
      */
-    public async copyPage(web: Web | List, pageName: string, title: string, publish = true): Promise<ClientSidePage> {
+    public async copyPage(web: Web | List, pageName: string, title: string, publish = true, promotedState: PromotedState = 0): Promise<ClientSidePage> {
 
-        const page = await ClientSidePage.create(web, pageName, title, this.pageLayout);
+        const page = await ClientSidePage.create(web, pageName, title, this.pageLayout, promotedState);
 
         page.setControls(this.getControls());
 
