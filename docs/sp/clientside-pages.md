@@ -20,6 +20,7 @@ You can create a new clientside page in several ways, all are equivalent.
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+import { PromotedState } from "@pnp/sp/clientside-pages";
 
 const page = await sp.web.addClientsidePage("mypage1");
 
@@ -33,6 +34,12 @@ const page2 = await sp.web.addClientsidePage("mypage", "My Page Title", "Article
 
 // you must publish the new page
 await page2.save();
+
+// include title and page layout while also specifying the publishing status (Added in 2.0.4)
+const page3 = await sp.web.addClientsidePage("mypage", "My Page Title", "Article", PromotedState.PromoteOnPublish);
+
+// you must publish the new page
+await page3.save();
 ```
 
 ### Create using CreateClientsidePage method
@@ -41,7 +48,7 @@ await page2.save();
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
-import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
+import { CreateClientsidePage, PromotedState } from "@pnp/sp/clientside-pages";
 
 const page1 = await CreateClientsidePage(sp.web, "mypage2", "My Page Title");
 
@@ -53,6 +60,12 @@ const page2 = await CreateClientsidePage(sp.web, "mypage3", "My Page Title", "Ar
 
 // you must publish the new page
 await page2.save();
+
+// specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)
+const page2half = await CreateClientsidePage(sp.web, "mypage3", "My Page Title", "Article", PromotedState.PromoteOnPublish);
+
+// you must publish the new page, in this case the page will immediately be promoted to a news article
+await page2half.save();
 
 // use the web factory to create a page in a specific web
 const page3 = await CreateClientsidePage(Web("https://{absolute web url}"), "mypage4", "My Page Title");

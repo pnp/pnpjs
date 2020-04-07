@@ -429,9 +429,9 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      * @param publish If true the page will be published
      */
     @tag("csp.copy")
-    public async copy(web: IWeb, pageName: string, title: string, publish = true): Promise<IClientsidePage> {
+    public async copy(web: IWeb, pageName: string, title: string, publish = true, promotedState?: PromotedState): Promise<IClientsidePage> {
 
-        const page = await CreateClientsidePage(web, pageName, title, this.pageLayout);
+        const page = await CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState);
 
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());
@@ -772,22 +772,26 @@ export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePa
  * @param title The page's title
  * @param PageLayoutType Layout to use when creating the page
  */
-export const CreateClientsidePage = async (web: IWeb, pageName: string, title: string, PageLayoutType: ClientsidePageLayoutType = "Article"): Promise<IClientsidePage> => {
+export const CreateClientsidePage =
+    async (web: IWeb, pageName: string, title: string, PageLayoutType: ClientsidePageLayoutType = "Article", promotedState: PromotedState = 0): Promise<IClientsidePage> => {
 
-    // patched because previously we used the full page name with the .aspx at the end
-    // this allows folk's existing code to work after the re-write to the new API
-    pageName = pageName.replace(/\.aspx$/i, "");
+        // patched because previously we used the full page name with the .aspx at the end
+        // this allows folk's existing code to work after the re-write to the new API
+        pageName = pageName.replace(/\.aspx$/i, "");
 
-    // initialize the page, at this point a checked-out page with a junk filename will be created.
-    const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), { PageLayoutType })));
+        // initialize the page, at this point a checked-out page with a junk filename will be created.
+        const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
+            PageLayoutType,
+            PromotedState: promotedState,
+        })));
 
-    // now we can init our page with the save data
-    const newPage = ClientsidePage(web, "", pageInitData);
-    newPage.title = pageName;
-    await newPage.save(false);
-    newPage.title = title;
-    return newPage;
-};
+        // now we can init our page with the save data
+        const newPage = ClientsidePage(web, "", pageInitData);
+        newPage.title = pageName;
+        await newPage.save(false);
+        newPage.title = title;
+        return newPage;
+    };
 
 export class CanvasSection {
 
