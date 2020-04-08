@@ -30,7 +30,7 @@ export class _Members extends _GraphQueryableCollection<IMemberType[]> {
      * the members navigation property. You can add users or other groups.
      * Important: You can add only users to Office 365 groups.
      * 
-     * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: https://graph.microsoft.com/v1.0/directoryObjects/${id})
+     * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: `https://graph.microsoft.com/v1.0/directoryObjects/${id}`)
      */
     public add(id: string): Promise<any> {
         return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));

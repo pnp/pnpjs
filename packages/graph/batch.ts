@@ -1,6 +1,6 @@
 import { Batch, IODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { assign, jsS, isUrlAbsolute } from "@pnp/common";
+import { assign, jsS, isUrlAbsolute, hOP } from "@pnp/common";
 import { GraphRuntimeConfig } from "./graphlibconfig";
 import { GraphHttpClient } from "./graphhttpclient";
 
@@ -30,7 +30,12 @@ interface GraphBatchResponseFragment {
     body?: any;
 }
 
-interface GraphBatchResponse {
+interface IGraphBatchResponse {
+    error?: {
+        code: string;
+        innerError: { "request-id": string, date: string };
+        message: string;
+    };
     responses: GraphBatchResponseFragment[];
     nextLink?: string;
 }
@@ -98,11 +103,17 @@ export class GraphBatch extends Batch {
                     headers = assign(headers, reqInfo.options.headers);
                 }
 
+                // all non-get requests need their own content-type header
+                if (reqInfo.method !== "GET") {
+                    headers["Content-Type"] = "application/json";
+                }
+
                 // add a request body
                 if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
 
+                    // we need to parse the body which was previously turned into a string
                     requestFragment = assign(requestFragment, {
-                        body: reqInfo.options.body,
+                        body: JSON.parse(reqInfo.options.body),
                     });
                 }
             }
@@ -115,9 +126,14 @@ export class GraphBatch extends Batch {
         });
     }
 
-    private static parseResponse(requests: IODataBatchRequestInfo[], graphResponse: GraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
+    private static parseResponse(requests: IODataBatchRequestInfo[], graphResponse: IGraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+
+            // we need to see if we have an error and report that
+            if (hOP(graphResponse, "error")) {
+                return reject(Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`));
+            }
 
             const parsedResponses: Response[] = new Array(requests.length).fill(null);
 
@@ -157,48 +173,62 @@ export class GraphBatch extends Batch {
 
         // create a working copy of our requests
         const requests = this.requests.slice();
+        let error = false;
 
-        // this is the root of our promise chain
-        const promise = Promise.resolve();
 
-        while (requests.length > 0) {
+        return new Promise(async (resolve, reject) => {
 
-            const requestsChunk = requests.splice(0, this.maxRequests);
+            // this is the root of our promise chain
+            while (requests.length > 0) {
 
-            const batchRequest: GraphBatchRequest = {
-                requests: GraphBatch.formatRequests(requestsChunk),
-            };
+                const requestsChunk = requests.splice(0, this.maxRequests);
 
-            const batchOptions = {
-                body: jsS(batchRequest),
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-            };
+                const batchRequest: GraphBatchRequest = {
+                    requests: GraphBatch.formatRequests(requestsChunk),
+                };
 
-            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
+                const batchOptions = {
+                    body: jsS(batchRequest),
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                };
 
-            client.fetch(this.batchUrl, batchOptions)
-                .then(r => r.json())
-                .then((j) => GraphBatch.parseResponse(requestsChunk, j))
-                .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
+                Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
+                await client.fetch(this.batchUrl, batchOptions)
+                    .then(r => r.json())
+                    .then((j) => GraphBatch.parseResponse(requestsChunk, j))
+                    .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
 
-                    parsedResponse.responses.reduce((chain, response, index) => {
+                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
 
-                        const request = requestsChunk[index];
+                        parsedResponse.responses.reduce((chain, response, index) => {
 
-                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
+                            const request = requestsChunk[index];
 
-                        return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
+                            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
 
-                    }, promise);
-                });
-        }
+                            return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
 
-        return promise;
+                        }, Promise.resolve());
+                    }).catch(e => {
+                        reject(e);
+                        error = true;
+                    });
+
+                if (error) {
+                    // do not continue processing on error, we can't know what the downstream effects are
+                    break;
+                }
+            }
+
+            if (!error) {
+                // if we didn't have an error go ahead and resolve the promise as successful
+                resolve();
+            }
+        });
     }
 }
