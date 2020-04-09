@@ -334,7 +334,20 @@ const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappca
 |Selective 2|import "@pnp/sp/client-side-pages/web";|
 |Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
 
-## TODO (need to update code to latest from 1.x branch)
+You can create and load clientside page instances directly from a web. More details on [working with clientside pages](clientside-pages.md) are available in the dedicated article.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages/web";
+
+// simplest add a page example
+const page = await sp.web.addClientsidePage("mypage1");
+
+// simplest load a page example
+const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
+```
+
 
 ## content-type imports
 
@@ -644,11 +657,11 @@ const data: IRelatedItem[] = await manager.getRelatedItems("{list name}", 4);
 
 ## security imports
 
-## TODO:: link to the security page and document all there, no need to duplicate
+Please see information around the available security methods in the [security article](security.md).
 
 ## sharing imports
 
-## TODO:: link to the sharing page and document all there, no need to duplicate
+Please see information around the available sharing methods in the [sharing article](sharing.md).
 
 ## site-groups imports
 
