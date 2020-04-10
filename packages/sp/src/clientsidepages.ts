@@ -801,8 +801,7 @@ export class ClientSidePage extends SharePointQueryable {
             }
         }
 
-        // tslint:disable-next-line
-        const zoneEmphasis = control.data?.emphasis?.zoneEmphasis ?? 0;
+        const zoneEmphasis = (control.data && control.data.emphasis && control.data.emphasis.zoneEmphasis) ? control.data.emphasis.zoneEmphasis : 0;
         const section = this.getOrCreateSection(zoneIndex, layoutIndex, zoneEmphasis);
 
         const columns = section.columns.filter(c => c.order === sectionIndex);
