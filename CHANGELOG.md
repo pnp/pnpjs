@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.4 - 2020-04-10
+
+### Added
+
+- graph: Added Graph Insights + documentation [@simonagren](https://github.com/simonagren) [[PR](https://github.com/pnp/pnpjs/pull/1089)]
+- sp: Added support, docs, and tests for default column values [[PR](https://github.com/pnp/pnpjs/pull/1130)]
+- sp: Added support for setting clientside page author field [[PR](https://github.com/pnp/pnpjs/pull/1133)]
+- sp: Added support for executeSiteScriptAction on Site [[PR](https://github.com/pnp/pnpjs/pull/1135)]
+- sp: Added support for accessing title and description resource on Web, List, Content Type, Field, and User Custom Action [[PR](https://github.com/pnp/pnpjs/pull/1138)]
+- sp: Added support for additional site creation properties [[PR](https://github.com/pnp/pnpjs/pull/1141)]
+- sp: Added support for getFileByUrl method on web [[PR](https://github.com/pnp/pnpjs/pull/1142)]
+- sp: Added support to specify promoted state when creating or copying clientside pages [[PR](https://github.com/pnp/pnpjs/pull/1143)]
+
+### Fixed
+
+- sp: brought over a v1 change that was missed for getCurrentUserEffectivePermissions [@koltyakov](https://github.com/koltyakov) [[PR](https://github.com/pnp/pnpjs/pull/1079)]
+- graph: fixed graph planner bucket edit and delete with etag [@JMTeamway](https://github.com/JMTeamway) [[PR](https://github.com/pnp/pnpjs/pull/1095)]
+- docs: Add starting '/' on relative urls in files & folders docs [@joelfmrodrigues](https://github.com/joelfmrodrigues) [[PR](https://github.com/pnp/pnpjs/pull/1095)]
+- sp: Fixed issue with absolute url when copy/moving files and folders by path [@joelfmrodrigues](https://github.com/joelfmrodrigues) [[PR](https://github.com/pnp/pnpjs/pull/1108)]
+- sp: Fixed issue with Retry-After not being converted to milliseconds [@koltyakov](https://github.com/koltyakov) [[PR](https://github.com/pnp/pnpjs/pull/1113)]
+- docs: Fixed imports for sp.profiles docs [@joelfmrodrigues](https://github.com/joelfmrodrigues) [[PR](https://github.com/pnp/pnpjs/pull/1116)]
+- docs: Fixed storage entities docs to correctly ref IStorageEntity [@PaoloPia](https://github.com/PaoloPia) [[PR](https://github.com/pnp/pnpjs/pull/1118)]
+- docs: Replaced a TODO with proper content [@hugoabernier](https://github.com/hugoabernier) [[PR](https://github.com/pnp/pnpjs/pull/1120)]
+- docs: Fixed fields documentation [@AJIXuMuK](https://github.com/AJIXuMuK) [[PR](https://github.com/pnp/pnpjs/pull/1125)]
+- sp: Fixed code to support accessing a safe global object regardless of environment [[PR](https://github.com/pnp/pnpjs/pull/1134)]
+- docs: Fixed docs around comments imports [[PR](https://github.com/pnp/pnpjs/pull/1136)]
+- sp: Fixed issue with null emphasis object in clientside pages [[PR](https://github.com/pnp/pnpjs/pull/1137)]
+- docs: Added recycle method to docs for list item [[PR](https://github.com/pnp/pnpjs/pull/1139)]
+- graph: Fixed issues with batching parsing and improved error handling [[PR](https://github.com/pnp/pnpjs/pull/1146)]
+- docs: Fixed a bad link and replaced TODO's with content in web article [[PR](https://github.com/pnp/pnpjs/pull/1149)]
+
 ## 2.0.3 - 2020-02-14
 
 _Happy Valentine's Day ❤_
