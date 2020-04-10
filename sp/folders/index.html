@@ -1313,6 +1313,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
       Comments and Likes
     </a>
@@ -2377,7 +2389,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new folder</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">);</span>
 </pre></div>
@@ -2390,7 +2402,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new folder</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">copyTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">);</span>
 </pre></div>
@@ -2403,7 +2415,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new folder</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">moveByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>
@@ -2416,7 +2428,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new folder</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">copyByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>

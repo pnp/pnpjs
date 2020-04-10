@@ -1313,6 +1313,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
       Comments and Likes
     </a>
@@ -1403,6 +1415,19 @@
   <a href="#reading-files" title="Reading Files" class="md-nav__link">
     Reading Files
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getfilebyurl" title="getFileByUrl" class="md-nav__link">
+    getFileByUrl
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2010,6 +2035,19 @@
     Reading Files
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getfilebyurl" title="getFileByUrl" class="md-nav__link">
+    getFileByUrl
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2203,6 +2241,23 @@
 </pre></div>
 
 
+<h3 id="getfilebyurl">getFileByUrl<a class="headerlink" href="#getfilebyurl" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.4</em></p>
+<p>This method supports opening files form sharing links or absolute urls. The file must reside in the through which you are trying to open the file.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&quot;{absolute file url OR sharing url}&quot;</span><span class="p">;</span>
+
+<span class="c1">// file is an IFile and supports all the file operations</span>
+<span class="kr">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByUrl</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+
+<span class="c1">// for example</span>
+<span class="kr">const</span> <span class="nx">fileContent</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">file</span><span class="p">.</span><span class="nx">getText</span><span class="p">();</span>
+</pre></div>
+
+
 <h2 id="adding-files">Adding Files<a class="headerlink" href="#adding-files" title="Permanent link">&para;</a></h2>
 <p>Likewise you can add files using one of two methods, add or addChunked. The second is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.</p>
 <div class="codehilite"><pre><span></span><span class="kr">declare</span> <span class="kd">var</span> <span class="nx">require</span><span class="o">:</span> <span class="p">(</span><span class="nx">s</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">any</span><span class="p">;</span>
@@ -2214,7 +2269,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">auth</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./auth&quot;</span><span class="p">;</span>
-<span class="kd">let</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">);</span> <span class="c1">//&lt;-- used here for illustration</span>
+<span class="kd">let</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">);</span> <span class="c1">// &lt;-- used here for illustration</span>
 
 <span class="kd">let</span> <span class="nx">siteUrl</span> <span class="o">=</span> <span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">;</span>
 
@@ -2441,7 +2496,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new file</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/dev/SiteAssets/new-file.docx`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/dev/SiteAssets/new-file.docx`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.docx&quot;</span><span class="p">).</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">);</span>
 </pre></div>
@@ -2454,7 +2509,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new file</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/dev/SiteAssets/new-file.docx`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/dev/SiteAssets/new-file.docx`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.docx&quot;</span><span class="p">).</span><span class="nx">copyTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 </pre></div>
@@ -2467,7 +2522,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new file</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/dev2/SiteAssets/new-file.docx`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/dev2/SiteAssets/new-file.docx`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.docx&quot;</span><span class="p">).</span><span class="nx">moveByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>
@@ -2480,7 +2535,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
 <span class="c1">// destination is a server-relative url of a new file</span>
-<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`sites/dev2/SiteAssets/new-file.docx`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/dev2/SiteAssets/new-file.docx`</span><span class="p">;</span>
 
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.docx&quot;</span><span class="p">).</span><span class="nx">copyByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>

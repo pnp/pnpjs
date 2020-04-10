@@ -1514,6 +1514,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get-set-author-details" title="Get / Set author details" class="md-nav__link">
+    Get / Set author details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#load" title="load" class="md-nav__link">
     load
   </a>
@@ -1603,6 +1610,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
   </li>
 
         
@@ -2303,6 +2322,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get-set-author-details" title="Get / Set author details" class="md-nav__link">
+    Get / Set author details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#load" title="load" class="md-nav__link">
     load
   </a>
@@ -2434,6 +2460,7 @@
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PromotedState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage1&quot;</span><span class="p">);</span>
 
@@ -2447,6 +2474,12 @@
 
 <span class="c1">// you must publish the new page</span>
 <span class="nx">await</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+
+<span class="c1">// include title and page layout while also specifying the publishing status (Added in 2.0.4)</span>
+<span class="kr">const</span> <span class="nx">page3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">,</span> <span class="nx">PromotedState</span><span class="p">.</span><span class="nx">PromoteOnPublish</span><span class="p">);</span>
+
+<span class="c1">// you must publish the new page</span>
+<span class="nx">await</span> <span class="nx">page3</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 </pre></div>
 
 
@@ -2454,7 +2487,7 @@
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span><span class="p">,</span> <span class="nx">PromotedState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">page1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage2&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">);</span>
 
@@ -2466,6 +2499,12 @@
 
 <span class="c1">// you must publish the new page</span>
 <span class="nx">await</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+
+<span class="c1">// specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)</span>
+<span class="kr">const</span> <span class="nx">page2half</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage3&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">,</span> <span class="nx">PromotedState</span><span class="p">.</span><span class="nx">PromoteOnPublish</span><span class="p">);</span>
+
+<span class="c1">// you must publish the new page, in this case the page will immediately be promoted to a news article</span>
+<span class="nx">await</span> <span class="nx">page2half</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
 <span class="c1">// use the web factory to create a page in a specific web</span>
 <span class="kr">const</span> <span class="nx">page3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://{absolute web url}&quot;</span><span class="p">),</span> <span class="s2">&quot;mypage4&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">);</span>
@@ -2767,6 +2806,30 @@
 </pre></div>
 
 
+<h3 id="get-set-author-details">Get / Set author details<a class="headerlink" href="#get-set-author-details" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.4</em></p>
+<div class="codehilite"><pre><span></span><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
+
+<span class="c1">// get the author details (string | null)</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">authorByLine</span><span class="p">;</span>
+
+<span class="c1">// set the author by user id</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;LoginName&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">Id</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">userLogin</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">LoginName</span><span class="p">;</span>
+
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setAuthorById</span><span class="p">(</span><span class="nx">userId</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setAuthorByLoginName</span><span class="p">(</span><span class="nx">userLogin</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</pre></div>
+
+
+<blockquote>
+<p>you must still save the page after setting the author to persit your changes as shown in the example</p>
+</blockquote>
 <h3 id="load">load<a class="headerlink" href="#load" title="Permanent link">&para;</a></h3>
 <p>Loads the page from the server, will overwrite any local unsaved changes.</p>
 <div class="codehilite"><pre><span></span><span class="c1">// our page instance</span>
@@ -2809,7 +2872,10 @@
 
 <h3 id="enablecomments-disablecomments">enableComments &amp; disableComments<a class="headerlink" href="#enablecomments-disablecomments" title="Permanent link">&para;</a></h3>
 <p>Used to control the availability of comments on a page</p>
-<div class="codehilite"><pre><span></span><span class="c1">// our page instance</span>
+<div class="codehilite"><pre><span></span><span class="c1">// you need to import the comments sub-module or use the all preset</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
+
+<span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
 <span class="c1">// turn on comments</span>
@@ -2987,13 +3053,13 @@
           </a>
         
         
-          <a href="../comments-likes/" title="Comments and Likes" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../column-defaults/" title="Column Defaults" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Comments and Likes
+                Column Defaults
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

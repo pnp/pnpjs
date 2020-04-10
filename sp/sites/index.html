@@ -1313,6 +1313,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
       Comments and Likes
     </a>
@@ -1667,12 +1679,38 @@
     Create a modern communication site
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-from-props" title="Create from Props" class="md-nav__link">
+    Create from Props
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#create-a-modern-team-site" title="Create a modern team site" class="md-nav__link">
     Create a modern team site
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-from-props_1" title="Create from Props" class="md-nav__link">
+    Create from Props
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1944,12 +1982,38 @@
     Create a modern communication site
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-from-props" title="Create from Props" class="md-nav__link">
+    Create from Props
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#create-a-modern-team-site" title="Create a modern team site" class="md-nav__link">
     Create a modern team site
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-from-props_1" title="Create from Props" class="md-nav__link">
+    Create from Props
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2150,7 +2214,7 @@
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSite</span><span class="p">(</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSite</span><span class="p">(</span>
             <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
             <span class="mi">1033</span><span class="p">,</span>
             <span class="kc">true</span><span class="p">,</span>
@@ -2160,6 +2224,22 @@
             <span class="s2">&quot;f6cc5403-0d63-442e-96c0-285923709ffc&quot;</span><span class="p">,</span>
             <span class="s2">&quot;a00ec589-ea9f-4dba-a34e-67e78d41e509&quot;</span><span class="p">,</span>
             <span class="s2">&quot;user@TENANT.onmicrosoft.com&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<h3 id="create-from-props">Create from Props<a class="headerlink" href="#create-from-props" title="Permanent link">&para;</a></h3>
+<p>You may need to supply additional parameters such as WebTemplate, to do so please use the <code>createCommunicationSiteFromProps</code> method.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+
+<span class="c1">// in this case you supply a single struct deinfing the creation props</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createCommunicationSiteFromProps</span><span class="p">({</span>
+  <span class="nx">Owner</span><span class="o">:</span> <span class="s2">&quot;patrick@three18studios.com&quot;</span><span class="p">,</span>
+  <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;A Test Site&quot;</span><span class="p">,</span>
+  <span class="nx">Url</span><span class="o">:</span> <span class="s2">&quot;https://318studios.sharepoint.com/sites/commsite2&quot;</span><span class="p">,</span>
+  <span class="nx">WebTemplate</span><span class="o">:</span> <span class="s2">&quot;STS#3&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 </pre></div>
 
 
@@ -2259,7 +2339,7 @@
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createModernTeamSite</span><span class="p">(</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createModernTeamSite</span><span class="p">(</span>
         <span class="s2">&quot;displayName&quot;</span><span class="p">,</span>
         <span class="s2">&quot;alias&quot;</span><span class="p">,</span>
         <span class="kc">true</span><span class="p">,</span>
@@ -2272,6 +2352,21 @@
         <span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h3 id="create-from-props_1">Create from Props<a class="headerlink" href="#create-from-props_1" title="Permanent link">&para;</a></h3>
+<p>You may need to supply additional parameters, to do so please use the <code>createModernTeamSiteFromProps</code> method.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+
+<span class="c1">// in this case you supply a single struct deinfing the creation props</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">createModernTeamSiteFromProps</span><span class="p">({</span>
+  <span class="nx">alias</span><span class="o">:</span> <span class="s2">&quot;JenniferGarner&quot;</span><span class="p">,</span>
+  <span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;A Test Site&quot;</span><span class="p">,</span>
+  <span class="nx">owners</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;patrick@three18studios.com&quot;</span><span class="p">],</span>
+<span class="p">});</span>
 </pre></div>
 
 

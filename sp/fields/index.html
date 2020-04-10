@@ -1313,6 +1313,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
       Comments and Likes
     </a>
@@ -2268,9 +2280,9 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field by Id for web</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">);</span>
 <span class="c1">// get the field by Id for list &#39;My List&#39;</span>
-<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">)();</span>
 
 <span class="c1">// we can use this &#39;field&#39; variable to execute more queries on the field:</span>
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
@@ -2289,9 +2301,9 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field with the title &#39;Author&#39; for web</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">);</span>
 <span class="c1">// get the field with the title &#39;Author&#39; for list &#39;My List&#39;</span>
-<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">)();</span>
 
 <span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
@@ -2310,9 +2322,9 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// get the field with the internal name &#39;ModifiedBy&#39; for web</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">);</span>
 <span class="c1">// get the field with the internal name &#39;ModifiedBy&#39; for list &#39;My List&#39;</span>
-<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">)();</span>
 
 <span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
 <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
@@ -2334,12 +2346,12 @@
 <span class="kr">const</span> <span class="nx">fieldSchema</span> <span class="o">=</span> <span class="sb">`&lt;Field ID=&quot;{03b09ff4-d99d-45ed-841d-3855f77a2483}&quot; StaticName=&quot;MyField&quot; Name=&quot;MyField&quot; DisplayName=&quot;My New Field&quot; FriendlyDisplayFormat=&quot;Disabled&quot; Format=&quot;DateOnly&quot; Type=&quot;DateTime&quot; Group=&quot;My Group&quot;&gt;&lt;Default&gt;[today]&lt;/Default&gt;&lt;/Field&gt;`</span><span class="p">;</span>
 
 <span class="c1">// create the new field in the web</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
 <span class="c1">// create the new field in the list &#39;My List&#39;</span>
-<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
 
 <span class="c1">// we can use this &#39;field&#39; variable to run more queries on the list:</span>
-<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
 <span class="c1">// log the field Id to console</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
@@ -2355,12 +2367,12 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
 <span class="c1">// create a new field called &#39;My Field&#39; in web.</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 <span class="c1">// create a new field called &#39;My Field&#39; in the list &#39;My List&#39;</span>
-<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
 <span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
-<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
 <span class="c1">// log the field Id to console</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>

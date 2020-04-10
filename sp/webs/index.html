@@ -1313,6 +1313,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
       Comments and Likes
     </a>
@@ -1870,13 +1882,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#todo-need-to-update-code-to-latest-from-1x-branch" title="TODO (need to update code to latest from 1.x branch)" class="md-nav__link">
-    TODO (need to update code to latest from 1.x branch)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#content-type-imports" title="content-type imports" class="md-nav__link">
     content-type imports
   </a>
@@ -2128,22 +2133,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#todo-link-to-the-security-page-and-document-all-there-no-need-to-duplicate" title="TODO:: link to the security page and document all there, no need to duplicate" class="md-nav__link">
-    TODO:: link to the security page and document all there, no need to duplicate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#sharing-imports" title="sharing imports" class="md-nav__link">
     sharing imports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#todo-link-to-the-sharing-page-and-document-all-there-no-need-to-duplicate" title="TODO:: link to the sharing page and document all there, no need to duplicate" class="md-nav__link">
-    TODO:: link to the sharing page and document all there, no need to duplicate
   </a>
   
 </li>
@@ -2547,13 +2538,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#todo-need-to-update-code-to-latest-from-1x-branch" title="TODO (need to update code to latest from 1.x branch)" class="md-nav__link">
-    TODO (need to update code to latest from 1.x branch)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#content-type-imports" title="content-type imports" class="md-nav__link">
     content-type imports
   </a>
@@ -2805,22 +2789,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#todo-link-to-the-security-page-and-document-all-there-no-need-to-duplicate" title="TODO:: link to the security page and document all there, no need to duplicate" class="md-nav__link">
-    TODO:: link to the security page and document all there, no need to duplicate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#sharing-imports" title="sharing imports" class="md-nav__link">
     sharing imports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#todo-link-to-the-sharing-page-and-document-all-there-no-need-to-duplicate" title="TODO:: link to the sharing page and document all there, no need to duplicate" class="md-nav__link">
-    TODO:: link to the sharing page and document all there, no need to duplicate
   </a>
   
 </li>
@@ -3311,7 +3281,19 @@
 </tr>
 </tbody>
 </table>
-<h2 id="todo-need-to-update-code-to-latest-from-1x-branch">TODO (need to update code to latest from 1.x branch)<a class="headerlink" href="#todo-need-to-update-code-to-latest-from-1x-branch" title="Permanent link">&para;</a></h2>
+<p>You can create and load clientside page instances directly from a web. More details on <a href="../clientside-pages/">working with clientside pages</a> are available in the dedicated article.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
+
+<span class="c1">// simplest add a page example</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage1&quot;</span><span class="p">);</span>
+
+<span class="c1">// simplest load a page example</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">loadClientsidePage</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">);</span>
+</pre></div>
+
+
 <h2 id="content-type-imports">content-type imports<a class="headerlink" href="#content-type-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3767,9 +3749,9 @@
 
 
 <h2 id="security-imports">security imports<a class="headerlink" href="#security-imports" title="Permanent link">&para;</a></h2>
-<h2 id="todo-link-to-the-security-page-and-document-all-there-no-need-to-duplicate">TODO:: link to the security page and document all there, no need to duplicate<a class="headerlink" href="#todo-link-to-the-security-page-and-document-all-there-no-need-to-duplicate" title="Permanent link">&para;</a></h2>
+<p>Please see information around the available security methods in the <a href="../security/">security article</a>.</p>
 <h2 id="sharing-imports">sharing imports<a class="headerlink" href="#sharing-imports" title="Permanent link">&para;</a></h2>
-<h2 id="todo-link-to-the-sharing-page-and-document-all-there-no-need-to-duplicate">TODO:: link to the sharing page and document all there, no need to duplicate<a class="headerlink" href="#todo-link-to-the-sharing-page-and-document-all-there-no-need-to-duplicate" title="Permanent link">&para;</a></h2>
+<p>Please see information around the available sharing methods in the <a href="../sharing/">sharing article</a>.</p>
 <h2 id="site-groups-imports">site-groups imports<a class="headerlink" href="#site-groups-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
