@@ -801,6 +801,7 @@ export class ClientSidePage extends SharePointQueryable {
             }
         }
 
+        // tslint:disable-next-line
         const zoneEmphasis = control.data?.emphasis?.zoneEmphasis ?? 0;
         const section = this.getOrCreateSection(zoneIndex, layoutIndex, zoneEmphasis);
 
