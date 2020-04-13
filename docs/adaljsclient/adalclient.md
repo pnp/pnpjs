@@ -165,4 +165,4 @@ try {
 
 ## Nodejs Applications
 
-[We have a dedicated node client in @pnp/nodejs.](https://pnp.github.io/pnpjs/nodejs/docs/adal-fetch-client/)
+[We have a dedicated node client in @pnp/nodejs.](https://pnp.github.io/pnpjs/nodejs/adal-fetch-client/)
