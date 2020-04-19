@@ -439,7 +439,7 @@ export const Fields = spInvokableFactory<IFields>(_Fields);
 
 export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
 
-  public delete = deleteable("fl");
+  public delete = deleteable("f");
 
   /**
    * Updates this field instance with the supplied properties
