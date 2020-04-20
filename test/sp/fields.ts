@@ -177,6 +177,11 @@ describe("Fields", function () {
         return expect(false).to.be.true;
       }
     });
+    it("Web: delete web field", async function () {
+      const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+      const field = await sp.web.fields.add(testFieldNameRand, "SP.FieldText", { FieldTypeKind: 3, Group: testFieldGroup });
+      return expect(field.field.delete()).to.eventually.be.fulfilled;
+    });
 
     // List tests
     it("List: gets field by id", async function () {
@@ -316,6 +321,11 @@ describe("Fields", function () {
       } catch (err) {
         return expect(false).to.be.true;
       }
+    });
+    it("List: delete field", async function () {
+      const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+      const field = await sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, "SP.FieldText", { FieldTypeKind: 3, Group: testFieldGroup });
+      return expect(field.field.delete()).to.eventually.be.fulfilled;
     });
   }
 });
