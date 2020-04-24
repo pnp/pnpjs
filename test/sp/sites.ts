@@ -48,6 +48,12 @@ describe("Sites", () => {
             const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
             return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
         });
+
+        it(".exists", async function () {
+            const oWeb = await sp.site();
+            const exists: boolean = await sp.site.exists(oWeb.Url);
+            return expect(exists).to.haveOwnProperty("boolean");
+        });
     }
 });
 

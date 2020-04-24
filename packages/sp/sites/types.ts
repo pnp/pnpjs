@@ -182,6 +182,21 @@ export class _Site extends _SharePointQueryableInstance {
     }
 
     /**
+     * 
+     * @param siteUrl Site Url that you want to check if exists
+     */
+    public async exists(siteUrl: string ): Promise<boolean> {
+
+        const postBody = body({
+            url: siteUrl,
+        });
+
+        const value = await spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody);
+    
+        return value;
+    }
+
+    /**
     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
     * 
     * @param displayName The title or display name of the Modern team site to be created
