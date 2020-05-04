@@ -46,8 +46,7 @@ BuildSystem.launch({}, async (env: LiftOff.LiftoffEnv) => {
 
         case "build":
 
-            const buildSchema = <BuildSchema>config[0];
-            await builder(pkg.version, buildSchema);
+            await builder(pkg.version, <BuildSchema>config[0]);
             break;
 
         case "package":
