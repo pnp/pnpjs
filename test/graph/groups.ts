@@ -39,6 +39,14 @@ describe("Groups", function () {
       });
       return expect(groupExists).is.not.true;
     });
+    it.only("getById()", async function () {
+      // Create a new group
+      const groupName = `TestGroup_${getRandomString(4)}`;
+      const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+      // Get the group by ID
+      const group = await graph.groups.getById(groupAddResult.data.id);
+      return expect(group).is.not.undefined;
+    });
     it("update", async function () {
       // Create a new group
       const groupName = `TestGroup_${getRandomString(4)}`;
