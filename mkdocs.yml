@@ -47,7 +47,7 @@ nav:
       - planner: 'graph/planner.md'
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
-      - teams: 'graph/users.md'
+      - users: 'graph/users.md'
     - logging: 'logging/index.md'
     - nodejs:
       - nodejs: 'nodejs/index.md'

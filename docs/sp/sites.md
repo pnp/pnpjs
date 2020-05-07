@@ -216,3 +216,16 @@ const siteUrl = "https://tenant.sharepoint.com/sites/subsite";
 const site2 = Site(siteUrl);
 await site2.delete();
 ```
+
+## Check if a Site Collection Exists
+
+Using the library, you can check if a specific site collection exist or not on your tenant
+
+```TypeScript
+import { sp } from "@pnp/sp";
+
+// Specify which site to verify
+const siteUrl = "https://tenant.sharepoint.com/sites/subsite";
+const exists = sp.site.exists(siteUrl);
+console.log(exists);
+```
