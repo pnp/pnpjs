@@ -53,7 +53,7 @@ SPRest.prototype.search = function (this: SPRest, query: SearchQueryInit): Promi
 
 SPRest.prototype.searchWithCaching = function (this: SPRest, query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults> {
 
-    return (new _Search(this._baseUrl, null)).configure(this._options).usingCaching(options).execute(query);
+    return (new _Search(this._baseUrl)).configure(this._options).usingCaching(options).execute(query);
 };
 
 SPRest.prototype.searchSuggest = function (this: SPRest, query: string | ISuggestQuery): Promise<ISuggestResult> {

@@ -436,6 +436,58 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());
 
+        // we need to do some work to set the banner image url in the copied page
+        if (!stringIsNullOrEmpty(this.json.BannerImageUrl)) {
+
+            // use a URL to parse things for us
+            const url = new URL(this.json.BannerImageUrl);
+
+            // helper function to translate the guid strings into properly formatted guids with dashes
+            const makeGuid = (s: string) => s.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/g, "$1-$2-$3-$4-$5");
+
+            // protect against errors because the serverside impl has changed, we'll just skip
+            if (url.searchParams.has("guidSite") && url.searchParams.has("guidWeb") && url.searchParams.has("guidFile")) {
+
+                const guidSite = makeGuid(url.searchParams.get("guidSite"));
+                const guidWeb = makeGuid(url.searchParams.get("guidWeb"));
+                const guidFile = makeGuid(url.searchParams.get("guidFile"));
+
+                const site = Site(extractWebUrl(this.toUrl()));
+                const id = await site.select("Id")<{ Id: string }>();
+                // the site guid must match the current site's guid or we are unable to set the image
+                if (id.Id === guidSite) {
+
+                    const openWeb = await site.openWebById(guidWeb);
+                    const file = await openWeb.web.getFileById(guidFile).select("ServerRelativeUrl")();
+
+                    const props: any = {};
+                    if (this._layoutPart.properties) {
+
+                        if (hOP(this._layoutPart.properties, "translateX")) {
+                            props.translateX = this._layoutPart.properties.translateX;
+                        }
+
+
+                        if (hOP(this._layoutPart.properties, "translateY")) {
+                            props.translateY = this._layoutPart.properties.translateY;
+                        }
+
+
+                        if (hOP(this._layoutPart.properties, "imageSourceType")) {
+                            props.imageSourceType = this._layoutPart.properties.imageSourceType;
+                        }
+
+
+                        if (hOP(this._layoutPart.properties, "altText")) {
+                            props.altText = this._layoutPart.properties.altText;
+                        }
+                    }
+
+                    page.setBannerImage(file.ServerRelativeUrl, props);
+                }
+            }
+        }
+
         await page.save(publish);
 
         return page;

@@ -445,10 +445,15 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
    * Updates this field instance with the supplied properties
    *
    * @param properties A plain object hash of values to update for the list
-   * @param fieldType The type value, required to update child field type properties
+   * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
    */
   @tag("f.update")
-  public async update(properties: Partial<IFieldInfo>, fieldType = "SP.Field"): Promise<IFieldUpdateResult> {
+  public async update(properties: Partial<IFieldInfo>, fieldType?: string): Promise<IFieldUpdateResult> {
+
+    if (typeof fieldType === "undefined" || fieldType === null) {
+      const info = await this.select("FieldTypeKind")();
+      fieldType = `SP.Field${FieldTypes[info.FieldTypeKind]}`;
+    }
 
     const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
 

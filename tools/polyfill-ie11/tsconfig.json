@@ -16,8 +16,11 @@
             "es2016"
         ]
     },
-    "files": [
-        "./index.ts",
-        "./searchquerybuilder.ts"
-    ]
+    "include": [
+        "./**/*.ts"
+    ],
+    "awesomeTypescriptLoaderOptions": {
+        "useCache": true,
+        "forkChecker": true
+    }
 }
