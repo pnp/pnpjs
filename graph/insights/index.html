@@ -38,7 +38,7 @@
     
     
       
-        <title>@pnp/graph/insights - PnP/PnPjs</title>
+        <title>insights - PnP/PnPjs</title>
       
     
     
@@ -128,7 +128,7 @@
                 PnP/PnPjs
               </span>
               <span class="md-header-nav__topic">
-                @pnp/graph/insights
+                insights
               </span>
             
           
@@ -200,14 +200,16 @@
       
         
 
-<nav class="md-tabs" data-md-component="tabs">
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
   <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
       
         
   <li class="md-tabs__item">
     
-      <a href="../.." title="Home" class="md-tabs__link md-tabs__link--active">
+      <a href="../.." title="Home" class="md-tabs__link">
         Home
       </a>
     
@@ -249,7 +251,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../packages/" title="Packages" class="md-tabs__link">
+        <a href="../../packages/" title="Packages" class="md-tabs__link md-tabs__link--active">
           Packages
         </a>
       
@@ -583,10 +585,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
     
     <label class="md-nav__link" for="nav-6">
       Packages
@@ -830,10 +834,12 @@
           
           
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-5" type="checkbox" id="nav-6-5">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-5" type="checkbox" id="nav-6-5" checked>
     
     <label class="md-nav__link" for="nav-6-5">
       graph
@@ -854,6 +860,137 @@
     <a href="../" title="graph" class="md-nav__link">
       graph
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../groups/" title="groups" class="md-nav__link">
+      groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        insights
+      </label>
+    
+    <a href="./" title="insights" class="md-nav__link md-nav__link--active">
+      insights
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iinsights" title="IInsights" class="md-nav__link">
+    IInsights
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-all-trending-documents" title="Get all Trending documents" class="md-nav__link">
+    Get all Trending documents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-trending-document-by-id" title="Get a Trending document by Id" class="md-nav__link">
+    Get a Trending document by Id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-resource-from-trending-document" title="Get the resource from Trending document" class="md-nav__link">
+    Get the resource from Trending document
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-all-used-documents" title="Get all Used documents" class="md-nav__link">
+    Get all Used documents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-used-document-by-id" title="Get a Used document by Id" class="md-nav__link">
+    Get a Used document by Id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-resource-from-used-document" title="Get the resource from Used document" class="md-nav__link">
+    Get the resource from Used document
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-all-shared-documents" title="Get all Shared documents" class="md-nav__link">
+    Get all Shared documents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-shared-document-by-id" title="Get a Shared document by Id" class="md-nav__link">
+    Get a Shared document by Id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-resource-from-a-shared-document" title="Get the resource from a Shared document" class="md-nav__link">
+    Get the resource from a Shared document
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -2062,6 +2199,41 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../groups/" title="groups" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                groups
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../contacts/" title="contacts" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                contacts
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

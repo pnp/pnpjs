@@ -161,6 +161,16 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://pnp.github.io/pnpjs/graph/groups/</loc>
+     <lastmod>2020-05-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://pnp.github.io/pnpjs/graph/insights/</loc>
+     <lastmod>2020-05-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://pnp.github.io/pnpjs/graph/contacts/</loc>
      <lastmod>2020-05-08</lastmod>
      <changefreq>daily</changefreq>
