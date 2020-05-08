@@ -193,19 +193,19 @@ export class SearchResults {
     }
 
     public get ElapsedTime(): number {
-        return this.RawSearchResults.ElapsedTime;
+        return this?.RawSearchResults?.ElapsedTime || 0;
     }
 
     public get RowCount(): number {
-        return this.RawSearchResults.PrimaryQueryResult.RelevantResults.RowCount;
+        return this?.RawSearchResults?.PrimaryQueryResult?.RelevantResults?.RowCount || 0;
     }
 
     public get TotalRows(): number {
-        return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRows;
+        return this?.RawSearchResults?.PrimaryQueryResult?.RelevantResults?.TotalRows || 0;
     }
 
     public get TotalRowsIncludingDuplicates(): number {
-        return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRowsIncludingDuplicates;
+        return this?.RawSearchResults?.PrimaryQueryResult?.RelevantResults?.TotalRowsIncludingDuplicates || 0;
     }
 
     public get RawSearchResults(): ISearchResponse {
@@ -214,7 +214,7 @@ export class SearchResults {
 
     public get PrimarySearchResults(): ISearchResult[] {
         if (this._primary === null) {
-            this._primary = this.formatSearchResults(this._raw.PrimaryQueryResult.RelevantResults.Table.Rows);
+            this._primary = this.formatSearchResults(this._raw?.PrimaryQueryResult?.RelevantResults?.Table?.Rows || null);
         }
         return this._primary;
     }
@@ -257,6 +257,11 @@ export class SearchResults {
     protected formatSearchResults(rawResults: any): ISearchResult[] {
 
         const results = new Array<ISearchResult>();
+
+        if (typeof (rawResults) === "undefined" || rawResults == null) {
+            return [];
+        }
+
         const tempResults = rawResults.results ? rawResults.results : rawResults;
 
         for (const tempResult of tempResults) {

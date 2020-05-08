@@ -1,6 +1,6 @@
 {
   "name": "@pnp/polyfill-ie11",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "pnp - provides required polyfills for ie11",
   "main": "./dist/index.js",
   "types": "./dist",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@pnp/sp": "^2.0.0",
-    "core-js": "3.4.7",
+    "core-js": "3.6.5",
     "es6-map": "0.1.5",
     "whatwg-fetch": "3.0.0"
   },
@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "awesome-typescript-loader": "5.2.1",
-    "typescript": "^3.2.2",
-    "webpack": "4.28.4"
+    "typescript": "^3.8.3",
+    "webpack": "4.43.0"
   },
   "funding": {
     "type": "individual",

@@ -10,45 +10,53 @@ import { combine } from "@pnp/common";
 
 describe("Sites", () => {
 
-    if (testSettings.enableWebTests) {
+  if (testSettings.enableWebTests) {
 
-        it(".rootWeb", async function () {
-            return expect(sp.site.rootWeb()).to.eventually.be.fulfilled;
-        });
+    it(".rootWeb", async function () {
+      return expect(sp.site.rootWeb()).to.eventually.be.fulfilled;
+    });
 
-        it(".getRootWeb", async function () {
-            const rootWeb: IWeb = await sp.site.getRootWeb();
-            return expect(rootWeb.data).to.haveOwnProperty("url");
-        });
+    it(".getRootWeb", async function () {
+      const rootWeb: IWeb = await sp.site.getRootWeb();
+      return expect(rootWeb.data).to.haveOwnProperty("url");
+    });
 
-        it(".getContextInfo", async function () {
-            const oContext: IContextInfo = await sp.site.getContextInfo();
-            return expect(oContext).to.haveOwnProperty("SiteFullUrl");
-        });
+    it(".getContextInfo", async function () {
+      const oContext: IContextInfo = await sp.site.getContextInfo();
+      return expect(oContext).to.haveOwnProperty("SiteFullUrl");
+    });
 
-        it(".getDocumentLibraries", async function () {
-            const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries(testSettings.sp.webUrl);
-            return docLibs.forEach((docLib) => { expect(docLib).to.haveOwnProperty("Title"); });
-        });
+    it(".getDocumentLibraries", async function () {
+      const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries(testSettings.sp.webUrl);
+      return docLibs.forEach((docLib) => { expect(docLib).to.haveOwnProperty("Title"); });
+    });
 
-        it(".getWebUrlFromPageUrl", async function () {
-            const path = combine(testSettings.sp.webUrl, "SitePages", "Home.aspx");
-            const webUrl: string = await sp.site.getWebUrlFromPageUrl(path);
-            return expect(webUrl).to.be.equal(testSettings.sp.webUrl);
-        });
+    it(".getWebUrlFromPageUrl", async function () {
+      const path = combine(testSettings.sp.webUrl, "SitePages", "Home.aspx");
+      const webUrl: string = await sp.site.getWebUrlFromPageUrl(path);
+      return expect(webUrl).to.be.equal(testSettings.sp.webUrl);
+    });
 
-        it(".openWebById", async function () {
-            const oWeb = await sp.site.rootWeb();
-            const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
-            return expect(webIDResult).to.haveOwnProperty("data");
-        });
+    it(".openWebById", async function () {
+      const oWeb = await sp.site.rootWeb();
+      const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
+      return expect(webIDResult).to.haveOwnProperty("data");
+    });
 
-        it(".openWebById - chainable", async function () {
-            const oWeb = await sp.site.rootWeb();
-            const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
-            return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
-        });
-    }
+    it(".openWebById - chainable", async function () {
+      const oWeb = await sp.site.rootWeb();
+      const webIDResult: IOpenWebByIdResult = await sp.site.openWebById(oWeb.Id);
+      return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
+    });
+
+    it.only(".exists", async function () {
+      const oWeb = await sp.site();
+      const exists: boolean = await sp.site.exists(oWeb.Url);
+      const notExists: boolean = await sp.site.exists(`${oWeb.Url}/RANDOM`);
+      const success = exists && !notExists;
+      return expect(success).to.be.true;
+    });
+  }
 });
 
 // commented out as we can't have tests that require editing when run.

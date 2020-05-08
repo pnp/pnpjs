@@ -18,8 +18,7 @@ const myJoinedTeams = await graph.me.joinedTeams();
 
 ## Get Teams by Id
 
-Using the planner.plans.getById() you can get a specific Plan.
-Planner.plans is not an available endpoint, you need to get a specific Plan.
+Using the teams.getById() you can get a specific Team.
 
 ```TypeScript
 import { graph } from "@pnp/graph";

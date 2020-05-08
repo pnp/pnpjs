@@ -10,7 +10,7 @@ Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates aro
 
 This code is managed within the [main pnp repo](https://github.com/pnp/pnp), please report issues and submit pull requests there.
 
-Please see the public site for [package documentation](https://pnp.github.io/pnpjs/).
+Please see the public site for [package documentation](https://pnp.github.io/pnpjs/concepts/polyfill/).
 
 ### Code of Conduct
 

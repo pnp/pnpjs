@@ -1,8 +1,8 @@
-import "core-js/stable/array/from";
-import "core-js/stable/array/fill";
-import "core-js/stable/array/iterator";
-import "core-js/stable/promise";
-import "core-js/stable/reflect";
-import "es6-map/implement";
-import "core-js/stable/symbol";
-import "whatwg-fetch";
+import "./from";
+import "./fill";
+import "./iterator";
+import "./promise";
+import "./reflect";
+import "./map";
+import "./symbol";
+import "./fetch";

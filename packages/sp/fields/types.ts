@@ -2,6 +2,8 @@ import {
   _SharePointQueryableInstance,
   _SharePointQueryableCollection,
   spInvokableFactory,
+  deleteable,
+  IDeleteable,
 } from "../sharepointqueryable";
 import { assign, ITypedHash } from "@pnp/common";
 import { metadata } from "../utils/metadata";
@@ -13,10 +15,10 @@ import { tag } from "../telemetry";
 @defaultPath("fields")
 export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
-  /**	
-   * Gets a field from the collection by id	
-   *	
-   * @param id The Id of the list	
+  /**
+   * Gets a field from the collection by id
+   *
+   * @param id The Id of the list
    */
   public getById(id: string): IField {
     return tag.configure(Field(this).concat(`('${id}')`), "fs.getById");
@@ -42,7 +44,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
   /**
    * Creates a field based on the specified schema
-   * 
+   *
    * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
    */
   @tag("fs.createFieldAsXml")
@@ -279,7 +281,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
   }
 
   /** Adds a user field to the colleciton
-  * 
+  *
   * @param title The new field's title
   * @param selectionMode The selection mode of the field
   * @param selectionGroup Value that specifies the identifier of the SharePoint group whose members can be selected as values of the field
@@ -400,7 +402,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
   /**
   * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
-  * 
+  *
   * @param displayName The display name of the new field.
   * @param primaryLookupFieldId The guid of the primary Lookup Field.
   * @param showField Which field to show from the lookup list.
@@ -437,14 +439,21 @@ export const Fields = spInvokableFactory<IFields>(_Fields);
 
 export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
 
+  public delete = deleteable("f");
+
   /**
    * Updates this field instance with the supplied properties
    *
    * @param properties A plain object hash of values to update for the list
-   * @param fieldType The type value, required to update child field type properties
+   * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
    */
   @tag("f.update")
-  public async update(properties: Partial<IFieldInfo>, fieldType = "SP.Field"): Promise<IFieldUpdateResult> {
+  public async update(properties: Partial<IFieldInfo>, fieldType?: string): Promise<IFieldUpdateResult> {
+
+    if (typeof fieldType === "undefined" || fieldType === null) {
+      const info = await this.select("FieldTypeKind")();
+      fieldType = `SP.Field${FieldTypes[info.FieldTypeKind]}`;
+    }
 
     const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
@@ -480,7 +489,7 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
     return spPost(this.clone(Field, `setshowinnewform(${show})`));
   }
 }
-export interface IField extends _Field { }
+export interface IField extends _Field, IDeleteable { }
 export const Field = spInvokableFactory<IField>(_Field);
 
 /**

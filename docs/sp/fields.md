@@ -337,9 +337,6 @@ console.log(r.Id);
 const fieldAddResult = await sp.web.fields.addLookup("Test Lookup 124", "GUID", "Title");
 
 await fieldAddResult.field.update({ Description: 'New Description' }, "SP.FieldLookup");
-
-
-
 ```
 
 ### Add a Choice Field
@@ -488,6 +485,10 @@ import "@pnp/sp/fields";
 const fieldUpdate = await sp.web.fields.getByTitle("My Field").update({ Description: "My Description" });
 // update the field called 'My Field' with a description in list 'My List', returns FieldUpdateResult
 const fieldUpdate2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field").update({ Description: "My Description" });
+
+// if you need to update a field with properties for a specific field type you can optionally include the field type as a second param
+// if you do not include it we will look up the type, but that adds a call to the server
+const fieldUpdate2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("My Look up Field").update({ RelationshipDeleteBehavior: 1 }, "SP.FieldLookup");
 ```
 
 ### Show a Field in the Display Form
