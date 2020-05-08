@@ -27,4 +27,7 @@ module.exports = {
         filename: "[name].js",
         libraryTarget: "umd",
     },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
 };
