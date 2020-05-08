@@ -951,8 +951,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../graph/users/" title="teams" class="md-nav__link">
-      teams
+    <a href="../../graph/users/" title="users" class="md-nav__link">
+      users
     </a>
   </li>
 
@@ -2700,6 +2700,10 @@
 <span class="kr">const</span> <span class="nx">fieldUpdate</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span> <span class="p">});</span>
 <span class="c1">// update the field called &#39;My Field&#39; with a description in list &#39;My List&#39;, returns FieldUpdateResult</span>
 <span class="kr">const</span> <span class="nx">fieldUpdate2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span> <span class="p">});</span>
+
+<span class="c1">// if you need to update a field with properties for a specific field type you can optionally include the field type as a second param</span>
+<span class="c1">// if you do not include it we will look up the type, but that adds a call to the server</span>
+<span class="kr">const</span> <span class="nx">fieldUpdate2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Look up Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">RelationshipDeleteBehavior</span>: <span class="kt">1</span> <span class="p">},</span> <span class="s2">&quot;SP.FieldLookup&quot;</span><span class="p">);</span>
 </pre></div>
 
 
