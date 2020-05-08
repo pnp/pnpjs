@@ -8,24 +8,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-graph: Added tests and docs for groups [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1181)]
-sp: Added method to check it site collection exists [@DRamalho92](https://github.com/DRamalho92) [[PR](https://github.com/pnp/pnpjs/pull/1173)]
-sp: Added suppot for setting banner image in clientside-page copy [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- graph: Added tests and docs for groups [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1181)]
+- sp: Added method to check it site collection exists [@DRamalho92](https://github.com/DRamalho92) [[PR](https://github.com/pnp/pnpjs/pull/1173)]
+- sp: Added suppot for setting banner image in clientside-page copy [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 
 ### Changed
 
-sp: Made field type optional when updating a field [[PR](https://github.com/pnp/pnpjs/pull/1193)]
-polyfills: Allow selective import of polyfills [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- sp: Made field type optional when updating a field [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- polyfills: Allow selective import of polyfills [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 
 ### Fixed
 
-graph: Fixed issue with directoy-objects return types [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1192)]
-docs: Updated graph teams article [@jaywellings](https://github.com/jaywellings) [[PR](https://github.com/pnp/pnpjs/pull/1190)]
-docs: Fixed nav node name for users link [@siddharth-vaghasia](https://github.com/siddharth-vaghasia) [[PR](https://github.com/pnp/pnpjs/pull/1182)]
-sp: Fixed missing delete method on fields [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1165)]
-sp: Fixed issue with search results if there are zero rows returned [[PR](https://github.com/pnp/pnpjs/pull/1193)]
-common: Fixed storage issue in node related to usingCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
-sp: Fixed bug in searchWithCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- graph: Fixed issue with directoy-objects return types [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1192)]
+- docs: Updated graph teams article [@jaywellings](https://github.com/jaywellings) [[PR](https://github.com/pnp/pnpjs/pull/1190)]
+- docs: Fixed nav node name for users link [@siddharth-vaghasia](https://github.com/siddharth-vaghasia) [[PR](https://github.com/pnp/pnpjs/pull/1182)]
+- sp: Fixed missing delete method on fields [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1165)]
+- sp: Fixed issue with search results if there are zero rows returned [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- common: Fixed storage issue in node related to usingCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- sp: Fixed bug in searchWithCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 
 ## 2.0.4 - 2020-04-10
 
