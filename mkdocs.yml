@@ -40,6 +40,8 @@ nav:
       - providers: 'config-store/providers.md'
     - graph: 
       - graph: 'graph/index.md'
+      - groups: 'graph/groups.md'
+      - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
