@@ -55,11 +55,11 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
 
-sp.searchWithCaching(<ISearchQuery>{
+sp.searchWithCaching({
     Querytext: "test",
     RowLimit: 10,
     EnableInterleaving: true,
-}).then((r: SearchResults) => {
+} as ISearchQuery).then((r: SearchResults) => {
 
     console.log(r.ElapsedTime);
     console.log(r.RowCount);
@@ -158,10 +158,10 @@ import { ISuggestQuery, ISuggestResult } from "@pnp/sp/search";
 
 const results = await sp.searchSuggest("test");
 
-const results2 = await sp.searchSuggest(<ISuggestQuery>{
+const results2 = await sp.searchSuggest({
     querytext: "test",
     count: 5,
-});
+} as ISuggestQuery);
 ```
 
 ## Search Factory
