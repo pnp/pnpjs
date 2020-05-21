@@ -40,6 +40,8 @@ nav:
       - providers: 'config-store/providers.md'
     - graph: 
       - graph: 'graph/index.md'
+      - groups: 'graph/groups.md'
+      - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
@@ -47,7 +49,7 @@ nav:
       - planner: 'graph/planner.md'
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
-      - teams: 'graph/users.md'
+      - users: 'graph/users.md'
     - logging: 'logging/index.md'
     - nodejs:
       - nodejs: 'nodejs/index.md'
