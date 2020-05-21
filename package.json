@@ -31,6 +31,7 @@
     "chai-as-promised": "^7.1.1",
     "del-cli": "^1.1.0",
     "findup-sync": "^3.0.0",
+    "https-proxy-agent": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
     "node-fetch": "^2.5.0",
