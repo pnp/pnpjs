@@ -74,17 +74,16 @@ export class AdalClient extends BearerTokenFetchClient {
         await this.ensureAuthContext();
         await this.login();
 
-        let token = null;
-        AdalClient._authContext.acquireToken(resource, (message: string, tok: string) => {
+        return new Promise((resolve, reject) => {
+            AdalClient._authContext.acquireToken(resource, (message: string, token: string) => {
 
-            if (message) {
-                throw Error(message);
-            }
+                if (message) {
+                    reject(Error(message));
+                }
 
-            token = tok;
+                resolve(token);
+            });
         });
-
-        return token;
     }
 
     /**
