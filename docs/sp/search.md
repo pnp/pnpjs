@@ -177,10 +177,10 @@ import { Search, Suggest } from "@pnp/sp/search";
 const searcher = Search("https://mytenant.sharepoint.com/sites/dev");
 
 // this can accept any of the query types (text, ISearchQuery, or SearchQueryBuilder)
-const results = searcher("test");
+const results = await searcher("test");
 
 // you can reuse the ISearch instance
-const results2 = searcher("another query");
+const results2 = await searcher("another query");
 
 // same process works for Suggest
 const suggester = Suggest("https://mytenant.sharepoint.com/sites/dev");
