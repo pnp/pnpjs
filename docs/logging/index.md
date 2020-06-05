@@ -80,7 +80,7 @@ Logger.write("This is logging a simple string", LogLevel.Error);
 Logger.writeJSON({ name: "value", name2: "value2"});
 
 // optionally passing a level, default level is Verbose
-Logger.writeJSON({ name: "value", name2: "value2"}, LogLevel.Warn);
+Logger.writeJSON({ name: "value", name2: "value2"}, LogLevel.Warning);
 
 // specify the entire LogEntry interface using log
 Logger.log({
