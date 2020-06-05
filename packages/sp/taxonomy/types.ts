@@ -20,34 +20,18 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
     }
 
     /**
-     * Gets the term sets associated with this tenant
-     */
-    public get termSets(): ITermSets {
-        return TermSets(this);
-    }
-
-    /**
      * Gets the term groups associated with this tenant
      */
     public get groups(): ITermGroups {
         return TermGroups(this, "groups");
     }
-
-    /**
-     * Gets the term groups associated with this tenant
-     */
-    public get sets(): ITermSets {
-        return TermSets(this, "sets");
-    }
-
-
 }
 export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
 
 
 @defaultPath("termgroups")
-export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo> {
+export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]> {
 
     /**
      * Gets a term group by id
@@ -82,7 +66,7 @@ export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
 
 
 @defaultPath("termsets")
-export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo> {
+export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
 
     /**
      * Gets a term group by id
@@ -119,8 +103,18 @@ export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 
 @defaultPath("terms")
-export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> { }
-export interface ITerms extends _Terms { }
+export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+
+    /**
+     * Gets a term group by id
+     * 
+     * @param id Id of the term group to access
+     */
+    public getById(id: string): ITerm {
+        return Term(this, id);
+    }
+ }
+export interface ITerms extends _Terms {}
 export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SharePointQueryableInstance<ITermInfo> {
