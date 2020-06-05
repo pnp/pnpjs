@@ -104,6 +104,7 @@ nav:
       - Social: 'sp/social.md'
       - 'SP.Utilities.Utility': 'sp/sp-utilities-utility.md'
       - Subscriptions: 'sp/subscriptions.md'
+      - Taxonomy: 'sp/taxonomy.md'
       - 'Tenant Properties': 'sp/tenant-properties.md'
       - 'User custom actions': 'sp/user-custom-actions.md'      
       - Views: 'sp/views.md'
