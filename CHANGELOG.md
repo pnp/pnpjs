@@ -1,8 +1,22 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## 2.0.6 - 2020-06-05
+
+### Added
+
+- sp: Adds read operations for v2.1 Taxonomy API [[PR](https://github.com/pnp/pnpjs/pull/1216)]
+
+### Fixed
+
+- docs: Added await to the searcher function in search factory. [@derhallim](https://github.com/derhallim) [[PR](https://github.com/pnp/pnpjs/pull/1201)]
+- docs: Update comment line sentence in hubsites. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1207)]
+- docs: Change Warn to Warning in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1211)]
+- docs: Change LogListener to ILogListener in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1212)]
 
 ## 2.0.5 - 2020-05-08
 
