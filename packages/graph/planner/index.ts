@@ -5,35 +5,37 @@ import "./groups";
 import "./users";
 
 export {
-    Bucket,
-    Buckets,
-    IBucket,
-    IBucketAddResult,
-    IBuckets,
-    IPlan,
-    IPlanAddResult,
-    IPlanner,
-    IPlans,
-    ITask,
-    ITaskAddResult,
-    ITasks,
-    Plan,
-    Planner,
-    Plans,
-    Task,
-    Tasks,
+  Bucket,
+  Buckets,
+  IBucket,
+  IBucketAddResult,
+  IBuckets,
+  IPlan,
+  IPlanAddResult,
+  IPlanner,
+  IPlans,
+  ITask,
+  ITaskAddResult,
+  ITasks,
+  ITaskDetails,
+  Plan,
+  Planner,
+  Plans,
+  Task,
+  Tasks,
+  Details,
 } from "./types";
 
 declare module "../rest" {
-    interface GraphRest {
-        readonly planner: IPlanner;
-    }
+  interface GraphRest {
+    readonly planner: IPlanner;
+  }
 }
 
 Reflect.defineProperty(GraphRest.prototype, "planner", {
-    configurable: true,
-    enumerable: true,
-    get: function (this: GraphRest) {
-        return Planner(this);
-    },
+  configurable: true,
+  enumerable: true,
+  get: function (this: GraphRest) {
+    return Planner(this);
+  },
 });
