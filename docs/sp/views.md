@@ -10,7 +10,7 @@ Views define the columns, ordering, and other details we see when we look at a l
 |--|--|
 |Selective 1|import { sp } from "@pnp/sp";<br />import { Views, IViews } from "@pnp/sp/views";|
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/views";|
-|Preset: All|import { sp, Views, IViews } from "@pnp/sp/presents/all";|
+|Preset: All|import { sp, Views, IViews } from "@pnp/sp/presets/all";|
 
 ### Get views in a list
 
