@@ -10,7 +10,7 @@ This gets a collection of all the role assignments on a given securable. The pro
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { RoleAssignments } from "@pnp/sp/security";
+import "@pnp/sp/security";
 import { Logger } from "@pnp/logging";
 
 const roles = await sp.web.roleAssignments.get();
