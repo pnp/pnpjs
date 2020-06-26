@@ -8,7 +8,7 @@ _These APIs are currently in BETA and are subject to change or may not work on a
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import from "@pnp/sp/comments";|
+|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/comments";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## ClientsidePage Comments
