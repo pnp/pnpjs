@@ -367,6 +367,17 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
 
         return this.clone(File, "$value", false).usingParser(new BufferParser())(headers({ "binaryStringResponseBody": "true" }));
     }
+    
+    /**
+     * Gets the contents of a Node Stream, works ONLY in Node.js. Not supported in batching.
+     */
+    @tag("fi.getStream")
+    public getStream(): Promise<ArrayBuffer> {
+
+        return this.clone(File, "$value", false).usingParser({ parse(r) {
+            return Promise.resolve(r.body)
+        }})(headers({ "binaryStringResponseBody": "true" }));
+    }
 
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
