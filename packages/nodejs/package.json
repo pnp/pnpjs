@@ -9,7 +9,7 @@
     "https-proxy-agent": "4.0.0",
     "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
-    "tslib": "1.10.0",
+    "tslib": "2.0.0",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER"
   },

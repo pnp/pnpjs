@@ -12,6 +12,9 @@
     "include": [],
     "references": [
         {
+            "path": "./adaljsclient/tsconfig.esm.json"
+        },
+        {
             "path": "./common/tsconfig.esm.json"
         },
         {
@@ -22,6 +25,9 @@
         },
         {
             "path": "./logging/tsconfig.esm.json"
+        },
+        {
+            "path": "./msaljsclient/tsconfig.esm.json"
         },
         {
             "path": "./nodejs/tsconfig.esm.json"

@@ -25,7 +25,6 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 |     ||  |
 | ---| -------------|-------------|
 | @pnp/| | |
-|| [adaljsclient](adaljsclient/index.md)  | Provides shared functionality across all pnp libraries |
 || [common](common/index.md)  | Provides shared functionality across all pnp libraries |
 || [config-store](config-store/index.md) | Provides a way to manage configuration within your application |
 || [graph](graph/index.md) | Provides a fluent api for working with Microsoft Graph |
@@ -34,6 +33,10 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 || [odata](odata/index.md) | Provides shared odata functionality and base classes |
 || [sp](sp/index.md) | Provides a fluent api for working with SharePoint REST |
 || [sp-addinhelpers](sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
+
+## Authentication
+
+We have [new section dedicated to helping you figure out the best way to handle authentication](./authentication/index.md) in your application, check it out!
 
 ## Issues, Questions, Ideas
 

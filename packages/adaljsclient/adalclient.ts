@@ -1,4 +1,4 @@
-import { BearerTokenFetchClient, IFetchOptions, ISPFXContext, isUrlAbsolute, SPFxAdalClient , getADALResource } from "@pnp/common";
+import { BearerTokenFetchClient, IFetchOptions, ISPFXContext, isUrlAbsolute, SPFxAdalClient, getADALResource } from "@pnp/common";
 // @ts-ignore
 import * as adal from "adal-angular/dist/adal.min.js";
 
@@ -71,45 +71,42 @@ export class AdalClient extends BearerTokenFetchClient {
      */
     public async getToken(resource: string): Promise<string> {
 
-        await this.ensureAuthContext();
+        // await this.ensureAuthContext();
         await this.login();
 
-        let token = null;
-        AdalClient._authContext.acquireToken(resource, (message: string, tok: string) => {
+        return new Promise((resolve, reject) => {
 
-            if (message) {
-                throw Error(message);
-            }
+            AdalClient._authContext.acquireToken(resource, (message: string, token: string) => {
 
-            token = tok;
+                if (message) {
+                    console.log(`ERROR::> ${message}`);
+                    reject(Error(message));
+                } else {
+                    console.log(`TOKEN::> ${token}`);
+                    resolve(token);
+                }
+            });
         });
-
-        return token;
     }
 
     /**
      * Ensures we have created and setup the adal AuthenticationContext instance
      */
-    private ensureAuthContext(): Promise<void> {
+    private async ensureAuthContext(): Promise<void> {
 
-        return new Promise(resolve => {
-
-            if (AdalClient._authContext === null) {
-                AdalClient._authContext = adal.inject({
-                    clientId: this.clientId,
-                    displayCall: (url: string) => {
-                        if (this._displayCallback) {
-                            this._displayCallback(url);
-                        }
-                    },
-                    navigateToLoginRequestUrl: false,
-                    redirectUri: this.redirectUri,
-                    tenant: this.tenant,
-                });
-            }
-
-            resolve();
-        });
+        if (AdalClient._authContext === null) {
+            AdalClient._authContext = adal.inject({
+                clientId: this.clientId,
+                displayCall: (url: string) => {
+                    if (this._displayCallback) {
+                        this._displayCallback(url);
+                    }
+                },
+                navigateToLoginRequestUrl: false,
+                redirectUri: this.redirectUri,
+                tenant: this.tenant,
+            });
+        }
     }
 
     /**
@@ -123,43 +120,47 @@ export class AdalClient extends BearerTokenFetchClient {
 
         this._loginPromise = new Promise((resolve, reject) => {
 
-            if (AdalClient._authContext.getCachedUser()) {
-                return resolve();
-            }
-
-            this._displayCallback = (url: string) => {
-
-                const popupWindow = window.open(url, "login", "width=483, height=600");
-
-                if (!popupWindow) {
-                    return reject(Error("Could not open pop-up window for auth. Likely pop-ups are blocked by the browser."));
-                }
-
-                if (popupWindow && popupWindow.focus) {
-                    popupWindow.focus();
-                }
-
-                const pollTimer = window.setInterval(() => {
-
-                    if (!popupWindow || popupWindow.closed || popupWindow.closed === undefined) {
-                        window.clearInterval(pollTimer);
-                    }
-
-                    try {
-                        if (popupWindow.document.URL.indexOf(this.redirectUri) !== -1) {
-                            window.clearInterval(pollTimer);
-                            AdalClient._authContext.handleWindowCallback(popupWindow.location.hash);
-                            popupWindow.close();
-                            resolve();
-                        }
-                    } catch (e) {
-                        reject(e);
-                    }
-                }, 30);
-            };
-
             // this triggers the login process
             this.ensureAuthContext().then(_ => {
+
+                if (AdalClient._authContext.getCachedUser()) {
+                    return resolve();
+                }
+
+                this._displayCallback = (url: string) => {
+
+                    const popupWindow = window.open(url, "login", "width=483, height=600");
+
+                    if (!popupWindow) {
+                        return reject(Error("Could not open pop-up window for auth. Likely pop-ups are blocked by the browser."));
+                    }
+
+                    if (popupWindow && popupWindow.focus) {
+                        popupWindow.focus();
+                    }
+
+                    const pollTimer = window.setInterval(() => {
+
+                        try {
+
+                            if (!popupWindow || popupWindow.closed || popupWindow.closed === undefined) {
+                                throw Error("No popup window.");
+                            }
+
+                            if (popupWindow.document.URL.indexOf(this.redirectUri) !== -1) {
+                                window.clearInterval(pollTimer);
+                                AdalClient._authContext.handleWindowCallback(popupWindow.location.hash);
+                                popupWindow.close();
+                                resolve();
+                            }
+                        } catch (e) {
+                            reject(e);
+                        } finally {
+                            window.clearInterval(pollTimer);
+                        }
+                    }, 3000);
+                };
+
                 (<any>AdalClient._authContext)._loginInProgress = false;
                 AdalClient._authContext.login();
                 this._displayCallback = null;
