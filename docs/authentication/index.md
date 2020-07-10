@@ -28,3 +28,6 @@ There are two places the PnPjs libraries can be used to connect to various servi
     - [ADAL](server-nodejs.md#adal)
     - [MSAL](server-nodejs.md#msal) - coming soon
 
+## Flowchart of Auth
+
+See: [The amazing authentication flowchart!](./flowchart.md)
