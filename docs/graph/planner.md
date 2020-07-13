@@ -60,7 +60,7 @@ Using the details() you can get the details in a Plan.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const planDetails = await graph.planner.plans.getById('planId').details.get();
+const planDetails = await graph.planner.plans.getById('planId').details();
 
 ```
 
@@ -121,7 +121,7 @@ Using the details() you can get the details in a Task.
 import { graph } from "@pnp/graph";
 import "@pnp/graph/planner"
 
-const taskDetails = await graph.planner.tasks.getById('taskId').details.get();
+const taskDetails = await graph.planner.tasks.getById('taskId').details();
 
 ```
 
