@@ -12,6 +12,9 @@
     "include": [],
     "references": [
         {
+            "path": "./adaljsclient/tsconfig.cjs.json"
+        },
+        {
             "path": "./common/tsconfig.cjs.json"
         },
         {
@@ -22,6 +25,9 @@
         },
         {
             "path": "./logging/tsconfig.cjs.json"
+        },
+        {
+            "path": "./msaljsclient/tsconfig.cjs.json"
         },
         {
             "path": "./nodejs/tsconfig.cjs.json"

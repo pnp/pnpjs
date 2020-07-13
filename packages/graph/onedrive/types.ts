@@ -8,10 +8,10 @@ import {
     graphInvokableFactory,
 } from "../graphqueryable";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
-import { assign, combine } from "@pnp/common";
+import { assign, combine, safeGlobal } from "@pnp/common";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators";
-import { body } from "@pnp/odata";
-import { graphPatch, graphGet, graphPut } from "../operations";
+import { body, BlobParser } from "@pnp/odata";
+import { graphPatch, graphPut } from "../operations";
 
 /**
  * Describes a Drive instance
@@ -101,8 +101,18 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
         return graphPatch(this, body(assign(parentReference, { name })));
     }
 
-    public getContent(): Promise<any> {
-        return graphGet(this.clone(DriveItem, "content"));
+    public async getContent(): Promise<Blob> {
+        const info = await this();
+        const r = await safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
+            headers: {
+                "accept": "application/json",
+            },
+            method: "GET",
+            responseType: "arraybuffer",
+        });
+
+        const p = new BlobParser();
+        return p.parse(r);
     }
 
     public setContent(content: any): Promise<{ id: string, name: string, size: number }> {

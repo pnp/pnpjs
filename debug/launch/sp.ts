@@ -16,7 +16,6 @@ export async function Example(settings: any) {
     },
   });
 
-
   const w = await sp.web();
 
   Logger.log({
