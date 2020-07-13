@@ -31,7 +31,6 @@ nav:
       - 'SPA Auth': 'authentication/client-spa.md'
       - 'NodeJS Auth': 'authentication/server-nodejs.md'
       - 'SP App Reg': 'authentication/sp-app-registration.md'
-      - 'The Flowchart': 'authentication/flowchart.md'
   - Packages:
     - Packages: 'packages.md'
     - common:
@@ -141,21 +140,21 @@ extra_javascript:
 
 markdown_extensions:
   - admonition
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.superfences
+      # custom_fences:
+      #   - name: mermaid
+      #     class: mermaid
+      #     format: !!python/name:pymdownx.superfences.fence_div_format
   - toc:
       permalink: true
 
 plugins:
   - search
   - markdownextradata
-  - mermaid2:
-      arguments:
-        securityLevel: 'loose'
-        theme: 'default'
+  # - mermaid2:
+  #     arguments:
+  #       securityLevel: 'loose'
+  #       theme: 'default'
   - redirects:
       redirect_maps:
           'adaljsclient/index.md': 'authentication/index.md'

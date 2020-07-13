@@ -1,14 +1,6 @@
 # Authentication in Nodejs
 
-- [Authentication in Nodejs](#authentication-in-nodejs)
-  - [SharePoint App Registration](#sharepoint-app-registration)
-  - [MSAL](#msal)
-  - [ADAL](#adal)
-
-
 ## SharePoint App Registration
-
-[this](#adal)
 
 Within the PnPjs testing framework we make use of SharePoint App Registration. This uses the `SPFetchClient` client from the nodejs package. This client works based on the [original SharePoint App Registration model](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs) making use of a client and secret granted permissions through AppInv.aspx. This method works and at the time of writing has no published end date.
 

@@ -89,7 +89,7 @@ const r = await graph.groups();
 
 ## Get a Token
 
-You can also use the client to get a token if you for some reason need a token for use outside the PnPjs libraries
+You can also use the client to get a token if you need a token for use outside the PnPjs libraries
 
 ```TypeScript
 import { MsalClient } from "@pnp/msaljsclient";
