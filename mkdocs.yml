@@ -1,5 +1,7 @@
 site_name: PnP/PnPjs
+
 docs_dir: 'docs'
+
 nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
@@ -21,11 +23,16 @@ nav:
     - 'Invokables': 'concepts/invokable.md'
     - 'Polyfills': 'concepts/polyfill.md'
     - 'Settings': 'concepts/settings.md'
+    - 'Authentication':
+      - 'Getting Started': 'authentication/index.md'
+      - 'SPFx Auth': 'authentication/client-spfx.md'
+      - 'MSAL Client': 'authentication/msaljsclient.md'
+      - 'ADAL Client': 'authentication/adaljsclient.md'
+      - 'SPA Auth': 'authentication/client-spa.md'
+      - 'NodeJS Auth': 'authentication/server-nodejs.md'
+      - 'SP App Reg': 'authentication/sp-app-registration.md'
   - Packages:
     - Packages: 'packages.md'
-    - adaljsclient:
-      - index: 'adaljsclient/index.md'
-      - 'client': 'adaljsclient/adalclient.md'
     - common:
       - common: 'common/index.md'
       - collections: 'common/collections.md'
@@ -115,25 +122,44 @@ nav:
       - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
   - Version 1 Docs:
     - Home: 'v1/index.html'
+
 theme:
   name: 'material'
-  custom_dir: 'docs/theme'
+  custom_dir: 'docs/_theme'
   palette:
     primary: 'blue'
   logo: 'img/Logo.png'
   feature:
     tabs: true
+
 extra_css:
   - 'css/extra.css'
+
+extra_javascript:
+    - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
+
 markdown_extensions:
   - admonition
-  - codehilite:
-      guess_lang: false
+  - pymdownx.superfences
+      # custom_fences:
+      #   - name: mermaid
+      #     class: mermaid
+      #     format: !!python/name:pymdownx.superfences.fence_div_format
   - toc:
       permalink: true
+
 plugins:
   - search
   - markdownextradata
+  # - mermaid2:
+  #     arguments:
+  #       securityLevel: 'loose'
+  #       theme: 'default'
+  - redirects:
+      redirect_maps:
+          'adaljsclient/index.md': 'authentication/index.md'
+          'adaljsclient/adalclient.md': 'authentication/adaljsclient.md'
+
 extra:
   social:
     - type: 'twitter'
@@ -142,6 +168,9 @@ extra:
       link: 'http://aka.ms/sppnp-videos'
     - type: 'link'
       link: 'https://aka.ms/sppnp'
+
 repo_url: http://github.com/pnp/pnpjs
+
 edit_uri: tree/version-2/docs
+
 site_url: https://pnp.github.io/pnpjs/

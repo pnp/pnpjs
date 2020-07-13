@@ -134,7 +134,7 @@ import "@pnp/sp/sites";
 const result = await sp.site.createCommunicationSiteFromProps({
   Owner: "patrick@three18studios.com",
   Title: "A Test Site",
-  Url: "https://318studios.sharepoint.com/sites/commsite2",
+  Url: "https://{tenant}.sharepoint.com/sites/commsite2",
   WebTemplate: "STS#3",
 });
 ```

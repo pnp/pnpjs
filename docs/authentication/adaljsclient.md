@@ -3,6 +3,14 @@
 This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
 SharePoint Framework's permissions.
 
+> Where possible it is recommended to use the [MSAL client](./msaljsclient.md).
+
+## Getting Started
+
+Install the library and required dependencies
+
+`npm install @pnp/adaljsclient --save`
+
 ## Setup and Use inside SharePoint Framework
 
 Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the [SharePoint Framework 1.6 release notes](https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi). This method only work for SharePoint Framework >= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.
@@ -106,7 +114,7 @@ public render(): void {
   };
 
   // execute the request
-  client.fetch("https://318studios.sharepoint.com/_api/web", opts).then(response => {
+  client.fetch("https://{tenant}.sharepoint.com/_api/web", opts).then(response => {
 
     // create a parser to convert the response into JSON.
     // You can create your own, at this point you have a fetch Response to work with
@@ -144,7 +152,7 @@ graph.setup({
     graph: {
         fetchClientFactory: () => {
             return new AdalClient(
-                "e3e9048e-ea28-423b-aca9-3ea931cc7972",
+                "00000000-0000-0000-0000-000000000000",
                 "{tenant}.onmicrosoft.com",
                 "https://myapp/singlesignon.aspx");
         },
