@@ -59,7 +59,7 @@ export class SPHttpClient implements IRequestClient {
         // if we have either a request digest or an authorization header we don't need a digest
         if (opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization")) {
 
-            const digest = await this._digestCache(extractWebUrl(url));
+            const digest = await this._digestCache(extractWebUrl(url), opts);
             headers.append("X-RequestDigest", digest);
         }
 
@@ -169,7 +169,7 @@ interface ICachedDigest {
 }
 
 interface IGetDigest {
-    (webUrl: string): Promise<string>;
+    (webUrl: string, options: IFetchOptions): Promise<string>;
 }
 
 // allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
@@ -177,7 +177,7 @@ const digests = new Map<string, ICachedDigest>();
 
 function getDigestFactory(client: SPHttpClient): IGetDigest {
 
-    return async (webUrl: string) => {
+    return async (webUrl: string, options: IFetchOptions) => {
 
         const cachedDigest: ICachedDigest = digests.get(webUrl);
 
@@ -189,18 +189,8 @@ function getDigestFactory(client: SPHttpClient): IGetDigest {
         }
 
         const url = combine(webUrl, "/_api/contextinfo");
-
-        const headers = {
-            "Accept": "application/json;odata=verbose",
-            "Content-Type": "application/json;odata=verbose;charset=utf-8",
-        };
-
-        const resp = await client.fetchRaw(url, {
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: assign(headers, SPRuntimeConfig.headers, true),
-            method: "POST",
-        });
+        const opts = assign(options, { method: "POST" });
+        const resp = await client.fetchRaw(url, opts);
 
         const parsed = await (new ODataParser()).parse(resp).then(r => r.GetContextWebInformation);
 
