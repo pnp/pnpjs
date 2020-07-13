@@ -1,6 +1,7 @@
 import { ITypedHash, assign } from "@pnp/common";
 import {
   PlannerPlan as IPlannerPlanType,
+  PlannerPlanDetails as IPlannerPlanDetailsType,
   PlannerTask as IPlannerTaskType,
   PlannerTaskDetails as IPlannerTaskDetailsType,
   PlannerBucket as IPlannerBucketType,
@@ -37,6 +38,15 @@ export interface IPlanner extends _Planner { }
 export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 
 /**
+ * Details
+ */
+@defaultPath("details")
+@updateableWithETag()
+export class _PlanDetails extends _GraphQueryableInstance<IPlannerPlanDetailsType> { }
+export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> { }
+export const PlanDetails = graphInvokableFactory<ITaskDetails>(_PlanDetails);
+
+/**
  * Plan
  */
 @updateableWithETag()
@@ -49,6 +59,10 @@ export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
 
   public get buckets(): IBuckets {
     return Buckets(this);
+  }
+
+  public get details(): IPlanDetails {
+    return PlanDetails(this);
   }
 }
 export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag { }
@@ -81,9 +95,9 @@ export const Plans = graphInvokableFactory<IPlans>(_Plans);
  */
 @defaultPath("details")
 @updateableWithETag()
-export class _Details extends _GraphQueryableInstance<IPlannerTaskDetailsType> { }
-export interface ITaskDetails extends _Details { }
-export const Details = graphInvokableFactory<IPlannerTaskDetailsType>(_Details);
+export class _TaskDetails extends _GraphQueryableInstance<IPlannerTaskDetailsType> { }
+export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlannerTaskDetailsType> { }
+export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
 
 /**
  * Task
@@ -91,8 +105,8 @@ export const Details = graphInvokableFactory<IPlannerTaskDetailsType>(_Details);
 @updateableWithETag()
 @deleteableWithETag()
 export class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
-  public get details(): IPlannerTaskDetailsType {
-    return Details(this, "details");
+  public get details(): ITaskDetails {
+    return TaskDetails(this);
   }
 }
 export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag { }

@@ -23,7 +23,8 @@ export {
   Plans,
   Task,
   Tasks,
-  Details,
+  TaskDetails,
+  PlanDetails,
 } from "./types";
 
 declare module "../rest" {
