@@ -18,7 +18,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 // get all the attachments
 const info: IAttachmentInfo[] = await item.attachmentFiles();
@@ -42,7 +42,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.add("file2.txt", "Here is my content");
 ```
@@ -104,7 +104,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 const text = await item.attachmentFiles.getByName("file.txt").getText();
 
@@ -130,7 +130,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!");
 ```
@@ -145,7 +145,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").delete();
 ```
@@ -162,7 +162,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1)();
+let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").recycle();
 ```

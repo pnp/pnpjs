@@ -6,9 +6,10 @@
   "typings": "./index",
   "dependencies": {
     "adal-node": "0.1.28",
+    "https-proxy-agent": "4.0.0",
     "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
-    "tslib": "1.10.0",
+    "tslib": "2.0.0",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER"
   },
@@ -23,5 +24,8 @@
   "repository": {
     "type": "git",
     "url": "git:github.com/pnp/pnpjs"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7"
   }
 }

@@ -125,6 +125,6 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites/site";
 
-// join a site to a hubsite
+// separate a site from a hubsite
 await sp.site.unRegisterHubSite();
 ```
