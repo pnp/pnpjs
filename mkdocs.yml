@@ -23,6 +23,7 @@ nav:
     - 'Invokables': 'concepts/invokable.md'
     - 'Polyfills': 'concepts/polyfill.md'
     - 'Settings': 'concepts/settings.md'
+    - 'Error Handling': 'concepts/error-handling.md'
     - 'Authentication':
       - 'Getting Started': 'authentication/index.md'
       - 'SPFx Auth': 'authentication/client-spfx.md'
