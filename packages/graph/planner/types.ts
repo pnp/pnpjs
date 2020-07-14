@@ -1,7 +1,9 @@
 import { ITypedHash, assign } from "@pnp/common";
 import {
     PlannerPlan as IPlannerPlanType,
+    PlannerPlanDetails as IPlannerPlanDetailsType,
     PlannerTask as IPlannerTaskType,
+    PlannerTaskDetails as IPlannerTaskDetailsType,
     PlannerBucket as IPlannerBucketType,
     Planner as IPlannerType,
 } from "@microsoft/microsoft-graph-types";
@@ -36,6 +38,15 @@ export interface IPlanner extends _Planner { }
 export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 
 /**
+ * Details
+ */
+@defaultPath("details")
+@updateableWithETag()
+export class _PlanDetails extends _GraphQueryableInstance<IPlannerPlanDetailsType> { }
+export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> { }
+export const PlanDetails = graphInvokableFactory<ITaskDetails>(_PlanDetails);
+
+/**
  * Plan
  */
 @updateableWithETag()
@@ -48,6 +59,10 @@ export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
 
     public get buckets(): IBuckets {
         return Buckets(this);
+    }
+
+    public get details(): IPlanDetails {
+        return PlanDetails(this);
     }
 }
 export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag { }
@@ -76,11 +91,24 @@ export interface IPlans extends _Plans, IGetById<IPlan> { }
 export const Plans = graphInvokableFactory<IPlans>(_Plans);
 
 /**
+ * Details
+ */
+@defaultPath("details")
+@updateableWithETag()
+export class _TaskDetails extends _GraphQueryableInstance<IPlannerTaskDetailsType> { }
+export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlannerTaskDetailsType> { }
+export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
+
+/**
  * Task
  */
 @updateableWithETag()
 @deleteableWithETag()
-export class _Task extends _GraphQueryableInstance<IPlannerTaskType> { }
+export class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
+    public get details(): ITaskDetails {
+        return TaskDetails(this);
+    }
+}
 export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag { }
 export const Task = graphInvokableFactory<ITask>(_Task);
 
@@ -121,7 +149,6 @@ export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> {
 }
 export interface ITasks extends _Tasks, IGetById<ITask> { }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
-
 
 /**
  * Bucket

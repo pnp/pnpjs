@@ -17,11 +17,14 @@ export {
     ITask,
     ITaskAddResult,
     ITasks,
+    ITaskDetails,
     Plan,
     Planner,
     Plans,
     Task,
     Tasks,
+    TaskDetails,
+    PlanDetails,
 } from "./types";
 
 declare module "../rest" {
