@@ -102,6 +102,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
         return url;
     }
 
+    public setEndpoint(endpoint: "beta" | "v1.0"): this {
+        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
+        return this;
+    }
+
     /**
      * Gets a parent for this instance as specified
      *
@@ -125,11 +130,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
 
         return super.cloneTo<T>(factory(this, additionalPath), { includeBatch });
     }
-
-    protected setEndpoint(endpoint: string): this {
-        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
-        return this;
-    }
 }
 
 export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<GetType> {
@@ -148,7 +148,18 @@ export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<G
      */
     expand(...expands: string[]): this;
 
+    /**
+     * 
+     * @param options 
+     */
     defaultAction(options?: IFetchOptions): Promise<GetType>;
+
+    /**
+     * Allows you to set the graph endpoint version string
+     * 
+     * @param endpoint The string either beta of v1.0
+     */
+    setEndpoint(endpoint: "beta" | "v1.0"): this;
 
     /**
      * Gets the full url with query information

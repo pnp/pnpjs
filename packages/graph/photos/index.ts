@@ -1,4 +1,5 @@
 import "./groups";
+import "./users";
 
 export {
     IPhoto,
