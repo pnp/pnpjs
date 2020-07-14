@@ -43,7 +43,7 @@ We have a new section dedicated to helping you [figure out the best way to handl
 
 ## Issues, Questions, Ideas
 
-Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any contructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
+Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any constructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
 
 ## Code of Conduct
 

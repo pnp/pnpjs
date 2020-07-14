@@ -16,7 +16,7 @@ Please review the [documentation](https://pnp.github.io/pnpjs/) for the PnPjs li
 site is updated with each release. If cannot find what you need, please let us know by logging an [documentation request](https://github.com/pnp/pnpjs/issues).
 
 ## Authors
-This project's contributors include Microsoft and [community contributors](AUTHORS). Work is done as as open source community project.
+This project's contributors include Microsoft and [community contributors](AUTHORS). Work is done as an open source community project.
 
 ## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
