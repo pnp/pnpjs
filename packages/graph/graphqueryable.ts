@@ -57,7 +57,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
+            this.query.set("$select", selects.map(encodeURIComponent).join(","));
         }
         return this;
     }
@@ -69,7 +69,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
+            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
         }
         return this;
     }
@@ -184,7 +184,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
         const query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
+        query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;
     }
