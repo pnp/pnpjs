@@ -1,6 +1,6 @@
 # @pnp/sp/clientside-pages
 
-The clientside pages module allows you to created, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
+The 'clientside pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
@@ -8,13 +8,13 @@ The clientside pages module allows you to created, edit, and delete modern Share
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
 | Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
-| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presents/all";                                    |
+| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                    |
 
 ## Create a new Page
 
-You can create a new clientside page in several ways, all are equivalent.
+You can create a new client-side page in several ways, all are equivalent.
 
-### Create using IWeb.addClientSidePage
+### Create using IWeb.addClientsidePage
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -38,7 +38,7 @@ await page2.save();
 // include title and page layout while also specifying the publishing status (Added in 2.0.4)
 const page3 = await sp.web.addClientsidePage("mypage", "My Page Title", "Article", PromotedState.PromoteOnPublish);
 
-// you must publish the new page
+// you must publish the new page, after which the page will immediately be promoted to a news article
 await page3.save();
 ```
 
@@ -64,7 +64,7 @@ await page2.save();
 // specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)
 const page2half = await CreateClientsidePage(sp.web, "mypage3", "My Page Title", "Article", PromotedState.PromoteOnPublish);
 
-// you must publish the new page, in this case the page will immediately be promoted to a news article
+// you must publish the new page, after which the page will immediately be promoted to a news article
 await page2half.save();
 
 // use the web factory to create a page in a specific web
@@ -76,9 +76,9 @@ await page3.save();
 
 ## Load Pages
 
-There a a few ways to load pages, each of which results in an IClientSidePage instance being returned.
+There are a few ways to load pages, each of which results in an IClientsidePage instance being returned.
 
-### Load using IWeb.loadClientSidePage
+### Load using IWeb.loadClientsidePage
 
 This method takes a _server relative_ path to the page to load.
 
@@ -92,7 +92,6 @@ import "@pnp/sp/clientside-pages/web";
 const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
 
 // use the web factory to target a specific web
-
 const page2 = await Web("https://{absolute web url}").loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
 ```
 
@@ -111,7 +110,7 @@ const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/s
 
 ## Edit Sections and Columns
 
-Clientside pages are made up of sections, columns, and controls. Sections contain columns which contain controls. There are methods to operate on these within the page, in addition to the standard array methods available in JavaScript. These samples use a variable `page` that is understood to be an IClientsidePage instance which is either created or loaded as outlined in previous sections.
+Client-side pages are made up of sections, columns, and controls. Sections contain columns which contain controls. There are methods to operate on these within the page, in addition to the standard array methods available in JavaScript. These samples use a variable `page` that is understood to be an IClientsidePage instance which is either created or loaded as outlined in previous sections.
 
 ```TypeScript
 // our page instance
@@ -152,7 +151,7 @@ await page.save();
 
 ### Vertical Section
 
-The vertical section, if on the page is stored within the sections array, but you can access it slightly differently to make things easier.
+The vertical section, if on the page, is stored within the sections array. However, you access it slightly differently to make things easier.
 
 ```TypeScript
 // our page instance
@@ -222,7 +221,7 @@ await page.save();
 
 ### Add Controls
 
-Adding controls involves loading the available clientside part definitions from the server or creating a text part.
+Adding controls involves loading the available client-side part definitions from the server or creating a text part.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -230,7 +229,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
-// this will be a ClientSidePageComponent array
+// this will be a ClientsidePageComponent array
 // this can be cached on the client in production scenarios
 const partDefs = await sp.web.getClientsideWebParts();
 
@@ -265,7 +264,7 @@ There are other operation you can perform on a page in addition to manipulating 
 
 ### pageLayout
 
-You can get and set the page layout. Changing the layout after page creating may have side effects and should be done cautiously.
+You can get and set the page layout. Changing the layout after creating the page may have side effects and should be done cautiously.
 
 ```TypeScript
 // our page instance
@@ -329,7 +328,7 @@ await page.save();
 
 ### layoutType
 
-Sets the page layout type. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"
+Sets the layout type of the page. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"
 
 ```TypeScript
 // our page instance
@@ -422,12 +421,12 @@ await page.setAuthorByLoginName(userLogin);
 await page.save();
 ```
 
-> you must still save the page after setting the author to persit your changes as shown in the example
+> you must still save the page after setting the author to persist your changes as shown in the example.
 
 
 ### load
 
-Loads the page from the server, will overwrite any local unsaved changes.
+Loads the page from the server. This will overwrite any local unsaved changes.
 
 ```TypeScript
 // our page instance
@@ -438,7 +437,7 @@ await page.load();
 
 ### save
 
-Saves any changes to the page, optionally keeping them in draft state
+Saves any changes to the page, optionally keeping them in draft state.
 
 ```TypeScript
 // our page instance
@@ -464,7 +463,7 @@ await page.discardPageCheckout();
 
 ### promoteToNews
 
-Promotes the page as a news article
+Promotes the page as a news article.
 
 ```TypeScript
 // our page instance
@@ -475,7 +474,7 @@ await page.promoteToNews();
 
 ### enableComments & disableComments
 
-Used to control the availability of comments on a page
+Used to control the availability of comments on a page.
 
 ```TypeScript
 // you need to import the comments sub-module or use the all preset
@@ -509,7 +508,7 @@ const control = page.findControlById<ClientsideText>("06d4cdf6-bce6-4200-8b93-66
 
 ### findControl
 
-Finds a control within the page using the supplied delegate. Can also be used to iterate all controls in the page.
+Finds a control within the page using the supplied delegate. Can also be used to iterate through all controls in the page.
 
 ```TypeScript
 // our page instance
@@ -568,7 +567,7 @@ const pageCopy = await page.copy(sp.web, "newpagename", "New Page Title");
 // creates a draft (unpublished) copy of the page
 const pageCopy2 = await page.copy(sp.web, "newpagename", "New Page Title", false);
 
-// edits to pageCopy2
+// edits to pageCopy2 ...
 
 // publish the page
 pageCopy2.save();
@@ -601,7 +600,7 @@ page.setBannerImage("/server/relative/path/to/image.png", {
 await page.save();
 ```
 
-This sample show the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the `file` - likely from a file input or similar.
+This sample shows the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the `file` - likely from a file input or similar.
 
 ```TypeScript
 import { SPFetchClient } from "@pnp/nodejs";
