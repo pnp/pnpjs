@@ -149,5 +149,5 @@ MyRuntimeConfig.setup({
     },
 });
 
-const value = MyRuntimeConfig.prop1; // "hello"
+const value = MyRuntimeConfig.myProp1; // "hello"
 ```
