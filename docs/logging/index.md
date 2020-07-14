@@ -12,14 +12,14 @@ Install the logging module, it has no other dependencies
 
 ## Understanding the Logging Framework
 
-The logging framework is centered on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the _LogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface as a parameter.
+The logging framework is centered on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the _ILogListener_ interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface as a parameter.
 
 ```TypeScript
 /**
  * Interface that defines a log listener
  *
  */
-export interface LogListener {
+export interface ILogListener {
     /**
      * Any associated data that a given logging listener may choose to log or ignore
      *
@@ -80,7 +80,7 @@ Logger.write("This is logging a simple string", LogLevel.Error);
 Logger.writeJSON({ name: "value", name2: "value2"});
 
 // optionally passing a level, default level is Verbose
-Logger.writeJSON({ name: "value", name2: "value2"}, LogLevel.Warn);
+Logger.writeJSON({ name: "value", name2: "value2"}, LogLevel.Warning);
 
 // specify the entire LogEntry interface using log
 Logger.log({
@@ -149,16 +149,16 @@ Logger.subscribe(listener);
 
 ### Create a Custom Listener
 
-If desirable for your project you can create a custom listener to perform any logging action you would like. This is done by implementing the LogListener interface.
+If desirable for your project you can create a custom listener to perform any logging action you would like. This is done by implementing the ILogListener interface.
 
 ```TypeScript
 import {
     Logger,
-    LogListener,
+    ILogListener,
     ILogEntry
 } from "@pnp/logging";
 
-class MyListener implements LogListener {
+class MyListener implements ILogListener {
 
     log(entry: ILogEntry): void {
         // here you would do something with the entry

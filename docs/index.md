@@ -10,6 +10,7 @@ _Animation of the library in use, note intellisense help in building your querie
 These articles provide general guidance for working with the libraries. If you are migrating from v1 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
+* [Authentication](./authentication/index.md)
 * [Getting Started Contributing](getting-started-dev.md)
 * [Documentation](documentation.md)
 * [npm scripts](npm-scripts.md)
@@ -25,19 +26,24 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 |     ||  |
 | ---| -------------|-------------|
 | @pnp/| | |
-|| [adaljsclient](adaljsclient/index.md)  | Provides shared functionality across all pnp libraries |
-|| [common](common/index.md)  | Provides shared functionality across all pnp libraries |
-|| [config-store](config-store/index.md) | Provides a way to manage configuration within your application |
-|| [graph](graph/index.md) | Provides a fluent api for working with Microsoft Graph |
-|| [logging](logging/index.md) | Light-weight, subscribable logging framework |
-|| [nodejs](nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
-|| [odata](odata/index.md) | Provides shared odata functionality and base classes |
-|| [sp](sp/index.md) | Provides a fluent api for working with SharePoint REST |
-|| [sp-addinhelpers](sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
+|| [adaljsclient](./authentication/adaljsclient.md)  | Provides an adaljs wrapper suitable for use with PnPjs |
+|| [common](./common/index.md)  | Provides shared functionality across all pnp libraries |
+|| [config-store](./config-store/index.md) | Provides a way to manage configuration within your application |
+|| [graph](./graph/index.md) | Provides a fluent api for working with Microsoft Graph |
+|| [logging](./logging/index.md) | Light-weight, subscribable logging framework |
+|| [msaljsclient](./authentication/msaljsclient.md)  | Provides an msal wrapper suitable for use with PnPjs |
+|| [nodejs](./nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
+|| [odata](./odata/index.md) | Provides shared odata functionality and base classes |
+|| [sp](./sp/index.md) | Provides a fluent api for working with SharePoint REST |
+|| [sp-addinhelpers](./sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
+
+## Authentication
+
+We have a new section dedicated to helping you [figure out the best way to handle authentication](./authentication/index.md) in your application, check it out!
 
 ## Issues, Questions, Ideas
 
-Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any contructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
+Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any constructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
 
 ## Code of Conduct
 

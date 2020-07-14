@@ -202,7 +202,7 @@ Applies the theme specified by the contents of each of the files specified in th
 import { combine } from "@pnp/common";
 
 // we are going to apply the theme to this sub web as an example
-const web = Web("https://318studios.sharepoint.com/sites/dev/subweb");
+const web = Web("https://{tenant}.sharepoint.com/sites/dev/subweb");
 
 // the urls to the color and font need to both be from the catalog at the root
 // these urls can be constants or calculated from existing urls

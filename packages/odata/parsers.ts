@@ -87,7 +87,6 @@ export class TextParser extends ODataParser<string> {
 export class BlobParser extends ODataParser<Blob> {
 
     protected parseImpl(r: Response, resolve: (value: any) => void): void {
-
         r.blob().then(resolve);
     }
 }

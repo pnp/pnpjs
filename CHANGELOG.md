@@ -1,8 +1,45 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## 2.0.6 - 2020-06-05
+
+### Added
+
+- sp: Adds read operations for v2.1 Taxonomy API [[PR](https://github.com/pnp/pnpjs/pull/1216)]
+
+### Fixed
+
+- docs: Added await to the searcher function in search factory. [@derhallim](https://github.com/derhallim) [[PR](https://github.com/pnp/pnpjs/pull/1201)]
+- docs: Update comment line sentence in hubsites. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1207)]
+- docs: Change Warn to Warning in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1211)]
+- docs: Change LogListener to ILogListener in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1212)]
+
+## 2.0.5 - 2020-05-08
+
+### Added
+
+- graph: Added tests and docs for groups [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1181)]
+- sp: Added method to check it site collection exists [@DRamalho92](https://github.com/DRamalho92) [[PR](https://github.com/pnp/pnpjs/pull/1173)]
+- sp: Added suppot for setting banner image in clientside-page copy [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+
+### Changed
+
+- sp: Made field type optional when updating a field [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- polyfills: Allow selective import of polyfills [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+
+### Fixed
+
+- graph: Fixed issue with directoy-objects return types [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1192)]
+- docs: Updated graph teams article [@jaywellings](https://github.com/jaywellings) [[PR](https://github.com/pnp/pnpjs/pull/1190)]
+- docs: Fixed nav node name for users link [@siddharth-vaghasia](https://github.com/siddharth-vaghasia) [[PR](https://github.com/pnp/pnpjs/pull/1182)]
+- sp: Fixed missing delete method on fields [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1165)]
+- sp: Fixed issue with search results if there are zero rows returned [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- common: Fixed storage issue in node related to usingCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
+- sp: Fixed bug in searchWithCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 
 ## 2.0.4 - 2020-04-10
 

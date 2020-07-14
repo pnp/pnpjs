@@ -34,6 +34,6 @@ a suggestion or asking a question delete this section.*
 * All suggestions, questions and issues are welcome, please let us know what's on your mind.
 * Remember to include sufficient details and context.
 * Please check back occasionally on your issue as we may have follow up questions.
-* If you have multiple suggestions, questions, or bugs please submit them in seperate issues so we can track resolution.
+* If you have multiple suggestions, questions, or bugs please submit them in separate issues so we can track resolution.
 
 Thank you for your feedback!

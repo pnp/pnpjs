@@ -5,14 +5,6 @@ import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById,
 import { graphPost } from "../operations";
 
 /**
- * Calendars
- */
-@defaultPath("calendars")
-export class _Calendars extends _GraphQueryableCollection<ICalendarType[]> { }
-export interface ICalendars<GetType = any> extends _Calendars { }
-export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
-
-/**
  * Calendar
  */
 export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
@@ -23,6 +15,15 @@ export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
 }
 export interface ICalendar extends _Calendar { }
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
+
+/**
+ * Calendars
+ */
+@defaultPath("calendars")
+@getById(Calendar)
+export class _Calendars extends _GraphQueryableCollection<ICalendarType[]> { }
+export interface ICalendars<GetType = any> extends _Calendars, IGetById<ICalendar> { }
+export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
 
 /**
  * Event

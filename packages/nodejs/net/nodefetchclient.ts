@@ -1,7 +1,7 @@
 declare var require: (path: string) => any;
 import { IHttpClientImpl } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-const nodeFetch = require("node-fetch").default;
+import { fetch } from "./fetch";
 
 /**
  * Payload from transient errors
@@ -34,7 +34,7 @@ export class NodeFetchClient implements IHttpClientImpl {
             try {
 
                 // Try to make the request...
-                return await nodeFetch(url, options || {});
+                return await fetch(url, options || {});
 
             } catch (err) {
 
@@ -117,6 +117,6 @@ export class NodeFetchClient implements IHttpClientImpl {
         }
 
         const currentCount = (retryData && retryData.retryCount);
-        return (currentCount < this.retryCount);
+        return currentCount < this.retryCount;
     }
 }
