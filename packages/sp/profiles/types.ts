@@ -177,12 +177,20 @@ export class _Profiles extends _SharePointQueryableInstance {
      * @param profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB
      */
     public setMyProfilePic(profilePicSource: Blob): Promise<void> {
-        let buffer: any = null;
-        const reader = new FileReader();
-        reader.onload = (e: any) => buffer = e.target.result;
-        reader.readAsArrayBuffer(profilePicSource);
-        const request = new _Profiles(this, "setmyprofilepicture");
-        return spPost(request, body(String.fromCharCode.apply(null, <any>new Uint16Array(buffer))));
+
+        return new Promise<void>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = async (e: any) => {
+                const buffer = e.target.result;
+                try {
+                    await spPost(Profiles(this, "setmyprofilepicture"), { body: buffer });
+                    resolve();
+                } catch (e) {
+                    reject(e);
+                }
+            };
+            reader.readAsArrayBuffer(profilePicSource);
+        });
     }
 
     /**
@@ -277,7 +285,7 @@ export class _Profiles extends _SharePointQueryableInstance {
         return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
     }
 }
-export interface IProfiles extends _Profiles {}
+export interface IProfiles extends _Profiles { }
 export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
 
 @defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")
