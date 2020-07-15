@@ -26,7 +26,7 @@ import { toResourcePath } from "../utils/toResourcePath";
 export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
     /**
-     * Gets a File by filenameany
+     * Gets a File by filename
      *
      * @param name The name of the file, including extension.
      */
