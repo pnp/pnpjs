@@ -7,7 +7,7 @@ import {
     IDeleteableWithETag,
     deleteableWithETag,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, StreamParser, headers, body, IResponseBodyStream } from "@pnp/odata";
 import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
@@ -26,7 +26,7 @@ import { toResourcePath } from "../utils/toResourcePath";
 export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
     /**
-     * Gets a File by filename
+     * Gets a File by filenameany
      *
      * @param name The name of the file, including extension.
      */
@@ -46,7 +46,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      * @returns The new File and the raw response.
      */
     @tag("fis.add")
-    public async add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IFileAddResult> {
+    public async add(url: string, content: string | ArrayBuffer | Blob | any, shouldOverWrite = true): Promise<IFileAddResult> {
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });
@@ -369,14 +369,12 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
     
     /**
-     * Gets the contents of a Node Stream, works ONLY in Node.js. Not supported in batching.
+     * Gets the raw reference to response body without consuming it, should be used to get the response stream in Node.js. Not supported in batching.
      */
     @tag("fi.getStream")
-    public getStream(): Promise<ArrayBuffer> {
+    public getStream(): Promise<IResponseBodyStream> {
 
-        return this.clone(File, "$value", false).usingParser({ parse(r) {
-            return Promise.resolve(r.body)
-        }})(headers({ "binaryStringResponseBody": "true" }));
+        return this.clone(File, "$value", false).usingParser(new StreamParser())(headers({ "binaryStringResponseBody": "true" }));
     }
 
     /**

@@ -5,6 +5,11 @@ export interface IODataParser<T> {
     parse(r: Response): Promise<T>;
 }
 
+export interface IResponseBodyStream {
+    body: ReadableStream<Uint8Array>;
+    knownLength: number;
+}
+
 export class ODataParser<T = any> implements IODataParser<T> {
 
     public parse(r: Response): Promise<T> {
@@ -89,6 +94,12 @@ export class BlobParser extends ODataParser<Blob> {
     protected parseImpl(r: Response, resolve: (value: any) => void): void {
 
         r.blob().then(resolve);
+    }
+}
+export class StreamParser extends ODataParser<IResponseBodyStream> {
+
+    protected parseImpl(r: Response, resolve: (value: any) => void): void {
+        resolve({ body: r.body, knownLength: parseInt(r.headers['content-length'],10)})
     }
 }
 
