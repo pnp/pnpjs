@@ -18,7 +18,7 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
   // Note however, even bodies that can be serialized will not be cloned.
   if (source.options && source.options.body) {
     body = source.options.body;
-    source.options.body = "-"
+    source.options.body = "-";
   }
 
   const s = JSON.stringify(source, (key: string, value: any) => {
