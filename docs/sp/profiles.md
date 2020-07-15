@@ -237,6 +237,16 @@ setMyProfilePic(profilePicSource: Blob): Promise<void>
 ```
 
 ```typescript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/web";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/profiles";
+import "@pnp/sp/folders";
+import "@pnp/sp/files";
+
+// get the blob object through a request or from a file input
+const blob = await sp.web.lists.getByTitle("Documents").rootFolder.files.getByName("profile.jpg").getBlob();
+
 await sp.profiles.setMyProfilePic(blob);
 ```
 
