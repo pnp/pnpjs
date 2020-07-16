@@ -326,6 +326,22 @@ page.title = "My page title";
 await page.save();
 ```
 
+### description
+
+> Descriptions are limited to 255 chars
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// get the current value
+const value = page.description;
+
+// set the value
+page.description = "A description";
+await page.save();
+```
+
 ### layoutType
 
 Sets the layout type of the page. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"
