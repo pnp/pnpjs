@@ -274,5 +274,35 @@ describe("Clientside Pages", () => {
                 expect(page2.authorByLine).to.eq(userLogin);
             });
         });
+
+        describe("description", function () {
+
+            let web: IWeb;
+            let page: IClientsidePage;
+            let pageUrl: string;
+
+            before(async function () {
+                this.timeout(0);
+                web = Web(testSettings.sp.webUrl);
+                page = await web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
+                await page.save();
+                // we need the updated url info from the published page so we re-load things.
+                await page.load();
+
+                const serverRelUrl = (await web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+                pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+            });
+
+            it.only("set", async function () {
+
+                const description = `Test Desc ${getRandomString(10)}`;
+                page.description = description;
+                await page.save();
+
+                const page2 = await web.loadClientsidePage(pageUrl);
+
+                expect(page2.description).to.eq(description);
+            });
+        });
     }
 });

@@ -149,6 +149,26 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         this._layoutPart.properties.title = value;
     }
 
+    public get description(): string {
+        return this.json.Description;
+    }
+
+    public set description(value: string) {
+
+        if (!stringIsNullOrEmpty(value) && value.length > 255) {
+            throw Error("Modern Page description is limited to 255 chars.");
+        }
+
+        this.json.Description = value;
+        if (!hOP(this._pageSettings, "htmlAttributes")) {
+            this._pageSettings.htmlAttributes = [];
+        }
+        if (this._pageSettings.htmlAttributes.indexOf("modifiedDescription") < 0) {
+            this._pageSettings.htmlAttributes.push("modifiedDescription");
+        }
+        this._pageSettings.pageSettingsSlice.isDefaultDescription = false;
+    }
+
     public get layoutType(): LayoutType {
         return this._layoutPart.properties.layoutType;
     }
@@ -333,10 +353,12 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
             await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
         }
 
+        // create the body for the save request
         const saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
             AuthorByline: this.json.AuthorByline || [],
             BannerImageUrl: this.bannerImageUrl,
             CanvasContent1: this.getCanvasContent1(),
+            Description: this.description,
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
@@ -1229,6 +1251,7 @@ export interface IPageData {
     AbsoluteUrl: string;
     AuthorByline: string[] | null;
     BannerImageUrl: string;
+    BannerThumbnailUrl: string;
     ContentTypeId: null | string;
     Description: string;
     DoesUserHaveEditPermission: boolean;
@@ -1326,6 +1349,7 @@ export interface ICanvasControlBaseData extends IClientsideControlBaseData {
 }
 
 export interface IClientsidePageSettingsSlice extends IClientsideControlBaseData {
+    htmlAttributes?: string[];
     pageSettingsSlice: {
         "isDefaultDescription": boolean;
         "isDefaultThumbnail": boolean;
