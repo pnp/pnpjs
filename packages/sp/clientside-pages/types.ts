@@ -313,7 +313,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
             const site = Site(extractWebUrl(this.toUrl()));
             const web = Web(extractWebUrl(this.toUrl()));
-            const imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/i, " "));
+            const imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/ig, " "));
 
             let siteId = "";
             let webId = "";
