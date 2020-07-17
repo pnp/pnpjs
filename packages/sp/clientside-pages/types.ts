@@ -55,6 +55,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
     private _pageSettings: IClientsidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
     private _bannerImageDirty: boolean;
+    private _bannerImageThumbnailUrlDirty: boolean;
 
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
@@ -70,6 +71,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         super(baseUrl, path);
 
         this._bannerImageDirty = false;
+        this._bannerImageThumbnailUrlDirty = false;
 
         // ensure we have a good url to build on for the pages api
         if (typeof baseUrl === "string") {
@@ -124,8 +126,17 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
     }
 
     public set bannerImageUrl(value: string) {
-        this.json.BannerImageUrl = value;
-        this._bannerImageDirty = true;
+        this.setBannerImage(value);
+    }
+
+    public get thumbnailUrl(): string {
+        return this._pageSettings.pageSettingsSlice.isDefaultThumbnail ? this.json.BannerImageUrl : this.json.BannerThumbnailUrl;
+    }
+
+    public set thumbnailUrl(value: string) {
+        this.json.BannerThumbnailUrl = value;
+        this._bannerImageThumbnailUrlDirty = true;
+        this._pageSettings.pageSettingsSlice.isDefaultThumbnail = false;
     }
 
     public get topicHeader(): string {
@@ -302,7 +313,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
             const site = Site(extractWebUrl(this.toUrl()));
             const web = Web(extractWebUrl(this.toUrl()));
-            const imgFile = web.getFileByServerRelativePath(origImgUrl);
+            const imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/i, " "));
 
             let siteId = "";
             let webId = "";
@@ -354,15 +365,23 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         }
 
         // create the body for the save request
-        const saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
+        let saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
             AuthorByline: this.json.AuthorByline || [],
-            BannerImageUrl: this.bannerImageUrl,
             CanvasContent1: this.getCanvasContent1(),
             Description: this.description,
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
         });
+
+        if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
+
+            const bannerImageUrlValue = this._bannerImageThumbnailUrlDirty ? this.thumbnailUrl : this.bannerImageUrl;
+
+            saveBody = assign(saveBody, {
+                BannerImageUrl: bannerImageUrlValue,
+            });
+        }
 
         const updater = initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
         await spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
@@ -377,6 +396,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         }
 
         this._bannerImageDirty = false;
+        this._bannerImageThumbnailUrlDirty = false;
 
         return r;
     }
@@ -529,8 +549,21 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         translateY?: number;
     }): void {
 
-        this.bannerImageUrl = url;
-        this._layoutPart.properties.imageSourceType = 2; // this seems to always be true, so default?
+        this.json.BannerImageUrl = url;
+        this._bannerImageDirty = true;
+        /*
+            setting the banner image resets the thumbnail image (matching UI functionality)
+            but if the thumbnail is dirty they are likely trying to set them both to
+            different values, so we allow that here.
+            Also allows the banner image to be updated safely with the calculated one in save()
+        */
+        if (!this._bannerImageThumbnailUrlDirty) {
+            this.thumbnailUrl = url;
+            this._pageSettings.pageSettingsSlice.isDefaultThumbnail = true;
+        }
+
+        // this seems to always be true, so default
+        this._layoutPart.properties.imageSourceType = 2;
 
         if (objectDefinedNotNull(props)) {
             if (hOP(props, "translateX")) {

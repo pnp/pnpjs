@@ -294,6 +294,24 @@ await page.save();
 
 > Banner images need to exist within the same site collection as the page where you want to use them.
 
+### thumbnailUrl
+
+Allows you to set the thumbnail used for the page independently of the banner.
+
+> If you set the bannerImageUrl property and ant thumbnailUrl the thumbnail will be reset to match the banner, mimicing the UI functionality.
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// get the current value
+const value = page.thumbnailUrl;
+
+// set the value
+page.thumbnailUrl = "/server/relative/path/to/image.png";
+await page.save();
+```
+
 ### topicHeader
 
 ```TypeScript
@@ -591,7 +609,7 @@ pageCopy2.save();
 
 ### setBannerImage
 
-Sets the banner image url and optionally additional properties. Similar to setting the bannerImageUrl property, however allows you to set additional properties if needed. If you do not need to set the additional properties they are equivalent.
+Sets the banner image url and optionally additional properties. Allows you to set additional properties if needed, if you do not need to set the additional properties they are equivalent.
 
 > Banner images need to exist within the same site collection as the page where you want to use them.
 
