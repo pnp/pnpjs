@@ -23,6 +23,7 @@ nav:
     - 'Invokables': 'concepts/invokable.md'
     - 'Polyfills': 'concepts/polyfill.md'
     - 'Settings': 'concepts/settings.md'
+    - 'Error Handling': 'concepts/error-handling.md'
     - 'Authentication':
       - 'Getting Started': 'authentication/index.md'
       - 'SPFx Auth': 'authentication/client-spfx.md'
@@ -50,6 +51,7 @@ nav:
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
+      - calendars: 'graph/calendars.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
       - onedrive: 'graph/onedrive.md'
@@ -101,7 +103,6 @@ nav:
       - 'Related Items': 'sp/related-items.md'
       - Search: 'sp/search.md'
       - Security: 'sp/security.md'
-      - Search: 'sp/search.md'
       - Sharing: 'sp/sharing.md'
       - 'Site Designs': 'sp/site-designs.md'
       - 'Site Groups': 'sp/site-groups.md'

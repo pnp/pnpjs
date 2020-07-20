@@ -49,7 +49,7 @@ describe("Sites", () => {
       return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
     });
 
-    it.only(".exists", async function () {
+    it(".exists", async function () {
       const oWeb = await sp.site();
       const exists: boolean = await sp.site.exists(oWeb.Url);
       const notExists: boolean = await sp.site.exists(`${oWeb.Url}/RANDOM`);

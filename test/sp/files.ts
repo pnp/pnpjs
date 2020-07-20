@@ -87,6 +87,14 @@ describe("files", () => {
             expect(file.Name).to.eq(name);
         });
 
+        it("addUsingPath (silly chars)", async function () {
+
+            const name = `Testing Add & = + - ${getRandomString(4)}.txt`;
+            const res = await files.addUsingPath(name, "Some test text content.");
+            const file = await sp.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
+            expect(file.Name).to.eq(name);
+        });
+
         it("addUsingPath (overwrite)", async function () {
 
             const name = `Testing Add %# - ${getRandomString(4)}.txt`;
@@ -127,6 +135,14 @@ describe("files", () => {
             const far = await files.add(name, "Some test text content.");
             const fileById = await sp.web.getFileById(far.data.UniqueId).select("UniqueId")();
             return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
+        });
+
+        it("filter works for silly chars (issue # 1208)", async function () {
+
+            const name = `Testing Silly Chars & = + - ${getRandomString(4)}.txt`;
+            await files.addUsingPath(name, "Some test text content.");
+            const fileList = await files.filter(`Name eq '${name}'`)();
+            return expect(fileList).to.be.an.instanceOf(Array).and.to.have.lengthOf(1);
         });
     }
 });

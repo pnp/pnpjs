@@ -133,7 +133,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
   public abstract defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
 
   /**
-  * Gets the currentl url
+  * Gets the current url
   *
   */
   public toUrl(): string {

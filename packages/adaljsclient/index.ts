@@ -71,7 +71,6 @@ export class AdalClient extends BearerTokenFetchClient {
      */
     public async getToken(resource: string): Promise<string> {
 
-        // await this.ensureAuthContext();
         await this.login();
 
         return new Promise((resolve, reject) => {
@@ -79,10 +78,8 @@ export class AdalClient extends BearerTokenFetchClient {
             AdalClient._authContext.acquireToken(resource, (message: string, token: string) => {
 
                 if (message) {
-                    console.log(`ERROR::> ${message}`);
                     reject(Error(message));
                 } else {
-                    console.log(`TOKEN::> ${token}`);
                     resolve(token);
                 }
             });
@@ -148,7 +145,6 @@ export class AdalClient extends BearerTokenFetchClient {
                             }
 
                             if (popupWindow.document.URL.indexOf(this.redirectUri) !== -1) {
-                                window.clearInterval(pollTimer);
                                 AdalClient._authContext.handleWindowCallback(popupWindow.location.hash);
                                 popupWindow.close();
                                 resolve();
@@ -158,7 +154,7 @@ export class AdalClient extends BearerTokenFetchClient {
                         } finally {
                             window.clearInterval(pollTimer);
                         }
-                    }, 3000);
+                    }, 300);
                 };
 
                 (<any>AdalClient._authContext)._loginInProgress = false;
