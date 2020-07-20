@@ -18,7 +18,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 // get all the attachments
 const info: IAttachmentInfo[] = await item.attachmentFiles();
@@ -42,7 +42,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.add("file2.txt", "Here is my content");
 ```
@@ -53,16 +53,16 @@ This method allows you to pass an array of AttachmentFileInfo plain objects that
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IList } from "@pnp/sp/lists/types";
+import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const list: IList = await sp.web.lists.getByTitle("MyList")();
+const list: IList = sp.web.lists.getByTitle("MyList");
 
-var fileInfos: IAttachmentFileInfo[] = [];
+let fileInfos: IAttachmentFileInfo[] = [];
 
 fileInfos.push({
     name: "My file name 1",
@@ -87,7 +87,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const list: IList = await sp.web.lists.getByTitle("MyList")();
+const list: IList = sp.web.lists.getByTitle("MyList");
 
 await list.items.getById(2).attachmentFiles.deleteMultiple("1.txt", "2.txt");
 ```
@@ -104,7 +104,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 const text = await item.attachmentFiles.getByName("file.txt").getText();
 
@@ -130,7 +130,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!");
 ```
@@ -145,7 +145,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").delete();
 ```
@@ -162,7 +162,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-let item: IItem = await sp.web.lists.getByTitle("MyList").items.getById(1);
+const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.getByName("file2.txt").recycle();
 ```
@@ -179,7 +179,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const list: IList = await sp.web.lists.getByTitle("MyList")();
+const list: IList = sp.web.lists.getByTitle("MyList");
 
 await list.items.getById(2).attachmentFiles.recycleMultiple("1.txt","2.txt");
 ```
