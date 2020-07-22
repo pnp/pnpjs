@@ -62,6 +62,25 @@ import '@pnp/graph/groups';
 const calendar = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar();
 ```
 
+## Get Calendar View
+
+_Added in 2.0.7_
+
+```ts
+import { graph } from '@pnp/graph';
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+// basic request, note need to invoke the returned queryable
+const view = await graph.users.getById("21aaf779-f6d8-40bd-88c2-4a03f456ee82").calendarView("2020-01-01", "2020-03-01")();
+
+// you can use select, top, etc to filter your returned results
+const view2 = await graph.users.getById("21aaf779-f6d8-40bd-88c2-4a03f456ee82").calendarView("2020-01-01", "2020-03-01").select("subject").top(3)();
+
+// you can specify times along with the dates
+const view3 = await graph.users.getById("21aaf779-f6d8-40bd-88c2-4a03f456ee82").calendarView("2020-01-01T19:00:00-08:00", "2020-03-01T19:00:00-08:00")();
+```
+
 ## Get Events for a Group
 
 ```ts
