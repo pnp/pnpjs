@@ -9,10 +9,7 @@ nav:
   - General:
     - 'Getting Started': 'getting-started.md'
     - 'Transition Guide': 'transition-guide.md'
-    - 'Contributing': 'getting-started-dev.md'
     - 'Npm Scripts': 'npm-scripts.md'
-    - 'Debugging': 'debugging.md'
-    - 'Debugging Tests': 'debug-tests.md'    
     - 'SPFx On-Premises': 'SPFx-on-premises.md'
     - 'Building Docs': 'documentation.md'
     - 'Working in Nodejs': 'nodejs-support.md'
@@ -121,6 +118,14 @@ nav:
       - sp-addinhelpers: 'sp-addinhelpers/index.md'
       - SPRequestExecutorClient:  'sp-addinhelpers/sp-request-executor-client.md'
       - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
+  - Contributing:
+    - 'Contributing': 'contributing/index.md'
+    - 'Setup Dev Maching': 'contributing/setup-dev-machine.md'
+    - 'Local Debug Configuration': 'contributing/local-debug-configuration.md'
+    - 'Debugging': 'contributing/debugging.md'
+    - 'Extending the library': 'contributing/extending-the-library.md'
+    - 'Writing Tests': 'contributing/debug-tests.md'
+    - 'Update Documentation': 'contributing/documentation.md'
   - Version 1 Docs:
     - Home: 'v1/index.html'
 
@@ -160,6 +165,10 @@ plugins:
       redirect_maps:
           'adaljsclient/index.md': 'authentication/index.md'
           'adaljsclient/adalclient.md': 'authentication/adaljsclient.md'
+          'getting-started-dev.md': 'contributing/index.md'
+          'debugging.md': 'contributing/debugging.md'
+          'debug-tests.md': 'contributing/debug-tests.md'
+          'documentation.md': 'contributing/documentation.md'
 
 extra:
   social:
