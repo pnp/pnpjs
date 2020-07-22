@@ -3,6 +3,7 @@ import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/micro
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators";
 import { graphPost } from "../operations";
+import { calendarView } from "./funcs";
 
 /**
  * Calendar
@@ -12,6 +13,8 @@ export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
     public get events(): IEvents {
         return Events(this);
     }
+
+    public calendarView = calendarView;
 }
 export interface ICalendar extends _Calendar { }
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);

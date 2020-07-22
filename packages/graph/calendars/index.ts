@@ -12,3 +12,7 @@ export {
     IEvent,
     IEvents,
 } from "./types";
+
+export {
+    ICalendarViewInfo,
+} from "./funcs";
