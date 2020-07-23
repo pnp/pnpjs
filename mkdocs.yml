@@ -11,7 +11,6 @@ nav:
     - 'Transition Guide': 'transition-guide.md'
     - 'Npm Scripts': 'npm-scripts.md'
     - 'SPFx On-Premises': 'SPFx-on-premises.md'
-    - 'Building Docs': 'documentation.md'
     - 'Working in Nodejs': 'nodejs-support.md'
   - 'Library Concepts':
     - 'Selective Imports': 'concepts/selective-imports.md'
@@ -126,6 +125,7 @@ nav:
     - 'Extending the library': 'contributing/extending-the-library.md'
     - 'Writing Tests': 'contributing/debug-tests.md'
     - 'Update Documentation': 'contributing/documentation.md'
+    - 'Submit a Pull Request': 'contributing/pull-requests.md'
   - Version 1 Docs:
     - Home: 'v1/index.html'
 

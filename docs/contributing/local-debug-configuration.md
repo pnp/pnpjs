@@ -2,11 +2,11 @@
 
 This article covers the local setup required to debug the library and run tests. This only needs to be done once (unless you update the app registrations, then you just need to update the settings.js file accordingly).
 
-## Creating settings.js
+## Create settings.js
 
-Both local debugging and tests make use of a settings.js file expected to be in the root of the project. Ensure you create a settings.js files by copying settings.example.js and renaming it to settings.js.
+Both local debugging and tests make use of a settings.js file located in the root of the project. Ensure you create a settings.js files by copying settings.example.js and renaming it to settings.js.
 
-The default file looks like the below:
+The default file content is below:
 
 ```js
 var settings = {
@@ -32,13 +32,15 @@ module.exports = settings;
 
 As you can see it is an export of a simple JS object, but as it is a js file you can include additional functionality here if you wish.
 
-The settings object has a single sub object `testing` which contains the configuration used for debugging and testing PnPjs. The parts of this object are described in detail below.
+The settings object has a single sub-object `testing` which contains the configuration used for debugging and testing PnPjs. The parts of this object are described in detail below.
 
 |||
 |--|--|
-|enableWebTests|Flag to toggle if tests are run against the live services or not. If this is set to false none of the other sections are required.|
-|sp|Settings used to configure SharePoint (sp library) debugging and tests|
-|graph|Settings used to configure Microsoft Graph (graph library) debugging and tests|
+|**enableWebTests**|Flag to toggle if tests are run against the live services or not. If this is set to false none of the other sections are required.|
+|**sp**|Settings used to configure SharePoint (sp library) debugging and tests|
+|**graph**|Settings used to configure Microsoft Graph (graph library) debugging and tests|
+
+> You can control which tests are run by including or omiting sp and graph sections. If sp is present and graph is not only sp tests are run. Include both and all tests are run, resepecting the enableWebTests flag.
 
 ### Minimal Configuration
 
@@ -56,26 +58,24 @@ module.exports = sets;
 
 ### SP values
 
-The sp values are described in the table below and come through [registering a legacy SharePoint add-in](../authentication/sp-app-registration.md).
+The sp values are described in the table below and come from [registering a legacy SharePoint add-in](../authentication/sp-app-registration.md).
 
 |name|description|
 |--|--|
-|id|The client id of the registered application|
-|secret|The client secret of the registered application|
-|url|The url of the site to use for all requests. For tests unless a site paramter is specified a child web will be created under the web at this url. See [scripts article](../npm-scripts.md) for more details.
-|notificationUrl|Url used when registering test subscriptions
+|**id**|The client id of the registered application|
+|**secret**|The client secret of the registered application|
+|**url**|The url of the site to use for all requests. For tests unless a site paramter is specified a child web will be created under the web at this url. See [scripts article](../npm-scripts.md) for more details.
+|**notificationUrl**|Url used when registering test subscriptions
 
 ### Graph value
 
-The graph values are described in the table below and come through [registering an AAD Application](https://docs.microsoft.com/en-us/graph/auth-register-app-v2). The permissions required by the registered application are dictated by the tests you want to run or resources you wish to test against.
+The graph values are described in the table below and come from [registering an AAD Application](https://docs.microsoft.com/en-us/graph/auth-register-app-v2). The permissions required by the registered application are dictated by the tests you want to run or resources you wish to test against.
 
 |name|description|
 |--|--|
-|tenant|Tenant to target for authentication and data (ex: contoso.onmicrosoft.com)|
-|id|The application id|
-|secret|The application secret
-
-> You can control which tests are run by including or omiting sp and graph sections. If sp is present and graph is not only sp tests are run. Include both and all tests are run, resepecting the enableWebTests flag.
+|**tenant**|Tenant to target for authentication and data (ex: contoso.onmicrosoft.com)|
+|**id**|The application id|
+|**secret**|The application secret
 
 ## Test your setup
 
