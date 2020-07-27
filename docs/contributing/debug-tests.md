@@ -69,6 +69,7 @@ describe("Items", () => {
 - Each test should be self contained and not depend on other tests, they can depend on work done in before or beforeAll
 - When writing tests you can use "only" and "skip" from mochajs to focus on only the tests you are writing
 - Be sure to review the [various options](../npm-scripts.md#test) when running your tests
+- If you are writing a test and the endpoint doesn't support app only permissions, you can skip writing a test - but please note that in the PR description
 
 ## Next Steps
 
