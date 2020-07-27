@@ -448,11 +448,15 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
    * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
    */
   @tag("f.update")
-  public async update(properties: Partial<IFieldInfo>, fieldType?: string): Promise<IFieldUpdateResult> {
+  public async update(properties: any, fieldType?: string): Promise<IFieldUpdateResult> {
 
     if (typeof fieldType === "undefined" || fieldType === null) {
-      const info = await this.select("FieldTypeKind")();
-      fieldType = `SP.Field${FieldTypes[info.FieldTypeKind]}`;
+      const info = await Field(this).select("FieldTypeKind").configure({
+        headers: {
+          "Accept": "application/json",
+        },
+      })();
+      fieldType = info["odata.type"];
     }
 
     const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));

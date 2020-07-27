@@ -293,7 +293,7 @@ describe("Clientside Pages", () => {
                 pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
             });
 
-            it.only("set", async function () {
+            it("set", async function () {
 
                 const description = `Test Desc ${getRandomString(10)}`;
                 page.description = description;

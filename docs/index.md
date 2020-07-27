@@ -11,10 +11,8 @@ These articles provide general guidance for working with the libraries. If you a
 
 * **[Getting Started](getting-started.md)**
 * [Authentication](./authentication/index.md)
-* [Getting Started Contributing](getting-started-dev.md)
-* [Documentation](documentation.md)
+* [Get Started Contributing](./contributing/index.md)
 * [npm scripts](npm-scripts.md)
-* [Debugging](debugging.md)
 * [Polyfills](concepts/polyfill.md)
 
 ## Packages
