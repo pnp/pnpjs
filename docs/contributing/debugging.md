@@ -2,23 +2,27 @@
 
 Using the steps in this article you will be able to locally debug the library internals as well as new features you are working on.
 
-## Debugging Library Features in Code using Node
+Before proceeding be sure you have reviewed how to [setup for local configuration](./local-debug-configuration.md) and debugging.
 
-The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses [launch.json](https://github.com/pnp/pnpjs/blob/master/.vscode/launch.json) to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/main.ts) as the program entry. You can add any number of files to this directory and they will be ignored by git, however the debug.ts file is not, so please ensure you don't commit any login information.
+## Debugging Library Features
 
-## Basic SP Testing
+The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses [launch.json](https://github.com/pnp/pnpjs/blob/master/.vscode/launch.json) to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/main.ts) as the entry point.
 
-Once you have completed the [one time setup](./local-debug-configuration.md) required for sp debugging you can start the base debugging case by hitting F5. Before you do place a break point in ./debug/launch/sp.ts and it should get hit as you execute the code. You can also place a break point within any of the libraries or modules. Feel free to edit the sp.ts file to try things out, quickly test new features, etc - but please don't commit any changes as this is a shared file. See [the section on creating your own debug modules](#how-to-create-a-debug-module).
+### Basic SP Testing
+
+You can start the base debugging case by hitting F5. Before you do place a break point in ./debug/launch/sp.ts. You can also place a break point within any of the libraries or modules. Feel free to edit the sp.ts file to try things out, debug suspected issues, or test new features, etc - but please don't commit any changes as this is a shared file. See [the section on creating your own debug modules](#how-to-create-a-debug-module).
 
 All of the setup for the node client is handled within sp.ts using the [settings from the local configuration](./local-debug-configuration.md).
 
-## Basic Graph Testing
+### Basic Graph Testing
 
 Testing and debugging graph calls follows the same process as outlined for sp, however you need to update main.ts to import graph instead of sp. You can place break points anywhere within the library code and they should be hit.
 
 All of the setup for the node client is handled within graph.ts using the [settings from the local configuration](./local-debug-configuration.md).
 
 ## How to: Create a Debug Module
+
+If you are working on multiple features or want to save sample code for various tasks you can creat your own debugging modules and leave them in the debug/launch folder locally. The gitignore file is setup to ignore any files that aren't already in git.
 
 Using [./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/sp.ts) as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:
 
@@ -32,33 +36,43 @@ declare var process: { exit(code?: number): void };
 
 export async function MyDebug() {
 
-    // run some debugging
-    const list = await sp.web.lists.ensure("MyFirstList")l
+  // configure your options
+  // you can have different configs in different modules as needed for your testing/dev work
+  sp.setup({
+    sp: {
+      fetchClientFactory: () => {
+        return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret);
+      },
+    },
+  });
+
+  // run some debugging
+  const list = await sp.web.lists.ensure("MyFirstList");
+
+  Logger.log({
+    data: list.created,
+    level: LogLevel.Info,
+    message: "Was list created?",
+  });
+
+  if (list.created) {
 
     Logger.log({
-        data: list.created,
-        message: "Was list created?",
-        level: LogLevel.Verbose
+      data: list.data,
+      level: LogLevel.Info,
+      message: "Raw data from list creation.",
     });
 
-    if (list.created) {
+  } else {
 
-        Logger.log({
-            data: list.data,
-            message: "Raw data from list creation.",
-            level: LogLevel.Verbose
-        });
+    Logger.log({
+      data: null,
+      level: LogLevel.Info,
+      message: "List already existed!",
+    });
+  }
 
-    } else {
-
-        Logger.log({
-            data: null,
-            message: "List already existed!",
-            level: LogLevel.Verbose
-        });
-    }
-
-    process.exit(0);
+  process.exit(0);
 }
 ```
 
@@ -83,7 +97,7 @@ MyDebug();
 
 ### Debug
 
-Place a break point within the promise resolution in your debug file and hit F5. Your module should be run and your break point hit. You can then examine the contents of the objects and see the run time state. Remember you can also set breakpoints within the package src folders to see exactly how things are working during your debugging scenarios.
+Place a break point within the mydebug.ts file and hit F5. Your module should be run and your break point hit. You can then examine the contents of the objects and see the run time state. Remember you can also set breakpoints within the package src folders to see exactly how things are working during your debugging scenarios.
 
 ### Debug Module Next Steps
 
@@ -110,6 +124,13 @@ Within a SharePoint page add a script editor web part and then paste in the foll
 
 You should see an alert with the current web's title using the default main.ts. Feel free to update main.ts to do whatever you would like, but rember not to commit changes to the shared files.
 
+### Debug
+
+Refresh the page and open the developer tools in your browser of choice. If the pnp.js file is blocked due to security restrictions you can will need to allow it.
+
+
 ### Next Steps
 
-You can make changes to the library and immediately see them reflected in the browser. All files are watched so changes will be available as soon as webpack reloads the package.
+You can make changes to the library and immediately see them reflected in the browser. All files are watched so changes will be available as soon as webpack reloads the package. This allows you to rapidly test the library in the browser.
+
+Now you can learn about [extending the library](./extending-the-library.md).
