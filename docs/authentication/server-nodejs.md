@@ -2,7 +2,7 @@
 
 ## SharePoint App Registration
 
-Within the PnPjs testing framework we make use of SharePoint App Registration. This uses the `SPFetchClient` client from the nodejs package. This client works based on the [original SharePoint App Registration model](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs) making use of a client and secret granted permissions through AppInv.aspx. This method works and at the time of writing has no published end date.
+Within the PnPjs testing framework we make use of SharePoint App Registration. This uses the `SPFetchClient` client from the nodejs package. This client works based on the [legacy SharePoint App Registration model](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs) making use of a client and secret granted permissions through AppInv.aspx. This method works and at the time of writing has no published end date.
 
 See: [details on how to register a legacy SharePoint application](./sp-app-registration.md).
 

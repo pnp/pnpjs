@@ -1,7 +1,7 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { getGUID, combine, assign } from "@pnp/common";
-// import { graph } from "@pnp/graph";
-import { SPFetchClient } from "@pnp/nodejs";
+import { graph } from "@pnp/graph";
+import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import * as chai from "chai";
@@ -175,21 +175,21 @@ function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
     });
 }
 
-// function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
+function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
 
-//     return new Promise((resolve) => {
+    return new Promise((resolve) => {
 
-//         graph.setup({
-//             graph: {
-//                 fetchClientFactory: () => {
-//                     return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
-//                 },
-//             },
-//         });
+        graph.setup({
+            graph: {
+                fetchClientFactory: () => {
+                    return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
+                },
+            },
+        });
 
-//         resolve();
-//     });
-// }
+        resolve();
+    });
+}
 
 export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
 
@@ -201,17 +201,21 @@ before(async function (): Promise<void> {
     // establish the connection to sharepoint
     if (testSettings.enableWebTests) {
 
-        console.log(`Setting up SharePoint tests...`);
-        const s = Date.now();
-        await spTestSetup(testSettings);
-        const e = Date.now();
-        console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+        if (testSettings.sp) {
+            console.log(`Setting up SharePoint tests...`);
+            const s = Date.now();
+            await spTestSetup(testSettings);
+            const e = Date.now();
+            console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+        }
 
-        // console.log(`Setting up Graph tests...`);
-        // s = Date.now();
-        // await graphTestSetup(testSettings);
-        // e = Date.now();
-        // console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+        if (testSettings.graph) {
+            console.log(`Setting up Graph tests...`);
+            const s = Date.now();
+            await graphTestSetup(testSettings);
+            const e = Date.now();
+            console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
+        }
     }
 });
 

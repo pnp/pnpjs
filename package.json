@@ -80,6 +80,10 @@
     "spfx",
     "sharepoint framework"
   ],
+  "engines": {
+    "node": ">=10.18.0"
+  },
+  "engineStrict": true,
   "maintainers": [
     {
       "name": "patrick-rodgers",
