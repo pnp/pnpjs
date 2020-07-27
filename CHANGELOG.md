@@ -5,11 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.7 - 2020-07-27
+
+### Added
+- graph: Added calendar endpoints and docs [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1246)]
+- msaljsclient: Added a new client for MSAL in browser [[PR](https://github.com/pnp/pnpjs/pull/1266)]
+- docs: Added a new article on error handling [[PR](https://github.com/pnp/pnpjs/pull/1273)]
+- graph: Adds the calendarView method to calenders and users [[PR](https://github.com/pnp/pnpjs/pull/1293)]
+
+### Changed
+
+- docs: Moved contribution guide to its own section and expanded [[PR](https://github.com/pnp/pnpjs/pull/1296)]
+
+### Fixed
+
+- adaljsclient: Fixed bug in getToken [@jusper-dk](https://github.com/jusper-dk) [[PR](https://github.com/pnp/pnpjs/pull/1205)]
+- sp: Fixed a bug in the role definition and graph planner task details when updating [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1227)]
+- docs: Updated attachments.md [@cesarhoeflich](https://github.com/cesarhoeflich) [[PR](https://github.com/pnp/pnpjs/pull/1233)]
+- docs: Updated views.md [@mikezimm](https://github.com/mikezimm) [[PR](https://github.com/pnp/pnpjs/pull/1242)]
+- docs: Updated permissions.md [@Harshagracy](https://github.com/Harshagracy) [[PR](https://github.com/pnp/pnpjs/pull/1244)]
+- docs: Fixed typos in comments-likes.md [@NZainchkovskiy](https://github.com/NZainchkovskiy) [[PR](https://github.com/pnp/pnpjs/pull/1245)]
+- sp: Fixed uri encoding for select, expand, and orderby query params [[PR](https://github.com/pnp/pnpjs/pull/1267)]
+- docs: Fixed typos in readme and docs/index.md [@Ashikpaul](https://github.com/Ashikpaul) [[PR](https://github.com/pnp/pnpjs/pull/1268)]
+- docs: Fixed clientsite-pages.md typos and wording to make more clear [@MarkyDeParky](https://github.com/MarkyDeParky) [[PR](https://github.com/pnp/pnpjs/pull/1269)]
+- sp: Fixed code comment typo in queryable.ts [@NZainchkovskiy](https://github.com/NZainchkovskiy) [[PR](https://github.com/pnp/pnpjs/pull/1270)]
+- docs: Removed duplicate search menu item [@f1nzer](https://github.com/f1nzer) [[PR](https://github.com/pnp/pnpjs/pull/1272)]
+- graph: Made setEndpoint public, adds back user.photo property [[PR](https://github.com/pnp/pnpjs/pull/1274)]
+- sp: Fixed bug with setting profile photo [[PR](https://github.com/pnp/pnpjs/pull/1276)]
+- docs: Fixed typos in file attachment docs [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1288)]
+- docs: Fixed a typo in sites.md [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1292)]
+- sp: Fixed issue updating certain field types due to non-matching type [[PR](https://github.com/pnp/pnpjs/pull/1297)]
+
 ## 2.0.6 - 2020-06-05
 
 ### Added
 
 - sp: Adds read operations for v2.1 Taxonomy API [[PR](https://github.com/pnp/pnpjs/pull/1216)]
+- sp: Adds support for setting client side page description [[PR](https://github.com/pnp/pnpjs/pull/1279)]
+- sp: Adds support for setting client side page thumbnail [[PR](https://github.com/pnp/pnpjs/pull/1284)]
 
 ### Fixed
 
