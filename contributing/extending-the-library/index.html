@@ -1,0 +1,2485 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/contributing/extending-the-library/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-3.0.3">
+    
+    
+      
+        <title>Extending the library - PnP/PnPjs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#extending-pnpjs" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-header-nav__button md-logo">
+          
+            <img src="../../img/Logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                PnP/PnPjs
+              </span>
+              <span class="md-header-nav__topic">
+                Extending the library
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Home" class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../getting-started/" title="General" class="md-tabs__link">
+          General
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../concepts/selective-imports/" title="Library Concepts" class="md-tabs__link">
+          Library Concepts
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../packages/" title="Packages" class="md-tabs__link">
+          Packages
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../" title="Contributing" class="md-tabs__link md-tabs__link--active">
+          Contributing
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../v1/" title="Version 1 Docs" class="md-tabs__link">
+          Version 1 Docs
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-nav__button md-logo">
+      
+        <img src="../../img/Logo.png" width="48" height="48">
+      
+    </a>
+    PnP/PnPjs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      General
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        General
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../npm-scripts/" title="Npm Scripts" class="md-nav__link">
+      Npm Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../SPFx-on-premises/" title="SPFx On-Premises" class="md-nav__link">
+      SPFx On-Premises
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs-support/" title="Working in Nodejs" class="md-nav__link">
+      Working in Nodejs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Library Concepts
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Library Concepts
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/selective-imports/" title="Selective Imports" class="md-nav__link">
+      Selective Imports
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/custom-bundle/" title="Custom Bundle" class="md-nav__link">
+      Custom Bundle
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/ie11-mode/" title="IE11 Mode" class="md-nav__link">
+      IE11 Mode
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/invokable/" title="Invokables" class="md-nav__link">
+      Invokables
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/polyfill/" title="Polyfills" class="md-nav__link">
+      Polyfills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/settings/" title="Settings" class="md-nav__link">
+      Settings
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../concepts/error-handling/" title="Error Handling" class="md-nav__link">
+      Error Handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8">
+    
+    <label class="md-nav__link" for="nav-5-8">
+      Authentication
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-8">
+        Authentication
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/client-spfx/" title="SPFx Auth" class="md-nav__link">
+      SPFx Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/msaljsclient/" title="MSAL Client" class="md-nav__link">
+      MSAL Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/adaljsclient/" title="ADAL Client" class="md-nav__link">
+      ADAL Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/client-spa/" title="SPA Auth" class="md-nav__link">
+      SPA Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/server-nodejs/" title="NodeJS Auth" class="md-nav__link">
+      NodeJS Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/sp-app-registration/" title="SP App Reg" class="md-nav__link">
+      SP App Reg
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Packages
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Packages
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../packages/" title="Packages" class="md-nav__link">
+      Packages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+    
+    <label class="md-nav__link" for="nav-6-2">
+      common
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-2">
+        common
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/collections/" title="collections" class="md-nav__link">
+      collections
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/custom-httpclientimpl/" title="Custom HttpClientImpl" class="md-nav__link">
+      Custom HttpClientImpl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/libconfig/" title="libconfig" class="md-nav__link">
+      libconfig
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/netutil/" title="netutil" class="md-nav__link">
+      netutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/storage/" title="storage" class="md-nav__link">
+      storage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/util/" title="util" class="md-nav__link">
+      util
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-3" type="checkbox" id="nav-6-3">
+    
+    <label class="md-nav__link" for="nav-6-3">
+      config-store
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-3">
+        config-store
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/" title="config-store" class="md-nav__link">
+      config-store
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/configuration/" title="configuration" class="md-nav__link">
+      configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/providers/" title="providers" class="md-nav__link">
+      providers
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-4" type="checkbox" id="nav-6-4">
+    
+    <label class="md-nav__link" for="nav-6-4">
+      graph
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-4">
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/" title="graph" class="md-nav__link">
+      graph
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/groups/" title="groups" class="md-nav__link">
+      groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/insights/" title="insights" class="md-nav__link">
+      insights
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/contacts/" title="contacts" class="md-nav__link">
+      contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/calendars/" title="calendars" class="md-nav__link">
+      calendars
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/directoryobjects/" title="directory objects" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/invitations/" title="invitations" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/onedrive/" title="onedrive" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/planner/" title="planner" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/subscriptions/" title="subscriptions" class="md-nav__link">
+      subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/teams/" title="teams" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/users/" title="users" class="md-nav__link">
+      users
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../logging/" title="logging" class="md-nav__link">
+      logging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-6" type="checkbox" id="nav-6-6">
+    
+    <label class="md-nav__link" for="nav-6-6">
+      nodejs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-6">
+        nodejs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/" title="nodejs" class="md-nav__link">
+      nodejs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
+      SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/adal-fetch-client/" title="AdalFetchClient" class="md-nav__link">
+      AdalFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/provider-hosted-app/" title="ProviderHostedRequestContext" class="md-nav__link">
+      ProviderHostedRequestContext
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-7" type="checkbox" id="nav-6-7">
+    
+    <label class="md-nav__link" for="nav-6-7">
+      odata
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-7">
+        odata
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/" title="odata" class="md-nav__link">
+      odata
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/caching/" title="caching" class="md-nav__link">
+      caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/core/" title="core" class="md-nav__link">
+      core
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/odata-batch/" title="OData Batching" class="md-nav__link">
+      OData Batching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/extensions/" title="Extending an OData library" class="md-nav__link">
+      Extending an OData library
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/debug/" title="Debugging Proxy Objects" class="md-nav__link">
+      Debugging Proxy Objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/parsers/" title="Parsers" class="md-nav__link">
+      Parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/pipeline/" title="Pipeline" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/queryable/" title="Queryable" class="md-nav__link">
+      Queryable
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-8" type="checkbox" id="nav-6-8">
+    
+    <label class="md-nav__link" for="nav-6-8">
+      pnpjs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-8">
+        pnpjs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pnpjs/" title="pnpjs" class="md-nav__link">
+      pnpjs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-9" type="checkbox" id="nav-6-9">
+    
+    <label class="md-nav__link" for="nav-6-9">
+      sp
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-9">
+        sp
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/" title="sp" class="md-nav__link">
+      sp
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/alias-parameters/" title="Alias Parameters" class="md-nav__link">
+      Alias Parameters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/alm/" title="ALM api" class="md-nav__link">
+      ALM api
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/attachments/" title="Attachments" class="md-nav__link">
+      Attachments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/clientside-pages/" title="Client-side Pages" class="md-nav__link">
+      Client-side Pages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/column-defaults/" title="Column Defaults" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/comments-likes/" title="Comments and Likes" class="md-nav__link">
+      Comments and Likes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/content-types/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/entity-merging/" title="Entity Merging" class="md-nav__link">
+      Entity Merging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/features/" title="Features" class="md-nav__link">
+      Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/fields/" title="Fields" class="md-nav__link">
+      Fields
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/files/" title="Files" class="md-nav__link">
+      Files
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/folders/" title="Folders" class="md-nav__link">
+      Folders
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/forms/" title="Forms" class="md-nav__link">
+      Forms
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/hubsites/" title="Hubsites" class="md-nav__link">
+      Hubsites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/items/" title="List Items" class="md-nav__link">
+      List Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/lists/" title="Lists" class="md-nav__link">
+      Lists
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/navigation/" title="Navigation" class="md-nav__link">
+      Navigation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/permissions/" title="Permissions" class="md-nav__link">
+      Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/profiles/" title="Profiles" class="md-nav__link">
+      Profiles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/regional-settings/" title="Regional Settings" class="md-nav__link">
+      Regional Settings
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/related-items/" title="Related Items" class="md-nav__link">
+      Related Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/search/" title="Search" class="md-nav__link">
+      Search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/security/" title="Security" class="md-nav__link">
+      Security
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sharing/" title="Sharing" class="md-nav__link">
+      Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-designs/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-groups/" title="Site Groups" class="md-nav__link">
+      Site Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-scripts/" title="Site Scripts" class="md-nav__link">
+      Site Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-users/" title="Site Users" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sites/" title="Sites" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/social/" title="Social" class="md-nav__link">
+      Social
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sp-utilities-utility/" title="SP.Utilities.Utility" class="md-nav__link">
+      SP.Utilities.Utility
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/subscriptions/" title="Subscriptions" class="md-nav__link">
+      Subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/taxonomy/" title="Taxonomy" class="md-nav__link">
+      Taxonomy
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/tenant-properties/" title="Tenant Properties" class="md-nav__link">
+      Tenant Properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/user-custom-actions/" title="User custom actions" class="md-nav__link">
+      User custom actions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/views/" title="Views" class="md-nav__link">
+      Views
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/webs/" title="Webs" class="md-nav__link">
+      Webs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6-10" type="checkbox" id="nav-6-10">
+    
+    <label class="md-nav__link" for="nav-6-10">
+      sp-addinhelpers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-10">
+        sp-addinhelpers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/" title="sp-addinhelpers" class="md-nav__link">
+      sp-addinhelpers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/sp-request-executor-client/" title="SPRequestExecutorClient" class="md-nav__link">
+      SPRequestExecutorClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/sp-rest-addin/" title="SPRestAddIn" class="md-nav__link">
+      SPRestAddIn
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
+    
+    <label class="md-nav__link" for="nav-7">
+      Contributing
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Contributing
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Contributing" class="md-nav__link">
+      Contributing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../setup-dev-machine/" title="Setup Dev Maching" class="md-nav__link">
+      Setup Dev Maching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../local-debug-configuration/" title="Local Debug Configuration" class="md-nav__link">
+      Local Debug Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../debugging/" title="Debugging" class="md-nav__link">
+      Debugging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Extending the library
+      </label>
+    
+    <a href="./" title="Extending the library" class="md-nav__link md-nav__link--active">
+      Extending the library
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-factory-functions" title="Understanding Factory Functions" class="md-nav__link">
+    Understanding Factory Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-structure" title="Class structure" class="md-nav__link">
+    Class structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-property" title="Add a Property" class="md-nav__link">
+    Add a Property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-method" title="Add a Method" class="md-nav__link">
+    Add a Method
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#web-request-method" title="Web Request Method" class="md-nav__link">
+    Web Request Method
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#augment-using-selective-imports" title="Augment Using Selective Imports" class="md-nav__link">
+    Augment Using Selective Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-rules-for-extening-pnpjs" title="General Rules for Extening PnPjs" class="md-nav__link">
+    General Rules for Extening PnPjs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" title="Next Steps" class="md-nav__link">
+    Next Steps
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../debug-tests/" title="Writing Tests" class="md-nav__link">
+      Writing Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../documentation/" title="Update Documentation" class="md-nav__link">
+      Update Documentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../pull-requests/" title="Submit a Pull Request" class="md-nav__link">
+      Submit a Pull Request
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Version 1 Docs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        Version 1 Docs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../v1/" title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-factory-functions" title="Understanding Factory Functions" class="md-nav__link">
+    Understanding Factory Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-structure" title="Class structure" class="md-nav__link">
+    Class structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-property" title="Add a Property" class="md-nav__link">
+    Add a Property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-method" title="Add a Method" class="md-nav__link">
+    Add a Method
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#web-request-method" title="Web Request Method" class="md-nav__link">
+    Web Request Method
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#augment-using-selective-imports" title="Augment Using Selective Imports" class="md-nav__link">
+    Augment Using Selective Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-rules-for-extening-pnpjs" title="General Rules for Extening PnPjs" class="md-nav__link">
+    General Rules for Extening PnPjs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" title="Next Steps" class="md-nav__link">
+    Next Steps
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/contributing/extending-the-library.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="extending-pnpjs">Extending PnPjs<a class="headerlink" href="#extending-pnpjs" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This article is targeted at people wishing to extend PnPjs itself, usually by adding a method or property.</p>
+</blockquote>
+<p>At the most basic level PnPjs is a set of libraries used to build and execute a web request and handle the response from that request. Conceptually each object in the fluent chain serves as input when creating the next object in the chain. This is how configuration, url, query, and other values are passed along. To get a sense for what this looks like see the code below. This is taken from inside the <a href="https://github.com/pnp/pnpjs/blob/version-2/packages/sp/webs/types.ts#L77">webs submodule</a> and shows how the "webs" property is added to the web class.</p>
+<div class="highlight"><pre><span></span><span class="c1">// TypeScript property, returning an interface</span>
+<span class="kr">public</span> <span class="nx">get</span> <span class="nx">webs</span><span class="p">()</span><span class="o">:</span> <span class="nx">IWebs</span> <span class="p">{</span>
+    <span class="c1">// using the Webs factory function and providing &quot;this&quot; as the first parameter</span>
+    <span class="k">return</span> <span class="nx">Webs</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="understanding-factory-functions">Understanding Factory Functions<a class="headerlink" href="#understanding-factory-functions" title="Permanent link">&para;</a></h2>
+<p>PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions with sp and graph have a similar form.</p>
+<div class="highlight"><pre><span></span><span class="c1">// create a constant which is a function of type ISPInvokableFactory having the name Webs</span>
+<span class="c1">// this is bound by the generic type param to return an IWebs instance</span>
+<span class="c1">// and it will use the _Webs concrete class to form the internal type of the invokable</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">Webs</span> <span class="o">=</span> <span class="nx">spInvokableFactory</span><span class="o">&lt;</span><span class="nx">IWebs</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">_Webs</span><span class="p">);</span>
+</pre></div>
+
+<p>The ISPInvokableFactory type looks like:</p>
+<div class="highlight"><pre><span></span><span class="kr">export</span> <span class="nx">type</span> <span class="nx">ISPInvokableFactory</span><span class="o">&lt;</span><span class="nx">R</span> <span class="o">=</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="nx">baseUrl</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">ISharePointQueryable</span><span class="p">,</span> <span class="nx">path?</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">R</span><span class="p">;</span>
+</pre></div>
+
+<p>And the matching graph type:</p>
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">f</span>: <span class="kt">any</span><span class="p">)</span><span class="o">:</span> <span class="p">(</span><span class="nx">baseUrl</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">IGraphQueryable</span><span class="p">,</span> <span class="nx">path?</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">R</span>
+</pre></div>
+
+<p>The general idea of a factory function is that it takes two parameters. The first is either a string or Queryable derivative which forms base for the new object. The second is the next part of the url. In some cases (like the webs property example above) you will note there is no second parameter. Some classes are decorated with defaultPath, which automatically fills the second param. Don't worry too much right now about the deep internals of the library, let's instead focus on some concrete examples.</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+
+<span class="c1">// create a web from an absolute url</span>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com&quot;</span><span class="p">);</span>
+
+<span class="c1">// as an example, create a new web using the first as a base</span>
+<span class="c1">// targets: https://tenant.sharepoint.com/sites/dev</span>
+<span class="kr">const</span> <span class="nx">web2</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;sites/dev&quot;</span><span class="p">);</span>
+
+<span class="c1">// or you can add any path components you want, here as an example we access the current user property</span>
+<span class="kr">const</span> <span class="nx">cu</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;currentuser&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">currentUserInfo</span> <span class="o">=</span> <span class="nx">cu</span><span class="p">();</span>
+</pre></div>
+
+<p>Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everying is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries <em>within</em> methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.</p>
+<h2 id="class-structure">Class structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
+<p>Internally to the library we have a bit of complexity to make the whole invokable proxy ararchitecture work and provide the typings folks expect. Here is an example implemenation with extra comments explaining what is happening. You don't need to understand the entire stack to <a href="#add-a-property">add a property</a> or <a href="#add-a-method">method</a></p>
+<div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">The concrete class implementation. This is never exported or shown directly</span>
+<span class="cm">to consumers of the library. It is wrapped by the Proxy we do expose.</span>
+
+<span class="cm">It extends the _SharePointQueryableInstance class for which there is a matching</span>
+<span class="cm">_SharePointQueryableCollection. The generic parameter defines the return type</span>
+<span class="cm">of a get operation and the invoked result.</span>
+
+<span class="cm">Classes can have methods and properties as normal. This one has a single property as a simple example</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">_HubSite</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableInstance</span><span class="o">&lt;</span><span class="nx">IHubSiteInfo</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Gets the ISite instance associated with this hubsite</span>
+<span class="cm">     */</span>
+    <span class="c1">// the tag decorator is used to provide some additional telemetry on what methods are</span>
+    <span class="c1">// being called.</span>
+    <span class="kd">@tag</span><span class="p">(</span><span class="s2">&quot;hs.getSite&quot;</span><span class="p">)</span>
+    <span class="kr">public</span> <span class="nx">async</span> <span class="nx">getSite</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">ISite</span><span class="o">&gt;</span> <span class="p">{</span>
+
+        <span class="c1">// we execute a request using this instance, selecting the SiteUrl property, and invoking it immediately and awaiting the result</span>
+        <span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;SiteUrl&quot;</span><span class="p">)();</span>
+
+        <span class="c1">// we then return a new ISite instance created from the Site factory using the returned SiteUrl property as the baseUrl</span>
+        <span class="k">return</span> <span class="nx">Site</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">SiteUrl</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/*</span>
+<span class="cm">This defines the interface we export and expose to consumers.</span>
+<span class="cm">In most cases this extends the concrete object but may add or remove some methods/properties</span>
+<span class="cm">in special cases</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">IHubSite</span> <span class="kr">extends</span> <span class="nx">_HubSite</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="cm">/*</span>
+<span class="cm">This defines the HubSite factory function as discussed above</span>
+<span class="cm">binding the spInvokableFactory to a generic param of IHubSite and a param of _HubSite.</span>
+
+<span class="cm">This is understood to mean that HubSite is a factory function that returns a types of IHubSite</span>
+<span class="cm">which the spInvokableFactory will create using _HubSite as the concrete underlying type.</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">HubSite</span> <span class="o">=</span> <span class="nx">spInvokableFactory</span><span class="o">&lt;</span><span class="nx">IHubSite</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">_HubSite</span><span class="p">);</span>
+</pre></div>
+
+<h2 id="add-a-property">Add a Property<a class="headerlink" href="#add-a-property" title="Permanent link">&para;</a></h2>
+<p>In most cases you won't need to create the class, interface, or factory - you just want to add a property or method. An example of this is sp.web.lists. web is a property of sp and lists is a property of web. You can have a look at those classes as examples. Let's have a look at the fields on the _View class.</p>
+<div class="highlight"><pre><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">_View</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableInstance</span><span class="o">&lt;</span><span class="nx">IViewInfo</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// ... other code removed</span>
+
+    <span class="c1">// add the property, and provide a return type</span>
+    <span class="c1">// return types should be interfaces</span>
+    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">fields</span><span class="p">()</span><span class="o">:</span> <span class="nx">IViewFields</span> <span class="p">{</span>
+        <span class="c1">// we use the ViewFields factory function supplying &quot;this&quot; as the first parameter</span>
+        <span class="c1">// this will create a url like &quot;.../fields/viewfields&quot; due to the defaultPath decorator</span>
+        <span class="c1">// on the _ViewFields class. This is equivelent to: ViewFields(this, &quot;viewfields&quot;)</span>
+        <span class="k">return</span> <span class="nx">ViewFields</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ... other code removed</span>
+<span class="p">}</span>
+</pre></div>
+
+<blockquote>
+<p>There are many examples throughout the library that follow this pattern.</p>
+</blockquote>
+<h2 id="add-a-method">Add a Method<a class="headerlink" href="#add-a-method" title="Permanent link">&para;</a></h2>
+<p>Adding a method is just like adding a property with the key difference that a method usually <em>does</em> something like make a web request or act like a property but take parameters. Let's look at the _Items getById method:</p>
+<div class="highlight"><pre><span></span><span class="kd">@defaultPath</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">_Items</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableCollection</span> <span class="p">{</span>
+
+    <span class="cm">/** </span>
+<span class="cm">    * Gets an Item by id    </span>
+<span class="cm">    *   </span>
+<span class="cm">    * @param id The integer id of the item to retrieve  </span>
+<span class="cm">    */</span>
+    <span class="c1">// we declare a method and set the return type to an interface</span>
+    <span class="kr">public</span> <span class="nx">getById</span><span class="p">(</span><span class="nx">id</span>: <span class="kt">number</span><span class="p">)</span><span class="o">:</span> <span class="nx">IItem</span> <span class="p">{</span>
+        <span class="c1">// here we use the tag helper to add some telemetry to our request</span>
+        <span class="c1">// we create a new IItem using the factory and appending the id value to the end</span>
+        <span class="c1">// this gives us a valid url path to a single item .../items/getById(2)</span>
+        <span class="c1">// we can then use the returned IItem to extrend our chain or execute a request</span>
+        <span class="k">return</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="nx">Item</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="sb">`(</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">)`</span><span class="p">),</span> <span class="s2">&quot;is.getById&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ... other code removed</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="web-request-method">Web Request Method<a class="headerlink" href="#web-request-method" title="Permanent link">&para;</a></h3>
+<p>A second exampe is a method that performs a request. Here we use the _Item recycle method as an example:</p>
+<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.</span>
+<span class="cm"> */</span>
+<span class="c1">// we use the tag decorator to add telemetry</span>
+<span class="kd">@tag</span><span class="p">(</span><span class="s2">&quot;i.recycle&quot;</span><span class="p">)</span>
+<span class="c1">// we return a promise</span>
+<span class="kr">public</span> <span class="nx">recycle</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="c1">// we use the spPost method to post the request created by cloning our current instance IItem using</span>
+    <span class="c1">// the Item factory and adding the path &quot;recycle&quot; to the end. Url will look like .../items/getById(2)/recycle</span>
+    <span class="k">return</span> <span class="nx">spPost</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">Item</span><span class="p">,</span> <span class="s2">&quot;recycle&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="augment-using-selective-imports">Augment Using Selective Imports<a class="headerlink" href="#augment-using-selective-imports" title="Permanent link">&para;</a></h2>
+<p>To understand is how to extend functionality within the selective imports structures look at <a href="https://github.com/pnp/pnpjs/blob/master/packages/sp/items/list.ts">list.ts</a> file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.</p>
+<div class="highlight"><pre><span></span><span class="c1">// import the addProp helper</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">addProp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="c1">// import the _List concrete class from the types module (not the index!)</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">_List</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;../lists/types&quot;</span><span class="p">;</span>
+<span class="c1">// import the interface and factory we are going to add to the List</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Items</span><span class="p">,</span> <span class="nx">IItems</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./types&quot;</span><span class="p">;</span>
+
+<span class="c1">// This module declaration fixes up the types, allowing .items to appear in intellisense</span>
+<span class="c1">// when you import &quot;@pnp/sp/items/list&quot;;</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;../lists/types&quot;</span> <span class="p">{</span>
+    <span class="c1">// we need to extend the concrete type</span>
+    <span class="kr">interface</span> <span class="nx">_List</span> <span class="p">{</span>
+        <span class="nx">readonly</span> <span class="nx">items</span>: <span class="kt">IItems</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// we need to extend the interface</span>
+    <span class="c1">// this may not be strictly necessary as the IList interface extends _List so it</span>
+    <span class="c1">// should pick up the same additions, but we have seen in some cases this does seem</span>
+    <span class="c1">// to be required. So we include it for safety as it will all be removed during </span>
+    <span class="c1">// transpilation we don&#39;t need to care about the extra code</span>
+    <span class="kr">interface</span> <span class="nx">IList</span> <span class="p">{</span>
+        <span class="nx">readonly</span> <span class="nx">items</span>: <span class="kt">IItems</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// finally we add the property to the _List class</span>
+<span class="c1">// this method call says add a property to _List named &quot;items&quot; and that property returns a result using the Items factory</span>
+<span class="c1">// The factory will be called with &quot;this&quot; when the property is accessed. If needed there is a fourth parameter to append additional path </span>
+<span class="c1">// information to the property url</span>
+<span class="nx">addProp</span><span class="p">(</span><span class="nx">_List</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="nx">Items</span><span class="p">);</span>
+</pre></div>
+
+<h2 id="general-rules-for-extening-pnpjs">General Rules for Extening PnPjs<a class="headerlink" href="#general-rules-for-extening-pnpjs" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Only expose interfaces to consumers</li>
+<li>Use the factory functions except in very special cases</li>
+<li>Look for other properties and methods as examples</li>
+<li>Simple is always preferrable, but not always possible - use your best judgement</li>
+<li>If you find yourself writing a ton of code to solve a problem you think should be easy, ask</li>
+<li>If you find yourself deep within the core classes or odata library trying to make a change, ask - changes to the core classes are rarely needed</li>
+</ul>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>Now that you have extended the library you need to <a href="../debug-tests/">write a test</a> to cover it!</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../debugging/" title="Debugging" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Debugging
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../debug-tests/" title="Writing Tests" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Writing Tests
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+    
+      <a href="https://twitter.com/officedevpnp" class="md-footer-social__link fa fa-twitter"></a>
+    
+      <a href="http://aka.ms/sppnp-videos" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://aka.ms/sppnp" class="md-footer-social__link fa fa-link"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.1.2",url:{base:"../.."}})</script>
+      
+        <script src="https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js"></script>
+      
+    
+    
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/contributing/extending-the-library/" alt="spacer" />
+
+  </body>
+</html>
