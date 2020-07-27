@@ -73,10 +73,10 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 
 // use for rootweb information access
-const rootwebData = await sp.sites.rootWeb();
+const rootwebData = await sp.site.rootWeb();
 
 // use for chaining
-const rootweb = await sp.sites.getRootWeb();
+const rootweb = await sp.site.getRootWeb();
 const listData = await rootWeb.lists.getByTitle("MyList")();
 ```
 
