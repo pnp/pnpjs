@@ -30,9 +30,7 @@ public onInit(): Promise<void> {
   return super.onInit().then(_ => {
 
     // other init code may be present
-    graph.setup({
-      spfxContext: this.context
-    });
+    graph.setup(this.context);
   });
 }
 
@@ -56,11 +54,11 @@ public render(): void {
 
 #### Calling the SharePoint API
 
-This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD.
+This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD from within SharePoint framework.
 
 ```TypeScript
+import { SPFxAdalClient } from "@pnp/common";
 import { sp } from "@pnp/sp/presets/all";
-import { AdalClient } from "@pnp/adaljsclient";
 
 // ...
 
@@ -72,7 +70,7 @@ public onInit(): Promise<void> {
     sp.setup({
       spfxContext: this.context,
       sp: {
-        fetchClientFactory: () => AdalClient.fromSPFxContext(this.context),
+        fetchClientFactory: () => new SPFxAdalClient(this.context),
       },
     });
 

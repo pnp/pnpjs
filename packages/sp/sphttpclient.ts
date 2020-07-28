@@ -15,9 +15,9 @@ import { ODataParser } from "@pnp/odata";
 
 export class SPHttpClient implements IRequestClient {
 
-    private _digestCache: IGetDigest;
+    protected _digestCache: IGetDigest;
 
-    constructor(private _impl: IHttpClientImpl = SPRuntimeConfig.fetchClientFactory()) {
+    constructor(protected _impl: IHttpClientImpl = SPRuntimeConfig.fetchClientFactory()) {
         this._digestCache = getDigestFactory(this);
     }
 
