@@ -79,6 +79,17 @@ sp.setup({
 });
 ```
 
+### SharePoint Framework
+
+You can optionally supply only the SPFx context to the sp configure method.
+
+```ts
+import { sp } from "@pnp/sp";
+
+// in SPFx only
+sp.setup(this.context);
+```
+
 ## Graph Configuration
 
 The graph configuration works exactly the same as the sp configuration but is defined by the IGraphConfiguration interface which extends ILibraryConfiguration. All of the graph values are contained in a top level property named "graph". The following table describes the properties with a code sample following.
@@ -118,6 +129,17 @@ graph.setup({
   },
   spfxContext: this.context,
 });
+```
+
+### SharePoint Framework
+
+You can optionally supply only the SPFx context to the graph configure method. We will attempt to set the baseUrl property from the context - but if that is failing in your environment and you need to call a special cloud (i.e. graph.microsoft.us) please set the baseUrl property.
+
+```ts
+import { graph } from "@pnp/graph";
+
+// in SPFx only
+graph.setup(this.context);
 ```
 
 ## Configure Everything At Once
