@@ -276,3 +276,12 @@ import { Web } from "@pnp/sp/presets/all";
 const web = Web("{Absolute SharePoint Web URL}");
 const w = await web.get();
 ```
+
+## Next Steps
+
+Be sure to [review the article describing all of the available settings](./concepts/configuration.md) across the libraries.
+
+
+
+
+

@@ -9,7 +9,7 @@ import {
 
 export const emptyGuid = "00000000-0000-0000-0000-000000000000";
 
-export interface SPConfigurationPart {
+export interface ISPConfigurationPart {
     sp?: {
         /**
          * Any headers to apply to all requests
@@ -28,9 +28,9 @@ export interface SPConfigurationPart {
     };
 }
 
-export interface SPConfiguration extends ILibraryConfiguration, SPConfigurationPart { }
+export interface ISPConfiguration extends ILibraryConfiguration, ISPConfigurationPart { }
 
-export function setup(config: SPConfiguration): void {
+export function setup(config: ISPConfiguration): void {
     RuntimeConfig.assign(config);
 }
 

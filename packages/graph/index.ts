@@ -17,8 +17,8 @@ export {
 } from "./graphqueryable";
 
 export {
-    GraphConfiguration,
-    GraphConfigurationPart,
+    IGraphConfiguration,
+    IGraphConfigurationPart,
 } from "./graphlibconfig";
 
 export * from "./graphhttpclient";

@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, IFetchOptions } from "@pnp/common";
+import { combine, IFetchOptions } from "@pnp/common";
 import { Queryable, invokableFactory, IInvokable, IQueryable } from "@pnp/odata";
 import { GraphEndpoints } from "./types";
 import { graphGet } from "./operations";
@@ -89,10 +89,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
     public toUrlAndQuery(): string {
 
         let url = this.toUrl();
-
-        if (!isUrlAbsolute(url)) {
-            url = combine("https://graph.microsoft.com", url);
-        }
 
         if (this.query.size > 0) {
             const char = url.indexOf("?") > -1 ? "&" : "?";
