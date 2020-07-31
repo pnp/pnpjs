@@ -169,6 +169,14 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     }
 
     /**
+     * Gets the user validation message for this list
+     *
+     */
+    public get validationMessage() {
+        return tag.configure(SharePointQueryable(this, "validationMessage"), "l.validationMessage");
+    }
+
+    /**
      * Updates this list intance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
