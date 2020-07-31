@@ -172,7 +172,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * Gets the user validation message for this list
      *
      */
-    public get validationMessage() {
+    public get validationMessage(): ISharePointQueryable<string> {
         return tag.configure(SharePointQueryable(this, "validationMessage"), "l.validationMessage");
     }
 
