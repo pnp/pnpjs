@@ -30,7 +30,7 @@ module.exports = settings;
 
 ## Create Settings.js file
 
-1. Copy the example file and rename it settings.js
+1. Copy the example file and rename it settings.js. Place the file in the root of your project.
 2. Update the settings as needed for your environment.
 
 > If you are only doing SharePoint testing you can leave the graph section off and vice-versa. Also, if you are not testing anything with hooks you can leave off the notificationUrl.
