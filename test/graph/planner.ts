@@ -7,7 +7,7 @@ import "@pnp/graph/planner";
 
 // Tests can't be run until planner support application permissions, incomplete
 
-describe("Planner", function () {
+describe.skip("Planner", function () {
 
   if (testSettings.enableWebTests) {
     let groupID = "";
