@@ -10,7 +10,7 @@ You need to install the MSAL client before using it. This is in addition to inst
 
 ## Configure
 
-The pnp client is a very thin wrapper around the MSAL library and you can supply any of the arguments supported. These are described in the [MSAL docs](https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-core/modules/_configuration_.html).
+The PnP client is a very thin wrapper around the MSAL library and you can supply any of the arguments supported. These are described in the [MSAL docs](https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-core/modules/_configuration_.html).
 
 The basic configuration values you need (at least from our testing) are client id, authority, and redirectUri. The other options are settable but not required. This article is not intended to be an exhaustive discussion of all the MSAL configuration possibilities, please see the official docs to understand all of the available options.
 

@@ -7,7 +7,7 @@ import {
     getRandomString,
 } from "@pnp/common";
 
-// use from individual;y imported method
+// use from individually imported method
 console.log(getRandomString(10));
 ```
 
@@ -40,7 +40,7 @@ function theFunction2(g: number) {
     return this.myProp + g;
 }
 
-const callback2 = getCtxCallback(contextThis, theFunction, 4);
+const callback2 = getCtxCallback(contextThis, theFunction2, 4);
 
 callback2(); // returns 10 (6 + 4)
 ```
@@ -48,6 +48,14 @@ callback2(); // returns 10 (6 + 4)
 ## dateAdd
 
 Manipulates a date, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
+
+```TypeScript
+import { dateAdd } from "@pnp/common";
+
+const testDate = new Date();
+
+dateAdd(testDate,'minute',10);
+```
 
 ## combine
 
@@ -77,17 +85,63 @@ const randomString = getRandomString(10);
 
 Creates a random guid, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken.
 
+```TypeScript
+import { getGUID } from "@pnp/common";
+
+const newGUID = getGUID();
+```
+
 ## isFunc
 
 Determines if a supplied variable represents a function.
+
+```TypeScript
+import { isFunc } from "@pnp/common";
+
+public testFunction() {
+    console.log("test function");
+    return
+}
+
+if (isFunc(testFunction)){
+    console.log("this is a function");
+    testFunction();
+}
+```
 
 ## objectDefinedNotNull
 
 Determines if an object is defined and not null.
 
+```TypeScript
+import { objectDefinedNotNull } from "@pnp/common";
+
+let obj = {
+    prop: 1
+};
+
+if (objectDefinedNotNull(obj)){
+    console.log("Not null");
+}else{
+    console.log("Null");
+}
+```
+
 ## isArray
 
 Determines if a supplied variable represents an array.
+
+```TypeScript
+import { isArray } from "@pnp/common";
+
+let x:String[] = [1,2,3]];
+
+if (isArray(x)){
+    console.log("I am an array");
+}else{
+    console.log("I am not an array");
+}
+```
 
 ## assign
 
@@ -110,6 +164,7 @@ const obj2 = {
 const example1 = assign(obj1, obj2);
 // example1 = { prop: 4, prop2: 2, prop3: 9 }
 
+//noOverwrite = true stops overwriting existing properties
 const example2 = assign(obj1, obj2, true);
 // example2 = { prop: 1, prop2: 2, prop3: 9 }
 ```
@@ -118,9 +173,33 @@ const example2 = assign(obj1, obj2, true);
 
 Determines if a supplied url is absolute and returns true; otherwise returns false.
 
+```TypeScript
+import { isUrlAbsolute } from "@pnp/common";
+
+const webPath = 'https://{tenant}.sharepoint.com/sites/dev/';
+
+if (isUrlAbsolute(webPath)){
+    console.log("URL is absolute");
+}else{
+    console.log("URL is not absolute");
+}
+```
+
 ## stringIsNullOrEmpty
 
-Determines if a supplied string is null or empty
+Determines if a supplied string is null or empty.
+
+```TypeScript
+import { stringIsNullOrEmpty } from "@pnp/common";
+
+let x:String = "hello";
+
+if (stringIsNullOrEmpty(x)){
+    console.log("Null or empty");
+}else{
+    console.log("Not null or empty");
+}
+```
 
 ## Removed
 

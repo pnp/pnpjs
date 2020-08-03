@@ -25,7 +25,7 @@ const w = await sp.web.get();
 
 ## MSAL
 
-We do not currently have support for MSAL in node. At the time of writing this article the [@Azure/msal-node](https://www.npmjs.com/package/@azure/msal-node) package is in alpha and we have chosen to wait until it is more stable before taking that dependecy.
+We do not currently have support for MSAL in node. At the time of writing this article the [@Azure/msal-node](https://www.npmjs.com/package/@azure/msal-node) package is in alpha and we have chosen to wait until it is more stable before taking on that dependency.
 
 
 ## ADAL

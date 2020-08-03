@@ -1,6 +1,6 @@
 # Authentication in Single Page Application
 
-If you are writing a single page appliation deployed outside SharePoint it is recommended to use the MSAL client. You can find further details on the settings in the [MSAL docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview). You will need to ensure that you grant the permissions required to the application you are trying to use.
+If you are writing a single page application deployed outside SharePoint it is recommended to use the MSAL client. You can find further details on the settings in the [MSAL docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview). You will need to ensure that you grant the permissions required to the application you are trying to use.
 
 ```TypeScript
 import { MsalClientSetup  } from "@pnp/msaljsclient";

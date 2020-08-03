@@ -9,9 +9,9 @@ Before you can begin running tests you need to register a low-trust add-in with 
 1. Navigation to {site url}/_layouts/appregnew.aspx
 1. Click "Generate" for both the Client Id and Secret values
 1. Give you add-in a title, this can be anything but will let you locate it in the list of add-in permissions
-2. Provide a fake value for app domain and redirect uri
-3. Click "Create"
-4. Copy the returned block of text containing the client id and secret as well as app name for your records and later in this article.
+1. Provide a fake value for app domain and redirect uri
+1. Click "Create"
+1. Copy the returned block of text containing the client id and secret as well as app name for your records and later in this article.
 
 ## Grant Your Add-In Permissions
 
