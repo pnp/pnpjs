@@ -134,15 +134,19 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> {
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    public clone<T extends ISharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true): T {
+    public clone<T extends ISharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
 
-        const clone: T = super.cloneTo(factory(this, additionalPath), { includeBatch });
+        const clone: T = super.cloneTo(factory(this, additionalPath), { includeBatch, includeQuery });
 
         // handle sp specific clone actions
-        const t = "@target";
-        if (this.query.has(t)) {
-            clone.query.set(t, this.query.get(t));
+        if (!includeQuery) {
+            // we would have already copied this over if we got the entire query
+            const t = "@target";
+            if (this.query.has(t)) {
+                clone.query.set(t, this.query.get(t));
+            }
         }
 
         return clone;

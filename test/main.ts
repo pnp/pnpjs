@@ -42,7 +42,7 @@ let site: string = null;
 let skipWeb = false;
 let deleteWeb = false;
 let logging = false;
-const deleteAllWebs = false;
+let deleteAllWebs = false;
 
 for (let i = 0; i < process.argv.length; i++) {
     const arg = process.argv[i];
@@ -63,6 +63,9 @@ for (let i = 0; i < process.argv.length; i++) {
     }
     if (/^--cleanup/i.test(arg)) {
         deleteWeb = true;
+    }
+    if (/^--deleteAllWebs/i.test(arg)) {
+        deleteAllWebs = true;
     }
     if (/^--logging/i.test(arg)) {
         logging = true;

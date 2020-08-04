@@ -121,10 +121,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true): T {
+    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
 
-        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch });
+        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch, includeQuery });
     }
 }
 
