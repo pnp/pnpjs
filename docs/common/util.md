@@ -11,6 +11,58 @@ import {
 console.log(getRandomString(10));
 ```
 
+## assign
+
+Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwriting of existing
+properties.
+
+```TypeScript
+import { assign } from "@pnp/common";
+
+let obj1 = {
+    prop: 1,
+    prop2: 2,
+};
+
+const obj2 = {
+    prop: 4,
+    prop3: 9,
+};
+
+const example1 = assign(obj1, obj2);
+// example1 = { prop: 4, prop2: 2, prop3: 9 }
+
+//noOverwrite = true stops overwriting existing properties
+const example2 = assign(obj1, obj2, true);
+// example2 = { prop: 1, prop2: 2, prop3: 9 }
+```
+
+## combine
+
+Combines any number of paths, normalizing the slashes as required
+
+```TypeScript
+import { combine } from "@pnp/common";
+
+// "https://microsoft.com/something/more"
+const paths = combine("https://microsoft.com", "something", "more");
+
+// "also/works/with/relative"
+const paths2 = combine("/also/", "/works", "with/", "/relative\\");
+```
+
+## dateAdd
+
+Manipulates a date, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
+
+```TypeScript
+import { dateAdd } from "@pnp/common";
+
+const testDate = new Date();
+
+dateAdd(testDate,'minute',10);
+```
+
 ## getCtxCallback
 
 Gets a callback function which will maintain context across async calls.
@@ -45,30 +97,14 @@ const callback2 = getCtxCallback(contextThis, theFunction2, 4);
 callback2(); // returns 10 (6 + 4)
 ```
 
-## dateAdd
+## getGUID
 
-Manipulates a date, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
-
-```TypeScript
-import { dateAdd } from "@pnp/common";
-
-const testDate = new Date();
-
-dateAdd(testDate,'minute',10);
-```
-
-## combine
-
-Combines any number of paths, normalizing the slashes as required
+Creates a random guid, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken.
 
 ```TypeScript
-import { combine } from "@pnp/common";
+import { getGUID } from "@pnp/common";
 
-// "https://microsoft.com/something/more"
-const paths = combine("https://microsoft.com", "something", "more");
-
-// "also/works/with/relative"
-const paths2 = combine("/also/", "/works", "with/", "/relative\\");
+const newGUID = getGUID();
 ```
 
 ## getRandomString
@@ -81,14 +117,40 @@ import { getRandomString } from "@pnp/common";
 const randomString = getRandomString(10);
 ```
 
-## getGUID
+## hOP
 
-Creates a random guid, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken.
+Shortcut for Object.hasOwnProperty. Determines if an object has a specified property.
 
 ```TypeScript
-import { getGUID } from "@pnp/common";
+import { HttpRequestError } from "@pnp/odata";
+import { hOP } from "@pnp/common";
 
-const newGUID = getGUID();
+export async function handleError(e: Error | HttpRequestError): Promise<void> {
+
+  //Checks to see if the error object has a property called isHttpRequestError. Returns a bool.
+  if (hOP(e, "isHttpRequestError")) {
+      // Handle this type or error
+  } else {
+    // not an HttpRequestError so we do something else
+
+  }
+}
+```
+
+## isArray
+
+Determines if a supplied variable represents an array.
+
+```TypeScript
+import { isArray } from "@pnp/common";
+
+let x:String[] = [1,2,3]];
+
+if (isArray(x)){
+    console.log("I am an array");
+}else{
+    console.log("I am not an array");
+}
 ```
 
 ## isFunc
@@ -109,6 +171,22 @@ if (isFunc(testFunction)){
 }
 ```
 
+## isUrlAbsolute
+
+Determines if a supplied url is absolute and returns true; otherwise returns false.
+
+```TypeScript
+import { isUrlAbsolute } from "@pnp/common";
+
+const webPath = 'https://{tenant}.sharepoint.com/sites/dev/';
+
+if (isUrlAbsolute(webPath)){
+    console.log("URL is absolute");
+}else{
+    console.log("URL is not absolute");
+}
+```
+
 ## objectDefinedNotNull
 
 Determines if an object is defined and not null.
@@ -124,64 +202,6 @@ if (objectDefinedNotNull(obj)){
     console.log("Not null");
 }else{
     console.log("Null");
-}
-```
-
-## isArray
-
-Determines if a supplied variable represents an array.
-
-```TypeScript
-import { isArray } from "@pnp/common";
-
-let x:String[] = [1,2,3]];
-
-if (isArray(x)){
-    console.log("I am an array");
-}else{
-    console.log("I am not an array");
-}
-```
-
-## assign
-
-Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwriting of existing
-properties.
-
-```TypeScript
-import { assign } from "@pnp/common";
-
-let obj1 = {
-    prop: 1,
-    prop2: 2,
-};
-
-const obj2 = {
-    prop: 4,
-    prop3: 9,
-};
-
-const example1 = assign(obj1, obj2);
-// example1 = { prop: 4, prop2: 2, prop3: 9 }
-
-//noOverwrite = true stops overwriting existing properties
-const example2 = assign(obj1, obj2, true);
-// example2 = { prop: 1, prop2: 2, prop3: 9 }
-```
-
-## isUrlAbsolute
-
-Determines if a supplied url is absolute and returns true; otherwise returns false.
-
-```TypeScript
-import { isUrlAbsolute } from "@pnp/common";
-
-const webPath = 'https://{tenant}.sharepoint.com/sites/dev/';
-
-if (isUrlAbsolute(webPath)){
-    console.log("URL is absolute");
-}else{
-    console.log("URL is not absolute");
 }
 ```
 
