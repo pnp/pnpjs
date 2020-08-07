@@ -238,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../selective-imports/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
+        <a href="../configuration/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
           Library Concepts
         </a>
       
@@ -477,6 +477,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../selective-imports/" title="Selective Imports" class="md-nav__link">
       Selective Imports
     </a>
@@ -641,13 +653,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9">
     
-    <label class="md-nav__link" for="nav-5-8">
+    <label class="md-nav__link" for="nav-5-9">
       Authentication
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-8">
+      <label class="md-nav__title" for="nav-5-9">
         Authentication
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1853,6 +1865,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" title="Custom Request Client" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2218,7 +2242,7 @@
 </pre></div>
 
 <h2 id="general-statement-on-polyfills">General Statement on Polyfills<a class="headerlink" href="#general-statement-on-polyfills" title="Permanent link">&para;</a></h2>
-<p>Internet Explorer 11 (IE11) has been an enterprise standard browser for many years. Given the complexity in changing technical platforms in many organizations, it is no surprise standardization on this out-of-date browser continues. Unfortunately, for those organizations the Internet has moved on and many - if not all - SaaS platforms are embracing modern standards and no longer supporting the legacy IE11 browser. Even Microsoft states in their official documentation that Microsoft 365 is best experienced with a modern browser. They have even gone so far to build the latest version of Microsoft Edge based on Chromium (Edge Chromium), with an "Internet Explorer mode" allowing organizations to load legacy sites which require IE automatically.</p>
+<p>Internet Explorer 11 (IE11) has been an enterprise standard browser for many years. Given the complexity in changing technical platforms in many organizations, it is no surprise standardization on this out-of-date browser continues. Unfortunately, for those organizations, the Internet has moved on and many - if not all - SaaS platforms are embracing modern standards and no longer supporting the legacy IE11 browser. Even Microsoft states in their official documentation that Microsoft 365 is best experienced with a modern browser. They have even gone so far to build the latest version of Microsoft Edge based on Chromium (Edge Chromium), with an "Internet Explorer mode" allowing organizations to load legacy sites which require IE automatically.</p>
 <p>PnPjs is now "modern" as well, and by that we mean we have moved to using capabilities of current browsers and JavaScript which are not present in IE11. We understand as a developer your ability to require an organization to switch browsers is unrealistic. We want to do everything we can to support you, but it is up to you to ensure your application is properly supported in IE11.</p>
 <p>There are many polyfills available, depending on the platform you're running on, the frameworks you are using, and the libraries you consume. Although the majority of PnPjs users build for SharePoint Online, a significant number build for earlier versions of the platform as well as for their own node-based solutions or websites. Unfortunately, there is no way our polyfill library can support all these scenarios.</p>
 <p>What we intended with the @pnp/polyfill-ie11 package was to provide a comprehensive group of all the polyfills that would be needed based on the complete PnPjs library. We are finding when we aggregate our polyfills with the polyfills provided in the SharePoint page and from other sources, things don't always work well. We cannot solve this for your specific situations except by providing you transparency into the polyfills which we know are necessary for our packages. You may need to adjust what polyfills your application uses based on the other libraries you are using.</p>

@@ -238,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../selective-imports/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
+        <a href="../configuration/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
           Library Concepts
         </a>
       
@@ -477,6 +477,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../selective-imports/" title="Selective Imports" class="md-nav__link">
       Selective Imports
     </a>
@@ -600,13 +612,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9">
     
-    <label class="md-nav__link" for="nav-5-8">
+    <label class="md-nav__link" for="nav-5-9">
       Authentication
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-8">
+      <label class="md-nav__title" for="nav-5-9">
         Authentication
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1812,6 +1824,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" title="Custom Request Client" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2085,7 +2109,7 @@
                 
                 
                 <h1 id="invokables">Invokables<a class="headerlink" href="#invokables" title="Permanent link">&para;</a></h1>
-<p>For folks who have been using the library since the early days you are familiar with the need to use the <code>.get()</code> method to invoke a method chain:</p>
+<p>For people who have been using the library since the early days you are familiar with the need to use the <code>.get()</code> method to invoke a method chain:</p>
 <div class="highlight"><pre><span></span><span class="c1">// an example of get</span>
 <span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 </pre></div>
@@ -2094,7 +2118,7 @@
 <div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 </pre></div>
 
-<p>This has two main benefits for folks using the library: you can write less code, and we now have a way to model default actions for objects that might do something other than a get. The way we designed the library prior to v2 hid the post, put, delete operations as protected methods attached to the Queryable classes. Without diving into a lot of why we did this having a rethink seemed appropriate for v2. Based on that the entire queryable chain is now invokable as well for any of the operations.</p>
+<p>This has two main benefits for people using the library: you can write less code, and we now have a way to model default actions for objects that might do something other than a get. The way we designed the library prior to v2 hid the post, put, delete operations as protected methods attached to the Queryable classes. Without diving into why we did this, having a rethink seemed appropriate for v2. Based on that, the entire queryable chain is now invokable as well for any of the operations.</p>
 <h2 id="other-operations-post-put-delete">Other Operations (post, put, delete)<a class="headerlink" href="#other-operations-post-put-delete" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spPost</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
@@ -2103,7 +2127,7 @@
 <span class="nx">spPost</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">);</span>
 </pre></div>
 
-<p>But things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:</p>
+<p>Things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spPost</span><span class="p">,</span> <span class="nx">SharePointQueryable</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields/web&quot;</span><span class="p">;</span>

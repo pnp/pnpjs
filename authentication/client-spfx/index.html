@@ -238,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../concepts/selective-imports/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
+        <a href="../../concepts/configuration/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
           Library Concepts
         </a>
       
@@ -477,6 +477,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../concepts/configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../concepts/selective-imports/" title="Selective Imports" class="md-nav__link">
       Selective Imports
     </a>
@@ -564,13 +576,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9" checked>
     
-    <label class="md-nav__link" for="nav-5-8">
+    <label class="md-nav__link" for="nav-5-9">
       Authentication
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-8">
+      <label class="md-nav__title" for="nav-5-9">
         Authentication
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -655,8 +667,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adal-client" title="Adal Client" class="md-nav__link">
-    Adal Client
+  <a href="#adal-client" title="ADAL Client" class="md-nav__link">
+    ADAL Client
   </a>
   
 </li>
@@ -1848,6 +1860,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" title="Custom Request Client" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2129,8 +2153,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adal-client" title="Adal Client" class="md-nav__link">
-    Adal Client
+  <a href="#adal-client" title="ADAL Client" class="md-nav__link">
+    ADAL Client
   </a>
   
 </li>
@@ -2156,7 +2180,7 @@
                 
                 <h1 id="authentication-in-sharepoint-framework">Authentication in SharePoint Framework<a class="headerlink" href="#authentication-in-sharepoint-framework" title="Permanent link">&para;</a></h1>
 <h2 id="auth-as-current-user">Auth as Current User<a class="headerlink" href="#auth-as-current-user" title="Permanent link">&para;</a></h2>
-<p>PnPjs is designed to work as easily as possible within SharePoint framework so the authentication setup is very simple for the base case. Supply the current SharePoint Framework context to the library. This works for both SharePoint authentication and Graph authentication using the current user. Graph permissions are controlled by the permissions granted to the SharePoint shared application within your tenant.</p>
+<p>PnPjs is designed to work as easily as possible within the SharePoint Framework so the authentication setup is very simple for the base case. Supply the current SharePoint Framework context to the library. This works for both SharePoint authentication and Graph authentication using the current user. Graph permissions are controlled by the permissions granted to the SharePoint shared application within your tenant.</p>
 <p>The below example is taken from a SharePoint Framework webpart.</p>
 <h3 id="connect-to-sharepoint-as-current-user">Connect to SharePoint as Current User<a class="headerlink" href="#connect-to-sharepoint-as-current-user" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
@@ -2195,7 +2219,7 @@
 </pre></div>
 
 <h2 id="msal-client">MSAL Client<a class="headerlink" href="#msal-client" title="Permanent link">&para;</a></h2>
-<p>You might want/need to use a client configured to use your own AAD application and not the shared SharePoint application. You can do so using the <a href="../msaljsclient/">MSAL client</a>. Here we show this using graph, this works the same with any of the <a href="../../getting-started/">setup strategies</a>. Please see the <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview">MSAL library docs</a> for more details on what values to supply in configuration.</p>
+<p>You might want/need to use a client configured to use your own AAD application and not the shared SharePoint application. You can do so using the <a href="../msaljsclient/">MSAL client</a>. Here we show this using graph, this works the same with any of the <a href="../../getting-started/">setup strategies</a>. Please see the <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview">MSAL library docs</a> for more details on what values to supply in the configuration.</p>
 <blockquote>
 <p>Note: you must install the @pnp/msaljsclient client package before using it</p>
 </blockquote>
@@ -2229,8 +2253,8 @@
 <span class="c1">// ...</span>
 </pre></div>
 
-<h2 id="adal-client">Adal Client<a class="headerlink" href="#adal-client" title="Permanent link">&para;</a></h2>
-<p>You can use the ADAL client from within SPFX, though it is recommened to transition to the MSAL client.</p>
+<h2 id="adal-client">ADAL Client<a class="headerlink" href="#adal-client" title="Permanent link">&para;</a></h2>
+<p>You can use the ADAL client from within SPFx, though it is recommended to transition to the MSAL client.</p>
 <blockquote>
 <p>Note: you must install the @pnp/adaljsclient client package before using it</p>
 </blockquote>

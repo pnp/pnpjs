@@ -238,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../concepts/selective-imports/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
+        <a href="../../concepts/configuration/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
           Library Concepts
         </a>
       
@@ -477,6 +477,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../concepts/configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../concepts/selective-imports/" title="Selective Imports" class="md-nav__link">
       Selective Imports
     </a>
@@ -564,13 +576,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9" checked>
     
-    <label class="md-nav__link" for="nav-5-8">
+    <label class="md-nav__link" for="nav-5-9">
       Authentication
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-8">
+      <label class="md-nav__title" for="nav-5-9">
         Authentication
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1881,6 +1893,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" title="Custom Request Client" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2221,8 +2245,7 @@
                 
                 
                 <h1 id="pnpcommonadalclient">@pnp/common/adalclient<a class="headerlink" href="#pnpcommonadalclient" title="Permanent link">&para;</a></h1>
-<p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
-SharePoint Framework's permissions.</p>
+<p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with SharePoint Framework's permissions.</p>
 <blockquote>
 <p>Where possible it is recommended to use the <a href="../msaljsclient/">MSAL client</a>.</p>
 </blockquote>
@@ -2230,7 +2253,7 @@ SharePoint Framework's permissions.</p>
 <p>Install the library and required dependencies</p>
 <p><code>npm install @pnp/adaljsclient --save</code></p>
 <h2 id="setup-and-use-inside-sharepoint-framework">Setup and Use inside SharePoint Framework<a class="headerlink" href="#setup-and-use-inside-sharepoint-framework" title="Permanent link">&para;</a></h2>
-<p>Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the <a href="https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi">SharePoint Framework 1.6 release notes</a>. This method only work for SharePoint Framework &gt;= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.</p>
+<p>Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the <a href="https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi">SharePoint Framework 1.6 release notes</a>. This method will only work for SharePoint Framework &gt;= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined below using the constructor to specify the values for an AAD Application you have setup.</p>
 <h3 id="calling-the-graph-api">Calling the graph api<a class="headerlink" href="#calling-the-graph-api" title="Permanent link">&para;</a></h3>
 <p>By providing the context in the onInit we can create the adal client from known information.  </p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
@@ -2243,9 +2266,7 @@ SharePoint Framework's permissions.</p>
   <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// other init code may be present</span>
-    <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
-      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
-    <span class="p">});</span>
+    <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">}</span>
 
@@ -2268,9 +2289,9 @@ SharePoint Framework's permissions.</p>
 </pre></div>
 
 <h4 id="calling-the-sharepoint-api">Calling the SharePoint API<a class="headerlink" href="#calling-the-sharepoint-api" title="Permanent link">&para;</a></h4>
-<p>This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD.</p>
-<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/adaljsclient&quot;</span><span class="p">;</span>
+<p>This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD from within SharePoint Framework.</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFxAdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
 
@@ -2282,7 +2303,7 @@ SharePoint Framework's permissions.</p>
     <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
       <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span>
       <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">AdalClient</span><span class="p">.</span><span class="nx">fromSPFxContext</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">),</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">SPFxAdalClient</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">),</span>
       <span class="p">},</span>
     <span class="p">});</span>
 

@@ -238,7 +238,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../concepts/selective-imports/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
+        <a href="../../concepts/configuration/" title="Library Concepts" class="md-tabs__link md-tabs__link--active">
           Library Concepts
         </a>
       
@@ -477,6 +477,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../concepts/configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../concepts/selective-imports/" title="Selective Imports" class="md-nav__link">
       Selective Imports
     </a>
@@ -564,13 +576,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-8" type="checkbox" id="nav-5-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9" checked>
     
-    <label class="md-nav__link" for="nav-5-8">
+    <label class="md-nav__link" for="nav-5-9">
       Authentication
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-8">
+      <label class="md-nav__title" for="nav-5-9">
         Authentication
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1862,6 +1874,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" title="Custom Request Client" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -2188,7 +2212,7 @@
 <p>You need to install the MSAL client before using it. This is in addition to installing the other PnPjs libraries you require.</p>
 <p><code>npm install @pnp/msaljsclient --save</code></p>
 <h2 id="configure">Configure<a class="headerlink" href="#configure" title="Permanent link">&para;</a></h2>
-<p>The pnp client is a very thin wrapper around the MSAL library and you can supply any of the arguments supported. These are described in the <a href="https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-core/modules/_configuration_.html">MSAL docs</a>.</p>
+<p>The PnP client is a very thin wrapper around the MSAL library and you can supply any of the arguments supported. These are described in the <a href="https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-core/modules/_configuration_.html">MSAL docs</a>.</p>
 <p>The basic configuration values you need (at least from our testing) are client id, authority, and redirectUri. The other options are settable but not required. This article is not intended to be an exhaustive discussion of all the MSAL configuration possibilities, please see the official docs to understand all of the available options.</p>
 <p>The second parameter when configuring the PnP client is the list of scope you are seeking to use. These must be configured and properly granted within AAD and you can request one or more scopes as needed for the current scenario.</p>
 <h2 id="use-in-spfx">Use in SPFx<a class="headerlink" href="#use-in-spfx" title="Permanent link">&para;</a></h2>
@@ -2225,9 +2249,9 @@
     <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
             <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/318studios.onmicrosoft.com&quot;</span><span class="p">,</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/tenant.onmicrosoft.com&quot;</span><span class="p">,</span>
                 <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
-                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://318studios.sharepoint.com/sites/dev/SitePages/test.aspx&quot;</span><span class="p">,</span>
+                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;Group.Read.All&quot;</span><span class="p">]),</span>
     <span class="p">},</span>
@@ -2245,7 +2269,7 @@
     <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
             <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/318studios.onmicrosoft.com&quot;</span><span class="p">,</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/tenant.onmicrosoft.com&quot;</span><span class="p">,</span>
                 <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
                 <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://myapp.com/login.aspx&quot;</span><span class="p">,</span>
             <span class="p">},</span>
