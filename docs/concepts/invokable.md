@@ -1,6 +1,6 @@
 # Invokables
 
-For folks who have been using the library since the early days you are familiar with the need to use the `.get()` method to invoke a method chain:
+For people who have been using the library since the early days you are familiar with the need to use the `.get()` method to invoke a method chain:
 
 ```TypeScript
 // an example of get
@@ -13,7 +13,7 @@ Starting with v2 this is no longer required, you can invoke the object directly 
 const lists = await sp.web.lists();
 ```
 
-This has two main benefits for folks using the library: you can write less code, and we now have a way to model default actions for objects that might do something other than a get. The way we designed the library prior to v2 hid the post, put, delete operations as protected methods attached to the Queryable classes. Without diving into a lot of why we did this having a rethink seemed appropriate for v2. Based on that the entire queryable chain is now invokable as well for any of the operations.
+This has two main benefits for people using the library: you can write less code, and we now have a way to model default actions for objects that might do something other than a get. The way we designed the library prior to v2 hid the post, put, delete operations as protected methods attached to the Queryable classes. Without diving into why we did this, having a rethink seemed appropriate for v2. Based on that, the entire queryable chain is now invokable as well for any of the operations.
 
 ## Other Operations (post, put, delete)
 
@@ -25,7 +25,7 @@ import "@pnp/sp/webs";
 spPost(sp.web);
 ```
 
-But things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:
+Things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:
 
 ```TypeScript
 import { sp, spPost, SharePointQueryable } from "@pnp/sp";

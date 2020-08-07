@@ -1,7 +1,6 @@
 # @pnp/common/adalclient
 
-This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
-SharePoint Framework's permissions.
+This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with SharePoint Framework's permissions.
 
 > Where possible it is recommended to use the [MSAL client](./msaljsclient.md).
 
@@ -13,7 +12,7 @@ Install the library and required dependencies
 
 ## Setup and Use inside SharePoint Framework
 
-Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the [SharePoint Framework 1.6 release notes](https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi). This method only work for SharePoint Framework >= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined above using the constructor to specify the values for an AAD Application you have setup.
+Using the SharePoint Framework is the preferred way to make use of the AdalClient as we can use the AADTokenProvider to efficiently get tokens on your behalf. You can also read more about how this process works and the necessary SPFx configurations in the [SharePoint Framework 1.6 release notes](https://github.com/SharePoint/sp-dev-docs/wiki/SharePoint-Framework-v1.6-release-notes#moving-from-beta-to-public---webapi). This method will only work for SharePoint Framework >= 1.6. For earlier versions of SharePoint Framework you can still use the AdalClient as outlined below using the constructor to specify the values for an AAD Application you have setup.
 
 ### Calling the graph api
 
@@ -54,7 +53,7 @@ public render(): void {
 
 #### Calling the SharePoint API
 
-This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD from within SharePoint framework.
+This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD from within SharePoint Framework.
 
 ```TypeScript
 import { SPFxAdalClient } from "@pnp/common";
