@@ -117,6 +117,8 @@ The PnPjs bundle will remain, though it is designed only for backwards compatibi
 
 These libraries were created to allow folks to access and manage SharePoint taxonomy and manage metadata. Given that there is upcoming support for taxonomy via a supported REST API we will drop these two libraries. If working with taxonomy remains a core requirement of your application and we do not yet have support for the new apis, please remain on v1 for the time being.
 
+> As of 2.0.6 we support reading the modern taxonomy API. [Docs here](./sp/taxonomy.md)
+
 ## Changelog
 
 Please review the [CHANGELOG](https://github.com/pnp/pnpjs/blob/master/CHANGELOG.md) for details on all library changes.
