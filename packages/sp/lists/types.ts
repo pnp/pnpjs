@@ -267,18 +267,15 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
         }
 
-        const postBody = body({
-            overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: assign(metadata("SP.RenderListDataParameters"), parameters),
-        });
+        let bodyOptions = { parameters: assign(metadata("SP.RenderListDataParameters"), parameters) };
 
-        const clone = this.clone(List, "RenderListDataAsStream", true);
-
-        if (queryParams && queryParams.size > 0) {
-            queryParams.forEach((v, k) => clone.query.set(k, v));
+        if (objectDefinedNotNull(overrideParameters)) {
+            bodyOptions = assign(bodyOptions, { overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
         }
 
-        return spPost(clone, postBody);
+        const clone = this.clone(List, "RenderListDataAsStream", true, true);
+
+        return spPost(clone, body(bodyOptions));
     }
 
     /**

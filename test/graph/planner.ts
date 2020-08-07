@@ -30,6 +30,7 @@ describe.skip("Planner", function () {
       planID = plan.data.id;
       return expect(plan.data.title).is.equal(planName);
     });
+
     it("getPlan", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -40,6 +41,7 @@ describe.skip("Planner", function () {
       const plan = await graph.planner.plans.getById(planID)();
       return expect(plan.title).is.equal(planName);
     });
+
     it("updatePlan", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -52,6 +54,7 @@ describe.skip("Planner", function () {
       const planUpdate = await graph.planner.plans.getById(planID)();
       return expect(planUpdate.title).is.equal(newPlanName);
     });
+
     it("deletePlan", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -75,6 +78,7 @@ describe.skip("Planner", function () {
       const planDetails = await graph.planner.plans.getById(planID).details();
       return expect(planDetails.id).is.equal(planID);
     });
+
     it("addPlanTasks", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -87,6 +91,7 @@ describe.skip("Planner", function () {
       taskID = planTaskResult.data.id;
       return expect(planTaskResult.data.id).is.not.undefined;
     });
+
     it("getPlanTasks", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -107,6 +112,7 @@ describe.skip("Planner", function () {
       });
       return expect(taskExists).is.not.true;
     });
+
     it("getTasksById", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -120,6 +126,7 @@ describe.skip("Planner", function () {
       const task = await graph.planner.tasks.getById(taskID)();
       return expect(task.id).is.equal(taskID);
     });
+
     it("updateTask", async function () {
       const groupName = `TestGroup_${getRandomString(4)}`;
       const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
@@ -133,6 +140,7 @@ describe.skip("Planner", function () {
       const task = await graph.planner.tasks.getById(taskID)();
       return expect(task.id).is.equal(taskID);
     });
+
     afterEach(async function () {
       if (taskID !== "") {
         await graph.planner.plans.getById(planID).tasks.getById(taskID).delete();

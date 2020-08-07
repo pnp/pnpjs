@@ -13,6 +13,7 @@ nav:
     - 'SPFx On-Premises': 'SPFx-on-premises.md'
     - 'Working in Nodejs': 'nodejs-support.md'
   - 'Library Concepts':
+    - 'Configuration': 'concepts/configuration.md'
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'IE11 Mode': 'concepts/ie11-mode.md'

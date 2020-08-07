@@ -2,12 +2,12 @@
 
 Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and contains the global configuration shared across the libraries. You can also extend the configuration for use within your own applications.
 
-## LibraryConfiguration Interface
+## ILibraryConfiguration Interface
 
 Defines the shared configurable values used across the library as shown below. Each of these has a default value as shown below
 
 ```TypeScript
-export interface LibraryConfiguration {
+export interface ILibraryConfiguration {
 
     /**
      * Allows caching to be global disabled, default: false

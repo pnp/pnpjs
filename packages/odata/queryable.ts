@@ -6,6 +6,7 @@ import {
   mergeOptions,
   objectDefinedNotNull,
   IRequestClient,
+  assign,
 } from "@pnp/common";
 import { ICachingOptions } from "./caching";
 import { Batch } from "./batch";
@@ -282,7 +283,13 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    * @param target Instance to which data is written
    * @param settings [Optional] Settings controlling how clone is applied
    */
-  protected cloneTo<T extends IQueryable<any>>(target: T, settings: { includeBatch: boolean } = { includeBatch: true }): T {
+  protected cloneTo<T extends IQueryable<any>>(target: T, settings: { includeBatch?: boolean, includeQuery?: boolean } = {}): T {
+
+    // default values for settings
+    settings = assign({
+      includeBatch: true,
+      includeQuery: false,
+    }, settings);
 
     target.data = Object.assign({}, cloneQueryableData(this.data), <Partial<IQueryableData<DefaultActionType>>>{
       batch: null,
@@ -294,6 +301,10 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
 
     if (settings.includeBatch) {
       target.inBatch(this.batch);
+    }
+
+    if (settings.includeQuery && this.query.size > 0) {
+      this.query.forEach((v, k) => target.query.set(k, v));
     }
 
     if (this.data.useCaching) {
