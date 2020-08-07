@@ -40,7 +40,7 @@ The settings object has a single sub-object `testing` which contains the configu
 |**sp**|Settings used to configure SharePoint (sp library) debugging and tests|
 |**graph**|Settings used to configure Microsoft Graph (graph library) debugging and tests|
 
-> You can control which tests are run by including or omiting sp and graph sections. If sp is present and graph is not only sp tests are run. Include both and all tests are run, resepecting the enableWebTests flag.
+> You can control which tests are run by including or omitting sp and graph sections. If sp is present and graph is not, only sp tests are run. Include both and all tests are run, respecting the enableWebTests flag.
 
 ### Minimal Configuration
 
@@ -64,7 +64,7 @@ The sp values are described in the table below and come from [registering a lega
 |--|--|
 |**id**|The client id of the registered application|
 |**secret**|The client secret of the registered application|
-|**url**|The url of the site to use for all requests. For tests unless a site paramter is specified a child web will be created under the web at this url. See [scripts article](../npm-scripts.md) for more details.
+|**url**|The url of the site to use for all requests. If a site parameter is not specified a child web will be created under the web at this url. See [scripts article](../npm-scripts.md) for more details.
 |**notificationUrl**|Url used when registering test subscriptions
 
 ### Graph value

@@ -1,6 +1,6 @@
 # Writing Tests
 
-With version 2 we have made a significant effort to improve out test coverage. To keep that up all changes will require one or more tests be included. For new functionality at least a basic test that the method executes is required. For bug fixes please include a test that would have caught the bug (i.e. fail before your fix) and passes with your fix in place.
+With version 2 we have made a significant effort to improve out test coverage. To keep that up, all changes submitted will require one or more tests be included. For new functionality at least a basic test that the method executes is required. For bug fixes please include a test that would have caught the bug (i.e. fail before your fix) and passes with your fix in place.
 
 ## How to write Tests
 
@@ -23,7 +23,7 @@ describe("Items", () => {
         // a block scoped var we will use across our tests
         let list: IList = null;
 
-        // we use the before block to setup 
+        // we use the before block to setup
         // executed before all the tests in this block, see the mocha docs for more details
         // mocha prefers using function vs arrow functions and this is recommended
         before(async function () {
@@ -62,7 +62,7 @@ describe("Items", () => {
 }
 ```
 
-## General Guidlines for Writing Tests
+## General Guidelines for Writing Tests
 
 - Tests should operate within the site defined in testSettings
 - Tests should be able to run multiple times on the same site, but do not need to cleanup after themselves

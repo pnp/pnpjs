@@ -14,12 +14,12 @@ public get webs(): IWebs {
 
 ## Understanding Factory Functions
 
-PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions with sp and graph have a similar form.
+PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.
 
 ```ts
 // create a constant which is a function of type ISPInvokableFactory having the name Webs
 // this is bound by the generic type param to return an IWebs instance
-// and it will use the _Webs concrete class to form the internal type of the invokable
+// and it will use the _Webs concrete class to form the internal type of the invocable
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 ```
 
@@ -52,11 +52,11 @@ const cu = Web(web, "currentuser");
 const currentUserInfo = cu();
 ```
 
-Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everying is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries _within_ methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.
+Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everything is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries _within_ methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.
 
 ## Class structure
 
-Internally to the library we have a bit of complexity to make the whole invokable proxy ararchitecture work and provide the typings folks expect. Here is an example implemenation with extra comments explaining what is happening. You don't need to understand the entire stack to [add a property](#add-a-property) or [method](#add-a-method)
+Internally to the library we have a bit of complexity to make the whole invocable proxy architecture work and provide the typings folks expect. Here is an example implementation with extra comments explaining what is happening. You don't need to understand the entire stack to [add a property](#add-a-property) or [method](#add-a-method)
 
 ```ts
 /*
@@ -72,13 +72,13 @@ Classes can have methods and properties as normal. This one has a single propert
 export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
 
     /**
-     * Gets the ISite instance associated with this hubsite
+     * Gets the ISite instance associated with this hub site
      */
     // the tag decorator is used to provide some additional telemetry on what methods are
     // being called.
     @tag("hs.getSite")
     public async getSite(): Promise<ISite> {
-        
+
         // we execute a request using this instance, selecting the SiteUrl property, and invoking it immediately and awaiting the result
         const d = await this.select("SiteUrl")();
 
@@ -104,7 +104,6 @@ which the spInvokableFactory will create using _HubSite as the concrete underlyi
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 ```
 
-
 ## Add a Property
 
 In most cases you won't need to create the class, interface, or factory - you just want to add a property or method. An example of this is sp.web.lists. web is a property of sp and lists is a property of web. You can have a look at those classes as examples. Let's have a look at the fields on the _View class.
@@ -119,7 +118,7 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
     public get fields(): IViewFields {
         // we use the ViewFields factory function supplying "this" as the first parameter
         // this will create a url like ".../fields/viewfields" due to the defaultPath decorator
-        // on the _ViewFields class. This is equivelent to: ViewFields(this, "viewfields")
+        // on the _ViewFields class. This is equivalent to: ViewFields(this, "viewfields")
         return ViewFields(this);
     }
 
@@ -129,7 +128,6 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
 
 > There are many examples throughout the library that follow this pattern.
 
-
 ## Add a Method
 
 Adding a method is just like adding a property with the key difference that a method usually _does_ something like make a web request or act like a property but take parameters. Let's look at the _Items getById method:
@@ -138,17 +136,17 @@ Adding a method is just like adding a property with the key difference that a me
 @defaultPath("items")
 export class _Items extends _SharePointQueryableCollection {
 
-    /**	
-    * Gets an Item by id	
-    *	
-    * @param id The integer id of the item to retrieve	
+    /**
+    * Gets an Item by id
+    *
+    * @param id The integer id of the item to retrieve
     */
     // we declare a method and set the return type to an interface
     public getById(id: number): IItem {
         // here we use the tag helper to add some telemetry to our request
         // we create a new IItem using the factory and appending the id value to the end
         // this gives us a valid url path to a single item .../items/getById(2)
-        // we can then use the returned IItem to extrend our chain or execute a request
+        // we can then use the returned IItem to extend our chain or execute a request
         return tag.configure(Item(this).concat(`(${id})`), "is.getById");
     }
 
@@ -158,7 +156,7 @@ export class _Items extends _SharePointQueryableCollection {
 
 ### Web Request Method
 
-A second exampe is a method that performs a request. Here we use the _Item recycle method as an example:
+A second example is a method that performs a request. Here we use the _Item recycle method as an example:
 
 ```ts
 /**
@@ -196,7 +194,7 @@ declare module "../lists/types" {
     // we need to extend the interface
     // this may not be strictly necessary as the IList interface extends _List so it
     // should pick up the same additions, but we have seen in some cases this does seem
-    // to be required. So we include it for safety as it will all be removed during 
+    // to be required. So we include it for safety as it will all be removed during
     // transpilation we don't need to care about the extra code
     interface IList {
         readonly items: IItems;
@@ -205,21 +203,20 @@ declare module "../lists/types" {
 
 // finally we add the property to the _List class
 // this method call says add a property to _List named "items" and that property returns a result using the Items factory
-// The factory will be called with "this" when the property is accessed. If needed there is a fourth parameter to append additional path 
+// The factory will be called with "this" when the property is accessed. If needed there is a fourth parameter to append additional path
 // information to the property url
 addProp(_List, "items", Items);
 ```
 
-## General Rules for Extening PnPjs
+## General Rules for Extending PnPjs
 
 - Only expose interfaces to consumers
 - Use the factory functions except in very special cases
 - Look for other properties and methods as examples
-- Simple is always preferrable, but not always possible - use your best judgement
+- Simple is always preferable, but not always possible - use your best judgement
 - If you find yourself writing a ton of code to solve a problem you think should be easy, ask
 - If you find yourself deep within the core classes or odata library trying to make a change, ask - changes to the core classes are rarely needed
 
 ## Next Steps
 
 Now that you have extended the library you need to [write a test](./debug-tests.md) to cover it!
-
