@@ -403,4 +403,18 @@ import "@pnp/sp/files";
 await sp.web.rootFolder.files.getByName("name.txt").deleteWithParams({
     BypassSharedLock: true,
 });
-```  
+```
+
+### exists
+
+_Added in 2.0.9_
+
+Checks to see if a file exists
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const exists = await sp.web.rootFolder.files.getByName("name.txt").exists();
+```

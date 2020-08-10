@@ -350,6 +350,22 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 
     /**
+     * Checks to see if the file represented by this object exists
+     *
+     */
+    @tag("fi.exists")
+    public async exists(): Promise<boolean> {
+        try {
+            const r = await this.clone(File).select("Exists")();
+            return r.Exists;
+        } catch (e) {
+            // this treats any error here as the file not existing, which
+            // might not be true, but is good enough.
+            return false;
+        }
+    }
+
+    /**
      * Gets the contents of the file as text. Not supported in batching.
      *
      */
