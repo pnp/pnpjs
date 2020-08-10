@@ -391,7 +391,7 @@ await sp.web.rootFolder.files.getByName("name.txt").delete();
 
 ### delete with params
 
-_Added in 2.0.8_
+_Added in 2.0.9_
 
 Deletes a file with options
 

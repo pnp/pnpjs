@@ -421,7 +421,7 @@ await list.items.getById(1).delete();
 
 ## Delete With Params
 
-_Added in 2.0.8_
+_Added in 2.0.9_
 
 Deletes the item object with options.
 

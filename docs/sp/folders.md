@@ -181,7 +181,7 @@ await sp.web.rootFolder.folders.getByName("My Folder").delete();
 
 ### delete with params
 
-_Added in 2.0.8_
+_Added in 2.0.9_
 
 Deletes a folder with options
 
