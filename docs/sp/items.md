@@ -419,6 +419,27 @@ let list = sp.web.lists.getByTitle("MyList");
 await list.items.getById(1).delete();
 ```
 
+## Delete With Params
+
+_Added in 2.0.8_
+
+Deletes the item object with options.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+let list = sp.web.lists.getByTitle("MyList");
+
+await list.items.getById(1).deleteWithParams({
+                BypassSharedLock: true,
+            });
+```
+
+> The deleteWithParams method can only be used by accounts where UserToken.IsSystemAccount is true
+
 ## Resolving field names
 
 It's a very common mistake trying wrong field names in the requests.

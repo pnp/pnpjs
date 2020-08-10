@@ -171,6 +171,20 @@ describe("file", () => {
             expect(r.length).to.eq(0);
         });
 
+        it("delete file with params", async function () {
+            const name = `Testing Delete - ${getRandomString(4)}.txt`;
+            await files.add(name, "Some test text content.");
+            let r = await files.filter(`Name eq '${name}'`)();
+            expect(r.length).to.eq(1);
+
+            await files.getByName(name).deleteWithParams({
+                BypassSharedLock: true,
+            });
+
+            r = await files.filter(`Name eq '${name}'`)();
+            expect(r.length).to.eq(0);
+        });
+
         it("listItemAllFields", function () {
 
             return expect(files.getByName(testFileName).listItemAllFields()).to.be.fulfilled;

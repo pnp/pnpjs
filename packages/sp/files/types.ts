@@ -318,6 +318,16 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 
     /**
+     * Deletes the file object with options.
+     * 
+     * @param parameters Specifies the options to use when deleting a file.
+     */
+    @tag("fi.del-params")
+    public async deleteWithParams(parameters: Partial<IFileDeleteParams>): Promise<void> {
+        return spPost(this.clone(File, "DeleteWithParameters"), body({ parameters }));
+    }
+
+    /**
      * Reverts an existing checkout for the file.
      *
      */
@@ -682,4 +692,20 @@ export interface IFileInfo {
     UIVersion: number;
     UIVersionLabel: string;
     UniqueId: string;
+}
+
+export interface IFileDeleteParams {
+    /**
+     * If true, delete or recyle a file when the LockType
+     * value is SPLockType.Shared or SPLockType.None.
+     * When false, delete or recycle the file when
+     * the LockType value SPLockType.None.
+     */
+    BypassSharedLock: boolean;
+
+    /**
+     * Gets or sets a string value that allows SPfile delete and recycle methods
+     * to target a file with a matching value. Use null to unconditionally delete the file.
+     */
+    ETagMatch: string;
 }
