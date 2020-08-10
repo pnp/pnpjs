@@ -359,6 +359,8 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
             const r = await this.clone(File).select("Exists")();
             return r.Exists;
         } catch (e) {
+            // this treats any error here as the file not existing, which
+            // might not be true, but is good enough.
             return false;
         }
     }

@@ -275,6 +275,22 @@ describe("file", () => {
             expect(r.length).to.eq(0);
         });
 
+        it("exists - true", async function () {
+
+            const name = `Testing Exists - ${getRandomString(4)}.txt`;
+            await files.add(name, "Some test text content.");
+            const exists = await files.getByName(name).exists();
+            // tslint:disable-next-line: no-unused-expression
+            expect(exists).to.be.true;
+        });
+
+        it("exists - false", async function () {
+
+            const exists = await files.getByName(`Testing Exists - ${getRandomString(4)}.txt`).exists();
+            // tslint:disable-next-line: no-unused-expression
+            expect(exists).to.be.false;
+        });
+
         it("setContent", async function () {
 
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
