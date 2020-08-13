@@ -46,9 +46,9 @@ import { graph } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
-// You can do one of
+// You can get the default calendar events
 const events = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').calendar.events();
-// or
+// or get all events for the user
 const events = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').events();
 ```
 
@@ -96,7 +96,7 @@ const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82'
 
 ## Create Events
 
-This will work on any `IEvents` objects, ie anything accessed using an `events` key.
+This will work on any `IEvents` objects (e.g. anything accessed using an `events` key).
 
 ```ts
 import { graph } from '@pnp/graph';
@@ -135,7 +135,7 @@ await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').calendar.event
 
 ## Update Events
 
-This will work on any `IEvents` objects, ie anything accessed using an `events` key. 
+This will work on any `IEvents` objects (e.g. anything accessed using an `events` key).
 
 ```ts
 import { graph } from '@pnp/graph';
