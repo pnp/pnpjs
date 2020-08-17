@@ -1,4 +1,4 @@
-# @pnp/graph/users
+# @pnp/graph/groups
 
 Groups are collections of users and other principals who share access to resources in Microsoft services or in your app. All group-related operations in Microsoft Graph require administrator consent.
 

@@ -1,15 +1,15 @@
 import { expect } from "chai";
 import { testSettings } from "../main";
 import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-import "@pnp/graph/contacts"
+import "@pnp/graph/users";
+import "@pnp/graph/contacts";
 import { EmailAddress } from '@microsoft/microsoft-graph-types';
 import { HttpRequestError } from '@pnp/odata';
 
-describe.only("Contacts", function () {
+describe("Contacts", function () {
 
 
-    //We can't test for graph.me.contacts calls in an application context
+    // We can't test for graph.me.contacts calls in an application context
     if (testSettings.enableWebTests) {
         let testUserName: string = "";
         let testContactID: string = "";
