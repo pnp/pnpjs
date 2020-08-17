@@ -176,7 +176,7 @@ public recycle(): Promise<string> {
 
 ## Augment Using Selective Imports
 
-To understand is how to extend functionality within the selective imports structures look at [list.ts](https://github.com/pnp/pnpjs/blob/master/packages/sp/items/list.ts) file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.
+To understand is how to extend functionality within the selective imports structures look at [list.ts](https://github.com/pnp/pnpjs/blob/main/packages/sp/items/list.ts) file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.
 
 ```ts
 // import the addProp helper

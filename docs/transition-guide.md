@@ -121,4 +121,4 @@ These libraries were created to allow folks to access and manage SharePoint taxo
 
 ## Changelog
 
-Please review the [CHANGELOG](https://github.com/pnp/pnpjs/blob/master/CHANGELOG.md) for details on all library changes.
+Please review the [CHANGELOG](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md) for details on all library changes.
