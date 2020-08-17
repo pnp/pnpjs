@@ -213,7 +213,7 @@ sp.web.select("Title", "Description").get().then(w => {
 ## Connect to Microsoft Graph From Node
 
 Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
-[./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/graph.ts) for a live example.
+[./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts) for a live example.
 
 `npm i @pnp/graph-commonjs @pnp/nodejs-commonjs`
 
