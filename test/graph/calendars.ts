@@ -5,7 +5,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from '@pnp/odata';
 
-describe.only("Calendar", function () {
+describe("Calendar", function () {
 
 
     // We can't test for graph.me calls in an application context
@@ -16,7 +16,7 @@ describe.only("Calendar", function () {
 
         // Ensure we have the data to test against
         this.beforeAll(async function () {
-            // Create a sample user
+            // Get a sample user
             const allUsers = await graph.users();
             testUserName = allUsers[1].mail;
 
