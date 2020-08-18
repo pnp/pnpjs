@@ -7,7 +7,7 @@ import "@pnp/graph/directory-objects";
 import { GroupType } from "@pnp/graph/groups";
 import { getRandomString, getGUID } from "@pnp/common";
 
-describe.only("Directory Objects", function () {
+describe("Directory Objects", function () {
 
 
     // We can't test for graph.me calls in an application context
