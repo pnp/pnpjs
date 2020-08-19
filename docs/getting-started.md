@@ -1,8 +1,6 @@
 # Getting Started
 
-These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install
-the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
-more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
+These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
 If you need to support older browsers please review the article on [polyfills](concepts/polyfill.md) for required functionality.
 
@@ -12,8 +10,8 @@ First you will need to install those libraries you want to use in your applicati
 
 `npm install @pnp/sp @pnp/graph --save`
 
-Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
-for more details.
+Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation
+for more details and examples.
 
 ```TypeScript
 import { getRandomString } from "@pnp/common";
@@ -32,10 +30,7 @@ The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within Shar
 
 ### Establish Context
 
-Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request
-urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the spfx context to the library. Either through the setup method
-imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if
-you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.
+Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.
 
 The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.
 
@@ -85,7 +80,7 @@ protected onInit(): Promise<void> {
 
 ```
 
-The sp setup also supports passing just the SPFx context object directly as this is the most common case
+Sp setup also supports passing just the SPFx context object directly as this is the most common case
 
 ```TypeScript
 import { sp } from "@pnp/sp/presets/all";
@@ -180,7 +175,7 @@ export class SampleService {
 
 ## Connect to SharePoint from Node
 
-> Please see the [main article on how we support node versions]() that require commonjs modules.
+> Please see the [main article on how we support node versions](../nodejs/index.md) that require commonjs modules.
 
 `npm i @pnp/sp-commonjs @pnp/nodejs-commonjs`
 
@@ -215,7 +210,9 @@ sp.web.select("Title", "Description").get().then(w => {
 Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
 [./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/graph.ts) for a live example.
 
-`npm i @pnp/graph-commonjs @pnp/nodejs-commonjs`
+```CMD
+npm i @pnp/graph-commonjs @pnp/nodejs-commonjs
+```
 
 Now we need to import what we'll need to call graph
 

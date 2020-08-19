@@ -2,13 +2,13 @@
 
 As outlined on the [getting started page](./getting-started.md#connect-to-sharepoint-from-node) you can easily use the library with Nodejs, but there are some key differences you need to consider.
 
-But first a little history, you can skip this part if you just want to see how things work but felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this [following the available guidance](https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling) but ultimately it didn't work across all node versions and we unpublished 2.0.1.
+But first a little history, you can skip this part if you just want to see how things work but we felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this [following the available guidance](https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling) but ultimately it didn't work across all node versions and we unpublished 2.0.1.
 
 ## CommonJS Libraries
 
 Because of the difficulties of working with es modules in node we recommend using our mirror packages providing commonjs modules. These can be installed by using the package name and appending -commonjs, such as:
 
-```
+```CMD
 npm install @pnp/sp-commonjs @pnp/nodejs-commonjs
 ```
 
@@ -18,13 +18,13 @@ These packages are built from the same source and released at the same time so a
 
 We want to make a simple request to SharePoint so we need to first install the modules we need:
 
-```
+```CMD
 npm install @pnp/sp-commonjs @pnp/nodejs-commonjs --save
 ```
 
 We will also install TypeScript:
 
-```
+```CMD
 npm install typescript --save-dev
 ```
 
@@ -110,10 +110,10 @@ We add the "start" script to the default package.json
 }
 ```
 
-### Run It!
+### Run It
 
 You can now run your program using:
 
-```
+```cmd
 npm start
 ```
