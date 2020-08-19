@@ -19,7 +19,7 @@ const unwrapped = sp.web.__unwrap();
 console.log(JSON.stringify(unwrapped, null, 2));
 ```
 
-> Note: It is not supported to unwrap objects and then use them. It may work in some cases, but this behavior may change as what is contained with the Proxy is an implementation detail and should not be relied upon. Without the Proxy wrapper we make no guarantees. 
+> Note: It is not supported to unwrap objects and then use them. It may work in some cases, but this behavior may change as what is contained with the Proxy is an implementation detail and should not be relied upon. Without the Proxy wrapper we make no guarantees.
 
 ## Data
 
@@ -38,7 +38,7 @@ console.log(JSON.stringify(data, null, 2));
 
 ## JSON
 
-You can also get a representation of the wrapped instance in JSON format consiting of all its own properties and values.
+You can also get a representation of the wrapped instance in JSON format consisting of all its own properties and values.
 
 ```TypeScript
 import { sp } from "@pnp/sp";

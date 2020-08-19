@@ -2,7 +2,7 @@
 
 _introduced in 2.0.0_
 
-Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invokable](../concepts/invokable.md). You can control any behavior of the library with extensions.
+Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invocable](../concepts/invokable.md). You can control any behavior of the library with extensions.
 
 > Extensions do not work in ie11 compatibility mode. This is by design.
 
@@ -101,11 +101,11 @@ console.log(JSON.stringify(items.length, null, 2));
 
 ## Registering Extensions
 
-You can register Extensions either globally, on an invokable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.
+You can register Extensions either globally, on an invocable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.
 
 ### Global Registration
 
-Globally registering an extension allows you to inject functionality into every invokable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.
+Globally registering an extension allows you to inject functionality into every invocable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.
 
 ```TypeScript
 import { extendGlobal } from "@pnp/odata";
@@ -129,7 +129,7 @@ extendGlobal((op: string, _target: any, ...rest: any[]): void => {
 
 ### Factory Registration
 
-The pattern you will likely find most useful is the ability to extend an invokable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
+The pattern you will likely find most useful is the ability to extend an invocable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
 
 ```TypeScript
 import "@pnp/sp/webs";

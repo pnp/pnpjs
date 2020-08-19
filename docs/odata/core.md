@@ -1,6 +1,6 @@
 # @pnp/odata/core
 
-This modules contains shared interfaces and abstract classes used within, and by inheritors of, the @pnp/odata package.
+This module contains shared interfaces and abstract classes used within the @pnp/odata package and those items that inherit from it.
 
 ## ProcessHttpClientResponseException
 
@@ -16,13 +16,11 @@ value to be returned. It has two methods, one is optional:
 
 ## ODataParserBase<T>
 
-The base class used by all parsers in the @pnp libraries. It is optional to use when creating your own custom parsers, but does contain several helper
-methods.
+The base class used by all parsers in the @pnp libraries. It is optional to use when creating your own custom parsers, but does contain several helper methods.
 
 ### Create a custom parser from ODataParserBase<T>
 
-You can always create custom parsers for your projects, however it is likely you will not require this step as the default parsers should work for most
-cases.
+You can always create custom parsers for your projects, however it is likely you will not require this step as the default parsers should work for most cases.
 
 ```TypeScript
 class MyParser extends ODataParserBase<any> {
