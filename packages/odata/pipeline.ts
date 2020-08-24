@@ -74,7 +74,7 @@ export function pipe<T = any>(context: IRequestContext<T>): Promise<T> {
     });
 
     if (context.isBatched) {
-        // this will block the batch's execute method from returning until the child requets have been resolved
+        // this will block the batch's execute method from returning until the child requests have been resolved
         context.batch.addResolveBatchDependency(promise);
     }
 

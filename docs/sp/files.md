@@ -376,3 +376,45 @@ import { IFile } from "@pnp/sp/files";
 
 const file: IFile = sp.web.getFileById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 ```
+
+### delete
+
+Deletes a file
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+await sp.web.rootFolder.files.getByName("name.txt").delete();
+```
+
+### delete with params
+
+_Added in 2.0.9_
+
+Deletes a file with options
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+await sp.web.rootFolder.files.getByName("name.txt").deleteWithParams({
+    BypassSharedLock: true,
+});
+```
+
+### exists
+
+_Added in 2.0.9_
+
+Checks to see if a file exists
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const exists = await sp.web.rootFolder.files.getByName("name.txt").exists();
+```

@@ -3,6 +3,7 @@ import { Logger, LogLevel } from "@pnp/logging";
 import { assign, jsS, isUrlAbsolute, hOP } from "@pnp/common";
 import { GraphRuntimeConfig } from "./graphlibconfig";
 import { GraphHttpClient } from "./graphhttpclient";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 interface GraphBatchRequestFragment {
     id: string;
@@ -42,7 +43,7 @@ interface IGraphBatchResponse {
 
 export class GraphBatch extends Batch {
 
-    constructor(private batchUrl = "https://graph.microsoft.com/v1.0/$batch", private maxRequests = 20) {
+    constructor(private batchUrl = "v1.0/$batch", private maxRequests = 20) {
         super();
     }
 
@@ -198,7 +199,9 @@ export class GraphBatch extends Batch {
 
                 Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-                await client.fetch(this.batchUrl, batchOptions)
+                const queryUrl = await toAbsoluteUrl(this.batchUrl);
+
+                await client.fetch(queryUrl, batchOptions)
                     .then(r => r.json())
                     .then((j) => GraphBatch.parseResponse(requestsChunk, j))
                     .then((parsedResponse: { nextLink: string, responses: Response[] }) => {

@@ -13,6 +13,7 @@ nav:
     - 'SPFx On-Premises': 'SPFx-on-premises.md'
     - 'Working in Nodejs': 'nodejs-support.md'
   - 'Library Concepts':
+    - 'Configuration': 'concepts/configuration.md'
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'IE11 Mode': 'concepts/ie11-mode.md'
@@ -113,6 +114,7 @@ nav:
       - 'User custom actions': 'sp/user-custom-actions.md'      
       - Views: 'sp/views.md'
       - Webs: 'sp/webs.md'
+      - 'Custom Request Client': 'sp/custom-irequestclient.md'
     - sp-addinhelpers:
       - sp-addinhelpers: 'sp-addinhelpers/index.md'
       - SPRequestExecutorClient:  'sp-addinhelpers/sp-request-executor-client.md'

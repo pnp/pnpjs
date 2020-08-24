@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.8 - 2020-08-07
+
+### Added
+- sp: Added custom SPHttpClient extensibility and docs [[PR](https://github.com/pnp/pnpjs/pull/1300)]
+- graph: Added baseUrl [[PR](https://github.com/pnp/pnpjs/pull/1303)]
+- graph: Added ability to pass the SPFx context directly to setup [[PR](https://github.com/pnp/pnpjs/pull/1303)]
+- docs: Added article on library configuration [[PR](https://github.com/pnp/pnpjs/pull/1303)]
+
+### Changed
+- msal: Fixed type name spelling [@biste5](https://github.com/biste5) [[PR](https://github.com/pnp/pnpjs/pull/1322)]
+
+### Fixed
+- sp: Fixed issue with renderListDataAsStream when omitting overrideParameters [[PR](https://github.com/pnp/pnpjs/pull/1303)]
+- docs: Various updates, improvements, and corrections [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1310)]
+
+### Removed
+- graph: Removed adaljslcient library dependency [[PR](https://github.com/pnp/pnpjs/pull/1303)]
+
 ## 2.0.7 - 2020-07-27
 
 ### Added

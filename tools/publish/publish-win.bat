@@ -11,11 +11,11 @@ echo.
 echo.
 
 ::
-:: merge version-2 branch into master
+:: merge version-2 branch into main
 ::
 git checkout version-2
 git pull
-git checkout master
+git checkout main
 git pull
 git merge version-2
 
@@ -44,13 +44,13 @@ call pnpbuild -n publish
 mkdocs gh-deploy
 
 ::
-:: merge master into version-2 branch
+:: merge main into version-2 branch
 ::
-git checkout master
+git checkout main
 git pull
 git checkout version-2
 git pull
-git merge master
+git merge main
 git push
 
 ::

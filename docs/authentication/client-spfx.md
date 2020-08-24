@@ -2,7 +2,7 @@
 
 ## Auth as Current User
 
-PnPjs is designed to work as easily as possible within SharePoint framework so the authentication setup is very simple for the base case. Supply the current SharePoint Framework context to the library. This works for both SharePoint authentication and Graph authentication using the current user. Graph permissions are controlled by the permissions granted to the SharePoint shared application within your tenant.
+PnPjs is designed to work as easily as possible within the SharePoint Framework so the authentication setup is very simple for the base case. Supply the current SharePoint Framework context to the library. This works for both SharePoint authentication and Graph authentication using the current user. Graph permissions are controlled by the permissions granted to the SharePoint shared application within your tenant.
 
 The below example is taken from a SharePoint Framework webpart.
 
@@ -50,7 +50,7 @@ protected async onInit(): Promise<void> {
 
 ## MSAL Client
 
-You might want/need to use a client configured to use your own AAD application and not the shared SharePoint application. You can do so using the [MSAL client](./msaljsclient.md). Here we show this using graph, this works the same with any of the [setup strategies](../getting-started.md). Please see the [MSAL library docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview) for more details on what values to supply in configuration.
+You might want/need to use a client configured to use your own AAD application and not the shared SharePoint application. You can do so using the [MSAL client](./msaljsclient.md). Here we show this using graph, this works the same with any of the [setup strategies](../getting-started.md). Please see the [MSAL library docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview) for more details on what values to supply in the configuration.
 
 > Note: you must install the @pnp/msaljsclient client package before using it
 
@@ -85,9 +85,9 @@ protected async onInit(): Promise<void> {
 // ...
 ```
 
-## Adal Client
+## ADAL Client
 
-You can use the ADAL client from within SPFX, though it is recommened to transition to the MSAL client.
+You can use the ADAL client from within SPFx, though it is recommended to transition to the MSAL client.
 
 > Note: you must install the @pnp/adaljsclient client package before using it
 

@@ -1,14 +1,18 @@
 import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/odata";
 import { SPHttpClient } from "./sphttpclient";
 import { ISharePointQueryable } from "./sharepointqueryable";
-import { IFetchOptions, mergeOptions, objectDefinedNotNull } from "@pnp/common";
+import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc } from "@pnp/common";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
-const spClientBinder = defaultPipelineBinder(() => new SPHttpClient());
+export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
+    factory = isFunc(requestClientFactory) ? requestClientFactory : () => new SPHttpClient();
+}
+
+let factory: () => IRequestClient = () => new SPHttpClient();
 
 const send = (method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT"): <T = any>(o: ISharePointQueryable, options?: IFetchOptions) => Promise<T> => {
 
-    const operation: IOperation = spClientBinder(method);
+    const operation: IOperation = defaultPipelineBinder(factory)(method);
 
     return async function <T = any>(o: ISharePointQueryable, options?: IFetchOptions): Promise<T> {
 
@@ -43,11 +47,11 @@ export const spGet = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOpt
     return send("GET")(o, options);
 };
 
-export const spPost = send("POST");
+export const spPost = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send("POST")(o, options);
 
-export const spDelete = send("DELETE");
+export const spDelete = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send("DELETE")(o, options);
 
-export const spPatch = send("PATCH");
+export const spPatch = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => send("PATCH")(o, options);
 
 export const spPostDelete = <T = any>(o: ISharePointQueryable<any>, options?: IFetchOptions): Promise<T> => {
     const opts = Object.assign(headers({ "X-HTTP-Method": "DELETE" }), options);

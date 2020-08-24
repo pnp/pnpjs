@@ -118,6 +118,25 @@ describe("Items", () => {
             return expect(item.item.recycle()).to.eventually.be.fulfilled;
         });
 
+        /**
+         * Skipped because only system accounts can call this method for items.
+         */
+        it.skip("delete item with params", async function () {
+
+            const title = `test_delparams_${getRandomString(4)}`;
+
+            const item = await list.items.add({
+                Title: title,
+            });
+
+            await item.item.deleteWithParams({
+                BypassSharedLock: false,
+            });
+
+            const r = await list.items.filter(`Title eq '${title}'`)();
+            expect(r.length).to.eq(0);
+        });
+
         it("getWopiFrameUrl", async function () {
 
             const item = await list.items.select("Id").top(1)().then(r => r[0]);

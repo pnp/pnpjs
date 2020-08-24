@@ -11,7 +11,7 @@ When required to use IE11 mode there is certain functionality which may not work
 
 ## Configure IE11 Mode
 
-To enable IE11 Mode set the ie11 flag to true in the setup object. Optionally supply the context object when working in [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview).
+To enable IE11 Mode set the ie11 flag to true in the setup object. Optionally, supply the context object when working in [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview).
 
 ```TypeScript
 import { sp } from "@pnp/sp";

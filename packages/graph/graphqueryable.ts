@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, IFetchOptions } from "@pnp/common";
+import { combine, IFetchOptions } from "@pnp/common";
 import { Queryable, invokableFactory, IInvokable, IQueryable } from "@pnp/odata";
 import { GraphEndpoints } from "./types";
 import { graphGet } from "./operations";
@@ -90,10 +90,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
 
         let url = this.toUrl();
 
-        if (!isUrlAbsolute(url)) {
-            url = combine("https://graph.microsoft.com", url);
-        }
-
         if (this.query.size > 0) {
             const char = url.indexOf("?") > -1 ? "&" : "?";
             url += `${char}${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
@@ -125,10 +121,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true): T {
+    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
 
-        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch });
+        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch, includeQuery });
     }
 }
 

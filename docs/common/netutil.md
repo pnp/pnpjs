@@ -1,13 +1,13 @@
-# @pnp/common/netutil
+# @pnp/common/net
 
-This module contains a set of classes and interfaces used to caracterize shared http interactions and configuration of the libraries. Some of the interfaces
+This module contains a set of classes and interfaces used to characterize shared http interactions and configuration of the libraries. Some of the interfaces
 are described below (many have no use outside the library) as well as several classes.
 
 ## Interfaces
 
 ### HttpClientImpl
 
-Defines an implementation of an Http Client within the context of @pnp. This being a class with a a single method "fetch" take a URL and options and returning a `Promise<Response>`. Used primarily with the shared request pipeline to define the client used to make the actual request. You can write your own [custom implementation](custom-httpclientimpl.md) if needed.
+Defines an implementation of an Http Client within the context of @pnp. This being a class with a a single method "fetch" takes a URL and options. It returns a `Promise<Response>`. Used primarily with the shared request pipeline to define the client used to make the actual request. You can write your own [custom implementation](custom-httpclientimpl.md) if needed.
 
 ### RequestClient
 

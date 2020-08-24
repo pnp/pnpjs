@@ -96,8 +96,23 @@ describe("Folder", () => {
         });
 
         it("recycles folder", async function () {
-            await web.rootFolder.folders.getByName("SiteAssets").folders.add("test3");
-            return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName("test").recycle()).to.eventually.be.fulfilled;
+            const name = `test_${getRandomString(7)}`;
+            await web.rootFolder.folders.getByName("SiteAssets").folders.add(name);
+            return expect(web.rootFolder.folders.getByName("SiteAssets").folders.getByName(name).recycle()).to.eventually.be.fulfilled;
+        });
+
+        it("delete folder with params", async function () {
+            const name = `test_${getRandomString(7)}`;
+            const folders = web.rootFolder.folders.getByName("SiteAssets").folders;
+            await folders.add(name);
+
+            await folders.getByName(name).deleteWithParams({
+                BypassSharedLock: true,
+                DeleteIfEmpty: true,
+            });
+
+            const r = await folders.filter(`Name eq '${name}'`)();
+            expect(r.length).to.eq(0);
         });
 
         it("should get server relative url", function () {

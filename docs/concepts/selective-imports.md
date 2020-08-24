@@ -103,7 +103,7 @@ const lists = await sp.web.lists();
 The graph library contains a single preset, "all" mimicking the v1 structure.
 
 ```TypeScript
-import { sp } from "@pnp/graph/presets/all";
+import { graph } from "@pnp/graph/presets/all";
 
 // graph.* exists as it did in v1, tree shaking will not work
 ```

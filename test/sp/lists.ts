@@ -12,7 +12,7 @@ import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue, RenderListDataOptions } from "@pnp/sp/lists";
 import * as assert from "assert";
-import { IConfigOptions, getRandomString } from "@pnp/common";
+import { IConfigOptions, getRandomString, combine } from "@pnp/common";
 
 describe("Lists", function () {
 
@@ -237,7 +237,7 @@ describe("List", function () {
             return expect(listEnsure.list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.be.fulfilled;
         });
 
-        it(".renderListDataAsStream", async function () {
+        const setupRenderListDataAsStream = async function (): Promise<IList> {
 
             const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListDataAsStream");
 
@@ -252,29 +252,24 @@ describe("List", function () {
                     Title: "Item 3",
                 });
             }
+
+            return listEnsure.list;
+        };
+
+        it(".renderListDataAsStream", async function () {
+
+            const rList = await setupRenderListDataAsStream();
 
             const renderListDataParams: IRenderListDataParameters = {
                 ViewXml: "<View><RowLimit>5</RowLimit></View>",
             };
 
-            return expect(listEnsure.list.renderListDataAsStream(renderListDataParams)).to.eventually.have.property("Row").that.is.not.empty;
+            return expect(rList.renderListDataAsStream(renderListDataParams)).to.eventually.have.property("Row").that.is.not.empty;
         });
 
         it(".renderListDataAsStream - advanced options", async function () {
 
-            const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListDataAsStream");
-
-            if (listEnsure.created) {
-                await listEnsure.list.items.add({
-                    Title: "Item 1",
-                });
-                await listEnsure.list.items.add({
-                    Title: "Item 2",
-                });
-                await listEnsure.list.items.add({
-                    Title: "Item 3",
-                });
-            }
+            const rList = await setupRenderListDataAsStream();
 
             const renderListDataParams: IRenderListDataParameters = {
                 AddRequiredFields: true,
@@ -292,7 +287,19 @@ describe("List", function () {
                 ViewXml: "<View><RowLimit>5</RowLimit></View>",
             };
 
-            return expect(listEnsure.list.renderListDataAsStream(renderListDataParams)).to.eventually.be.fulfilled;
+            return expect(rList.renderListDataAsStream(renderListDataParams)).to.eventually.be.fulfilled;
+        });
+
+        it(".renderListDataAsStream - no override params", async function () {
+
+            const rList = await setupRenderListDataAsStream();
+
+            const renderListDataParams: IRenderListDataParameters = {
+                AddRequiredFields: true,
+                ViewXml: "<View><RowLimit>5</RowLimit></View>",
+            };
+
+            return expect(rList.renderListDataAsStream(renderListDataParams)).to.eventually.be.fulfilled;
         });
 
         it(".renderListFormData", async function () {
@@ -343,7 +350,7 @@ describe("List", function () {
         });
 
         it(".addValidateUpdateItemUsingPath", async function () {
-            const listTitle = `pnp testing addValidateUpdateItemUsingPath`;
+            const listTitle = `pnp-testing-addValidateUpdateItemUsingPath`;
             const listAddRes = await sp.web.lists.ensure(listTitle);
 
             const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
@@ -356,16 +363,16 @@ describe("List", function () {
                 },
             ];
 
-            const folderName = `PnPTestAddFolder2 ${getRandomString(4)}`;
+            const folderName = `PnPTestAddFolder2-${getRandomString(4)}`;
             await listAddRes.list.rootFolder.folders.add(folderName);
 
             return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-                `${testList.ParentWebUrl}/Lists/${listTitle}/${folderName}`)).to.eventually.be.fulfilled;
+                combine(testList.ParentWebUrl, "Lists", listTitle, folderName))).to.eventually.be.fulfilled;
         });
 
         it(".addValidateUpdateItemUsingPath Folder", async function () {
 
-            const listTitle = `pnp testing addValidateUpdateItemUsingPath2`;
+            const listTitle = `pnp-testing-addValidateUpdateItemUsingPath2`;
             const listAddRes = await sp.web.lists.ensure(listTitle, "", 101);
 
             const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();

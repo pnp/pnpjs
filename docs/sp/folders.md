@@ -167,6 +167,35 @@ const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 await sp.web.rootFolder.folders.getByName("SiteAssets").folders.getByName("My Folder").copyByPath(destinationUrl, true);
 ```  
 
+### delete
+
+Deletes a folder
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+await sp.web.rootFolder.folders.getByName("My Folder").delete();
+```  
+
+### delete with params
+
+_Added in 2.0.9_
+
+Deletes a folder with options
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+await sp.web.rootFolder.folders.getByName("My Folder").deleteWithParams({
+                BypassSharedLock: true,
+                DeleteIfEmpty: true,
+            });
+```  
+
 ### recycle
 
 Recycles a folder
