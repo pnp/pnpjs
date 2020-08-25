@@ -18,13 +18,13 @@ These packages are built from the same source and released at the same time so a
 
 We want to make a simple request to SharePoint so we need to first install the modules we need:
 
-```
+```cmd
 npm install @pnp/sp-commonjs @pnp/nodejs-commonjs --save
 ```
 
 We will also install TypeScript:
 
-```
+```cmd
 npm install typescript --save-dev
 ```
 
@@ -57,7 +57,7 @@ async function makeRequest() {
 makeRequest();
 ```
 
-> Don't forget you will need to [register an app](https://pnp.github.io/pnpjs/debugging/#register-an-add-in) to get the client id and secret.
+> Don't forget you will need to [register an app](https://pnp.github.io/pnpjs/authentication/sp-app-registration/) to get the client id and secret.
 
 ### Add a tsconfig.json
 
@@ -114,6 +114,6 @@ We add the "start" script to the default package.json
 
 You can now run your program using:
 
-```
+```cmd
 npm start
 ```
