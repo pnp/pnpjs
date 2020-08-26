@@ -1,9 +1,7 @@
 import { defaultPath } from "../decorators";
 import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable";
-
-
-// TODO::
-// import { tag } from "../telemetry";
+import { spGet } from "../operations";
+import { tag } from "../telemetry";
 
 /**
  * Describes a collection of Form objects
@@ -15,22 +13,22 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
     /**
      * Gets the term groups associated with this tenant
      */
-    public get termGroups(): ITermGroups {
-        return TermGroups(this);
+    public get groups(): ITermGroups {
+        return tag.configure(TermGroups(this), "txts.groups");
     }
 
     /**
-     * Gets the term groups associated with this tenant
+     * Gets the term sets associated with this tenant
      */
-    public get groups(): ITermGroups {
-        return TermGroups(this, "groups");
+    public get sets(): ITermSets {
+        return tag.configure(TermSets(this), "txts.sets");
     }
 }
 export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
 
 
-@defaultPath("termgroups")
+@defaultPath("groups")
 export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]> {
 
     /**
@@ -39,7 +37,7 @@ export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermGroup {
-        return TermGroup(this, id);
+        return tag.configure(TermGroup(this, id), "txtgs.getById");
     }
 }
 export interface ITermGroups extends _TermGroups { }
@@ -50,22 +48,15 @@ export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
     /**
      * Gets the term sets associated with this tenant
      */
-    public get termSets(): ITermSets {
-        return TermSets(this);
-    }
-
-    /**
-     * Gets the term groups associated with this tenant
-     */
     public get sets(): ITermSets {
-        return TermSets(this, "sets");
+        return tag.configure(TermSets(this, "sets"), "txtg.sets");
     }
 }
 export interface ITermGroup extends _TermGroup { }
 export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
 
 
-@defaultPath("termsets")
+@defaultPath("sets")
 export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
 
     /**
@@ -74,7 +65,7 @@ export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermSet {
-        return TermSet(this, id);
+        return tag.configure(TermSet(this, id), "txts.getById");
     }
 }
 export interface ITermSets extends _TermSets { }
@@ -82,57 +73,65 @@ export const TermSets = spInvokableFactory<ITermSets>(_TermSets);
 
 export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
-    public get terms(): ITerms {
-        return Terms(this);
-    }
+    // public get terms(): ITerms {
+    //     return Terms(this);
+    // }
 
     public get parentGroup(): ITermGroup {
-        return TermGroup(this, "parentGroup");
+        return tag.configure(TermGroup(this, "parentGroup"), "txts.parentGroup");
     }
 
-    public get children(): ITerms {
-        return Terms(this, "children");
+    public get children(): IChildren {
+        return tag.configure(Children(this), "txts.children");
     }
 
     public get relations(): IRelations {
-        return Relations(this);
+        return tag.configure(Relations(this), "txts.relations");
+    }
+
+    public getTermById(id: string): Promise<ITermInfo> {
+        return spGet(tag.configure(this.clone(TermSet, `terms/${id}`), "txts.getTermById"));
     }
 }
 export interface ITermSet extends _TermSet { }
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
+// @defaultPath("terms")
+// export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
 
-@defaultPath("terms")
-export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+//     /**
+//      * Gets a term group by id
+//      *
+//      * @param id Id of the term group to access
+//      */
+//     public getById(id: string): ITerm {
+//         return Term(this, id);
+//     }
+// }
+// export interface ITerms extends _Terms { }
+// export const Terms = spInvokableFactory<ITerms>(_Terms);
 
-    /**
-     * Gets a term group by id
-     * 
-     * @param id Id of the term group to access
-     */
-    public getById(id: string): ITerm {
-        return Term(this, id);
-    }
- }
-export interface ITerms extends _Terms {}
-export const Terms = spInvokableFactory<ITerms>(_Terms);
+@defaultPath("children")
+export class _Children extends _SharePointQueryableCollection<ITermInfo[]> { }
+export interface IChildren extends _Children { }
+export const Children = spInvokableFactory<IChildren>(_Children);
 
 export class _Term extends _SharePointQueryableInstance<ITermInfo> {
 
     public get parent(): ITerm {
-        return Term(this, "parent");
+        return tag.configure(Term(this, "parent"), "txt.parent");
     }
 
-    public get children(): ITerms {
-        return Terms(this, "children");
+    public get children(): IChildren {
+        return tag.configure(Children(this), "txt.children");
     }
 
     public get relations(): IRelations {
-        return Relations(this);
+        return tag.configure(Relations(this), "txt.relations");
     }
 
     public get set(): ITermSet {
-        return TermSet(this, "set");
+        return tag.configure(TermSet(this, "set"), "txt.set");
     }
 }
 export interface ITerm extends _Term { }
@@ -147,7 +146,7 @@ export class _Relations extends _SharePointQueryableCollection<IRelationInfo[]> 
      * @param id Id of the term group to access
      */
     public getById(id: string): IRelation {
-        return Relation(this, id);
+        return tag.configure(Relation(this, id), "txrs.getById");
     }
 }
 export interface IRelations extends _Relations { }
@@ -156,15 +155,15 @@ export const Relations = spInvokableFactory<IRelations>(_Relations);
 export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
 
     public get fromTerm(): ITerm {
-        return Term(this, "fromTerm");
+        return tag.configure(Term(this, "fromTerm"), "txr.fromTerm");
     }
 
     public get toTerm(): ITerm {
-        return Term(this, "toTerm");
+        return tag.configure(Term(this, "toTerm"), "txr.toTerm");
     }
 
     public get set(): ITermSet {
-        return TermSet(this, "set");
+        return tag.configure(TermSet(this, "set"), "txr.set");
     }
 }
 export interface IRelation extends _Relation { }
@@ -188,9 +187,11 @@ export interface ITermGroupInfo {
     id: string;
     description: string;
     name: string;
+    displayName: string;
     createdDateTime: string;
     lastModifiedDateTime: string;
     type: string;
+    scope: "global" | "system" | "siteCollection";
     managers?: ITaxonomyUserInfo[];
     contributors?: ITaxonomyUserInfo[];
 }
