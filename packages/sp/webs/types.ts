@@ -85,7 +85,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     @tag("w.getParentWeb")
     public async getParentWeb(): Promise<IOpenWebByIdResult> {
         const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
-        return ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
+        return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
     }
 
     /**
