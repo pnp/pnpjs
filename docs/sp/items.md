@@ -24,7 +24,7 @@ import "@pnp/sp/items";
 const items: any[] = await sp.web.lists.getByTitle("My List").items.get();
 console.log(items);
 
-// get a specific item by id
+// get a specific item by id.
 const item: any = await sp.web.lists.getByTitle("My List").items.getById(1).get();
 console.log(item);
 
@@ -213,7 +213,7 @@ console.log(iar);
 
 ### Content Type
 
-You can also set the content type id when you create an item as shown in the example below:
+You can also set the content type id when you create an item as shown in the example below. For more information on content type IDs reference the [Microsoft Documentation](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)). While this documentation references SharePoint 2010 the structure of the IDs has not changed.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -286,7 +286,7 @@ import { getGUID } from "@pnp/common";
 await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
-    MuptiLookupFieldId: {
+    MultiLookupFieldId: {
         results: [ 1, 56 ]  // allows multiple lookup value
     }
 });

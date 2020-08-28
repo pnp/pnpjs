@@ -19,11 +19,9 @@ import "@pnp/sp/webs";
 (function main() {
 
     // here we will load the current web's title
-    sp.web.select("Title")().then(w => {
-
-        console.log(`Web Title: ${w.Title}`);
-    });
-})()
+    const w = await sp.web.select("Title")();
+    console.log(`Web Title: ${w.Title}`);
+)()
 ```
 
 ## Getting Started: SharePoint Framework
@@ -59,10 +57,8 @@ public render(): void {
     // A simple loading message
     this.domElement.innerHTML = `Loading...`;
 
-    sp.web.select("Title")().then(w => {
-
-        this.domElement.innerHTML = `Web Title: ${w.Title}`;
-    });
+    const w = await sp.web.select("Title")();
+    this.domElement.innerHTML = `Web Title: ${w.Title}`;
 }
 ```
 
@@ -89,8 +85,8 @@ sp.setup({
 });
 
 // now make any calls you need using the configured client
-sp.web.select("Title")().then(w => {
 
-    console.log(`Web Title: ${w.Title}`);
-});
+const w = await sp.web.select("Title")();
+console.log(`Web Title: ${w.Title}`);
+
 ```

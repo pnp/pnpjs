@@ -1,6 +1,6 @@
 # @pnp/sp/hubsites
 
-This module helps you with working with hubsites in your tenant.
+This module helps you with working with hub sites in your tenant.
 
 ## IHubSites
 
@@ -11,21 +11,21 @@ This module helps you with working with hubsites in your tenant.
 | Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/hubsites"; |
 | Preset: All | import { sp, HubSites, IHubSites } from "@pnp/sp/presets/all";    |
 
-### Get a Listing of All Hubsites
+### Get a Listing of All Hub sites
 
 ```TypeScript
 import { sp } from "@pnp/sp";
 import { IHubSiteData } from  "@pnp/sp/hubsites";
 import "@pnp/sp/hubsites";
 
-// invoke the hubsites object
+// invoke the hub sites object
 const hubsites: IHubSiteData[] = await sp.hubSites();
 
 // you can also use select to only return certain fields:
 const hubsites2: IHubSiteData[] = await sp.hubSites.select("ID", "Title", "RelatedHubSiteIds")();
 ```
 
-### Get Hubsite by Id
+### Get Hub site by Id
 
 Using the getById method on the hubsites module to get a hub site by site Id (guid).
 
@@ -57,7 +57,7 @@ const siteData = await site();
 console.log(siteData.Title);
 ```
 
-### Get HubSite data for a web
+### Get Hub site data for a web
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -67,13 +67,13 @@ import "@pnp/sp/hubsites/web";
 
 const webData: IHubSiteWebData = await sp.web.hubSiteData();
 
-// you can also force a refresh of the hubsite data
+// you can also force a refresh of the hub site data
 const webData2: IHubSiteWebData = await sp.web.hubSiteData(true);
 ```
 
 ### syncHubSiteTheme
 
-Allows you to Applies theme updates from the parent hub site collection.
+Allows you to apply theme updates from the parent hub site collection.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -83,9 +83,9 @@ import "@pnp/sp/hubsites/web";
 await sp.web.syncHubSiteTheme();
 ```
 
-## Hubsite Site Methods
+## Hub site Site Methods
 
-You manage hubsites at the Site level.
+You manage hub sites at the Site level.
 
 ### joinHubSite
 
@@ -96,10 +96,10 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites/site";
 
-// join a site to a hubsite
+// join a site to a hub site
 await sp.site.joinHubSite("{parent hub site id}");
 
-// remove a site from a hubsite
+// remove a site from a hub site
 await sp.site.joinHubSite("00000000-0000-0000-0000-000000000000");
 ```
 
@@ -112,7 +112,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites/site";
 
-// join a site to a hubsite
+// regsiter current site as a hub site
 await sp.site.registerHubSite();
 ```
 
@@ -125,6 +125,6 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites/site";
 
-// separate a site from a hubsite
+// make a site no longer a hub
 await sp.site.unRegisterHubSite();
 ```
