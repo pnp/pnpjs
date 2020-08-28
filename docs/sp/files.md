@@ -28,7 +28,7 @@ const text2: string = await sp.web.getFolderByServerRelativeUrl("/sites/dev/docu
 
 _Added in 2.0.4_
 
-This method supports opening files form sharing links or absolute urls. The file must reside in the through which you are trying to open the file.
+This method supports opening files from sharing links or absolute urls. The file must reside in the site from which you are trying to open the file.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -46,7 +46,7 @@ const fileContent = await file.getText();
 
 ## Adding Files
 
-Likewise you can add files using one of two methods, add or addChunked. The second is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.
+Likewise you can add files using one of two methods, add or addChunked. AddChunked is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.
 
 ```typescript
 declare var require: (s: string) => any;
@@ -133,7 +133,7 @@ const file = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared%20Docu
 
 ## Update File Content
 
-You can of course use similar methods to update existing files as shown below:
+You can of course use similar methods to update existing files as shown below. This overwrites the existing content in the file.
 
 ```typescript
 import { sp } from "@pnp/sp";
@@ -271,13 +271,12 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/security";
 
-const item = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem();
+const item = await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.txt").getItem();
 console.log(item);
 
-const item2 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem("Title", "Modified");
+const item2 = await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.txt").getItem("Title", "Modified");
 console.log(item2);
 
-const item3 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem();
 // you can also chain directly off this item instance
 const perms = await item.getCurrentUserEffectivePermissions();
 console.log(perms);
@@ -294,7 +293,7 @@ import "@pnp/sp/items";
 import "@pnp/sp/security";
 
 // also supports typing the objects so your type will be a union type
-const item = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getItem<{ Id: number, Title: string }>("Id", "Title");
+const item = await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.txt").getItem<{ Id: number, Title: string }>("Id", "Title");
 
 // You get intellisense and proper typing of the returned object
 console.log(`Id: ${item.Id} -- ${item.Title}`);

@@ -21,10 +21,8 @@ const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/"
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&$top=3
 
-query.get().then(r => {
-
-    console.log(r);
-});
+const r = await query.get();
+console.log(r);;
 ```
 
 ### Example with aliasing
@@ -38,10 +36,8 @@ const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Docum
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
 
-query.get().then(r => {
-
-    console.log(r);
-});
+const r = await query.get();
+console.log(r);
 ```
 
 ### Example with aliasing and batching
