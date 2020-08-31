@@ -11,7 +11,7 @@ export class GraphEndpoints {
         const all = [GraphEndpoints.Beta, GraphEndpoints.V1];
         let regex = new RegExp(endpoint, "i");
         const replaces = all.filter(s => !regex.test(s)).map(s => s.replace(".", "\\."));
-        regex = new RegExp(`/?(${replaces.join("|")})/`, "ig");
+        regex = new RegExp(`/?(${replaces.join("|")})/?`, "ig");
         return url.replace(regex, `/${endpoint}/`);
     }
 }
