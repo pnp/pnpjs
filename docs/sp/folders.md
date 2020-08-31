@@ -6,7 +6,7 @@ Folders serve as a container for your files and list items.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-Represents a collection of folders. SharePoint web, list and list item have a collection of folders under their properties.
+Represents a collection of folders. SharePoint webs, lists, and list items have a collection of folders under their properties.
 
 |Scenario|Import Statement|
 |--|--|

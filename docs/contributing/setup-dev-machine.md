@@ -9,7 +9,7 @@ These steps will help you get your environment setup for contributing to the cor
 1. Install [Visual Studio Code](https://code.visualstudio.com/) - this is the development environment we use so the contribution sections expect you are as well. If you prefer you can use Visual Studio or any editor you like.
 
 1. Install [Node JS](https://nodejs.org/en/download/) - this provides two key capabilities; the first is the nodejs server which will act as our development server (think iisexpress), the second is npm a package manager (think nuget).
-   
+
     > This library requires node >= 10.18.0
 
 1. On Windows: Install [Python](https://www.python.org/downloads)
@@ -33,4 +33,4 @@ All of our contributions come via [pull requests](https://docs.github.com/en/git
 
 1. Follow the [guidance to complete the one-time local configuration](./local-debug-configuration.md) required to debug and run tests.
 
-2. Then you can follow the guidance in the [debugging](./debugging.md) article.
+1. Then you can follow the guidance in the [debugging](./debugging.md) article.

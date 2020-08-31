@@ -1,7 +1,6 @@
-# Submiting Pull Requests
+# Submitting Pull Requests
 
 Pull requests may be large or small - adding whole new features or fixing some misspellings. Regardless, they are all appreciated and help improve the library for everyone! By following the below guidelines we'll have an easier time merging your work and getting it into the next release.
-
 
 * Target your pull requests to the **version-2** branch
 * Add/Update any relevant docs articles in the relevant package's docs folder related to your changes

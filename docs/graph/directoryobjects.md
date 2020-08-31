@@ -1,44 +1,56 @@
 # @pnp/graph/directoryObjects
 
+Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory entity types.
+
+More information can be found in the official Graph documentation:
+
+- [DirectoryObject Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/directoryobject?view=graph-rest-1.0)
+
 ## The groups and directory roles for the user
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 
-const memberOf = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').memberOf();
+const memberOf = await graph.users.getById('user@tenant.onmicrosoft.com').memberOf();
 
 const memberOf2 = await graph.me.memberOf();
 
 ```
 
-## Return all the groups the user, group or directoryObject is a member of
+## Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/groups"
 
-const memberGroups = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberGroups();
+const memberGroups = await graph.users.getById('user@tenant.onmicrosoft.com').getMemberGroups();
 
 const memberGroups2 = await graph.me.getMemberGroups();
 
-const memberGroups3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberGroups();
+// Returns only security enabled groups
+const memberGroups3 = await graph.me.getMemberGroups(true);
+
+const memberGroups4 = await graph.groups.getById('user@tenant.onmicrosoft.com').getMemberGroups();
 
 ```
 
-## Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of
+## Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups
 
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-import "@pnp/graph/groups"
+import "@pnp/graph/users";
+import "@pnp/graph/groups";
 
-const memberObjects = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
+const memberObjects = await graph.users.getById('user@tenant.onmicrosoft.com').getMemberObjects();
 
 const memberObjects2 = await graph.me.getMemberObjects();
 
-const memberObjects3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
+// Returns only security enabled groups
+const memberObjects3 = await graph.me.getMemberObjects(true);
+
+const memberObjects4 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
 ```
 
 ## Check for membership in a specified list of groups
@@ -47,10 +59,10 @@ And returns from that list those groups of which the specified user, group, or d
 
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-import "@pnp/graph/groups"
+import "@pnp/graph/users";
+import "@pnp/graph/groups";
 
-const checkedMembers = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').checkMemberGroups(["c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741","2001bb09-1d46-40a6-8176-7bb867fb75aa"]);
+const checkedMembers = await graph.users.getById('user@tenant.onmicrosoft.com').checkMemberGroups(["c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741","2001bb09-1d46-40a6-8176-7bb867fb75aa"]);
 
 const checkedMembers2 = await graph.me.checkMemberGroups(["c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741","2001bb09-1d46-40a6-8176-7bb867fb75aa"]);
 
@@ -61,7 +73,7 @@ const checkedMembers3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d
 
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/directory-objects"
+import "@pnp/graph/directory-objects";
 
 const dirObject = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26');
 
@@ -71,6 +83,7 @@ const dirObject = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/directory-objects";
 
 const deleted = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').delete()
 

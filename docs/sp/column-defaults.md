@@ -117,7 +117,7 @@ await sp.web.lists.getByTitle("DefaultColumnValues").getDefaultColumnValues([{
             }, {
                 name: "TextField",
                 path: `/sites/dev/DefaultColumnValues/folder1`,
-                value: "#PnPjs Rocks in subfolders too!",
+                value: "#PnPjs Rocks in sub-folders too!",
             }, {
                 name: "MultiChoiceField",
                 path: `/sites/dev/DefaultColumnValues/folder2`,

@@ -8,7 +8,7 @@ Before proceeding be sure you have reviewed how to [setup for local configuratio
 
 The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses [launch.json](https://github.com/pnp/pnpjs/blob/main/.vscode/launch.json) to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/main.ts) as the entry point.
 
-### Basic SP Testing
+### Basic SharePoint Testing
 
 You can start the base debugging case by hitting F5. Before you do place a break point in ./debug/launch/sp.ts. You can also place a break point within any of the libraries or modules. Feel free to edit the sp.ts file to try things out, debug suspected issues, or test new features, etc - but please don't commit any changes as this is a shared file. See [the section on creating your own debug modules](#how-to-create-a-debug-module).
 
@@ -16,13 +16,13 @@ All of the setup for the node client is handled within sp.ts using the [settings
 
 ### Basic Graph Testing
 
-Testing and debugging graph calls follows the same process as outlined for sp, however you need to update main.ts to import graph instead of sp. You can place break points anywhere within the library code and they should be hit.
+Testing and debugging Graph calls follows the same process as outlined for SharePoint, however you need to update main.ts to import graph instead of sp. You can place break points anywhere within the library code and they should be hit.
 
 All of the setup for the node client is handled within graph.ts using the [settings from the local configuration](./local-debug-configuration.md).
 
 ## How to: Create a Debug Module
 
-If you are working on multiple features or want to save sample code for various tasks you can creat your own debugging modules and leave them in the debug/launch folder locally. The gitignore file is setup to ignore any files that aren't already in git.
+If you are working on multiple features or want to save sample code for various tasks you can create your own debugging modules and leave them in the debug/launch folder locally. The gitignore file is setup to ignore any files that aren't already in git.
 
 Using [./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/sp.ts) as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:
 
@@ -97,7 +97,7 @@ MyDebug();
 
 ### Debug
 
-Place a break point within the mydebug.ts file and hit F5. Your module should be run and your break point hit. You can then examine the contents of the objects and see the run time state. Remember you can also set breakpoints within the package src folders to see exactly how things are working during your debugging scenarios.
+Place a break point within the mydebug.ts file and hit F5. Your module should run and your break point hit. You can then examine the contents of the objects and see the run time state. Remember, you can also set breakpoints within the package src folders to see exactly how things are working during your debugging scenarios.
 
 ### Debug Module Next Steps
 
@@ -105,7 +105,7 @@ Using this pattern you can create and preserve multiple debugging scenarios in s
 
 ## In Browser Debugging
 
-You can also serve files locally to debug as a user in the browser by serving code using ./debug/serve/main.ts as the entry. The file is served as `https://localhost:8080/assets/pnp.js`, allowing you to create a single page in your tenant for in browser testing. The remainder of this section descibes the process to setup a SharePoint page to debug in this manner.
+You can also serve files locally to debug as a user in the browser by serving code using ./debug/serve/main.ts as the entry. The file is served as `https://localhost:8080/assets/pnp.js`, allowing you to create a single page in your tenant for in browser testing. The remainder of this section describes the process to setup a SharePoint page to debug in this manner.
 
 ### Start the local serve
 
@@ -122,12 +122,11 @@ Within a SharePoint page add a script editor web part and then paste in the foll
 <div id="pnp-test"></div>
 ```
 
-You should see an alert with the current web's title using the default main.ts. Feel free to update main.ts to do whatever you would like, but rember not to commit changes to the shared files.
+You should see an alert with the current web's title using the default main.ts. Feel free to update main.ts to do whatever you would like, but remember not to commit changes to the shared files.
 
 ### Debug
 
-Refresh the page and open the developer tools in your browser of choice. If the pnp.js file is blocked due to security restrictions you can will need to allow it.
-
+Refresh the page and open the developer tools in your browser of choice. If the pnp.js file is blocked due to security restrictions you will need to allow it.
 
 ### Next Steps
 
