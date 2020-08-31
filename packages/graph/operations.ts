@@ -2,6 +2,7 @@ import { IFetchOptions, mergeOptions, objectDefinedNotNull } from "@pnp/common";
 import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/odata";
 import { GraphHttpClient } from "./graphhttpclient";
 import { IGraphQueryable } from "./graphqueryable";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 const graphClientBinder = defaultPipelineBinder(() => new GraphHttpClient());
 
@@ -11,7 +12,7 @@ const send = <T>(operation: IOperation): (o: IGraphQueryable<T>, options?: IFetc
 
         const data = cloneQueryableData(o.data);
         const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => { return; };
-        const url = o.toUrlAndQuery();
+        const url = await toAbsoluteUrl(o.toUrlAndQuery());
 
         mergeOptions(data.options, options);
 

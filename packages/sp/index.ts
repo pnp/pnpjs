@@ -19,8 +19,8 @@ export * from "./decorators";
 export * from "./operations";
 
 export {
-    SPConfiguration,
-    SPConfigurationPart,
+    ISPConfiguration,
+    ISPConfigurationPart,
 } from "./splibconfig";
 
 export {

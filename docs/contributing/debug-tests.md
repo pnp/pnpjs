@@ -4,7 +4,7 @@ With version 2 we have made a significant effort to improve out test coverage. T
 
 ## How to write Tests
 
-We use [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/) for our testing framework. You can see many examples of writing tests within the ./test folder. Here is a sample with extra comments to help explain what's happening, taken from [./test/sp/items.ts](https://github.com/pnp/pnpjs/blob/master/test/sp/items.ts):
+We use [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/) for our testing framework. You can see many examples of writing tests within the ./test folder. Here is a sample with extra comments to help explain what's happening, taken from [./test/sp/items.ts](https://github.com/pnp/pnpjs/blob/main/test/sp/items.ts):
 
 ```ts
 import { getRandomString } from "@pnp/common";

@@ -62,3 +62,14 @@ const people = await graph.me.people();
 // get the top 3 people
 const people = await graph.me.people.top(3)();
 ```
+
+## Photo
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/photos";
+
+const currentUser = await graph.me.photo();
+const specificUser = await graph.users.getById('jane@contoso.com').photo();
+```

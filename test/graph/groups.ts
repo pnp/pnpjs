@@ -21,6 +21,7 @@ describe("Groups", function () {
       groupID = groupAddResult.data.id;
       return expect(group.displayName).is.not.undefined;
     });
+
     it("delete", async function () {
       // Create a new group
       const groupName = `TestGroup_${getRandomString(4)}`;
@@ -39,6 +40,7 @@ describe("Groups", function () {
       });
       return expect(groupExists).is.not.true;
     });
+
     it("getById()", async function () {
       // Create a new group
       const groupName = `TestGroup_${getRandomString(4)}`;
@@ -47,6 +49,7 @@ describe("Groups", function () {
       const group = await graph.groups.getById(groupAddResult.data.id);
       return expect(group).is.not.undefined;
     });
+
     it("update", async function () {
       // Create a new group
       const groupName = `TestGroup_${getRandomString(4)}`;
@@ -63,30 +66,31 @@ describe("Groups", function () {
 
       return expect(groupName === group.displayName).is.not.true;
     });
-    it("addFavorite()", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
-    it("removeFavorite()", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
-    it("resetUnseenCount()", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
-    it("subscribeByMail()", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
-    it("unsubscribeByMail()", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
-    it("getCalendarView(start: Date, end: Date)", async function () {
-      // This is a user context function. Can't test in application context
-      return expect(true).is.true;
-    });
+
+    // it("addFavorite()", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
+    // it("removeFavorite()", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
+    // it("resetUnseenCount()", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
+    // it("subscribeByMail()", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
+    // it("unsubscribeByMail()", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
+    // it("getCalendarView(start: Date, end: Date)", async function () {
+    //   // This is a user context function. Can't test in application context
+    //   return expect(true).is.true;
+    // });
 
     afterEach(async function () {
       if (groupID !== "") {

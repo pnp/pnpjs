@@ -53,9 +53,9 @@ graph.setup({
     graph: {
         fetchClientFactory: MsalClientSetup({
             auth: {
-                authority: "https://login.microsoftonline.com/318studios.onmicrosoft.com",
+                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com",
                 clientId: "00000000-0000-0000-0000-000000000000",
-                redirectUri: "https://318studios.sharepoint.com/sites/dev/SitePages/test.aspx",
+                redirectUri: "https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx",
             },
         }, ["Group.Read.All"]),
     },
@@ -76,7 +76,7 @@ graph.setup({
     graph: {
         fetchClientFactory: MsalClientSetup({
             auth: {
-                authority: "https://login.microsoftonline.com/318studios.onmicrosoft.com",
+                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com",
                 clientId: "00000000-0000-0000-0000-000000000000",
                 redirectUri: "https://myapp.com/login.aspx",
             },

@@ -1,7 +1,7 @@
 import { ILibraryConfiguration, RuntimeConfig } from "@pnp/common";
-import { SPConfigurationPart } from "@pnp/sp";
+import { ISPConfigurationPart } from "@pnp/sp";
 
-export interface PnPConfiguration extends ILibraryConfiguration, SPConfigurationPart { }
+export interface PnPConfiguration extends ILibraryConfiguration, ISPConfigurationPart { }
 
 export function setup(config: PnPConfiguration): void {
     RuntimeConfig.assign(config);

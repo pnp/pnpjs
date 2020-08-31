@@ -6,7 +6,7 @@ Before proceeding be sure you have reviewed how to [setup for local configuratio
 
 ## Debugging Library Features
 
-The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses [launch.json](https://github.com/pnp/pnpjs/blob/master/.vscode/launch.json) to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/main.ts) as the entry point.
+The easiest way to debug the library when working on new features is using F5 in Visual Studio Code. This uses [launch.json](https://github.com/pnp/pnpjs/blob/main/.vscode/launch.json) to build and run the library using [./debug/launch/main.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/main.ts) as the entry point.
 
 ### Basic SharePoint Testing
 
@@ -24,7 +24,7 @@ All of the setup for the node client is handled within graph.ts using the [setti
 
 If you are working on multiple features or want to save sample code for various tasks you can create your own debugging modules and leave them in the debug/launch folder locally. The gitignore file is setup to ignore any files that aren't already in git.
 
-Using [./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/master/debug/launch/sp.ts) as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:
+Using [./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/sp.ts) as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:
 
 ```TypeScript
 // note we can use the actual package names for our imports (ex: @pnp/logging)

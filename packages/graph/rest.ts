@@ -1,9 +1,10 @@
 import { _GraphQueryable } from "./graphqueryable";
 import {
     setup as _setup,
-    GraphConfiguration,
+    IGraphConfiguration,
 } from "./graphlibconfig";
 import { GraphBatch } from "./batch";
+import { ISPFXContext } from "@pnp/common";
 
 export class GraphRest extends _GraphQueryable {
 
@@ -11,8 +12,15 @@ export class GraphRest extends _GraphQueryable {
         return new GraphBatch();
     }
 
-    public setup(config: GraphConfiguration) {
-        _setup(config);
+    public setup(config: IGraphConfiguration | ISPFXContext) {
+
+        if ((<ISPFXContext>config).pageContext) {
+            _setup({
+                spfxContext: <ISPFXContext>config,
+            });
+        } else {
+            _setup(<IGraphConfiguration>config);
+        }
     }
 }
 

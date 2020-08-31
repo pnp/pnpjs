@@ -4,7 +4,7 @@ import { BearerTokenFetchClient, isUrlAbsolute, IFetchOptions } from "@pnp/commo
 /**
  * Modifies the msal libray type Configuration, omitting the "framework" property
  */
-export type MsalConfiguation = Omit<Configuration, "framework">;
+export type MsalConfiguration = Omit<Configuration, "framework">;
 
 /**
  * Function Binder suitable for creating a factory function used in setup to create MsalClient instances
@@ -12,7 +12,7 @@ export type MsalConfiguation = Omit<Configuration, "framework">;
  * @param config The MSAL configuration object
  * @param scopes The scope this client should request
  */
-export function MsalClientSetup(config: MsalConfiguation, scopes: string[]): () => MsalClient {
+export function MsalClientSetup(config: MsalConfiguration, scopes: string[]): () => MsalClient {
 
     // optimized to share an app per configuration (hopefully)
     const app = new UserAgentApplication(config);
@@ -31,7 +31,7 @@ export class MsalClient extends BearerTokenFetchClient {
      * @param scopes [optional] The AAD Permission scope names this client should request
      * @param app [optional] If supplied will be used instead of creating a new UserAgentApplication specific to this client
      */
-    constructor(config: MsalConfiguation, public scopes: string[] = [], public app: UserAgentApplication = null) {
+    constructor(config: MsalConfiguration, public scopes: string[] = [], public app: UserAgentApplication = null) {
         super(null);
         if (app === null) {
             this.app = new UserAgentApplication(config);

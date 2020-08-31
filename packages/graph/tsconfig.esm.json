@@ -8,15 +8,11 @@
     ],
     "include": [
         "./**/*.ts",
-        "../adaljsclient/**/*.ts",
         "../common/**/*.ts",
         "../logging/**/*.ts",
         "../odata/**/*.ts"
     ],
     "references": [
-        {
-            "path": "../adaljsclient/tsconfig.esm.json"
-        },
         {
             "path": "../common/tsconfig.esm.json"
         },
