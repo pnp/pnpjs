@@ -1,6 +1,6 @@
 # @pnp/sp/lists
 
-Fields in SharePoint can be applied to both webs and lists. When referencing a webs' fields you are effectively looking at site columns which are common fields that can be utilized in any list/library in the site. When referencing a lits' fields you are looking at the fields only associated to that particular list.
+Fields in SharePoint can be applied to both webs and lists. When referencing a webs' fields you are effectively looking at site columns which are common fields that can be utilized in any list/library in the site. When referencing a lists' fields you are looking at the fields only associated to that particular list.
 
 ## IFields
 
@@ -473,7 +473,7 @@ const result2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("My F
 
 ### Update a Field
 
-Use the addLocation method to update a field.
+Use the update method to update a field.
 
 ```TypeScript
 import { sp } from "@pnp/sp";

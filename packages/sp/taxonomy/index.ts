@@ -17,9 +17,7 @@ export {
     ITaxonomyProperty,
     ITermInfo,
     ITermSet,
-    ITerms,
     TermSet,
-    Terms,
     IRelation,
     IRelationInfo,
     IRelations,
@@ -27,6 +25,8 @@ export {
     Relation,
     Relations,
     Term,
+    Children,
+    IChildren,
 } from "./types";
 
 declare module "../rest" {

@@ -4,7 +4,7 @@ As you likely are aware you can embed scripts within package.json. Using this ca
 
 This article outlines the current scripts we've implemented and how to use them, with available options and examples.
 
-## start
+## Start
 
 Executes the `serve` command
 
@@ -12,7 +12,7 @@ Executes the `serve` command
 npm start
 ```
 
-## serve
+## Serve
 
 Starts a debugging server serving a bundled script with ./debug/serve/main.ts as the entry point. This allows you to run tests and debug code running within the context of a webpage rather than node.
 
@@ -20,7 +20,7 @@ Starts a debugging server serving a bundled script with ./debug/serve/main.ts as
 npm run serve
 ```
 
-## test
+## Test
 
 Runs the tests and coverage for the library.
 
@@ -28,7 +28,7 @@ Runs the tests and coverage for the library.
 npm test
 ```
 
-### options
+### Options
 
 There are several options you can provide to the test command. All of these need to be separated using a "--" double hyphen so they are passed to the spawned sub-commands.
 
@@ -36,7 +36,7 @@ There are several options you can provide to the test command. All of these need
 
 >`--package` or `-p`
 
-This option will only run the tests associated with the package you specify. They values are the folder names within the ./packages directory.
+This option will only run the tests associated with the package you specify. The values are the folder names within the ./packages directory.
 
 ```cmd
 # run only sp tests
@@ -64,7 +64,7 @@ npm test -- -package graph -single groups
 
 >`--site`
 
-By default every time you run the tests a new subsite is created below the site specified in your [settings file](./concepts/settings.md). You can choose to reuse a site for testing, which saves time when re-running a set of tests frequently. Testing content is not deleted after tests, so if you need to inspect the created content from testing you may wish to forgo this option.
+By default every time you run the tests a new sub-site is created below the site specified in your [settings file](./concepts/settings.md). You can choose to reuse a site for testing, which saves time when re-running a set of tests frequently. Testing content is not deleted after tests, so if you need to inspect the created content from testing you may wish to forgo this option.
 
 This option can be used with any or none of the other testing options.
 

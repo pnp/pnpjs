@@ -1,6 +1,6 @@
 # @pnp/sp/clientside-pages
 
-The 'clientside pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.
+The 'clientside-pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side web parts.
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
@@ -22,6 +22,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { PromotedState } from "@pnp/sp/clientside-pages";
 
+// Create a page providing a file name
 const page = await sp.web.addClientsidePage("mypage1");
 
 // ... other operations on the page as outlined below
@@ -35,7 +36,7 @@ const page2 = await sp.web.addClientsidePage("mypage", "My Page Title", "Article
 // you must publish the new page
 await page2.save();
 
-// include title and page layout while also specifying the publishing status (Added in 2.0.4)
+// include title, page layout, and specifying the publishing status (Added in 2.0.4)
 const page3 = await sp.web.addClientsidePage("mypage", "My Page Title", "Article", PromotedState.PromoteOnPublish);
 
 // you must publish the new page, after which the page will immediately be promoted to a news article
@@ -245,8 +246,8 @@ if (partDef.length < 1) {
 // create a ClientWebPart instance from the definition
 const part = ClientsideWebpart.fromComponentDef(partDef[0]);
 
-// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a youtube video.
-// the structure of the properties varies for each webpart and each version of a webpart, so you will need to ensure you are setting
+// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a YouTube video.
+// the structure of the properties varies for each web part and each version of a web part, so you will need to ensure you are setting
 // the properties correctly
 part.setProperties<{ embedCode: string }>({
     embedCode: "https://www.youtube.com/watch?v=IWQFZ7Lx-rg",
@@ -298,7 +299,7 @@ await page.save();
 
 Allows you to set the thumbnail used for the page independently of the banner.
 
-> If you set the bannerImageUrl property and ant thumbnailUrl the thumbnail will be reset to match the banner, mimicing the UI functionality.
+> If you set the bannerImageUrl property and not thumbnailUrl the thumbnail will be reset to match the banner, mimicking the UI functionality.
 
 ```TypeScript
 // our page instance
@@ -456,7 +457,6 @@ await page.save();
 ```
 
 > you must still save the page after setting the author to persist your changes as shown in the example.
-
 
 ### load
 

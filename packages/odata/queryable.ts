@@ -119,7 +119,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
   }
 
   public set data(value: Partial<IQueryableData<DefaultActionType>>) {
-    this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
+    this._data = Object.assign({}, this.data, cloneQueryableData(value));
   }
 
   /**

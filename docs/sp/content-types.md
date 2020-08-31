@@ -31,7 +31,7 @@ console.log(d.name);
 
 ### Add a new Content Type
 
-To add a new Content Type to a collection, parameters id and name are required.
+To add a new Content Type to a collection, parameters id and name are required. For more information on creating content type IDs reference the [Microsoft Documentation](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)). While this documentation references SharePoint 2010 the structure of the IDs has not changed.
 
 ```TypeScript
 sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Type");

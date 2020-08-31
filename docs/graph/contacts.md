@@ -3,9 +3,18 @@
 The ability to manage contacts and folders in Outlook is a capability introduced in version 1.2.2 of @pnp/graph. Through the methods described
 you can add and edit both contacts and folders in a users Outlook.
 
+More information can be found in the official Graph documentation:
+
+- [Contact Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/contact?view=graph-rest-1.0)
+
+## Set up notes
+
+To make user calls you can use getById where the id is the users email address.
+Contact ID, Folder ID, and Parent Folder ID use the following format "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA="
+
 ## Get all of the Contacts
 
-Using the contacts() you can get the users contacts from Outlook
+Gets a list of all the contacts for the user.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -18,9 +27,26 @@ const contacts2 = await graph.me.contacts();
 
 ```
 
+## Get Contact by Id
+
+Gets a specific contact by ID for the user.
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users"
+import "@pnp/graph/contacts"
+
+const contactID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=";
+
+const contact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID)();
+
+const contact2 = await graph.me.contacts.getById(contactID)();
+
+```
+
 ## Add a new Contact
 
-Using the contacts.add() you can a add Contact to the users Outlook
+Adds a new contact for the user.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -34,54 +60,43 @@ const addedContact2 = await graph.me.contacts.add('Pavel', 'Bansky', [<EmailAddr
 
 ```
 
-## Get Contact by Id
+## Update a Contact
 
-Using the contacts.getById() you can get one of the users Contacts in Outlook
+Updates a specific contact by ID for teh designated user
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const contact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById('userId')();
+const contactID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=";
 
-const contact2 = await graph.me.contacts.getById('userId')();
+const updContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).update({birthday: "1986-05-30" });
+
+const updContact2 = await graph.me.contacts.getById(contactID).update({birthday: "1986-05-30" });
 
 ```
 
 ## Delete a Contact
 
-Using the delete you can remove one of the users Contacts in Outlook
+Delete a contact from the list of contacts for a user.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const delContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById('userId').delete();
+const contactID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=";
 
-const delContact2 = await graph.me.contacts.getById('userId').delete();
+const delContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).delete();
 
-```
-
-## Update a Contact
-
-Using the update you can update one of the users Contacts in Outlook
-
-```TypeScript
-import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-import "@pnp/graph/contacts"
-
-const updContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById('userId').update({birthday: "1986-05-30" });
-
-const updContact2 = await graph.me.contacts.getById('userId').update({birthday: "1986-05-30" });
+const delContact2 = await graph.me.contacts.getById(contactID).delete();
 
 ```
 
 ## Get all of the Contact Folders
 
-Using the contactFolders.get() you can get the users Contact Folders from Outlook
+Get all the folders for the designated user's contacts
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -94,129 +109,144 @@ const contactFolders2 = await graph.me.contactFolders();
 
 ```
 
-## Add a new Contact Folder
-
-Using the contactFolders.add() you can a add Contact Folder to the users Outlook
-
-```TypeScript
-import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-import "@pnp/graph/contacts"
-
-const addedContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.add('displayName', '<ParentFolderId>');
-
-const addedContactFolder2 = await graph.me.contactFolders.add('displayName', '<ParentFolderId>');
-
-```
-
 ## Get Contact Folder by Id
 
-Using the contactFolders.getById() you can get one of the users Contact Folders in Outlook
+Get a contact folder by ID for the specified user
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const contactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('folderId')();
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
 
-const contactFolder2 = await graph.me.contactFolders.getById('folderId')();
+const contactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID)();
+
+const contactFolder2 = await graph.me.contactFolders.getById(folderID)();
 
 ```
 
-## Delete a Contact Folder
+## Add a new Contact Folder
 
-Using the delete you can remove one of the users Contact Folders in Outlook
+Add a new folder in the users contacts
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const delContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('folderId').delete();
+const parentFolderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAAAAAEOAAA=";
 
-const delContactFolder2 = await graph.me.contactFolders.getById('folderId').delete();
+const addedContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.add("New Folder", parentFolderID);
+
+const addedContactFolder2 = await graph.me.contactFolders.add("New Folder", parentFolderID);
 
 ```
 
 ## Update a Contact Folder
 
-Using the update you can update one of the users Contact Folders in Outlook
+Update an existing folder in the users contacts
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const updContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('userId').update({displayName: "value" });
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
 
-const updContactFolder2 = await graph.me.contactFolders.getById('userId').update({displayName: "value" });
+const updContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).update({displayName: "Updated Folder" });
+
+const updContactFolder2 = await graph.me.contactFolders.getById(folderID).update({displayName: "Updated Folder" });
+
+```
+
+## Delete a Contact Folder
+
+Delete a folder from the users contacts list. Deleting a folder deletes the contacts in that folder.
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users"
+import "@pnp/graph/contacts"
+
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
+
+const delContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).delete();
+
+const delContactFolder2 = await graph.me.contactFolders.getById(folderID).delete();
 
 ```
 
 ## Get all of the Contacts from the Contact Folder
 
-Using the contacts.get() in the Contact Folder gets the users Contact from the folder.
+Get all the contacts in a folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const contactsInContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('folderId').contacts();
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
 
-const contactsInContactFolder2 = await graph.me.contactFolders.getById('folderId').contacts();
+const contactsInContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).contacts();
+
+const contactsInContactFolder2 = await graph.me.contactFolders.getById(folderID).contacts();
 
 ```
 
 ## Get Child Folders of the Contact Folder
 
-Using the childFolders.get() you can get the Child Folders of the current Contact Folder from Outlook
+Get child folders from contact folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const childFolders = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('<id>').childFolders();
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
 
-const childFolders2 = await graph.me.contactFolders.getById('<id>').childFolders();
+const childFolders = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders();
+
+const childFolders2 = await graph.me.contactFolders.getById(folderID).childFolders();
 
 ```
 
 ## Add a new Child Folder
 
-Using the childFolders.add() you can a add Child Folder in a Contact Folder
+Add a new child folder to a contact folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const addedChildFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('<id>').childFolders.add('displayName', '<ParentFolderId>');
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
 
-const addedChildFolder2 = await graph.me.contactFolders.getById('<id>').childFolders.add('displayName', '<ParentFolderId>');
+const addedChildFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.add("Sub Folder", folderID);
 
+const addedChildFolder2 = await graph.me.contactFolders.getById(folderID).childFolders.add("Sub Folder", folderID);
 ```
 
 ## Get Child Folder by Id
 
-Using the childFolders.getById() you can get one of the users Child Folders in Outlook
+Get child folder by ID from user contacts
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const childFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('<id>').childFolders.getById('folderId')();
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
+const subFolderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqIZAAA=";
 
-const childFolder2 = await graph.me.contactFolders.getById('<id>').childFolders.getById('folderId')();
+const childFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID)();
 
+const childFolder2 = await graph.me.contactFolders.getById(folderID).childFolders.getById(subFolderID)();
 ```
 
 ## Add Contact in Child Folder of Contact Folder
 
-Using contacts.add in the Child Folder of a Contact Folder, adds a new Contact to that folder
+Add a new contact to a child folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -224,8 +254,11 @@ import { EmailAddress } from "./@microsoft/microsoft-graph-types";
 import "@pnp/graph/users"
 import "@pnp/graph/contacts"
 
-const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById('<id>').childFolders.getById('folderId').contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const folderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=";
+const subFolderID = "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqIZAAA=";
 
-const addedContact2 = await graph.me.contactFolders.getById('<id>').childFolders.getById('folderId').contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+
+const addedContact2 = await graph.me.contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
 ```

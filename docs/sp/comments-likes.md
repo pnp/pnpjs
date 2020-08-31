@@ -23,7 +23,7 @@ You can add a comment using the addComment method as shown
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
-const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
+const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
 await page.save();
 
@@ -36,7 +36,7 @@ const comment = await page.addComment("A test comment");
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
-const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
+const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
 await page.save();
 
@@ -74,7 +74,7 @@ await page.disableComments();
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
-const page = await CreateClientsidePage(sp.web, pageName, pageName, "Article");
+const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
 await page.save();
 

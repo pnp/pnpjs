@@ -1,10 +1,10 @@
 # Documentation
 
-Just like with tests we have invested much time in updating the documentation and when you make a change to the library you should update the associated docs as part of the pull request.
+Just like with tests we have invested much time in updating the documentation and when you make a change to the library you should update the associated documentation as part of the pull request.
 
 ## Writing Docs
 
-Our docs are all written in markdown and processed using mkdocs. You can use code blocks, tables, and other markdown formatting. You can review the other articles for examples on writing docs. Generally articles should focus on how to use the library and where appropriate link to official outside documents as needed. Official could be Microsoft, project docs such as mkdocs, or others.
+Our docs are all written in markdown and processed using MkDocs. You can use code blocks, tables, and other markdown formatting. You can review the other articles for examples on writing docs. Generally articles should focus on how to use the library and where appropriate link to official outside documents as needed. Official documentation could be Microsoft, other library project docs such as MkDocs, or other sources.
 
 ## Building Docs Locally
 

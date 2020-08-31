@@ -71,6 +71,6 @@ export interface IRequestClient {
 }
 ```
 
-## Suportability Note
+## Supportability Note
 
 We cannot provide support for your custom client implementation, and creating your own client assumes an intimate knowledge of how SharePoint requests work. Again, this is very likely something you will never need to do - and we recommend exhausting all other options before taking this route.

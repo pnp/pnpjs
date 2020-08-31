@@ -1,12 +1,10 @@
 # @pnp/sp-addinhelpers/sprequestexecutorclient
 
-The SPRequestExecutorClient is an implementation of the HttpClientImpl interface that facilitates requests to SharePoint from an add-in. It relies on
-the SharePoint SP product libraries being present to allow use of the SP.RequestExecutor to make the request.
+The SPRequestExecutorClient is an implementation of the HttpClientImpl interface that facilitates requests to SharePoint from an add-in. It relies on the SharePoint SP product libraries being present to allow use of the SP.RequestExecutor to make the request.
 
 ## Setup
 
-To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a
-SharePoint add-in web.
+To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a SharePoint add-in web.
 
 ```TypeScript
 // note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods
