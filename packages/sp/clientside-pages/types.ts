@@ -749,7 +749,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         }
 
         // per bug #858 if we promote before we have ever published the last published date will
-        // forever not be updated correctly in the modern news webpart. Because this will affect very
+        // forever not be updated correctly in the modern news web part. Because this will affect very
         // few folks we just go ahead and publish for them here as that is likely what they intended.
         if (stringIsNullOrEmpty(this.json.VersionInfo.LastVersionCreatedBy)) {
             const lastPubData = new Date(this.json.VersionInfo.LastVersionCreated);
@@ -815,7 +815,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
         const order = hOP(column.data, "position") && hOP(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
         const layoutIndex = hOP(column.data, "position") && hOP(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
-        const section = this.getOrCreateSection(order, layoutIndex, column.data.emphasis.zoneEmphasis || 0);
+        const section = this.getOrCreateSection(order, layoutIndex, column.data?.emphasis?.zoneEmphasis || 0);
         column.section = section;
         section.columns.push(column);
     }
