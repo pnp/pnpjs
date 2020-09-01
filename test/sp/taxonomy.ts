@@ -121,7 +121,7 @@ describe("Taxonomy", () => {
                 return;
             }
 
-            return expect(group.sets.getById(info2[0].id).getTermById(info3[0].id)).to.eventually.have.property("id");
+            return expect(group.sets.getById(info2[0].id).getTermById(info3[0].id)()).to.eventually.have.property("id");
         });
     }
 });

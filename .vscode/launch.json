@@ -21,6 +21,9 @@
       "sourceMaps": true,
       "outFiles": [
         "${workspaceRoot}/build/debugging/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
       ]
     },
     {
@@ -33,7 +36,10 @@
       "outFiles": [],
       "args": [],
       "console": "internalConsole",
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "name": "Debug Build System",
@@ -58,6 +64,9 @@
       "sourceMaps": true,
       "outFiles": [
         "${workspaceRoot}/tools/buildsystem/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
       ]
     },
   ]
