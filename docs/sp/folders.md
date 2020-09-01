@@ -355,6 +355,22 @@ await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
 });
 ```
 
+### addSubFolderUsingPath
+
+_Added in 2.0.9_
+
+You can use the addSubFolderUsingPath method to add a folder with some special chars supported
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+import { IFolder } from "@pnp/sp/folders";
+
+// add a folder to site assets
+const folder: IFolder = await web.rootFolder.folders.getByName("SiteAssets").addSubFolderUsingPath("folder name");
+```
+
 ### getFolderById
 
 You can get a folder by Id from a web.

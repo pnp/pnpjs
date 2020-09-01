@@ -205,5 +205,18 @@ describe("Folder", () => {
             const folderByIdInfo = await web.getFolderById(folderInfo.UniqueId).select("UniqueId")();
             return expect(folderInfo.UniqueId).to.eq(folderByIdInfo.UniqueId);
         });
+
+        it("add folder by path", async function () {
+
+            const folderName = `test_${getRandomString(5)}`;
+
+            const result1 = await web.rootFolder.folders.getByName("SiteAssets").folders.add(folderName);
+
+            const folderName2 = `test_${getRandomString(5)}`;
+
+            const folder = await result1.folder.addSubFolderUsingPath(folderName2);
+
+            return expect(folder()).to.eventually.be.fulfilled;
+        });
     }
 });

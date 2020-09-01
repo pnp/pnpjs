@@ -257,6 +257,16 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     }
 
     /**
+     * Create the subfolder inside the current folder, as specified by the leafPath
+     * 
+     * @param leafPath leafName of the new folder
+     */
+    public async addSubFolderUsingPath(leafPath: string): Promise<IFolder> {
+        await spPost(this.clone(Folder, "AddSubFolderUsingPath"), body({ leafPath: toResourcePath(leafPath) }));
+        return this.folders.getByName(leafPath);
+    }
+
+    /**
      * Gets the shareable item associated with this folder
      */
     @tag("f.getShareable")
