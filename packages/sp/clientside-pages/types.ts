@@ -108,6 +108,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
                 title: "",
                 topicHeader: "",
             },
+            reservedHeight: 280,
             serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
             title: "Title area",
         };
@@ -158,6 +159,14 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
     public set title(value: string) {
         this.json.Title = value;
         this._layoutPart.properties.title = value;
+    }
+
+    public get reservedHeight(): number {
+        return this._layoutPart.reservedHeight;
+    }
+
+    public set reservedHeight(value: number) {
+        this._layoutPart.reservedHeight = value;
     }
 
     public get description(): string {
@@ -669,6 +678,9 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     protected setControls(controls: IClientsideControlBaseData[]): void {
 
+        // reset the sections
+        this.sections = [];
+
         if (controls && controls.length) {
 
             for (let i = 0; i < controls.length; i++) {
@@ -953,7 +965,7 @@ export class CanvasSection {
     /**
      * Adds a new column to this section
      */
-    public addColumn(factor: CanvasColumnFactor, layoutIndex = 1): CanvasColumn {
+    public addColumn(factor: CanvasColumnFactor, layoutIndex = this.layoutIndex): CanvasColumn {
         const column = new CanvasColumn();
         column.section = this;
         column.data.position.zoneIndex = this.order;
@@ -1486,4 +1498,5 @@ interface ILayoutPartsContent {
         translateY?: number;
         altText?: string;
     };
+    reservedHeight: number;
 }

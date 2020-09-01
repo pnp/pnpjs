@@ -200,6 +200,36 @@ describe("Clientside Pages", () => {
                 // reload
                 await page.load();
 
+                const web = Web(testSettings.sp.webUrl);
+                const webData = await web.select("ServerRelativeUrl")();
+
+                // we need a full reload
+                page = await web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
+
+                // tslint:disable-next-line:no-unused-expression
+                expect(page.hasVerticalSection).to.be.true;
+                expect(page.verticalSection.columns[0].controls.length).to.eq(2);
+                const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
+                expect(ctrl.text).to.match(/I'm second\./);
+            });
+
+            it("vertical section 2", async function () {
+
+                page.addVerticalSection();
+                page.verticalSection.addControl(new ClientsideText("Hello."));
+                page.verticalSection.addControl(new ClientsideText("I'm second."));
+
+                // save
+                await page.save();
+                // load to update the data with correct url
+                await page.load();
+
+                const web = Web(testSettings.sp.webUrl);
+                const webData = await web.select("ServerRelativeUrl")();
+
+                // we need a full reload
+                page = await web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
+
                 // tslint:disable-next-line:no-unused-expression
                 expect(page.hasVerticalSection).to.be.true;
                 expect(page.verticalSection.columns[0].controls.length).to.eq(2);
