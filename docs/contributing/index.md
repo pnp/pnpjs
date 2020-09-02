@@ -11,3 +11,12 @@ Thank you for your interest in contributing to PnPjs. We have updated our contri
 |[Writing Tests](./debug-tests.md)|How to write and debug tests|
 |[Update Documentation](./documentation.md)|Describes the steps required to edit and locally view the documentation|
 |[Submit a Pull Request](./pull-requests.md)|Outlines guidance for submitting a pull request|
+
+
+## Need Help?
+
+The PnP "Sharing Is Caring" initiative teaches the basics around making changes in GitHub, submitting pull requests to the PnP & Microsoft 365 open-source repositories such as PnPjs. 
+
+Every month, we provide multiple live hands-on sessions that walk attendees through the process of using and contributing to PnP initiatives.
+
+To learn more and register for an upcoming session, please visit the [Sharing is Caring](https://aka.ms/sharing-is-caring) website.
