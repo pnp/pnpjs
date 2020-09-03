@@ -7,7 +7,7 @@ import {
     IDeleteableWithETag,
     deleteableWithETag,
 } from "../sharepointqueryable";
-import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, StreamParser, headers, body, IResponseBodyStream } from "@pnp/odata";
 import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
 import { Item, IItem } from "../items";
 import { odataUrlFrom } from "../odata";
@@ -46,7 +46,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      * @returns The new File and the raw response.
      */
     @tag("fis.add")
-    public async add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IFileAddResult> {
+    public async add(url: string, content: string | ArrayBuffer | Blob | any, shouldOverWrite = true): Promise<IFileAddResult> {
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });
@@ -392,6 +392,15 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     public getBuffer(): Promise<ArrayBuffer> {
 
         return this.clone(File, "$value", false).usingParser(new BufferParser())(headers({ "binaryStringResponseBody": "true" }));
+    }
+    
+    /**
+     * Gets the raw reference to response body without consuming it, should be used to get the response stream in Node.js. Not supported in batching.
+     */
+    @tag("fi.getStream")
+    public getStream(): Promise<IResponseBodyStream> {
+
+        return this.clone(File, "$value", false).usingParser(new StreamParser())(headers({ "binaryStringResponseBody": "true" }));
     }
 
     /**
