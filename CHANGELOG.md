@@ -5,9 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.9 - 2020-09-04
+
+### Added
+
+- sp: Added support for deleteWithParameters for folder, file, and item [[PR](https://github.com/pnp/pnpjs/pull/1326)]
+- sp: Adding support for file.Exists to handle errors #1320 [[PR](https://github.com/pnp/pnpjs/pull/1327)]
+- sp: Adding support for AddSubFolderUsingPath #1340 [[PR](https://github.com/pnp/pnpjs/pull/1353)]
+- nodejs: Add getStream support to Nodejs  [@naugtur](https://github.com/naugtur) [[PR](https://github.com/pnp/pnpjs/pull/1259)]
+
+### Changed
+
+- Renaming all instances of master to main in scripts, docs, and code [[PR](https://github.com/pnp/pnpjs/pull/1334)]
+- sp: Updates to adjust taxonomy support and docs to reflect changes in api [[PR](https://github.com/pnp/pnpjs/pull/1346)]
+
+### Fixed
+
+- docs/graph: Docs updates to address #1341, #1099, and updated graph typings version to 1.17.0 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1343)]
+- sp: Fixes an issue for users not using minimal meta-data where unpatched 2016 returns verbose results that caused an error in getParentWeb. [[PR](https://github.com/pnp/pnpjs/pull/1345)]
+- docs/graph: Updated documentation and added Graph tests [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1350)]
+- sp/graph: Bug fixes for #1337, #1349 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1351)]
+- sp/graph: Fix for #1330, fixing linting issues, update tests for client side pages [[PR](https://github.com/pnp/pnpjs/pull/1352)]
+
 ## 2.0.8 - 2020-08-07
 
 ### Added
+
 - sp: Added custom SPHttpClient extensibility and docs [[PR](https://github.com/pnp/pnpjs/pull/1300)]
 - graph: Added baseUrl [[PR](https://github.com/pnp/pnpjs/pull/1303)]
 - graph: Added ability to pass the SPFx context directly to setup [[PR](https://github.com/pnp/pnpjs/pull/1303)]
