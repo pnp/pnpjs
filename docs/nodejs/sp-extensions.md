@@ -34,3 +34,24 @@ const txt = await new Promise<string>((resolve) => {
     stream.body.on("end", () => resolve(data));
 });
 ```
+
+## Explicit import
+
+If you don't need to import anything from the library, but would like to include the extensions just import the library as shown.
+
+```TypeScript
+import "@pnp/nodejs-commonjs";
+
+// get the stream
+const streamResult = await sp.web.getFileByServerRelativeUrl("/sites/dev/file.txt").getStream();
+```
+
+## Accessing SP Extension Namespace
+
+There are classes and interfaces included in extension modules, which you can access through a namespace, "SPNS".
+
+```TypeScript
+import { SPNS } from "@pnp/nodejs-commonjs";
+
+const parser = new SPNS.StreamParser();
+```

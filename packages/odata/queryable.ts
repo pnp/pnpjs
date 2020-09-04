@@ -63,7 +63,6 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
 
   if (body) {
     parsed.options.body = body;
-    // Since we're attempting to clone the source to avoid changing it, the least we can do with the body is keep the reference intact.
     source.options.body = body;
   }
 

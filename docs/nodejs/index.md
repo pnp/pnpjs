@@ -15,4 +15,11 @@ exported functionality.
 * [AdalFetchClient](./adal-fetch-client.md)
 * [SPFetchClient](./sp-fetch-client.md)
 * [BearerTokenFetchClient](./bearer-token-fetch-client.md)
+
+## SP Extensions
+
+_Added in 2.0.9_
+
+A set of nodejs specific extensions for the [@pnp/sp](../sp/) library.
+
 * [SP Extensions](./sp-extensions.md)

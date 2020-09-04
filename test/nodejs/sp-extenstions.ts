@@ -13,7 +13,7 @@ describe("nodejs - sp-extensions", () => {
 
     if (testSettings.enableWebTests) {
 
-        it.only("Should allow reading of a stream", async function () {
+        it("Should allow reading of a stream", async function () {
 
             const content = "Some test text content.";
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
