@@ -41,12 +41,12 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      * Uploads a file. Not supported for batching
      *
      * @param url The folder-relative url of the file.
-     * @param content The file contents blob.
+     * @param content The file contents
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
      * @returns The new File and the raw response.
      */
     @tag("fis.add")
-    public async add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IFileAddResult> {
+    public async add(url: string, content: any, shouldOverWrite = true): Promise<IFileAddResult> {
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });

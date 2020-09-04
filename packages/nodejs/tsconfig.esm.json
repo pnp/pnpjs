@@ -3,7 +3,9 @@
     "include": [
         "./**/*.ts",
         "../common/**/*.ts",
-        "../logging/**/*.ts"
+        "../odata/**/*.ts",
+        "../logging/**/*.ts",
+        "../sp/**/*.ts"
     ],
     "references": [
         {
@@ -11,6 +13,12 @@
         },
         {
             "path": "../logging/tsconfig.esm.json"
+        },
+        {
+            "path": "../odata/tsconfig.esm.json"
+        },
+        {
+            "path": "../sp/tsconfig.esm.json"
         }
     ]
 }

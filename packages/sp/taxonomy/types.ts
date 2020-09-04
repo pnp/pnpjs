@@ -1,6 +1,5 @@
 import { defaultPath } from "../decorators";
 import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable";
-import { spGet } from "../operations";
 import { tag } from "../telemetry";
 
 /**
@@ -89,8 +88,8 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
         return tag.configure(Relations(this), "txts.relations");
     }
 
-    public getTermById(id: string): Promise<ITermInfo> {
-        return spGet(tag.configure(this.clone(TermSet, `terms/${id}`), "txts.getTermById"));
+    public getTermById(id: string): ITerm {
+        return tag.configure(this.clone(Term, `terms/${id}`), "txts.getTermById");
     }
 }
 export interface ITermSet extends _TermSet { }

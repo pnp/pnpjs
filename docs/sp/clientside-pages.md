@@ -161,6 +161,8 @@ const page: IClientsidePage;
 // add or get a vertical section (handles case where section already exists)
 const vertSection = page.addVerticalSection();
 
+// ****************************************************************
+
 // if you know or want to test if a vertical section is present:
 if (page.hasVerticalSection) {
 
@@ -169,7 +171,7 @@ if (page.hasVerticalSection) {
 } else {
 
     const vertSection = page.addVerticalSection();
-    section.addControl(new ClientsideText("hello"));
+    vertSection.addControl(new ClientsideText("hello"));
 }
 ```
 

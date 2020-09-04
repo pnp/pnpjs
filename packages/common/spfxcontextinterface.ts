@@ -10,7 +10,7 @@ export interface ISPFXContext {
         }>;
     };
 
-    msGraphClientFactory: {
+    msGraphClientFactory?: {
         getClient: () => Promise<any>;
     };
 

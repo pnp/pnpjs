@@ -3,7 +3,7 @@ import { testSettings } from "../main";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
-import { HttpRequestError } from '@pnp/odata';
+import { HttpRequestError } from "@pnp/odata";
 
 describe("Calendar", function () {
 

@@ -14,6 +14,13 @@ import { PipelineMethod } from "./pipeline";
 import { IODataParser, ODataParser } from "./parsers";
 
 export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData> {
+  let body;
+  // this handles bodies that cannot be JSON encoded (Blob, etc)
+  // Note however, even bodies that can be serialized will not be cloned.
+  if (source.options && source.options.body) {
+    body = source.options.body;
+    source.options.body = "-";
+  }
 
   const s = JSON.stringify(source, (key: string, value: any) => {
 
@@ -54,9 +61,10 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
     }
   });
 
-  // this handles bodies that cannot be JSON encoded (Blob, etc)
-  if (source.options && source.options.body) {
-    parsed.options.body = source.options.body;
+  if (body) {
+    parsed.options.body = body;
+    // Since we're attempting to clone the source to avoid changing it, the least we can do with the body is keep the reference intact.
+    source.options.body = body;
   }
 
   return parsed;

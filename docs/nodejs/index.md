@@ -12,6 +12,7 @@ exported functionality.
 
 `npm install @pnp/logging @pnp/common @pnp/nodejs --save`
 
-* [AdalFetchClient](adal-fetch-client.md)
-* [SPFetchClient](sp-fetch-client.md)
-* [BearerTokenFetchClient](bearer-token-fetch-client.md)
+* [AdalFetchClient](./adal-fetch-client.md)
+* [SPFetchClient](./sp-fetch-client.md)
+* [BearerTokenFetchClient](./bearer-token-fetch-client.md)
+* [SP Extensions](./sp-extensions.md)

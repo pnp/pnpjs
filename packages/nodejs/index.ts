@@ -17,6 +17,16 @@ const NodeFetch = require("node-fetch");
 
 })(global);
 
+// auto populate all extensions
+import "./sp-extensions";
+
+// export extension types as a namespace
+import * as sp from "./sp-extensions";
+
+export {
+    sp,
+};
+
 export { AADToken, SPOAuthEnv } from "./types";
 export { ProviderHostedRequestContext } from "./providerhosted";
 export * from "./net/index";

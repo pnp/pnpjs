@@ -33,5 +33,4 @@ export * from "../planner";
 export * from "../subscriptions";
 export * from "../teams";
 export * from "../users";
-
-export { graph, GraphRest } from "../rest";
+export * from "../index";
