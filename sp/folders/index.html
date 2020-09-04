@@ -1593,6 +1593,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#delete" title="delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-with-params" title="delete with params" class="md-nav__link">
+    delete with params
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#recycle" title="recycle" class="md-nav__link">
     recycle
   </a>
@@ -1672,6 +1686,13 @@
           <li class="md-nav__item">
   <a href="#create-a-folder-with-custom-content-type" title="Create a folder with custom content type" class="md-nav__link">
     Create a folder with custom content type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addsubfolderusingpath" title="addSubFolderUsingPath" class="md-nav__link">
+    addSubFolderUsingPath
   </a>
   
 </li>
@@ -2342,6 +2363,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#delete" title="delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-with-params" title="delete with params" class="md-nav__link">
+    delete with params
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#recycle" title="recycle" class="md-nav__link">
     recycle
   </a>
@@ -2426,6 +2461,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#addsubfolderusingpath" title="addSubFolderUsingPath" class="md-nav__link">
+    addSubFolderUsingPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#getfolderbyid" title="getFolderById" class="md-nav__link">
     getFolderById
   </a>
@@ -2460,7 +2502,7 @@
 <p>Folders serve as a container for your files and list items.</p>
 <h2 id="ifolders">IFolders<a class="headerlink" href="#ifolders" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<p>Represents a collection of folders. SharePoint web, list and list item have a collection of folders under their properties.</p>
+<p>Represents a collection of folders. SharePoint webs, lists, and list items have a collection of folders under their properties.</p>
 <table>
 <thead>
 <tr>
@@ -2642,6 +2684,28 @@
 <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">copyByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>
 
+<h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
+<p>Deletes a folder</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</pre></div>
+
+<h3 id="delete-with-params">delete with params<a class="headerlink" href="#delete-with-params" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.9</em></p>
+<p>Deletes a folder with options</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">deleteWithParams</span><span class="p">({</span>
+                <span class="nx">BypassSharedLock</span>: <span class="kt">true</span><span class="p">,</span>
+                <span class="nx">DeleteIfEmpty</span>: <span class="kt">true</span><span class="p">,</span>
+            <span class="p">});</span>
+</pre></div>
+
 <h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
 <p>Recycles a folder</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
@@ -2763,6 +2827,18 @@
     <span class="nx">MyFolderField</span><span class="o">:</span> <span class="s2">&quot;field value&quot;</span><span class="p">,</span>
     <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;My New Folder&quot;</span><span class="p">,</span>
 <span class="p">});</span>
+</pre></div>
+
+<h3 id="addsubfolderusingpath">addSubFolderUsingPath<a class="headerlink" href="#addsubfolderusingpath" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.9</em></p>
+<p>You can use the addSubFolderUsingPath method to add a folder with some special chars supported</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IFolder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+
+<span class="c1">// add a folder to site assets</span>
+<span class="kr">const</span> <span class="nx">folder</span>: <span class="kt">IFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">addSubFolderUsingPath</span><span class="p">(</span><span class="s2">&quot;folder name&quot;</span><span class="p">);</span>
 </pre></div>
 
 <h3 id="getfolderbyid">getFolderById<a class="headerlink" href="#getfolderbyid" title="Permanent link">&para;</a></h3>

@@ -1761,6 +1761,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#docs-updated-with-v209-release-as-the-underlying-api-changed" title="Docs updated with v2.0.9 release as the underlying API changed." class="md-nav__link">
+    Docs updated with v2.0.9 release as the underlying API changed.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#term-store" title="Term Store" class="md-nav__link">
     Term Store
   </a>
@@ -2166,6 +2173,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#docs-updated-with-v209-release-as-the-underlying-api-changed" title="Docs updated with v2.0.9 release as the underlying API changed." class="md-nav__link">
+    Docs updated with v2.0.9 release as the underlying API changed.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#term-store" title="Term Store" class="md-nav__link">
     Term Store
   </a>
@@ -2274,6 +2288,7 @@
                 
                 <h1 id="pnpsptaxonomy">@pnp/sp/taxonomy<a class="headerlink" href="#pnpsptaxonomy" title="Permanent link">&para;</a></h1>
 <p>Provides access to the v2.1 api term store</p>
+<h3 id="docs-updated-with-v209-release-as-the-underlying-api-changed">Docs updated with v2.0.9 release as the underlying API changed.<a class="headerlink" href="#docs-updated-with-v209-release-as-the-underlying-api-changed" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>NOTE: This API may change so please be aware updates to the taxonomy module will not trigger a major version bump in PnPjs even if they are breaking. Once things stabalize this note will be removed.</p>
 </blockquote>
@@ -2295,11 +2310,8 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermGroupInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
-<span class="c1">// get term groups data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermGroupInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">();</span>
-
-<span class="c1">// seems to get the same information</span>
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermGroupInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">();</span>
+<span class="c1">// get term groups</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermGroupInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">();</span>
 </pre></div>
 
 <h3 id="get-by-id">Get By Id<a class="headerlink" href="#get-by-id" title="Permanent link">&para;</a></h3>
@@ -2308,9 +2320,7 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermGroupInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
 <span class="c1">// get term groups data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermGroupInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
-
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermGroupInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermGroupInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
 </pre></div>
 
 <h2 id="term-sets">Term Sets<a class="headerlink" href="#term-sets" title="Permanent link">&para;</a></h2>
@@ -2320,11 +2330,11 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermSetInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
-<span class="c1">// get term set data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermSetInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">termSets</span><span class="p">();</span>
+<span class="c1">// get get set info</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermSetInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">();</span>
 
-<span class="c1">// seems to get the same information</span>
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermSetInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">();</span>
+<span class="c1">// also works to get sets not in groups</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermSetInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">sets</span><span class="p">();</span>
 </pre></div>
 
 <h3 id="get-by-id_1">Get By Id<a class="headerlink" href="#get-by-id_1" title="Permanent link">&para;</a></h3>
@@ -2333,9 +2343,9 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermSetInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
 <span class="c1">// get term set data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermSetInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">termSets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermSetInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
 
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermSetInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermSetInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
 </pre></div>
 
 <h2 id="terms">Terms<a class="headerlink" href="#terms" title="Permanent link">&para;</a></h2>
@@ -2345,11 +2355,10 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
-<span class="c1">// get term set data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">termSets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">terms</span><span class="p">();</span>
+<span class="c1">// list all the terms</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">children</span><span class="p">();</span>
 
-<span class="c1">// seems to get the same information</span>
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">terms</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">children</span><span class="p">();</span>
 </pre></div>
 
 <h3 id="get-by-id_2">Get By Id<a class="headerlink" href="#get-by-id_2" title="Permanent link">&para;</a></h3>
@@ -2358,9 +2367,9 @@
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ITermInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
 <span class="c1">// get term set data</span>
-<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">termGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">termSets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">terms</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">getTermById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
 
-<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">terms</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">ITermInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">).</span><span class="nx">getTermById</span><span class="p">(</span><span class="s2">&quot;338666a8-1111-2222-3333-f72471314e72&quot;</span><span class="p">)();</span>
 </pre></div>
                 
                   

@@ -1987,8 +1987,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#general-guidlines-for-writing-tests" title="General Guidlines for Writing Tests" class="md-nav__link">
-    General Guidlines for Writing Tests
+  <a href="#general-guidelines-for-writing-tests" title="General Guidelines for Writing Tests" class="md-nav__link">
+    General Guidelines for Writing Tests
   </a>
   
 </li>
@@ -2104,8 +2104,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#general-guidlines-for-writing-tests" title="General Guidlines for Writing Tests" class="md-nav__link">
-    General Guidlines for Writing Tests
+  <a href="#general-guidelines-for-writing-tests" title="General Guidelines for Writing Tests" class="md-nav__link">
+    General Guidelines for Writing Tests
   </a>
   
 </li>
@@ -2137,9 +2137,9 @@
                 
                 
                 <h1 id="writing-tests">Writing Tests<a class="headerlink" href="#writing-tests" title="Permanent link">&para;</a></h1>
-<p>With version 2 we have made a significant effort to improve out test coverage. To keep that up all changes will require one or more tests be included. For new functionality at least a basic test that the method executes is required. For bug fixes please include a test that would have caught the bug (i.e. fail before your fix) and passes with your fix in place.</p>
+<p>With version 2 we have made a significant effort to improve out test coverage. To keep that up, all changes submitted will require one or more tests be included. For new functionality at least a basic test that the method executes is required. For bug fixes please include a test that would have caught the bug (i.e. fail before your fix) and passes with your fix in place.</p>
 <h2 id="how-to-write-tests">How to write Tests<a class="headerlink" href="#how-to-write-tests" title="Permanent link">&para;</a></h2>
-<p>We use <a href="https://mochajs.org/">Mocha</a> and <a href="https://www.chaijs.com/">Chai</a> for our testing framework. You can see many examples of writing tests within the ./test folder. Here is a sample with extra comments to help explain what's happening, taken from <a href="https://github.com/pnp/pnpjs/blob/master/test/sp/items.ts">./test/sp/items.ts</a>:</p>
+<p>We use <a href="https://mochajs.org/">Mocha</a> and <a href="https://www.chaijs.com/">Chai</a> for our testing framework. You can see many examples of writing tests within the ./test folder. Here is a sample with extra comments to help explain what's happening, taken from <a href="https://github.com/pnp/pnpjs/blob/main/test/sp/items.ts">./test/sp/items.ts</a>:</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">testSettings</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;../main&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;chai&quot;</span><span class="p">;</span>
@@ -2156,7 +2156,7 @@
         <span class="c1">// a block scoped var we will use across our tests</span>
         <span class="kd">let</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-        <span class="c1">// we use the before block to setup </span>
+        <span class="c1">// we use the before block to setup</span>
         <span class="c1">// executed before all the tests in this block, see the mocha docs for more details</span>
         <span class="c1">// mocha prefers using function vs arrow functions and this is recommended</span>
         <span class="nx">before</span><span class="p">(</span><span class="nx">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -2195,7 +2195,7 @@
 <span class="p">}</span>
 </pre></div>
 
-<h2 id="general-guidlines-for-writing-tests">General Guidlines for Writing Tests<a class="headerlink" href="#general-guidlines-for-writing-tests" title="Permanent link">&para;</a></h2>
+<h2 id="general-guidelines-for-writing-tests">General Guidelines for Writing Tests<a class="headerlink" href="#general-guidelines-for-writing-tests" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Tests should operate within the site defined in testSettings</li>
 <li>Tests should be able to run multiple times on the same site, but do not need to cleanup after themselves</li>

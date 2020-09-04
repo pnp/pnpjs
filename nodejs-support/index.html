@@ -504,8 +504,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-it" title="Run It!" class="md-nav__link">
-    Run It!
+  <a href="#run-it" title="Run It" class="md-nav__link">
+    Run It
   </a>
   
 </li>
@@ -2160,8 +2160,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-it" title="Run It!" class="md-nav__link">
-    Run It!
+  <a href="#run-it" title="Run It" class="md-nav__link">
+    Run It
   </a>
   
 </li>
@@ -2192,7 +2192,7 @@
                 
                 <h1 id="working-in-nodejs">Working in Nodejs<a class="headerlink" href="#working-in-nodejs" title="Permanent link">&para;</a></h1>
 <p>As outlined on the <a href="../getting-started/#connect-to-sharepoint-from-node">getting started page</a> you can easily use the library with Nodejs, but there are some key differences you need to consider.</p>
-<p>But first a little history, you can skip this part if you just want to see how things work but felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this <a href="https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling">following the available guidance</a> but ultimately it didn't work across all node versions and we unpublished 2.0.1.</p>
+<p>But first a little history, you can skip this part if you just want to see how things work but we felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this <a href="https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling">following the available guidance</a> but ultimately it didn't work across all node versions and we unpublished 2.0.1.</p>
 <h2 id="commonjs-libraries">CommonJS Libraries<a class="headerlink" href="#commonjs-libraries" title="Permanent link">&para;</a></h2>
 <p>Because of the difficulties of working with es modules in node we recommend using our mirror packages providing commonjs modules. These can be installed by using the package name and appending -commonjs, such as:</p>
 <div class="highlight"><pre><span></span>npm install @pnp/sp-commonjs @pnp/nodejs-commonjs
@@ -2235,7 +2235,7 @@
 </pre></div>
 
 <blockquote>
-<p>Don't forget you will need to <a href="https://pnp.github.io/pnpjs/debugging/#register-an-add-in">register an app</a> to get the client id and secret.</p>
+<p>Don't forget you will need to <a href="https://pnp.github.io/pnpjs/authentication/sp-app-registration/">register an app</a> to get the client id and secret.</p>
 </blockquote>
 <h3 id="add-a-tsconfigjson">Add a tsconfig.json<a class="headerlink" href="#add-a-tsconfigjson" title="Permanent link">&para;</a></h3>
 <p>Not strictly necessary but very useful to include a tsconfig.json to control how tsc transpiles your code to JavaScript</p>
@@ -2282,7 +2282,7 @@
 <span class="p">}</span>
 </pre></div>
 
-<h3 id="run-it">Run It!<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h3>
+<h3 id="run-it">Run It<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h3>
 <p>You can now run your program using:</p>
 <div class="highlight"><pre><span></span>npm start
 </pre></div>

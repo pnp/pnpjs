@@ -1000,15 +1000,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of" title="Return all the groups the user, group or directoryObject is a member of" class="md-nav__link">
-    Return all the groups the user, group or directoryObject is a member of
+  <a href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups" class="md-nav__link">
+    Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of" title="Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of" class="md-nav__link">
-    Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of
+  <a href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups" class="md-nav__link">
+    Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups
   </a>
   
 </li>
@@ -2127,15 +2127,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of" title="Return all the groups the user, group or directoryObject is a member of" class="md-nav__link">
-    Return all the groups the user, group or directoryObject is a member of
+  <a href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups" class="md-nav__link">
+    Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of" title="Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of" class="md-nav__link">
-    Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of
+  <a href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups" class="md-nav__link">
+    Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups
   </a>
   
 </li>
@@ -2181,46 +2181,57 @@
                 
                 
                 <h1 id="pnpgraphdirectoryobjects">@pnp/graph/directoryObjects<a class="headerlink" href="#pnpgraphdirectoryobjects" title="Permanent link">&para;</a></h1>
+<p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory entity types.</p>
+<p>More information can be found in the official Graph documentation:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/graph/api/resources/directoryobject?view=graph-rest-1.0">DirectoryObject Resource Type</a></li>
+</ul>
 <h2 id="the-groups-and-directory-roles-for-the-user">The groups and directory roles for the user<a class="headerlink" href="#the-groups-and-directory-roles-for-the-user" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-<span class="kr">const</span> <span class="nx">memberOf</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">memberOf</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">memberOf</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">memberOf</span><span class="p">();</span>
 
 <span class="kr">const</span> <span class="nx">memberOf2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">memberOf</span><span class="p">();</span>
 </pre></div>
 
-<h2 id="return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of">Return all the groups the user, group or directoryObject is a member of<a class="headerlink" href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of" title="Permanent link">&para;</a></h2>
+<h2 id="return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups">Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups<a class="headerlink" href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span>
 
-<span class="kr">const</span> <span class="nx">memberGroups</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">getMemberGroups</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">memberGroups</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">getMemberGroups</span><span class="p">();</span>
 
 <span class="kr">const</span> <span class="nx">memberGroups2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">getMemberGroups</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">memberGroups3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">getMemberGroups</span><span class="p">();</span>
+<span class="c1">// Returns only security enabled groups</span>
+<span class="kr">const</span> <span class="nx">memberGroups3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">getMemberGroups</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">memberGroups4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">getMemberGroups</span><span class="p">();</span>
 </pre></div>
 
-<h2 id="returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of">Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of<a class="headerlink" href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of" title="Permanent link">&para;</a></h2>
+<h2 id="returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups">Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups<a class="headerlink" href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">memberObjects</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">getMemberObjects</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">memberObjects</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">getMemberObjects</span><span class="p">();</span>
 
 <span class="kr">const</span> <span class="nx">memberObjects2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">getMemberObjects</span><span class="p">();</span>
 
-<span class="kr">const</span> <span class="nx">memberObjects3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">getMemberObjects</span><span class="p">();</span>
+<span class="c1">// Returns only security enabled groups</span>
+<span class="kr">const</span> <span class="nx">memberObjects3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">getMemberObjects</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">memberObjects4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">getMemberObjects</span><span class="p">();</span>
 </pre></div>
 
 <h2 id="check-for-membership-in-a-specified-list-of-groups">Check for membership in a specified list of groups<a class="headerlink" href="#check-for-membership-in-a-specified-list-of-groups" title="Permanent link">&para;</a></h2>
 <p>And returns from that list those groups of which the specified user, group, or directory object is a member</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">checkedMembers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">checkMemberGroups</span><span class="p">([</span><span class="s2">&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;</span><span class="p">,</span><span class="s2">&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;</span><span class="p">]);</span>
+<span class="kr">const</span> <span class="nx">checkedMembers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">checkMemberGroups</span><span class="p">([</span><span class="s2">&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;</span><span class="p">,</span><span class="s2">&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;</span><span class="p">]);</span>
 
 <span class="kr">const</span> <span class="nx">checkedMembers2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">checkMemberGroups</span><span class="p">([</span><span class="s2">&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;</span><span class="p">,</span><span class="s2">&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;</span><span class="p">]);</span>
 
@@ -2229,13 +2240,14 @@
 
 <h2 id="get-directoryobject-by-id">Get directoryObject by Id<a class="headerlink" href="#get-directoryobject-by-id" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/directory-objects&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/directory-objects&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">dirObject</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">directoryObjects</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">);</span>
 </pre></div>
 
 <h2 id="delete-directoryobject">Delete directoryObject<a class="headerlink" href="#delete-directoryobject" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/directory-objects&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">deleted</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">directoryObjects</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">()</span>
 </pre></div>

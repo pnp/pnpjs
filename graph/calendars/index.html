@@ -1009,22 +1009,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-calendar-for-a-group" title="Get Calendar for a Group" class="md-nav__link">
-    Get Calendar for a Group
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#get-calendar-view" title="Get Calendar View" class="md-nav__link">
-    Get Calendar View
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#get-events-for-a-group" title="Get Events for a Group" class="md-nav__link">
-    Get Events for a Group
+  <a href="#get-events-by-id" title="Get Events By ID" class="md-nav__link">
+    Get Events By ID
   </a>
   
 </li>
@@ -1039,6 +1025,34 @@
         <li class="md-nav__item">
   <a href="#update-events" title="Update Events" class="md-nav__link">
     Update Events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-event" title="Delete Event" class="md-nav__link">
+    Delete Event
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calendar-for-a-group" title="Get Calendar for a Group" class="md-nav__link">
+    Get Calendar for a Group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-events-for-a-group" title="Get Events for a Group" class="md-nav__link">
+    Get Events for a Group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calendar-view" title="Get Calendar View" class="md-nav__link">
+    Get Calendar View
   </a>
   
 </li>
@@ -2169,22 +2183,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-calendar-for-a-group" title="Get Calendar for a Group" class="md-nav__link">
-    Get Calendar for a Group
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#get-calendar-view" title="Get Calendar View" class="md-nav__link">
-    Get Calendar View
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#get-events-for-a-group" title="Get Events for a Group" class="md-nav__link">
-    Get Events for a Group
+  <a href="#get-events-by-id" title="Get Events By ID" class="md-nav__link">
+    Get Events By ID
   </a>
   
 </li>
@@ -2199,6 +2199,34 @@
         <li class="md-nav__item">
   <a href="#update-events" title="Update Events" class="md-nav__link">
     Update Events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-event" title="Delete Event" class="md-nav__link">
+    Delete Event
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calendar-for-a-group" title="Get Calendar for a Group" class="md-nav__link">
+    Get Calendar for a Group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-events-for-a-group" title="Get Events for a Group" class="md-nav__link">
+    Get Events for a Group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-calendar-view" title="Get Calendar View" class="md-nav__link">
+    Get Calendar View
   </a>
   
 </li>
@@ -2234,7 +2262,9 @@
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">calendars</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">calendars</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">();</span>
+
+<span class="kr">const</span> <span class="nx">myCalendars</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">();</span>
 </pre></div>
 
 <h2 id="get-a-specific-calendar-for-a-user">Get a Specific Calendar For a User<a class="headerlink" href="#get-a-specific-calendar-for-a-user" title="Permanent link">&para;</a></h2>
@@ -2244,7 +2274,9 @@
 
 <span class="kr">const</span> <span class="nx">CALENDAR_ID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==&#39;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">CALENDAR_ID</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">CALENDAR_ID</span><span class="p">)();</span>
+
+<span class="kr">const</span> <span class="nx">myCalendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">CALENDAR_ID</span><span class="p">)();</span>
 </pre></div>
 
 <h2 id="get-a-users-default-calendar">Get a User's Default Calendar<a class="headerlink" href="#get-a-users-default-calendar" title="Permanent link">&para;</a></h2>
@@ -2252,7 +2284,9 @@
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
+
+<span class="kr">const</span> <span class="nx">myCalendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendar</span><span class="p">();</span>
 </pre></div>
 
 <h2 id="get-events-for-a-users-default-calendar">Get Events For a User's Default Calendar<a class="headerlink" href="#get-events-for-a-users-default-calendar" title="Permanent link">&para;</a></h2>
@@ -2260,54 +2294,45 @@
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-<span class="c1">// You can do one of</span>
-<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
-<span class="c1">// or</span>
-<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// You can get the default calendar events</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or get all events for the user</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
+
+<span class="c1">// You can get my default calendar events</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or get all events for me</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
 </pre></div>
 
-<h2 id="get-calendar-for-a-group">Get Calendar for a Group<a class="headerlink" href="#get-calendar-for-a-group" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
-</pre></div>
-
-<h2 id="get-calendar-view">Get Calendar View<a class="headerlink" href="#get-calendar-view" title="Permanent link">&para;</a></h2>
-<p><em>Added in 2.0.7</em></p>
+<h2 id="get-events-by-id">Get Events By ID<a class="headerlink" href="#get-events-by-id" title="Permanent link">&para;</a></h2>
+<p>You can use .events.getByID to search through all the events in all calendars or narrow the request to a specific calendar.</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-<span class="c1">// basic request, note need to invoke the returned queryable</span>
-<span class="kr">const</span> <span class="nx">view</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;21aaf779-f6d8-40bd-88c2-4a03f456ee82&quot;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">CalendarID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA==&#39;</span><span class="p">;</span>
 
-<span class="c1">// you can use select, top, etc to filter your returned results</span>
-<span class="kr">const</span> <span class="nx">view2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;21aaf779-f6d8-40bd-88c2-4a03f456ee82&quot;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;subject&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">EventID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==&#39;</span><span class="p">;</span>
 
-<span class="c1">// you can specify times along with the dates</span>
-<span class="kr">const</span> <span class="nx">view3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;21aaf779-f6d8-40bd-88c2-4a03f456ee82&quot;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01T19:00:00-08:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01T19:00:00-08:00&quot;</span><span class="p">)();</span>
-</pre></div>
+<span class="c1">// Get events by ID</span>
+<span class="kr">const</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 
-<h2 id="get-events-for-a-group">Get Events for a Group<a class="headerlink" href="#get-events-for-a-group" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 
-<span class="c1">// You can do one of</span>
-<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
-<span class="c1">// or</span>
-<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// Get an event by ID from a specific calendar</span>
+<span class="kr">const</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">CalendarID</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">CalendarID</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 </pre></div>
 
 <h2 id="create-events">Create Events<a class="headerlink" href="#create-events" title="Permanent link">&para;</a></h2>
-<p>This will work on any <code>IEvents</code> objects, ie anything accessed using an <code>events</code> key.</p>
+<p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span>
 <span class="p">{</span>
   <span class="s2">&quot;subject&quot;</span><span class="o">:</span> <span class="s2">&quot;Let&#39;s go for lunch&quot;</span><span class="p">,</span>
   <span class="s2">&quot;body&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -2338,16 +2363,67 @@
 </pre></div>
 
 <h2 id="update-events">Update Events<a class="headerlink" href="#update-events" title="Permanent link">&para;</a></h2>
-<p>This will work on any <code>IEvents</code> objects, ie anything accessed using an <code>events</code> key. </p>
+<p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">EVENT_ID</span> <span class="o">=</span> <span class="s1">&#39;BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=&#39;</span><span class="p">;</span>
 
-<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
     <span class="nx">reminderMinutesBeforeStart</span>: <span class="kt">99</span><span class="p">,</span>
 <span class="p">});</span>
+</pre></div>
+
+<h2 id="delete-event">Delete Event<a class="headerlink" href="#delete-event" title="Permanent link">&para;</a></h2>
+<p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">EVENT_ID</span> <span class="o">=</span> <span class="s1">&#39;BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=&#39;</span><span class="p">;</span>
+
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</pre></div>
+
+<h2 id="get-calendar-for-a-group">Get Calendar for a Group<a class="headerlink" href="#get-calendar-for-a-group" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
+</pre></div>
+
+<h2 id="get-events-for-a-group">Get Events for a Group<a class="headerlink" href="#get-events-for-a-group" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
+
+<span class="c1">// You can do one of</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
+</pre></div>
+
+<h2 id="get-calendar-view">Get Calendar View<a class="headerlink" href="#get-calendar-view" title="Permanent link">&para;</a></h2>
+<p><em>Added in 2.0.7</em>
+Gets the events in a calendar during a specified date range.</p>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
+
+<span class="c1">// basic request, note need to invoke the returned queryable</span>
+<span class="kr">const</span> <span class="nx">view</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
+
+<span class="c1">// you can use select, top, etc to filter your returned results</span>
+<span class="kr">const</span> <span class="nx">view2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;subject&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+
+<span class="c1">// you can specify times along with the dates</span>
+<span class="kr">const</span> <span class="nx">view3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01T19:00:00-08:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01T19:00:00-08:00&quot;</span><span class="p">)();</span>
+
+<span class="kr">const</span> <span class="nx">view4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
 </pre></div>
                 
                   

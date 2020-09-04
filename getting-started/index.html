@@ -2451,15 +2451,13 @@
                 
                 
                 <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install
-the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install
-more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.</p>
+<p>These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.</p>
 <p>If you need to support older browsers please review the article on <a href="../concepts/polyfill/">polyfills</a> for required functionality.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <p>First you will need to install those libraries you want to use in your application. Here we will install the most frequently used packages. This step applies to any environment or project.</p>
 <p><code>npm install @pnp/sp @pnp/graph --save</code></p>
-<p>Next we can import and use the functionality within our application. The below is a very simple example, please see the individual package documentation
-for more details.</p>
+<p>Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation
+for more details and examples.</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
 <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -2473,10 +2471,7 @@ for more details.</p>
 <h2 id="getting-started-with-sharepoint-framework">Getting Started with SharePoint Framework<a class="headerlink" href="#getting-started-with-sharepoint-framework" title="Permanent link">&para;</a></h2>
 <p>The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises please <a href="../SPFx-on-premises/">read this note</a> on a workaround for the included TypeScript version. If you are targeting SharePoint online you do not need to take any additional steps.</p>
 <h3 id="establish-context">Establish Context<a class="headerlink" href="#establish-context" title="Permanent link">&para;</a></h3>
-<p>Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request
-urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the spfx context to the library. Either through the setup method
-imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if
-you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.</p>
+<p>Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.</p>
 <p>The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.</p>
 <h4 id="using-pnpcommon-setup">Using @pnp/common setup<a class="headerlink" href="#using-pnpcommon-setup" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="kr">as</span> <span class="nx">pnpSetup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
@@ -2518,7 +2513,7 @@ you are already importing the sp variable from @pnp/sp or the graph variable fro
 <span class="c1">// ...</span>
 </pre></div>
 
-<p>The sp setup also supports passing just the SPFx context object directly as this is the most common case</p>
+<p>Sp setup also supports passing just the SPFx context object directly as this is the most common case</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
@@ -2604,7 +2599,7 @@ you are already importing the sp variable from @pnp/sp or the graph variable fro
 
 <h2 id="connect-to-sharepoint-from-node">Connect to SharePoint from Node<a class="headerlink" href="#connect-to-sharepoint-from-node" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Please see the <a href="">main article on how we support node versions</a> that require commonjs modules.</p>
+<p>Please see the <a href="../nodejs/index.md">main article on how we support node versions</a> that require commonjs modules.</p>
 </blockquote>
 <p><code>npm i @pnp/sp-commonjs @pnp/nodejs-commonjs</code></p>
 <p>This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the <a href="../packages/">packages</a> page.
@@ -2631,8 +2626,10 @@ Once these are installed you need to import them into your project, to communica
 
 <h2 id="connect-to-microsoft-graph-from-node">Connect to Microsoft Graph From Node<a class="headerlink" href="#connect-to-microsoft-graph-from-node" title="Permanent link">&para;</a></h2>
 <p>Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
-<a href="https://github.com/pnp/pnpjs/blob/master/debug/launch/graph.ts">./debug/launch/graph.ts</a> for a live example.</p>
-<p><code>npm i @pnp/graph-commonjs @pnp/nodejs-commonjs</code></p>
+<a href="https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts">./debug/launch/graph.ts</a> for a live example.</p>
+<div class="highlight"><pre><span></span>npm i @pnp/graph-commonjs @pnp/nodejs-commonjs
+</pre></div>
+
 <p>Now we need to import what we'll need to call graph</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph-commonjs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>

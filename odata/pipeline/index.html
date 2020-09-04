@@ -2139,12 +2139,9 @@
                 
                 
                 <h1 id="pnpodatapipeline">@pnp/odata/pipeline<a class="headerlink" href="#pnpodatapipeline" title="Permanent link">&para;</a></h1>
-<p>All of the odata requests processed by @pnp/odata pass through an extensible request pipeline. Each request is executed in a specific request context defined by
-the <code>RequestContext&lt;T&gt;</code> interface with the type parameter representing the type ultimately returned at the end a successful processing through the
-pipeline. Unless you are writing a pipeline method it is unlikely you will ever interact directly with the request pipeline.</p>
+<p>All of the odata requests processed by @pnp/odata pass through an extensible request pipeline. Each request is executed in a specific request context defined by the <code>RequestContext&lt;T&gt;</code> interface with the type parameter representing the type ultimately returned at the end a successful processing through the pipeline. Unless you are writing a pipeline method it is unlikely you will ever interact directly with the request pipeline.</p>
 <h2 id="interface-requestcontextt">interface <code>RequestContext&lt;T&gt;</code><a class="headerlink" href="#interface-requestcontextt" title="Permanent link">&para;</a></h2>
-<p>The interface that defines the context within which all requests are executed. Note that the pipeline methods to be executed are part of the context. This
-allows full control over the methods called during a request, and allows for the insertion of any custom methods required.</p>
+<p>The interface that defines the context within which all requests are executed. Note that the pipeline methods to be executed are part of the context. This allows full control over the methods called during a request, and allows for the insertion of any custom methods required.</p>
 <div class="highlight"><pre><span></span><span class="kr">interface</span> <span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="nx">batch</span>: <span class="kt">ODataBatch</span><span class="p">;</span>
     <span class="nx">batchDependency</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">;</span>
@@ -2164,9 +2161,7 @@ allows full control over the methods called during a request, and allows for the
 </pre></div>
 
 <h2 id="requestpipelinemethod-decorator">requestPipelineMethod decorator<a class="headerlink" href="#requestpipelinemethod-decorator" title="Permanent link">&para;</a></h2>
-<p>The requestPipelineMethod decorator is used to tag a pipeline method and add functionality to bypass processing if a result is already present in the pipeline. If you
-would like your method to always run regardless of the existence of a result you can pass true to ensure it will always run. Each pipeline method takes a single argument
-of the current RequestContext and returns a promise resolving to the RequestContext updated as needed.</p>
+<p>The requestPipelineMethod decorator is used to tag a pipeline method and add functionality to bypass processing if a result is already present in the pipeline. If you would like your method to always run regardless of the existence of a result you can pass true to ensure it will always run. Each pipeline method takes a single argument of the current RequestContext and returns a promise resolving to the RequestContext updated as needed.</p>
 <div class="highlight"><pre><span></span><span class="kd">@requestPipelineMethod</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
 <span class="kr">public</span> <span class="kr">static</span> <span class="nx">myPipelineMethod</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">context</span>: <span class="kt">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
 

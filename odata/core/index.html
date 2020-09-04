@@ -2165,7 +2165,7 @@
                 
                 
                 <h1 id="pnpodatacore">@pnp/odata/core<a class="headerlink" href="#pnpodatacore" title="Permanent link">&para;</a></h1>
-<p>This modules contains shared interfaces and abstract classes used within, and by inheritors of, the @pnp/odata package.</p>
+<p>This module contains shared interfaces and abstract classes used within the @pnp/odata package and those items that inherit from it.</p>
 <h2 id="processhttpclientresponseexception">ProcessHttpClientResponseException<a class="headerlink" href="#processhttpclientresponseexception" title="Permanent link">&para;</a></h2>
 <p>The exception thrown when a response is returned and cannot be processed.</p>
 <h2 id="interface-odataparser">interface ODataParser<T><a class="headerlink" href="#interface-odataparser" title="Permanent link">&para;</a></h2>
@@ -2176,11 +2176,9 @@ value to be returned. It has two methods, one is optional:</p>
 <li>hydrate?: (d: any) =&gt; T - optional method used when getting an object from the <a href="../caching/">cache</a> if it requires calling a constructor</li>
 </ul>
 <h2 id="odataparserbase">ODataParserBase<T><a class="headerlink" href="#odataparserbase" title="Permanent link">&para;</a></h2>
-<p>The base class used by all parsers in the @pnp libraries. It is optional to use when creating your own custom parsers, but does contain several helper
-methods.</p>
+<p>The base class used by all parsers in the @pnp libraries. It is optional to use when creating your own custom parsers, but does contain several helper methods.</p>
 <h3 id="create-a-custom-parser-from-odataparserbase">Create a custom parser from ODataParserBase<T><a class="headerlink" href="#create-a-custom-parser-from-odataparserbase" title="Permanent link">&para;</a></h3>
-<p>You can always create custom parsers for your projects, however it is likely you will not require this step as the default parsers should work for most
-cases.</p>
+<p>You can always create custom parsers for your projects, however it is likely you will not require this step as the default parsers should work for most cases.</p>
 <div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">MyParser</span> <span class="kr">extends</span> <span class="nx">ODataParserBase</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
 
     <span class="c1">// we need to override the parse method to do our custom stuff</span>

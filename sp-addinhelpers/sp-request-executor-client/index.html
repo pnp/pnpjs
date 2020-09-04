@@ -2111,11 +2111,9 @@
                 
                 
                 <h1 id="pnpsp-addinhelperssprequestexecutorclient">@pnp/sp-addinhelpers/sprequestexecutorclient<a class="headerlink" href="#pnpsp-addinhelperssprequestexecutorclient" title="Permanent link">&para;</a></h1>
-<p>The SPRequestExecutorClient is an implementation of the HttpClientImpl interface that facilitates requests to SharePoint from an add-in. It relies on
-the SharePoint SP product libraries being present to allow use of the SP.RequestExecutor to make the request.</p>
+<p>The SPRequestExecutorClient is an implementation of the HttpClientImpl interface that facilitates requests to SharePoint from an add-in. It relies on the SharePoint SP product libraries being present to allow use of the SP.RequestExecutor to make the request.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
-<p>To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a
-SharePoint add-in web.</p>
+<p>To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a SharePoint add-in web.</p>
 <div class="highlight"><pre><span></span><span class="c1">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">SPRequestExecutorClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-addinhelpers&quot;</span><span class="p">;</span>
 

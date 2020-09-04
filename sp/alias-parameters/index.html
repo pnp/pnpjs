@@ -2179,10 +2179,8 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrl</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;/sites/dev/Shared Documents/&#39;)/files</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrlAndQuery</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;/sites/dev/Shared Documents/&#39;)/files?$select=Title&amp;$top=3</span>
 
-<span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
-<span class="p">});</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);;</span>
 </pre></div>
 
 <h3 id="example-with-aliasing">Example with aliasing<a class="headerlink" href="#example-with-aliasing" title="Permanent link">&para;</a></h3>
@@ -2194,10 +2192,8 @@
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrl</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;!@p1::/sites/dev/Shared Documents/&#39;)/files</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrlAndQuery</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1=&#39;/sites/dev/Shared Documents/&#39;&amp;$select=Title&amp;$top=3</span>
 
-<span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
-<span class="p">});</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 </pre></div>
 
 <h3 id="example-with-aliasing-and-batching">Example with aliasing and batching<a class="headerlink" href="#example-with-aliasing-and-batching" title="Permanent link">&para;</a></h3>

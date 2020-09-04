@@ -2675,7 +2675,7 @@
                 
                 
                 <h1 id="pnpspclientside-pages">@pnp/sp/clientside-pages<a class="headerlink" href="#pnpspclientside-pages" title="Permanent link">&para;</a></h1>
-<p>The 'clientside pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side webparts.</p>
+<p>The 'clientside-pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side web parts.</p>
 <p><a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
 <table>
 <thead>
@@ -2707,6 +2707,7 @@
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">PromotedState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
+<span class="c1">// Create a page providing a file name</span>
 <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage1&quot;</span><span class="p">);</span>
 
 <span class="c1">// ... other operations on the page as outlined below</span>
@@ -2720,7 +2721,7 @@
 <span class="c1">// you must publish the new page</span>
 <span class="nx">await</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-<span class="c1">// include title and page layout while also specifying the publishing status (Added in 2.0.4)</span>
+<span class="c1">// include title, page layout, and specifying the publishing status (Added in 2.0.4)</span>
 <span class="kr">const</span> <span class="nx">page3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">,</span> <span class="nx">PromotedState</span><span class="p">.</span><span class="nx">PromoteOnPublish</span><span class="p">);</span>
 
 <span class="c1">// you must publish the new page, after which the page will immediately be promoted to a news article</span>
@@ -2827,6 +2828,8 @@
 <span class="c1">// add or get a vertical section (handles case where section already exists)</span>
 <span class="kr">const</span> <span class="nx">vertSection</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addVerticalSection</span><span class="p">();</span>
 
+<span class="c1">// ****************************************************************</span>
+
 <span class="c1">// if you know or want to test if a vertical section is present:</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">hasVerticalSection</span><span class="p">)</span> <span class="p">{</span>
 
@@ -2835,7 +2838,7 @@
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 
     <span class="kr">const</span> <span class="nx">vertSection</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addVerticalSection</span><span class="p">();</span>
-    <span class="nx">section</span><span class="p">.</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientsideText</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">));</span>
+    <span class="nx">vertSection</span><span class="p">.</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientsideText</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">));</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -2900,8 +2903,8 @@
 <span class="c1">// create a ClientWebPart instance from the definition</span>
 <span class="kr">const</span> <span class="nx">part</span> <span class="o">=</span> <span class="nx">ClientsideWebpart</span><span class="p">.</span><span class="nx">fromComponentDef</span><span class="p">(</span><span class="nx">partDef</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 
-<span class="c1">// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a youtube video.</span>
-<span class="c1">// the structure of the properties varies for each webpart and each version of a webpart, so you will need to ensure you are setting</span>
+<span class="c1">// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a YouTube video.</span>
+<span class="c1">// the structure of the properties varies for each web part and each version of a web part, so you will need to ensure you are setting</span>
 <span class="c1">// the properties correctly</span>
 <span class="nx">part</span><span class="p">.</span><span class="nx">setProperties</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">embedCode</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">({</span>
     <span class="nx">embedCode</span><span class="o">:</span> <span class="s2">&quot;https://www.youtube.com/watch?v=IWQFZ7Lx-rg&quot;</span><span class="p">,</span>
@@ -2946,7 +2949,7 @@
 <h3 id="thumbnailurl">thumbnailUrl<a class="headerlink" href="#thumbnailurl" title="Permanent link">&para;</a></h3>
 <p>Allows you to set the thumbnail used for the page independently of the banner.</p>
 <blockquote>
-<p>If you set the bannerImageUrl property and ant thumbnailUrl the thumbnail will be reset to match the banner, mimicing the UI functionality.</p>
+<p>If you set the bannerImageUrl property and not thumbnailUrl the thumbnail will be reset to match the banner, mimicking the UI functionality.</p>
 </blockquote>
 <div class="highlight"><pre><span></span><span class="c1">// our page instance</span>
 <span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>

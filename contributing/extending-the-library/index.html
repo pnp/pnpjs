@@ -2016,8 +2016,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#general-rules-for-extening-pnpjs" title="General Rules for Extening PnPjs" class="md-nav__link">
-    General Rules for Extening PnPjs
+  <a href="#general-rules-for-extending-pnpjs" title="General Rules for Extending PnPjs" class="md-nav__link">
+    General Rules for Extending PnPjs
   </a>
   
 </li>
@@ -2186,8 +2186,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#general-rules-for-extening-pnpjs" title="General Rules for Extening PnPjs" class="md-nav__link">
-    General Rules for Extening PnPjs
+  <a href="#general-rules-for-extending-pnpjs" title="General Rules for Extending PnPjs" class="md-nav__link">
+    General Rules for Extending PnPjs
   </a>
   
 </li>
@@ -2231,10 +2231,10 @@
 </pre></div>
 
 <h2 id="understanding-factory-functions">Understanding Factory Functions<a class="headerlink" href="#understanding-factory-functions" title="Permanent link">&para;</a></h2>
-<p>PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions with sp and graph have a similar form.</p>
+<p>PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.</p>
 <div class="highlight"><pre><span></span><span class="c1">// create a constant which is a function of type ISPInvokableFactory having the name Webs</span>
 <span class="c1">// this is bound by the generic type param to return an IWebs instance</span>
-<span class="c1">// and it will use the _Webs concrete class to form the internal type of the invokable</span>
+<span class="c1">// and it will use the _Webs concrete class to form the internal type of the invocable</span>
 <span class="kr">export</span> <span class="kr">const</span> <span class="nx">Webs</span> <span class="o">=</span> <span class="nx">spInvokableFactory</span><span class="o">&lt;</span><span class="nx">IWebs</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">_Webs</span><span class="p">);</span>
 </pre></div>
 
@@ -2261,9 +2261,9 @@
 <span class="kr">const</span> <span class="nx">currentUserInfo</span> <span class="o">=</span> <span class="nx">cu</span><span class="p">();</span>
 </pre></div>
 
-<p>Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everying is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries <em>within</em> methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.</p>
+<p>Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everything is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries <em>within</em> methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.</p>
 <h2 id="class-structure">Class structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
-<p>Internally to the library we have a bit of complexity to make the whole invokable proxy ararchitecture work and provide the typings folks expect. Here is an example implemenation with extra comments explaining what is happening. You don't need to understand the entire stack to <a href="#add-a-property">add a property</a> or <a href="#add-a-method">method</a></p>
+<p>Internally to the library we have a bit of complexity to make the whole invocable proxy architecture work and provide the typings folks expect. Here is an example implementation with extra comments explaining what is happening. You don't need to understand the entire stack to <a href="#add-a-property">add a property</a> or <a href="#add-a-method">method</a></p>
 <div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">The concrete class implementation. This is never exported or shown directly</span>
 <span class="cm">to consumers of the library. It is wrapped by the Proxy we do expose.</span>
@@ -2277,7 +2277,7 @@
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">_HubSite</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableInstance</span><span class="o">&lt;</span><span class="nx">IHubSiteInfo</span><span class="o">&gt;</span> <span class="p">{</span>
 
     <span class="cm">/**</span>
-<span class="cm">     * Gets the ISite instance associated with this hubsite</span>
+<span class="cm">     * Gets the ISite instance associated with this hub site</span>
 <span class="cm">     */</span>
     <span class="c1">// the tag decorator is used to provide some additional telemetry on what methods are</span>
     <span class="c1">// being called.</span>
@@ -2320,7 +2320,7 @@
     <span class="kr">public</span> <span class="nx">get</span> <span class="nx">fields</span><span class="p">()</span><span class="o">:</span> <span class="nx">IViewFields</span> <span class="p">{</span>
         <span class="c1">// we use the ViewFields factory function supplying &quot;this&quot; as the first parameter</span>
         <span class="c1">// this will create a url like &quot;.../fields/viewfields&quot; due to the defaultPath decorator</span>
-        <span class="c1">// on the _ViewFields class. This is equivelent to: ViewFields(this, &quot;viewfields&quot;)</span>
+        <span class="c1">// on the _ViewFields class. This is equivalent to: ViewFields(this, &quot;viewfields&quot;)</span>
         <span class="k">return</span> <span class="nx">ViewFields</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -2336,17 +2336,17 @@
 <div class="highlight"><pre><span></span><span class="kd">@defaultPath</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">_Items</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableCollection</span> <span class="p">{</span>
 
-    <span class="cm">/** </span>
-<span class="cm">    * Gets an Item by id    </span>
-<span class="cm">    *   </span>
-<span class="cm">    * @param id The integer id of the item to retrieve  </span>
+    <span class="cm">/**</span>
+<span class="cm">    * Gets an Item by id</span>
+<span class="cm">    *</span>
+<span class="cm">    * @param id The integer id of the item to retrieve</span>
 <span class="cm">    */</span>
     <span class="c1">// we declare a method and set the return type to an interface</span>
     <span class="kr">public</span> <span class="nx">getById</span><span class="p">(</span><span class="nx">id</span>: <span class="kt">number</span><span class="p">)</span><span class="o">:</span> <span class="nx">IItem</span> <span class="p">{</span>
         <span class="c1">// here we use the tag helper to add some telemetry to our request</span>
         <span class="c1">// we create a new IItem using the factory and appending the id value to the end</span>
         <span class="c1">// this gives us a valid url path to a single item .../items/getById(2)</span>
-        <span class="c1">// we can then use the returned IItem to extrend our chain or execute a request</span>
+        <span class="c1">// we can then use the returned IItem to extend our chain or execute a request</span>
         <span class="k">return</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="nx">Item</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="sb">`(</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">)`</span><span class="p">),</span> <span class="s2">&quot;is.getById&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -2355,7 +2355,7 @@
 </pre></div>
 
 <h3 id="web-request-method">Web Request Method<a class="headerlink" href="#web-request-method" title="Permanent link">&para;</a></h3>
-<p>A second exampe is a method that performs a request. Here we use the _Item recycle method as an example:</p>
+<p>A second example is a method that performs a request. Here we use the _Item recycle method as an example:</p>
 <div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.</span>
 <span class="cm"> */</span>
@@ -2370,7 +2370,7 @@
 </pre></div>
 
 <h2 id="augment-using-selective-imports">Augment Using Selective Imports<a class="headerlink" href="#augment-using-selective-imports" title="Permanent link">&para;</a></h2>
-<p>To understand is how to extend functionality within the selective imports structures look at <a href="https://github.com/pnp/pnpjs/blob/master/packages/sp/items/list.ts">list.ts</a> file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.</p>
+<p>To understand is how to extend functionality within the selective imports structures look at <a href="https://github.com/pnp/pnpjs/blob/main/packages/sp/items/list.ts">list.ts</a> file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.</p>
 <div class="highlight"><pre><span></span><span class="c1">// import the addProp helper</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">addProp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 <span class="c1">// import the _List concrete class from the types module (not the index!)</span>
@@ -2388,7 +2388,7 @@
     <span class="c1">// we need to extend the interface</span>
     <span class="c1">// this may not be strictly necessary as the IList interface extends _List so it</span>
     <span class="c1">// should pick up the same additions, but we have seen in some cases this does seem</span>
-    <span class="c1">// to be required. So we include it for safety as it will all be removed during </span>
+    <span class="c1">// to be required. So we include it for safety as it will all be removed during</span>
     <span class="c1">// transpilation we don&#39;t need to care about the extra code</span>
     <span class="kr">interface</span> <span class="nx">IList</span> <span class="p">{</span>
         <span class="nx">readonly</span> <span class="nx">items</span>: <span class="kt">IItems</span><span class="p">;</span>
@@ -2397,17 +2397,17 @@
 
 <span class="c1">// finally we add the property to the _List class</span>
 <span class="c1">// this method call says add a property to _List named &quot;items&quot; and that property returns a result using the Items factory</span>
-<span class="c1">// The factory will be called with &quot;this&quot; when the property is accessed. If needed there is a fourth parameter to append additional path </span>
+<span class="c1">// The factory will be called with &quot;this&quot; when the property is accessed. If needed there is a fourth parameter to append additional path</span>
 <span class="c1">// information to the property url</span>
 <span class="nx">addProp</span><span class="p">(</span><span class="nx">_List</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="nx">Items</span><span class="p">);</span>
 </pre></div>
 
-<h2 id="general-rules-for-extening-pnpjs">General Rules for Extening PnPjs<a class="headerlink" href="#general-rules-for-extening-pnpjs" title="Permanent link">&para;</a></h2>
+<h2 id="general-rules-for-extending-pnpjs">General Rules for Extending PnPjs<a class="headerlink" href="#general-rules-for-extending-pnpjs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Only expose interfaces to consumers</li>
 <li>Use the factory functions except in very special cases</li>
 <li>Look for other properties and methods as examples</li>
-<li>Simple is always preferrable, but not always possible - use your best judgement</li>
+<li>Simple is always preferable, but not always possible - use your best judgement</li>
 <li>If you find yourself writing a ton of code to solve a problem you think should be easy, ask</li>
 <li>If you find yourself deep within the core classes or odata library trying to make a change, ask - changes to the core classes are rarely needed</li>
 </ul>

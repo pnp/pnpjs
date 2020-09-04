@@ -2262,7 +2262,7 @@
                 
                 <h1 id="extensions">Extensions<a class="headerlink" href="#extensions" title="Permanent link">&para;</a></h1>
 <p><em>introduced in 2.0.0</em></p>
-<p>Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any <a href="../../concepts/invokable/">invokable</a>. You can control any behavior of the library with extensions.</p>
+<p>Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any <a href="../../concepts/invokable/">invocable</a>. You can control any behavior of the library with extensions.</p>
 <blockquote>
 <p>Extensions do not work in ie11 compatibility mode. This is by design.</p>
 </blockquote>
@@ -2348,9 +2348,9 @@
 </pre></div>
 
 <h2 id="registering-extensions">Registering Extensions<a class="headerlink" href="#registering-extensions" title="Permanent link">&para;</a></h2>
-<p>You can register Extensions either globally, on an invokable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.</p>
+<p>You can register Extensions either globally, on an invocable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.</p>
 <h3 id="global-registration">Global Registration<a class="headerlink" href="#global-registration" title="Permanent link">&para;</a></h3>
-<p>Globally registering an extension allows you to inject functionality into every invokable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.</p>
+<p>Globally registering an extension allows you to inject functionality into every invocable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendGlobal</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 
 <span class="c1">// we can add a logging method to very verbosely track what things are called in our application</span>
@@ -2371,7 +2371,7 @@
 </pre></div>
 
 <h3 id="factory-registration">Factory Registration<a class="headerlink" href="#factory-registration" title="Permanent link">&para;</a></h3>
-<p>The pattern you will likely find most useful is the ability to extend an invokable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.</p>
+<p>The pattern you will likely find most useful is the ability to extend an invocable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.</p>
 <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>

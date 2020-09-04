@@ -2127,11 +2127,14 @@
                 <h1 id="pnpjs">PnPjs<a class="headerlink" href="#pnpjs" title="Permanent link">&para;</a></h1>
 <p>This package is a rollup package of all the other libraries for scenarios where you would prefer to access all of the code from a single file. Examples would be importing a single file into a script editor webpart or using the library in other ways that benefit from a single file. You will not be able to take advantage of selective imports using this bundle.</p>
 <blockquote>
-<p>Our recommendation is to import the packages directly into your project, or to <a href="../concepts/custom-bundle/">create a custom bundle</a>. This package is mostly provided to help folks with back-compatibility needs.</p>
+<p>Our recommendation is to import the packages directly into your project, or to <a href="../concepts/custom-bundle/">create a custom bundle</a>. This package is mostly provided to help folks with backward-compatibility needs.</p>
 </blockquote>
 <h2 id="script-editor-webpart">Script Editor Webpart<a class="headerlink" href="#script-editor-webpart" title="Permanent link">&para;</a></h2>
 <p>The below is an example of using the pnp.js bundle within a Script Editor webpart. This script editor example is provided for folks on older version of SharePoint - when possible your first choice is SharePoint Framework.</p>
 <p>You will need to grab the pnp.js bundle file from the dist folder of the pnpjs package and upload it to a location where you can reference it from without your script editor webparts.</p>
+<blockquote>
+<p>*This is included as a reference for backward compatibility. The script editor webpart is no longer available in SharePoint online. In addition, see our General Statement on Polyfills and <a href="../concepts/pollyfill.md">IE11</a></p>
+</blockquote>
 <div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://mytenant.sharepoint.com/sites/dev/Shared%20Documents/pnp2bundle/pnp.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="c">&lt;!-- Optional to include the IE11 polyfill package --&gt;</span>
 <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/@pnp/polyfill-ie11&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
