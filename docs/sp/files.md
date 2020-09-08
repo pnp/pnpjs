@@ -100,6 +100,25 @@ $(() => {
 });
 ```
 
+### Adding a file using Nodejs Streams
+
+If you are working in nodejs you can also add a file using a stream. This example makes a copy of a file using streams.
+
+```TypeScript
+// triggers auto-application of extensions, in this case to add getStream
+import "@pnp/nodejs";
+
+// get a stream of an existing file
+const sr = await sp.web.getFileByServerRelativePath("/sites/dev/shared documents/old.md").getStream();
+
+// now add the stream as a new file, remember to set the content-length header
+const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.configure({
+    headers: {
+        "content-length": `${sr.knownLength}`,
+    },
+}).add("new.md", sr.body);
+```
+
 ### Setting Associated Item Values
 
 You can also update the file properties of a newly uploaded file using code similar to the below snippet:

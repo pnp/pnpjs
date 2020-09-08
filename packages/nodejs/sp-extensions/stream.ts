@@ -10,7 +10,7 @@ export interface IResponseBodyStream {
 export class StreamParser extends ODataParser<IResponseBodyStream> {
 
     protected parseImpl(r: Response, resolve: (value: any) => void): void {
-        resolve({ body: r.body, knownLength: parseInt(r.headers["content-length"], 10) });
+        resolve({ body: r.body, knownLength: parseInt(r.headers.get("content-length"), 10) });
     }
 }
 
@@ -32,4 +32,3 @@ declare module "@pnp/sp/files/types" {
         getStream(): Promise<IResponseBodyStream>;
     }
 }
-

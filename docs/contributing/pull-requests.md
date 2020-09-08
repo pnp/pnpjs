@@ -12,6 +12,14 @@ Pull requests may be large or small - adding whole new features or fixing some m
 
 > If you need to target a PR for version 1, please target the "version-1" branch
 
+## Sharing is Caring - Pull Request Guidance
+
+The PnP "Sharing Is Caring" initiative teaches the basics around making changes in GitHub, submitting pull requests to the PnP & Microsoft 365 open-source repositories such as PnPjs. 
+
+Every month, we provide multiple live hands-on sessions that walk attendees through the process of using and contributing to PnP initiatives.
+
+To learn more and register for an upcoming session, please visit the [Sharing is Caring](https://aka.ms/sharing-is-caring) website.
+
 ## Next Steps
 
 Now that you've submitted your PR please keep an eye on it as we might have questions. Once an initial review is complete we'll tag it with the expected version number for which it is targeted.

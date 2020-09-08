@@ -21,10 +21,10 @@ const NodeFetch = require("node-fetch");
 import "./sp-extensions";
 
 // export extension types as a namespace
-import * as sp from "./sp-extensions";
+import * as SPNS from "./sp-extensions";
 
 export {
-    sp,
+    SPNS,
 };
 
 export { AADToken, SPOAuthEnv } from "./types";
