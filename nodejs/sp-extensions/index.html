@@ -2152,10 +2152,13 @@
                 
                 <h1 id="pnpnodejs-sp-extensions">@pnp/nodejs - sp extensions<a class="headerlink" href="#pnpnodejs-sp-extensions" title="Permanent link">&para;</a></h1>
 <p>By importing anything from the @pnp/nodejs library you automatically get nodejs specific extension methods added into the sp fluent api. This article describes them.</p>
+<blockquote>
+<p>These examples use the *-commonjs version of the libraries as they target node, you can <a href="../../nodejs-support/">read more about the differences</a>.</p>
+</blockquote>
 <h2 id="ifilegetstream">IFile.getStream<a class="headerlink" href="#ifilegetstream" title="Permanent link">&para;</a></h2>
 <p>Allows you to read a response body as a nodejs PassThrough stream.</p>
 <div class="highlight"><pre><span></span><span class="c1">// by importing the the library the node specific extensions are automatically applied</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPNS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
@@ -2167,7 +2170,7 @@
 <span class="p">});</span>
 
 <span class="c1">// get the stream</span>
-<span class="kr">const</span> <span class="nx">streamResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/file.txt&quot;</span><span class="p">).</span><span class="nx">getStream</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">streamResult</span>: <span class="kt">SPNS.IResponseBodyStream</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/file.txt&quot;</span><span class="p">).</span><span class="nx">getStream</span><span class="p">();</span>
 
 <span class="c1">// see if we have a known length</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">streamResult</span><span class="p">.</span><span class="nx">knownLength</span><span class="p">);</span>
