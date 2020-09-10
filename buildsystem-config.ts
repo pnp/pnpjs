@@ -75,7 +75,7 @@ export default <ConfigCollection>[
                         if (/\.js$|\.d\.ts$/i.test(file.path)) {
 
                             const content: string = file.contents.toString("utf8");
-                            file.contents = Buffer.from(content.replace(/"\@pnp\/(\w*?)"/ig, `"@pnp/$1-commonjs"`));
+                            file.contents = Buffer.from(content.replace(/"\@pnp\/(\w*?)([\/|"])/ig, `"@pnp/$1-commonjs$2`));
                         }
 
                         cb(null, file);

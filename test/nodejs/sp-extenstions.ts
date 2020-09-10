@@ -25,7 +25,7 @@ describe("nodejs - sp-extensions", () => {
             // tslint:disable-next-line: no-unused-expression
             expect(stream).to.not.be.null;
 
-            expect(stream.knownLength).to.not.be.null.and.be.greaterThan(0);
+            expect(stream.knownLength).to.be.greaterThan(0);
 
             // tslint:disable-next-line: no-unused-expression
             expect(stream.body).to.not.be.null;

@@ -1,4 +1,4 @@
-import { Batch } from "@pnp/odata";
+import { Batch, HttpRequestError } from "@pnp/odata";
 import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./sphttpclient";
@@ -207,7 +207,14 @@ export class SPBatch extends Batch {
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
         const fetchResponse = await client.fetch(combine(absoluteRequestUrl, "/_api/$batch"), batchOptions);
-        const text = await fetchResponse.text();
+
+        if (!fetchResponse.ok) {
+            // the entire batch resulted in an error and we need to handle that better #1356
+            // things consistently with the rest of the http errors
+            throw (await HttpRequestError.init(fetchResponse));
+        }
+
+        const text = await fetchResponse.clone().text();
         const responses = SPBatch.ParseResponse(text);
 
         if (responses.length !== this.requests.length) {

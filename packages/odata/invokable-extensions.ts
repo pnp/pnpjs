@@ -1,4 +1,4 @@
-import { isFunc, isArray, ITypedHash } from "@pnp/common";
+import { isFunc, isArray, ITypedHash, getGUID } from "@pnp/common";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
@@ -7,9 +7,10 @@ export type ExtensionDelegateType<T extends object> = { (op: string, target: T, 
 export type ExtensionType<T extends object = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
 
 let _enableExtensions = false;
-const globaExtensions: ExtensionType[] = [];
+const globalExtensions: ExtensionType[] = [];
+const factoryExtensions: Map<string, ExtensionType[]> = new Map<string, ExtensionType[]>();
 
-const ObjExtensionsSym = Symbol("__extensions");
+const ObjExtensionsSym = Symbol.for("43f7a601");
 
 /**
  * Creates global extensions across all invokable objects
@@ -19,7 +20,7 @@ const ObjExtensionsSym = Symbol("__extensions");
 export const extendGlobal = (e: ExtensionType | ExtensionType[]) => {
 
     _enableExtensions = true;
-    extendCol(globaExtensions, e);
+    extendCol(globalExtensions, e);
 };
 
 /**
@@ -51,11 +52,23 @@ export const extendFactory = <T extends (...args: any[]) => any>(factory: T, ext
 
     _enableExtensions = true;
 
-    if ((<any>factory).__proto__[ObjExtensionsSym] === undefined) {
-        (<any>factory).__proto__[ObjExtensionsSym] = [];
+    // factoryExtensions
+    const proto = Reflect.getPrototypeOf(factory);
+
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: getGUID(),
+        });
     }
 
-    extendCol((<any>factory).__proto__[ObjExtensionsSym], extensions);
+    const key = proto[ObjExtensionsSym];
+
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+
+    extendCol(factoryExtensions.get(key), extensions);
 };
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
@@ -72,7 +85,7 @@ function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
  * Clears all global extensions
  */
 export const clearGlobalExtensions = () => {
-    globaExtensions.length = 0;
+    globalExtensions.length = 0;
 };
 
 /**
@@ -99,8 +112,13 @@ export const applyFactoryExtensions = <T extends object = {}>(factory: (args: an
 
     let o = factory(args);
 
-    if ((<any>factory).__proto__[ObjExtensionsSym]) {
-        o = extendObj(o, (<any>factory).__proto__[ObjExtensionsSym]);
+    const proto = Reflect.getPrototypeOf(factory);
+
+    if (Reflect.has(proto, ObjExtensionsSym)) {
+
+        const extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+
+        o = extendObj(o, extensions);
     }
 
     return o;
@@ -118,7 +136,7 @@ export function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) =
         }
 
         // second we need to process any global extensions
-        extensions.push(...globaExtensions);
+        extensions.push(...globalExtensions);
 
         for (let i = 0; i < extensions.length; i++) {
             const extension = extensions[i];

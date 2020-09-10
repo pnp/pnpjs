@@ -21,12 +21,9 @@ extendFactory(File, {
     },
 });
 
-// for extensions to correctly appear in intellisense we need to extend the interface
-// to do this we extend the modules and need to append the /types to the normal import path
-// this has to do with where the file we are extending is located
 declare module "@pnp/sp/files/types" {
     /**
-     * Returns the instance wrapped by the invokable proxy
+     * Gets a PassThrough stream representing the file
      */
     interface IFile {
         getStream(): Promise<IResponseBodyStream>;
