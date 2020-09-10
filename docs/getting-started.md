@@ -175,7 +175,7 @@ export class SampleService {
 
 ## Connect to SharePoint from Node
 
-> Please see the [main article on how we support node versions](../nodejs/index.md) that require commonjs modules.
+> Please see the [main article on how we support node versions](../nodejs) that require commonjs modules.
 
 `npm i @pnp/sp-commonjs @pnp/nodejs-commonjs`
 
