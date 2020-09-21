@@ -1,3 +1,8 @@
+import {
+    TeamsAsyncOperation,
+    Team as ITeamProperties,
+} from "@microsoft/microsoft-graph-types";
+
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
 import { body } from "@pnp/odata";
 import { assign } from "@pnp/common";
@@ -64,9 +69,31 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> { }
-export interface ITeams extends _Teams, IGetById<ITeam> { }
+export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> {
+    /**
+     * Creates a team
+     * @param teamProperties The properties of the team that you are specifically setting which override defaults in the template if you are providing one. 
+     * Read Graph documentation carefully if using this with the group property.
+     * @param template The graph REST URL to return the teams template to use. (e.g.: "https://graph.microsoft.com/beta/teamsTemplates('standard')")
+     * @param group The graph REST URL to return the team to clone (e.g.: "https://graph.microsoft.com/v1.0/groups('groupId')")
+     */
+
+    public createTeam(teamProperties: ITeamProperties, template?: string, group?: string): Promise<TeamsAsyncOperation> {
+        if (template) {
+            teamProperties["template@odata.bind"] = template;
+        }
+        if (group) {
+            teamProperties["group@odata.bind"] = group;
+        }
+
+        return graphPost(this, body(teamProperties));
+    }
+}
+export interface ITeams extends IGetById<ITeam> {
+    createTeam(template: string, displayName: string, description: string): Promise<void>;
+}
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
+
 
 /**
  * Channel
@@ -76,7 +103,7 @@ export class _Channel extends _GraphQueryableInstance {
         return Tabs(this);
     }
 }
-export interface IChannel extends _Channel {}
+export interface IChannel extends _Channel { }
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**
@@ -128,7 +155,7 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
 export class _Tabs extends _GraphQueryableCollection {
 
     /**
-     * Adds a tab to the cahnnel
+     * Adds a tab to the channel
      * @param name The name of the new Tab
      * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
      * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
@@ -169,42 +196,6 @@ export interface ITabCreateResult {
 export interface ITabUpdateResult {
     data: any;
     tab: ITab;
-}
-
-/**
- * Defines the properties for a Team
- * 
- * TODO:: remove this once typings are present in graph types package
- */
-export interface ITeamProperties {
-
-    memberSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-        "allowAddRemoveApps"?: boolean;
-        "allowCreateUpdateRemoveTabs"?: boolean;
-        "allowCreateUpdateRemoveConnectors"?: boolean;
-    };
-
-    guestSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-    };
-
-    messagingSettings?: {
-        "allowUserEditMessages"?: boolean;
-        "allowUserDeleteMessages"?: boolean;
-        "allowOwnerDeleteMessages"?: boolean;
-        "allowTeamMentions"?: boolean;
-        "allowChannelMentions"?: boolean;
-    };
-
-    funSettings?: {
-        "allowGiphy"?: boolean;
-        "giphyContentRating"?: "strict" | string,
-        "allowStickersAndMemes"?: boolean;
-        "allowCustomMemes"?: boolean;
-    };
 }
 
 export interface ITabsConfiguration {
