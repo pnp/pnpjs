@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.10 - 2020-09-10
+
+- packaging: update to include .map files in packages [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- docs: update to docs for nodejs sp extensions [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- sp: update how batch error handling is done [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- nodejs: fix for nodejs-commonjs error in 2.0.9 [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- odata: updates how extensions are managed when extending a factory [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+
 ## 2.0.9 - 2020-09-04
 
 ### Added

@@ -28,7 +28,7 @@ export function createCopyTargetFiles(targetOverride = "", subDir = "", transfor
             await new Promise((res, rej) => {
 
                 pump([
-                    src(["./**/*.d.ts", "./**/*.js"], {
+                    src(["./**/*.d.ts", "./**/*.js", "./**/*.js.map", "./**/*.d.ts.map"], {
                         cwd: resolve(buildOutDir, dir),
                     }),
                     ...transforms.map(t => obj(t)),
