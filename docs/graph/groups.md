@@ -12,8 +12,9 @@ You can learn more about Microsoft Graph Groups by reading the [Official Microso
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { graph } from "@pnp/graph";<br />import "@pnp/graph/groups";|
-|Preset: All|import { graph } from "@pnp/sp/presets/all";|
+|Selective 1|import { graph } from "@pnp/graph";<br />import {Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups} from "@pnp/graph/groups";|
+|Selective 2|import { graph } from "@pnp/graph";<br />import "@pnp/graph/groups";|
+|Preset: All|import { graph, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";|
 
 ## Add a Group
 
@@ -119,3 +120,7 @@ const endDate = new Date("2020-03-01");
 
 const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
 ```
+
+## Group Photo Operations
+
+See [Photos](./photos.md)
