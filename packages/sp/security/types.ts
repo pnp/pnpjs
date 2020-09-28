@@ -170,6 +170,10 @@ export class _RoleDefinition extends _SharePointQueryableInstance<IRoleDefinitio
         const s = ["BasePermissions"];
         if (hOP(properties, s[0]) !== undefined) {
             properties[s[0]] = assign(metadata(`SP.${s[0]}`), properties[s[0]]);
+
+            const bpObj = properties[s[0]];
+            bpObj.High = bpObj.High.toString();
+            bpObj.Low = bpObj.Low.toString();
         }
 
         const postBody = body(assign(metadata("SP.RoleDefinition"), properties), headers({ "X-HTTP-Method": "MERGE" }));
