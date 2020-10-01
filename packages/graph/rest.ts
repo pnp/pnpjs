@@ -1,6 +1,6 @@
 import { _GraphQueryable } from "./graphqueryable";
 import {
-    setup as _setup,
+    setup2 as _setup,
     IGraphConfiguration,
 } from "./graphlibconfig";
 import { GraphBatch } from "./batch";

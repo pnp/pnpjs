@@ -5,30 +5,49 @@ import {
     IHttpClientImpl,
     FetchClient,
     objectDefinedNotNull,
+    RuntimeConfig2,
+    ISPFXContext,
 } from "@pnp/common";
 
 export const emptyGuid = "00000000-0000-0000-0000-000000000000";
 
 export interface ISPConfigurationPart {
-    sp?: {
-        /**
-         * Any headers to apply to all requests
-         */
-        headers?: ITypedHash<string>;
+    sp?: ISPConfigurationProps;
+}
 
-        /**
-         * The base url used for all requests
-         */
-        baseUrl?: string;
+export interface ISPConfigurationProps {
+    /**
+             * Any headers to apply to all requests
+             */
+    headers?: ITypedHash<string>;
 
-        /**
-         * Defines a factory method used to create fetch clients
-         */
-        fetchClientFactory?: () => IHttpClientImpl;
-    };
+    /**
+     * The base url used for all requests
+     */
+    baseUrl?: string;
+
+    /**
+     * Defines a factory method used to create fetch clients
+     */
+    fetchClientFactory?: () => IHttpClientImpl;
 }
 
 export interface ISPConfiguration extends ILibraryConfiguration, ISPConfigurationPart { }
+
+export function setup2(config: ISPConfiguration): void {
+
+    // use a passed context if provided, if not see if we get one from the current global config
+    const context = config?.spfxContext || RuntimeConfig2.get<ILibraryConfiguration, ISPFXContext>("spfxContext");
+
+    // do the defaults upfront
+    config.sp = Object.assign({}, {
+        baseUrl: context?.pageContext?.web?.absoluteUrl || null,
+        fetchClientFactory: () => new FetchClient(),
+        headers: {},
+    }, config?.sp || {});
+
+    RuntimeConfig2.assign(config);
+}
 
 export function setup(config: ISPConfiguration): void {
     RuntimeConfig.assign(config);

@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
-import { hOP, IConfigOptions } from "@pnp/common";
+import { hOP, IConfigOptions, RuntimeConfig2 } from "@pnp/common";
 import { defaultPath } from "../decorators";
 import { tag } from "../telemetry";
 
@@ -50,8 +50,8 @@ export interface ISuggest {
     (query: ISuggestQuery): Promise<ISuggestResult>;
 }
 
-export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISuggest => (query: ISuggestQuery) => {
-    return (new _Suggest(baseUrl)).configure(options).execute(query);
+export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}, runtime = RuntimeConfig2): ISuggest => (query: ISuggestQuery) => {
+    return (new _Suggest(baseUrl)).configure(options).setRuntimeConfig(runtime).execute(query);
 };
 
 /**

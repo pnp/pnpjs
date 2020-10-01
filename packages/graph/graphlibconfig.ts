@@ -1,26 +1,44 @@
-import { ILibraryConfiguration, ITypedHash, RuntimeConfig, IHttpClientImpl, SPFxAdalClient } from "@pnp/common";
+import { ILibraryConfiguration, ITypedHash, RuntimeConfig, IHttpClientImpl, SPFxAdalClient, RuntimeConfig2, ISPFXContext } from "@pnp/common";
 
 export interface IGraphConfigurationPart {
-    graph?: {
+    graph?: IGraphConfigurationProps;
+}
 
-        /**
-         * The base url used for all requests (default: none)
-         */
-        baseUrl?: string;
+export interface IGraphConfigurationProps {
+    /**
+    * The base url used for all requests (default: none)
+    */
+    baseUrl?: string;
 
-        /**
-         * Any headers to apply to all requests
-         */
-        headers?: ITypedHash<string>;
+    /**
+     * Any headers to apply to all requests
+     */
+    headers?: ITypedHash<string>;
 
-        /**
-         * Defines a factory method used to create fetch clients
-         */
-        fetchClientFactory?: () => IHttpClientImpl;
-    };
+    /**
+     * Defines a factory method used to create fetch clients
+     */
+    fetchClientFactory?: () => IHttpClientImpl;
 }
 
 export interface IGraphConfiguration extends ILibraryConfiguration, IGraphConfigurationPart { }
+
+export function setup2(config: IGraphConfiguration): void {
+
+    // use a passed context if provided, if not see if we get one from the current global config
+    const context = config?.spfxContext || RuntimeConfig2.get<ILibraryConfiguration, ISPFXContext>("spfxContext");
+
+    const errText = "There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup."
+
+    // do the defaults upfront
+    config.graph = Object.assign({}, {
+        baseUrl: null,
+        fetchClientFactory: config?.graph?.fetchClientFactory || context ? () => new SPFxAdalClient(context) : () => { throw Error(errText); },
+        headers: {},
+    }, config?.graph || {});
+
+    RuntimeConfig2.assign(config);
+}
 
 export function setup(config: IGraphConfiguration): void {
     RuntimeConfig.assign(config);

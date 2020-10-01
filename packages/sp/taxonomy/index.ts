@@ -39,6 +39,8 @@ Reflect.defineProperty(SPRest.prototype, "termStore", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return TermStore(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return TermStore(baseUrl).configure(options).setRuntimeConfig(runtime);
+        });
     },
 });

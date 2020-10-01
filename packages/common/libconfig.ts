@@ -40,8 +40,9 @@ export interface ILibraryConfiguration {
 }
 
 export function setup(config: ILibraryConfiguration): void {
-    RuntimeConfig.assign(config);
+    RuntimeConfig2.assign(config);
 }
+
 
 // lable mapping for known config values
 const s = [
@@ -53,6 +54,49 @@ const s = [
     "spfxContext",
     "ie11",
 ];
+
+export class Config2 {
+
+    constructor(private _v = new Map<string | number | symbol, any>()) {
+        // setup defaults
+        this._v.set(s[0], "session");
+        this._v.set(s[1], 60);
+        this._v.set(s[2], false);
+        this._v.set(s[3], false);
+        this._v.set(s[4], 750);
+        this._v.set(s[5], null);
+        this._v.set(s[6], false);
+    }
+
+    /**
+     * 
+     * @param config The set of properties to add to the globa configuration instance
+     */
+    public assign(config: ITypedHash<any>): void {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    }
+
+    public get<T = ILibraryConfiguration, R = any>(key: keyof T): R {
+        return this._v.get(key);
+    }
+
+    public export(): Map<string | number | symbol, any> {
+
+        const expt = new Map<string | number | symbol, any>();
+
+        for (const [key, value] of this._v) {
+            if (key !== "__isDefault__") {
+                expt.set(key, value);
+            }
+        }
+
+        return expt;
+    }
+}
+
+const _runtimeConfig2 = new Config2(new Map([["__isDefault__", true]]));
+export let RuntimeConfig2 = _runtimeConfig2;
+
 
 export class RuntimeConfigImpl {
 
@@ -110,5 +154,4 @@ export class RuntimeConfigImpl {
 }
 
 const _runtimeConfig = new RuntimeConfigImpl();
-
 export let RuntimeConfig = _runtimeConfig;

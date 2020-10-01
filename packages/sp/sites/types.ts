@@ -51,7 +51,7 @@ export class _Site extends _SharePointQueryableInstance {
   }
 
   public createBatch(): SPBatch {
-    return new SPBatch(this.parentUrl);
+    return new SPBatch(this.parentUrl, this.getRuntimeConfig());
   }
 
   /**

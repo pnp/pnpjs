@@ -7,8 +7,9 @@ import {
     IHttpClientImpl,
     combine,
     dateAdd,
+    RuntimeConfig2,
 } from "@pnp/common";
-import { SPRuntimeConfig } from "./splibconfig";
+import { ISPConfigurationPart, SPRuntimeConfig, ISPConfigurationProps } from "./splibconfig";
 import { extractWebUrl } from "./utils/extractweburl";
 import { tag } from "./telemetry";
 import { ODataParser } from "@pnp/odata";
@@ -17,7 +18,7 @@ export class SPHttpClient implements IRequestClient {
 
     protected _digestCache: IGetDigest;
 
-    constructor(protected _impl: IHttpClientImpl = SPRuntimeConfig.fetchClientFactory()) {
+    constructor(protected _impl: IHttpClientImpl = RuntimeConfig2.get<ISPConfigurationPart, ISPConfigurationProps>("sp").fetchClientFactory()) {
         this._digestCache = getDigestFactory(this);
     }
 

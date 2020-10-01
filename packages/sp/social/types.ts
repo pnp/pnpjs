@@ -7,7 +7,7 @@ import {
 import { defaultPath } from "../decorators";
 import { hOP, IFetchOptions } from "@pnp/common";
 import { metadata } from "../utils/metadata";
-import { body } from "@pnp/odata";
+import { body, IQueryable } from "@pnp/odata";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
 
@@ -94,7 +94,7 @@ export interface ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export const Social = (baseUrl: string | ISharePointQueryable): ISocial => new _Social(baseUrl);
+export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable, "configure" | "setRuntimeConfig"> => new _Social(baseUrl);
 const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: string): ISocial & ISharePointQueryable => new _Social(baseUrl, paths);
 
 /**

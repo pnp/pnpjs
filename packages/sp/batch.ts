@@ -1,8 +1,8 @@
 import { Batch, HttpRequestError } from "@pnp/odata";
-import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP } from "@pnp/common";
+import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Config2 } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./sphttpclient";
-import { SPRuntimeConfig } from "./splibconfig";
+import { ISPConfigurationPart, ISPConfigurationProps, SPRuntimeConfig } from "./splibconfig";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
@@ -10,7 +10,7 @@ import { toAbsoluteUrl } from "./utils/toabsoluteurl";
  */
 export class SPBatch extends Batch {
 
-    constructor(private baseUrl: string) {
+    constructor(private url: string, private runtime: Config2) {
         super();
     }
 
@@ -92,7 +92,7 @@ export class SPBatch extends Batch {
 
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch
-        const absoluteRequestUrl = await toAbsoluteUrl(this.baseUrl);
+        const absoluteRequestUrl = await toAbsoluteUrl(this.url, this.runtime);
 
         // build all the requests, send them, pipe results in order to parsers
         const batchBody: string[] = [];

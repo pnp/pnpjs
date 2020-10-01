@@ -19,6 +19,8 @@ Reflect.defineProperty(SPRest.prototype, "site", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return Site(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Site(baseUrl).configure(options).setRuntimeConfig(runtime);
+        });
     },
 });

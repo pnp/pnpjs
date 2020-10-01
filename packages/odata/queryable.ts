@@ -1,12 +1,17 @@
 import {
   combine,
-  RuntimeConfig,
   IFetchOptions,
   IConfigOptions,
   mergeOptions,
   objectDefinedNotNull,
   IRequestClient,
   assign,
+  ILibraryConfiguration,
+  ITypedHash,
+  Config2,
+  RuntimeConfig2,
+  dateAdd,
+  stringIsNullOrEmpty,
 } from "@pnp/common";
 import { ICachingOptions } from "./caching";
 import { Batch } from "./batch";
@@ -14,6 +19,7 @@ import { PipelineMethod } from "./pipeline";
 import { IODataParser, ODataParser } from "./parsers";
 
 export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData> {
+
   let body;
   // this handles bodies that cannot be JSON encoded (Blob, etc)
   // Note however, even bodies that can be serialized will not be cloned.
@@ -22,19 +28,15 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
     source.options.body = "-";
   }
 
-  const s = JSON.stringify(source, (key: string, value: any) => {
+  const s = JSON.stringify(source, (key: keyof IQueryableData, value: any) => {
 
     switch (key) {
       case "query":
         return JSON.stringify([...(<Map<string, string>>value)]);
       case "batch":
-        return "-";
       case "batchDependency":
-        return "-";
       case "cachingOptions":
-        return "-";
       case "clientFactory":
-        return "-";
       case "parser":
         return "-";
       default:
@@ -42,20 +44,16 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
     }
   }, 0);
 
-  const parsed = JSON.parse(s, (key: any, value: any) => {
+  const parsed = JSON.parse(s, (key: keyof IQueryableData, value: any) => {
     switch (key) {
       case "query":
         return new Map(JSON.parse(value));
       case "batch":
-        return source.batch;
       case "batchDependency":
-        return source.batchDependency;
       case "cachingOptions":
-        return source.cachingOptions;
       case "clientFactory":
-        return source.clientFactory;
       case "parser":
-        return source.parser;
+        return source[key];
       default:
         return value;
     }
@@ -102,11 +100,14 @@ export interface IQueryable<DefaultActionType> {
   usingParser(parser: IODataParser<any>): this;
   withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
   defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
+  getRuntimeConfig(): Config2;
+  setRuntimeConfig(cloneGlobal?: boolean, additionalConfig?: Map<string, string>): this;
 }
 
 export abstract class Queryable<DefaultActionType = any> implements IQueryable<DefaultActionType> {
 
   private _data: Partial<IQueryableData<DefaultActionType>>;
+  private _runtime: Config2;
 
   constructor(dataSeed: Partial<IQueryableData<DefaultActionType>> = {}) {
 
@@ -119,6 +120,8 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
       url: "",
       useCaching: false,
     }, cloneQueryableData(dataSeed));
+
+    this._runtime = null;
   }
 
   public get data(): Partial<IQueryableData<DefaultActionType>> {
@@ -127,6 +130,34 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
 
   public set data(value: Partial<IQueryableData<DefaultActionType>>) {
     this._data = Object.assign({}, this.data, cloneQueryableData(value));
+  }
+
+  public getRuntimeConfig(): Config2 {
+    if (this._runtime === null) {
+      return RuntimeConfig2;
+    }
+
+    return this._runtime;
+  }
+
+  public setRuntimeConfig(runtime: Config2): this;
+  public setRuntimeConfig(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
+  public setRuntimeConfig(...args: [Config2] | [boolean, ITypedHash<any>?]): this {
+
+    if (args[0] instanceof Config2) {
+
+      this._runtime = args[0];
+
+    } else {
+
+      this._runtime = args[0] ? new Config2(RuntimeConfig2.export()) : new Config2();
+
+      if (args.length > 1 && objectDefinedNotNull(args[1])) {
+        this._runtime.assign(args[1]);
+      }
+    }
+
+    return this;
   }
 
   /**
@@ -191,13 +222,31 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    *
    * @param options Defines the options used when caching this request
    */
-  public usingCaching(options?: ICachingOptions): this {
-    if (!RuntimeConfig.globalCacheDisable) {
+  public usingCaching(options?: string | ICachingOptions): this {
+
+    const runtime = this.getRuntimeConfig();
+
+    if (!runtime.get<ILibraryConfiguration, boolean>("globalCacheDisable")) {
+
       this.data.useCaching = true;
-      if (options !== undefined) {
-        this.data.cachingOptions = options;
+
+      // handle getting just the key
+      if (typeof options === "string") {
+        if (stringIsNullOrEmpty(options)) {
+          throw Error("Cache key cannot be empty.");
+        }
+        options = <ICachingOptions>{ key: options };
       }
+
+      // this uses our local options if they are defined as defaults
+      const defaultOpts: Partial<ICachingOptions> = {
+        expiration: dateAdd(new Date(), "second", runtime.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds")),
+        storeName: runtime.get<ILibraryConfiguration, "session" | "local">("defaultCachingStore"),
+      };
+
+      this.data.cachingOptions = assign(defaultOpts, options);
     }
+
     return this;
   }
 

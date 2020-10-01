@@ -119,7 +119,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      *
      */
     public createBatch(): SPBatch {
-        return new SPBatch(this.parentUrl);
+        return new SPBatch(this.parentUrl, this.getRuntimeConfig());
     }
 
     /**

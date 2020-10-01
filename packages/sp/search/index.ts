@@ -48,15 +48,21 @@ declare module "../rest" {
 
 SPRest.prototype.search = function (this: SPRest, query: SearchQueryInit): Promise<SearchResults> {
 
-    return Search(this._baseUrl, this._options)(query);
+    return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return Search(baseUrl, options, runtime)(query);
+    });
 };
 
-SPRest.prototype.searchWithCaching = function (this: SPRest, query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults> {
+SPRest.prototype.searchWithCaching = function (this: SPRest, query: SearchQueryInit, cacheOptions?: ICachingOptions): Promise<SearchResults> {
 
-    return (new _Search(this._baseUrl)).configure(this._options).usingCaching(options).execute(query);
+    return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return (new _Search(baseUrl)).configure(options).setRuntimeConfig(runtime).usingCaching(cacheOptions).execute(query);
+    });
 };
 
 SPRest.prototype.searchSuggest = function (this: SPRest, query: string | ISuggestQuery): Promise<ISuggestResult> {
 
-    return Suggest(this._baseUrl, this._options)(typeof query === "string" ? { querytext: query } : query);
+    return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return Suggest(baseUrl, options, runtime)(typeof query === "string" ? { querytext: query } : query);
+    });
 };

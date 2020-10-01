@@ -175,13 +175,13 @@ plugins:
 extra:
   social:
     - type: 'twitter'
-      link: 'https://twitter.com/officedevpnp'
+      link: 'https://twitter.com/m365pnpjs'
     - type: 'youtube'
-      link: 'http://aka.ms/sppnp-videos'
+      link: 'https://aka.ms/sppnp-videos'
     - type: 'link'
       link: 'https://aka.ms/sppnp'
 
-repo_url: http://github.com/pnp/pnpjs
+repo_url: https://github.com/pnp/pnpjs
 
 edit_uri: tree/version-2/docs
 

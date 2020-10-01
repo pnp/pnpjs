@@ -30,6 +30,8 @@ Reflect.defineProperty(SPRest.prototype, "navigation", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return NavigationService().configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return NavigationService(baseUrl).configure(options).setRuntimeConfig(runtime);
+        });
     },
 });

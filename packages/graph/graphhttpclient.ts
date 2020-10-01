@@ -5,8 +5,10 @@ import {
     IFetchOptions,
     IHttpClientImpl,
     getCtxCallback,
+    RuntimeConfig2,
+    ITypedHash,
 } from "@pnp/common";
-import { GraphRuntimeConfig } from "./graphlibconfig";
+import { IGraphConfiguration, IGraphConfigurationProps } from "./graphlibconfig";
 
 export class GraphHttpClient implements IRequestClient {
 
@@ -14,7 +16,7 @@ export class GraphHttpClient implements IRequestClient {
 
     constructor() {
 
-        this._impl = GraphRuntimeConfig.fetchClientFactory();
+        this._impl = RuntimeConfig2.get<IGraphConfiguration, Pick<IGraphConfigurationProps, "fetchClientFactory">>("graph").fetchClientFactory();
     }
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
@@ -22,7 +24,7 @@ export class GraphHttpClient implements IRequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, GraphRuntimeConfig.headers);
+        mergeHeaders(headers, RuntimeConfig2.get<IGraphConfiguration, { headers: ITypedHash<string> }>("graph").headers);
 
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);

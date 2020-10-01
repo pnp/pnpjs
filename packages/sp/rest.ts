@@ -1,6 +1,6 @@
-import { IConfigOptions, ISPFXContext } from "@pnp/common";
+import { RuntimeConfig2, IConfigOptions, ISPFXContext, Config2 } from "@pnp/common";
 import {
-    setup as _setup,
+    setup2 as _setup,
     ISPConfiguration,
 } from "./splibconfig";
 
@@ -15,7 +15,7 @@ export class SPRest {
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
-    constructor(protected _options: IConfigOptions = {}, protected _baseUrl = "") { }
+    constructor(private _options: IConfigOptions = {}, private _baseUrl = "", private _runtime = RuntimeConfig2) { }
 
     /**
      * Configures instance with additional options and baseUrl.
@@ -42,6 +42,17 @@ export class SPRest {
         } else {
             _setup(<ISPConfiguration>config);
         }
+    }
+
+    public async createdIsolatedRuntime(cloneGlobalConfig = true, options: IConfigOptions = {}, baseUrl = ""): Promise<SPRest> {
+
+        const runtime = cloneGlobalConfig ? new Config2(RuntimeConfig2.export()) : new Config2();
+
+        return new SPRest(options, baseUrl, runtime);
+    }
+
+    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Config2 }) => T): T {
+        return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime});
     }
 }
 

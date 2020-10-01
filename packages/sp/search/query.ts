@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
-import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions } from "@pnp/common";
+import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, RuntimeConfig2 } from "@pnp/common";
 import { metadata } from "../utils/metadata";
 import { CachingOptions, body } from "@pnp/odata";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types";
@@ -176,8 +176,8 @@ export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
 
-export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).configure(options).execute(queryInit);
+export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}, runtime = RuntimeConfig2): ISearch => (queryInit: SearchQueryInit) => {
+    return (new _Search(baseUrl)).configure(options).setRuntimeConfig(runtime).execute(queryInit);
 };
 
 export class SearchResults {

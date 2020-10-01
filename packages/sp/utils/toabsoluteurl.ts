@@ -1,5 +1,5 @@
-import { combine, isUrlAbsolute, hOP, safeGlobal } from "@pnp/common";
-import { SPRuntimeConfig } from "../splibconfig";
+import { combine, isUrlAbsolute, hOP, safeGlobal, RuntimeConfig2, stringIsNullOrEmpty } from "@pnp/common";
+import { ISPConfigurationPart, ISPConfigurationProps } from "../splibconfig";
 
 /**
  * Ensures that a given url is absolute for the current web based on context
@@ -7,16 +7,18 @@ import { SPRuntimeConfig } from "../splibconfig";
  * @param candidateUrl The url to make absolute
  *
  */
-export async function toAbsoluteUrl(candidateUrl: string): Promise<string> {
+export async function toAbsoluteUrl(candidateUrl: string, runtime = RuntimeConfig2): Promise<string> {
+
+    let baseUrl = runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp").baseUrl;
 
     if (isUrlAbsolute(candidateUrl)) {
         // if we are already absolute, then just return the url
         return candidateUrl;
     }
 
-    if (SPRuntimeConfig.baseUrl !== null) {
+    if (!stringIsNullOrEmpty(baseUrl)) {
         // base url specified either with baseUrl of spfxContext config property
-        return combine(SPRuntimeConfig.baseUrl, candidateUrl);
+        return combine(baseUrl, candidateUrl);
     }
 
     if (safeGlobal._spPageContextInfo !== undefined) {
@@ -31,7 +33,7 @@ export async function toAbsoluteUrl(candidateUrl: string): Promise<string> {
 
     // does window.location exist and have a certain path part in it?
     if (safeGlobal.location !== undefined) {
-        const baseUrl = safeGlobal.location.toString().toLowerCase();
+        baseUrl = safeGlobal.location.toString().toLowerCase();
         ["/_layouts/", "/siteassets/"].forEach((s: string) => {
             const index = baseUrl.indexOf(s);
             if (index > 0) {
