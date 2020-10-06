@@ -19,6 +19,8 @@ Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return DirectoryObjects(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return DirectoryObjects(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

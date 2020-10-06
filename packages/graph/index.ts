@@ -25,3 +25,8 @@ export * from "./graphhttpclient";
 
 export * from "./types";
 
+export * from "./operations";
+
+export {
+    toAbsoluteUrl,
+} from "./utils/toabsoluteurl";

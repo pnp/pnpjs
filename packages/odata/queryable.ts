@@ -8,8 +8,8 @@ import {
   assign,
   ILibraryConfiguration,
   ITypedHash,
-  Config2,
-  RuntimeConfig2,
+  Runtime,
+  DefaultRuntime,
   dateAdd,
   stringIsNullOrEmpty,
 } from "@pnp/common";
@@ -20,7 +20,7 @@ import { IODataParser, ODataParser } from "./parsers";
 
 export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData> {
 
-  let body;
+  let body: any;
   // this handles bodies that cannot be JSON encoded (Blob, etc)
   // Note however, even bodies that can be serialized will not be cloned.
   if (source.options && source.options.body) {
@@ -100,14 +100,15 @@ export interface IQueryable<DefaultActionType> {
   usingParser(parser: IODataParser<any>): this;
   withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
   defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
-  getRuntimeConfig(): Config2;
-  setRuntimeConfig(cloneGlobal?: boolean, additionalConfig?: Map<string, string>): this;
+  getRuntime(): Runtime;
+  setRuntime(runtime: Runtime): this;
+  setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
 }
 
 export abstract class Queryable<DefaultActionType = any> implements IQueryable<DefaultActionType> {
 
   private _data: Partial<IQueryableData<DefaultActionType>>;
-  private _runtime: Config2;
+  private _runtime: Runtime;
 
   constructor(dataSeed: Partial<IQueryableData<DefaultActionType>> = {}) {
 
@@ -132,25 +133,24 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
     this._data = Object.assign({}, this.data, cloneQueryableData(value));
   }
 
-  public getRuntimeConfig(): Config2 {
+  public getRuntime(): Runtime {
+
     if (this._runtime === null) {
-      return RuntimeConfig2;
+      return DefaultRuntime;
     }
 
     return this._runtime;
   }
 
-  public setRuntimeConfig(runtime: Config2): this;
-  public setRuntimeConfig(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
-  public setRuntimeConfig(...args: [Config2] | [boolean, ITypedHash<any>?]): this {
+  public setRuntime(...args: [runtime: Runtime] | [cloneGlobal: boolean, additionalConfig?: ITypedHash<any>]): this {
 
-    if (args[0] instanceof Config2) {
+    if (args[0] instanceof Runtime) {
 
       this._runtime = args[0];
 
     } else {
 
-      this._runtime = args[0] ? new Config2(RuntimeConfig2.export()) : new Config2();
+      this._runtime = args[0] ? new Runtime(DefaultRuntime.export()) : new Runtime();
 
       if (args.length > 1 && objectDefinedNotNull(args[1])) {
         this._runtime.assign(args[1]);
@@ -213,7 +213,13 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    * @param o Instance from which options should be taken
    */
   public configureFrom(o: IQueryable<any>): this {
+
     mergeOptions(this.data.options, o.data.options);
+
+    const sourceRuntime = o.getRuntime();
+    if (!sourceRuntime.get<{ "__isDefault__": boolean }, boolean>("__isDefault__")) {
+      this.setRuntime(sourceRuntime);
+    }
     return this;
   }
 
@@ -224,7 +230,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    */
   public usingCaching(options?: string | ICachingOptions): this {
 
-    const runtime = this.getRuntimeConfig();
+    const runtime = this.getRuntime();
 
     if (!runtime.get<ILibraryConfiguration, boolean>("globalCacheDisable")) {
 

@@ -31,7 +31,7 @@ Reflect.defineProperty(SPRest.prototype, "navigation", {
     enumerable: true,
     get: function (this: SPRest) {
         return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return NavigationService(baseUrl).configure(options).setRuntimeConfig(runtime);
+            return NavigationService(baseUrl).configure(options).setRuntime(runtime);
         });
     },
 });

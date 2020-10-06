@@ -2,6 +2,33 @@
 
 This article describes the configuration architecture used by the library as well as the settings available.
 
+> Starting with version 2.1.0 we updated our configuration design to support the ability to isolate settings to individual objects. The first part of this article discusses the newer design, you can read about the [pre v2.1.0 configuration](#prior-to-v210) further down.
+
+# Post v2.1.0
+
+## Architecture
+
+Starting from v2.1.0 we have modified our configuration design to allow for configuring individual queryable objects. Generally this should be done from the root objects for ease of understanding, but can be done to individual queryable instances if needed.
+
+## Backward Compatibility
+
+
+
+
+## Common Configuration
+
+## SP Configuration
+
+## Graph Configuration
+
+## Configure Everything At Once
+
+This pattern is no longer valid and you should use either the dedicated sp.setup and graph.setup individually.
+
+
+
+# Prior to v2.1.0
+
 ## Architecture
 
 PnPjs uses an additive configuration design with multiple libraries sharing a single global configuration instance. If you need non-global configuration [please see this section](#non-global-configuration). There are three ways to access the setup functionality - through either the common, sp, or graph library's setup method. While the configuration is global the various methods have different typing on their input parameter. You can review the [libconfig article](../common/libconfig.md) for more details on storing your own configuration.
@@ -168,9 +195,4 @@ const config: AllConfig = {
 };
 
 setup(config);
-```
-
-## Non-Global Configuration
-
-Currently PnPjs uses a globally shared configuration model. This means you can't have one "sp" pointing to one site and another "sp" pointing to another, or using different headers, etc. There is an [open issue](https://github.com/pnp/pnpjs/issues/589) to create a way to enable such an isolated configuration experience and we're working on it. You can track progress in the issue and we'll update these docs with usage when available.
-    
+```    

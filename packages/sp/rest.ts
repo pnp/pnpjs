@@ -1,6 +1,6 @@
-import { RuntimeConfig2, IConfigOptions, ISPFXContext, Config2 } from "@pnp/common";
+import { DefaultRuntime, IConfigOptions, ISPFXContext, Runtime, ITypedHash } from "@pnp/common";
 import {
-    setup2 as _setup,
+    setup as _setup,
     ISPConfiguration,
 } from "./splibconfig";
 
@@ -15,7 +15,7 @@ export class SPRest {
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
-    constructor(private _options: IConfigOptions = {}, private _baseUrl = "", private _runtime = RuntimeConfig2) { }
+    constructor(private _options: IConfigOptions = {}, private _baseUrl = "", private _runtime = DefaultRuntime) { }
 
     /**
      * Configures instance with additional options and baseUrl.
@@ -38,22 +38,41 @@ export class SPRest {
         if ((<ISPFXContext>config).pageContext) {
             _setup({
                 spfxContext: <ISPFXContext>config,
-            });
+            }, this._runtime);
         } else {
-            _setup(<ISPConfiguration>config);
+            _setup(<ISPConfiguration>config, this._runtime);
         }
     }
 
-    public async createdIsolatedRuntime(cloneGlobalConfig = true, options: IConfigOptions = {}, baseUrl = ""): Promise<SPRest> {
+    public async createIsolated<T = ITypedHash<any>>(init: Partial<IIsolatedInit<T>>): Promise<SPRest> {
 
-        const runtime = cloneGlobalConfig ? new Config2(RuntimeConfig2.export()) : new Config2();
+        // merge our defaults
+        init = Object.assign<IIsolatedInit<T>, Partial<IIsolatedInit<T>>>({
+            baseUrl: "",
+            cloneGlobal: true,
+            options: {},
+            runtimeConfig: <T>{},
+        }, init);
+
+        const { baseUrl, cloneGlobal, options, runtimeConfig } = init;
+
+        const runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
+
+        runtime.assign(runtimeConfig);
 
         return new SPRest(options, baseUrl, runtime);
     }
 
     protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Config2 }) => T): T {
-        return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime});
+        return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime });
     }
+}
+
+export interface IIsolatedInit<T> {
+    cloneGlobal: boolean;
+    runtimeConfig: T;
+    options: IConfigOptions;
+    baseUrl: string;
 }
 
 export const sp = new SPRest();

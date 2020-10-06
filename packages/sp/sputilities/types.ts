@@ -1,7 +1,7 @@
 import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable";
 import { assign, ITypedHash } from "@pnp/common";
 import { SPBatch } from "../batch";
-import { ICachingOptions, body } from "@pnp/odata";
+import { ICachingOptions, body, IQueryable } from "@pnp/odata";
 import { odataUrlFrom } from "../odata";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types";
 import { metadata } from "../utils/metadata";
@@ -201,7 +201,7 @@ export interface IUtilities {
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 
-export const Utilities = spInvokableFactory<IUtilities>(_Utilities);
+export const Utilities = spInvokableFactory<IUtilities & Pick<IQueryable, "configure" | "setRuntime" | "getRuntime">>(_Utilities);
 type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };
 const UtilitiesCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
 

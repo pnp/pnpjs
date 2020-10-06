@@ -1,6 +1,6 @@
 import { IQueryable } from "./queryable";
 import { IRequestContext } from "./pipeline";
-import { IFetchOptions, ILibraryConfiguration, RuntimeConfig2 } from "@pnp/common";
+import { IFetchOptions, ILibraryConfiguration, DefaultRuntime } from "@pnp/common";
 import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions";
 
 export type IHybrid<R = any, T = any> = T & {
@@ -20,7 +20,7 @@ const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor:
         };
 
         // ie11 setting is always global
-        if (RuntimeConfig2.get<ILibraryConfiguration, boolean>("ie11")) {
+        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("ie11")) {
 
             return factory(args);
         } else {

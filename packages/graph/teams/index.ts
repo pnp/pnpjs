@@ -61,6 +61,8 @@ Reflect.defineProperty(GraphRest.prototype, "teams", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return Teams(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Teams(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

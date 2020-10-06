@@ -19,6 +19,9 @@ declare module "../rest" {
 }
 
 SPRest.prototype.getTenantAppCatalogWeb = async function (this: SPRest): Promise<IWeb> {
-    const data: { CorporateCatalogUrl: string } = await SharePointQueryable("/", "_api/SP_TenantSettings_Current")();
-    return Web(data.CorporateCatalogUrl);
+
+    return this.childConfigHook(async ({ options, runtime }) => {
+        const data: { CorporateCatalogUrl: string } = await SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)();
+        return Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime);
+    });
 };

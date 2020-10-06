@@ -27,7 +27,7 @@ Reflect.defineProperty(SPRest.prototype, "hubSites", {
     enumerable: true,
     get: function (this: SPRest) {
         return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return HubSites(baseUrl).configure(options).setRuntimeConfig(runtime);
+            return HubSites(baseUrl).configure(options).setRuntime(runtime);
         });
     },
 });

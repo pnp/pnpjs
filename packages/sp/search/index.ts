@@ -56,7 +56,7 @@ SPRest.prototype.search = function (this: SPRest, query: SearchQueryInit): Promi
 SPRest.prototype.searchWithCaching = function (this: SPRest, query: SearchQueryInit, cacheOptions?: ICachingOptions): Promise<SearchResults> {
 
     return this.childConfigHook(({ options, baseUrl, runtime }) => {
-        return (new _Search(baseUrl)).configure(options).setRuntimeConfig(runtime).usingCaching(cacheOptions).execute(query);
+        return (new _Search(baseUrl)).configure(options).setRuntime(runtime).usingCaching(cacheOptions).execute(query);
     });
 };
 

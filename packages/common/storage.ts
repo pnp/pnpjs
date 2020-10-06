@@ -1,5 +1,5 @@
 import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util";
-import { ILibraryConfiguration, RuntimeConfig2 } from "./libconfig";
+import { ILibraryConfiguration, DefaultRuntime } from "./libconfig";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage
@@ -23,7 +23,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
 
         // if the cache timeout is enabled call the handler
         // this will clear any expired items and set the timeout function
-        if (RuntimeConfig2.get<ILibraryConfiguration, boolean>("enableCacheExpiration")) {
+        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("enableCacheExpiration")) {
             this.cacheExpirationHandler();
         }
     }
@@ -150,7 +150,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
         if (expire === undefined) {
 
             // ensure we are by default inline with the global library setting
-            let defaultTimeout = RuntimeConfig2.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds");
+            let defaultTimeout = DefaultRuntime.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds");
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
@@ -172,7 +172,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
         this.deleteExpired().then(_ => {
 
             // call ourself in the future
-            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), RuntimeConfig2.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
+            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
         }).catch(console.error);
     }
 }

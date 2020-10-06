@@ -29,7 +29,7 @@ Reflect.defineProperty(SPRest.prototype, "social", {
   enumerable: true,
   get: function (this: SPRest) {
     return this.childConfigHook(({ options, baseUrl, runtime }) => {
-      return Social(baseUrl).configure(options).setRuntimeConfig(runtime);
+      return Social(baseUrl).configure(options).setRuntime(runtime);
     });
   },
 });

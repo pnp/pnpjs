@@ -25,7 +25,7 @@ export class _Social extends _SharePointQueryableInstance implements ISocial {
   }
 
   @tag("soc.getFollowedDocumentsUri")
-    public async getFollowedDocumentsUri(): Promise<string> {
+  public async getFollowedDocumentsUri(): Promise<string> {
     const r = await this.clone(SocialCloneFactory, "FollowedDocumentsUri").get();
     return r.FollowedDocumentsUri || r;
   }
@@ -94,7 +94,7 @@ export interface ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable, "configure" | "setRuntimeConfig"> => new _Social(baseUrl);
+export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable, "configure" | "setRuntime" | "getRuntime"> => new _Social(baseUrl);
 const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: string): ISocial & ISharePointQueryable => new _Social(baseUrl, paths);
 
 /**

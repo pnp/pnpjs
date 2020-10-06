@@ -1,8 +1,8 @@
 import { Batch, HttpRequestError } from "@pnp/odata";
-import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Config2 } from "@pnp/common";
+import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Runtime, DefaultRuntime } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./sphttpclient";
-import { ISPConfigurationPart, ISPConfigurationProps, SPRuntimeConfig } from "./splibconfig";
+import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl";
 
 /**
@@ -10,7 +10,7 @@ import { toAbsoluteUrl } from "./utils/toabsoluteurl";
  */
 export class SPBatch extends Batch {
 
-    constructor(private url: string, private runtime: Config2) {
+    constructor(private url: string, private runtime: Runtime = DefaultRuntime) {
         super();
     }
 
@@ -88,7 +88,7 @@ export class SPBatch extends Batch {
         // creating the client here allows the url to be populated for nodejs client as well as potentially
         // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
         // below to be correct
-        const client = new SPHttpClient();
+        const client = new SPHttpClient(this.runtime);
 
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch
@@ -156,7 +156,7 @@ export class SPBatch extends Batch {
             }
 
             // merge global config headers
-            mergeHeaders(headers, SPRuntimeConfig.headers);
+            mergeHeaders(headers, this.runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp").headers);
 
             // merge per-request headers
             if (reqInfo.options) {
