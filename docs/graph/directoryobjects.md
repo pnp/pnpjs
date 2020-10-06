@@ -6,6 +6,14 @@ More information can be found in the official Graph documentation:
 
 - [DirectoryObject Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/directoryobject?view=graph-rest-1.0)
 
+## IDirectoryObject, IDirectoryObjects
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { graph } from "@pnp/graph";<br />import "@pnp/graph/directory-objects";|
+|Preset: All|import { graph } from "@pnp/sp/presets/all";|
+
 ## The groups and directory roles for the user
 
 ```TypeScript

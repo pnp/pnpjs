@@ -3,6 +3,15 @@
 The ability to manage plans and tasks in Planner is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can add, update and delete items in Planner.
 
+## IInvitations
+
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+
+| Scenario    | Import Statement                                                  |
+| ----------- | ----------------------------------------------------------------- |
+| Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/planner"; |
+| Preset: All | import "@pnp/graph/presets/all";    |
+
 ## Get Plans by Id
 
 Using the planner.plans.getById() you can get a specific Plan.

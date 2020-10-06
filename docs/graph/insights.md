@@ -9,7 +9,7 @@ This module helps you get Insights in form of ***Trending***, ***Used*** and ***
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |
 | Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/insights"; |
-| Preset: All | import { graph, Insights, IInsights } from "@pnp/graph/presets/all";    |
+| Preset: All | import "@pnp/graph/presets/all";    |
 
 ### Get all Trending documents
 

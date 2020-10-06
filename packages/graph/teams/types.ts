@@ -1,4 +1,5 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
+import { Team as ITeamProperties, TeamsAsyncOperation } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/odata";
 import { assign } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
@@ -64,8 +65,22 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> { }
-export interface ITeams extends _Teams, IGetById<ITeam> { }
+export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> {
+    /**
+     * Creates a team
+     * @param teamProperties The properties of the team that you are specifically setting which override defaults in the template if you are providing one. 
+     * Read Graph documentation carefully if using this with the group property.
+     */
+
+    public createTeam(teamProperties: ITeamProperties): Promise<TeamsAsyncOperation> {
+        teamProperties["template@odata.bind"] = teamProperties.template.id;
+        delete teamProperties.template;
+        return graphPost(this, body(teamProperties));
+    }
+}
+export interface ITeams extends IGetById<ITeam> {
+    createTeam(teamProperties: ITeamProperties): Promise<TeamsAsyncOperation>;
+}
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
 
 /**
@@ -76,7 +91,7 @@ export class _Channel extends _GraphQueryableInstance {
         return Tabs(this);
     }
 }
-export interface IChannel extends _Channel {}
+export interface IChannel extends _Channel { }
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**
@@ -176,36 +191,36 @@ export interface ITabUpdateResult {
  * 
  * TODO:: remove this once typings are present in graph types package
  */
-export interface ITeamProperties {
+// export interface ITeamProperties {
 
-    memberSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-        "allowAddRemoveApps"?: boolean;
-        "allowCreateUpdateRemoveTabs"?: boolean;
-        "allowCreateUpdateRemoveConnectors"?: boolean;
-    };
+//     memberSettings?: {
+//         "allowCreateUpdateChannels"?: boolean;
+//         "allowDeleteChannels"?: boolean;
+//         "allowAddRemoveApps"?: boolean;
+//         "allowCreateUpdateRemoveTabs"?: boolean;
+//         "allowCreateUpdateRemoveConnectors"?: boolean;
+//     };
 
-    guestSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-    };
+//     guestSettings?: {
+//         "allowCreateUpdateChannels"?: boolean;
+//         "allowDeleteChannels"?: boolean;
+//     };
 
-    messagingSettings?: {
-        "allowUserEditMessages"?: boolean;
-        "allowUserDeleteMessages"?: boolean;
-        "allowOwnerDeleteMessages"?: boolean;
-        "allowTeamMentions"?: boolean;
-        "allowChannelMentions"?: boolean;
-    };
+//     messagingSettings?: {
+//         "allowUserEditMessages"?: boolean;
+//         "allowUserDeleteMessages"?: boolean;
+//         "allowOwnerDeleteMessages"?: boolean;
+//         "allowTeamMentions"?: boolean;
+//         "allowChannelMentions"?: boolean;
+//     };
 
-    funSettings?: {
-        "allowGiphy"?: boolean;
-        "giphyContentRating"?: "strict" | string,
-        "allowStickersAndMemes"?: boolean;
-        "allowCustomMemes"?: boolean;
-    };
-}
+//     funSettings?: {
+//         "allowGiphy"?: boolean;
+//         "giphyContentRating"?: "strict" | string,
+//         "allowStickersAndMemes"?: boolean;
+//         "allowCustomMemes"?: boolean;
+//     };
+// }
 
 export interface ITabsConfiguration {
     configuration: {
