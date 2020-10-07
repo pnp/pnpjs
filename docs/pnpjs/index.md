@@ -10,7 +10,7 @@ The below is an example of using the pnp.js bundle within a Script Editor webpar
 
 You will need to grab the pnp.js bundle file from the dist folder of the pnpjs package and upload it to a location where you can reference it from without your script editor webparts.
 
-> *This is included as a reference for backward compatibility. The script editor webpart is no longer available in SharePoint online. In addition, see our General Statement on Polyfills and [IE11](../concepts/pollyfill.md)
+> *This is included as a reference for backward compatibility. The script editor webpart is no longer available in SharePoint online. In addition, see our General Statement on Polyfills and [IE11](../concepts/polyfill.md)
 
 ```HTML
 <script src="https://mytenant.sharepoint.com/sites/dev/Shared%20Documents/pnp2bundle/pnp.js"></script>

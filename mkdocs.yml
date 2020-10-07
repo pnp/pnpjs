@@ -63,6 +63,7 @@ nav:
       - AdalFetchClient: 'nodejs/adal-fetch-client.md'
       - BearerTokenFetchClient: 'nodejs/bearer-token-fetch-client.md'       
       - ProviderHostedRequestContext: 'nodejs/provider-hosted-app.md'
+      - 'sp Extensions': 'nodejs\sp-extensions.md'      
     - odata:
       - odata: 'odata/index.md'
       - caching: 'odata/caching.md'

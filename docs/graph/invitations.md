@@ -2,6 +2,15 @@
 
 The ability invite an external user via the invitation manager
 
+## IInvitations
+
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+
+| Scenario    | Import Statement                                                  |
+| ----------- | ----------------------------------------------------------------- |
+| Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/invitations"; |
+| Preset: All | import "@pnp/graph/presets/all";    |
+
 ## Create Invitation
 
 Using the invitations.create() you can create an Invitation.
