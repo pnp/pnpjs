@@ -34,11 +34,16 @@ export interface ISPConfigurationProps {
 export interface ISPConfiguration extends ILibraryConfiguration, ISPConfigurationPart { }
 
 onRuntimeCreate((runtime: Runtime) => {
-    runtime.assign<Required<ISPConfigurationPart>>({
+
+    const existing = runtime.get<ISPConfigurationPart>("sp");
+
+    const spPart = Object.assign({}, {
         sp: {
             fetchClientFactory: () => new FetchClient(),
         },
-    });
+    }, existing);
+
+    runtime.assign({ sp: spPart });
 });
 
 export function setup(config: ISPConfiguration, runtime = DefaultRuntime): void {

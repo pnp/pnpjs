@@ -20,7 +20,7 @@ const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor:
         };
 
         // ie11 setting is always global
-        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("ie11")) {
+        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("ie11") || false) {
 
             return factory(args);
         } else {

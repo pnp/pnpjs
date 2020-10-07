@@ -8,8 +8,9 @@
         "removeComments": false,
         "types": [],
         "lib": [
-            "es2015",
-            "dom"
+            "ES2015",
+            "dom",
+            "ES2017.Object"
         ],
         "baseUrl": ".",
         "rootDir": ".",

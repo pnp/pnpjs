@@ -58,6 +58,8 @@ const runtimeCreateHooks: ((runtime: Runtime) => void)[] = [];
 
 export function onRuntimeCreate(hook: (runtime: Runtime) => void) {
     if (runtimeCreateHooks.indexOf(hook) < 0) {
+        // apply hook logic to default runtime
+        hook(DefaultRuntime);
         runtimeCreateHooks.push(hook);
     }
 }
@@ -65,14 +67,19 @@ export function onRuntimeCreate(hook: (runtime: Runtime) => void) {
 export class Runtime {
 
     constructor(private _v = new Map<string | number | symbol, any>()) {
+        const defaulter = (key: string, def: any) => {
+            if (!this._v.has(key)) {
+                this._v.set(key, def);
+            }
+        };
         // setup defaults
-        this._v.set(s[0], "session");
-        this._v.set(s[1], 60);
-        this._v.set(s[2], false);
-        this._v.set(s[3], false);
-        this._v.set(s[4], 750);
-        this._v.set(s[5], null);
-        this._v.set(s[6], false);
+        defaulter(s[0], "session");
+        defaulter(s[1], 60);
+        defaulter(s[2], false);
+        defaulter(s[3], false);
+        defaulter(s[4], 750);
+        defaulter(s[5], null);
+        defaulter(s[6], false);
 
         runtimeCreateHooks.forEach(hook => hook(this));
     }

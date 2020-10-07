@@ -31,33 +31,33 @@ export class GraphRest {
         }
     }
 
-    public async createIsolated<T = ITypedHash<any>>(init: Partial<IIsolatedInit<T>>): Promise<GraphRest> {
+    public async createIsolated<T = ITypedHash<any>>(init?: Partial<IGraphIsolatedInit<T>>): Promise<GraphRest> {
 
         // merge our defaults
-        init = Object.assign<IIsolatedInit<T>, Partial<IIsolatedInit<T>>>({
+        init = Object.assign<IGraphIsolatedInit<T>, Partial<IGraphIsolatedInit<T>>>({
             baseUrl: "v1.0",
             cloneGlobal: true,
+            config: <T>{},
             options: {},
-            runtimeConfig: <T>{},
-        }, init);
+        }, init || {});
 
-        const { baseUrl, cloneGlobal, options, runtimeConfig } = init;
+        const { baseUrl, cloneGlobal, options, config } = init;
 
         const runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
 
-        runtime.assign(runtimeConfig);
+        runtime.assign(config);
 
         return new GraphRest(options, baseUrl, runtime);
     }
 
-    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Config2 }) => T): T {
+    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Runtime }) => T): T {
         return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime });
     }
 }
 
-export interface IIsolatedInit<T> {
+export interface IGraphIsolatedInit<T> {
     cloneGlobal: boolean;
-    runtimeConfig: T;
+    config: T;
     options: IConfigOptions;
     baseUrl: "v1.0" | "beta";
 }

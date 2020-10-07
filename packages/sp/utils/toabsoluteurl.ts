@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, DefaultRuntime, stringIsNullOrEmpty, ILibraryConfiguration, ISPFXContext, hOP } from "@pnp/common";
+import { combine, isUrlAbsolute, DefaultRuntime, stringIsNullOrEmpty, ILibraryConfiguration, ISPFXContext, hOP, safeGlobal } from "@pnp/common";
 import { ISPConfigurationPart, ISPConfigurationProps } from "../splibconfig";
 
 /**
@@ -14,7 +14,8 @@ export async function toAbsoluteUrl(candidateUrl: string, runtime = DefaultRunti
         return candidateUrl;
     }
 
-    const { baseUrl, fetchClientFactory } = runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp");
+    const baseUrl = runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.baseUrl;
+    const fetchClientFactory = runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.fetchClientFactory;
 
     if (!stringIsNullOrEmpty(baseUrl)) {
         // base url specified either with baseUrl of spfxContext config property
@@ -38,27 +39,26 @@ export async function toAbsoluteUrl(candidateUrl: string, runtime = DefaultRunti
         }
     }
 
-    // scream test
-    // if (safeGlobal._spPageContextInfo !== undefined) {
+    if (safeGlobal._spPageContextInfo !== undefined) {
 
-    //     // operating in classic pages
-    //     if (hOP(safeGlobal._spPageContextInfo, "webAbsoluteUrl")) {
-    //         return combine(safeGlobal._spPageContextInfo.webAbsoluteUrl, candidateUrl);
-    //     } else if (hOP(safeGlobal._spPageContextInfo, "webServerRelativeUrl")) {
-    //         return combine(safeGlobal._spPageContextInfo.webServerRelativeUrl, candidateUrl);
-    //     }
-    // }
+        // operating in classic pages
+        if (hOP(safeGlobal._spPageContextInfo, "webAbsoluteUrl")) {
+            return combine(safeGlobal._spPageContextInfo.webAbsoluteUrl, candidateUrl);
+        } else if (hOP(safeGlobal._spPageContextInfo, "webServerRelativeUrl")) {
+            return combine(safeGlobal._spPageContextInfo.webServerRelativeUrl, candidateUrl);
+        }
+    }
 
-    // // does window.location exist and have a certain path part in it?
-    // if (safeGlobal.location !== undefined) {
-    //     baseUrl = safeGlobal.location.toString().toLowerCase();
-    //     ["/_layouts/", "/siteassets/"].forEach((s: string) => {
-    //         const index = baseUrl.indexOf(s);
-    //         if (index > 0) {
-    //             return combine(baseUrl.substr(0, index), candidateUrl);
-    //         }
-    //     });
-    // }
+    // does window.location exist and have a certain path part in it?
+    if (safeGlobal.location !== undefined) {
+        const location = safeGlobal.location.toString().toLowerCase();
+        ["/_layouts/", "/siteassets/", "/sitepages/"].forEach((s: string) => {
+            const index = location.indexOf(s);
+            if (index > 0) {
+                return combine(location.substr(0, index), candidateUrl);
+            }
+        });
+    }
 
     return candidateUrl;
 }

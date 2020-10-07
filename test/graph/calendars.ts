@@ -4,6 +4,7 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/odata";
+import { stringIsNullOrEmpty } from "@pnp/common";
 
 describe("Calendar", function () {
 
@@ -198,8 +199,10 @@ describe("Calendar", function () {
 
         // Remove the test data we created
         this.afterAll(async function () {
-            await graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
-        });
 
+            if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
+                await graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
+            }
+        });
     }
 });

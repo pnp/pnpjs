@@ -1,4 +1,5 @@
 import { sp } from "@pnp/sp/presets/all";
+import { graph } from "@pnp/graph/presets/all";
 
 // ******
 // Please edit this file and do any testing required. Please do not submit changes as part of a PR.

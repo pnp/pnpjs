@@ -21,7 +21,10 @@ export class SPHttpClient implements IRequestClient {
     protected _impl: IHttpClientImpl;
     protected _digestCache: IGetDigest;
 
-    constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
+    constructor(runtime: Runtime)
+    constructor(impl: IHttpClientImpl, runtime?: Runtime)
+    constructor(...args: any[]) {
+        // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
 
         if (args[0] instanceof Runtime) {
             this._runtime = args[0];
@@ -30,7 +33,7 @@ export class SPHttpClient implements IRequestClient {
             this._impl = args[0];
         }
 
-        this._impl = this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp").fetchClientFactory();
+        this._impl = this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.fetchClientFactory();
         this._digestCache = getDigestFactory(this);
     }
 
@@ -41,7 +44,7 @@ export class SPHttpClient implements IRequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp").headers);
+        mergeHeaders(headers, this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.headers);
 
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);
@@ -211,7 +214,7 @@ function getDigestFactory(client: SPHttpClient): IGetDigest {
         const resp = await client.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: assign(headers, (<Runtime>(<any>client)._runtime).get<ISPConfigurationPart, ISPConfigurationProps>("sp").headers, true),
+            headers: assign(headers, (<Runtime>(<any>client)._runtime).get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.headers, true),
             method: "POST",
         });
 

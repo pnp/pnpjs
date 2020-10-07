@@ -15,7 +15,10 @@ export class GraphHttpClient implements IRequestClient {
     protected _runtime: Runtime;
     private _impl: IHttpClientImpl;
 
-    constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
+    constructor(runtime: Runtime)
+    constructor(impl: IHttpClientImpl, runtime?: Runtime)
+    constructor(...args: any[]) {
+        // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
 
         if (args[0] instanceof Runtime) {
             this._runtime = args[0];
@@ -24,7 +27,7 @@ export class GraphHttpClient implements IRequestClient {
             this._impl = args[0];
         }
 
-        this._impl = this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory(this._runtime);
+        this._impl = this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory();
     }
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
@@ -32,7 +35,7 @@ export class GraphHttpClient implements IRequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, this._runtime.get<IGraphConfiguration, IGraphConfigurationProps>("graph").headers);
+        mergeHeaders(headers, this._runtime.get<IGraphConfiguration, IGraphConfigurationProps>("graph")?.headers);
 
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);

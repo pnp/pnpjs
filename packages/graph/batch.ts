@@ -170,7 +170,7 @@ export class GraphBatch extends Batch {
             let headers = {};
 
             // merge runtime headers
-            headers = assign(headers, this.runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").headers);
+            headers = assign(headers, this.runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph")?.headers);
 
             if (reqInfo.options !== undefined) {
 

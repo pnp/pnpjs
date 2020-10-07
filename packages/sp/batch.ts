@@ -156,7 +156,7 @@ export class SPBatch extends Batch {
             }
 
             // merge global config headers
-            mergeHeaders(headers, this.runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp").headers);
+            mergeHeaders(headers, this.runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.headers);
 
             // merge per-request headers
             if (reqInfo.options) {

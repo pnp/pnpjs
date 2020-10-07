@@ -1,9 +1,4 @@
-import { isFunc } from "./util";
-
-declare var Object: {
-    entries?: any;
-    keys(o: any): any;
-};
+import { isFunc, objectDefinedNotNull } from "./util";
 
 /**
  * Interface defining an object with a known property type
@@ -23,7 +18,7 @@ const objectEntries: any = isFunc(Object.entries) ? Object.entries : (o: any): [
  * @param o The object to map
  */
 export function objectToMap<K, V>(o: any): Map<K, V> {
-    if (o !== undefined && o !== null) {
+    if (objectDefinedNotNull(o)) {
         return new Map(objectEntries(o));
     }
     return new Map();
@@ -35,10 +30,17 @@ export function objectToMap<K, V>(o: any): Map<K, V> {
  * @param target map into which the other maps are merged
  * @param maps One or more maps to merge into the target 
  */
-export function mergeMaps<K, V>(target: Map<K, V>, ...maps: Map<K, V>[]): Map<K, V> {
+export function mergeMaps<K = string, V = any>(target: Map<K, V>, ...maps: Map<K, V>[]): Map<K, V> {
     for (let i = 0; i < maps.length; i++) {
         maps[i].forEach((v: V, k: K) => {
-            target.set(k, v);
+
+            // let's not run the spfx context through Object.assign :)
+            if ((typeof k === "string" && k !== "spfxContext") && Object.prototype.toString.call(v) === "[object Object]") {
+                // we only handle one level of deep object merging
+                target.set(k, Object.assign({}, target.get(k) || {}, v));
+            } else {
+                target.set(k, v);
+            }
         });
     }
 

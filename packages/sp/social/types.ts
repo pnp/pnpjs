@@ -94,7 +94,7 @@ export interface ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable, "configure" | "setRuntime" | "getRuntime"> => new _Social(baseUrl);
+export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime"> => new _Social(baseUrl);
 const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: string): ISocial & ISharePointQueryable => new _Social(baseUrl, paths);
 
 /**

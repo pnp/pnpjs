@@ -4,6 +4,7 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/odata";
+import { stringIsNullOrEmpty } from "@pnp/common";
 
 describe("Contacts", function () {
 
@@ -169,8 +170,11 @@ describe("Contacts", function () {
 
         // Remove the test contact we created
         this.afterAll(async function () {
-            await graph.users.getById(testUserName).contacts.getById(testContactID).delete();
-            await graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete();
+
+            if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContactID)) {
+                await graph.users.getById(testUserName).contacts.getById(testContactID).delete();
+                await graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete();
+            }
         });
     }
 });

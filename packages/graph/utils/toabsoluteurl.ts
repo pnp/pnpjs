@@ -14,7 +14,7 @@ export async function toAbsoluteUrl(candidateUrl: string, runtime = DefaultRunti
         return candidateUrl;
     }
 
-    let baseUrl = runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").baseUrl;
+    let baseUrl = runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph")?.baseUrl;
 
     if (!stringIsNullOrEmpty(baseUrl)) {
         // base url specified either with baseUrl of spfxContext config property

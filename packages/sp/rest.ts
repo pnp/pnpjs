@@ -44,33 +44,33 @@ export class SPRest {
         }
     }
 
-    public async createIsolated<T = ITypedHash<any>>(init: Partial<IIsolatedInit<T>>): Promise<SPRest> {
+    public async createIsolated<T = ITypedHash<any>>(init?: Partial<ISPIsolatedInit<T>>): Promise<SPRest> {
 
         // merge our defaults
-        init = Object.assign<IIsolatedInit<T>, Partial<IIsolatedInit<T>>>({
+        init = Object.assign<ISPIsolatedInit<T>, Partial<ISPIsolatedInit<T>>>({
             baseUrl: "",
             cloneGlobal: true,
+            config: <T>{},
             options: {},
-            runtimeConfig: <T>{},
-        }, init);
+        }, init || {});
 
-        const { baseUrl, cloneGlobal, options, runtimeConfig } = init;
+        const { baseUrl, cloneGlobal, options, config } = init;
 
         const runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
 
-        runtime.assign(runtimeConfig);
+        runtime.assign(config);
 
         return new SPRest(options, baseUrl, runtime);
     }
 
-    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Config2 }) => T): T {
+    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Runtime }) => T): T {
         return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime });
     }
 }
 
-export interface IIsolatedInit<T> {
+export interface ISPIsolatedInit<T> {
     cloneGlobal: boolean;
-    runtimeConfig: T;
+    config: T;
     options: IConfigOptions;
     baseUrl: string;
 }

@@ -1,4 +1,4 @@
-import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, SPFxAdalClient, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime } from "@pnp/common";
+import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, SPFxAdalClient, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime, objectDefinedNotNull } from "@pnp/common";
 
 export interface IGraphConfigurationPart {
     graph?: IGraphConfigurationProps;
@@ -25,14 +25,20 @@ export interface IGraphConfiguration extends ILibraryConfiguration, IGraphConfig
 
 onRuntimeCreate((runtime: Runtime) => {
 
-    const errText = "There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context.";
-    const context = runtime.get<ILibraryConfiguration, ISPFXContext>("spfxContext");
+    const existing = runtime.get<IGraphConfigurationPart>("graph");
 
-    runtime.assign<Required<IGraphConfigurationPart>>({
-        graph: {
-            fetchClientFactory: context ? () => new SPFxAdalClient(context) : () => { throw Error(errText); },
+    const graphPart = Object.assign({}, {
+        fetchClientFactory: () => {
+            // we keep a ref to the runtime within which we are assigned
+            const context = runtime.get<ILibraryConfiguration, ISPFXContext>("spfxContext");
+            if (objectDefinedNotNull(context)) {
+                return new SPFxAdalClient(context);
+            }
+            throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context.");
         },
-    });
+    }, existing);
+
+    runtime.assign({ graph: graphPart });
 });
 
 export function setup(config: IGraphConfiguration, runtime = DefaultRuntime): void {

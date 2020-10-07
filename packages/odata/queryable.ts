@@ -142,7 +142,11 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
     return this._runtime;
   }
 
-  public setRuntime(...args: [runtime: Runtime] | [cloneGlobal: boolean, additionalConfig?: ITypedHash<any>]): this {
+  public setRuntime(runtime: Runtime): this;
+  public setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
+  public setRuntime(...args: any[]): this {
+
+    // need to wait for ts update in spfx: [runtime: Runtime] | [cloneGlobal: boolean, additionalConfig?: ITypedHash<any>]
 
     if (args[0] instanceof Runtime) {
 
