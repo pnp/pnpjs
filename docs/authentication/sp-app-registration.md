@@ -2,6 +2,8 @@
 
 This section outlines how to register for a client id and secret for use in the above code.
 
+> Due to a recent change in how SPO is configured NEW tenants will have ACS authentication _disabled_ by default. You can read more [details in this article](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs). For testing we recommend using [MSAL Certificate Authentication](./server-nodejs.md#call-sharepoint).
+
 ## Register An Add-In
 
 Before you can begin running tests you need to register a low-trust add-in with SharePoint. This is primarily designed for Office 365, but can work on-premises if you [configure your farm accordingly](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx).
