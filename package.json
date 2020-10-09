@@ -4,6 +4,7 @@
   "version": "2.0.10",
   "description": "A JavaScript library for SharePoint development.",
   "devDependencies": {
+    "@azure/msal-node": "^1.0.0-alpha.9",
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@microsoft/microsoft-graph-types": "^1.22.0",
     "@pnp/buildsystem": "^2.2.3",
