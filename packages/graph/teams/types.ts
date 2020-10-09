@@ -76,7 +76,7 @@ export class _Channel extends _GraphQueryableInstance {
         return Tabs(this);
     }
 }
-export interface IChannel extends _Channel {}
+export interface IChannel extends _Channel { }
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**

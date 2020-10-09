@@ -14,7 +14,7 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
     }
 
     /**
-     * Gets the image file byets as a Buffer (node.js)
+     * Gets the image file bytes as a Buffer (node.js)
      */
     public getBuffer(): Promise<ArrayBuffer> {
         return this.clone(Photo, "$value", false).usingParser(new BufferParser())<ArrayBuffer>();

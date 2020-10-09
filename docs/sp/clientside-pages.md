@@ -512,6 +512,8 @@ await page.promoteToNews();
 
 Used to control the availability of comments on a page.
 
+[![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg)](https://github.com/pnp/pnpjs/issues/1383)
+
 ```TypeScript
 // you need to import the comments sub-module or use the all preset
 import "@pnp/sp/comments/clientside-page";

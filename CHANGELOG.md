@@ -5,14 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 2.0.9 - 2020-09-04
+## 2.0.11 - 2020-Oct-09
+
+### Added
+
+- docs/sp: Address underlying api issue in #1383 by adding `known issue` tag [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1400)]
+- node: Adds support for node MSAL client with docs, Likely addresses #1226 as well with introduction of modern msal support #1390 [[PR](https://github.com/pnp/pnpjs/pull/1409)]
+- sp: Use string values for the BasePermission High and Low properties in SP RoleDef updates [@danwatford](https://github.com/danwatford) [[PR](https://github.com/pnp/pnpjs/pull/1393)]
+
+### Changed
+
+- docs/sp & graph: update taxonomy for change in beta endpoints #1359, #1378 & graph update for photos endpoint #1368 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1384)]
+- docs/graph: Update docs for calendars, contacts, directoryobjects, insights, invitations, onedrive, planner. Update @microsoft/microsoft-graph-types to 1.22.0  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1398)]
+
+### Fixed
+
+- docs: Fix Microsoft 365 PnP logo [@thechriskent](https://github.com/thechriskent) [[PR](https://github.com/pnp/pnpjs/pull/1394)]
+- sp: Fixes issue with ViewsLifeTime search property casing in name #1401 [[PR](https://github.com/pnp/pnpjs/pull/1409)]
+
+## 2.0.10 - 2020-Sept-10
+
+- packaging: update to include .map files in packages [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- docs: update to docs for nodejs sp extensions [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- sp: update how batch error handling is done [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- nodejs: fix for nodejs-commonjs error in 2.0.9 [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+- odata: updates how extensions are managed when extending a factory [[PR](https://github.com/pnp/pnpjs/pull/1371)]
+
+## 2.0.9 - 2020-Sept-04
 
 ### Added
 
 - sp: Added support for deleteWithParameters for folder, file, and item [[PR](https://github.com/pnp/pnpjs/pull/1326)]
 - sp: Adding support for file.Exists to handle errors #1320 [[PR](https://github.com/pnp/pnpjs/pull/1327)]
 - sp: Adding support for AddSubFolderUsingPath #1340 [[PR](https://github.com/pnp/pnpjs/pull/1353)]
-- nodejs: Add getStream support to Nodejs  [@naugtur](https://github.com/naugtur) [[PR](https://github.com/pnp/pnpjs/pull/1259)]
+- nodejs: Add getStream support to Nodejs [@naugtur](https://github.com/naugtur) [[PR](https://github.com/pnp/pnpjs/pull/1259)]
 
 ### Changed
 
@@ -27,7 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - sp/graph: Bug fixes for #1337, #1349 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1351)]
 - sp/graph: Fix for #1330, fixing linting issues, update tests for client side pages [[PR](https://github.com/pnp/pnpjs/pull/1352)]
 
-## 2.0.8 - 2020-08-07
+## 2.0.8 - 2020-Aug-07
 
 ### Added
 
@@ -46,7 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - graph: Removed adaljslcient library dependency [[PR](https://github.com/pnp/pnpjs/pull/1303)]
 
-## 2.0.7 - 2020-07-27
+## 2.0.7 - 2020-July-27
 
 ### Added
 - graph: Added calendar endpoints and docs [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1246)]
@@ -77,7 +103,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - docs: Fixed a typo in sites.md [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1292)]
 - sp: Fixed issue updating certain field types due to non-matching type [[PR](https://github.com/pnp/pnpjs/pull/1297)]
 
-## 2.0.6 - 2020-06-05
+## 2.0.6 - 2020-June-05
 
 ### Added
 
@@ -92,7 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - docs: Change Warn to Warning in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1211)]
 - docs: Change LogListener to ILogListener in logger. [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1212)]
 
-## 2.0.5 - 2020-05-08
+## 2.0.5 - 2020-May-08
 
 ### Added
 
@@ -115,7 +141,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - common: Fixed storage issue in node related to usingCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 - sp: Fixed bug in searchWithCaching [[PR](https://github.com/pnp/pnpjs/pull/1193)]
 
-## 2.0.4 - 2020-04-10
+## 2.0.4 - 2020-April-10
 
 ### Added
 
@@ -146,7 +172,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - graph: Fixed issues with batching parsing and improved error handling [[PR](https://github.com/pnp/pnpjs/pull/1146)]
 - docs: Fixed a bad link and replaced TODO's with content in web article [[PR](https://github.com/pnp/pnpjs/pull/1149)]
 
-## 2.0.3 - 2020-02-14
+## 2.0.3 - 2020-Feb-14
 
 _Happy Valentine's Day ❤_
 
@@ -175,7 +201,7 @@ _Happy Valentine's Day ❤_
 - odata: updated interface to use I prefix, code cleanup [[PR](https://github.com/pnp/pnpjs/pull/1065)]
 
 
-## 2.0.2 - 2020-01-23
+## 2.0.2 - 2020-Jan-23
 
 ### Added
 
@@ -201,7 +227,7 @@ _Happy Valentine's Day ❤_
   - [@KEMiCZA](https://github.com/KEMiCZA) [[PR](https://github.com/pnp/pnpjs/pull/973)]
   - [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1007)]
 
-## ~~2.0.1 - 2019-01-16~~
+## ~~2.0.1 - 2019-Jan-16~~
 
 - Unpublished due to module issues
 
