@@ -300,7 +300,7 @@ export interface ISearchResult {
     FileExtension?: string;
     ContentTypeId?: string;
     ParentLink?: string;
-    ViewsLifetime?: number;
+    ViewsLifeTime?: number;
     ViewsRecent?: number;
     SectionNames?: string;
     SectionIndexes?: string;
