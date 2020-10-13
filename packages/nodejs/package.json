@@ -5,15 +5,16 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
-    "adal-node": "0.1.28",
-    "https-proxy-agent": "4.0.0",
-    "jsonwebtoken": "8.3.0",
-    "node-fetch": "2.2.0",
-    "tslib": "2.0.0",
+    "@azure/msal-node": "^1.0.0-alpha.9",
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "@pnp/logging": "0.0.0-PLACEHOLDER",
     "@pnp/odata": "0.0.0-PLACEHOLDER",
-    "@pnp/sp": "0.0.0-PLACEHOLDER"
+    "@pnp/sp": "0.0.0-PLACEHOLDER",
+    "adal-node": "0.1.28",
+    "https-proxy-agent": "^5.0.0",
+    "jsonwebtoken": "8.3.0",
+    "node-fetch": "2.2.0",
+    "tslib": "2.0.0"
   },
   "author": {
     "name": "Microsoft and other contributors"
