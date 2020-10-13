@@ -173,6 +173,48 @@ const isolatedGraph = await graph.createIsolated<IGraphConfiguration>({
 
 ## Additional Examples
 
+### MSAL with Node multiple site requests
+
+_MSAL Support Added in 2.0.11_
+
+In this example you can see how you can setup the MSAL client once and then set a different baseUrl for an isolated instance. [More information specific to setting up the MSAL client is available](../authentication/derver-nodejs.md).
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { readFileSync } from "fs";
+
+// read in our private key
+const buffer = readFileSync("c:/temp/key.pem");
+
+// configure node options
+sp.setup({
+  sp: {
+    baseUrl: "https://{my tenant}.sharepoint.com/sites/dev/",
+    fetchClientFactory: () => {
+      return new MsalFetchClient({
+        auth: {
+          authority: "https://login.microsoftonline.com/{tenant id or common}",
+          clientCertificate: {
+            thumbprint: "{certificate thumbprint, displayed in AAD}",
+            privateKey: buffer.toString(),
+          },
+          clientId: "{client id}",
+        }
+      }, ["https://{my tenant}.sharepoint.com/.default"]); // you must set the scope for SharePoint access
+    },
+  },
+});
+
+const isolatedSP = await sp.createIsolated<ISPConfigurationPart>({
+  config: {
+    sp: {
+      baseUrl: "https://{my tenant}.sharepoint.com/sites/dev2/",
+    },
+  },
+});
+```
+
 ### Node multiple site requests
 
 Isolated configuration was most requested for scenarios in node where you need to access information in multiple sites. This example shows setting up the global configuration and then creating an isolated config with only the baseUrl updated.
