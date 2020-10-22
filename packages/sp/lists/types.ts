@@ -261,7 +261,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * @param queryParams Allows setting of query parameters
      */
     @tag("l.AsStream")
-    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
+    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
         if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
             parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
@@ -274,6 +274,10 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
         }
 
         const clone = this.clone(List, "RenderListDataAsStream", true, true);
+
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach((v, k) => clone.query.set(k, v));
+        }
 
         return spPost(clone, body(bodyOptions));
     }
@@ -694,4 +698,16 @@ export interface IListInfo {
     Views: IViewInfo[];
     WorkflowAssociations: any[];
     WriteSecurity: number;
+}
+
+export interface IRenderListDataAsStreamResult {
+    CurrentFolderSpItemUrl: string;
+    FilterLink: string;
+    FirstRow: number;
+    FolderPermissions: string;
+    ForceNoHierarchy: string;
+    HierarchyHasIndention: string;
+    LastRow: number;
+    Row: any[];
+    RowLimit: number
 }
