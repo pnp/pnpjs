@@ -537,12 +537,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      * @param altText Alt text to describe the image
      * @param bannerProps Additional properties to control display of the banner
      */
-    public setBannerImage(url: string, props?: {
-        altText?: string;
-        imageSourceType?: number;
-        translateX?: number;
-        translateY?: number;
-    }): void {
+    public setBannerImage(url: string, props?: IBannerImageProps): void {
 
         if (isUrlAbsolute(url)) {
             // do our best to make this a server relative url by removing the x.sharepoint.com part
@@ -586,7 +581,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      * 
      * @param url absolute url of the external file
      */
-    public async setBannerImageFromExternalUrl(url: string): Promise<void> {
+    public async setBannerImageFromExternalUrl(url: string, props?: IBannerImageProps): Promise<void> {
 
         // validate and parse our input url
         const fileUrl = new URL(url);
@@ -604,8 +599,8 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         request.select("ServerRelativeUrl");
 
         const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
-        // set our property with the newly created relative url
-        this.bannerImageUrl = result.ServerRelativeUrl;
+        // set with the newly created relative url
+        this.setBannerImage(result.ServerRelativeUrl, props);
     }
 
     /**
@@ -1515,4 +1510,11 @@ interface ILayoutPartsContent {
         altText?: string;
     };
     reservedHeight: number;
+}
+
+export interface IBannerImageProps {
+    altText?: string;
+    imageSourceType?: number;
+    translateX?: number;
+    translateY?: number;
 }
