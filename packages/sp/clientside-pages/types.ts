@@ -1158,9 +1158,6 @@ export class ClientsideText extends ColumnControl<IClientsideTextData> {
     }
 
     public set text(value: string) {
-        if (!value.startsWith("<p>")) {
-            value = `<p>${value}</p>`;
-        }
         this.data.innerHTML = value;
     }
 
