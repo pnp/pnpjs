@@ -312,7 +312,8 @@ describe("List", function () {
             };
 
             const r = await rList.renderListDataAsStream(renderListDataParams, {}, new Map([["FilterField1", "Title"], ["FilterValue1", encodeURIComponent("Item 2")]]));
-            
+
+            // tslint:disable-next-line:no-unused-expression
             expect(r).to.not.be.null;
             expect(r.Row.length).to.eq(1);
         });

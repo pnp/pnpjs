@@ -698,16 +698,19 @@ export interface IFileInfo {
     Level: number;
     LinkingUri: string | null;
     LinkingUrl: string;
+    ListId: string;
     MajorVersion: number;
     MinorVersion: number;
     Name: string;
     ServerRelativeUrl: string;
+    SiteId: string;
     TimeCreated: string;
     TimeLastModified: string;
     Title: string | null;
     UIVersion: number;
     UIVersionLabel: string;
     UniqueId: string;
+    WebId: string;
 }
 
 export interface IFileDeleteParams {
