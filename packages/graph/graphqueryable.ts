@@ -1,5 +1,5 @@
 import { combine, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IInvokable, IQueryable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { GraphEndpoints } from "./types";
 import { graphGet } from "./operations";
 
