@@ -21,8 +21,6 @@ describe("Fields", function () {
   const testFieldName = "PnPJSTest";
   const titleFieldId = "fa564e0f-0c70-4ab9-b863-0177e6ddd247";
   const testFieldGroup = "PnP Test Group";
-  // tslint:disable-next-line:max-line-length
-  // tslint:disable-next-line:max-line-length
   const testFieldDescription = "PnPJS Test Description";
   const listName = "Documents";
 

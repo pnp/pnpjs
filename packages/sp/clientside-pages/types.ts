@@ -580,6 +580,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      * Sets the banner image url from an external source. You must call save to persist the changes
      * 
      * @param url absolute url of the external file
+     * @param props optional set of properties to control display of the banner image
      */
     public async setBannerImageFromExternalUrl(url: string, props?: IBannerImageProps): Promise<void> {
 

@@ -1,4 +1,5 @@
 import "./web";
+import "./folder";
 
 export {
     IClientsidePage,
@@ -23,4 +24,5 @@ export {
     LayoutType,
     PromotedState,
     TextAlignment,
+    IBannerImageProps,
 } from "./types";

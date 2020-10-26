@@ -25,7 +25,7 @@ export class _OneNote extends _GraphQueryableInstance<IOnenoteType> {
     }
 
     public get pages(): IGraphQueryableCollection<IOnenotePageType[]> {
-        return <any>GraphQueryableCollection(this, "pages");
+        return this.clone(GraphQueryableCollection, "pages");
     }
 }
 export interface IOneNote extends _OneNote {}

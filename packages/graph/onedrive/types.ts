@@ -25,7 +25,7 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
     }
 
     public get list(): IGraphQueryableInstance {
-        return GraphQueryableInstance(this, "list");
+        return this.clone(GraphQueryableInstance, "list");
     }
 
     public get recent(): IDriveItems {
@@ -71,7 +71,7 @@ export class _Root extends _GraphQueryableInstance<IDrive> {
     }
 
     public get thumbnails(): IGraphQueryableCollection {
-        return GraphQueryableCollection(this, "thumbnails");
+        return this.clone(GraphQueryableCollection, "thumbnails");
     }
 }
 export interface IRoot extends _Root {}
@@ -90,11 +90,11 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
     }
 
     public get thumbnails(): IGraphQueryableCollection {
-        return GraphQueryableCollection(this, "thumbnails");
+        return this.clone(GraphQueryableCollection, "thumbnails");
     }
 
     public get versions(): IGraphQueryableCollection<IDriveItemVersionInfo> {
-        return <any>GraphQueryableCollection(this, "versions");
+        return <any>this.clone(GraphQueryableCollection, "versions");
     }
 
     public move(parentReference: { id: "string" }, name: string): Promise<void> {
