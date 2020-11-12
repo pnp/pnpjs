@@ -66,11 +66,9 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
 
     return tags.reduce((defVals, t) => {
         const m = /<a href="(.*?)">/ig.exec(t);
-        // if things worked our captures are:
+        // if things worked out captures are:
         // 0: whole string
         // 1: ENCODED server relative path
-        // 2: Field internal name
-        // 3: Default value as string
 
         if (m.length < 1) {
             // this indicates an error somewhere, but we have no way to meaningfully recover
@@ -84,13 +82,21 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         const subTags = subMaches === null ? [] : subMaches.map(st => st.trim());
 
         subTags.map(st => {
-            const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+          const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+          // if things worked out captures are:
+          // 0: whole string
+          // 1: Field internal name
+          // 2: Default value as string
 
+          if (sm.length < 1) {
+            Logger.write(`Could not parse default column value from '${st}'`, LogLevel.Warning);
+          } else {
             defVals.push({
-                name: sm[1],
-                path: decodeURIComponent(m[1]),
-                value: sm[2],
+              name: sm[1],
+              path: decodeURIComponent(m[1]),
+              value: sm[2],
             });
+          }
         });
 
         return defVals;
