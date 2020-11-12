@@ -22,8 +22,8 @@ declare module "../lists/types" {
 
         /**
          * Replaces all the column defaults with the supplied values
-         * 
-         * @param defaults 
+         *
+         * @param defaults
          */
         setDefaultColumnValues(defaults: IFieldDefault[]): Promise<void>;
     }
@@ -64,8 +64,8 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
     // now we need to turn these tags of form into objects
     // <a href="/sites/dev/My%20Title"><DefaultValue FieldName="TextField">Test</DefaultValue></a>
 
-    return tags.map(t => {
-        const m = /<a href="(.*?)"><DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(t);
+    return tags.reduce((defVals, t) => {
+        const m = /<a href="(.*?)">/ig.exec(t);
         // if things worked our captures are:
         // 0: whole string
         // 1: ENCODED server relative path
@@ -80,13 +80,22 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         }
 
         // return the parsed out values
-        return {
-            name: m[2],
-            path: decodeURIComponent(m[1]),
-            value: m[3],
-        };
+        const subMaches = t.match(/<DefaultValue.*?<\/DefaultValue>/ig);
+        const subTags = subMaches === null ? [] : subMaches.map(st => st.trim());
 
-    }).filter(v => v !== null);
+        subTags.map(st => {
+            const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+
+            defVals.push({
+                name: sm[1],
+                path: decodeURIComponent(m[1]),
+                value: sm[2],
+            });
+        });
+
+        return defVals;
+
+      }, []).filter(v => v !== null);
 };
 
 _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: IFieldDefault[]): Promise<void> {
