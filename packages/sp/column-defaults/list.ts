@@ -78,8 +78,8 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         }
 
         // return the parsed out values
-        const subMaches = t.match(/<DefaultValue.*?<\/DefaultValue>/ig);
-        const subTags = subMaches === null ? [] : subMaches.map(st => st.trim());
+        const subMatches = t.match(/<DefaultValue.*?<\/DefaultValue>/ig);
+        const subTags = subMatches === null ? [] : subMatches.map(st => st.trim());
 
         subTags.map(st => {
           const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
