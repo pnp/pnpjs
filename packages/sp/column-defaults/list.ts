@@ -22,8 +22,8 @@ declare module "../lists/types" {
 
         /**
          * Replaces all the column defaults with the supplied values
-         * 
-         * @param defaults 
+         *
+         * @param defaults
          */
         setDefaultColumnValues(defaults: IFieldDefault[]): Promise<void>;
     }
@@ -137,6 +137,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                 break;
 
             case "Taxonomy":
+            case "TaxonomyFieldType":
                 if (isArray(fieldDefault.value)) {
                     throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
                 } else {
@@ -145,6 +146,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                 break;
 
             case "TaxonomyMulti":
+            case "TaxonomyFieldTypeMulti":
                 if (isArray(fieldDefault.value)) {
                     value = (<{ wssId: string, termName: string, termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                 }
