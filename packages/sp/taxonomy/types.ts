@@ -199,30 +199,17 @@ export interface ITermSetInfo {
     id: string;
     localizedNames: { name: string, languageTag: string }[];
     description: string;
-    childrenCount: number;
     createdDateTime: string;
-    isOpen: boolean;
-    groupId: string;
     properties: ITaxonomyProperty[];
-    customSortOrder: string;
-    isAvailableForTagging: boolean;
-    contact: string;
-    owner: ITaxonomyUserInfo;
-    stakeHolders: ITaxonomyUserInfo[];
 }
 
 export interface ITermInfo {
     id: string;
     labels: { name: string, isDefault: boolean, languageTag: string }[];
-    isDeprecated: boolean;
-    childrenCount: number;
     createdDateTime: string;
     lastModifiedDateTime: string;
     descriptions: { description: string, languageTag: string }[];
-    customSortOrder: { setId: string, order: string[] }[];
     properties: ITaxonomyProperty[];
-    localProperties: { setId: string, properties: ITaxonomyProperty[] }[];
-    isAvailableForTagging: { setId: string, isAvailable: boolean }[];
 }
 
 export interface IRelationInfo {

@@ -5,6 +5,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security";
 import "@pnp/sp/site-users/web";
+import { IWeb } from "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
 
@@ -12,12 +13,26 @@ if (testSettings.enableWebTests) {
 
     describe("Security", function () {
 
+        const testRoleDefName = "PNPJS Test Role Def 38274947";
         let list: IList = null;
+        let parentWeb: IWeb = null;
 
         before(async function () {
 
             const ler = await sp.web.lists.ensure("SecurityTestingList");
             list = ler.list;
+        });
+
+        before(async function() {
+            // Capture the parent web for use in role definition tests.
+            parentWeb = (await sp.web.getParentWeb()).web;
+
+            // Create the test role definition.
+            try {
+                await parentWeb.roleDefinitions.add(testRoleDefName, "", 1000, { Low: 1, High: 0 });
+            } catch (err) {
+                // Do nothing. Assume any error is because the role definition already exists.
+            }
         });
 
         after(async function () {
@@ -61,6 +76,11 @@ if (testSettings.enableWebTests) {
         it("breakRoleInheritance", async function () {
 
             return expect(list.breakRoleInheritance(true, true)).to.eventually.be.fulfilled;
+        });
+
+        it("updateRoleDef", async function() {
+            // We cannot alter Role Definitions on a subsite, we therefore test updating Role Definitions agains the parent site.
+            return expect(parentWeb.roleDefinitions.getByName(testRoleDefName).update({ BasePermissions: { Low: 3, High: 0 } })).to.eventually.be.fulfilled;
         });
     });
 }

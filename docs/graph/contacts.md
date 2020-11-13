@@ -7,6 +7,15 @@ More information can be found in the official Graph documentation:
 
 - [Contact Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/contact?view=graph-rest-1.0)
 
+## IContact, IContacts, IContactFolder, IContactFolders
+
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { graph } from "@pnp/graph";<br />import "@pnp/graph/contacts";|
+|Preset: All|import { graph } from "@pnp/graph/presets/all";|
+
 ## Set up notes
 
 To make user calls you can use getById where the id is the users email address.

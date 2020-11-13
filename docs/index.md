@@ -1,4 +1,4 @@
-![SharePoint Patterns and Practices Logo](https://raw.githubusercontent.com/pnp/media/main/pnp-logos-sp/png/1x/SharePoint_PnP_logo_fullcolor.png)
+![SharePoint Patterns and Practices Logo](https://raw.githubusercontent.com/pnp/media/master/pnp-logos-sp/png/1x/SharePoint_PnP_mark_fullcolor.png)
 
 PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and Office 365 REST APIs in a type-safe way. You can use it within SharePoint Framework, Nodejs, or any JavaScript project. This an open source initiative and we encourage contributions and constructive feedback from the community.
 
@@ -43,6 +43,10 @@ We have a new section dedicated to helping you [figure out the best way to handl
 ## Issues, Questions, Ideas
 
 Please [log an issue](https://github.com/pnp/pnpjs/issues) using our template as a guide. This will let us track your request and ensure we respond. We appreciate any constructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.
+
+## Changelog
+
+Please review the [CHANGELOG](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md) for release details on all library changes.
 
 ## Code of Conduct
 

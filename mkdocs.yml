@@ -52,6 +52,7 @@ nav:
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
       - onedrive: 'graph/onedrive.md'
+      - photos: 'graph/photos.md'
       - planner: 'graph/planner.md'
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
@@ -63,6 +64,8 @@ nav:
       - AdalFetchClient: 'nodejs/adal-fetch-client.md'
       - BearerTokenFetchClient: 'nodejs/bearer-token-fetch-client.md'       
       - ProviderHostedRequestContext: 'nodejs/provider-hosted-app.md'
+      - 'sp Extensions': 'nodejs\sp-extensions.md'
+      - proxy: 'nodejs\proxy.md'
     - odata:
       - odata: 'odata/index.md'
       - caching: 'odata/caching.md'
@@ -143,12 +146,12 @@ theme:
 extra_css:
   - 'css/extra.css'
 
-extra_javascript:
-    - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
+# extra_javascript:
+#     - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
 
 markdown_extensions:
   - admonition
-  - pymdownx.superfences
+  # - pymdownx.superfences
       # custom_fences:
       #   - name: mermaid
       #     class: mermaid
@@ -174,11 +177,11 @@ plugins:
 
 extra:
   social:
-    - type: 'twitter'
-      link: 'https://twitter.com/officedevpnp'
-    - type: 'youtube'
+    - icon: 'fontawesome/brands/twitter'
+      link: 'https://twitter.com/m365pnpjs'
+    - icon: 'fontawesome/brands/youtube'
       link: 'http://aka.ms/sppnp-videos'
-    - type: 'link'
+    - icon: 'fontawesome/brands/microsoft'
       link: 'https://aka.ms/sppnp'
 
 repo_url: http://github.com/pnp/pnpjs
