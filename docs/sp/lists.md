@@ -493,3 +493,18 @@ Get a collection of the list's user custom actions.
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.userCustomActions();
 ```
+
+### getParentInfos
+
+_Added in 2.0.12_
+
+Gets information about an list, including details about the parent list root folder, and parent web.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/items";
+
+const list = sp.web.lists.getByTitle("Documents");
+await list.getParentInfos();
+```  

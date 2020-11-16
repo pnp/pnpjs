@@ -383,3 +383,18 @@ import { IFolder } from "@pnp/sp/folders";
 
 const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 ```
+
+### getParentInfos
+
+_Added in 2.0.12_
+
+Gets information about folder, including details about the parent list, parent list root folder, and parent web.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
+await folder.getParentInfos();
+```  

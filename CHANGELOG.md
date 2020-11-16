@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - sp: Adds new ClientSidePage.setBannerImageFromExternalUrl #1396 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- sp: Adds new getParentInfos to List, Folder, and Items [[PR](https://github.com/pnp/pnpjs/pull/1402)]
 
 ### Changed
 
 - sp: Updates ClientSideText adding additional `<p></p>` tags which are no longer needed. #1282 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- sp: Updates Folder methods (moveTo, moveByPath, copyTo, copyByPath) to remove dependency on `odata.id`. #1395 [@hohenp](https://github.com/hohenp) [[PR](https://github.com/pnp/pnpjs/pull/1402)]
 
 ### Fixed
 
