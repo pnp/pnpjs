@@ -24,7 +24,7 @@ import { IFormInfo } from "../forms/types";
 import { IFolderInfo } from "../folders/types";
 import { IViewInfo } from "../views/types";
 import { IUserCustomActionInfo } from "../user-custom-actions/types";
-import { toResourcePath } from "../utils/toResourcePath";
+import { IResourcePath, toResourcePath } from "../utils/toResourcePath";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
@@ -362,6 +362,41 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
         }));
 
         return hOP(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res;
+    }
+
+    /**
+     * Gets the parent information for this item's list and web
+     */
+    public async getParentInfos(): Promise<IListParentInfos> {
+
+        const urlInfo: any =
+            await this.select(
+                "Id",
+                "RootFolder/UniqueId",
+                "RootFolder/ServerRelativeUrl",
+                "RootFolder/ServerRelativePath",
+                "ParentWeb/Id",
+                "ParentWeb/Url",
+                "ParentWeb/ServerRelativeUrl",
+                "ParentWeb/ServerRelativePath",
+            ).expand(
+                "RootFolder",
+                "ParentWeb")();
+
+        return {
+            List: {
+                Id: urlInfo.Id,
+                RootFolderServerRelativePath: urlInfo.RootFolder.ServerRelativePath,
+                RootFolderServerRelativeUrl: urlInfo.RootFolder.ServerRelativeUrl,
+                RootFolderUniqueId: urlInfo.RootFolder.UniqueId,
+            },
+            ParentWeb: {
+                Id: urlInfo.ParentWeb.Id,
+                ServerRelativePath: urlInfo.ParentWeb.ServerRelativePath,
+                ServerRelativeUrl: urlInfo.ParentWeb.ServerRelativeUrl,
+                Url: urlInfo.ParentWeb.Url,
+            },
+        };
     }
 }
 export interface IList extends _List, IDeleteableWithETag { }
@@ -710,4 +745,19 @@ export interface IRenderListDataAsStreamResult {
     LastRow: number;
     Row: any[];
     RowLimit: number;
+}
+
+export interface IListParentInfos {
+    List: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }
