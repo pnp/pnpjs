@@ -18,6 +18,7 @@ import { metadata } from "../utils/metadata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
+import { IResourcePath } from '../utils/toResourcePath';
 
 /**
  * Describes a collection of Item objects
@@ -304,6 +305,46 @@ export class _Item extends _SharePointQueryableInstance {
     }
 
     /**
+     * Gets the parent information for this item's list and web
+     */
+    public async getParentInfos(): Promise<IItemParentInfos> {
+
+        const urlInfo: any =
+            await this.select(
+                "Id",
+                "ParentList/Id",
+                "ParentList/RootFolder/UniqueId",
+                "ParentList/RootFolder/ServerRelativeUrl",
+                "ParentList/RootFolder/ServerRelativePath",
+                "ParentList/ParentWeb/Id",
+                "ParentList/ParentWeb/Url",
+                "ParentList/ParentWeb/ServerRelativeUrl",
+                "ParentList/ParentWeb/ServerRelativePath",
+            ).expand(
+                "ParentList",
+                "ParentList/RootFolder",
+                "ParentList/ParentWeb")();
+
+        return {
+            Item: {
+                Id: urlInfo.Id,
+            },
+            ParentList: {
+                Id: urlInfo.ParentList.Id,
+                RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
+                RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
+                RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
+            },
+            ParentWeb: {
+                Id: urlInfo.ParentList.ParentWeb.Id,
+                ServerRelativePath: urlInfo.ParentList.ParentWeb.ServerRelativePath,
+                ServerRelativeUrl: urlInfo.ParentList.ParentWeb.ServerRelativeUrl,
+                Url: urlInfo.ParentList.ParentWeb.Url,
+            },
+        };
+    }
+
+    /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
@@ -431,4 +472,22 @@ export interface IItemDeleteParams {
      * the LockType value SPLockType.None.
      */
     BypassSharedLock: boolean;
+}
+
+export interface IItemParentInfos {
+    Item: {
+        Id: string;
+    };
+    ParentList: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }
