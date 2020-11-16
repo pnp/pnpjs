@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp: Adds new ClientSidePage.setBannerImageFromExternalUrl #1396 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
 - sp: Adds new getParentInfos to List, Folder, and Items [[PR](https://github.com/pnp/pnpjs/pull/1402)]
+- sp: Adds ability to work with very large libraries with > 5000 files to Files.addChunked method #1424
 
 ### Changed
 
