@@ -21,6 +21,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
+import { sp } from "../rest";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
@@ -162,10 +163,10 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.moveTo")
     public async moveTo(destUrl: string): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"),
+        const { ServerRelativeUrl: srcUrl } = await this.select("ServerRelativeUrl")();
+        const web = await sp.web.select("Url, ServerRelativeUrl")();
+        const hostUrl = web.Url.replace(web.ServerRelativeUrl, "");
+        await spPost(Folder(web.Url, "/_api/SP.MoveCopyUtil.MoveFolder()"),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
                 srcUrl: `${hostUrl}${srcUrl}`,
@@ -182,10 +183,10 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.moveByPath")
     public async moveByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
+        const { ServerRelativeUrl: srcUrl } = await this.select("ServerRelativeUrl")();
+        const web = await sp.web.select("Url, ServerRelativeUrl")();
+        const hostUrl = web.Url.replace(web.ServerRelativeUrl, "");
+        await spPost(Folder(web.Url, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
@@ -208,10 +209,10 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.copyTo")
     public async copyTo(destUrl: string): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+        const { ServerRelativeUrl: srcUrl } = await this.select("ServerRelativeUrl")();
+        const web = await sp.web.select("Url, ServerRelativeUrl")();
+        const hostUrl = web.Url.replace(web.ServerRelativeUrl, "");
+        await spPost(Folder(web.Url, "/_api/SP.MoveCopyUtil.CopyFolder()"),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
                 srcUrl: `${hostUrl}${srcUrl}`,
@@ -228,10 +229,10 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.copyByPath")
     public async copyByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
+        const { ServerRelativeUrl: srcUrl } = await this.select("ServerRelativeUrl")();
+        const web = await sp.web.select("Url, ServerRelativeUrl")();
+        const hostUrl = web.Url.replace(web.ServerRelativeUrl, "");
+        await spPost(Folder(web.Url, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
