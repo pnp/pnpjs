@@ -1,5 +1,5 @@
 import { combine, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IInvokable, IQueryable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { GraphEndpoints } from "./types";
 import { graphGet } from "./operations";
 
@@ -104,6 +104,18 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
     }
 
     /**
+     * Clones this queryable into a new queryable instance of T
+     * @param factory Constructor used to create the new instance
+     * @param additionalPath Any additional path to include in the clone
+     * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
+     */
+    public clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
+
+        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch, includeQuery });
+    }
+
+    /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
@@ -115,57 +127,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
 
         return new factory(baseUrl, path);
     }
-
-    /**
-     * Clones this queryable into a new queryable instance of T
-     * @param factory Constructor used to create the new instance
-     * @param additionalPath Any additional path to include in the clone
-     * @param includeBatch If true this instance's batch will be added to the cloned instance
-     * @param includeQuery If true all of the query values will be copied to the cloned instance
-     */
-    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
-
-        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch, includeQuery });
-    }
 }
 
-export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<GetType> {
-
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    select(...selects: string[]): this;
-
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    expand(...expands: string[]): this;
-
-    /**
-     * 
-     * @param options 
-     */
-    defaultAction(options?: IFetchOptions): Promise<GetType>;
-
-    /**
-     * Allows you to set the graph endpoint version string
-     * 
-     * @param endpoint The string either beta of v1.0
-     */
-    setEndpoint(endpoint: "beta" | "v1.0"): this;
-
-    /**
-     * Gets the full url with query information
-     *
-     */
-    toUrlAndQuery(): string;
-
-}
-export interface _GraphQueryable extends IInvokable { }
+export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType>, IInvokable<GetType> { }
+export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> { }
+export interface _GraphQueryable<GetType = any> extends IInvokable<GetType> { }
 export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQueryable);
 
 /**

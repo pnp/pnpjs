@@ -34,10 +34,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [],
-      "args": [
-        "--site",
-        "https://318studios.sharepoint.com/sites/dev"
-      ],
+      "args": [],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

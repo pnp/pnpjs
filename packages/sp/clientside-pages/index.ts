@@ -23,4 +23,5 @@ export {
     LayoutType,
     PromotedState,
     TextAlignment,
+    IBannerImageProps,
 } from "./types";

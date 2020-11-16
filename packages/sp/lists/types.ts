@@ -257,11 +257,11 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * Returns the data for the specified query view
      *
      * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     * @param queryParams Allows setting of query parameters
+     * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param query Allows setting of query parameters
      */
     @tag("l.AsStream")
-    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
+    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParams: any = null, query = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
         if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
             parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
@@ -269,11 +269,15 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
 
         let bodyOptions = { parameters: assign(metadata("SP.RenderListDataParameters"), parameters) };
 
-        if (objectDefinedNotNull(overrideParameters)) {
-            bodyOptions = assign(bodyOptions, { overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
+        if (objectDefinedNotNull(overrideParams)) {
+            bodyOptions = assign(bodyOptions, { overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParams) });
         }
 
         const clone = this.clone(List, "RenderListDataAsStream", true, true);
+
+        if (query && query.size > 0) {
+            query.forEach((v, k) => clone.query.set(k, v));
+        }
 
         return spPost(clone, body(bodyOptions));
     }
@@ -694,4 +698,16 @@ export interface IListInfo {
     Views: IViewInfo[];
     WorkflowAssociations: any[];
     WriteSecurity: number;
+}
+
+export interface IRenderListDataAsStreamResult {
+    CurrentFolderSpItemUrl: string;
+    FilterLink: string;
+    FirstRow: number;
+    FolderPermissions: string;
+    ForceNoHierarchy: string;
+    HierarchyHasIndention: string;
+    LastRow: number;
+    Row: any[];
+    RowLimit: number;
 }
