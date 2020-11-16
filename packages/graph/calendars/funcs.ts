@@ -11,7 +11,7 @@ import { Event as IEvent } from "@microsoft/microsoft-graph-types";
  */
 export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphQueryableCollection<ICalendarViewInfo[]> {
 
-    const query = GraphQueryableCollection(this, "calendarView");
+    const query = this.clone(GraphQueryableCollection, "calendarView");
     query.query.set("startDateTime", encodeURIComponent(start));
     query.query.set("endDateTime", encodeURIComponent(end));
     return query;

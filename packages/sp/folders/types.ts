@@ -1,4 +1,4 @@
-import { assign, ITypedHash, isUrlAbsolute } from "@pnp/common";
+import { assign, ITypedHash, isUrlAbsolute, combine } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -21,6 +21,7 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
+import { sp } from "../rest";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
@@ -162,13 +163,14 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.moveTo")
     public async moveTo(destUrl: string): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"),
+        const urlInfo = await this.getParentInfos();
+
+        const uri = new URL(urlInfo.ParentWeb.Url);
+
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolder()"),
             body({
-                destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
-                srcUrl: `${hostUrl}${srcUrl}`,
+                destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
+                srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
             }));
     }
 
@@ -182,21 +184,22 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.moveByPath")
     public async moveByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
+        const urlInfo = await this.getParentInfos();
+
+        const uri = new URL(urlInfo.ParentWeb.Url);
+
+        await spPost(Folder(uri.origin, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
-                    KeepBoth: KeepBoth,
+                    KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
                     __metadata: {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${hostUrl}${srcUrl}`),
+                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
     }
 
@@ -208,13 +211,14 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.copyTo")
     public async copyTo(destUrl: string): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+        const urlInfo = await this.getParentInfos();
+
+        const uri = new URL(urlInfo.ParentWeb.Url);
+
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"),
             body({
-                destUrl: isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`,
-                srcUrl: `${hostUrl}${srcUrl}`,
+                destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
+                srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
             }));
     }
 
@@ -228,12 +232,13 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.copyByPath")
     public async copyByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = extractWebUrl(absoluteUrl);
-        const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(Folder(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
+        const urlInfo = await this.getParentInfos();
+
+        const uri = new URL(urlInfo.ParentWeb.Url);
+
+        await spPost(Folder(uri.origin, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
                     KeepBoth: KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
@@ -242,7 +247,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
                         type: "SP.MoveCopyOptions",
                     },
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${hostUrl}${srcUrl}`),
+                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
     }
 
@@ -264,6 +269,46 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     public async addSubFolderUsingPath(leafPath: string): Promise<IFolder> {
         await spPost(this.clone(Folder, "AddSubFolderUsingPath"), body({ leafPath: toResourcePath(leafPath) }));
         return this.folders.getByName(leafPath);
+    }
+
+    /**
+     * Gets the parent information for this folder's list and web
+     */
+    public async getParentInfos(): Promise<IFolderParentInfos> {
+
+        const urlInfo: any =
+            await this.select(
+                "ServerRelativeUrl",
+                "ListItemAllFields/ParentList/Id",
+                "ListItemAllFields/ParentList/RootFolder/UniqueId",
+                "ListItemAllFields/ParentList/RootFolder/ServerRelativeUrl",
+                "ListItemAllFields/ParentList/RootFolder/ServerRelativePath",
+                "ListItemAllFields/ParentList/ParentWeb/Id",
+                "ListItemAllFields/ParentList/ParentWeb/Url",
+                "ListItemAllFields/ParentList/ParentWeb/ServerRelativeUrl",
+                "ListItemAllFields/ParentList/ParentWeb/ServerRelativePath",
+            ).expand(
+                "ListItemAllFields/ParentList",
+                "ListItemAllFields/ParentList/RootFolder",
+                "ListItemAllFields/ParentList/ParentWeb")();
+
+        return {
+            Folder: {
+                ServerRelativeUrl: urlInfo.ServerRelativeUrl,
+            },
+            ParentList: {
+                Id: urlInfo.ListItemAllFields.ParentList.Id,
+                RootFolderServerRelativePath: urlInfo.ListItemAllFields.ParentList.RootFolder.ServerRelativePath,
+                RootFolderServerRelativeUrl: urlInfo.ListItemAllFields.ParentList.RootFolder.ServerRelativeUrl,
+                RootFolderUniqueId: urlInfo.ListItemAllFields.ParentList.RootFolder.UniqueId,
+            },
+            ParentWeb: {
+                Id: urlInfo.ListItemAllFields.ParentList.ParentWeb.Id,
+                ServerRelativePath: urlInfo.ListItemAllFields.ParentList.ParentWeb.ServerRelativePath,
+                ServerRelativeUrl: urlInfo.ListItemAllFields.ParentList.ParentWeb.ServerRelativeUrl,
+                Url: urlInfo.ListItemAllFields.ParentList.ParentWeb.Url,
+            },
+        };
     }
 
     /**
@@ -357,4 +402,22 @@ export interface IFolderDeleteParams {
      * If set to false, folders that are not empty may be deleted.
      */
     DeleteIfEmpty: boolean;
+}
+
+export interface IFolderParentInfos {
+    Folder: {
+        ServerRelativeUrl: string;
+    };
+    ParentList: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }
