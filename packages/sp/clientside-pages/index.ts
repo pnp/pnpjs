@@ -1,5 +1,4 @@
 import "./web";
-import "./folder";
 
 export {
     IClientsidePage,
