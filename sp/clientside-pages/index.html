@@ -1610,6 +1610,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#setbannerimagefromexternalurl" class="md-nav__link">
+    setBannerImageFromExternalUrl
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2569,6 +2576,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#setbannerimagefromexternalurl" class="md-nav__link">
+    setBannerImageFromExternalUrl
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3148,6 +3162,33 @@ const page = await sp.web.addClientsidePage(&quot;MyPage&quot;, &quot;Page Title
 page.setBannerImage(far.data.ServerRelativeUrl);
 
 // publish the page
+await page.save();
+</code></pre>
+<h3 id="setbannerimagefromexternalurl">setBannerImageFromExternalUrl<a class="headerlink" href="#setbannerimagefromexternalurl" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.12</em></p>
+<p>Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;);
+
+// save the changes
+await page.save();
+</code></pre>
+<p>You can optionally supply additional props for the banner image, these match the properties when calling <a href="#setbannerimage">setBannerImage</a></p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;, {
+    altText: &quot;Image description&quot;,
+    imageSourceType: 2,
+    translateX: 30,
+    translateY: 1234,
+});
+
+// save the changes
 await page.save();
 </code></pre>
                 

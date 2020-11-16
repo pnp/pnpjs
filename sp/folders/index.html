@@ -1618,6 +1618,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2393,6 +2400,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2742,6 +2756,16 @@ import &quot;@pnp/sp/folders&quot;;
 import { IFolder } from &quot;@pnp/sp/folders&quot;;
 
 const folder: IFolder = sp.web.getFolderById(&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;);
+</code></pre>
+<h3 id="getparentinfos">getParentInfos<a class="headerlink" href="#getparentinfos" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.12</em></p>
+<p>Gets information about folder, including details about the parent list, parent list root folder, and parent web.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/folders&quot;;
+
+const folder: IFolder = sp.web.getFolderById(&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;);
+await folder.getParentInfos();
 </code></pre>
                 
               

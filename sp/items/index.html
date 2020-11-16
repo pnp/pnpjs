@@ -1614,6 +1614,19 @@
     Resolving field names
   </a>
   
+    <nav class="md-nav" aria-label="Resolving field names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2310,6 +2323,19 @@
     Resolving field names
   </a>
   
+    <nav class="md-nav" aria-label="Resolving field names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2737,6 +2763,16 @@ console.log(response.map(field =&gt; {
 }));
 </code></pre>
 <p>Lookup fields' names should be ended with additional <code>Id</code> suffix. E.g. for <code>Editor</code> EntityPropertyName <code>EditorId</code> should be used.</p>
+<h3 id="getparentinfos">getParentInfos<a class="headerlink" href="#getparentinfos" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.12</em></p>
+<p>Gets information about an item, including details about the parent list, parent list root folder, and parent web.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/items&quot;;
+
+const item: any = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1).get();
+await item.getParentInfos();
+</code></pre>
                 
               
               

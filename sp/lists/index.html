@@ -1767,6 +1767,19 @@
     userCustomActions
   </a>
   
+    <nav class="md-nav" aria-label="userCustomActions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2592,6 +2605,19 @@
     userCustomActions
   </a>
   
+    <nav class="md-nav" aria-label="userCustomActions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getparentinfos" class="md-nav__link">
+    getParentInfos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3149,6 +3175,16 @@ const subscriptions = await list.subscriptions();
 <p>Get a collection of the list's user custom actions.</p>
 <pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
 const r = await list.userCustomActions();
+</code></pre>
+<h3 id="getparentinfos">getParentInfos<a class="headerlink" href="#getparentinfos" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.12</em></p>
+<p>Gets information about an list, including details about the parent list root folder, and parent web.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/items&quot;;
+
+const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
+await list.getParentInfos();
 </code></pre>
                 
               
