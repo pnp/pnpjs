@@ -21,7 +21,6 @@ import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
 import { extractWebUrl } from "../utils/extractweburl";
 import { tag } from "../telemetry";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
-import { sp } from "../rest";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
