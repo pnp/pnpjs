@@ -67,6 +67,30 @@ describe("Groups", function () {
       return expect(groupName === group.displayName).is.not.true;
     });
 
+    it("sites", async function() {
+      // Find an existing group
+      // This has to be tested on existing groups. On a newly created group, this returns an error often
+      // "Resource provisioning is in progress. Please try again.". This is expected as the team site provisioning takes a few seconds when creating a new group
+      const groups = await graph.groups();
+      const grpID = groups[0].id;
+
+      // Get sites within this group
+      const sites = await graph.groups.getById(grpID).sites.get();
+
+      return expect(sites.length).is.not.null;
+    });
+
+    it("sites/root", async function() {
+      // Find an existing group
+      const groups = await graph.groups();
+      const grpID = groups[0].id;
+
+      // Get the group team site
+      const root = await graph.groups.getById(grpID).sites.root();
+
+      return expect(root).is.not.null;
+    });
+
     // it("addFavorite()", async function () {
     //   // This is a user context function. Can't test in application context
     //   return expect(true).is.true;

@@ -72,6 +72,10 @@ export class _Group extends _DirectoryObject<IGroupType> {
         view.query.set("endDateTime", end.toISOString());
         return view();
     }
+
+    public get sites(): ISites {
+        return Sites(this);
+    }
 }
 export interface IGroup extends _Group, IDeleteable, IUpdateable { }
 export const Group = graphInvokableFactory<IGroup>(_Group);
@@ -127,3 +131,20 @@ export interface IGroupAddResult {
     group: IGroup;
     data: any;
 }
+
+
+/**
+ * Sites
+ */
+@defaultPath("sites")
+export class _Sites extends _GraphQueryableCollection {
+    /**
+     * Gets the team site for the group
+     */
+    public async root(): Promise<any> {
+        const root = this.clone(Sites, "root");
+        return root();
+    }
+}
+export interface ISites extends _Sites { }
+export const Sites = graphInvokableFactory<ISites>(_Sites);
