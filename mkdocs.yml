@@ -124,7 +124,7 @@ nav:
       - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
   - Contributing:
     - 'Contributing': 'contributing/index.md'
-    - 'Setup Dev Maching': 'contributing/setup-dev-machine.md'
+    - 'Setup Dev Machine': 'contributing/setup-dev-machine.md'
     - 'Local Debug Configuration': 'contributing/local-debug-configuration.md'
     - 'Debugging': 'contributing/debugging.md'
     - 'Extending the library': 'contributing/extending-the-library.md'
