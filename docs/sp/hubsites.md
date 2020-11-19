@@ -15,14 +15,14 @@ This module helps you with working with hub sites in your tenant.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IHubSiteData } from  "@pnp/sp/hubsites";
+import { IHubSiteInfo } from  "@pnp/sp/hubsites";
 import "@pnp/sp/hubsites";
 
 // invoke the hub sites object
-const hubsites: IHubSiteData[] = await sp.hubSites();
+const hubsites: IHubSiteInfo[] = await sp.hubSites();
 
 // you can also use select to only return certain fields:
-const hubsites2: IHubSiteData[] = await sp.hubSites.select("ID", "Title", "RelatedHubSiteIds")();
+const hubsites2: IHubSiteInfo[] = await sp.hubSites.select("ID", "Title", "RelatedHubSiteIds")();
 ```
 
 ### Get Hub site by Id
@@ -31,10 +31,10 @@ Using the getById method on the hubsites module to get a hub site by site Id (gu
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IHubSiteData } from  "@pnp/sp/hubsites";
+import { IHubSiteInfo } from  "@pnp/sp/hubsites";
 import "@pnp/sp/hubsites";
 
-const hubsite: IHubSiteData = await sp.hubSites.getById("3504348e-b2be-49fb-a2a9-2d748db64beb")();
+const hubsite: IHubSiteInfo = await sp.hubSites.getById("3504348e-b2be-49fb-a2a9-2d748db64beb")();
 
 // log hub site title to console
 console.log(hubsite.Title);
@@ -46,7 +46,6 @@ We provide a helper method to load the ISite instance from the HubSite
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IHubSiteData } from  "@pnp/sp/hubsites";
 import { ISite } from  "@pnp/sp/sites";
 import "@pnp/sp/hubsites";
 
@@ -65,10 +64,10 @@ import { IHubSiteWebData } from  "@pnp/sp/hubsites";
 import "@pnp/sp/webs";
 import "@pnp/sp/hubsites/web";
 
-const webData: IHubSiteWebData = await sp.web.hubSiteData();
+const webData: Partial<IHubSiteWebData> = await sp.web.hubSiteData();
 
 // you can also force a refresh of the hub site data
-const webData2: IHubSiteWebData = await sp.web.hubSiteData(true);
+const webData2: Partial<IHubSiteWebData> = await sp.web.hubSiteData(true);
 ```
 
 ### syncHubSiteTheme
@@ -112,7 +111,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites/site";
 
-// regsiter current site as a hub site
+// register current site as a hub site
 await sp.site.registerHubSite();
 ```
 
