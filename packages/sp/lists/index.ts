@@ -18,4 +18,6 @@ export {
     RenderListDataOptions,
     IRenderListDataParameters,
     IListInfo,
+    IListParentInfos,
+    IRenderListDataAsStreamResult,
 } from "./types";

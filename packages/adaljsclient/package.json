@@ -5,7 +5,7 @@
   "main": "./index.js",
   "typings": "./index",
   "dependencies": {
-    "adal-angular": "1.0.17",
+    "adal-angular": "1.0.18",
     "tslib": "2.0.0",
     "@pnp/common": "0.0.0-PLACEHOLDER"
   },

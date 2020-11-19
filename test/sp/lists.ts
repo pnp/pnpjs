@@ -302,6 +302,22 @@ describe("List", function () {
             return expect(rList.renderListDataAsStream(renderListDataParams)).to.eventually.be.fulfilled;
         });
 
+        it(".renderListDataAsStream - query params", async function () {
+
+            const rList = await setupRenderListDataAsStream();
+
+            const renderListDataParams: IRenderListDataParameters = {
+                AddRequiredFields: false,
+                ViewXml: "<View><RowLimit>5</RowLimit></View>",
+            };
+
+            const r = await rList.renderListDataAsStream(renderListDataParams, {}, new Map([["FilterField1", "Title"], ["FilterValue1", encodeURIComponent("Item 2")]]));
+
+            // tslint:disable-next-line:no-unused-expression
+            expect(r).to.not.be.null;
+            expect(r.Row.length).to.eq(1);
+        });
+
         it(".renderListFormData", async function () {
 
             const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing renderListFormData");

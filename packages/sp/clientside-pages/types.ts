@@ -1,6 +1,6 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
 import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
-import { IFile } from "../files/types";
+import { IFile, IFileInfo } from "../files/types";
 import { Item, IItem } from "../items/types";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable";
 import { metadata } from "../utils/metadata";
@@ -312,60 +312,46 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
         if (this._bannerImageDirty) {
 
-            // we have to do these gymnastics to set the banner image url
-            let origImgUrl = this.json.BannerImageUrl;
+            const serverRelativePath = this.bannerImageUrl;
 
-            if (isUrlAbsolute(origImgUrl)) {
-                // do our best to make this a server relative url by removing the x.sharepoint.com part
-                origImgUrl = origImgUrl.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
-            }
+            let imgInfo: Pick<IFileInfo, "ListId" | "WebId" | "UniqueId" | "Name" | "SiteId">;
+            let webUrl: string;
 
-            const site = Site(extractWebUrl(this.toUrl()));
             const web = Web(extractWebUrl(this.toUrl()));
-            const imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/ig, " "));
-
-            let siteId = "";
-            let webId = "";
-            let imgId = "";
-            let listId = "";
-            let webUrl = "";
-
             const batch = web.createBatch();
-
-            site.select("Id", "Url").inBatch(batch)().then((r1: { Id: string }) => siteId = r1.Id);
-            web.select("Id", "Url").inBatch(batch)().then((r2: { Id: string, Url: string }) => { webId = r2.Id; webUrl = r2.Url; });
-            imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").inBatch(batch)()
-                .then((r3: { UniqueId: string, ParentList: { Id: string } }) => { imgId = r3.UniqueId; listId = r3.ParentList.Id; });
+            web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
+                .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(r1 => imgInfo = r1);
+            web.select("Url").inBatch(batch)().then(r2 => webUrl = r2.Url);
 
             // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await batch.execute();
 
             const f = SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
-            f.query.set("guidSite", `${siteId}`);
-            f.query.set("guidWeb", `${webId}`);
-            f.query.set("guidFile", `${imgId}`);
+            f.query.set("guidSite", `${imgInfo.SiteId}`);
+            f.query.set("guidWeb", `${imgInfo.WebId}`);
+            f.query.set("guidFile", `${imgInfo.UniqueId}`);
             this.bannerImageUrl = f.toUrlAndQuery();
 
             if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent)) {
                 this._layoutPart.serverProcessedContent = <any>{};
             }
 
-            this._layoutPart.serverProcessedContent.imageSources = { imageSource: origImgUrl };
+            this._layoutPart.serverProcessedContent.imageSources = { imageSource: serverRelativePath };
 
             if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent.customMetadata)) {
                 this._layoutPart.serverProcessedContent.customMetadata = <any>{};
             }
 
             this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
-                listId,
-                siteId,
-                uniqueId: imgId,
-                webId,
+                listId: imgInfo.ListId,
+                siteId: imgInfo.SiteId,
+                uniqueId: imgInfo.UniqueId,
+                webId: imgInfo.WebId,
             };
-            this._layoutPart.properties.webId = webId;
-            this._layoutPart.properties.siteId = siteId;
-            this._layoutPart.properties.listId = listId;
-            this._layoutPart.properties.uniqueId = imgId;
+            this._layoutPart.properties.webId = imgInfo.WebId;
+            this._layoutPart.properties.siteId = imgInfo.SiteId;
+            this._layoutPart.properties.listId = imgInfo.ListId;
+            this._layoutPart.properties.uniqueId = imgInfo.UniqueId;
         }
 
         // we try and check out the page for the user
@@ -551,12 +537,12 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      * @param altText Alt text to describe the image
      * @param bannerProps Additional properties to control display of the banner
      */
-    public setBannerImage(url: string, props?: {
-        altText?: string;
-        imageSourceType?: number;
-        translateX?: number;
-        translateY?: number;
-    }): void {
+    public setBannerImage(url: string, props?: IBannerImageProps): void {
+
+        if (isUrlAbsolute(url)) {
+            // do our best to make this a server relative url by removing the x.sharepoint.com part
+            url = url.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
+        }
 
         this.json.BannerImageUrl = url;
         this._bannerImageDirty = true;
@@ -591,13 +577,40 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
     }
 
     /**
+     * Sets the banner image url from an external source. You must call save to persist the changes
+     * 
+     * @param url absolute url of the external file
+     * @param props optional set of properties to control display of the banner image
+     */
+    public async setBannerImageFromExternalUrl(url: string, props?: IBannerImageProps): Promise<void> {
+
+        // validate and parse our input url
+        const fileUrl = new URL(url);
+
+        // get our page name without extension, used as a folder name when creating the file
+        const pageName = this.json.FileName.replace(/\.[^/.]+$/, "");
+
+        // get the filename we will use
+        const filename = fileUrl.pathname.split(/[\\\/]/i).pop();
+
+        const request = initFrom(this, "_api/sitepages/AddImageFromExternalUrl");
+        request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
+        request.query.set("pageName", `'${encodeURIComponent(pageName)}'`);
+        request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
+        request.select("ServerRelativeUrl");
+
+        const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
+        // set with the newly created relative url
+        this.setBannerImage(result.ServerRelativeUrl, props);
+    }
+
+    /**
      * Sets the authors for this page from the supplied list of user integer ids
      * 
      * @param authorId The integer id of the user to set as the author
      */
     public async setAuthorById(authorId: number): Promise<void> {
 
-        // get logins and send to loginname method?
         const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
             .configureFrom(this)
             .filter(`Id eq ${authorId}`)
@@ -617,7 +630,6 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
      */
     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
 
-        // get logins and send to loginname method?
         const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
             .configureFrom(this)
             .filter(`LoginName eq '${encodeURIComponent(authorLoginName)}'`)
@@ -1147,9 +1159,6 @@ export class ClientsideText extends ColumnControl<IClientsideTextData> {
     }
 
     public set text(value: string) {
-        if (!value.startsWith("<p>")) {
-            value = `<p>${value}</p>`;
-        }
         this.data.innerHTML = value;
     }
 
@@ -1499,4 +1508,11 @@ interface ILayoutPartsContent {
         altText?: string;
     };
     reservedHeight: number;
+}
+
+export interface IBannerImageProps {
+    altText?: string;
+    imageSourceType?: number;
+    translateX?: number;
+    translateY?: number;
 }

@@ -13,4 +13,6 @@ export {
     IItemUpdateResult,
     IItemUpdateResultData,
     PagedItemCollection,
+    IItemDeleteParams,
+    IItemParentInfos,
 } from "./types";

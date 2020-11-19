@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.12 - 2020-Nov-16
+
+### Added
+
+- sp: Adds new ClientSidePage.setBannerImageFromExternalUrl #1396 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- sp: Adds new getParentInfos to List, Folder, and Items [[PR](https://github.com/pnp/pnpjs/pull/1402)]
+- sp: Adds ability to work with very large libraries with > 5000 files to Files.addChunked method #1424
+
+### Changed
+
+- sp: Updates ClientSideText adding additional `<p></p>` tags which are no longer needed. #1282 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- sp: Updates Folder methods (moveTo, moveByPath, copyTo, copyByPath) to remove dependency on `odata.id`. #1395 [@hohenp](https://github.com/hohenp) [[PR](https://github.com/pnp/pnpjs/pull/1402)]
+
+### Fixed
+
+- sp: Fixes issue renderListDataAsStream not passing in URL parameters #1414 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- graph: Fixes issue with multiple graph methods not honoring 'inBatch' #1411 [[PR](https://github.com/pnp/pnpjs/pull/1419)]
+- sp: Fixes folder default values at library just working for first default value #1434 [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1436)]
+- sp: Fix for issue setting taxonomy field default values for libs/folders #1426 [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1437)]
+
 ## 2.0.11 - 2020-Oct-09
 
 ### Added

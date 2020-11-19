@@ -673,3 +673,38 @@ page.setBannerImage(far.data.ServerRelativeUrl);
 // publish the page
 await page.save();
 ```
+
+### setBannerImageFromExternalUrl
+
+_Added in 2.0.12_
+
+Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg");
+
+// save the changes
+await page.save();
+```
+
+You can optionally supply additional props for the banner image, these match the properties when calling [setBannerImage](#setbannerimage)
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg", {
+    altText: "Image description",
+    imageSourceType: 2,
+    translateX: 30,
+    translateY: 1234,
+});
+
+// save the changes
+await page.save();
+```
