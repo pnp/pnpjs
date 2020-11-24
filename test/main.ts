@@ -245,7 +245,9 @@ async function graphTestSetup(ts: ISettings): Promise<void> {
 }
 
 export let testSettings: ISettings = settings.testing;
-testSettings.sp.webUrl = "";
+// if (testSettings.enableWebTests) {
+//     testSettings.sp.webUrl = "";
+// }
 
 before(async function (): Promise<void> {
 
