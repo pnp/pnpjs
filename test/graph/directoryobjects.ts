@@ -9,7 +9,6 @@ import { getRandomString, getGUID } from "@pnp/common";
 
 describe("Directory Objects", function () {
 
-
     // We can't test for graph.me calls in an application context
     if (testSettings.enableWebTests) {
         let testUserName = "";
