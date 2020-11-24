@@ -74,6 +74,24 @@ console.log(`spVerbose: ${spVerbose}`);
 console.log(`useMSAL: ${useMSAL}`);
 console.log(`*****************************`);
 
+function readEnvVar(key: string, parse = false): any {
+
+    const b = process.env[key];
+    if (typeof b !== "string" || b.length < 1) {
+        console.error(`Environment var ${key} not found.`);
+    }
+
+    if (!parse) {
+        return b;
+    }
+
+    try {
+        return JSON.parse(b);
+    } catch (e) {
+        console.error(`Error parsing env var ${key}. ${e.message}`);
+    }
+}
+
 switch (mode) {
 
     case "online":
@@ -85,17 +103,17 @@ switch (mode) {
                     enableWebTests: true,
                     graph: {
                         msal: {
-                            init: JSON.parse(process.env.PnPTesting_MSAL_Graph_Config),
-                            scopes: JSON.parse(process.env.PnPTesting_MSAL_Graph_Scopes),
+                            init: readEnvVar("PNPTESTING_MSAL_GRAPH_CONFIG", true),
+                            scopes: readEnvVar("PNPTESTING_MSAL_GRAPH_SCOPES", true),
                         },
                     },
                     sp: {
                         msal: {
-                            init: JSON.parse(process.env.PnPTesting_MSAL_SP_Config),
-                            scopes: JSON.parse(process.env.PnPTesting_MSAL_SP_Scopes),
+                            init: readEnvVar("PNPTESTING_MSAL_SP_CONFIG", true),
+                            scopes: readEnvVar("PNPTESTING_MSAL_SP_SCOPES", true),
                         },
-                        notificationUrl: process.env.PnPTesting_NotificationUrl || null,
-                        url: process.env.PnPTesting_SiteUrl,
+                        notificationUrl: readEnvVar("PNPTESTING_NOTIFICATIONURL") || null,
+                        url: readEnvVar("PNPTESTING_SITEURL"),
                     },
                 },
             };
@@ -111,10 +129,10 @@ switch (mode) {
                         tenant: "",
                     },
                     sp: {
-                        id: process.env.PnPTesting_ClientId,
-                        notificationUrl: process.env.PnPTesting_NotificationUrl || null,
-                        secret: process.env.PnPTesting_ClientSecret,
-                        url: process.env.PnPTesting_SiteUrl,
+                        id: readEnvVar("PnPTesting_ClientId"),
+                        notificationUrl: readEnvVar("PnPTesting_NotificationUrl") || null,
+                        secret: readEnvVar("PnPTesting_ClientSecret"),
+                        url: readEnvVar("PnPTesting_SiteUrl"),
                     },
                 },
             };
