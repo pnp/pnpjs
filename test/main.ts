@@ -96,13 +96,6 @@ switch (mode) {
 
     case "online":
 
-        process.env.
-
-
-
-
-
-
         if (useMSAL) {
 
             settings = {
