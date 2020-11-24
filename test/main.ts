@@ -1,47 +1,30 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine, assign } from "@pnp/common";
-import { graph } from "@pnp/graph";
-import { SPFetchClient, AdalFetchClient } from "@pnp/nodejs";
-import { sp } from "@pnp/sp";
+import { getGUID, combine } from "@pnp/common";
+import { graph, IGraphConfigurationPart } from "@pnp/graph";
+import { SPFetchClient, AdalFetchClient, MsalFetchClient } from "@pnp/nodejs";
+import { ISPConfigurationPart, sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
 import { Web } from "@pnp/sp/webs";
+import { ISettings, ITestingSettings } from "./settings";
 
 chai.use(chaiAsPromised);
 
 declare var process: any;
 const testStart = Date.now();
 
-export interface ISettingsTestingPart {
-    enableWebTests: boolean;
-    graph?: {
-        id: string;
-        secret: string;
-        tenant: string;
-    };
-    sp?: {
-        webUrl?: string;
-        id: string;
-        notificationUrl: string | null;
-        secret: string;
-        url: string;
-    };
-}
-
-export interface ISettings {
-    testing: ISettingsTestingPart;
-}
-
 // we need to load up the appropriate settings based on where we are running
-let settings: ISettings = null;
+let settings: ITestingSettings = null;
 let mode = "cmd";
 let site: string = null;
 let skipWeb = false;
 let deleteWeb = false;
 let logging = false;
+let spVerbose = false;
+let useMSAL = false;
 let deleteAllWebs = false;
 
 for (let i = 0; i < process.argv.length; i++) {
@@ -49,10 +32,10 @@ for (let i = 0; i < process.argv.length; i++) {
     if (/^--mode/i.test(arg)) {
         switch (process.argv[++i]) {
             case "pr":
-                mode = "travis-noweb";
+                mode = "online-noweb";
                 break;
             case "push":
-                mode = "travis";
+                mode = "online";
         }
     }
     if (/^--site/i.test(arg)) {
@@ -72,6 +55,12 @@ for (let i = 0; i < process.argv.length; i++) {
         Logger.activeLogLevel = LogLevel.Info;
         Logger.subscribe(new ConsoleListener());
     }
+    if (/^--spverbose/i.test(arg)) {
+        spVerbose = true;
+    }
+    if (/^--msal/i.test(arg)) {
+        useMSAL = true;
+    }
 }
 
 console.log(`*****************************`);
@@ -81,31 +70,58 @@ console.log(`site: ${site}`);
 console.log(`skipWeb: ${skipWeb}`);
 console.log(`deleteWeb: ${deleteWeb}`);
 console.log(`logging: ${logging}`);
+console.log(`spVerbose: ${spVerbose}`);
+console.log(`useMSAL: ${useMSAL}`);
 console.log(`*****************************`);
 
 switch (mode) {
 
-    case "travis":
+    case "online":
 
-        settings = {
-            testing: {
-                enableWebTests: true,
-                graph: {
-                    id: "",
-                    secret: "",
-                    tenant: "",
+        if (useMSAL) {
+
+            settings = {
+                testing: {
+                    enableWebTests: true,
+                    graph: {
+                        msal: {
+                            init: JSON.parse(process.env.PnPTesting_MSAL_Graph_Config),
+                            scopes: JSON.parse(process.env.PnPTesting_MSAL_Graph_Scopes),
+                        },
+                    },
+                    sp: {
+                        msal: {
+                            init: JSON.parse(process.env.PnPTesting_MSAL_SP_Config),
+                            scopes: JSON.parse(process.env.PnPTesting_MSAL_SP_Scopes),
+                        },
+                        notificationUrl: process.env.PnPTesting_NotificationUrl || null,
+                        url: process.env.PnPTesting_SiteUrl,
+                    },
                 },
-                sp: {
-                    id: process.env.PnPTesting_ClientId,
-                    notificationUrl: process.env.PnPTesting_NotificationUrl || null,
-                    secret: process.env.PnPTesting_ClientSecret,
-                    url: process.env.PnPTesting_SiteUrl,
+            };
+
+        } else {
+
+            settings = {
+                testing: {
+                    enableWebTests: true,
+                    graph: {
+                        id: "",
+                        secret: "",
+                        tenant: "",
+                    },
+                    sp: {
+                        id: process.env.PnPTesting_ClientId,
+                        notificationUrl: process.env.PnPTesting_NotificationUrl || null,
+                        secret: process.env.PnPTesting_ClientSecret,
+                        url: process.env.PnPTesting_SiteUrl,
+                    },
                 },
-            },
-        };
+            };
+        }
 
         break;
-    case "travis-noweb":
+    case "online-noweb":
 
         settings = {
             testing: {
@@ -124,77 +140,114 @@ switch (mode) {
         break;
 }
 
-function spTestSetup(ts: ISettingsTestingPart): Promise<void> {
+async function spTestSetup(ts: ISettings): Promise<void> {
 
-    return new Promise((resolve, reject) => {
-        if (site && site.length > 0) {
-            // we have a site url provided, we'll use that
-            sp.setup({
-                sp: {
-                    fetchClientFactory: () => {
-                        return new SPFetchClient(site, ts.sp.id, ts.sp.secret);
-                    },
-                },
-            });
-            ts.sp.webUrl = site;
-            return resolve();
+    // create skeleton settings
+    const settingsPart: ISPConfigurationPart = {
+        sp: {
+            baseUrl: ts.sp.url,
+        },
+    };
+
+    let siteUsed = false;
+
+    if (useMSAL) {
+
+        if (typeof ts.sp.msal === "undefined") {
+            throw Error("No MSAL settings defined for sp but useMSAL flag set to true.");
         }
 
-        sp.setup({
-            sp: {
-                fetchClientFactory: () => {
-                    return new SPFetchClient(ts.sp.url, ts.sp.id, ts.sp.secret);
-                },
-            },
-        });
+        settingsPart.sp.fetchClientFactory = () => {
+            return new MsalFetchClient(ts.sp.msal.init, ts.sp.msal.scopes);
+        };
 
-        // create the web in which we will test
-        const d = new Date();
-        const g = getGUID();
+    } else {
 
-        sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g).then(() => {
+        if (site && site.length > 0) {
 
-            const url = combine(ts.sp.url, g);
+            settingsPart.sp.fetchClientFactory = () => {
+                return new SPFetchClient(site, ts.sp.id, ts.sp.secret);
+            };
 
-            // set the testing web url so our tests have access if needed
-            ts.sp.webUrl = url;
+            settingsPart.sp.baseUrl = site;
 
-            // re-setup the node client to use the new web
-            sp.setup({
+            // and we will just use this as the url
+            ts.sp.webUrl = site;
+            siteUsed = true;
 
-                sp: {
-                    // headers: {
-                    //     "Accept": "application/json;odata=verbose",
-                    // },
-                    fetchClientFactory: () => {
-                        return new SPFetchClient(url, ts.sp.id, ts.sp.secret);
-                    },
-                },
-            });
+        } else {
 
-            resolve();
+            settingsPart.sp.fetchClientFactory = () => {
+                return new SPFetchClient(ts.sp.url, ts.sp.id, ts.sp.secret);
+            };
+        }
+    }
 
-        }).catch(e => reject(e));
-    });
+    // do initial setup
+    sp.setup(settingsPart);
+
+    // if we had a site specified we don't need to create one for testing
+    if (siteUsed) {
+        return;
+    }
+
+    // create the web in which we will test
+    const d = new Date();
+    const g = getGUID();
+
+    await sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
+
+    const url = combine(ts.sp.url, g);
+
+    // set the testing web url so our tests have access if needed
+    ts.sp.webUrl = url;
+    settingsPart.sp.baseUrl = url;
+
+    if (!useMSAL) {
+        settingsPart.sp.fetchClientFactory = () => {
+            return new SPFetchClient(url, ts.sp.id, ts.sp.secret);
+        };
+    }
+
+    if (spVerbose) {
+        settingsPart.sp.headers = {
+            "Accept": "application/json;odata=verbose",
+        };
+        console.log("I think we set verbose.");
+    }
+
+    // re-setup the node client to use the new web
+    sp.setup(settingsPart);
 }
 
-function graphTestSetup(ts: ISettingsTestingPart): Promise<void> {
+async function graphTestSetup(ts: ISettings): Promise<void> {
 
-    return new Promise((resolve) => {
+    const settingsPart: IGraphConfigurationPart = { graph: {} };
 
-        graph.setup({
-            graph: {
-                fetchClientFactory: () => {
-                    return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
-                },
-            },
-        });
+    if (useMSAL) {
 
-        resolve();
-    });
+        if (typeof ts.graph.msal === "undefined") {
+            throw Error("No MSAL settings defined for graph but useMSAL flag set to true.");
+        }
+
+        settingsPart.graph.fetchClientFactory = () => {
+            return new MsalFetchClient(ts.graph.msal.init, ts.graph.msal.scopes);
+        };
+
+    } else {
+
+        settingsPart.graph.fetchClientFactory = () => {
+            return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
+        };
+    }
+
+    graph.setup(settingsPart);
 }
 
-export let testSettings: ISettingsTestingPart = assign(settings.testing, { webUrl: "" });
+export let testSettings: ISettings = settings.testing;
+// if (testSettings.enableWebTests) {
+//     testSettings.sp.webUrl = "";
+// }
 
 before(async function (): Promise<void> {
 

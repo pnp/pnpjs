@@ -18,7 +18,7 @@ import { metadata } from "../utils/metadata";
 import { defaultPath } from "../decorators";
 import { spPost } from "../operations";
 import { tag } from "../telemetry";
-import { IResourcePath } from '../utils/toResourcePath';
+import { IResourcePath } from "../utils/toResourcePath";
 
 /**
  * Describes a collection of Item objects
