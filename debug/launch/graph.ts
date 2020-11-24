@@ -1,20 +1,13 @@
 import { Logger, LogLevel } from "@pnp/logging";
-import { AdalFetchClient } from "@pnp/nodejs";
 import { graph } from "@pnp/graph";
+import { graphSetup } from "./setup";
 import "@pnp/graph/groups";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: any) {
 
-    graph.setup({
-        graph: {
-            fetchClientFactory: () => {
-                return new AdalFetchClient(settings.testing.graph.tenant, settings.testing.graph.id, settings.testing.graph.secret);
-            },
-        },
-    });
-
+    graphSetup(settings);
 
     const g = await graph.groups();
 
