@@ -29,7 +29,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-let user = await sp.web.currentUser;
+let user = await sp.web.currentUser();
 ```
 
 ### Get user by id
@@ -82,9 +82,9 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
 const user = await sp.web.ensureUser("userLoginname")
-const users = await sp.web.siteUsers;
+const users = await sp.web.siteUsers();
   
-await users.add(user.data.LoginName);
+await users.push(user.data.LoginName);
 ```
 
 ### Get user
