@@ -82,9 +82,9 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
 const user = await sp.web.ensureUser("userLoginname")
-const users = await sp.web.siteUsers();
+const users = await sp.web.siteUsers;
   
-await users.push(user.data.LoginName);
+await users.add(user.data.LoginName);
 ```
 
 ### Get user
