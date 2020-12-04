@@ -3,6 +3,7 @@ import { expect } from "chai";
 import { testSettings } from "../main";
 import { graph } from "@pnp/graph";
 import { GroupType } from "@pnp/graph/groups";
+import "@pnp/graph/sites/groups";
 
 describe("Groups", function () {
 
@@ -67,7 +68,7 @@ describe("Groups", function () {
       return expect(groupName === group.displayName).is.not.true;
     });
 
-    it("sites", async function() {
+    it("sites/root/sites", async function () {
       // Find an existing group
       // This has to be tested on existing groups. On a newly created group, this returns an error often
       // "Resource provisioning is in progress. Please try again.". This is expected as the team site provisioning takes a few seconds when creating a new group
@@ -75,12 +76,12 @@ describe("Groups", function () {
       const grpID = groups[0].id;
 
       // Get sites within this group
-      const sites = await graph.groups.getById(grpID).sites.get();
+      const sitesPromise = graph.groups.getById(grpID).sites.root.sites();
 
-      return expect(sites.length).is.not.null;
+      return expect(sitesPromise).to.eventually.be.fulfilled;
     });
 
-    it("sites/root", async function() {
+    it("sites/root", async function () {
       // Find an existing group
       const groups = await graph.groups();
       const grpID = groups[0].id;

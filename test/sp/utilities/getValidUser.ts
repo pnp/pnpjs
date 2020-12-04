@@ -1,26 +1,27 @@
-import { User as IUser } from "@microsoft/microsoft-graph-types";
-import { graph } from "@pnp/graph";
-import "@pnp/graph/users";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/web";
+import "@pnp/sp/site-users/web";
+import { ISiteUserProps } from "@pnp/sp/site-users";
 import { Logger, LogLevel } from "@pnp/logging";
 
 let cachedValidUser = null;
 const usersToCheck = 20;
 
-export default async function getValidUser(ignoreCache = false, ...selects: string[]): Promise<IUser> {
+export default async function getValidUser(ignoreCache = false, ...selects: string[]): Promise<ISiteUserProps> {
 
     if (!ignoreCache && cachedValidUser !== null) {
         return cachedValidUser;
     }
 
-    const allUsers = await graph.users.top(usersToCheck).select("userPrincipalName")();
+    const allUsers = await sp.web.siteUsers.top(usersToCheck).select("Id")();
 
     for (let i = 0; i < allUsers.length; i++) {
 
-        const testUserName = allUsers[i].userPrincipalName;
+        const testUserId = allUsers[i].Id;
 
         try {
 
-            const query = graph.users.getById(testUserName);
+            const query = sp.web.siteUsers.getById(testUserId);
             if (selects && selects.length > 0) {
                 query.select(...selects);
             }
@@ -29,7 +30,7 @@ export default async function getValidUser(ignoreCache = false, ...selects: stri
 
         } catch (e) {
             cachedValidUser = null;
-            Logger.write(`getValidUser: Failed looking up user '${testUserName}'`, LogLevel.Verbose);
+            Logger.write(`getValidUser: Failed looking up user '${testUserId}'`, LogLevel.Verbose);
         }
     }
 
