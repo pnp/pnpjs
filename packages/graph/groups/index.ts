@@ -8,6 +8,8 @@ export {
     IGroup,
     IGroupAddResult,
     IGroups,
+    Sites,
+    ISites,
 } from "./types";
 
 declare module "../rest" {
