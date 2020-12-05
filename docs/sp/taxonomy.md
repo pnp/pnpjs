@@ -73,6 +73,10 @@ import { ITermSetInfo } from "@pnp/sp/taxonomy";
 const info: ITermSetInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72")();
 ```
 
+### getAllChildrenAsOrderedTree
+
+This method will get all of a set's child terms in an ordered array
+
 ## Terms
 
 Access term set information

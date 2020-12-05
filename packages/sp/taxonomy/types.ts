@@ -92,12 +92,37 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
     /**
      * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
-     * ** This is an expensive operation and you should consider strongly caching the results **
+     * ** This is an expensive operation and you should strongly consider caching the results **
      */
     public async getAllChildrenAsOrderedTree(): Promise<IOrderedTermInfo[]> {
 
-        const setInfo = await this();
+        const setInfo = await this.select("*", "customSortOrder")();
         const tree: IOrderedTermInfo[] = [];
+
+        const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
+            // handle custom sort order
+            let ordering: string[] = null;
+            if (sorts === null && setSorts.length > 0) {
+                ordering = [...setSorts];
+            } else {
+                const index = sorts.findIndex(v => v.setId === setInfo.id);
+                if (index >= 0) {
+                    ordering = [...sorts[index].order];
+                }
+            }
+
+            if (ordering !== null) {
+                const orderedChildren = [];
+                ordering.forEach(o => {
+                    const found = terms.find(ch => o === ch.id);
+                    if (found) {
+                        orderedChildren.push(found);
+                    }
+                });
+                return orderedChildren;
+            }
+            return terms;
+        };
 
         const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
 
@@ -109,20 +134,13 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
                 const orderedTerm = {
                     children: <IOrderedTermInfo[]>[],
+                    defaultLabel: child.labels.find(l => l.isDefault).name,
                     ...child,
                 };
 
                 await visitor(this.getTermById(children[i].id), orderedTerm.children);
 
-                const index = child.customSortOrder.findIndex(v => v.setId === setInfo.id);
-                if (index >= 0) {
-                    const sort = child.customSortOrder[index];
-                    const orderedChildren = [];
-
-                    sort.order.forEach(o => orderedChildren.push(orderedTerm.children.find(ch => o === ch.id)));
-
-                    orderedTerm.children = orderedChildren;
-                }
+                orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
 
                 parent.push(orderedTerm);
             }
@@ -130,7 +148,7 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
         await visitor(this, tree);
 
-        return tree;
+        return ensureOrder(tree, null, setInfo.customSortOrder);
     }
 }
 
@@ -241,6 +259,7 @@ export interface ITermSetInfo {
     localizedNames: { name: string, languageTag: string }[];
     description: string;
     createdDateTime: string;
+    customSortOrder: string[];
     properties?: ITaxonomyProperty[];
     childrenCount: number;
     groupId: string;
@@ -271,6 +290,7 @@ export interface ITermSortOrderInfo {
 
 export interface IOrderedTermInfo extends ITermInfo {
     children: IOrderedTermInfo[];
+    defaultLabel: string;
 }
 
 export interface IRelationInfo {
