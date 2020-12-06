@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { testSettings } from "../main";
 import { graph } from "@pnp/graph";
 import { GroupType } from "@pnp/graph/groups";
-import "@pnp/graph/sites/groups";
+import "@pnp/graph/sites/group";
 
 describe("Groups", function () {
 
