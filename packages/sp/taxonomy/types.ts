@@ -1,8 +1,6 @@
 import { defaultPath } from "../decorators";
-import { UrlFieldFormatType } from '../fields';
 import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable";
 import { tag } from "../telemetry";
-import { SPBatch } from "../batch";
 
 /**
  * Describes a collection of Form objects
@@ -16,6 +14,13 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
      */
     public get groups(): ITermGroups {
         return tag.configure(TermGroups(this), "txts.groups");
+    }
+
+    /**
+     * Gets the term groups associated with this tenant
+     */
+    public get sets(): ITermSets {
+        return tag.configure(TermSets(this), "txts.sets");
     }
 }
 export interface ITermStore extends _TermStore { }
@@ -138,9 +143,10 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
                     ...child,
                 };
 
-                await visitor(this.getTermById(children[i].id), orderedTerm.children);
-
-                orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                if (child.childrenCount > 0) {
+                    await visitor(this.getTermById(children[i].id), orderedTerm.children);
+                    orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                }
 
                 parent.push(orderedTerm);
             }
