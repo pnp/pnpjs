@@ -1,9 +1,9 @@
 import { Batch, IODataBatchRequestInfo } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
 import { assign, jsS, isUrlAbsolute, hOP, Runtime, DefaultRuntime } from "@pnp/common";
-import { IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig";
-import { GraphHttpClient } from "./graphhttpclient";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
+import { GraphHttpClient } from "./graphhttpclient.js";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 interface GraphBatchRequestFragment {
     id: string;

@@ -1,8 +1,8 @@
-import "./conversations";
+import "./conversations.js";
 
 export {
     Attachment,
     Attachments,
     IAttachment,
     IAttachments,
-} from "./types";
+} from "./types.js";

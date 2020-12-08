@@ -6,17 +6,17 @@ import {
     SharePointQueryableInstance,
     IDeleteableWithETag,
     deleteableWithETag,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
 import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
-import { Item, IItem } from "../items";
-import { odataUrlFrom } from "../odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
-import { toResourcePath } from "../utils/toResourcePath";
+import { Item, IItem } from "../items/index.js";
+import { odataUrlFrom } from "../odata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { tag } from "../telemetry.js";
+import { toResourcePath } from "../utils/toResourcePath.js";
 
 /**
  * Describes a collection of File objects

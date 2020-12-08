@@ -1,11 +1,11 @@
 {
     "extends": "../tsconfig.esm.json",
     "include": [
-        "./**/*.ts",
-        "../common/**/*.ts",
-        "../odata/**/*.ts",
-        "../logging/**/*.ts",
-        "../sp/**/*.ts"
+        "./**/*.*",
+        "../common/**/*.*",
+        "../odata/**/*.*",
+        "../logging/**/*.*",
+        "../sp/**/*.*"
     ],
     "references": [
         {

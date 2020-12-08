@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
-import { _Web } from "../webs/types";
-import { RegionalSettings, IRegionalSettings, IUserResources } from "./types";
-import { getValueForUICultureBinder } from "./funcs";
+import { _Web } from "../webs/types.js";
+import { RegionalSettings, IRegionalSettings, IUserResources } from "./types.js";
+import { getValueForUICultureBinder } from "./funcs.js";
 
 declare module "../webs/types" {
     interface _Web extends IUserResources {

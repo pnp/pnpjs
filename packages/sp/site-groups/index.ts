@@ -1,4 +1,4 @@
-import "./web";
+import "./web.js";
 
 export {
     ISiteGroup,
@@ -8,4 +8,4 @@ export {
     SiteGroup,
     SiteGroups,
     ISiteGroupInfo,
-} from "./types";
+} from "./types.js";

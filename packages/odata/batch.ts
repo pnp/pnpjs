@@ -1,7 +1,7 @@
 import { IFetchOptions, getGUID } from "@pnp/common";
-import { IODataParser } from "./parsers";
-import { IQueryable } from "./queryable";
-import { IRequestContext } from "./pipeline";
+import { IODataParser } from "./parsers.js";
+import { IQueryable } from "./queryable.js";
+import { IRequestContext } from "./pipeline.js";
 
 export interface IODataBatchRequestInfo {
     url: string;

@@ -1,14 +1,14 @@
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
 import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
     deleteableWithETag,
     IDeleteableWithETag,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/odata";
-import { tag } from "../telemetry";
+import { tag } from "../telemetry.js";
 
 @defaultPath("AttachmentFiles")
 export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo[]> {

@@ -1,5 +1,5 @@
-import { defaultPath } from "../decorators";
-import { graphInvokableFactory, _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable";
+import { defaultPath } from "../decorators.js";
+import { graphInvokableFactory, _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
 import { Site as ISiteType } from "@microsoft/microsoft-graph-types";
 
 /**

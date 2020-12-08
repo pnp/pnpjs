@@ -1,7 +1,7 @@
-import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types";
-import { _SharePointQueryableInstance, _SharePointQueryable, SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable";
+import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
+import { _SharePointQueryableInstance, _SharePointQueryable, SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable.js";
 import { hOP } from "@pnp/common";
-import { spPost } from "../operations";
+import { spPost } from "../operations.js";
 
 /**
 * Gets the effective permissions for the user supplied

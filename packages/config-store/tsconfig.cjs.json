@@ -1,11 +1,11 @@
 {
     "extends": "../tsconfig.cjs.json",
     "include": [
-        "./**/*.ts",
-        "../common/**/*.ts",
-        "../logging/**/*.ts",
-        "../odata/**/*.ts",
-        "../sp/**/*.ts"
+        "./**/*.*",
+        "../common/**/*.*",
+        "../logging/**/*.*",
+        "../odata/**/*.*",
+        "../sp/**/*.*"
     ],
     "references": [
         {

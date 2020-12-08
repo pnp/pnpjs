@@ -1,4 +1,4 @@
-import "./list";
+import "./list.js";
 
 export {
     Form,
@@ -6,4 +6,4 @@ export {
     IForm,
     IForms,
     IFormInfo,
-} from "./types";
+} from "./types.js";

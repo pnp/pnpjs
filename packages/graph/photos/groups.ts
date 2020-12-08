@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Group } from "../groups/types";
-import { Photo, IPhoto } from "./types";
+import { _Group } from "../groups/types.js";
+import { Photo, IPhoto } from "./types.js";
 
 declare module "../groups/types" {
     interface _Group {

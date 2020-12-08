@@ -1,4 +1,4 @@
-import { IODataParser } from "./parsers";
+import { IODataParser } from "./parsers.js";
 import { IPnPClientStore, PnPClientStorage } from "@pnp/common";
 
 export interface ICachingOptions {

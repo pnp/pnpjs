@@ -1,8 +1,8 @@
-export { graph, GraphRest } from "./rest";
+export { graph, GraphRest } from "./rest.js";
 
 export {
     GraphBatch,
-} from "./batch";
+} from "./batch.js";
 
 export {
     IGraphQueryableCollection,
@@ -14,19 +14,19 @@ export {
     GraphQueryableInstance,
     IGraphQueryableConstructor,
     GraphQueryableSearchableCollection,
-} from "./graphqueryable";
+} from "./graphqueryable.js";
 
 export {
     IGraphConfiguration,
     IGraphConfigurationPart,
 } from "./graphlibconfig";
 
-export * from "./graphhttpclient";
+export * from "./graphhttpclient.js";
 
-export * from "./types";
+export * from "./types.js";
 
-export * from "./operations";
+export * from "./operations.js";
 
 export {
     toAbsoluteUrl,
-} from "./utils/toabsoluteurl";
+} from "./utils/toabsoluteurl.js";

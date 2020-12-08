@@ -6,15 +6,15 @@
         ]
     },
     "include": [
-        "./**/*.ts",
-        "../adaljsclient/**/*.ts",
-        "../common/**/*.ts",
-        "../logging/**/*.ts",
-        "../odata/**/*.ts",
-        "../sp/**/*.ts",
-        "../graph/**/*.ts",
-        "../config-store/**/*.ts",
-        "../sp-addinhelpers/**/*.ts"
+        "./**/*.*",
+        "../adaljsclient/**/*.*",
+        "../common/**/*.*",
+        "../logging/**/*.*",
+        "../odata/**/*.*",
+        "../sp/**/*.*",
+        "../graph/**/*.*",
+        "../config-store/**/*.*",
+        "../sp-addinhelpers/**/*.*"
     ],
     "references": [
         {

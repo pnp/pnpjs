@@ -1,8 +1,8 @@
-import { _ClientsidePage } from "../clientside-pages/types";
-import { ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types";
-import { spODataEntity } from "../odata";
-import { tag } from "../telemetry";
-import { IItemUpdateResult, Item } from "../items";
+import { _ClientsidePage } from "../clientside-pages/types.js";
+import { ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types.js";
+import { spODataEntity } from "../odata.js";
+import { tag } from "../telemetry.js";
+import { IItemUpdateResult, Item } from "../items/index.js";
 
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {

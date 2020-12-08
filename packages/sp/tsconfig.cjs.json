@@ -4,11 +4,11 @@
         "strictNullChecks": false
     },
     "include": [
-        "./**/*.ts",
-        "../common/**/*.ts",
-        "../logging/**/*.ts",
-        "../odata/**/*.ts",
-        "./presets/**/*.ts"
+        "./**/*.*",
+        "../common/**/*.*",
+        "../logging/**/*.*",
+        "../odata/**/*.*",
+        "./presets/**/*.*"
     ],
     "references": [
         {

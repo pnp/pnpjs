@@ -1,8 +1,8 @@
-import { SPRest } from "../rest";
-import { HubSites, IHubSites } from "./types";
+import { SPRest } from "../rest.js";
+import { HubSites, IHubSites } from "./types.js";
 
-import "./site";
-import "./web";
+import "./site.js";
+import "./web.js";
 
 export {
     HubSite,
@@ -11,7 +11,7 @@ export {
     IHubSiteInfo,
     IHubSiteWebData,
     IHubSites,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

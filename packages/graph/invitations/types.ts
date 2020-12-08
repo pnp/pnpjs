@@ -1,9 +1,9 @@
 import { ITypedHash, assign } from "@pnp/common";
 import { body } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { defaultPath } from "../decorators";
-import { graphPost } from "../operations";
+import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { graphPost } from "../operations.js";
 
 /**
  * Invitations

@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { IUser, User, IUsers, Users } from "./types";
+import { GraphRest } from "../rest.js";
+import { IUser, User, IUsers, Users } from "./types.js";
 
 export {
     IUser,
@@ -8,7 +8,7 @@ export {
     Users,
     IPeople,
     People,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {

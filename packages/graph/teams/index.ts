@@ -1,8 +1,8 @@
 import { addProp, body } from "@pnp/odata";
-import { GraphRest } from "../rest";
-import { _Group, Group } from "../groups/types";
-import { ITeamCreateResult, ITeamProperties, ITeam, Team, ITeams, Teams } from "./types";
-import { graphPut } from "../operations";
+import { GraphRest } from "../rest.js";
+import { _Group, Group } from "../groups/types.js";
+import { ITeamCreateResult, ITeamProperties, ITeam, Team, ITeams, Teams } from "./types.js";
+import { graphPut } from "../operations.js";
 
 import "./users";
 
@@ -26,7 +26,7 @@ export {
     Tabs,
     Team,
     Teams,
-} from "./types";
+} from "./types.js";
 
 declare module "../groups/types" {
     interface _Group {

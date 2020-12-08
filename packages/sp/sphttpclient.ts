@@ -10,9 +10,9 @@ import {
     DefaultRuntime,
     Runtime,
 } from "@pnp/common";
-import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig";
-import { extractWebUrl } from "./utils/extractweburl";
-import { tag } from "./telemetry";
+import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
+import { extractWebUrl } from "./utils/extractweburl.js";
+import { tag } from "./telemetry.js";
 import { ODataParser } from "@pnp/odata";
 
 export class SPHttpClient implements IRequestClient {

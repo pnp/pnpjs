@@ -11,16 +11,16 @@ import {
     spInvokableFactory,
     deleteableWithETag,
     IDeleteableWithETag,
-} from "../sharepointqueryable";
-import { odataUrlFrom } from "../odata";
-import { IItem, Item } from "../items/types";
+} from "../sharepointqueryable.js";
+import { odataUrlFrom } from "../odata.js";
+import { IItem, Item } from "../items/types.js";
 import { body } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
-import { toResourcePath, IResourcePath } from "../utils/toResourcePath";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { tag } from "../telemetry.js";
+import { toResourcePath, IResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("folders")
 export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {

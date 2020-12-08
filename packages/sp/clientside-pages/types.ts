@@ -1,19 +1,19 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
 import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
-import { IFile, IFileInfo } from "../files/types";
-import { Item, IItem } from "../items/types";
-import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable";
-import { metadata } from "../utils/metadata";
-import { List } from "../lists/types";
-import { odataUrlFrom } from "../odata";
-import { Web, IWeb } from "../webs/types";
-import { extractWebUrl } from "../utils/extractweburl";
-import { Site } from "../sites/types";
-import { spPost } from "../operations";
-import { getNextOrder, reindex } from "./funcs";
-import "../files/web";
-import "../comments/item";
-import { tag } from "../telemetry";
+import { IFile, IFileInfo } from "../files/types.js";
+import { Item, IItem } from "../items/types.js";
+import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { metadata } from "../utils/metadata.js";
+import { List } from "../lists/types.js";
+import { odataUrlFrom } from "../odata.js";
+import { Web, IWeb } from "../webs/types.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { Site } from "../sites/types.js";
+import { spPost } from "../operations.js";
+import { getNextOrder, reindex } from "./funcs.js";
+import "../files/web.js";
+import "../comments/item.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Page promotion state

@@ -1,6 +1,6 @@
-import { assign, objectDefinedNotNull } from "./util";
-import { ISPFXContext } from "./spfxcontextinterface";
-import { safeGlobal } from "./safe-global";
+import { assign, objectDefinedNotNull } from "./util.js";
+import { ISPFXContext } from "./spfxcontextinterface.js";
+import { safeGlobal } from "./safe-global.js";
 
 export interface IConfigOptions {
     headers?: string[][] | { [key: string]: string } | Headers;

@@ -1,5 +1,5 @@
-import { _Web } from "../webs/types";
-import { AppCatalog, IAppCatalog } from "./types";
+import { _Web } from "../webs/types.js";
+import { AppCatalog, IAppCatalog } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {

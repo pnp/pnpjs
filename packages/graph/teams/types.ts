@@ -1,9 +1,9 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { body } from "@pnp/odata";
 import { assign } from "@pnp/common";
-import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
-import { graphPost } from "../operations";
-import { defaultPath } from "../decorators";
+import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
+import { graphPost } from "../operations.js";
+import { defaultPath } from "../decorators.js";
 
 /**
  * Represents a Microsoft Team

@@ -5,13 +5,13 @@ import {
     _SharePointQueryable,
     ISharePointQueryable,
     spInvokableFactory,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { assign } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/odata";
-import { PrincipalType, PrincipalSource } from "../types";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
+import { PrincipalType, PrincipalSource } from "../types.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
 
 export class _Profiles extends _SharePointQueryableInstance {
 

@@ -1,7 +1,7 @@
-import "./file";
-import "./folder";
-import "./item";
-import "./web";
+import "./file.js";
+import "./folder.js";
+import "./item.js";
+import "./web.js";
 
 export {
     ISharingEmailData,
@@ -24,4 +24,4 @@ export {
     IShareLinkSettings,
     IShareObjectOptions,
     RoleType,
-} from "./types";
+} from "./types.js";

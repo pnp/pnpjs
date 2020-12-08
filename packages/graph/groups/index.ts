@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { IGroups, Groups } from "./types";
+import { GraphRest } from "../rest.js";
+import { IGroups, Groups } from "./types.js";
 
 export {
     Group,
@@ -8,7 +8,7 @@ export {
     IGroup,
     IGroupAddResult,
     IGroups,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {

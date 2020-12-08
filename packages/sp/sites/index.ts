@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { ISite, Site } from "./types";
+import { SPRest } from "../rest.js";
+import { ISite, Site } from "./types.js";
 
 export {
     IOpenWebByIdResult,
@@ -7,7 +7,7 @@ export {
     Site,
     IContextInfo,
     IDocumentLibraryInformation,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

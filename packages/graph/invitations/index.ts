@@ -1,11 +1,11 @@
-import { GraphRest } from "../rest";
-import { IInvitations, Invitations } from "./types";
+import { GraphRest } from "../rest.js";
+import { IInvitations, Invitations } from "./types.js";
 
 export {
     IInvitationAddResult,
     IInvitations,
     Invitations,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {

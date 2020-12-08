@@ -1,7 +1,7 @@
 import { combine, IFetchOptions } from "@pnp/common";
 import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
-import { GraphEndpoints } from "./types";
-import { graphGet } from "./operations";
+import { GraphEndpoints } from "./types.js";
+import { graphGet } from "./operations.js";
 
 export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;

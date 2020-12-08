@@ -3,7 +3,7 @@ const u: any = require("url");
 const nodeFetch = require("node-fetch").default;
 import * as jwt from "jsonwebtoken";
 import { ITypedHash } from "@pnp/common";
-import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types";
+import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types.js";
 
 class MapCacheManager implements ITokenCacheManager {
 

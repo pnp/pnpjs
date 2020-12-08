@@ -1,10 +1,10 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
 import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPBatch } from "./batch";
-import { metadata } from "./utils/metadata";
-import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations";
-import { tag } from "./telemetry";
+import { SPBatch } from "./batch.js";
+import { metadata } from "./utils/metadata.js";
+import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations.js";
+import { tag } from "./telemetry.js";
 
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;

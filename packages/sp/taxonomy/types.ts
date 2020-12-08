@@ -1,6 +1,6 @@
-import { defaultPath } from "../decorators";
-import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Describes a collection of Form objects

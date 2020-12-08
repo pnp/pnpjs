@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Group } from "../groups/types";
-import { ISites, Sites } from "./types";
+import { _Group } from "../groups/types.js";
+import { ISites, Sites } from "./types.js";
 
 declare module "../groups/types" {
     interface _Group {

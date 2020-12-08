@@ -1,3 +1,4 @@
+declare var require: (path: string) => any;
 import * as pump from "pump";
 import { src, dest } from "gulp";
 import { resolve, dirname } from "path";
@@ -25,7 +26,7 @@ export function createCopyTargetFiles(targetOverride = "", subDir = "", transfor
 
         dirs.forEach(async dir => {
 
-            await new Promise((res, rej) => {
+            await new Promise<void>((res, rej) => {
 
                 pump([
                     src(["./**/*.d.ts", "./**/*.js", "./**/*.js.map", "./**/*.d.ts.map"], {

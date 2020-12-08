@@ -1,4 +1,4 @@
-import { metadata } from "./metadata";
+import { metadata } from "./metadata.js";
 import { ITypedHash, assign } from "@pnp/common";
 
 export interface ISPKeyValueCollection {

@@ -1,9 +1,9 @@
 import { body } from "@pnp/odata";
 import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
-import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators";
-import { graphPost } from "../operations";
-import { calendarView } from "./funcs";
+import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
+import { graphPost } from "../operations.js";
+import { calendarView } from "./funcs.js";
 
 /**
  * Calendar

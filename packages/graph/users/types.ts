@@ -1,7 +1,7 @@
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable";
+import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
 import { User as IUserType, Person as IPersonType } from "@microsoft/microsoft-graph-types";
-import { _DirectoryObject, DirectoryObjects, IDirectoryObjects } from "../directory-objects/types";
-import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
+import { _DirectoryObject, DirectoryObjects, IDirectoryObjects } from "../directory-objects/types.js";
+import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
 
 @updateable()
 @deleteable()

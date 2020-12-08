@@ -1,4 +1,4 @@
-import { isFunc, objectDefinedNotNull } from "./util";
+import { isFunc, objectDefinedNotNull } from "./util.js";
 
 /**
  * Interface defining an object with a known property type

@@ -1,7 +1,6 @@
-declare var require: (path: string) => any;
 import { IHttpClientImpl } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { fetch } from "./fetch";
+import { fetch } from "./fetch.js";
 
 /**
  * Payload from transient errors

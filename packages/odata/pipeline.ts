@@ -1,7 +1,7 @@
 import { IRequestClient, assign, isFunc, hOP } from "@pnp/common";
 import { LogLevel, Logger } from "@pnp/logging";
-import { CachingOptions, CachingParserWrapper } from "./caching";
-import { IQueryableData } from "./queryable";
+import { CachingOptions, CachingParserWrapper } from "./caching.js";
+import { IQueryableData } from "./queryable.js";
 
 /**
  * Defines the context for a given request to be processed in the pipeline

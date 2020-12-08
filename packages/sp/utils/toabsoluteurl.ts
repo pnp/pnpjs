@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, DefaultRuntime, stringIsNullOrEmpty, ILibraryConfiguration, ISPFXContext, hOP, safeGlobal } from "@pnp/common";
-import { ISPConfigurationPart, ISPConfigurationProps } from "../splibconfig";
+import { ISPConfigurationPart, ISPConfigurationProps } from "../splibconfig.js";
 
 /**
  * Ensures that a given url is absolute for the current web based on context

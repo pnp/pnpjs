@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
-import { _Item, Item } from "../items/types";
-import { Comments, IComments, ILikeData, ILikedByInformation } from "./types";
-import { spPost } from "../operations";
+import { _Item, Item } from "../items/types.js";
+import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
+import { spPost } from "../operations.js";
 
 declare module "../items/types" {
     interface _Item {

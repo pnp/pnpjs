@@ -1,6 +1,6 @@
-import { _Post } from "../conversations/types";
+import { _Post } from "../conversations/types.js";
 import { addProp } from "@pnp/odata";
-import { Attachments, IAttachments } from "./types";
+import { Attachments, IAttachments } from "./types.js";
 
 declare module "../conversations/types" {
     interface _Post {

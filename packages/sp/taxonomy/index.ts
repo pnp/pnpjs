@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { ITermStore, TermStore } from "./types";
+import { SPRest } from "../rest.js";
+import { ITermStore, TermStore } from "./types.js";
 
 export {
     ITermStore,
@@ -27,7 +27,7 @@ export {
     Term,
     Children,
     IChildren,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

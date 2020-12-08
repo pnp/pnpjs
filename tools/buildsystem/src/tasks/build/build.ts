@@ -15,7 +15,7 @@ export function build(_0: string, config: BuildSchema) {
 
     // for each build target we need to invoke tsc
 
-    return Promise.all(config.buildTargets.map(buildTarget => new Promise((resolve, reject) => {
+    return Promise.all<void>(config.buildTargets.map(buildTarget => new Promise((resolve, reject) => {
         // exec a child process to run a tsc build based on the project file in each
         // package directory. Build is now fully managed via tsconfig.json files
         exec(`${tscPath} -b ${buildTarget}`, (error, stdout, stderr) => {

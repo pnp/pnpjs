@@ -8,12 +8,12 @@ import {
     spInvokableFactory,
     IDeleteable,
     deleteable,
-} from "../sharepointqueryable";
-import { SiteGroups, ISiteGroups } from "../site-groups/types";
-import { metadata } from "../utils/metadata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
+import { metadata } from "../utils/metadata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 export type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethods;
 

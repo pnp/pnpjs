@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
-import { _List } from "../lists/types";
-import { RoleAssignments, ISecurableMethods } from "./types";
-import { SharePointQueryableInstance } from "../sharepointqueryable";
+import { _List } from "../lists/types.js";
+import { RoleAssignments, ISecurableMethods } from "./types.js";
+import { SharePointQueryableInstance } from "../sharepointqueryable.js";
 import {
     getUserEffectivePermissions,
     getCurrentUserEffectivePermissions,
@@ -10,7 +10,7 @@ import {
     userHasPermissions,
     currentUserHasPermissions,
     hasPermissions,
-} from "./funcs";
+} from "./funcs.js";
 
 declare module "../lists/types" {
     interface _List extends ISecurableMethods { }

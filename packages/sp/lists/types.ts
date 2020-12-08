@@ -10,21 +10,21 @@ import {
     spInvokableFactory,
     deleteableWithETag,
     IDeleteableWithETag,
-} from "../sharepointqueryable";
-import { IChangeQuery } from "../types";
-import { odataUrlFrom } from "../odata";
-import { metadata } from "../utils/metadata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { tag } from "../telemetry";
-import { IBasePermissions } from "../security/types";
-import { IFieldInfo } from "../fields/types";
-import { IFormInfo } from "../forms/types";
-import { IFolderInfo } from "../folders/types";
-import { IViewInfo } from "../views/types";
-import { IUserCustomActionInfo } from "../user-custom-actions/types";
-import { IResourcePath, toResourcePath } from "../utils/toResourcePath";
+} from "../sharepointqueryable.js";
+import { IChangeQuery } from "../types.js";
+import { odataUrlFrom } from "../odata.js";
+import { metadata } from "../utils/metadata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { tag } from "../telemetry.js";
+import { IBasePermissions } from "../security/types.js";
+import { IFieldInfo } from "../fields/types.js";
+import { IFormInfo } from "../forms/types.js";
+import { IFolderInfo } from "../folders/types.js";
+import { IViewInfo } from "../views/types.js";
+import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
+import { IResourcePath, toResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {

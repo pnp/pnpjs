@@ -1,6 +1,6 @@
-import { _Web } from "../webs/types";
-import { SiteScripts } from "./types";
-import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types";
+import { _Web } from "../webs/types.js";
+import { SiteScripts } from "./types.js";
+import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {

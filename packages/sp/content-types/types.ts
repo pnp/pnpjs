@@ -8,11 +8,11 @@ import {
     spInvokableFactory,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { metadata } from "../utils/metadata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { metadata } from "../utils/metadata.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeInfo[]> {

@@ -6,6 +6,7 @@
         "declaration": true,
         "declarationMap": true,
         "removeComments": false,
+        "allowJs": true,
         "types": [],
         "lib": [
             "ES2015",

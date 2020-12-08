@@ -2,11 +2,11 @@ import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
-import { ISerializableNavigationNode } from "../navigation/types";
-import { defaultPath } from "../decorators";
-import { Site, ISite } from "../sites/types";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { ISerializableNavigationNode } from "../navigation/types.js";
+import { defaultPath } from "../decorators.js";
+import { Site, ISite } from "../sites/types.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("_api/hubsites")
 export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {

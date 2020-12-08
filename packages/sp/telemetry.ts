@@ -1,4 +1,4 @@
-import { ISharePointQueryable } from "./sharepointqueryable";
+import { ISharePointQueryable } from "./sharepointqueryable.js";
 import { stringIsNullOrEmpty } from "@pnp/common";
 import { headers } from "@pnp/odata";
 

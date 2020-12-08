@@ -1,7 +1,7 @@
 export {
     default as CachingConfigurationProvider,
-} from "./cachingConfigurationProvider";
+} from "./cachingConfigurationProvider.js";
 
 export {
     default as SPListConfigurationProvider,
-} from "./spListConfigurationProvider";
+} from "./spListConfigurationProvider.js";

@@ -1,9 +1,9 @@
 import { body } from "@pnp/odata";
 import { jsS, assign } from "@pnp/common";
-import { SharePointQueryableCollection, _SharePointQueryableInstance, SharePointQueryableInstance } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
-import { Web, _Web } from "../webs/types";
-import { _File } from "../files/types";
+import { SharePointQueryableCollection, _SharePointQueryableInstance, SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { Web, _Web } from "../webs/types.js";
+import { _File } from "../files/types.js";
 import {
     ShareableQueryable,
     ISharingResult,
@@ -18,11 +18,11 @@ import {
     IObjectSharingSettings,
     ISharingEmailData,
     RoleType,
-} from "./types";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
-import { RoleDefinitions } from "../security/types";
-import { emptyGuid } from "../splibconfig";
+} from "./types.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
+import { RoleDefinitions } from "../security/types.js";
+import { emptyGuid } from "../splibconfig.js";
 
 /**
  * Shares an object based on the supplied options

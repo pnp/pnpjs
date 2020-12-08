@@ -1,5 +1,5 @@
 import { combine, ILibraryConfiguration, ISPFXContext, isUrlAbsolute, objectDefinedNotNull, DefaultRuntime, stringIsNullOrEmpty } from "@pnp/common";
-import { IGraphConfigurationPart, IGraphConfigurationProps } from "../graphlibconfig";
+import { IGraphConfigurationPart, IGraphConfigurationProps } from "../graphlibconfig.js";
 
 /**
  * Ensures that a given url is absolute for the current web based on context

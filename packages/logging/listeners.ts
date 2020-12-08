@@ -1,4 +1,4 @@
-import { ILogEntry, LogLevel, ILogListener } from "./logger";
+import { ILogEntry, LogLevel, ILogListener } from "./logger.js";
 
 /**
  * Implementation of LogListener which logs to the console

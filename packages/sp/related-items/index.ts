@@ -2,4 +2,4 @@ export {
     IRelatedItem,
     IRelatedItemManager,
     RelatedItemManager,
-} from "./types";
+} from "./types.js";

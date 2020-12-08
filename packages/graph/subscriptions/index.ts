@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { Subscriptions, ISubscriptions } from "./types";
+import { GraphRest } from "../rest.js";
+import { Subscriptions, ISubscriptions } from "./types.js";
 
 export {
     ISubscription,
@@ -7,7 +7,7 @@ export {
     ISubscriptions,
     Subscription,
     Subscriptions,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {

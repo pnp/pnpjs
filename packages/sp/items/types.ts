@@ -8,17 +8,17 @@ import {
     spInvokableFactory,
     deleteableWithETag,
     IDeleteableWithETag,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { assign, ITypedHash, hOP } from "@pnp/common";
-import { IListItemFormUpdateValue, List } from "../lists/types";
+import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { ODataParser, body, headers } from "@pnp/odata";
-import { IList } from "../lists";
+import { IList } from "../lists/index.js";
 import { Logger, LogLevel } from "@pnp/logging";
-import { metadata } from "../utils/metadata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
-import { IResourcePath } from "../utils/toResourcePath";
+import { metadata } from "../utils/metadata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 
 /**
  * Describes a collection of Item objects

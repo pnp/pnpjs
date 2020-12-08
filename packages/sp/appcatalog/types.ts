@@ -4,13 +4,13 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { spPost } from "../operations";
-import { odataUrlFrom } from "../odata";
-import { extractWebUrl } from "../utils/extractweburl";
-import { File, IFile } from "../files/types";
-import { tag } from "../telemetry";
-import { Web } from "../webs";
-import "../items";
+import { spPost } from "../operations.js";
+import { odataUrlFrom } from "../odata.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { File, IFile } from "../files/types.js";
+import { tag } from "../telemetry.js";
+import { Web } from "../webs/index.js";
+import "../items/index.js";
 
 export class _AppCatalog extends _SharePointQueryableCollection {
 

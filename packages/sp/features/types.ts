@@ -3,11 +3,11 @@ import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { SPBatch } from "../batch";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { SPBatch } from "../batch.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("features")
 export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {

@@ -8,7 +8,7 @@ import {
     DefaultRuntime,
     Runtime,
 } from "@pnp/common";
-import { IGraphConfiguration, IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig";
+import { IGraphConfiguration, IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
 
 export class GraphHttpClient implements IRequestClient {
 

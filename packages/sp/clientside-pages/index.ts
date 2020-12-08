@@ -1,4 +1,4 @@
-import "./web";
+import "./web.js";
 
 export {
     IClientsidePage,
@@ -24,4 +24,4 @@ export {
     PromotedState,
     TextAlignment,
     IBannerImageProps,
-} from "./types";
+} from "./types.js";

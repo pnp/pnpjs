@@ -1,4 +1,4 @@
-import "./item";
+import "./item.js";
 
 export {
     Comment,
@@ -11,4 +11,4 @@ export {
     Replies,
     ILikeData,
     ILikedByInformation,
-} from "./types";
+} from "./types.js";

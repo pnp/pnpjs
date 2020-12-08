@@ -6,7 +6,7 @@ import {
     isUrlAbsolute,
     assign,
 } from "@pnp/common";
-import { NodeFetchClient } from "./nodefetchclient";
+import { NodeFetchClient } from "./nodefetchclient.js";
 
 /**
  * 

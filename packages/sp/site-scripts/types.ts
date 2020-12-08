@@ -1,9 +1,9 @@
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
-import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { spPost } from "../operations.js";
+import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { tag } from "../telemetry.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 export class _SiteScripts extends _SharePointQueryable {
 

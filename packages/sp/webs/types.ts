@@ -10,16 +10,16 @@ import {
     SharePointQueryableInstance,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { IChangeQuery } from "../types";
-import { odataUrlFrom } from "../odata";
-import { SPBatch } from "../batch";
-import { metadata } from "../utils/metadata";
-import { Site, IOpenWebByIdResult } from "../sites";
-import { spPost, spGet } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { IChangeQuery } from "../types.js";
+import { odataUrlFrom } from "../odata.js";
+import { SPBatch } from "../batch.js";
+import { metadata } from "../utils/metadata.js";
+import { Site, IOpenWebByIdResult } from "../sites/index.js";
+import { spPost, spGet } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("webs")
 export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {

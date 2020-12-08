@@ -1,5 +1,5 @@
-import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util";
-import { ILibraryConfiguration, DefaultRuntime } from "./libconfig";
+import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util.js";
+import { ILibraryConfiguration, DefaultRuntime } from "./libconfig.js";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage

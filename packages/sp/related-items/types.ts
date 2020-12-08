@@ -1,9 +1,9 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
 import { body } from "@pnp/odata";
-import { tag } from "../telemetry";
+import { tag } from "../telemetry.js";
 
 @defaultPath("_api/SP.RelatedItemManager")
 export class _RelatedItemManager extends _SharePointQueryable implements IRelatedItemManager {

@@ -8,46 +8,46 @@ export {
     SharePointQueryable,
     spInvokableFactory,
     ISPInvokableFactory,
-} from "./sharepointqueryable";
+} from "./sharepointqueryable.js";
 
 export {
     SPBatch,
-} from "./batch";
+} from "./batch.js";
 
-export * from "./decorators";
+export * from "./decorators.js";
 
-export * from "./operations";
+export * from "./operations.js";
 
 export {
     ISPConfiguration,
     ISPConfigurationPart,
-} from "./splibconfig";
+} from "./splibconfig.js";
 
 export {
     SPHttpClient,
-} from "./sphttpclient";
+} from "./sphttpclient.js";
 
 export {
     SPRest,
     sp,
-} from "./rest";
+} from "./rest.js";
 
-export * from "./types";
+export * from "./types.js";
 
 export {
     toAbsoluteUrl,
-} from "./utils/toabsoluteurl";
+} from "./utils/toabsoluteurl.js";
 
 export {
     extractWebUrl,
-} from "./utils/extractweburl";
+} from "./utils/extractweburl.js";
 
 export {
     ISPKeyValueCollection,
     objectToSPKeyValueCollection,
-} from "./utils/objectToSPKeyValueCollection";
+} from "./utils/objectToSPKeyValueCollection.js";
 
 export {
     stripInvalidFileFolderChars,
     containsInvalidFileFolderChars,
-} from "./utils/file-names";
+} from "./utils/file-names.js";

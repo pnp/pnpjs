@@ -1,6 +1,6 @@
-import { _Web, Web } from "../webs/types";
-import { IHubSiteWebData } from "./types";
-import { spPost } from "../operations";
+import { _Web, Web } from "../webs/types.js";
+import { IHubSiteWebData } from "./types.js";
+import { spPost } from "../operations.js";
 
 declare module "../webs/types" {
     interface _Web {

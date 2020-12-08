@@ -1,5 +1,5 @@
-import { IGraphQueryable } from "./graphqueryable";
-import { graphDelete, graphPatch, graphPost } from "./operations";
+import { IGraphQueryable } from "./graphqueryable.js";
+import { graphDelete, graphPatch, graphPost } from "./operations.js";
 import { body, headers } from "@pnp/odata";
 
 /**

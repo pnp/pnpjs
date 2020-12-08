@@ -1,7 +1,7 @@
-import { SPRest } from "../rest";
-import { NavigationService, INavigationService } from "./types";
+import { SPRest } from "../rest.js";
+import { NavigationService, INavigationService } from "./types.js";
 
-import "./web";
+import "./web.js";
 
 export {
     INavNodeUpdateResult,
@@ -18,7 +18,7 @@ export {
     IMenuNodeCollection,
     ISerializableNavigationNode,
     INavNodeInfo,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

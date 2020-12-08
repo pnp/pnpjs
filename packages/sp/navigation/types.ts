@@ -5,13 +5,13 @@ import {
     spInvokableFactory,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { assign } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body, headers } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Represents a collection of navigation nodes

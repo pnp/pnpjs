@@ -1,8 +1,8 @@
 import { Runtime, IFetchOptions, IRequestClient, isFunc, mergeOptions, objectDefinedNotNull } from "@pnp/common";
 import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/odata";
-import { GraphHttpClient } from "./graphhttpclient";
-import { IGraphQueryable } from "./graphqueryable";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { GraphHttpClient } from "./graphhttpclient.js";
+import { IGraphQueryable } from "./graphqueryable.js";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
     httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;

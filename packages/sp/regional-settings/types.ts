@@ -5,11 +5,11 @@ import {
     ISharePointQueryableCollection,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { spODataEntity } from "../odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { spODataEntity } from "../odata.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {

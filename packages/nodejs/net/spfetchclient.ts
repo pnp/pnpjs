@@ -1,7 +1,7 @@
 import { IHttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
-import { NodeFetchClient } from "./nodefetchclient";
-import { getAddInOnlyAccessToken } from "../sptokenutils";
-import { SPOAuthEnv, AuthToken } from "../types";
+import { NodeFetchClient } from "./nodefetchclient.js";
+import { getAddInOnlyAccessToken } from "../sptokenutils.js";
+import { SPOAuthEnv, AuthToken } from "../types.js";
 
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions.

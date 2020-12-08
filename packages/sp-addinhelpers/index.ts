@@ -1,2 +1,2 @@
-export * from "./sprequestexecutorclient";
-export * from "./sprestaddin";
+export * from "./sprequestexecutorclient.js";
+export * from "./sprestaddin.js";

@@ -2,7 +2,7 @@ import { DefaultRuntime, IConfigOptions, ISPFXContext, Runtime, ITypedHash } fro
 import {
     setup as _setup,
     ISPConfiguration,
-} from "./splibconfig";
+} from "./splibconfig.js";
 
 /**
  * Root of the SharePoint REST module

@@ -18,16 +18,16 @@ const NodeFetch = require("node-fetch");
 })(global);
 
 // auto populate all extensions
-import "./sp-extensions";
+import "./sp-extensions/index.js";
 
 // export extension types as a namespace
-import * as SPNS from "./sp-extensions";
+import * as SPNS from "./sp-extensions/index.js";
 
 export {
     SPNS,
 };
 
-export { AADToken, SPOAuthEnv } from "./types";
-export { ProviderHostedRequestContext } from "./providerhosted";
-export * from "./net/index";
-export { setProxyUrl, setProxyAgent } from "./net/proxy";
+export { AADToken, SPOAuthEnv } from "./types.js";
+export { ProviderHostedRequestContext } from "./providerhosted.js";
+export * from "./net/index.js";
+export { setProxyUrl, setProxyAgent } from "./net/proxy.js";

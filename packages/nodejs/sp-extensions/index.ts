@@ -1,3 +1,3 @@
-import "./stream";
+import "./stream.js";
 
-export * from "./stream";
+export * from "./stream.js";

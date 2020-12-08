@@ -13,10 +13,10 @@ import {
   dateAdd,
   stringIsNullOrEmpty,
 } from "@pnp/common";
-import { ICachingOptions } from "./caching";
-import { Batch } from "./batch";
-import { PipelineMethod } from "./pipeline";
-import { IODataParser, ODataParser } from "./parsers";
+import { ICachingOptions } from "./caching.js";
+import { Batch } from "./batch.js";
+import { PipelineMethod } from "./pipeline.js";
+import { IODataParser, ODataParser } from "./parsers.js";
 
 export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData> {
 

@@ -1,8 +1,8 @@
-import { SPRest } from "../rest";
-import { IWeb, Web } from "../webs/types";
+import { SPRest } from "../rest.js";
+import { IWeb, Web } from "../webs/types.js";
 
-import "./web";
-import { SharePointQueryable } from "../sharepointqueryable";
+import "./web.js";
+import { SharePointQueryable } from "../sharepointqueryable.js";
 
 export {
     IAppAddResult,
@@ -10,7 +10,7 @@ export {
     IAppCatalog,
     App,
     AppCatalog,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

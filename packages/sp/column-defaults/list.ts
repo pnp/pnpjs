@@ -1,13 +1,13 @@
 import { addProp, TextParser, headers, body } from "@pnp/odata";
-import { _List, List } from "../lists/types";
-import { Folder } from "../folders/types";
-import { IFieldDefault } from "./types";
-import { IResourcePath } from "../utils/toResourcePath";
+import { _List, List } from "../lists/types.js";
+import { Folder } from "../folders/types.js";
+import { IFieldDefault } from "./types.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 import { combine, isArray } from "@pnp/common";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { Logger, LogLevel } from "@pnp/logging";
-import { spPost } from "../operations";
-import { SharePointQueryableCollection } from "../presets/all";
+import { spPost } from "../operations.js";
+import { SharePointQueryableCollection } from "../presets/all.js";
 
 declare module "../lists/types" {
     interface _List {

@@ -2,14 +2,14 @@ import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
-import { SiteUsers, ISiteUsers } from "../site-users/types";
+} from "../sharepointqueryable.js";
+import { SiteUsers, ISiteUsers } from "../site-users/types.js";
 import { assign, ITypedHash, hOP } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {

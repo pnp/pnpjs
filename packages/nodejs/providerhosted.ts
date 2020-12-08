@@ -1,5 +1,5 @@
-import { AuthToken, ProviderHostedConfigurationOptions } from "./types";
-import { validateProviderHostedRequestToken, getAddInOnlyAccessToken, getUserAccessToken } from "./sptokenutils";
+import { AuthToken, ProviderHostedConfigurationOptions } from "./types.js";
+import { validateProviderHostedRequestToken, getAddInOnlyAccessToken, getUserAccessToken } from "./sptokenutils.js";
 
 export class ProviderHostedRequestContext {
 

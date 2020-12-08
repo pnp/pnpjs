@@ -1,5 +1,5 @@
-import { ITypedHash, mergeMaps, objectToMap } from "./collections";
-import { ISPFXContext } from "./spfxcontextinterface";
+import { ITypedHash, mergeMaps, objectToMap } from "./collections.js";
+import { ISPFXContext } from "./spfxcontextinterface.js";
 
 export interface ILibraryConfiguration {
 

@@ -1,9 +1,9 @@
 import { Batch, HttpRequestError } from "@pnp/odata";
 import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Runtime, DefaultRuntime } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPHttpClient } from "./sphttpclient";
-import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { SPHttpClient } from "./sphttpclient.js";
+import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 /**
  * Manages a batch of OData operations

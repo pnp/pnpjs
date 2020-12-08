@@ -1,9 +1,9 @@
-import { _GraphQueryable } from "./graphqueryable";
+import { _GraphQueryable } from "./graphqueryable.js";
 import {
     setup as _setup,
     IGraphConfiguration,
-} from "./graphlibconfig";
-import { GraphBatch } from "./batch";
+} from "./graphlibconfig.js";
+import { GraphBatch } from "./batch.js";
 import { Runtime, IConfigOptions, ISPFXContext, ITypedHash, DefaultRuntime } from "@pnp/common";
 
 export class GraphRest {

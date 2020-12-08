@@ -7,8 +7,8 @@
         "**/node_modules": true,
         "coverage": true,
         ".nyc_output": true,
-        "build": true,
-        "dist": true,
+        "build": false,
+        "dist": false,
         "site": true
     },
     "typescript.validate.enable": true,

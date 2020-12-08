@@ -3,13 +3,13 @@ import {
   ISharePointQueryable,
   spInvokableFactory,
   _SharePointQueryable,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
 import { hOP, IFetchOptions } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body, IQueryable } from "@pnp/odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("_api/social.following")
 export class _Social extends _SharePointQueryableInstance implements ISocial {

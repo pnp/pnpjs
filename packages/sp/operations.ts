@@ -1,8 +1,8 @@
 import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/odata";
-import { SPHttpClient } from "./sphttpclient";
-import { ISharePointQueryable } from "./sharepointqueryable";
+import { SPHttpClient } from "./sphttpclient.js";
+import { ISharePointQueryable } from "./sharepointqueryable.js";
 import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc, Runtime } from "@pnp/common";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
     httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;

@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { IUtilities, Utilities } from "./types";
+import { SPRest } from "../rest.js";
+import { IUtilities, Utilities } from "./types.js";
 
 export {
     ICreateWikiPageResult,
@@ -7,7 +7,7 @@ export {
     IUtilities,
     IWikiPageCreationInfo,
     Utilities,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

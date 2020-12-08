@@ -1,11 +1,11 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
-import { odataUrlFrom } from "../odata";
-import { extractWebUrl } from "../utils/extractweburl";
-import { IResourcePath } from "../utils/toResourcePath";
-import { Web } from "../webs/types";
-import "../lists/web";
-import { _Folder, Folder } from "../folders/types";
-import { IFieldDefault, IFieldDefaultProps } from "./types";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { odataUrlFrom } from "../odata.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
+import { Web } from "../webs/types.js";
+import "../lists/web.js";
+import { _Folder, Folder } from "../folders/types.js";
+import { IFieldDefault, IFieldDefaultProps } from "./types.js";
 
 declare module "../folders/types" {
     interface _Folder {

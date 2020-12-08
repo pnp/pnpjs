@@ -1,8 +1,8 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators";
+import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/odata";
-import { graphPost } from "../operations";
+import { graphPost } from "../operations.js";
 
 /**
  * Represents a Directory Object entity

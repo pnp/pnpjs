@@ -1,6 +1,6 @@
-import "./web";
-import { SPRest } from "../rest";
-import { ISiteDesigns, SiteDesigns } from "./types";
+import "./web.js";
+import { SPRest } from "../rest.js";
+import { ISiteDesigns, SiteDesigns } from "./types.js";
 
 export {
     ISiteDesignCreationInfo,
@@ -12,7 +12,7 @@ export {
     ISiteDesignRun,
     ISiteDesignTask,
     ISiteScriptActionStatus,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {

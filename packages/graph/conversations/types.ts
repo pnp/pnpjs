@@ -10,9 +10,9 @@ import {
     _GraphQueryableCollection,
     _GraphQueryableInstance,
     graphInvokableFactory,
-} from "../graphqueryable";
-import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators";
-import { graphPost, graphDelete } from "../operations";
+} from "../graphqueryable.js";
+import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators.js";
+import { graphPost, graphDelete } from "../operations.js";
 
 /**
  * Conversation

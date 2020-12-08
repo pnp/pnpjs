@@ -7,10 +7,10 @@ import {
     spInvokableFactory,
     SharePointQueryable,
     SharePointQueryableInstance,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 export class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
 

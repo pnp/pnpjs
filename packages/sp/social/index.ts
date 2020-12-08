@@ -1,5 +1,5 @@
-import { ISocial, Social } from "./types";
-import { SPRest } from "../rest";
+import { ISocial, Social } from "./types.js";
+import { SPRest } from "../rest.js";
 
 export {
   IMySocial,
@@ -13,7 +13,7 @@ export {
   SocialActorTypes,
   SocialFollowResult,
   SocialStatusCode,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
   interface SPRest {

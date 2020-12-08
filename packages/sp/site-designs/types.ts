@@ -1,9 +1,9 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/odata";
-import { spPost } from "../operations";
+import { spPost } from "../operations.js";
 import { hOP } from "@pnp/common";
-import { tag } from "../telemetry";
+import { tag } from "../telemetry.js";
 
 export class _SiteDesigns extends _SharePointQueryable {
 

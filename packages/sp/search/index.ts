@@ -1,18 +1,18 @@
-import { SPRest } from "../rest";
-import { SearchQueryInit } from "./types";
-import { _Search } from "./query";
+import { SPRest } from "../rest.js";
+import { SearchQueryInit } from "./types.js";
+import { _Search } from "./query.js";
 import { ICachingOptions } from "@pnp/odata";
-import { SearchResults, Search } from "./query";
-import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest";
+import { SearchResults, Search } from "./query.js";
+import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest.js";
 
-export * from "./types";
+export * from "./types.js";
 
 export {
     ISearch,
     SearchQueryBuilder,
     SearchResults,
     Search,
-} from "./query";
+} from "./query.js";
 
 export {
     ISuggest,
@@ -20,7 +20,7 @@ export {
     ISuggestQuery,
     ISuggestResult,
     Suggest,
-} from "./suggest";
+} from "./suggest.js";
 
 declare module "../rest" {
     interface SPRest {

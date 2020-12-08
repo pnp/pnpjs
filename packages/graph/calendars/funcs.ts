@@ -1,4 +1,4 @@
-import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable";
+import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 
 /**

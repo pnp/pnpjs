@@ -1,6 +1,6 @@
-import "./web";
-import "./item";
-import "./list";
+import "./web.js";
+import "./item.js";
+import "./list.js";
 
 export {
     ContentType,
@@ -14,4 +14,4 @@ export {
     IFieldLinks,
     IContentTypeInfo,
     IFieldLinkInfo,
-} from "./types";
+} from "./types.js";

@@ -1,5 +1,5 @@
-import { _Site, Site } from "../sites/types";
-import { spPost } from "../operations";
+import { _Site, Site } from "../sites/types.js";
+import { spPost } from "../operations.js";
 
 declare module "../sites/types" {
     interface _Site {

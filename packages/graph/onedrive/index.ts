@@ -1,4 +1,4 @@
-import "./users";
+import "./users.js";
 
 export {
     Drive,
@@ -13,4 +13,4 @@ export {
     IDrives,
     IRoot,
     Root,
-} from "./types";
+} from "./types.js";

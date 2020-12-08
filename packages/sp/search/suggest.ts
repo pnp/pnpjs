@@ -1,7 +1,7 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
 import { hOP, IConfigOptions, DefaultRuntime } from "@pnp/common";
-import { defaultPath } from "../decorators";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("_api/search/suggest")
 export class _Suggest extends _SharePointQueryableInstance {

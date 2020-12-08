@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Web } from "../webs/types";
-import { ContentTypes, IContentTypes } from "./types";
+import { _Web } from "../webs/types.js";
+import { ContentTypes, IContentTypes } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {

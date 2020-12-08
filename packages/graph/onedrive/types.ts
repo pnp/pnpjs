@@ -6,12 +6,12 @@ import {
     IGraphQueryableCollection,
     _GraphQueryableCollection,
     graphInvokableFactory,
-} from "../graphqueryable";
+} from "../graphqueryable.js";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { assign, combine, safeGlobal } from "@pnp/common";
-import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators";
+import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParser } from "@pnp/odata";
-import { graphPatch, graphPut } from "../operations";
+import { graphPatch, graphPut } from "../operations.js";
 
 /**
  * Describes a Drive instance

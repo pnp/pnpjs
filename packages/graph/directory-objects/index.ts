@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { IDirectoryObjects, DirectoryObjects } from "./types";
+import { GraphRest } from "../rest.js";
+import { IDirectoryObjects, DirectoryObjects } from "./types.js";
 
 export {
     IDirectoryObject,
@@ -7,7 +7,7 @@ export {
     DirectoryObject,
     DirectoryObjects,
     IDirectoryObjects,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {

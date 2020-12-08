@@ -1,17 +1,17 @@
-import { SharePointQueryable, _SharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { Web, IWeb } from "../webs/types";
+import { SharePointQueryable, _SharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { Web, IWeb } from "../webs/types.js";
 import { hOP, assign } from "@pnp/common";
 import { body } from "@pnp/odata";
-import { odataUrlFrom } from "../odata";
-import { spPost } from "../operations";
-import { SPBatch } from "../batch";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { IChangeQuery } from "../types";
-import { tag } from "../telemetry";
-import { metadata } from "../utils/metadata";
-import { extractWebUrl } from "../utils/extractweburl";
-import { emptyGuid } from "../splibconfig";
+import { odataUrlFrom } from "../odata.js";
+import { spPost } from "../operations.js";
+import { SPBatch } from "../batch.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { IChangeQuery } from "../types.js";
+import { tag } from "../telemetry.js";
+import { metadata } from "../utils/metadata.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { emptyGuid } from "../splibconfig.js";
 
 @defaultPath("_api/site")
 export class _Site extends _SharePointQueryableInstance {

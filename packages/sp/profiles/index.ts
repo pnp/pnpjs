@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { Profiles, IProfiles } from "./types";
+import { SPRest } from "../rest.js";
+import { Profiles, IProfiles } from "./types.js";
 
 export {
     IProfiles,
@@ -13,7 +13,7 @@ export {
     IPeoplePickerQuerySettings,
     IUserProfile,
     UrlZone,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
