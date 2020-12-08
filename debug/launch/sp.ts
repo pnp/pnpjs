@@ -1,6 +1,8 @@
-import { SPFetchClient } from "@pnp/nodejs";
+import { ITestingSettings } from "../../test/settings";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ISPConfiguration, sp } from "@pnp/sp";
+import { sp } from "@pnp/sp";
+import { spSetup } from "./setup";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import { graph, IGraphConfiguration } from "@pnp/graph";
@@ -8,7 +10,7 @@ import { graph, IGraphConfiguration } from "@pnp/graph";
 
 declare var process: { exit(code?: number): void };
 
-export async function Example(settings: any) {
+export async function Example(settings: ITestingSettings) {
 
   // configure your node options
 sp.setup({
@@ -40,6 +42,7 @@ const isolatedSP = await sp.createIsolated<IGraphConfiguration>({
       baseUrl: "https://mytenant.sharepoint.com/",
     },
   });
+  spSetup(settings);
 
 
   isolatedSP.setup({

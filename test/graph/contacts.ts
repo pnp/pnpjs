@@ -5,6 +5,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/odata";
 import { stringIsNullOrEmpty } from "@pnp/common";
+import getValidUser from "./utilities/getValidUser";
 
 describe("Contacts", function () {
 
@@ -20,8 +21,8 @@ describe("Contacts", function () {
         // Ensure we have the data to test against
         this.beforeAll(async function () {
             // Get a sample user
-            const allUsers = await graph.users();
-            testUserName = allUsers[1].mail;
+            const userInfo = await getValidUser();
+            testUserName = userInfo.userPrincipalName;
 
             // Create a test contact
             const contact = await graph.users.getById(testUserName).contacts.add("Pavel", "Bansky", [{ address: "pavelb@contoso.onmicrosoft.com", name: "Pavel Bansky" }], ["+1 732 555 0102"]);

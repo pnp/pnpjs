@@ -6,9 +6,9 @@ import "@pnp/graph/groups";
 import "@pnp/graph/directory-objects";
 import { GroupType } from "@pnp/graph/groups";
 import { getRandomString, getGUID } from "@pnp/common";
+import getValidUser from "./utilities/getValidUser";
 
 describe("Directory Objects", function () {
-
 
     // We can't test for graph.me calls in an application context
     if (testSettings.enableWebTests) {
@@ -19,31 +19,31 @@ describe("Directory Objects", function () {
 
         this.beforeAll(async function () {
             // Get a sample user
-            const allUsers = await graph.users();
-            testUserName = allUsers[1].mail;
+            const userInfo = await getValidUser();
+            testUserName = userInfo.userPrincipalName;
 
             // Create a test group to ensure we have a directory object
             let groupName = `TestGroup_${getRandomString(4)}`;
-            let result = await (await graph.groups.add(groupName, groupName, GroupType.Security, {
+            let result = await graph.groups.add(groupName, groupName, GroupType.Security, {
                 "members@odata.bind": [
-                    "https://graph.microsoft.com/v1.0/users/" + allUsers[1].id,
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
                 ],
                 "owners@odata.bind": [
-                    "https://graph.microsoft.com/v1.0/users/" + allUsers[1].id,
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
                 ],
-            }));
+            });
             testChildGroupID = result.data.id;
 
             groupName = `TestGroup_${getRandomString(4)}`;
-            result = await (await graph.groups.add(groupName, groupName, GroupType.Security, {
+            result = await graph.groups.add(groupName, groupName, GroupType.Security, {
                 "members@odata.bind": [
-                    "https://graph.microsoft.com/v1.0/users/" + allUsers[1].id,
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
                     "https://graph.microsoft.com/v1.0/groups/" + testChildGroupID,
                 ],
                 "owners@odata.bind": [
-                    "https://graph.microsoft.com/v1.0/users/" + allUsers[1].id,
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
                 ],
-            }));
+            });
             testParentGroupID = result.data.id;
         });
 

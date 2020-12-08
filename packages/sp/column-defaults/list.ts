@@ -22,8 +22,8 @@ declare module "../lists/types" {
 
         /**
          * Replaces all the column defaults with the supplied values
-         * 
-         * @param defaults 
+         *
+         * @param defaults
          */
         setDefaultColumnValues(defaults: IFieldDefault[]): Promise<void>;
     }
@@ -64,13 +64,11 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
     // now we need to turn these tags of form into objects
     // <a href="/sites/dev/My%20Title"><DefaultValue FieldName="TextField">Test</DefaultValue></a>
 
-    return tags.map(t => {
-        const m = /<a href="(.*?)"><DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(t);
-        // if things worked our captures are:
+    return tags.reduce((defVals, t) => {
+        const m = /<a href="(.*?)">/ig.exec(t);
+        // if things worked out captures are:
         // 0: whole string
         // 1: ENCODED server relative path
-        // 2: Field internal name
-        // 3: Default value as string
 
         if (m.length < 1) {
             // this indicates an error somewhere, but we have no way to meaningfully recover
@@ -80,13 +78,30 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         }
 
         // return the parsed out values
-        return {
-            name: m[2],
-            path: decodeURIComponent(m[1]),
-            value: m[3],
-        };
+        const subMatches = t.match(/<DefaultValue.*?<\/DefaultValue>/ig);
+        const subTags = subMatches === null ? [] : subMatches.map(st => st.trim());
 
-    }).filter(v => v !== null);
+        subTags.map(st => {
+          const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+          // if things worked out captures are:
+          // 0: whole string
+          // 1: Field internal name
+          // 2: Default value as string
+
+          if (sm.length < 1) {
+            Logger.write(`Could not parse default column value from '${st}'`, LogLevel.Warning);
+          } else {
+            defVals.push({
+              name: sm[1],
+              path: decodeURIComponent(m[1]),
+              value: sm[2],
+            });
+          }
+        });
+
+        return defVals;
+
+      }, []).filter(v => v !== null);
 };
 
 _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: IFieldDefault[]): Promise<void> {
@@ -137,6 +152,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                 break;
 
             case "Taxonomy":
+            case "TaxonomyFieldType":
                 if (isArray(fieldDefault.value)) {
                     throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
                 } else {
@@ -145,6 +161,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                 break;
 
             case "TaxonomyMulti":
+            case "TaxonomyFieldTypeMulti":
                 if (isArray(fieldDefault.value)) {
                     value = (<{ wssId: string, termName: string, termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                 }

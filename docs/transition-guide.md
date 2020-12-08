@@ -119,6 +119,3 @@ These libraries were created to allow folks to access and manage SharePoint taxo
 
 > As of 2.0.6 we support reading the modern taxonomy API. [Docs here](./sp/taxonomy.md)
 
-## Changelog
-
-Please review the [CHANGELOG](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md) for details on all library changes.

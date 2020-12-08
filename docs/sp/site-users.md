@@ -29,7 +29,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-let user = await sp.web.currentUser;
+let user = await sp.web.currentUser();
 ```
 
 ### Get user by id

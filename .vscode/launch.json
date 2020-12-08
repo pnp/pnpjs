@@ -35,8 +35,7 @@
       "sourceMaps": true,
       "outFiles": [],
       "args": [
-        "--site",
-        "https://318studios.sharepoint.com/sites/dev"
+        "--msal",
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",

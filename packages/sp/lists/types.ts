@@ -24,7 +24,7 @@ import { IFormInfo } from "../forms/types";
 import { IFolderInfo } from "../folders/types";
 import { IViewInfo } from "../views/types";
 import { IUserCustomActionInfo } from "../user-custom-actions/types";
-import { toResourcePath } from "../utils/toResourcePath";
+import { IResourcePath, toResourcePath } from "../utils/toResourcePath";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
@@ -257,11 +257,11 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * Returns the data for the specified query view
      *
      * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     * @param queryParams Allows setting of query parameters
+     * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param query Allows setting of query parameters
      */
     @tag("l.AsStream")
-    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, queryParams = new Map<string, string>()): Promise<any> {
+    public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParams: any = null, query = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
         if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
             parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
@@ -269,11 +269,15 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
 
         let bodyOptions = { parameters: assign(metadata("SP.RenderListDataParameters"), parameters) };
 
-        if (objectDefinedNotNull(overrideParameters)) {
-            bodyOptions = assign(bodyOptions, { overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
+        if (objectDefinedNotNull(overrideParams)) {
+            bodyOptions = assign(bodyOptions, { overrideParameters: assign(metadata("SP.RenderListDataOverrideParameters"), overrideParams) });
         }
 
         const clone = this.clone(List, "RenderListDataAsStream", true, true);
+
+        if (query && query.size > 0) {
+            query.forEach((v, k) => clone.query.set(k, v));
+        }
 
         return spPost(clone, body(bodyOptions));
     }
@@ -358,6 +362,41 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
         }));
 
         return hOP(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res;
+    }
+
+    /**
+     * Gets the parent information for this item's list and web
+     */
+    public async getParentInfos(): Promise<IListParentInfos> {
+
+        const urlInfo: any =
+            await this.select(
+                "Id",
+                "RootFolder/UniqueId",
+                "RootFolder/ServerRelativeUrl",
+                "RootFolder/ServerRelativePath",
+                "ParentWeb/Id",
+                "ParentWeb/Url",
+                "ParentWeb/ServerRelativeUrl",
+                "ParentWeb/ServerRelativePath",
+            ).expand(
+                "RootFolder",
+                "ParentWeb")();
+
+        return {
+            List: {
+                Id: urlInfo.Id,
+                RootFolderServerRelativePath: urlInfo.RootFolder.ServerRelativePath,
+                RootFolderServerRelativeUrl: urlInfo.RootFolder.ServerRelativeUrl,
+                RootFolderUniqueId: urlInfo.RootFolder.UniqueId,
+            },
+            ParentWeb: {
+                Id: urlInfo.ParentWeb.Id,
+                ServerRelativePath: urlInfo.ParentWeb.ServerRelativePath,
+                ServerRelativeUrl: urlInfo.ParentWeb.ServerRelativeUrl,
+                Url: urlInfo.ParentWeb.Url,
+            },
+        };
     }
 }
 export interface IList extends _List, IDeleteableWithETag { }
@@ -694,4 +733,32 @@ export interface IListInfo {
     Views: IViewInfo[];
     WorkflowAssociations: any[];
     WriteSecurity: number;
+}
+
+export interface IRenderListDataAsStreamResult {
+    CurrentFolderSpItemUrl: string;
+    FilterLink: string;
+    FirstRow: number;
+    FolderPermissions: string;
+    ForceNoHierarchy: string;
+    HierarchyHasIndention: string;
+    LastRow: number;
+    NextHref?: string;
+    Row: any[];
+    RowLimit: number;
+}
+
+export interface IListParentInfos {
+    List: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }

@@ -5,6 +5,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/odata";
 import { stringIsNullOrEmpty } from "@pnp/common";
+import getValidUser from "./utilities/getValidUser";
 
 describe("Calendar", function () {
 
@@ -17,9 +18,9 @@ describe("Calendar", function () {
 
         // Ensure we have the data to test against
         this.beforeAll(async function () {
-            // Get a sample user
-            const allUsers = await graph.users();
-            testUserName = allUsers[1].mail;
+
+            const userInfo = await getValidUser();
+            testUserName = userInfo.userPrincipalName;
 
             // Get default calendar
             const defaultCal = await graph.users.getById(testUserName).calendar();

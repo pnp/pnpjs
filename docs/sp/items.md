@@ -471,3 +471,18 @@ console.log(response.map(field => {
 ```
 
 Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Editor` EntityPropertyName `EditorId` should be used.
+
+### getParentInfos
+
+_Added in 2.0.12_
+
+Gets information about an item, including details about the parent list, parent list root folder, and parent web.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/items";
+
+const item: any = await sp.web.lists.getByTitle("My List").items.getById(1).get();
+await item.getParentInfos();
+```  

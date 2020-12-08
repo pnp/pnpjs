@@ -10,4 +10,6 @@ export {
     IFolder,
     IFolders,
     IFolderInfo,
+    IFolderDeleteParams,
+    IFolderParentInfos,
 } from "./types";
