@@ -1,5 +1,5 @@
 import { sp } from "@pnp/sp";
-import "@pnp/sp/web";
+import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { ISiteUserProps } from "@pnp/sp/site-users";
 import { Logger, LogLevel } from "@pnp/logging";
