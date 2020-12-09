@@ -38,7 +38,7 @@ onRuntimeCreate((runtime: Runtime) => {
         },
     }, existing);
 
-    runtime.assign({ graph: graphPart });
+    runtime.assign(graphPart);
 });
 
 export function setup(config: IGraphConfiguration, runtime = DefaultRuntime): void {
