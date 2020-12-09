@@ -27,36 +27,10 @@ import "@pnp/graph/teams"
 const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
 ```
 
-## Create new Group and Team
+## Create new Team/Group - Method #1
 
-When you create a new group and add a Team, the group needs to have an Owner. Or else we get an error.
-So the owner Id is important, and you could just get the users Ids from
-
-```TypeScript
-import { graph } from "@pnp/graph";
-import "@pnp/graph/users"
-
-const users = await graph.users();
-```
-
-Then create
-
-```TypeScript
-import { graph } from "@pnp/graph";
-
-const createdGroupTeam = await graph.teams.create('Groupname', 'description', 'OwnerId',{
-"memberSettings": {
-    "allowCreateUpdateChannels": true
-},
-"messagingSettings": {
-        "allowUserEditMessages": true,
-"allowUserDeleteMessages": true
-},
-"funSettings": {
-    "allowGiphy": true,
-    "giphyContentRating": "strict"
-}});
-```
+The first way to create a new Team and corresponding Group is to first create the group and then create the team.
+Follow the example in Groups to create the group and get the GroupID. Then make a call to create the team from the group.
 
 ## Create a Team via a specific group
 
@@ -81,6 +55,54 @@ const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec3324
 }});
 ```
 
+## Create new Team/Group - Method #2
+
+The second way to create a new TEam and corresponding Group is to do so in one call. This can be done by using the createTeam method.
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/teams"
+
+const team = {
+        "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
+        "displayName": "PnPJS Test Team",
+        "description": "PnPJS Test Team’s Description",
+        "members": [
+            {
+                "@odata.type": "#microsoft.graph.aadUserConversationMember",
+                "roles": ["owner"],
+                "user@odata.bind": "https://graph.microsoft.com/v1.0/users('{owners user id}')",
+            },
+        ],
+    };
+
+const createdTeam: ITeamCreateResultAsync = await graph.teams.create(t);
+//To check the status of the team creation, call getOperationById for the newly created team.
+const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
+```
+
+## Clone a Team
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/teams"
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+'Cloned','description','apps,tabs,settings,channels,members','public');
+
+```
+
+## Get Teams Async Operation
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/teams"
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+'Cloned','description','apps,tabs,settings,channels,members','public');
+const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
+```
+
 ## Archive a Team
 
 ```TypeScript
@@ -97,17 +119,6 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/teams"
 
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
-```
-
-## Clone a Team
-
-```TypeScript
-import { graph } from "@pnp/graph";
-import "@pnp/graph/teams"
-
-const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
-'Cloned','description','apps,tabs,settings,channels,members','public');
-
 ```
 
 ## Get all channels of a Team
