@@ -1,7 +1,9 @@
 import { addProp, body } from "@pnp/odata";
 import { GraphRest } from "../rest";
 import { _Group, Group } from "../groups/types";
-import { ITeamCreateResult, ITeamProperties, ITeam, Team, ITeams, Teams } from "./types";
+import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types";
+// ITeamProperties,
+import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
 import { graphPut } from "../operations";
 
 import "./users";
@@ -16,10 +18,9 @@ export {
     ITabCreateResult,
     ITabUpdateResult,
     ITabs,
-    ITabsConfiguration,
     ITeam,
     ITeamCreateResult,
-    ITeamProperties,
+    ITeamCreateResultAsync,
     ITeamUpdateResult,
     ITeams,
     Tab,
@@ -28,20 +29,22 @@ export {
     Teams,
 } from "./types";
 
+// ITeamProperties, ITabsConfiguration,
+
 declare module "../groups/types" {
     interface _Group {
         readonly team: ITeam;
-        createTeam(properties: ITeamProperties): Promise<ITeamCreateResult>;
+        createTeam(properties: ITeamType): Promise<ITeamCreateResult>;
     }
     interface IGroup {
         readonly team: ITeam;
-        createTeam(properties: ITeamProperties): Promise<ITeamCreateResult>;
+        createTeam(properties: ITeamType): Promise<ITeamCreateResult>;
     }
 }
 
 addProp(_Group, "team", Team);
 
-_Group.prototype.createTeam = async function (this: _Group, props: ITeamProperties): Promise<ITeamCreateResult> {
+_Group.prototype.createTeam = async function (this: _Group, props: ITeamType): Promise<ITeamCreateResult> {
 
     const data = await graphPut(this.clone(Group, "team"), body(props));
 
