@@ -9,12 +9,12 @@ npm i
 npm i -g rimraf # used to remove the node_modules folder (much better/faster)
 ```
 
-1. Ensure that the **@pnp/sp** package is already installed `npm i @pnp/sp`
-1. Remove the package-lock.json file & node_modules `rimraf node_modules` folder and execute `npm install`
-1. Open package-lock.json from the root folder
-1. Search for `"typescript"` or similar with version 2.4.1 (SP2019) 2.2.2 (SP2016)
-1. Replace "2.4.1" or "2.2.2" with "3.6.4"
-1. Search for the next `"typescript"` occurrence and replace the block with:
+1\. Ensure that the **@pnp/sp** package is already installed `npm i @pnp/sp`
+2\. Remove the package-lock.json file & node_modules `rimraf node_modules` folder and execute `npm install`
+3\. Open package-lock.json from the root folder
+4\. Search for `"typescript"` or similar with version 2.4.1 (SP2019) 2.2.2 (SP2016)
+5\. Replace "2.4.1" or "2.2.2" with "3.6.4"
+6\. Search for the next `"typescript"` occurrence and replace the block with:
 
    ```JSON
     "typescript": {
@@ -25,5 +25,31 @@ npm i -g rimraf # used to remove the node_modules folder (much better/faster)
     }
    ```
 
-1. Remove node_modules folder `rimraf node_modules`
-1. Run `npm install`
+7\. Remove node_modules folder `rimraf node_modules`
+8\. Run `npm install`
+
+## Alternative using `npm-force-resolutions`
+
+1\. Install resolutions package and TypeScript providing considered version explicitly:
+
+```bash
+npm i -D npm-force-resolutions typescript@3.6.4
+```
+
+2\. Add a resolution for TypeScript and preinstall script into `package.json` to a corresponding code blocks:
+
+    ```JSON
+    {
+      "scripts": {
+        "preinstall": "npx npm-force-resolutions"
+      },
+      "resolutions": {
+        "typescript": "3.6.4"
+      }
+    }
+    ```
+
+3\. Run ```npm install``` to trigger preinstall script and bumping TypeScript version into `package-lock.json`
+4\. Run ```npm run build```, should produce no errors
+
+Installing additional dependencies should be safe then.
