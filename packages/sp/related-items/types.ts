@@ -111,7 +111,7 @@ export interface IRelatedItemManager {
 
     /**
      * Gets all the related items for the given item specification
-     * 
+     *
      * @param sourceListName The list name or list id
      * @param sourceItemId The item id
      */
@@ -119,7 +119,7 @@ export interface IRelatedItemManager {
 
     /**
      * Gets the first page of related items for the given item specification
-     * 
+     *
      * @param sourceListName The list name or list id
      * @param sourceItemId The item id
      */
@@ -127,7 +127,7 @@ export interface IRelatedItemManager {
 
     /**
      * Adds a single link using full specifications for source and target
-     * 
+     *
      * @param sourceListName The source list name or list id
      * @param sourceItemId The source item id
      * @param sourceWebUrl The source web absolute url
@@ -166,14 +166,14 @@ export interface IRelatedItemManager {
 
     /**
      * Deletes a single link
-     * 
-     * @param sourceListName 
-     * @param sourceItemId 
-     * @param sourceWebUrl 
-     * @param targetListName 
-     * @param targetItemId 
-     * @param targetWebUrl 
-     * @param tryDeleteReverseLink 
+     *
+     * @param sourceListName
+     * @param sourceItemId
+     * @param sourceWebUrl
+     * @param targetListName
+     * @param targetItemId
+     * @param targetWebUrl
+     * @param tryDeleteReverseLink
      */
     deleteSingleLink(sourceListName: string,
         sourceItemId: number,

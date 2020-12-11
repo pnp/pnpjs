@@ -31,7 +31,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      * @param name The name of the file, including extension.
      */
     public getByName(name: string): IFile {
-        if (/\%#/.test(name)) {
+        if (/%#/.test(name)) {
             throw Error("For file names containing % or # please use web.getFileByServerRelativePath");
         }
         return tag.configure(File(this).concat(`('${escapeQueryStrValue(name)}')`), "fis.getByName");
@@ -58,7 +58,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
     /**
      * Adds a file using the pound percent safe methods
-     * 
+     *
      * @param url Excoded url of the file
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
@@ -124,7 +124,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
         };
     }
 }
-export interface IFiles extends _Files { }
+export interface IFiles extends _Files {}
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
@@ -319,7 +319,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
 
     /**
      * Deletes the file object with options.
-     * 
+     *
      * @param parameters Specifies the options to use when deleting a file.
      */
     @tag("fi.del-params")
@@ -428,7 +428,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const q = this.listItemAllFields;
-        const d = await q.select.apply(q, selects)();
+        const d = await q.select(...selects)();
         return assign(Item(odataUrlFrom(d)), d);
     }
 
@@ -540,10 +540,10 @@ export const File = spInvokableFactory<IFile>(_File);
 @defaultPath("versions")
 export class _Versions extends _SharePointQueryableCollection {
 
-    /**	
-     * Gets a version by id	
-     *	
-     * @param versionId The id of the version to retrieve	
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
      */
     public getById(versionId: number): IVersion {
         return tag.configure(Version(this).concat(`(${versionId})`), "vers.getById");
@@ -608,7 +608,7 @@ export class _Versions extends _SharePointQueryableCollection {
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-export interface IVersions extends _Versions { }
+export interface IVersions extends _Versions {}
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -622,7 +622,7 @@ export interface IVersion extends _Version, IDeleteableWithETag { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 
 /**
- * Types for document check in. 
+ * Types for document check in.
  * Minor = 0
  * Major = 1
  * Overwrite = 2

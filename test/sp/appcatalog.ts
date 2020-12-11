@@ -1,7 +1,7 @@
 
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import { IWeb, Web } from "@pnp/sp/webs";
 import { sp } from "@pnp/sp";
@@ -11,7 +11,9 @@ import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => { r(); }, ms));
+const sleep = (ms: number) => new Promise(r => setTimeout(() => {
+    r();
+}, ms));
 
 // currrently skipping due to permissions issues
 describe.skip("AppCatalog", function () {
@@ -30,7 +32,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it gets all the apps", function () {
-            return expect(appCatalog.get(), `all apps should've been fetched`).to.eventually.be.fulfilled;
+            return expect(appCatalog.get(), "all apps should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("it adds an app", function () {
@@ -52,7 +54,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it fails to synchronize a solution to the Microsoft Teams App Catalog using a non existing app", async function () {
-            const msg = `app 'random' should not have been synchronized to the Microsoft Teams App Catalog`;
+            const msg = "app 'random' should not have been synchronized to the Microsoft Teams App Catalog";
             return expect(appCatalog.syncSolutionToTeams("random"), msg).to.not.eventually.be.fulfilled;
         });
 

@@ -16,7 +16,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new comment to this collection
-     * 
+     *
      * @param info Comment information to add
      */
     @tag("coms.add")
@@ -35,7 +35,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Gets a comment by id
-     * 
+     *
      * @param id Id of the comment to load
      */
     public getById(id: string | number): IComment {
@@ -93,7 +93,7 @@ export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new reply to this collection
-     * 
+     *
      * @param info Comment information to add
      */
     @tag("reps.add")

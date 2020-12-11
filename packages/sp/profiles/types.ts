@@ -165,7 +165,7 @@ export class _Profiles extends _SharePointQueryableInstance {
      */
     public isFollowing(follower: string, followee: string): Promise<boolean> {
         const q = this.clone(Profiles, null);
-        q.concat(`.isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)`);
+        q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
         q.query.set("@v", `'${encodeURIComponent(follower)}'`);
         q.query.set("@y", `'${encodeURIComponent(followee)}'`);
         return q.get();
@@ -285,7 +285,7 @@ export class _Profiles extends _SharePointQueryableInstance {
         return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
     }
 }
-export interface IProfiles extends _Profiles { }
+export interface IProfiles extends _Profiles {}
 export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
 
 @defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")

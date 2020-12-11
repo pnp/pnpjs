@@ -7,7 +7,7 @@ export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
 }
 
-export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R => {
+export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R & IInvokable => {
     return invokableFactory<R>(f);
 };
 
@@ -15,7 +15,7 @@ export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQuery
  * Queryable Base Class
  *
  */
-export class _GraphQueryable<GetType = any> extends Queryable<GetType> implements IGraphQueryable<GetType> {
+export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
     /**
      * Creates a new instance of the Queryable class
@@ -129,16 +129,14 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> implement
     }
 }
 
-export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType>, IInvokable<GetType> { }
-export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> { }
-export interface _GraphQueryable<GetType = any> extends IInvokable<GetType> { }
+export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> { }
 export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQueryable);
 
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> implements IGraphQueryableCollection<GetType> {
+export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> {
 
     /**
      *
@@ -240,10 +238,9 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
      */
     skipToken(token: string): this;
 }
-export interface _GraphQueryableCollection extends IInvokable { }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
 
-export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection implements IGraphQueryableSearchableCollection {
+export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
 
     /**
      * 	To request second and subsequent pages of Graph data
@@ -257,7 +254,6 @@ export class _GraphQueryableSearchableCollection extends _GraphQueryableCollecti
 export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
     search(query: string): this;
 }
-export interface _GraphQueryableSearchableCollection extends IInvokable { }
 export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQueryableSearchableCollection>(_GraphQueryableSearchableCollection);
 
 
@@ -268,5 +264,4 @@ export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQu
 export class _GraphQueryableInstance<GetType = any> extends _GraphQueryable<GetType> { }
 
 export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
-export interface _GraphQueryableInstance extends IInvokable { }
 export const GraphQueryableInstance = graphInvokableFactory<IGraphQueryableInstance>(_GraphQueryableInstance);

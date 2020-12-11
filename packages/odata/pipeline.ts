@@ -30,7 +30,7 @@ function returnResult<T = any>(context: IRequestContext<T>): Promise<T> {
         message: `[${context.requestId}] (${(new Date()).getTime()}) Returning result from pipeline. Set logging to verbose to see data.`,
     });
 
-    return Promise.resolve(context.result!);
+    return Promise.resolve(context.result);
 }
 
 /**

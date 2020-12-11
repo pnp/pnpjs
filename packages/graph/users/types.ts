@@ -1,4 +1,4 @@
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { User as IUserType, Person as IPersonType } from "@microsoft/microsoft-graph-types";
 import { _DirectoryObject, DirectoryObjects, IDirectoryObjects } from "../directory-objects/types.js";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
@@ -31,5 +31,5 @@ export const Users = graphInvokableFactory<IUsers>(_Users);
 
 @defaultPath("people")
 export class _People extends _GraphQueryableCollection<IPersonType[]> {}
-export interface IPeople extends _People { }
+export interface IPeople extends _People {}
 export const People = graphInvokableFactory<IPeople>(_People);

@@ -58,7 +58,7 @@ export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
         };
     }
 }
-export interface IWebs extends _Webs { }
+export interface IWebs extends _Webs {}
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 /**
@@ -79,27 +79,6 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     }
 
     /**
-     * Gets this web's parent web and data
-     *
-     */
-    @tag("w.getParentWeb")
-    public async getParentWeb(): Promise<IOpenWebByIdResult> {
-        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
-        return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
-    }
-
-    /**
-    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
-    *
-    * @param nWebTemplateFilter Specifies the site definition (default = -1)
-    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
-    */
-    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): IWebs {
-        const o = this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
-        return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
-    }
-
-    /**
      * Allows access to the web's all properties collection
      */
     public get allProperties(): ISharePointQueryableInstance {
@@ -115,11 +94,13 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     }
 
     /**
-     * Creates a new batch for requests within the context of this web
+     * Gets this web's parent web and data
      *
      */
-    public createBatch(): SPBatch {
-        return new SPBatch(this.parentUrl, this.getRuntime());
+    @tag("w.getParentWeb")
+    public async getParentWeb(): Promise<IOpenWebByIdResult> {
+        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
+        return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
     }
 
     /**
@@ -172,21 +153,10 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     }
 
     /**
-     * Returns a collection of site templates available for the site
-     *
-     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
-     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
-     */
-    public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISharePointQueryableCollection {
-        const path = `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`;
-        return tag.configure(SharePointQueryableCollection(this, path), "w.availableWebTemplates");
-    }
-
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-     *
-     * @param query The change query
-     */
+         * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+         *
+         * @param query The change query
+         */
     @tag("w.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
         const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
@@ -225,7 +195,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.setStorageEntity")
     public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
-        return spPost(this.clone(Web, `setStorageEntity`), body({
+        return spPost(this.clone(Web, "setStorageEntity"), body({
             comments,
             description,
             key,
@@ -241,6 +211,36 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     @tag("w.removeStorageEntity")
     public removeStorageEntity(key: string): Promise<void> {
         return spPost(this.clone(Web, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
+    }
+
+    /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): IWebs {
+        const o = this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+        return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
+    }
+
+    /**
+     * Creates a new batch for requests within the context of this web
+     *
+     */
+    public createBatch(): SPBatch {
+        return new SPBatch(this.parentUrl, this.getRuntime());
+    }
+
+    /**
+     * Returns a collection of site templates available for the site
+     *
+     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
+     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
+     */
+    public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISharePointQueryableCollection {
+        const path = `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`;
+        return tag.configure(SharePointQueryableCollection(this, path), "w.availableWebTemplates");
     }
 }
 export interface IWeb extends _Web, IDeleteable { }
@@ -290,7 +290,7 @@ export interface IWebInfo {
     ClassicWelcomePage: string | null;
     Configuration: number;
     Created: string;
-    CurrentChangeToken: { StringValue: string; };
+    CurrentChangeToken: { StringValue: string };
     CustomMasterUrl: string;
     Description: string;
     DesignPackageId: string;
@@ -317,7 +317,7 @@ export interface IWebInfo {
     OverwriteTranslationsOnChange: boolean;
     QuickLaunchEnabled: boolean;
     RecycleBinEnabled: boolean;
-    ResourcePath: { DecodedUrl: string; };
+    ResourcePath: { DecodedUrl: string };
     SearchScope: number;
     ServerRelativeUrl: string;
     SiteLogoUrl: string | null;

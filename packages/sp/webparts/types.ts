@@ -83,7 +83,7 @@ export class _WebPartDefinitions extends _SharePointQueryableCollection {
         return WebPartDefinition(this, `getByControlId('${id}')`);
     }
 }
-export interface IWebPartDefinitions extends _WebPartDefinitions { }
+export interface IWebPartDefinitions extends _WebPartDefinitions {}
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
 
 export class _WebPartDefinition extends _SharePointQueryableInstance {
@@ -133,7 +133,7 @@ export class _WebPartDefinition extends _SharePointQueryableInstance {
         return spPost(this.clone(WebPartDefinition, "DeleteWebPart"));
     }
 }
-export interface IWebPartDefinition extends _WebPartDefinition { }
+export interface IWebPartDefinition extends _WebPartDefinition {}
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 
 export enum WebPartsPersonalizationScope {

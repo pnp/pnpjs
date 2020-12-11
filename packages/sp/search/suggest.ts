@@ -58,9 +58,6 @@ export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfig
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
 export interface ISuggestQuery {
-
-    [key: string]: string | number | boolean;
-
     /**
      * A string that contains the text for the search query.
      */
@@ -119,6 +116,8 @@ export interface ISuggestQuery {
      * query suggestions should match the full query word.
      */
     prefixMatch?: boolean;
+
+    [key: string]: string | number | boolean;
 }
 
 export interface ISuggestResult {

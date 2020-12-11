@@ -16,10 +16,10 @@ import { metadata } from "../utils/metadata.js";
 @defaultPath("usercustomactions")
 export class _UserCustomActions extends _SharePointQueryableCollection<IUserCustomActionInfo[]> {
 
-    /**	   
-     * Returns the user custom action with the specified id	     
-     *	    
-     * @param id The GUID id of the user custom action to retrieve	     
+    /**
+     * Returns the user custom action with the specified id
+     *
+     * @param id The GUID id of the user custom action to retrieve
      */
     public getById(id: string): IUserCustomAction {
         return tag.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
@@ -47,7 +47,7 @@ export class _UserCustomActions extends _SharePointQueryableCollection<IUserCust
         return spPost(this.clone(UserCustomActions, "clear"));
     }
 }
-export interface IUserCustomActions extends _UserCustomActions { }
+export interface IUserCustomActions extends _UserCustomActions {}
 export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
 export class _UserCustomAction extends _SharePointQueryableInstance<IUserCustomActionInfo> {

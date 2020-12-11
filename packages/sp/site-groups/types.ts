@@ -14,10 +14,10 @@ import { tag } from "../telemetry.js";
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {
 
-    /**	
-     * Gets a group from the collection by id	
-     *	
-     * @param id The id of the group to retrieve	
+    /**
+     * Gets a group from the collection by id
+     *
+     * @param id The id of the group to retrieve
      */
     public getById(id: number): ISiteGroup {
         return tag.configure(SiteGroup(this).concat(`(${id})`), "sgs.getById");
@@ -68,7 +68,7 @@ export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]
         return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
     }
 }
-export interface ISiteGroups extends _SiteGroups { }
+export interface ISiteGroups extends _SiteGroups {}
 export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
 export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
@@ -83,17 +83,12 @@ export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
 
     /**
      * Updates the group with the given property values
-     * 
+     *
      * @param props The group properties object of property names and values to be set for the group
      */
     public update = this._update<IGroupUpdateResult, ITypedHash<any>>("SP.Group", (d, p) => {
 
-        let retGroup: ISiteGroup = this;
-
-        if (hOP(p, "Title")) {
-            /* tslint:disable-next-line no-string-literal */
-            retGroup = this.getParent(SiteGroup, this.parentUrl, `getByName('${p["Title"]}')`);
-        }
+        const retGroup: ISiteGroup = hOP(p, "Title") ? this.getParent(SiteGroup, this.parentUrl, `getByName('${p.Title}')`) : SiteGroup(this);
 
         return {
             data: d,
@@ -110,7 +105,7 @@ export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
         return spPost(this.clone(SiteGroup, `SetUserAsOwner(${userId})`));
     }
 }
-export interface ISiteGroup extends _SiteGroup { }
+export interface ISiteGroup extends _SiteGroup {}
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 /**

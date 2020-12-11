@@ -4,8 +4,8 @@
         "adal"
     ],
     "include": [
-        "./**/*.*",
-        "../common/**/*.*"
+        "./**/*.ts",
+        "../common/**/*.ts"
     ],
     "references": [
         {

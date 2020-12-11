@@ -35,7 +35,7 @@ export async function toAbsoluteUrl(candidateUrl: string, runtime = DefaultRunti
                 return combine(baseUrl, candidateUrl);
             }
 
-            // tslint:disable-next-line: no-empty
+        // eslint-disable-next-line no-empty
         } catch (e) { }
     }
 

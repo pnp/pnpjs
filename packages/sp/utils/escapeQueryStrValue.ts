@@ -14,9 +14,9 @@ export function escapeQueryStrValue(value: string): string {
         // so we encode JUST the part that will end up in the url
         return value.replace(/!(@.*?)::(.*)$/ig, (match, labelName, v) => {
             Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${v}`, LogLevel.Verbose);
-            return `!${labelName}::${encodeURIComponent(v.replace(/\'/ig, "''"))}`;
+            return `!${labelName}::${encodeURIComponent(v.replace(/'/ig, "''"))}`;
         });
     } else {
-        return encodeURIComponent(value.replace(/\'/ig, "''"));
+        return encodeURIComponent(value.replace(/'/ig, "''"));
     }
 }

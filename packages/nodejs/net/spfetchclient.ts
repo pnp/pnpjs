@@ -5,7 +5,7 @@ import { SPOAuthEnv, AuthToken } from "../types.js";
 
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions.
- * 
+ *
  * See either the MSAL client or ADAL client for more modern options
  */
 export class SPFetchClient implements IHttpClientImpl {
@@ -75,7 +75,7 @@ export class SPFetchClient implements IHttpClientImpl {
         const url = `https://${this.getAuthHostUrl(this.authEnv)}/metadata/json/1?realm=${realm}`;
 
         const r = await this._fetchClient.fetch(url, { method: "GET" });
-        const json: { endpoints: { protocol: string, location: string }[] } = await r.json();
+        const json: { endpoints: { protocol: string; location: string }[] } = await r.json();
 
         const eps = json.endpoints.filter(ep => ep.protocol === "OAuth2");
         if (eps.length > 0) {

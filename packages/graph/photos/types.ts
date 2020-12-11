@@ -22,7 +22,7 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
 
     /**
      * Sets the file bytes
-     * 
+     *
      * @param content Image file contents, max 4 MB
      */
     public setContent(content: ArrayBuffer | Blob): Promise<void> {

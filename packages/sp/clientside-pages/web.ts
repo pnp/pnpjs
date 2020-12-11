@@ -25,7 +25,7 @@ declare module "../webs/types" {
 
         /**
          * Loads a page from the provided server relative path to the file
-         * 
+         *
          * @param path Server relative path to the file (ex: "/sites/dev/sitepages/page.aspx")
          */
         loadClientsidePage(path: string): Promise<IClientsidePage>;

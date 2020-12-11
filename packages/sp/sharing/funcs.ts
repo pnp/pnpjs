@@ -1,9 +1,8 @@
 import { body } from "@pnp/odata";
 import { jsS, assign } from "@pnp/common";
-import { SharePointQueryableCollection, _SharePointQueryableInstance, SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { Web, _Web } from "../webs/types.js";
-import { _File } from "../files/types.js";
+import { Web } from "../webs/types.js";
 import {
     ShareableQueryable,
     ISharingResult,
@@ -113,7 +112,7 @@ export function checkPermissions(this: ShareableQueryable, recipients: ISharingR
  *
  * @param request The SharingInformationRequest Object.
  * @param expands Expand more fields.
- * 
+ *
  */
 export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
 
@@ -183,7 +182,9 @@ export async function shareWith(
         loginNames = [loginNames];
     }
 
-    const userStr = jsS(loginNames.map(login => { return { Key: login }; }));
+    const userStr = jsS(loginNames.map(login => {
+        return { Key: login };
+    }));
     const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
 
     // start by looking up the role definition id we need to set the roleValue
@@ -229,20 +230,22 @@ async function getRoleValue(role: SharingRole, group: RoleType): Promise<string>
     if (group !== undefined && group !== null) {
 
         switch (group) {
-            case RoleType.Contributor:
-                const g1 = await Web("_api/web", "associatedmembergroup").select("Id")<{ Id: number; }>();
+            case RoleType.Contributor: {
+                const g1 = await Web("_api/web", "associatedmembergroup").select("Id")<{ Id: number }>();
                 return `group: ${g1.Id}`;
+            }
             case RoleType.Reader:
-            case RoleType.Guest:
-                const g2 = await Web("_api/web", "associatedvisitorgroup").select("Id")<{ Id: number; }>();
+            case RoleType.Guest: {
+                const g2 = await Web("_api/web", "associatedvisitorgroup").select("Id")<{ Id: number }>();
                 return `group: ${g2.Id}`;
+            }
             default:
                 throw Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
         }
     } else {
 
         const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
-        const def = await RoleDefinitions("_api/web").select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`)<{ Id: number; }[]>();
+        const def = await RoleDefinitions("_api/web").select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`)<{ Id: number }[]>();
         if (def.length < 1) {
             throw Error("Could not locate associated role definition for supplied role. Edit and View are supported");
         }

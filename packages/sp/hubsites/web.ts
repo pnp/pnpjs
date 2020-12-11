@@ -34,5 +34,5 @@ _Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): 
 };
 
 _Web.prototype.syncHubSiteTheme = function (this: _Web): Promise<void> {
-    return spPost(this.clone(Web, `syncHubSiteTheme`));
+    return spPost(this.clone(Web, "syncHubSiteTheme"));
 };

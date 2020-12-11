@@ -46,7 +46,7 @@ export class _Subscriptions extends _SharePointQueryableCollection {
         return { data, subscription: this.getById(data.id) };
     }
 }
-export interface ISubscriptions extends _Subscriptions { }
+export interface ISubscriptions extends _Subscriptions {}
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
 export class _Subscription extends _SharePointQueryableInstance {
@@ -89,7 +89,7 @@ export class _Subscription extends _SharePointQueryableInstance {
         return spDelete(this);
     }
 }
-export interface ISubscription extends _Subscription { }
+export interface ISubscription extends _Subscription {}
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 /**

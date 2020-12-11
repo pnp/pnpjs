@@ -23,7 +23,7 @@ export class _Contacts extends _GraphQueryableCollection<IContactType[]> {
 
     /**
     * Create a new Contact for the user.
-    * 
+    *
     * @param givenName The contact's given name.
     * @param surName The contact's surname.
     * @param emailAddresses The contact's email addresses.
@@ -82,7 +82,7 @@ export class _ContactFolders extends _GraphQueryableCollection<IContactFolderTyp
 
     /**
      * Create a new Contact Folder for the user.
-     * 
+     *
      * @param displayName The folder's display name.
      * @param parentFolderId The ID of the folder's parent folder.
      */

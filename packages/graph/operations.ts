@@ -21,7 +21,9 @@ const send = (method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT"): <T = any>(o:
         const operation: IOperation = defaultPipelineBinder(httpClientFactory(runtime))(method);
 
         const data = cloneQueryableData(o.data);
-        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => { return; };
+        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => {
+            return;
+        };
         const url = await toAbsoluteUrl(o.toUrlAndQuery(), runtime);
 
         mergeOptions(data.options, options);

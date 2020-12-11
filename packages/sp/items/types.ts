@@ -27,10 +27,10 @@ import { IResourcePath } from "../utils/toResourcePath.js";
 @defaultPath("items")
 export class _Items extends _SharePointQueryableCollection {
 
-    /**	
-    * Gets an Item by id	
-    *	
-    * @param id The integer id of the item to retrieve	
+    /**
+    * Gets an Item by id
+    *
+    * @param id The integer id of the item to retrieve
     */
     public getById(id: number): IItem {
         return tag.configure(Item(this).concat(`(${id})`), "is.getById");
@@ -163,7 +163,7 @@ export class _Items extends _SharePointQueryableCollection {
             this.getParent<IList>(List).getListItemEntityTypeFullName();
     }
 }
-export interface IItems extends _Items { }
+export interface IItems extends _Items {}
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
@@ -264,7 +264,7 @@ export class _Item extends _SharePointQueryableInstance {
 
     /**
      * Deletes the item object with options.
-     * 
+     *
      * @param parameters Specifies the options to use when deleting a item.
      */
     @tag("i.del-params")
@@ -365,16 +365,16 @@ export const Item = spInvokableFactory<IItem>(_Item);
  */
 @defaultPath("versions")
 export class _ItemVersions extends _SharePointQueryableCollection {
-    /**	
-     * Gets a version by id	
-     *	
-     * @param versionId The id of the version to retrieve	
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
      */
     public getById(versionId: number): IItemVersion {
         return tag.configure(ItemVersion(this).concat(`(${versionId})`), "iv.getById");
     }
 }
-export interface IItemVersions extends _ItemVersions { }
+export interface IItemVersions extends _ItemVersions {}
 export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**
@@ -466,7 +466,7 @@ export interface IItemUpdateResultData {
 export interface IItemDeleteParams {
 
     /**
-     * If true, delete or recycle a file when the LockType 
+     * If true, delete or recycle a file when the LockType
      * value is SPLockType.Shared or SPLockType.None.
      * When false, delete or recycle the file when
      * the LockType value SPLockType.None.

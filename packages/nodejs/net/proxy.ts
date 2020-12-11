@@ -17,7 +17,7 @@ export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { 
 
 /**
  * Sets the given url as a proxy on all requests
- * 
+ *
  * @param url The url of the proxy
  */
 export function setProxyUrl(url: string) {
@@ -26,7 +26,7 @@ export function setProxyUrl(url: string) {
 
 /**
  * Sets the given agent as a proxy on all requests
- * 
+ *
  * @param url The proxy agent to use
  */
 export function setProxyAgent(agent: any) {

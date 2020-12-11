@@ -34,7 +34,7 @@ declare module "../webs/types" {
 
         /**
          * Gets a file from a sharing link or absolute url
-         * 
+         *
          * @param fileUrl Absolute url of the file to get
          */
         getFileByUrl(fileUrl: string): IFile;

@@ -34,7 +34,7 @@ export class _Planner extends _GraphQueryableInstance<IPlannerType> {
         return Buckets(this);
     }
 }
-export interface IPlanner extends _Planner { }
+export interface IPlanner extends _Planner {}
 export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 
 /**
@@ -73,7 +73,7 @@ export const Plan = graphInvokableFactory<IPlan>(_Plan);
 export class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]> {
     /**
      * Create a new Planner Plan.
-     * 
+     *
      * @param owner Id of Group object.
      * @param title The Title of the Plan.
      */
@@ -120,7 +120,7 @@ export const Task = graphInvokableFactory<ITask>(_Task);
 export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> {
     /**
      * Create a new Planner Task.
-     * 
+     *
      * @param planId Id of Plan.
      * @param title The Title of the Task.
      * @param assignments Assign the task
@@ -172,7 +172,7 @@ export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
 export class _Buckets extends _GraphQueryableCollection<IPlannerBucketType[]> {
     /**
      * Create a new Bucket.
-     * 
+     *
      * @param name Name of Bucket object.
      * @param planId The Id of the Plan.
      * @param oderHint Hint used to order items of this type in a list view.

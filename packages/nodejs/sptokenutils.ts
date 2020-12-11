@@ -1,6 +1,5 @@
-declare var require: (path: string) => any;
-const u: any = require("url");
-const nodeFetch = require("node-fetch").default;
+import { parse } from "url";
+import nodeFetch from "node-fetch";
 import * as jwt from "jsonwebtoken";
 import { ITypedHash } from "@pnp/common";
 import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types.js";
@@ -31,7 +30,11 @@ export async function validateProviderHostedRequestToken(requestToken: string, c
         const secret = Buffer.from(clientSecret, "base64");
 
         jwt.verify(requestToken, secret, (err: jwt.VerifyErrors, decoded: any) => {
-            err ? reject(err) : resolve(decoded);
+            if (err) {
+                return reject(err);
+            }
+
+            resolve(decoded);
         });
     });
 }
@@ -46,7 +49,7 @@ export async function getAddInOnlyAccessToken(siteUrl: string, clientId: string,
 /**
  * Gets a user authentication token based on the supplied site url, client id, client secret, and refresh token
  */
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 export function getUserAccessToken(siteUrl: string, clientId: string, clientSecret: string, refreshToken: string, realm: string, stsUri: string, cacheKey: string): Promise<AuthToken> {
     return getTokenInternal({ siteUrl, clientId, clientSecret, refreshToken, realm, stsUri, cacheKey: `user:${cacheKey}` });
 }
@@ -68,7 +71,7 @@ async function getTokenInternal(params: GetTokenInternalParams): Promise<AuthTok
         return accessToken;
     }
 
-    const resource = getFormattedPrincipal(SharePointServicePrincipal, u.parse(params.siteUrl).hostname, params.realm);
+    const resource = getFormattedPrincipal(SharePointServicePrincipal, parse(params.siteUrl).hostname, params.realm);
     const formattedClientId = getFormattedPrincipal(params.clientId, "", params.realm);
 
     const body: string[] = [];

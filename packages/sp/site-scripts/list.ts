@@ -2,7 +2,7 @@ import { combine } from "@pnp/common";
 import { _List, List } from "../lists/types.js";
 import { SiteScripts } from "./types.js";
 import "../folders/list.js";
-import { _Web, Web } from "../webs/types.js";
+import { Web } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 
 declare module "../lists/types" {

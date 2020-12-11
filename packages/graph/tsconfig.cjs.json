@@ -7,10 +7,10 @@
         "adal"
     ],
     "include": [
-        "./**/*.*",
-        "../common/**/*.*",
-        "../logging/**/*.*",
-        "../odata/**/*.*"
+        "./**/*.ts",
+        "../common/**/*.ts",
+        "../logging/**/*.ts",
+        "../odata/**/*.ts"
     ],
     "references": [
         {

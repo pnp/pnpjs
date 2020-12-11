@@ -11,17 +11,17 @@ import { tag } from "../telemetry.js";
 @defaultPath("_api/hubsites")
 export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
 
-    /**	    
-     * Gets a Hub Site from the collection by id	     
-     *	    
-     * @param id The Id of the Hub Site	    
+    /**
+     * Gets a Hub Site from the collection by id
+     *
+     * @param id The Id of the Hub Site
      */
     public getById(id: string): IHubSite {
         return tag.configure(HubSite(this, `GetById?hubSiteId='${id}'`), "hss.getById");
 
     }
 }
-export interface IHubSites extends _HubSites { }
+export interface IHubSites extends _HubSites {}
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
 export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
@@ -35,7 +35,7 @@ export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
         return Site(d.SiteUrl);
     }
 }
-export interface IHubSite extends _HubSite { }
+export interface IHubSite extends _HubSite {}
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
 export interface IHubSiteInfo {

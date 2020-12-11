@@ -1,5 +1,5 @@
 import { _ClientsidePage } from "../clientside-pages/types.js";
-import { ICommentInfo, IComment, _Comment, Comment, ILikedByInformation } from "./types.js";
+import { ICommentInfo, IComment, Comment, ILikedByInformation } from "./types.js";
 import { spODataEntity } from "../odata.js";
 import { tag } from "../telemetry.js";
 import { IItemUpdateResult, Item } from "../items/index.js";
@@ -20,12 +20,12 @@ declare module "../clientside-pages/types" {
     interface IClientsidePage {
         /**
          * Adds a comment to this page
-         * 
+         *
          * @param info The comment information
          */
         addComment(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;
         /**
-         * 
+         *
          * @param id gets a comment by id
          */
         getCommentById(id: string | number): Promise<IComment & ICommentInfo>;

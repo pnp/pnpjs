@@ -9,11 +9,11 @@ import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
 import { Web } from "@pnp/sp/webs";
-import { ISettings, ITestingSettings } from "./settings";
+import { ISettings, ITestingSettings } from "./settings.js";
 
 chai.use(chaiAsPromised);
 
-declare var process: any;
+declare let process: any;
 const testStart = Date.now();
 
 // we need to load up the appropriate settings based on where we are running
@@ -63,7 +63,7 @@ for (let i = 0; i < process.argv.length; i++) {
     }
 }
 
-console.log(`*****************************`);
+console.log("*****************************");
 console.log("Testing command args:");
 console.log(`mode: ${mode}`);
 console.log(`site: ${site}`);
@@ -72,7 +72,7 @@ console.log(`deleteWeb: ${deleteWeb}`);
 console.log(`logging: ${logging}`);
 console.log(`spVerbose: ${spVerbose}`);
 console.log(`useMSAL: ${useMSAL}`);
-console.log(`*****************************`);
+console.log("*****************************");
 
 function readEnvVar(key: string, parse = false): any {
 
@@ -161,7 +161,7 @@ switch (mode) {
 async function spTestSetup(ts: ISettings): Promise<void> {
 
     // create skeleton settings
-    const settingsPart: ISPConfigurationPart = {
+    const settingsPart: Partial<ISPConfigurationPart> = {
         sp: {
             baseUrl: ts.sp.url,
         },
@@ -262,7 +262,7 @@ async function graphTestSetup(ts: ISettings): Promise<void> {
     graph.setup(settingsPart);
 }
 
-export let testSettings: ISettings = settings.testing;
+export const testSettings: ISettings = settings.testing;
 // if (testSettings.enableWebTests) {
 //     testSettings.sp.webUrl = "";
 // }
@@ -276,7 +276,7 @@ before(async function (): Promise<void> {
     if (testSettings.enableWebTests) {
 
         if (testSettings.sp) {
-            console.log(`Setting up SharePoint tests...`);
+            console.log("Setting up SharePoint tests...");
             const s = Date.now();
             await spTestSetup(testSettings);
             const e = Date.now();
@@ -284,7 +284,7 @@ before(async function (): Promise<void> {
         }
 
         if (testSettings.graph) {
-            console.log(`Setting up Graph tests...`);
+            console.log("Setting up Graph tests...");
             const s = Date.now();
             await graphTestSetup(testSettings);
             const e = Date.now();

@@ -23,7 +23,7 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
         return tag.configure(TermSets(this), "txts.sets");
     }
 }
-export interface ITermStore extends _TermStore { }
+export interface ITermStore extends _TermStore {}
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
 
 
@@ -32,14 +32,14 @@ export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]
 
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermGroup {
         return tag.configure(TermGroup(this, id), "txtgs.getById");
     }
 }
-export interface ITermGroups extends _TermGroups { }
+export interface ITermGroups extends _TermGroups {}
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
 
 export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
@@ -51,7 +51,7 @@ export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
         return tag.configure(TermSets(this, "sets"), "txtg.sets");
     }
 }
-export interface ITermGroup extends _TermGroup { }
+export interface ITermGroup extends _TermGroup {}
 export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
 
 
@@ -60,14 +60,14 @@ export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
 
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermSet {
         return tag.configure(TermSet(this, id), "txts.getById");
     }
 }
-export interface ITermSets extends _TermSets { }
+export interface ITermSets extends _TermSets {}
 export const TermSets = spInvokableFactory<ITermSets>(_TermSets);
 
 export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
@@ -92,7 +92,7 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
         return tag.configure(this.clone(Term, `terms/${id}`), "txts.getTermById");
     }
 }
-export interface ITermSet extends _TermSet { }
+export interface ITermSet extends _TermSet {}
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 // @defaultPath("terms")
@@ -112,7 +112,7 @@ export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 @defaultPath("children")
 export class _Children extends _SharePointQueryableCollection<ITermInfo[]> { }
-export interface IChildren extends _Children { }
+export interface IChildren extends _Children {}
 export const Children = spInvokableFactory<IChildren>(_Children);
 
 export class _Term extends _SharePointQueryableInstance<ITermInfo> {
@@ -133,7 +133,7 @@ export class _Term extends _SharePointQueryableInstance<ITermInfo> {
         return tag.configure(TermSet(this, "set"), "txt.set");
     }
 }
-export interface ITerm extends _Term { }
+export interface ITerm extends _Term {}
 export const Term = spInvokableFactory<ITerm>(_Term);
 
 
@@ -141,14 +141,14 @@ export const Term = spInvokableFactory<ITerm>(_Term);
 export class _Relations extends _SharePointQueryableCollection<IRelationInfo[]> {
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): IRelation {
         return tag.configure(Relation(this, id), "txrs.getById");
     }
 }
-export interface IRelations extends _Relations { }
+export interface IRelations extends _Relations {}
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
 export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
@@ -165,7 +165,7 @@ export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
         return tag.configure(TermSet(this, "set"), "txr.set");
     }
 }
-export interface IRelation extends _Relation { }
+export interface IRelation extends _Relation {}
 export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 
@@ -197,7 +197,7 @@ export interface ITermGroupInfo {
 
 export interface ITermSetInfo {
     id: string;
-    localizedNames: { name: string, languageTag: string }[];
+    localizedNames: { name: string; languageTag: string }[];
     description: string;
     createdDateTime: string;
     properties: ITaxonomyProperty[];
@@ -205,10 +205,10 @@ export interface ITermSetInfo {
 
 export interface ITermInfo {
     id: string;
-    labels: { name: string, isDefault: boolean, languageTag: string }[];
+    labels: { name: string; isDefault: boolean; languageTag: string }[];
     createdDateTime: string;
     lastModifiedDateTime: string;
-    descriptions: { description: string, languageTag: string }[];
+    descriptions: { description: string; languageTag: string }[];
     properties: ITaxonomyProperty[];
 }
 

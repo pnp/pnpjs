@@ -1,6 +1,5 @@
-declare var global: any;
-declare var require: (path: string) => any;
-const NodeFetch = require("node-fetch");
+declare let global: any;
+import * as NodeFetch from "node-fetch";
 
 (function (g) {
 

@@ -102,7 +102,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
     }
 
     public async getContent(): Promise<Blob> {
-        const info = await this();
+        const info = await this.get();
         const r = await safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
             headers: {
                 "accept": "application/json",
@@ -115,7 +115,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
         return p.parse(r);
     }
 
-    public setContent(content: any): Promise<{ id: string, name: string, size: number }> {
+    public setContent(content: any): Promise<{ id: string; name: string; size: number }> {
         return graphPut(this.clone(DriveItem, "content"), {
             body: content,
         });
@@ -147,7 +147,7 @@ export interface IDriveItemVersionInfo {
         user: {
             id: string;
             displayName: string;
-        },
+        };
     };
     lastModifiedDateTime: string;
     size: number;

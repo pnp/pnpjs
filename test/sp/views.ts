@@ -4,7 +4,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { IList } from "@pnp/sp/lists";
 
 describe("Views", () => {
@@ -70,7 +70,7 @@ describe("Views", () => {
         it("setViewXml", async function () {
             this.timeout(0);
             const r = await list.views.add(`setViewXml-Test-View_${getRandomString(4)}`);
-            const xml = "<View><Query><Where><Eq><FieldRef Name=\'Title\'/><Value Type=\'Text\'>Test</Value></Eq></Where></Query></View>";
+            const xml = "<View><Query><Where><Eq><FieldRef Name='Title'/><Value Type='Text'>Test</Value></Eq></Where></Query></View>";
             return expect(r.view.setViewXml(xml)).to.eventually.be.fulfilled;
         });
 

@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/odata";
 import { stringIsNullOrEmpty } from "@pnp/common";
-import getValidUser from "./utilities/getValidUser";
+import getValidUser from "./utilities/getValidUser.js";
 
 describe("Calendar", function () {
 

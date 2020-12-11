@@ -14,7 +14,7 @@ const objectEntries: any = isFunc(Object.entries) ? Object.entries : (o: any): [
 
 /**
  * Converts the supplied object to a map
- * 
+ *
  * @param o The object to map
  */
 export function objectToMap<K, V>(o: any): Map<K, V> {
@@ -26,9 +26,9 @@ export function objectToMap<K, V>(o: any): Map<K, V> {
 
 /**
  * Merges to Map instances together, overwriting values in target with matching keys, last in wins
- * 
+ *
  * @param target map into which the other maps are merged
- * @param maps One or more maps to merge into the target 
+ * @param maps One or more maps to merge into the target
  */
 export function mergeMaps<K = string, V = any>(target: Map<K, V>, ...maps: Map<K, V>[]): Map<K, V> {
     for (let i = 0; i < maps.length; i++) {

@@ -8,6 +8,7 @@ import { ITypedHash } from "./collections.js";
  * @param method The method to which we will apply the context and parameters
  * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function getCtxCallback(context: any, method: Function, ...params: any[]): Function {
     return function () {
         method.apply(context, params);
@@ -50,14 +51,14 @@ export function combine(...paths: string[]): string {
 
     return paths
         .filter(path => !stringIsNullOrEmpty(path))
-        .map(path => path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""))
+        .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
         .join("/")
         .replace(/\\/g, "/");
 }
 
 /**
  * Gets a random string of chars length
- * 
+ *
  * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
  *
  * @param chars The length of the random string to generate
@@ -75,7 +76,7 @@ export function getRandomString(chars: number): string {
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
  */
-/* tslint:disable no-bitwise */
+/* eslint-disable no-bitwise */
 export function getGUID(): string {
     let d = Date.now();
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -84,7 +85,7 @@ export function getGUID(): string {
         return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
-/* tslint:enable */
+/* eslint-enable no-bitwise */
 
 /**
  * Determines if a given value is a function
@@ -128,7 +129,7 @@ export function assign<T extends ITypedHash<any> = any, S extends ITypedHash<any
     }
 
     // ensure we don't overwrite things we don't want overwritten
-    const check: (o: any, i: string) => Boolean = noOverwrite ? (o, i) => !(i in o) : () => true;
+    const check: (o: any, i: string) => boolean = noOverwrite ? (o, i) => !(i in o) : () => true;
 
     // final filter we will use
     const f = (v: string) => check(target, v) && filter(v);
@@ -161,7 +162,7 @@ export function stringIsNullOrEmpty(s: string): boolean {
 
 /**
  * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
- * 
+ *
  * @param guid The candidate guid
  */
 export function sanitizeGuid(guid: string): string {
@@ -177,7 +178,7 @@ export function sanitizeGuid(guid: string): string {
 
 /**
  * Shorthand for JSON.stringify
- * 
+ *
  * @param o Any type of object
  */
 export function jsS(o: any): string {
@@ -186,7 +187,7 @@ export function jsS(o: any): string {
 
 /**
  * Shorthand for Object.hasOwnProperty
- * 
+ *
  * @param o Object to check for
  * @param p Name of the property
  */
@@ -196,10 +197,10 @@ export function hOP(o: any, p: string): boolean {
 
 /**
  * Generates a ~unique hash code
- * 
+ *
  * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
-// tslint:disable:no-bitwise
+/* eslint-disable no-bitwise */
 export function getHashCode(s: string): number {
     let hash = 0;
     if (s.length === 0) {
@@ -213,4 +214,4 @@ export function getHashCode(s: string): number {
     }
     return hash;
 }
-// tslint:enable:no-bitwise
+/* eslint-enable no-bitwise */

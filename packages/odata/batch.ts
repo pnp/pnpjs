@@ -42,7 +42,7 @@ export abstract class Batch {
 
     /**
      * Not meant for use directly
-     * 
+     *
      * @param batchee The IQueryable for this batch to track in order
      */
     public track(batchee: IQueryable<any>): void {
@@ -58,7 +58,7 @@ export abstract class Batch {
 
     /**
      * Adds the given request context to the batch for execution
-     * 
+     *
      * @param context Details of the request to batch
      */
     public add<T = any>(context: IRequestContext<T>): Promise<T> {
@@ -102,7 +102,7 @@ export abstract class Batch {
 
     /**
      * The batch's execute method will not resolve util any promises added here resolve
-     * 
+     *
      * @param p The dependent promise
      */
     public addResolveBatchDependency(p: Promise<any>): void {

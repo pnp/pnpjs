@@ -1,4 +1,3 @@
-declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
 import { AADToken } from "../types.js";
 import {

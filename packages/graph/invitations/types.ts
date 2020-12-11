@@ -13,7 +13,7 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> {
 
     /**
      * Create a new Invitation via invitation manager.
-     * 
+     *
      * @param invitedUserEmailAddress The email address of the user being invited.
      * @param inviteRedirectUrl The URL user should be redirected to once the invitation is redeemed.
      * @param additionalProperties A plain object collection of additional properties you want to set in the invitation

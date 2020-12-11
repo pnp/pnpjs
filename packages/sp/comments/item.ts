@@ -26,7 +26,7 @@ declare module "../items/types" {
          */
         unlike(): Promise<void>;
         /**
-         * Get the like by information for a modern site page     
+         * Get the like by information for a modern site page
          */
         getLikedByInformation(): Promise<ILikedByInformation>;
     }

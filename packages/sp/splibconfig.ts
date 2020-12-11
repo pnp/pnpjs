@@ -36,16 +36,10 @@ export interface ISPConfiguration extends ILibraryConfiguration, ISPConfiguratio
 onRuntimeCreate((runtime: Runtime) => {
 
     const existing = runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp");
-    
-    // const y = existing && existing.fetchClientFactory ? existing.fetchClientFactory : null;
 
     const spPart = Object.assign({}, {
-            fetchClientFactory: () => new FetchClient(),
+        fetchClientFactory: () => new FetchClient(),
     }, existing);
-
-    // if (existing && existing.fetchClientFactory) {
-    //     spPart.fetchClientFactory = y;
-    // }
 
     runtime.assign({ sp: spPart });
 });

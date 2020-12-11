@@ -7,7 +7,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { Web, IWeb } from "@pnp/sp/webs";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { combine } from "@pnp/common";
 
 describe("Alias Parameters", () => {
@@ -21,7 +21,7 @@ describe("Alias Parameters", () => {
 
             web = Web(testSettings.sp.webUrl);
 
-            const webInfo: { ServerRelativeUrl: string, Url: string } = await web.select("ServerRelativeUrl", "Url")();
+            const webInfo: { ServerRelativeUrl: string; Url: string } = await web.select("ServerRelativeUrl", "Url")();
 
             // make sure we have the correct server relative url
             webRelativeUrl = webInfo.ServerRelativeUrl;

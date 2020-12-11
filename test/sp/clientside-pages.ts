@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { getRandomString, combine } from "@pnp/common";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -206,7 +206,7 @@ describe("Clientside Pages", () => {
                 // we need a full reload
                 page = await web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
 
-                // tslint:disable-next-line:no-unused-expression
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(page.hasVerticalSection).to.be.true;
                 expect(page.verticalSection.columns[0].controls.length).to.eq(2);
                 const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
@@ -230,7 +230,7 @@ describe("Clientside Pages", () => {
                 // we need a full reload
                 page = await web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
 
-                // tslint:disable-next-line:no-unused-expression
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(page.hasVerticalSection).to.be.true;
                 expect(page.verticalSection.columns[0].controls.length).to.eq(2);
                 const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];

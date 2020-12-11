@@ -85,7 +85,7 @@ export class Runtime {
     }
 
     /**
-     * 
+     *
      * @param config The set of properties to add to this runtime instance
      */
     public assign<T = ITypedHash<any>>(config: T): void {
@@ -94,8 +94,8 @@ export class Runtime {
 
     /**
      * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
-     * 
-     * @param key 
+     *
+     * @param key
      */
     public get<T = ILibraryConfiguration, R = any>(key: keyof T): R {
         return this._v.get(key);
@@ -120,4 +120,4 @@ export class Runtime {
 
 // default runtime used globally
 const _runtime = new Runtime(new Map([["__isDefault__", true]]));
-export let DefaultRuntime = _runtime;
+export const DefaultRuntime = _runtime;

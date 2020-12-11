@@ -9,9 +9,9 @@ import {
  */
 export class SPRest {
 
-    /** 
+    /**
      * Creates a new instance of the SPRest class
-     * 
+     *
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
@@ -20,7 +20,7 @@ export class SPRest {
     /**
      * Configures instance with additional options and baseUrl.
      * Provided configuration used by other objects in a chain
-     * 
+     *
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
@@ -30,7 +30,7 @@ export class SPRest {
 
     /**
      * Global SharePoint configuration options
-     * 
+     *
      * @param config The SharePoint configuration to apply
      */
     public setup(config: ISPConfiguration | ISPFXContext) {

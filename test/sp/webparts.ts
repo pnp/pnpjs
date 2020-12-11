@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/sp/webs";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { Web } from "@pnp/sp/webs";
 import { sp } from "@pnp/sp";
 import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "@pnp/sp/presets/all";

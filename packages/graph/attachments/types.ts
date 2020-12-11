@@ -21,7 +21,7 @@ export class _Attachments extends _GraphQueryableCollection<IAttachmentType[]> {
 
     /**
      * Add attachment to this collection
-     * 
+     *
      * @param name Name given to the attachment file
      * @param bytes File content
      */

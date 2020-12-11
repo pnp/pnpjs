@@ -22,13 +22,13 @@ export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
 export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[]> {
     /**
      * Create a new Subscription.
-     * 
+     *
      * @param changeType Indicates the type of change in the subscribed resource that will raise a notification. The supported values are: created, updated, deleted.
      * @param notificationUrl The URL of the endpoint that will receive the notifications. This URL must make use of the HTTPS protocol.
      * @param resource Specifies the resource that will be monitored for changes. Do not include the base URL (https://graph.microsoft.com/v1.0/).
      * @param expirationDateTime Specifies the date and time when the webhook subscription expires. The time is in UTC.
      * @param props A plain object collection of additional properties you want to set on the new subscription
-     * 
+     *
      */
     public async add(changeType: string, notificationUrl: string, resource: string, expirationDateTime: string, props: ISubscriptionType = {}): Promise<ISubAddResult> {
 

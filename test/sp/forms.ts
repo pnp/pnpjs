@@ -3,7 +3,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/lists";
 import "@pnp/sp/forms";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 
 describe("Forms", function () {
     const listName = "Documents";

@@ -46,7 +46,7 @@ export class SPBatch extends Batch {
                         state = "status";
                     }
                     break;
-                case "status":
+                case "status": {
                     const parts = statusRegExp.exec(line);
                     if (parts.length !== 3) {
                         throw Error(`Invalid status, line ${i}`);
@@ -55,6 +55,7 @@ export class SPBatch extends Batch {
                     statusText = parts[2];
                     state = "statusHeaders";
                     break;
+                }
                 case "statusHeaders":
                     if (line.trim() === "") {
                         state = "body";
@@ -81,7 +82,7 @@ export class SPBatch extends Batch {
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
         if (this.requests.length < 1) {
-            Logger.write(`Resolving empty batch.`, LogLevel.Info);
+            Logger.write("Resolving empty batch.", LogLevel.Info);
             return;
         }
 
@@ -125,8 +126,8 @@ export class SPBatch extends Batch {
             }
 
             // common batch part prefix
-            batchBody.push(`Content-Type: application/http\n`);
-            batchBody.push(`Content-Transfer-Encoding: binary\n\n`);
+            batchBody.push("Content-Type: application/http\n");
+            batchBody.push("Content-Transfer-Encoding: binary\n\n");
 
             // these are the per-request headers
             const headers = new Headers();
@@ -225,7 +226,7 @@ export class SPBatch extends Batch {
 
         // this structure ensures that we resolve the batched requests in the order we expect
         // using async this is not guaranteed depending on the requests
-        return responses.reduce((p, response, index) => p.then(async _ => {
+        return responses.reduce((p, response, index) => p.then(async () => {
 
             const request = this.requests[index];
 

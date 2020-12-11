@@ -129,7 +129,7 @@ export interface ISharedFuncs {
      *
      * @param request The SharingInformationRequest Object.
      * @param expands Expand more fields.
-     * 
+     *
      */
     getSharingInformation(request?: ISharingInformationRequest, expands?: string[]): Promise<ISharingInformation>;
     /**

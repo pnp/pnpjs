@@ -169,7 +169,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
             return;
         }
 
-        this.deleteExpired().then(_ => {
+        this.deleteExpired().then(() => {
 
             // call ourself in the future
             setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
@@ -231,6 +231,9 @@ class MemoryStorage {
 
     constructor(private _store = new Map<string, any>()) { }
 
+    [key: string]: any;
+    [index: number]: string;
+
     public get length(): number {
         return this._store.size;
     }
@@ -254,9 +257,6 @@ class MemoryStorage {
     public setItem(key: string, data: string): void {
         this._store.set(key, data);
     }
-
-    [key: string]: any;
-    [index: number]: string;
 }
 
 /**

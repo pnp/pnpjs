@@ -34,7 +34,7 @@ interface GraphBatchResponseFragment {
 interface IGraphBatchResponse {
     error?: {
         code: string;
-        innerError: { "request-id": string, date: string };
+        innerError: { "request-id": string; date: string };
         message: string;
     };
     responses: GraphBatchResponseFragment[];
@@ -52,12 +52,12 @@ export class GraphBatch extends Batch {
         return this;
     }
 
-    protected executeImpl(): Promise<void> {
+    protected async executeImpl(): Promise<void> {
 
         Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, LogLevel.Info);
 
         if (this.requests.length < 1) {
-            Logger.write(`Resolving empty batch.`, LogLevel.Info);
+            Logger.write("Resolving empty batch.", LogLevel.Info);
             return Promise.resolve();
         }
 
@@ -65,64 +65,49 @@ export class GraphBatch extends Batch {
 
         // create a working copy of our requests
         const requests = this.requests.slice();
-        let error = false;
 
-        return new Promise(async (resolve, reject) => {
+        // this is the root of our promise chain
+        while (requests.length > 0) {
 
-            // this is the root of our promise chain
-            while (requests.length > 0) {
+            const requestsChunk = requests.splice(0, this.maxRequests);
 
-                const requestsChunk = requests.splice(0, this.maxRequests);
+            const batchRequest: GraphBatchRequest = {
+                requests: this.formatRequests(requestsChunk),
+            };
 
-                const batchRequest: GraphBatchRequest = {
-                    requests: this.formatRequests(requestsChunk),
-                };
+            const batchOptions = {
+                body: jsS(batchRequest),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            };
 
-                const batchOptions = {
-                    body: jsS(batchRequest),
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    method: "POST",
-                };
+            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
 
-                Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, LogLevel.Info);
+            const queryUrl = await toAbsoluteUrl(this.batchUrl, this.runtime);
 
-                const queryUrl = await toAbsoluteUrl(this.batchUrl, this.runtime);
+            await client.fetch(queryUrl, batchOptions)
+                .then(r => r.json())
+                .then((j) => this.parseResponse(requestsChunk, j))
+                .then((parsedResponse: { nextLink: string; responses: Response[] }) => {
 
-                await client.fetch(queryUrl, batchOptions)
-                    .then(r => r.json())
-                    .then((j) => this.parseResponse(requestsChunk, j))
-                    .then((parsedResponse: { nextLink: string, responses: Response[] }) => {
+                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
 
-                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, LogLevel.Info);
+                    parsedResponse.responses.reduce((chain, response, index) => {
 
-                        parsedResponse.responses.reduce((chain, response, index) => {
+                        const request = requestsChunk[index];
 
-                            const request = requestsChunk[index];
+                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
 
-                            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, LogLevel.Verbose);
+                        return chain.then(() => request.parser.parse(response).then(request.resolve).catch(request.reject));
 
-                            return chain.then(_ => request.parser.parse(response).then(request.resolve).catch(request.reject));
-
-                        }, Promise.resolve());
-                    }).catch(e => {
-                        reject(e);
-                        error = true;
-                    });
-
-                if (error) {
-                    // do not continue processing on error, we can't know what the downstream effects are
-                    break;
-                }
-            }
-
-            if (!error) {
-                // if we didn't have an error go ahead and resolve the promise as successful
-                resolve();
-            }
-        });
+                    }, Promise.resolve());
+                }).catch(e => {
+                    throw e;
+                });
+        }
     }
 
     /**
@@ -202,7 +187,7 @@ export class GraphBatch extends Batch {
         });
     }
 
-    private parseResponse(requests: IODataBatchRequestInfo[], graphResponse: IGraphBatchResponse): Promise<{ nextLink: string, responses: Response[] }> {
+    private parseResponse(requests: IODataBatchRequestInfo[], graphResponse: IGraphBatchResponse): Promise<{ nextLink: string; responses: Response[] }> {
 
         return new Promise((resolve, reject) => {
 

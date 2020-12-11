@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { combine, dateAdd } from "@pnp/common";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { IFolder } from "@pnp/sp/folders";
@@ -208,7 +208,7 @@ describe("Sharing", () => {
 
             it("Should allow deleting a link by kind.", () => {
 
-                return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(_ => {
+                return expect(file.getShareLink(SharingLinkKind.AnonymousView).then(() => {
 
                     return file.deleteSharingLinkByKind(SharingLinkKind.AnonymousView);
                 })).to.eventually.be.fulfilled;

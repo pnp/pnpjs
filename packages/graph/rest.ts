@@ -1,4 +1,3 @@
-import { _GraphQueryable } from "./graphqueryable.js";
 import {
     setup as _setup,
     IGraphConfiguration,
@@ -8,9 +7,9 @@ import { Runtime, IConfigOptions, ISPFXContext, ITypedHash, DefaultRuntime } fro
 
 export class GraphRest {
 
-    /** 
+    /**
      * Creates a new instance of the SPRest class
-     * 
+     *
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
@@ -62,4 +61,4 @@ export interface IGraphIsolatedInit<T> {
     baseUrl: "v1.0" | "beta";
 }
 
-export let graph = new GraphRest();
+export const graph = new GraphRest();

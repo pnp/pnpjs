@@ -33,10 +33,10 @@ export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
         };
     }
 
-    /**	    
+    /**
      * Gets a feature from the collection with the specified guid
-     *	    
-     * @param id The Id of the feature (GUID)	    
+     *
+     * @param id The Id of the feature (GUID)
      */
     public getById(id: string): IFeature {
         const feature = Feature(this);
@@ -74,7 +74,7 @@ export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
 
         const removeDependency = this.addBatchDependency();
 
-        const feature = await Feature(this).select("DefinitionId")<{ DefinitionId: string; }>();
+        const feature = await Feature(this).select("DefinitionId")<{ DefinitionId: string }>();
 
         const promise = this.getParent<IFeatures>(Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
 

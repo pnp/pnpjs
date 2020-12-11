@@ -27,7 +27,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Gets a folder by it's name
-     * 
+     *
      * @param name Folder's name
      */
     public getByName(name: string): IFolder {
@@ -36,8 +36,8 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Adds a new folder at the specified URL
-     * 
-     * @param url 
+     *
+     * @param url
      */
     @tag("fs.add")
     public async add(url: string): Promise<IFolderAddResult> {
@@ -52,7 +52,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Adds a new folder by path and should be prefered over add
-     * 
+     *
      * @param serverRelativeUrl The server relative url of the new folder to create
      * @param overwrite True to overwrite an existing folder, default false
      */
@@ -67,7 +67,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
         };
     }
 }
-export interface IFolders extends _Folders { }
+export interface IFolders extends _Folders {}
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 
@@ -187,7 +187,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, `/_api/SP.MoveCopyUtil.MoveFolderByPath()`),
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -235,7 +235,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, `/_api/SP.MoveCopyUtil.CopyFolderByPath()`),
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -252,7 +252,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     /**
      * Deletes the folder object with options.
-     * 
+     *
      * @param parameters Specifies the options to use when deleting a folder.
      */
     @tag("f.del-params")
@@ -262,7 +262,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
     /**
      * Create the subfolder inside the current folder, as specified by the leafPath
-     * 
+     *
      * @param leafPath leafName of the new folder
      */
     public async addSubFolderUsingPath(leafPath: string): Promise<IFolder> {
@@ -342,7 +342,7 @@ export interface IFolderAddResult {
     folder: IFolder;
 
     /**
-     * Additional data from the server 
+     * Additional data from the server
      */
     data: any;
 }
@@ -358,7 +358,7 @@ export interface IFolderUpdateResult {
     folder: IFolder;
 
     /**
-     * Additional data from the server 
+     * Additional data from the server
      */
     data: any;
 }

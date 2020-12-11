@@ -18,7 +18,7 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> {
 
     /**
      * Archives this Team
-     * 
+     *
      * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
      */
     public archive(shouldSetSpoSiteReadOnlyForMembers = false): Promise<void> {
@@ -37,7 +37,7 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> {
      * @param name The name of the new Group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
-     * @param visibility Set visibility to public or private 
+     * @param visibility Set visibility to public or private
      */
     public cloneTeam(name: string, description = "", partsToClone = "apps,tabs,settings,channels,members", visibility: "public" | "private" = "private"): Promise<void> {
 
@@ -90,7 +90,7 @@ export class _Channels extends _GraphQueryableCollection {
      * Creates a new Channel in the Team
      * @param displayName The display name of the new channel
      * @param description Optional description of the channel
-     * 
+     *
      */
     public async add(displayName: string, description = ""): Promise<IChannelCreateResult> {
 
@@ -173,7 +173,7 @@ export interface ITabUpdateResult {
 
 /**
  * Defines the properties for a Team
- * 
+ *
  * TODO:: remove this once typings are present in graph types package
  */
 export interface ITeamProperties {
@@ -201,7 +201,7 @@ export interface ITeamProperties {
 
     funSettings?: {
         "allowGiphy"?: boolean;
-        "giphyContentRating"?: "strict" | string,
+        "giphyContentRating"?: "strict" | string;
         "allowStickersAndMemes"?: boolean;
         "allowCustomMemes"?: boolean;
     };

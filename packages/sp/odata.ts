@@ -54,7 +54,7 @@ class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
     public hydrate = (d: D) => {
         const o = this.factory(odataUrlFrom(d), null);
         return assign(o, d);
-    }
+    };
 
     public parse(r: Response): Promise<T & D> {
         return super.parse(r).then((d: any) => {
@@ -75,7 +75,7 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
             const o = this.factory(odataUrlFrom(v), null);
             return assign(o, v);
         });
-    }
+    };
 
     public parse(r: Response): Promise<(T & D)[]> {
         return super.parse(r).then((d: D[]) => {

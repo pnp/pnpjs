@@ -77,7 +77,7 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
         }
     }
 }
-export interface IAttachments extends _Attachments { }
+export interface IAttachments extends _Attachments {}
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
 export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {

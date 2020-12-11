@@ -1,5 +1,3 @@
-declare var require: (path: string) => any;
-
 import { IHttpClientImpl, mergeHeaders, IFetchOptions } from "@pnp/common";
 import { fetch } from "./fetch.js";
 

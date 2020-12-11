@@ -18,7 +18,7 @@ interface IRetryData {
 export class NodeFetchClient implements IHttpClientImpl {
 
     /**
-     * 
+     *
      * @param retryCount: number - Maximum number of transient failure retries before throwing the error
      * @param retryInterval: number - Starting interval to delay the first retry attempt
      * @param minRetryInterval: number - Minimum retry delay boundary as retry intervals are randomly recalculated
@@ -42,7 +42,9 @@ export class NodeFetchClient implements IHttpClientImpl {
 
                 // If there is no error code, this wasn't a transient error
                 // so we throw immediately.
-                if (!err.code) { throw err; }
+                if (!err.code) {
+                    throw err;
+                }
 
                 // Watching for specific error codes.
                 if (["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) > -1) {

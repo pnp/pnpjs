@@ -1,3 +1,4 @@
+import { hOP } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { extendGlobal } from "./invokable-extensions.js";
 import { IQueryable } from "./queryable.js";
@@ -6,6 +7,7 @@ declare module "./queryable" {
     /**
      * Returns the instance wrapped by the invokable proxy
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface IQueryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
@@ -14,6 +16,7 @@ declare module "./queryable" {
         __unwrap(): any;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Queryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
@@ -39,12 +42,17 @@ extendGlobal([
         }
     },
     {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         get: (target: IQueryable<any>, p: string | number | symbol, _receiver: any) => {
             switch (p) {
                 case "__enableDeepTrace":
-                    return () => { target.__deepTrace = true; };
+                    return () => {
+                        target.__deepTrace = true;
+                    };
                 case "__disableDeepTrace":
-                    return () => { target.__deepTrace = false; };
+                    return () => {
+                        target.__deepTrace = false;
+                    };
                 case "__data":
                     return target.data;
                 case "__unwrap":
@@ -55,7 +63,7 @@ extendGlobal([
                         const o: any = {};
 
                         for (const name in target) {
-                            if (target.hasOwnProperty(name)) {
+                            if (hOP(target, name)) {
                                 o[name] = target[name];
                             }
                         }
