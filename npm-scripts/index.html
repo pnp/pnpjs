@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/npm-scripts/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/npm-scripts/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -362,6 +362,20 @@
           <li class="md-nav__item">
   <a href="#logging" class="md-nav__link">
     Logging
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msal" class="md-nav__link">
+    msal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spverbose" class="md-nav__link">
+    spVerbose
   </a>
   
 </li>
@@ -1954,7 +1968,7 @@
 
   <li class="md-nav__item">
     <a href="../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -2162,6 +2176,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msal" class="md-nav__link">
+    msal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spverbose" class="md-nav__link">
+    spVerbose
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2280,6 +2308,22 @@ npm test -- --cleanup
 <p>If you include this flag a console logger will be subscribed and the log level will be set to Info. This will provide console output for all the requests being made during testing. This flag is compatible with all other flags - however unless you are trying to debug a specific test this will produce a lot of chatty output.</p>
 <pre><code class="language-cmd"># enable logging during testing
 npm test -- --logging
+</code></pre>
+<h4 id="msal">msal<a class="headerlink" href="#msal" title="Permanent link">&para;</a></h4>
+<p><em>Added in 2.0.13</em></p>
+<blockquote>
+<p><code>--msal</code></p>
+</blockquote>
+<p>This flag opts into using msal authentication settings from the <a href="../concepts/settings/">settings.js</a> file.</p>
+<pre><code class="language-cmd">npm test -- --spverbose
+</code></pre>
+<h4 id="spverbose">spVerbose<a class="headerlink" href="#spverbose" title="Permanent link">&para;</a></h4>
+<p><em>Added in 2.0.13</em></p>
+<blockquote>
+<p><code>--spverbose</code></p>
+</blockquote>
+<p>This flag will enable "verbose" OData mode for SharePoint tests. This flag is compatible with other flags.</p>
+<pre><code class="language-cmd">npm test -- --spverbose
 </code></pre>
 <h2 id="build">build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
 <p>Invokes the pnpbuild cli to transpile the TypeScript into JavaScript. All behavior is controlled via the tsconfig.json in the root of the project and sub folders as needed.</p>

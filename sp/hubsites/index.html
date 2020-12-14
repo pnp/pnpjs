@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/sp/hubsites/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/sp/hubsites/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -1935,7 +1935,7 @@
 
   <li class="md-nav__item">
     <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -2201,22 +2201,22 @@
 </table>
 <h3 id="get-a-listing-of-all-hub-sites">Get a Listing of All Hub sites<a class="headerlink" href="#get-a-listing-of-all-hub-sites" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteData } from  &quot;@pnp/sp/hubsites&quot;;
+import { IHubSiteInfo } from  &quot;@pnp/sp/hubsites&quot;;
 import &quot;@pnp/sp/hubsites&quot;;
 
 // invoke the hub sites object
-const hubsites: IHubSiteData[] = await sp.hubSites();
+const hubsites: IHubSiteInfo[] = await sp.hubSites();
 
 // you can also use select to only return certain fields:
-const hubsites2: IHubSiteData[] = await sp.hubSites.select(&quot;ID&quot;, &quot;Title&quot;, &quot;RelatedHubSiteIds&quot;)();
+const hubsites2: IHubSiteInfo[] = await sp.hubSites.select(&quot;ID&quot;, &quot;Title&quot;, &quot;RelatedHubSiteIds&quot;)();
 </code></pre>
 <h3 id="get-hub-site-by-id">Get Hub site by Id<a class="headerlink" href="#get-hub-site-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method on the hubsites module to get a hub site by site Id (guid).</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteData } from  &quot;@pnp/sp/hubsites&quot;;
+import { IHubSiteInfo } from  &quot;@pnp/sp/hubsites&quot;;
 import &quot;@pnp/sp/hubsites&quot;;
 
-const hubsite: IHubSiteData = await sp.hubSites.getById(&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;)();
+const hubsite: IHubSiteInfo = await sp.hubSites.getById(&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;)();
 
 // log hub site title to console
 console.log(hubsite.Title);
@@ -2224,7 +2224,6 @@ console.log(hubsite.Title);
 <h3 id="get-isite-instance">Get ISite instance<a class="headerlink" href="#get-isite-instance" title="Permanent link">&para;</a></h3>
 <p>We provide a helper method to load the ISite instance from the HubSite</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteData } from  &quot;@pnp/sp/hubsites&quot;;
 import { ISite } from  &quot;@pnp/sp/sites&quot;;
 import &quot;@pnp/sp/hubsites&quot;;
 
@@ -2240,10 +2239,10 @@ import { IHubSiteWebData } from  &quot;@pnp/sp/hubsites&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/hubsites/web&quot;;
 
-const webData: IHubSiteWebData = await sp.web.hubSiteData();
+const webData: Partial&lt;IHubSiteWebData&gt; = await sp.web.hubSiteData();
 
 // you can also force a refresh of the hub site data
-const webData2: IHubSiteWebData = await sp.web.hubSiteData(true);
+const webData2: Partial&lt;IHubSiteWebData&gt; = await sp.web.hubSiteData(true);
 </code></pre>
 <h3 id="synchubsitetheme">syncHubSiteTheme<a class="headerlink" href="#synchubsitetheme" title="Permanent link">&para;</a></h3>
 <p>Allows you to apply theme updates from the parent hub site collection.</p>
@@ -2273,7 +2272,7 @@ await sp.site.joinHubSite(&quot;00000000-0000-0000-0000-000000000000&quot;);
 import &quot;@pnp/sp/sites&quot;;
 import &quot;@pnp/sp/hubsites/site&quot;;
 
-// regsiter current site as a hub site
+// register current site as a hub site
 await sp.site.registerHubSite();
 </code></pre>
 <h3 id="unregisterhubsite">unRegisterHubSite<a class="headerlink" href="#unregisterhubsite" title="Permanent link">&para;</a></h3>

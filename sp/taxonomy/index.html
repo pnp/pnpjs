@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/sp/taxonomy/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/sp/taxonomy/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -1737,6 +1737,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#getallchildrenasorderedtree" class="md-nav__link">
+    getAllChildrenAsOrderedTree
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1753,6 +1760,13 @@
           <li class="md-nav__item">
   <a href="#list_2" class="md-nav__link">
     List
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-terms" class="md-nav__link">
+    List (terms)
   </a>
   
 </li>
@@ -1948,7 +1962,7 @@
 
   <li class="md-nav__item">
     <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -2154,6 +2168,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#getallchildrenasorderedtree" class="md-nav__link">
+    getAllChildrenAsOrderedTree
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2170,6 +2191,13 @@
           <li class="md-nav__item">
   <a href="#list_2" class="md-nav__link">
     List
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-terms" class="md-nav__link">
+    List (terms)
   </a>
   
 </li>
@@ -2246,9 +2274,6 @@ import { ITermSetInfo } from &quot;@pnp/sp/taxonomy&quot;;
 
 // get get set info
 const info: ITermSetInfo[] = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets();
-
-// also works to get sets not in groups
-const info: ITermSetInfo[] = await sp.termStore.sets();
 </code></pre>
 <h3 id="get-by-id_1">Get By Id<a class="headerlink" href="#get-by-id_1" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
@@ -2257,8 +2282,29 @@ import { ITermSetInfo } from &quot;@pnp/sp/taxonomy&quot;;
 
 // get term set data
 const info: ITermSetInfo = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;)();
+</code></pre>
+<h3 id="getallchildrenasorderedtree">getAllChildrenAsOrderedTree<a class="headerlink" href="#getallchildrenasorderedtree" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.13</em></p>
+<p>This method will get all of a set's child terms in an ordered array. It is a costly method in terms of requests so we suggest you cache the results as taxonomy trees seldom change.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/taxonomy&quot;;
+import { ITermInfo } from &quot;@pnp/sp/taxonomy&quot;;
+import { dateAdd, PnPClientStorage } from &quot;@pnp/common&quot;;
 
-const info2: ITermSetInfo = await sp.termStore.sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;)();
+// here we get all the children of a given set
+const childTree = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).getAllChildrenAsOrderedTree();
+
+
+
+
+// here we show caching the results using the PnPClientStorage class, there are many caching libraries and options available
+const store = new PnPClientStorage();
+
+// our tree likely doesn't change much in 30 minutes for most applications
+// adjust to be longer or shorter as needed
+const cachedTree = await store.local.getOrPut(&quot;myKey&quot;, () =&gt; {
+    return sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).getAllChildrenAsOrderedTree();
+}, dateAdd(new Date(), &quot;minute&quot;, 30));
 </code></pre>
 <h2 id="terms">Terms<a class="headerlink" href="#terms" title="Permanent link">&para;</a></h2>
 <p>Access term set information</p>
@@ -2267,10 +2313,18 @@ const info2: ITermSetInfo = await sp.termStore.sets.getById(&quot;338666a8-1111-
 import &quot;@pnp/sp/taxonomy&quot;;
 import { ITermInfo } from &quot;@pnp/sp/taxonomy&quot;;
 
-// list all the terms
-const info: ITermInfo = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).children();
+// list all the terms that are direct children of this set
+const infos: ITermInfo[] = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).children();
+</code></pre>
+<h3 id="list-terms">List (terms)<a class="headerlink" href="#list-terms" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.0.13</em></p>
+<p>You can use the terms property to get a flat list of all terms in the set. These terms do not contain parent/child relationship information.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/taxonomy&quot;;
+import { ITermInfo } from &quot;@pnp/sp/taxonomy&quot;;
 
-const info2: ITermInfo = await sp.termStore.sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).children();
+// list all the terms that are direct children of this set
+const infos: ITermInfo[] = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).terms();
 </code></pre>
 <h3 id="get-by-id_2">Get By Id<a class="headerlink" href="#get-by-id_2" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
@@ -2279,8 +2333,6 @@ import { ITermInfo } from &quot;@pnp/sp/taxonomy&quot;;
 
 // get term set data
 const info: ITermInfo = await sp.termStore.groups.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).getTermById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;)();
-
-const info2: ITermInfo = await sp.termStore.sets.getById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;).getTermById(&quot;338666a8-1111-2222-3333-f72471314e72&quot;)();
 </code></pre>
                 
               

@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/graph/groups/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/graph/groups/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -887,6 +887,13 @@
         <li class="md-nav__item">
   <a href="#group-photo-operations" class="md-nav__link">
     Group Photo Operations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-team-site-for-a-group" class="md-nav__link">
+    Get the Team Site for a Group
   </a>
   
 </li>
@@ -1930,7 +1937,7 @@
 
   <li class="md-nav__item">
     <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -2150,6 +2157,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#get-the-team-site-for-a-group" class="md-nav__link">
+    Get the Team Site for a Group
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2265,6 +2279,14 @@ const events = graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&q
 </code></pre>
 <h2 id="group-photo-operations">Group Photo Operations<a class="headerlink" href="#group-photo-operations" title="Permanent link">&para;</a></h2>
 <p>See <a href="../photos/">Photos</a></p>
+<h2 id="get-the-team-site-for-a-group">Get the Team Site for a Group<a class="headerlink" href="#get-the-team-site-for-a-group" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/groups&quot;;
+import &quot;@pnp/graph/sites/group&quot;;
+
+const teamSite = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).sites.root();
+const url = teamSite.webUrl
+</code></pre>
                 
               
               

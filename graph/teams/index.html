@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/graph/teams/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/graph/teams/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -949,8 +949,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-new-group-and-team" class="md-nav__link">
-    Create new Group and Team
+  <a href="#create-new-teamgroup-method-1" class="md-nav__link">
+    Create new Team/Group - Method #1
   </a>
   
 </li>
@@ -958,6 +958,27 @@
         <li class="md-nav__item">
   <a href="#create-a-team-via-a-specific-group" class="md-nav__link">
     Create a Team via a specific group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-new-teamgroup-method-2" class="md-nav__link">
+    Create new Team/Group - Method #2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clone-a-team" class="md-nav__link">
+    Clone a Team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-teams-async-operation" class="md-nav__link">
+    Get Teams Async Operation
   </a>
   
 </li>
@@ -972,13 +993,6 @@
         <li class="md-nav__item">
   <a href="#unarchive-a-team" class="md-nav__link">
     Unarchive a Team
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#clone-a-team" class="md-nav__link">
-    Clone a Team
   </a>
   
 </li>
@@ -1965,7 +1979,7 @@
 
   <li class="md-nav__item">
     <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -2123,8 +2137,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-new-group-and-team" class="md-nav__link">
-    Create new Group and Team
+  <a href="#create-new-teamgroup-method-1" class="md-nav__link">
+    Create new Team/Group - Method #1
   </a>
   
 </li>
@@ -2132,6 +2146,27 @@
         <li class="md-nav__item">
   <a href="#create-a-team-via-a-specific-group" class="md-nav__link">
     Create a Team via a specific group
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-new-teamgroup-method-2" class="md-nav__link">
+    Create new Team/Group - Method #2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clone-a-team" class="md-nav__link">
+    Clone a Team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-teams-async-operation" class="md-nav__link">
+    Get Teams Async Operation
   </a>
   
 </li>
@@ -2146,13 +2181,6 @@
         <li class="md-nav__item">
   <a href="#unarchive-a-team" class="md-nav__link">
     Unarchive a Team
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#clone-a-team" class="md-nav__link">
-    Clone a Team
   </a>
   
 </li>
@@ -2257,30 +2285,9 @@ import &quot;@pnp/graph/teams&quot;
 
 const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
 </code></pre>
-<h2 id="create-new-group-and-team">Create new Group and Team<a class="headerlink" href="#create-new-group-and-team" title="Permanent link">&para;</a></h2>
-<p>When you create a new group and add a Team, the group needs to have an Owner. Or else we get an error.
-So the owner Id is important, and you could just get the users Ids from</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-
-const users = await graph.users();
-</code></pre>
-<p>Then create</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-
-const createdGroupTeam = await graph.teams.create('Groupname', 'description', 'OwnerId',{
-&quot;memberSettings&quot;: {
-    &quot;allowCreateUpdateChannels&quot;: true
-},
-&quot;messagingSettings&quot;: {
-        &quot;allowUserEditMessages&quot;: true,
-&quot;allowUserDeleteMessages&quot;: true
-},
-&quot;funSettings&quot;: {
-    &quot;allowGiphy&quot;: true,
-    &quot;giphyContentRating&quot;: &quot;strict&quot;
-}});
-</code></pre>
+<h2 id="create-new-teamgroup-method-1">Create new Team/Group - Method #1<a class="headerlink" href="#create-new-teamgroup-method-1" title="Permanent link">&para;</a></h2>
+<p>The first way to create a new Team and corresponding Group is to first create the group and then create the team.
+Follow the example in Groups to create the group and get the GroupID. Then make a call to create the team from the group.</p>
 <h2 id="create-a-team-via-a-specific-group">Create a Team via a specific group<a class="headerlink" href="#create-a-team-via-a-specific-group" title="Permanent link">&para;</a></h2>
 <p>Here we get the group via id and use <code>createTeam</code></p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
@@ -2300,6 +2307,44 @@ const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec3324
     &quot;giphyContentRating&quot;: &quot;strict&quot;
 }});
 </code></pre>
+<h2 id="create-new-teamgroup-method-2">Create new Team/Group - Method #2<a class="headerlink" href="#create-new-teamgroup-method-2" title="Permanent link">&para;</a></h2>
+<p>The second way to create a new TEam and corresponding Group is to do so in one call. This can be done by using the createTeam method.</p>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;
+
+const team = {
+        &quot;template@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/teamsTemplates('standard')&quot;,
+        &quot;displayName&quot;: &quot;PnPJS Test Team&quot;,
+        &quot;description&quot;: &quot;PnPJS Test Team’s Description&quot;,
+        &quot;members&quot;: [
+            {
+                &quot;@odata.type&quot;: &quot;#microsoft.graph.aadUserConversationMember&quot;,
+                &quot;roles&quot;: [&quot;owner&quot;],
+                &quot;user@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/users('{owners user id}')&quot;,
+            },
+        ],
+    };
+
+const createdTeam: ITeamCreateResultAsync = await graph.teams.create(t);
+//To check the status of the team creation, call getOperationById for the newly created team.
+const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
+</code></pre>
+<h2 id="clone-a-team">Clone a Team<a class="headerlink" href="#clone-a-team" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+'Cloned','description','apps,tabs,settings,channels,members','public');
+
+</code></pre>
+<h2 id="get-teams-async-operation">Get Teams Async Operation<a class="headerlink" href="#get-teams-async-operation" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+'Cloned','description','apps,tabs,settings,channels,members','public');
+const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
+</code></pre>
 <h2 id="archive-a-team">Archive a Team<a class="headerlink" href="#archive-a-team" title="Permanent link">&para;</a></h2>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/teams&quot;
@@ -2311,14 +2356,6 @@ const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 import &quot;@pnp/graph/teams&quot;
 
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
-</code></pre>
-<h2 id="clone-a-team">Clone a Team<a class="headerlink" href="#clone-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
-
-const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
-'Cloned','description','apps,tabs,settings,channels,members','public');
-
 </code></pre>
 <h2 id="get-all-channels-of-a-team">Get all channels of a Team<a class="headerlink" href="#get-all-channels-of-a-team" title="Permanent link">&para;</a></h2>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;

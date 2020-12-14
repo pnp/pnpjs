@@ -44,7 +44,7 @@
       <link rel="stylesheet" href="../css/extra.css">
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/SPFx-on-premises/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/SPFx-on-premises/" alt="spacer" width="1" height="1" />
 
     
   </head>
@@ -291,9 +291,38 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        SPFx On-Premises
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="./" class="md-nav__link md-nav__link--active">
       SPFx On-Premises
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-using-npm-force-resolutions" class="md-nav__link">
+    Alternative using npm-force-resolutions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -1829,7 +1858,7 @@
 
   <li class="md-nav__item">
     <a href="../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Maching
+      Setup Dev Machine
     </a>
   </li>
 
@@ -1966,6 +1995,21 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-using-npm-force-resolutions" class="md-nav__link">
+    Alternative using npm-force-resolutions
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1993,19 +2037,46 @@ npm i -g rimraf # used to remove the node_modules folder (much better/faster)
 <li>Open package-lock.json from the root folder</li>
 <li>Search for <code>"typescript"</code> or similar with version 2.4.1 (SP2019) 2.2.2 (SP2016)</li>
 <li>Replace "2.4.1" or "2.2.2" with "3.6.4"</li>
-<li>Search for the next <code>"typescript"</code> occurrence and replace the block with:</li>
-</ol>
+<li>
+<p>Search for the next <code>"typescript"</code> occurrence and replace the block with:</p>
 <p><code>JSON
-    "typescript": {
-      "version": "3.6.4",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
-      "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
-      "dev": true
-    }</code></p>
-<ol>
-<li>Remove node_modules folder <code>rimraf node_modules</code></li>
+"typescript": {
+    "version": "3.6.4",
+    "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
+    "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
+    "dev": true
+}</code></p>
+</li>
+<li>
+<p>Remove node_modules folder <code>rimraf node_modules</code></p>
+</li>
 <li>Run <code>npm install</code></li>
 </ol>
+<h2 id="alternative-using-npm-force-resolutions">Alternative using <code>npm-force-resolutions</code><a class="headerlink" href="#alternative-using-npm-force-resolutions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Install resolutions package and TypeScript providing considered version explicitly:</p>
+<p><code>bash
+npm i -D npm-force-resolutions typescript@3.6.4</code></p>
+</li>
+<li>
+<p>Add a resolution for TypeScript and preinstall script into <code>package.json</code> to a corresponding code blocks:</p>
+<p><code>JSON
+{
+    "scripts": {
+    "preinstall": "npx npm-force-resolutions"
+    },
+    "resolutions": {
+    "typescript": "3.6.4"
+    }
+}</code></p>
+</li>
+<li>
+<p>Run <code>npm install</code> to trigger preinstall script and bumping TypeScript version into <code>package-lock.json</code></p>
+</li>
+<li>Run <code>npm run build</code>, should produce no errors</li>
+</ol>
+<p>Installing additional dependencies should be safe then.</p>
                 
               
               
