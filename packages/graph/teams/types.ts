@@ -1,16 +1,17 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
 import { body } from "@pnp/odata";
 import { assign } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";
+import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTab as ITeamsTabType } from "@microsoft/microsoft-graph-types";
 
 /**
  * Represents a Microsoft Team
  */
 @defaultPath("team")
 @updateable()
-export class _Team extends _GraphQueryableInstance<ITeamProperties> {
+export class _Team extends _GraphQueryableInstance<ITeamType> {
 
     public get channels(): IChannels {
         return Channels(this);
@@ -39,7 +40,11 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> {
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private 
      */
-    public cloneTeam(name: string, description = "", partsToClone = "apps,tabs,settings,channels,members", visibility: "public" | "private" = "private"): Promise<void> {
+    public async cloneTeam(
+        name: string,
+        description = "",
+        partsToClone = "apps,tabs,settings,channels,members",
+        visibility: "public" | "private" = "private"): Promise<ITeamCreateResultAsync> {
 
         const postBody = {
             description: description ? description : "",
@@ -49,14 +54,30 @@ export class _Team extends _GraphQueryableInstance<ITeamProperties> {
             visibility,
         };
 
-        // TODO:: we need to get the Location header from the response and return an operation
-        // instance that folks can query to see if/when this is complete
-        // it could just have a single method getResult (or whatever) that returns a promise that
-        // resolves when the operation is successful or rejects when it is not
-        return graphPost(this.clone(Team, "clone"), body(postBody));
+        const creator = Team(this, "clone").usingParser({
+            parse(r: Response) {
+                return Promise.resolve(r.headers);
+            },
+        });
+        const data: Headers = await graphPost(creator, body(postBody));
+        const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
+        if (data.has("location")) {
+            const location = data.get("location");
+            const locationArray = location.split("/");
+            if (locationArray.length === 3) {
+                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+            }
+        }
+
+        return result;
+    }
+
+    public getOperationById(id: string): Promise<ITeamsAsyncOperation> {
+        return GraphQueryableInstance(this, `operations/${id}`)();
     }
 }
-export interface ITeam extends _Team, IUpdateable<ITeamProperties> { }
+export interface ITeam extends _Team, IUpdateable<ITeamType> { }
 export const Team = graphInvokableFactory<ITeam>(_Team);
 
 /**
@@ -64,7 +85,27 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamProperties[]> { }
+export class _Teams extends _GraphQueryableCollection<ITeamType[]> {
+    public async create(team: ITeamType): Promise<ITeamCreateResultAsync> {
+        const creator = Teams(this, null).usingParser({
+            parse(r: Response) {
+                return Promise.resolve(r.headers);
+            },
+        });
+        const data: Headers = await graphPost(creator, body(team));
+        const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
+        if (data.has("location")) {
+            const location = data.get("location");
+            const locationArray = location.split("/");
+            if (locationArray.length === 3) {
+                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+            }
+        }
+
+        return result;
+    }
+}
 export interface ITeams extends _Teams, IGetById<ITeam> { }
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
 
@@ -128,12 +169,12 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
 export class _Tabs extends _GraphQueryableCollection {
 
     /**
-     * Adds a tab to the cahnnel
+     * Adds a tab to the channel
      * @param name The name of the new Tab
      * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
      * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
      */
-    public async add(name: string, appUrl: string, properties: ITabsConfiguration): Promise<ITabCreateResult> {
+    public async add(name: string, appUrl: string, properties: ITeamsTabType): Promise<ITabCreateResult> {
 
         const postBody = assign({
             displayName: name,
@@ -171,49 +212,9 @@ export interface ITabUpdateResult {
     tab: ITab;
 }
 
-/**
- * Defines the properties for a Team
- * 
- * TODO:: remove this once typings are present in graph types package
- */
-export interface ITeamProperties {
-
-    memberSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-        "allowAddRemoveApps"?: boolean;
-        "allowCreateUpdateRemoveTabs"?: boolean;
-        "allowCreateUpdateRemoveConnectors"?: boolean;
-    };
-
-    guestSettings?: {
-        "allowCreateUpdateChannels"?: boolean;
-        "allowDeleteChannels"?: boolean;
-    };
-
-    messagingSettings?: {
-        "allowUserEditMessages"?: boolean;
-        "allowUserDeleteMessages"?: boolean;
-        "allowOwnerDeleteMessages"?: boolean;
-        "allowTeamMentions"?: boolean;
-        "allowChannelMentions"?: boolean;
-    };
-
-    funSettings?: {
-        "allowGiphy"?: boolean;
-        "giphyContentRating"?: "strict" | string,
-        "allowStickersAndMemes"?: boolean;
-        "allowCustomMemes"?: boolean;
-    };
-}
-
-export interface ITabsConfiguration {
-    configuration: {
-        "entityId": string;
-        "contentUrl": string;
-        "websiteUrl": string;
-        "removeUrl": string;
-    };
+export interface ITeamCreateResultAsync {
+    teamId: string;
+    operationId: string;
 }
 
 export interface ITeamCreateResult {
