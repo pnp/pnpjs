@@ -238,7 +238,7 @@ setMyProfilePic(profilePicSource: Blob): Promise<void>
 
 ```typescript
 import { sp } from "@pnp/sp";
-import "@pnp/sp/web";
+import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/profiles";
 import "@pnp/sp/folders";

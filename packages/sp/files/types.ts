@@ -103,8 +103,8 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
     @tag("fis.addChunked")
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        const info: { ServerRelativeUrl: string } = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
-        const file = File(`_api/web/getFileByServerRelativeUrl('${info.ServerRelativeUrl}')`);
+        const response: IFileInfo = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
+        const file = File(odataUrlFrom(response));
         return await file.setContentChunked(content, progress, chunkSize);
     }
 

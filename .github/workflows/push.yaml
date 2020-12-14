@@ -1,5 +1,12 @@
-name: Push Testing
+name: Merge Testing
 on: push
+env:
+  PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
+  PNPTESTING_MSAL_GRAPH_SCOPES: ${{ secrets.PNPTESTING_MSAL_GRAPH_SCOPES }}
+  PNPTESTING_MSAL_SP_CONFIG: ${{ secrets.PNPTESTING_MSAL_SP_CONFIG }}
+  PNPTESTING_MSAL_SP_SCOPES: ${{ secrets.PNPTESTING_MSAL_SP_SCOPES }}
+  PNPTESTING_NOTIFICATIONURL: ${{ secrets.PNPTESTING_NOTIFICATIONURL }}
+  PNPTESTING_SITEURL: ${{ secrets.PNPTESTING_SITEURL }} 
 jobs:
   run_push_tests:
     runs-on: ubuntu-latest
@@ -14,4 +21,4 @@ jobs:
       - name: Run lint 
         run: npm run lint
       - name: Run tests
-        run: npx mocha --mode push --cleanup
+        run: npx mocha --mode push --cleanup --msal

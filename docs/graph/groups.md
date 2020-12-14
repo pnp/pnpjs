@@ -55,7 +55,6 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ disp
 
 Add the group to the list of the current user's favorite groups. Supported for Office 365 groups only.
 
-
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/groups";
@@ -124,3 +123,14 @@ const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getC
 ## Group Photo Operations
 
 See [Photos](./photos.md)
+
+## Get the Team Site for a Group
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/sites/group";
+
+const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
+const url = teamSite.webUrl
+```

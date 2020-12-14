@@ -95,6 +95,30 @@ If you include this flag a console logger will be subscribed and the log level w
 npm test -- --logging
 ```
 
+#### msal
+
+_Added in 2.0.13_
+
+>`--msal`
+
+This flag opts into using msal authentication settings from the [settings.js](./concepts/settings.md) file.
+
+```cmd
+npm test -- --spverbose
+```
+
+#### spVerbose
+
+_Added in 2.0.13_
+
+>`--spverbose`
+
+This flag will enable "verbose" OData mode for SharePoint tests. This flag is compatible with other flags.
+
+```cmd
+npm test -- --spverbose
+```
+
 ## build
 
 Invokes the pnpbuild cli to transpile the TypeScript into JavaScript. All behavior is controlled via the tsconfig.json in the root of the project and sub folders as needed.

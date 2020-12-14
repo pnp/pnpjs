@@ -743,6 +743,7 @@ export interface IRenderListDataAsStreamResult {
     ForceNoHierarchy: string;
     HierarchyHasIndention: string;
     LastRow: number;
+    NextHref?: string;
     Row: any[];
     RowLimit: number;
 }

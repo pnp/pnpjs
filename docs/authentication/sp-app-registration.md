@@ -20,7 +20,7 @@ Before you can begin running tests you need to register a low-trust add-in with 
 Now that we have created an add-in registration we need to tell SharePoint what permissions it can use. Due to an update in SharePoint Online you now have to [register add-ins with certain permissions in the admin site](https://msdn.microsoft.com/en-us/pnp_articles/how-to-provide-add-in-app-only-tenant-administrative-permissions-in-sharepoint-online).
 
 1. Navigate to {admin site url}/_layouts/appinv.aspx
-1. Paste your client id from the above section into the Add Id box and click "Lookup"
+1. Paste your client id from the above section into the App Id box and click "Lookup"
 1. You should see the information populated into the form from the last section, if not ensure you have the correct id value
 1. Paste the below XML into the permissions request xml box and hit "Create"
 1. You should get a confirmation message.

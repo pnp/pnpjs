@@ -16,14 +16,40 @@ npm i -g rimraf # used to remove the node_modules folder (much better/faster)
 1. Replace "2.4.1" or "2.2.2" with "3.6.4"
 1. Search for the next `"typescript"` occurrence and replace the block with:
 
-   ```JSON
+    ```JSON
     "typescript": {
-      "version": "3.6.4",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
-      "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
-      "dev": true
+        "version": "3.6.4",
+        "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
+        "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
+        "dev": true
     }
-   ```
+    ```
 
 1. Remove node_modules folder `rimraf node_modules`
 1. Run `npm install`
+
+## Alternative using `npm-force-resolutions`
+
+1. Install resolutions package and TypeScript providing considered version explicitly:
+
+    ```bash
+    npm i -D npm-force-resolutions typescript@3.6.4
+    ```
+
+1. Add a resolution for TypeScript and preinstall script into `package.json` to a corresponding code blocks:
+
+    ```JSON
+    {
+        "scripts": {
+        "preinstall": "npx npm-force-resolutions"
+        },
+        "resolutions": {
+        "typescript": "3.6.4"
+        }
+    }
+    ```
+
+1. Run ```npm install``` to trigger preinstall script and bumping TypeScript version into `package-lock.json`
+1. Run ```npm run build```, should produce no errors
+
+Installing additional dependencies should be safe then.

@@ -1,5 +1,7 @@
 import * as findup from "findup-sync";
 import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
+import { ITestingSettings } from "../../test/settings";
+
 // importing the example debug scenario and running it
 // adding your debugging to other files and importing them will keep them out of git
 // PRs updating the debug.ts or example.ts will not be accepted unless they are fixing bugs
@@ -14,7 +16,7 @@ import { Example } from "./sp";
 // if you don't have a settings file defined this will error
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
-import(findup("settings.js")).then(settings => {
+import(findup("settings.js")).then((settings: ITestingSettings) => {
 
     // // setup console logger
     Logger.subscribe(new ConsoleListener());
