@@ -38,6 +38,7 @@ debug/launch/*
 !debug/launch/sp.ts
 !debug/launch/graph.ts
 !debug/launch/tsconfig.json
+!debug/launch/setup.ts
 
 debug/serve/*
 !debug/serve/main.ts

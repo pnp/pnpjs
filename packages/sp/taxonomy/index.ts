@@ -27,6 +27,10 @@ export {
     Term,
     Children,
     IChildren,
+    IOrderedTermInfo,
+    ITermSortOrderInfo,
+    ITerms,
+    Terms,
 } from "./types";
 
 declare module "../rest" {
