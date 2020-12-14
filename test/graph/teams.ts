@@ -3,8 +3,10 @@ import { expect } from "chai";
 import { testSettings } from "../main";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/teams";
+import "@pnp/graph/groups";
 
-describe("Teams", function () {
+// TODO:: skipping until we enable the test user settings
+describe.skip("Teams", function () {
 
     if (testSettings.enableWebTests) {
         let teamID = "";
@@ -25,7 +27,7 @@ describe("Teams", function () {
                 {
                     "@odata.type": "#microsoft.graph.aadUserConversationMember",
                     "roles": ["owner"],
-                    "user@odata.bind": "https://graph.microsoft.com/v1.0/users('47c632ac-1203-438e-ad69-1fb8b99159b4')",
+                    "user@odata.bind": "https://graph.microsoft.com/v1.0/users('1d7f876a-49c2-4b05-8ca4-cb819ae840c4')",
                 },
             ],
         };
