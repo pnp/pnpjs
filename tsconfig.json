@@ -1,13 +1,12 @@
 {
     "compilerOptions": {
         "target": "ES2015",
-        "module": "ES2015",
+        "module": "commonjs",
         "composite": true,
         "declaration": true,
         "declarationMap": true,
         "removeComments": false,
         "allowJs": true,
-        "types": [],
         "lib": [
             "ES2015",
             "dom",
@@ -38,5 +37,7 @@
             ]
         }
     },
-    "include": []
+    "include": [
+        "./packages/**/*.ts",
+    ]
 }

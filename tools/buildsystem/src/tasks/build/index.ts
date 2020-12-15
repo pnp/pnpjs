@@ -1,3 +1,3 @@
-export * from "./build";
-export * from "./replace-debug";
-export * from "./replace-version";
+export * from "./build.js";
+export * from "./replace-debug.js";
+export * from "./replace-version.js";

@@ -10,10 +10,14 @@ import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
+import findupSync = require("findup-sync");
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => {
+const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
 }, ms));
+
+// give outselves a single reference to the projectRoot
+const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
 // currrently skipping due to permissions issues
 describe.skip("AppCatalog", function () {
@@ -21,7 +25,7 @@ describe.skip("AppCatalog", function () {
     if (testSettings.enableWebTests) {
         let appCatalog: IAppCatalog;
         let appCatWeb: IWeb;
-        const dirname = path.join(__dirname, "assets", "helloworld.sppkg");
+        const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
         const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 

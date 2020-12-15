@@ -4,10 +4,10 @@ import * as LiftOff from "liftoff";
 import { jsVariants } from "interpret";
 import * as yargs from "yargs";
 import * as findup from "findup-sync";
-import { ConfigCollection, BuildSchema, PackageSchema, PublishSchema } from "../src/config";
-import { builder } from "../src/builder";
-import { packager } from "../src/packager";
-import { publisher } from "../src/publisher";
+import { ConfigCollection, BuildSchema, PackageSchema, PublishSchema } from "../src/config.js";
+import { builder } from "../src/builder.js";
+import { packager } from "../src/packager.js";
+import { publisher } from "../src/publisher.js";
 
 const args = yargs.argv;
 

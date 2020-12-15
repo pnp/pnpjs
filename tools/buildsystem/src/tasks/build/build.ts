@@ -2,7 +2,7 @@ declare var require: (s: string) => any;
 const path = require("path");
 
 import { exec } from "child_process";
-import { BuildSchema } from "../../config";
+import { BuildSchema } from "../../config.js";
 
 const tscPath = path.resolve("./node_modules/.bin/tsc");
 

@@ -7,7 +7,7 @@
     "@azure/msal-node": "^1.0.0-beta.2",
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@microsoft/microsoft-graph-types": "^1.26.0",
-    "@pnp/buildsystem": "^2.2.3",
+    "@pnp/buildsystem": "^2.3.1",
     "@types/adal-angular": "^1.0.1",
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "7.1.0",
@@ -58,7 +58,7 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "test": "npm run lint && mocha",
+    "test": "tsc -p ./test/tsconfig.json && mocha",
     "build": "pnpbuild -n build",
     "buildDebug": "npm run clean && pnpbuild -n build-debug",
     "cbuild": "npm run clean && pnpbuild -n build",
@@ -98,5 +98,8 @@
   "bugs": {
     "url": "https://github.com/pnp/pnpjs/issues"
   },
-  "homepage": "https://github.com/pnp/pnpjs"
+  "homepage": "https://github.com/pnp/pnpjs",
+  "dependencies": {
+    "ci": "^1.0.0"
+  }
 }

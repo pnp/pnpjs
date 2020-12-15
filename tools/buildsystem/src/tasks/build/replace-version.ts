@@ -1,6 +1,6 @@
 declare var require: (s: string) => any;
 const path = require("path");
-import { BuildSchema } from "../../config";
+import { BuildSchema } from "../../config.js";
 // they broke the types in replace-in-file so we need to import it this way
 const replace = require("replace-in-file");
 

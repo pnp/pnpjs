@@ -18,13 +18,11 @@ module.exports = {
     rules: {
         // updated to address conflicts with code base / typescript such as interface redeclare, etc.
 
-        // reason: errors on redeclaring interfaces for selective imports
-        "no-shadow": "off",
         // reason: @typescript-eslint/indent says to disable indent so it works correctly
         "indent": "off",
         // reason: blocks all use of any on anything exposed by the library
         "@typescript-eslint/explicit-module-boundary-types": "off",
-        // reason: breaks our use of interfaces defined from concrete types
+        // reason: blocks our use of interfaces defined from concrete types
         "@typescript-eslint/no-empty-interface": "off",
 
         // migrated by tool from tslint.json

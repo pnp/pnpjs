@@ -13,8 +13,8 @@ function getAllPackageFolderNames() {
     });
 }
 
-let mode = "cmd";
-let paths = ["./test/main.ts"];
+const basePath = "./build/testing/test/";
+let paths = [`${basePath}main.js`];
 
 // handle package specific config
 if (yargs.packages || yargs.p) {
@@ -35,12 +35,12 @@ if (yargs.packages || yargs.p) {
 
     if (yargs.single || yargs.s) {
         // and only a single set of tests
-        paths.push(resolve(`./test/${processingPackages[0]}/`, (yargs.single || yargs.s) + ".ts"));
+        paths.push(resolve(`${basePath}${processingPackages[0]}/`, (yargs.single || yargs.s) + ".js"));
     } else {
-        paths.push(...processingPackages.map(p => `./test/${p}/**/*.ts`));
+        paths.push(...processingPackages.map(p => `${basePath}${p}/**/*.js`));
     }
 } else {
-    paths.push("./test/**/*.ts");
+    paths.push(`${basePath}**/*.js`);
 }
 
 const reporter = yargs.verbose ? "spec" : "dot";
@@ -53,8 +53,7 @@ const config = {
     ui: "bdd",
     retries: "2",
     require: [
-        "tsconfig-paths/register",
-        "ts-node/register"
+        resolve("./", "tools/local-module-resolver/register.js"),
     ],
     spec: paths,
 };

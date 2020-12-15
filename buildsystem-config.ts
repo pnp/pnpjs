@@ -1,8 +1,8 @@
 import { resolve } from "path";
-import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "./tools/buildsystem";
-import { webpack } from "./tools/buildsystem/src/tasks/package/webpack";
+import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
+const webpack = Tasks.Package.webpack;
 import * as wp from "webpack";
-// const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+
 const pkg = require("./package.json");
 
 const banner = [
@@ -41,7 +41,7 @@ export default <ConfigCollection>[
     },
     <PackageSchema>{
 
-        name: "package",
+            name: "package",
 
         role: "package",
 
@@ -55,9 +55,9 @@ export default <ConfigCollection>[
                     Tasks.Package.createCopyTargetFiles(),
                     Tasks.Package.copyStaticAssets,
                     Tasks.Package.createWritePackageFiles((p) => {
-                        return Object.assign({}, p, {
-                            funding: {
-                                "type": "individual",
+                        return Object.assign({ }, p, {
+                funding: {
+                "type": "individual",
                                 "url": "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "module",
@@ -83,9 +83,9 @@ export default <ConfigCollection>[
                     Tasks.Package.copyStaticAssets,
                     Tasks.Package.createWritePackageFiles(p => {
 
-                        const newP = Object.assign({}, p, {
-                            funding: {
-                                "type": "individual",
+                        const newP = Object.assign({ }, p, {
+                funding: {
+                "type": "individual",
                                 "url": "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "commonjs",
@@ -94,7 +94,7 @@ export default <ConfigCollection>[
                         // selective imports don't work in commonjs or matter for nodejs
                         // so we retarget main to the preset for these libraries (and update typings pointer)
                         if (newP.name.match(/\/sp$|\/graph$/)) {
-                            newP.main = "./presets/all.js";
+                newP.main = "./presets/all.js";
                             newP.typings = "./presets/all";
                         }
 
@@ -103,13 +103,13 @@ export default <ConfigCollection>[
 
                         // and we need to rewrite the dependencies to point to the commonjs ones
                         if (newP.dependencies) {
-                            const newDeps = {};
+                            const newDeps = { };
                             for (const key in newP.dependencies) {
 
                                 if (key.startsWith("@pnp/")) {
-                                    newDeps[`${key}-commonjs`] = newP.dependencies[key];
+                newDeps[`${key}-commonjs`] = newP.dependencies[key];
                                 } else {
-                                    newDeps[key] = newP.dependencies[key];
+                newDeps[key] = newP.dependencies[key];
                                 }
                             }
 
@@ -125,46 +125,30 @@ export default <ConfigCollection>[
         postPackageTasks: [
             webpack({
                 devtool: "source-map",
-                // entry: resolve("./packages/pnpjs/index.ts"),
                 entry: resolve("./build/packages/esm/pnpjs/index.js"),
                 mode: "production",
-                module: {
-                    rules: [
-                        {
-                            test: /\.ts$/,
-                            use: [{
-                                loader: "ts-loader",
-                                options: {
-                                    configFile: resolve("./packages/pnpjs/tsconfig.esm.json"),
-                                    // projectReferences: true,
-                                    transpileOnly: true,
-                                },
-                            }],
-                        },
-                    ],
-                },
                 output: {
-                    filename: "pnp.js",
+                filename: "pnp.js",
                     library: "pnp",
                     libraryTarget: "umd",
                     path: resolve("./dist/packages/esm/pnpjs/dist"),
                 },
                 performance: {
-                    // we are making a big package, but this is designed to be non-optimal
-                    maxAssetSize: 400000,
+                // we are making a big package, but this is designed to be non-optimal
+                maxAssetSize: 400000,
                     maxEntrypointSize: 400000,
                 },
                 plugins: [
                     new wp.BannerPlugin({
-                        banner,
-                        raw: true,
+                banner,
+                raw: true,
                     }),
                 ],
                 resolve: {
-                    alias: {
-                        // a list of module name aliases
-                        // aliases are imported relative to the current context
-                        "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
+                alias: {
+                // a list of module name aliases
+                // aliases are imported relative to the current context
+                "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
                         "@pnp/common": resolve(__dirname, "build/packages/esm/common"),
                         "@pnp/logging": resolve(__dirname, "build/packages/esm/logging"),
                         // tslint:disable-next-line: object-literal-sort-keys
@@ -176,10 +160,9 @@ export default <ConfigCollection>[
                         "@pnp/sp-addinhelpers": resolve(__dirname, "build/packages/esm/sp-addinhelpers"),
                     },
                     extensions: [".js", ".ts", ".json"],
-                    // plugins: [new TsconfigPathsPlugin({ configFile: resolve("./packages/pnpjs/tsconfig.esm.json") })],
                 },
                 stats: {
-                    assets: false,
+                assets: false,
                     colors: true,
                 },
             }),
@@ -187,7 +170,7 @@ export default <ConfigCollection>[
     },
     <PublishSchema>{
 
-        name: "publish",
+                name: "publish",
 
         role: "publish",
 
@@ -203,7 +186,7 @@ export default <ConfigCollection>[
         postPublishTasks: [],
     },
     <BuildSchema>{
-        name: "build-debug",
+                    name: "build-debug",
 
         role: "build",
 
@@ -223,7 +206,7 @@ export default <ConfigCollection>[
     },
     <PublishSchema>{
 
-        name: "publish-beta",
+                        name: "publish-beta",
 
         role: "publish",
 

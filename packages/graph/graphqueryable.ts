@@ -1,5 +1,5 @@
 import { combine, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/odata";
 import { GraphEndpoints } from "./types.js";
 import { graphGet } from "./operations.js";
 
@@ -130,6 +130,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 }
 
 export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> { }
+// this interface is to fix build issues when moving to typescript 4. _SharePointQueryable is itself not invokable but we need to match signatures
+// eslint-disable-next-line no-redeclare
+export interface _GraphQueryable<GetType = any> {
+    <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
+}
 export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQueryable);
 
 /**

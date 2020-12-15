@@ -8,7 +8,7 @@ import { ISiteDesignRun } from "@pnp/sp/site-designs";
 import { sp } from "@pnp/sp";
 import { testSettings } from "../main.js";
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => {
+const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
 }, ms));
 

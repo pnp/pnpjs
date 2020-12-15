@@ -10,7 +10,11 @@ import { getRandomString, combine } from "@pnp/common";
 import { sp } from "@pnp/sp";
 import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import findupSync = require("findup-sync");
+
+// give outselves a single reference to the projectRoot
+const projectRoot = resolve(dirname(findupSync("package.json")));
 
 describe("files", () => {
 
@@ -114,7 +118,7 @@ describe("files", () => {
         it.skip("addChunked", async function () {
 
             const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
-            const content = readFileSync(resolve(__dirname, "./assets/sample_file.jpg"));
+            const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
             const far = await files.addChunked(name, <any>content, null, true, 1000000);
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(far).to.not.be.null;

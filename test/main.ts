@@ -164,6 +164,8 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     const settingsPart: Partial<ISPConfigurationPart> = {
         sp: {
             baseUrl: ts.sp.url,
+            fetchClientFactory: null,
+            headers: {},
         },
     };
 
@@ -240,7 +242,11 @@ async function spTestSetup(ts: ISettings): Promise<void> {
 
 async function graphTestSetup(ts: ISettings): Promise<void> {
 
-    const settingsPart: IGraphConfigurationPart = { graph: {} };
+    const settingsPart: IGraphConfigurationPart = {
+        graph: {
+            fetchClientFactory: null,
+        },
+    };
 
     if (useMSAL) {
 

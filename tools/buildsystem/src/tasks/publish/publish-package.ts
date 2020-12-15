@@ -1,8 +1,8 @@
 import { exec } from "child_process";
-import { PublishSchema } from "../../config";
+import { PublishSchema } from "../../config.js";
 const colors = require("ansi-colors");
 import * as path from "path";
-import getSubDirNames from "../../lib/getSubDirectoryNames";
+import getSubDirNames from "../../lib/getSubDirectoryNames.js";
 const log = require("fancy-log");
 
 export function publishPackage(_version: string, config: PublishSchema): Promise<any> {

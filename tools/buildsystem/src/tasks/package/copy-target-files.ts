@@ -2,8 +2,8 @@ declare var require: (path: string) => any;
 import * as pump from "pump";
 import { src, dest } from "gulp";
 import { resolve, dirname } from "path";
-import { PackageTargetMap, PackageFunction } from "../../config";
-import getSubDirectoryNames from "../../lib/getSubDirectoryNames";
+import { PackageTargetMap, PackageFunction } from "../../config.js";
+import getSubDirectoryNames from "../../lib/getSubDirectoryNames.js";
 import { obj, TransformFunction } from "through2";
 
 interface TSConfig {
