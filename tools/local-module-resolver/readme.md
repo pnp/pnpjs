@@ -7,3 +7,12 @@ To use it with mocha you need to supply a require entry to mocha:
 mocha --require ./tools/local-module-resolver/register.js
 
 see: [.mocharc.js](../../.mocharc.js) for a code config example
+
+## Updating
+
+1) You will need to update the .ts files in this folder
+2) Run `npx tsc -p tsconfig.json` to transpile to js
+3) Test using `npm test -- --msal` (or settings as appropriate)
+4) Check in the latest .js output so the resolver with updates is available for all
+
+We are not currently publishing this as its own package, seems like overkill for now.
