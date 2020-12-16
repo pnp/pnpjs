@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.13 - 2020-Dec-14
+
+### Added
+
+- graph: Added new method to get the Team Site for a Group [@RamPrasadMeenavalli](https://github.com/RamPrasadMeenavalli) [[PR](https://github.com/pnp/pnpjs/pull/1446)]
+- general: Adding MSAL support for local dev and tests, updating actions to use [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1454)]
+- sp: Adds and updates for Taxonomy issues [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1465)]
+- graph: Add create for teams endpoint, Adds team getOperationId, Updates cloneTeam response type [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1469)]
+
+### Changed
+
+- docs: Updated SPFx On-Prem & TypeScript (alternative) docs [@koltyakov](https://github.com/koltyakov) [[PR](https://github.com/pnp/pnpjs/pull/1473)]
+- sp: Add NextHref prop in IRenderListDataAsStreamResult [@Leomaradan](https://github.com/Leomaradan) [[PR](https://github.com/pnp/pnpjs/pull/1453)]
+
+### Fixed
+
+- sp: Fixed issue with addChunked method [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1463)]
+- docs: Updating methods for valid syntax [@bcameron1231](https://github.com/bcameron1231) [[PR](https://github.com/pnp/pnpjs/pull/1459)]
+- docs: HubSite Documentation Fix [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1450)]
+- docs: Spelling fix sp-app-registration.md [@RamPrasadMeenavalli](https://github.com/RamPrasadMeenavalli) [[PR](https://github.com/pnp/pnpjs/pull/1442)]
+- docs: Spelling fix mkdocs.yml [@RamPrasadMeenavalli](https://github.com/RamPrasadMeenavalli) [[PR](https://github.com/pnp/pnpjs/pull/1441)]
+
 ## 2.0.12 - 2020-Nov-16
 
 ### Added

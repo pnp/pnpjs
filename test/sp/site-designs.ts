@@ -203,7 +203,6 @@ describe("SiteDesigns", function () {
         });
 
         it("gets a site design run status", async function () {
-            this.enableTimeouts(false);
 
             const title = `Test_add_task_run_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({

@@ -1,7 +1,7 @@
 {
   "name": "@pnp/monorepo",
   "private": true,
-  "version": "2.1.0-beta8",
+  "version": "2.1.0-beta9",
   "description": "A JavaScript library for SharePoint development.",
   "devDependencies": {
     "@azure/msal-node": "^1.0.0-beta.2",
@@ -66,9 +66,9 @@
     "just-publish": "pnpbuild -n publish",
     "pnp-publish": "cd tools/publish && publish-win.bat",
     "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
-    "lint": "npx eslint ./packages ./test --ext .ts",
-    "clean": "del-cli \"./?(dist|serve|site|build)\"",
-    "serve": "ts-node -r tsconfig-paths/register ./tools/serve/serve.ts"
+    "lint": "eslint ./packages ./test --ext .ts",
+    "clean": "del-cli \"./?(dist|site|build)\"",
+    "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js"
   },
   "repository": {
     "type": "git",
@@ -93,6 +93,10 @@
     {
       "name": "patrick-rodgers",
       "email": "patrick.rodgers@microsoft.com"
+    },
+    {
+      "name": "juliemturner",
+      "email": "julie.turner@sympraxisconsulting.com"
     }
   ],
   "bugs": {

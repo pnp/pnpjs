@@ -16,7 +16,7 @@ const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
 }, ms));
 
-// give outselves a single reference to the projectRoot
+// give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
 // currrently skipping due to permissions issues

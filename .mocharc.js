@@ -53,7 +53,7 @@ const config = {
     ui: "bdd",
     retries: "2",
     require: [
-        resolve("./", "tools/local-module-resolver/register.js"),
+        resolve("./", "build/testing/tools/local-module-resolver/register.js"),
     ],
     spec: paths,
 };

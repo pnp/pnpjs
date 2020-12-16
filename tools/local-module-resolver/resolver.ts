@@ -2,7 +2,7 @@
 import { resolve, dirname, join } from "path";
 import * as findup from "findup-sync";
 
-// give outselves a single reference to the projectRoot
+// give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findup("package.json")));
 
 /**

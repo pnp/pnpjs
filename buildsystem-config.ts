@@ -41,7 +41,7 @@ export default <ConfigCollection>[
     },
     <PackageSchema>{
 
-            name: "package",
+        name: "package",
 
         role: "package",
 
@@ -55,9 +55,9 @@ export default <ConfigCollection>[
                     Tasks.Package.createCopyTargetFiles(),
                     Tasks.Package.copyStaticAssets,
                     Tasks.Package.createWritePackageFiles((p) => {
-                        return Object.assign({ }, p, {
-                funding: {
-                "type": "individual",
+                        return Object.assign({}, p, {
+                            funding: {
+                                "type": "individual",
                                 "url": "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "module",
@@ -83,9 +83,9 @@ export default <ConfigCollection>[
                     Tasks.Package.copyStaticAssets,
                     Tasks.Package.createWritePackageFiles(p => {
 
-                        const newP = Object.assign({ }, p, {
-                funding: {
-                "type": "individual",
+                        const newP = Object.assign({}, p, {
+                            funding: {
+                                "type": "individual",
                                 "url": "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "commonjs",
@@ -94,7 +94,7 @@ export default <ConfigCollection>[
                         // selective imports don't work in commonjs or matter for nodejs
                         // so we retarget main to the preset for these libraries (and update typings pointer)
                         if (newP.name.match(/\/sp$|\/graph$/)) {
-                newP.main = "./presets/all.js";
+                            newP.main = "./presets/all.js";
                             newP.typings = "./presets/all";
                         }
 
@@ -103,13 +103,13 @@ export default <ConfigCollection>[
 
                         // and we need to rewrite the dependencies to point to the commonjs ones
                         if (newP.dependencies) {
-                            const newDeps = { };
+                            const newDeps = {};
                             for (const key in newP.dependencies) {
 
                                 if (key.startsWith("@pnp/")) {
-                newDeps[`${key}-commonjs`] = newP.dependencies[key];
+                                    newDeps[`${key}-commonjs`] = newP.dependencies[key];
                                 } else {
-                newDeps[key] = newP.dependencies[key];
+                                    newDeps[key] = newP.dependencies[key];
                                 }
                             }
 
@@ -128,27 +128,27 @@ export default <ConfigCollection>[
                 entry: resolve("./build/packages/esm/pnpjs/index.js"),
                 mode: "production",
                 output: {
-                filename: "pnp.js",
+                    filename: "pnp.js",
                     library: "pnp",
                     libraryTarget: "umd",
                     path: resolve("./dist/packages/esm/pnpjs/dist"),
                 },
                 performance: {
-                // we are making a big package, but this is designed to be non-optimal
-                maxAssetSize: 400000,
+                    // we are making a big package, but this is designed to be non-optimal
+                    maxAssetSize: 400000,
                     maxEntrypointSize: 400000,
                 },
                 plugins: [
                     new wp.BannerPlugin({
-                banner,
-                raw: true,
+                        banner,
+                        raw: true,
                     }),
                 ],
                 resolve: {
-                alias: {
-                // a list of module name aliases
-                // aliases are imported relative to the current context
-                "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
+                    alias: {
+                        // a list of module name aliases
+                        // aliases are imported relative to the current context
+                        "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
                         "@pnp/common": resolve(__dirname, "build/packages/esm/common"),
                         "@pnp/logging": resolve(__dirname, "build/packages/esm/logging"),
                         // tslint:disable-next-line: object-literal-sort-keys
@@ -162,7 +162,7 @@ export default <ConfigCollection>[
                     extensions: [".js", ".ts", ".json"],
                 },
                 stats: {
-                assets: false,
+                    assets: false,
                     colors: true,
                 },
             }),
@@ -170,7 +170,7 @@ export default <ConfigCollection>[
     },
     <PublishSchema>{
 
-                name: "publish",
+        name: "publish",
 
         role: "publish",
 
@@ -186,7 +186,7 @@ export default <ConfigCollection>[
         postPublishTasks: [],
     },
     <BuildSchema>{
-                    name: "build-debug",
+        name: "build-debug",
 
         role: "build",
 
@@ -206,7 +206,7 @@ export default <ConfigCollection>[
     },
     <PublishSchema>{
 
-                        name: "publish-beta",
+        name: "publish-beta",
 
         role: "publish",
 

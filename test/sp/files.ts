@@ -13,7 +13,7 @@ import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync = require("findup-sync");
 
-// give outselves a single reference to the projectRoot
+// give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
 
 describe("files", () => {

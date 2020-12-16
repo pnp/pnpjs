@@ -1,33 +1,14 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "es2015",
-        "module": "commonjs",
-        "baseUrl": ".",
-        "rootDir": "../../",
-        "outDir": "../../serve/",
-        "declaration": true,
-        "declarationMap": true,
-        "types": [
-            "sharepoint"
-        ],
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "paths": {
-            "@pnp/*": [
-                "../../packages/*"
-            ]
-        },
-        "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
-        "inlineSources": true,
-        "sourceMap": true,
-        "skipDefaultLibCheck": true,
-        "skipLibCheck": true,
-        "experimentalDecorators": true
+        "outDir": "../../build/server/",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "composite": false,
+        "incremental": true,
     },
-    "files": [
-        "./main.ts"
+    "include": [
+        "./**/*.ts",
+        "../../packages/**/*.ts"
     ]
 }
