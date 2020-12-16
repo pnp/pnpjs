@@ -3,12 +3,11 @@
     "files.exclude": {
         "**/.git": true,
         "**/.DS_Store": true,
-        "lib": false,
         "**/node_modules": true,
         "coverage": true,
         ".nyc_output": true,
-        "build": false,
-        "dist": false,
+        "build": true,
+        "dist": true,
         "site": true
     },
     "typescript.validate.enable": true,
