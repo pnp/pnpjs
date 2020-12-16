@@ -56,9 +56,6 @@ import "@pnp/sp/content-types/web";
 
 If you only need to access content types on the web object you can reduce size by only importing that piece.
 
-> **Gotcha**
-> If you import only an interface from a sub-module AND rely on the functionality within that module you need to include two separate imports. The reason being that during testing it will pull the default imports (because we are using ts-node) but the interface only import statement will be stripped when it is transpiled.
-
 ```TypeScript
 // this will fail
 import { sp } from "@pnp/sp";
