@@ -25,7 +25,7 @@ export interface IGraphConfiguration extends ILibraryConfiguration, IGraphConfig
 
 onRuntimeCreate((runtime: Runtime) => {
 
-    const existing = runtime.get<IGraphConfigurationPart>("graph");
+    const existing = runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph");
 
     const graphPart = Object.assign({}, {
         fetchClientFactory: () => {
@@ -38,7 +38,7 @@ onRuntimeCreate((runtime: Runtime) => {
         },
     }, existing);
 
-    runtime.assign(graphPart);
+    runtime.assign({ graph: graphPart });
 });
 
 export function setup(config: IGraphConfiguration, runtime = DefaultRuntime): void {
