@@ -28,6 +28,8 @@ export {
     Teams,
 } from "./types.js";
 
+// ITeamProperties, ITabsConfiguration,
+
 declare module "../groups/types" {
     interface _Group {
         readonly team: ITeam;
