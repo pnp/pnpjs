@@ -21,4 +21,4 @@ jobs:
       - name: Run lint 
         run: npm run lint
       - name: Run tests
-        run: npx mocha --mode push --cleanup --msal
+        run: npm test -- --mode push --cleanup --msal
