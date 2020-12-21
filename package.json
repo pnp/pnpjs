@@ -17,7 +17,7 @@
     "@types/gulp": "^4.0.6",
     "@types/gulp-replace": "^0.0.31",
     "@types/jsonwebtoken": "^8.3.2",
-    "@types/mocha": "^5.2.6",
+    "@types/mocha": "^8.2.0",
     "@types/node": "^10.11.3",
     "@types/pump": "^1.0.1",
     "@types/sharepoint": "^2016.1.2",
