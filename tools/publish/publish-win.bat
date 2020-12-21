@@ -30,6 +30,7 @@ call npm install
 ::
 call npm version patch
 git push
+git push --tags
 
 ::
 :: publish the packages
