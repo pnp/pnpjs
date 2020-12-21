@@ -10,21 +10,21 @@ import {
     spInvokableFactory,
     deleteableWithETag,
     IDeleteableWithETag,
-} from "../sharepointqueryable";
-import { IChangeQuery } from "../types";
-import { odataUrlFrom } from "../odata";
-import { metadata } from "../utils/metadata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { tag } from "../telemetry";
-import { IBasePermissions } from "../security/types";
-import { IFieldInfo } from "../fields/types";
-import { IFormInfo } from "../forms/types";
-import { IFolderInfo } from "../folders/types";
-import { IViewInfo } from "../views/types";
-import { IUserCustomActionInfo } from "../user-custom-actions/types";
-import { IResourcePath, toResourcePath } from "../utils/toResourcePath";
+} from "../sharepointqueryable.js";
+import { IChangeQuery } from "../types.js";
+import { odataUrlFrom } from "../odata.js";
+import { metadata } from "../utils/metadata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { tag } from "../telemetry.js";
+import { IBasePermissions } from "../security/types.js";
+import { IFieldInfo } from "../fields/types.js";
+import { IFormInfo } from "../forms/types.js";
+import { IFolderInfo } from "../folders/types.js";
+import { IViewInfo } from "../views/types.js";
+import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
+import { IResourcePath, toResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("lists")
 export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
@@ -129,7 +129,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
         return List(odataUrlFrom(json));
     }
 }
-export interface ILists extends _Lists { }
+export interface ILists extends _Lists {}
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
 export class _List extends _SharePointQueryableInstance<IListInfo> {
@@ -184,11 +184,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
 
         const data = await spPost(this, postBody);
 
-        let list: any = this;
-
-        if (hOP(properties, "Title")) {
-            list = this.getParent(List, this.parentUrl, `getByTitle('${properties.Title}')`);
-        }
+        const list: IList = hOP(properties, "Title") ? this.getParent(List, this.parentUrl, `getByTitle('${properties.Title}')`) : List(this);
 
         return {
             data,
@@ -215,7 +211,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand(...expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
     }
 
     /**
@@ -225,7 +221,11 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     @tag("l.ChangesSinceToken")
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
-        const o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse(r: Response) { return r.text(); } });
+        const o = this.clone(List, "getlistitemchangessincetoken").usingParser({
+            parse(r: Response) {
+                return r.text();
+            },
+        });
         return spPost(o, body({ "query": assign(metadata("SP.ChangeLogItemQuery"), query) }));
     }
 
@@ -319,7 +319,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      * @param decodedUrl Path decoded url; folder's server relative path.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      * @param checkInComment Optional check in comment.
-     * @param additionalProps Optional set of additional properties LeafName new document file name, 
+     * @param additionalProps Optional set of additional properties LeafName new document file name,
      */
     @tag("l.addValidateUpdateItemUsingPath")
     public async addValidateUpdateItemUsingPath(
@@ -331,11 +331,11 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             /**
              * If creating a document or folder, the name
              */
-            leafName?: string,
+            leafName?: string;
             /**
              * 0: File, 1: Folder, 2: Web
              */
-            objectType?: 0 | 1 | 2,
+            objectType?: 0 | 1 | 2;
         },
     ): Promise<IListItemFormUpdateValue[]> {
 
@@ -517,36 +517,36 @@ export interface IListFormData {
     ListSchema?: any;
     FormControlMode?: number;
     FieldControlModes?: {
-        Title?: number,
-        Author?: number,
-        Editor?: number,
-        Created?: number,
-        Modified?: number,
-        Attachments?: number,
+        Title?: number;
+        Author?: number;
+        Editor?: number;
+        Created?: number;
+        Modified?: number;
+        Attachments?: number;
     };
     WebAttributes?: {
-        WebUrl?: string,
-        EffectivePresenceEnabled?: boolean,
-        AllowScriptableWebParts?: boolean,
-        PermissionCustomizePages?: boolean,
-        LCID?: number,
-        CurrentUserId?: number,
+        WebUrl?: string;
+        EffectivePresenceEnabled?: boolean;
+        AllowScriptableWebParts?: boolean;
+        PermissionCustomizePages?: boolean;
+        LCID?: number;
+        CurrentUserId?: number;
     };
     ItemAttributes?: {
-        Id?: number,
-        FsObjType?: number,
-        ExternalListItem?: boolean,
-        Url?: string,
-        EffectiveBasePermissionsLow?: number,
-        EffectiveBasePermissionsHigh?: number,
+        Id?: number;
+        FsObjType?: number;
+        ExternalListItem?: boolean;
+        Url?: string;
+        EffectiveBasePermissionsLow?: number;
+        EffectiveBasePermissionsHigh?: number;
     };
     ListAttributes?: {
-        Id?: string,
-        BaseType?: number,
-        Direction?: string,
-        ListTemplateType?: number,
-        DefaultItemOpen?: number,
-        EnableVersioning?: boolean,
+        Id?: string;
+        BaseType?: number;
+        Direction?: string;
+        ListTemplateType?: number;
+        DefaultItemOpen?: number;
+        EnableVersioning?: boolean;
     };
     CSRCustomLayout?: boolean;
     PostBackRequired?: boolean;
@@ -696,7 +696,7 @@ export interface IListInfo {
     HasExternalDataSource: boolean;
     Hidden: boolean;
     Id: string;
-    ImagePath: { DecodedUrl: string; };
+    ImagePath: { DecodedUrl: string };
     ImageUrl: string;
     InformationRightsManagementSettings: any[];
     IrmEnabled: boolean;
@@ -718,7 +718,7 @@ export interface IListInfo {
     MultipleDataList: boolean;
     NoCrawl: boolean;
     OnQuickLaunch: boolean;
-    ParentWebPath: { DecodedUrl: string; };
+    ParentWebPath: { DecodedUrl: string };
     ParentWebUrl: string;
     ParserDisabled: boolean;
     ReadSecurity: number;

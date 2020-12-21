@@ -1,4 +1,4 @@
-import { IConfigurationProvider } from "../configuration";
+import { IConfigurationProvider } from "../configuration.js";
 import { ITypedHash, IPnPClientStore, PnPClientStorage } from "@pnp/common";
 
 /**

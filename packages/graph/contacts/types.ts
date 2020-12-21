@@ -1,8 +1,8 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { ITypedHash, assign } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators";
-import { graphPost } from "../operations";
+import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
+import { graphPost } from "../operations.js";
 import { body } from "@pnp/odata";
 
 /**
@@ -23,7 +23,7 @@ export class _Contacts extends _GraphQueryableCollection<IContactType[]> {
 
     /**
     * Create a new Contact for the user.
-    * 
+    *
     * @param givenName The contact's given name.
     * @param surName The contact's surname.
     * @param emailAddresses The contact's email addresses.
@@ -82,7 +82,7 @@ export class _ContactFolders extends _GraphQueryableCollection<IContactFolderTyp
 
     /**
      * Create a new Contact Folder for the user.
-     * 
+     *
      * @param displayName The folder's display name.
      * @param parentFolderId The ID of the folder's parent folder.
      */

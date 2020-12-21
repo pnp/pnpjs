@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { ISite, Site } from "./types";
+import { SPRest } from "../rest.js";
+import { ISite, Site } from "./types.js";
 
 export {
     IOpenWebByIdResult,
@@ -7,7 +7,7 @@ export {
     Site,
     IContextInfo,
     IDocumentLibraryInformation,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -19,6 +19,8 @@ Reflect.defineProperty(SPRest.prototype, "site", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return Site(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Site(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

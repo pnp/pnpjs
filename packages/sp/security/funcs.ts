@@ -1,7 +1,7 @@
-import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types";
-import { _SharePointQueryableInstance, _SharePointQueryable, SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable";
+import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
+import { SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable.js";
 import { hOP } from "@pnp/common";
-import { spPost } from "../operations";
+import { spPost } from "../operations.js";
 
 /**
 * Gets the effective permissions for the user supplied
@@ -76,7 +76,7 @@ export async function currentUserHasPermissions(this: SecurableQueryable, permis
  * @param value The security principal's permissions on the given object
  * @param perm The permission checked against the value
  */
-/* tslint:disable:no-bitwise */
+/* eslint-disable no-bitwise */
 export function hasPermissions(value: IBasePermissions, perm: PermissionKind): boolean {
 
     if (!perm) {
@@ -98,4 +98,4 @@ export function hasPermissions(value: IBasePermissions, perm: PermissionKind): b
     }
     return false;
 }
-/* tslint:enable */
+/* eslint-enable no-bitwise */

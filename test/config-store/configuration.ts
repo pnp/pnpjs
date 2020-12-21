@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as Collections from "@pnp/common";
 import { Settings } from "../../packages/config-store";
-import { default as MockConfigurationProvider } from "./mock-configurationprovider";
+import { default as MockConfigurationProvider } from "./mock-configurationprovider.js";
 
 describe("Configuration", () => {
 
@@ -94,9 +94,13 @@ describe("Configuration", () => {
             mockProvider.shouldThrow = true;
             const p = settings.load(mockProvider);
             return p.then(
-                () => { expect.fail(null, null, "Should not resolve when provider throws!"); },
-                // tslint:disable-next-line:no-unused-expression
-                (reason) => { expect(reason).not.to.be.null; },
+                () => {
+                    expect.fail(null, null, "Should not resolve when provider throws!");
+                },
+                (reason) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    expect(reason).not.to.be.null;
+                },
             );
         });
 
@@ -105,9 +109,13 @@ describe("Configuration", () => {
             mockProvider.shouldReject = true;
             const p = settings.load(mockProvider);
             return p.then(
-                () => { expect.fail(null, null, "Should not resolve when provider rejects!"); },
-                // tslint:disable-next-line:no-unused-expression
-                (reason) => { expect(reason).not.to.be.null; },
+                () => {
+                    expect.fail(null, null, "Should not resolve when provider rejects!");
+                },
+                (reason) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    expect(reason).not.to.be.null;
+                },
             );
         });
     });

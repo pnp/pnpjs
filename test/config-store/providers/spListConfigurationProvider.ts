@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { SPListConfigurationProvider } from "../../../packages/config-store";
-import MockStorage from "../mock-storage";
+import { MockStorage }  from "../../types.js";
 // import { TypedHash }  from "@pnp/common";
 import { Web, IWeb } from "@pnp/sp/presets/all";
 
-declare var global: any;
+declare let global: any;
 
 describe("Configuration", () => {
 

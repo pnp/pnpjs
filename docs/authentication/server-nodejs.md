@@ -46,7 +46,7 @@ graph.setup({
     fetchClientFactory: () => {
       return new MsalFetchClient({
         auth: {
-          authority: "https://login.microsoftonline.com/{tenant id or common}",
+          authority: "https://login.microsoftonline.com/{tenant id or common}/",
           clientId: "{guid}",
           clientSecret: "{client secret}",
         }
@@ -88,7 +88,7 @@ sp.setup({
     fetchClientFactory: () => {
       return new MsalFetchClient({
         auth: {
-          authority: "https://login.microsoftonline.com/{tenant id or common}",
+          authority: "https://login.microsoftonline.com/{tenant id or common}/",
           clientCertificate: {
             thumbprint: "{certificate thumbprint, displayed in AAD}",
             privateKey: buffer.toString(),

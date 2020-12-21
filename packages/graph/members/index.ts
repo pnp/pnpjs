@@ -1,8 +1,8 @@
-import "./groups";
+import "./groups.js";
 
 export {
     IMember,
     IMembers,
     Member,
     Members,
-} from "./types";
+} from "./types.js";

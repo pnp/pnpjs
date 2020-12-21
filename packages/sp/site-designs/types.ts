@@ -1,9 +1,9 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/odata";
-import { spPost } from "../operations";
+import { spPost } from "../operations.js";
 import { hOP } from "@pnp/common";
-import { tag } from "../telemetry";
+import { tag } from "../telemetry.js";
 
 export class _SiteDesigns extends _SharePointQueryable {
 
@@ -18,12 +18,12 @@ export class _SiteDesigns extends _SharePointQueryable {
 
     /**
      * Creates a new site design available to users when they create a new site from the SharePoint home page.
-     * 
+     *
      * @param creationInfo A sitedesign creation information object
      */
     @tag("sd.createSiteDesign")
     public createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, `CreateSiteDesign`).execute<ISiteDesignInfo>({ info: creationInfo });
+        return this.clone(SiteDesignsCloneFactory, "CreateSiteDesign").execute<ISiteDesignInfo>({ info: creationInfo });
     }
 
     /**
@@ -34,7 +34,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.applySiteDesign")
     public applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, `ApplySiteDesign`).execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
+        return this.clone(SiteDesignsCloneFactory, "ApplySiteDesign").execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
     }
 
     /**
@@ -42,7 +42,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesigns")
     public getSiteDesigns(): Promise<ISiteDesignInfo[]> {
-        return this.clone(SiteDesignsCloneFactory, `GetSiteDesigns`).execute<ISiteDesignInfo[]>({});
+        return this.clone(SiteDesignsCloneFactory, "GetSiteDesigns").execute<ISiteDesignInfo[]>({});
     }
 
     /**
@@ -51,17 +51,17 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesignMetadata")
     public getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignMetadata`).execute<ISiteDesignInfo>({ id: id });
+        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignMetadata").execute<ISiteDesignInfo>({ id: id });
     }
 
     /**
      * Updates a site design with new values. In the REST call, all parameters are optional except the site script Id.
-     * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE). 
+     * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE).
      * @param updateInfo A sitedesign update information object
      */
     @tag("sd.updateSiteDesign")
     public updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, `UpdateSiteDesign`).execute<ISiteDesignInfo>({ updateInfo: updateInfo });
+        return this.clone(SiteDesignsCloneFactory, "UpdateSiteDesign").execute<ISiteDesignInfo>({ updateInfo: updateInfo });
     }
 
     /**
@@ -70,7 +70,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.deleteSiteDesign")
     public deleteSiteDesign(id: string): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, `DeleteSiteDesign`).execute<void>({ id: id });
+        return this.clone(SiteDesignsCloneFactory, "DeleteSiteDesign").execute<void>({ id: id });
     }
 
     /**
@@ -79,39 +79,39 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesignRights")
     public getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
-        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRights`).execute<ISiteDesignPrincipals[]>({ id: id });
+        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRights").execute<ISiteDesignPrincipals[]>({ id: id });
     }
 
     /**
      * Grants access to a site design for one or more principals.
      * @param id The ID of the site design to grant rights on.
-     * @param principalNames An array of one or more principals to grant view rights. 
+     * @param principalNames An array of one or more principals to grant view rights.
      *                       Principals can be users or mail-enabled security groups in the form of "alias" or "alias@<domain name>.com"
      * @param grantedRights Always set to 1. This represents the View right.
      */
     @tag("sd.grantSiteDesignRights")
     public grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, `GrantSiteDesignRights`)
+        return this.clone(SiteDesignsCloneFactory, "GrantSiteDesignRights")
             .execute<void>({
-                "grantedRights": grantedRights.toString(),
-                "id": id,
-                "principalNames": principalNames,
-            });
+            "grantedRights": grantedRights.toString(),
+            "id": id,
+            "principalNames": principalNames,
+        });
     }
 
     /**
      * Revokes access from a site design for one or more principals.
      * @param id The ID of the site design to revoke rights from.
-     * @param principalNames An array of one or more principals to revoke view rights from. 
+     * @param principalNames An array of one or more principals to revoke view rights from.
      *                       If all principals have rights revoked on the site design, the site design becomes viewable to everyone.
      */
     @tag("sd.revokeSiteDesignRights")
     public revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, `RevokeSiteDesignRights`)
+        return this.clone(SiteDesignsCloneFactory, "RevokeSiteDesignRights")
             .execute<void>({
-                "id": id,
-                "principalNames": principalNames,
-            });
+            "id": id,
+            "principalNames": principalNames,
+        });
     }
 
     /**
@@ -121,7 +121,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.addSiteDesignTask")
     public addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
-        return this.clone(SiteDesignsCloneFactory, `AddSiteDesignTask`)
+        return this.clone(SiteDesignsCloneFactory, "AddSiteDesignTask")
             .execute<ISiteDesignTask>({ "webUrl": webUrl, "siteDesignId": siteDesignId });
     }
 
@@ -131,7 +131,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.addSiteDesignTaskToCurrentWeb")
     public addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
-        return this.clone(SiteDesignsCloneFactory, `AddSiteDesignTaskToCurrentWeb`)
+        return this.clone(SiteDesignsCloneFactory, "AddSiteDesignTaskToCurrentWeb")
             .execute<ISiteDesignTask>({ "siteDesignId": siteDesignId });
     }
 
@@ -141,7 +141,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesignTask")
     public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
-        const task = await this.clone(SiteDesignsCloneFactory, `GetSiteDesignTask`)
+        const task = await this.clone(SiteDesignsCloneFactory, "GetSiteDesignTask")
             .execute<ISiteDesignTask>({ "taskId": id });
 
         return hOP(task, "ID") ? task : null;
@@ -154,7 +154,7 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesignRun")
     public getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
-        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRun`)
+        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRun")
             .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
     }
 
@@ -165,11 +165,11 @@ export class _SiteDesigns extends _SharePointQueryable {
      */
     @tag("sd.getSiteDesignRunStatus")
     public getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
-        return this.clone(SiteDesignsCloneFactory, `GetSiteDesignRunStatus`)
+        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRunStatus")
             .execute<ISiteScriptActionStatus[]>({ "webUrl": webUrl, runId: runId });
     }
 }
-export interface ISiteDesigns extends _SiteDesigns { }
+export interface ISiteDesigns extends _SiteDesigns {}
 export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
 type SiteDesignsCloneType = ISiteDesigns & ISharePointQueryable & { execute<T>(props: any): Promise<T> };
@@ -209,7 +209,7 @@ export interface ISiteDesignInfo {
      */
     PreviewImageAltText: string;
     /**
-     * True if the site design is applied as the default site design; otherwise, false. 
+     * True if the site design is applied as the default site design; otherwise, false.
      * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
      */
     IsDefault: boolean;
@@ -249,7 +249,7 @@ export interface ISiteDesignCreationInfo {
      */
     PreviewImageAltText?: string;
     /**
-     * (Optional) True if the site design is applied as the default site design; otherwise, false. 
+     * (Optional) True if the site design is applied as the default site design; otherwise, false.
      * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
      */
     IsDefault?: boolean;
@@ -289,8 +289,8 @@ export interface ISiteDesignUpdateInfo {
      */
     PreviewImageAltText?: string;
     /**
-     * (Optional) True if the site design is applied as the default site design; otherwise, false. 
-     * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design. 
+     * (Optional) True if the site design is applied as the default site design; otherwise, false.
+     * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
      * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE).
      */
     IsDefault?: boolean;

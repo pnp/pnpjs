@@ -1,9 +1,9 @@
 import { addProp } from "@pnp/odata";
-import { _Web, Web } from "../webs/types";
-import { Lists, ILists, IList, List } from "./types";
-import { odataUrlFrom } from "../odata";
-import { ISharePointQueryableCollection, SharePointQueryableCollection } from "../sharepointqueryable";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { _Web, Web } from "../webs/types.js";
+import { Lists, ILists, IList, List } from "./types.js";
+import { odataUrlFrom } from "../odata.js";
+import { ISharePointQueryableCollection, SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 declare module "../webs/types" {
     interface _Web {

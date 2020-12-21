@@ -5,7 +5,7 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { CheckinType } from "@pnp/sp/files";
 
 describe("Batching", () => {
@@ -20,7 +20,7 @@ describe("Batching", () => {
 
             const batch = web.createBatch();
 
-            web.inBatch(batch).get().then(_ => {
+            web.inBatch(batch).get().then(() => {
                 order.push(1);
             });
 
@@ -38,19 +38,19 @@ describe("Batching", () => {
 
             const batch = web.createBatch();
 
-            web.inBatch(batch)().then(_ => {
+            web.inBatch(batch)().then(() => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch)().then(_ => {
+            web.lists.inBatch(batch)().then(() => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch)().then(_ => {
+            web.lists.top(2).inBatch(batch)().then(() => {
                 order.push(3);
             });
 
-            web.lists.select("Title").inBatch(batch)().then(_ => {
+            web.lists.select("Title").inBatch(batch)().then(() => {
                 order.push(4);
             });
 
@@ -69,15 +69,15 @@ describe("Batching", () => {
 
             const batch = web.createBatch();
 
-            web.inBatch(batch)().then(_ => {
+            web.inBatch(batch)().then(() => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch)().then(_ => {
+            web.lists.inBatch(batch)().then(() => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch)().then(_ => {
+            web.lists.top(2).inBatch(batch)().then(() => {
                 order.push(3);
             });
 
@@ -101,9 +101,9 @@ describe("Batching", () => {
 
             const entityType = await list.getListItemEntityTypeFullName();
 
-            list.items.inBatch(batch).add({ Title: "Hello 1" }, entityType).then(_ => order.push(1));
+            list.items.inBatch(batch).add({ Title: "Hello 1" }, entityType).then(() => order.push(1));
 
-            list.items.inBatch(batch).add({ Title: "Hello 2" }, entityType).then(_ => order.push(2));
+            list.items.inBatch(batch).add({ Title: "Hello 2" }, entityType).then(() => order.push(2));
 
             await batch.execute();
 

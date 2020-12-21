@@ -1,8 +1,8 @@
-import { IPrincipalInfo } from "../types";
-import { _Web } from "../webs/types";
-import { _File } from "../files/types";
-import { _Item } from "../items/types";
-import { _Folder } from "../folders/types";
+import { IPrincipalInfo } from "../types.js";
+import { _Web } from "../webs/types.js";
+import { _File } from "../files/types.js";
+import { _Item } from "../items/types.js";
+import { _Folder } from "../folders/types.js";
 
 export type ShareableQueryable = _Web | _File | _Folder | _Item;
 
@@ -129,7 +129,7 @@ export interface ISharedFuncs {
      *
      * @param request The SharingInformationRequest Object.
      * @param expands Expand more fields.
-     * 
+     *
      */
     getSharingInformation(request?: ISharingInformationRequest, expands?: string[]): Promise<ISharingInformation>;
     /**

@@ -2,7 +2,7 @@ import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { IList } from "@pnp/sp/lists";
 
 describe("SiteScripts", function () {
@@ -73,7 +73,7 @@ describe("SiteScripts", function () {
         it("fails to delete a site script with non-existing id", function () {
 
             return expect(sp.siteScripts.deleteSiteScript(null),
-                `site script should NOT have been deleted`).to.eventually.be.rejected;
+                "site script should NOT have been deleted").to.eventually.be.rejected;
         });
 
         it("gets the site script metadata", async function () {
@@ -120,7 +120,7 @@ describe("SiteScripts", function () {
         it("gets all the site scripts", async function () {
 
             return expect(sp.siteScripts.getSiteScripts(),
-                `all the site scripts should've been fetched`).to.eventually.be.fulfilled;
+                "all the site scripts should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("gets a site script from a list", async function () {
@@ -129,13 +129,13 @@ describe("SiteScripts", function () {
             createdLists.push(listResult.list);
 
             return expect(listResult.list.getSiteScript(),
-                `the lists site script should've been fetched`).to.eventually.be.fulfilled;
+                "the lists site script should've been fetched").to.eventually.be.fulfilled;
         });
 
         // this is currently experimental so we skip it for testing, not enabled in all tenants
         it.skip("gets a site script from a web", async function () {
             return expect(sp.web.getSiteScript(),
-                `the webs site script should've been fetched`).to.eventually.be.fulfilled;
+                "the webs site script should've been fetched").to.eventually.be.fulfilled;
         });
 
         after(() => {

@@ -1,6 +1,6 @@
-import "./item";
-import "./list";
-import "./web";
+import "./item.js";
+import "./list.js";
+import "./web.js";
 
 export {
     IRoleDefinitions,
@@ -18,4 +18,4 @@ export {
     SecurableQueryable,
     IRoleAssignmentInfo,
     IRoleDefinitionInfo,
-} from "./types";
+} from "./types.js";

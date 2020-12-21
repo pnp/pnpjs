@@ -4,7 +4,7 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 // import { IEmailProperties } from "@pnp/sp/sputilities";
 import { sp } from "@pnp/sp";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, getRandomString } from "@pnp/common";
 import { Web } from "@pnp/sp/webs";

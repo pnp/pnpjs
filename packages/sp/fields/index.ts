@@ -1,6 +1,6 @@
-import "./web";
-import "./list";
-import "./web";
+import "./web.js";
+import "./list.js";
+import "./web.js";
 
 export {
     IFields,
@@ -20,4 +20,4 @@ export {
     UrlFieldFormatType,
     IXmlSchemaFieldCreationInformation,
     IFieldInfo,
-} from "./types";
+} from "./types.js";

@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Site } from "../sites/types";
-import { UserCustomActions, IUserCustomActions } from "./types";
+import { _Site } from "../sites/types.js";
+import { UserCustomActions, IUserCustomActions } from "./types.js";
 
 declare module "../sites/types" {
     interface _Site {

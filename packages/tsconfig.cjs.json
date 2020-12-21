@@ -3,11 +3,7 @@
     "compilerOptions": {
         "rootDir": ".",
         "outDir": "../build/packages/cjs",
-        "module": "commonjs",
-        "lib": [
-            "es2015",
-            "dom"
-        ]
+        "module": "commonjs"
     },
     "include": [],
     "references": [

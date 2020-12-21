@@ -2,7 +2,7 @@ import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import { INavigationNodes } from "@pnp/sp/navigation";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
 
@@ -89,7 +89,7 @@ describe("navigation", () => {
 
                 const data = await nav();
 
-                // tslint:disable-next-line:no-unused-expression
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(data).to.not.be.null;
             });
 

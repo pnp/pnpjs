@@ -1,5 +1,5 @@
-import { _Web } from "../webs/types";
-import { RelatedItemManager, IRelatedItemManager } from "./types";
+import { _Web } from "../webs/types.js";
+import { RelatedItemManager, IRelatedItemManager } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {

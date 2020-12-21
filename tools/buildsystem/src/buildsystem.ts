@@ -1,6 +1,6 @@
-export * from "./builder";
-export * from "./packager";
-export * from "./publisher";
-import * as _Tasks from "./tasks";
-export * from "./config";
+export * from "./builder.js";
+export * from "./packager.js";
+export * from "./publisher.js";
+import * as _Tasks from "./tasks/index.js";
+export * from "./config.js";
 export const Tasks = _Tasks;

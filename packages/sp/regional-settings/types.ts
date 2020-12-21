@@ -5,11 +5,11 @@ import {
     ISharePointQueryableCollection,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { spODataEntity } from "../odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { spODataEntity } from "../odata.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {
@@ -45,7 +45,7 @@ export class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSet
         return results.Items;
     }
 }
-export interface IRegionalSettings extends _RegionalSettings { }
+export interface IRegionalSettings extends _RegionalSettings {}
 export const RegionalSettings = spInvokableFactory<IRegionalSettings>(_RegionalSettings);
 
 @defaultPath("timezone")
@@ -92,7 +92,7 @@ export class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInfo> {
         return hOP(res, "LocalTimeToUTC") ? res.LocalTimeToUTC : res;
     }
 }
-export interface ITimeZone extends _TimeZone { }
+export interface ITimeZone extends _TimeZone {}
 export const TimeZone = spInvokableFactory<ITimeZone>(_TimeZone);
 
 @defaultPath("timezones")
@@ -109,7 +109,7 @@ export class _TimeZones extends _SharePointQueryableCollection<ITimeZoneInfo[]> 
         return spPost(this.clone(TimeZones, `GetById(${id})`).usingParser(spODataEntity(TimeZone)));
     }
 }
-export interface ITimeZones extends _TimeZones { }
+export interface ITimeZones extends _TimeZones {}
 export const TimeZones = spInvokableFactory<ITimeZones>(_TimeZones);
 
 /**

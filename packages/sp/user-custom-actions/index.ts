@@ -1,6 +1,6 @@
-import "./list";
-import "./web";
-import "./site";
+import "./list.js";
+import "./web.js";
+import "./site.js";
 
 export {
     IUserCustomAction,
@@ -12,4 +12,4 @@ export {
     IUserCustomActionInfo,
     UserCustomActionRegistrationType,
     UserCustomActionScope,
-} from "./types";
+} from "./types.js";

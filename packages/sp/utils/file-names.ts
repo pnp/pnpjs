@@ -1,4 +1,6 @@
+// eslint-disable-next-line no-control-regex
 const InvalidFileFolderNameCharsOnlineRegex = /["*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
+// eslint-disable-next-line no-control-regex
 const InvalidFileFolderNameCharsOnPremiseRegex = /["#%*:<>?/\\|\x00-\x1f\x7f-\x9f]/g;
 
 /**

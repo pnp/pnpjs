@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Web } from "../webs/types";
-import { UserCustomActions, IUserCustomActions } from "./types";
+import { _Web } from "../webs/types.js";
+import { UserCustomActions, IUserCustomActions } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {

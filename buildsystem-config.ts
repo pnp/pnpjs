@@ -1,8 +1,8 @@
 import { resolve } from "path";
-import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "./tools/buildsystem";
-import { webpack } from "./tools/buildsystem/src/tasks/package/webpack";
+import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
+const webpack = Tasks.Package.webpack;
 import * as wp from "webpack";
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+
 const pkg = require("./package.json");
 
 const banner = [
@@ -69,7 +69,7 @@ export default <ConfigCollection>[
                 outDir: resolve("./dist/packages/commonjs"),
                 target: resolve("./packages/tsconfig.cjs.json"),
                 tasks: [
-                    Tasks.Package.createCopyTargetFiles("", "", [function(file, _enconding, cb) {
+                    Tasks.Package.createCopyTargetFiles("", "", [function (file, _enconding, cb) {
                         // we need to rewrite all the requires that use @pnp/something to be @pnp/something-commonjs
 
                         if (/\.js$|\.d\.ts$/i.test(file.path)) {
@@ -125,22 +125,8 @@ export default <ConfigCollection>[
         postPackageTasks: [
             webpack({
                 devtool: "source-map",
-                entry: resolve("./packages/pnpjs/index.ts"),
+                entry: resolve("./build/packages/esm/pnpjs/index.js"),
                 mode: "production",
-                module: {
-                    rules: [
-                        {
-                            test: /\.ts$/,
-                            use: [{
-                                loader: "ts-loader",
-                                options: {
-                                    configFile: resolve("./packages/pnpjs/tsconfig.esm.json"),
-                                    // we can't use transpile only mode, webpack produces a ton of warnings (errors in 5)
-                                },
-                            }],
-                        },
-                    ],
-                },
                 output: {
                     filename: "pnp.js",
                     library: "pnp",
@@ -159,8 +145,21 @@ export default <ConfigCollection>[
                     }),
                 ],
                 resolve: {
-                    extensions: [".ts", ".tsx", ".js", ".json"],
-                    plugins: [new TsconfigPathsPlugin({ configFile: resolve("./packages/pnpjs/tsconfig.esm.json") })],
+                    alias: {
+                        // a list of module name aliases
+                        // aliases are imported relative to the current context
+                        "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
+                        "@pnp/common": resolve(__dirname, "build/packages/esm/common"),
+                        "@pnp/logging": resolve(__dirname, "build/packages/esm/logging"),
+                        // tslint:disable-next-line: object-literal-sort-keys
+                        "@pnp/config-store": resolve(__dirname, "build/packages/esm/config-store"),
+                        "@pnp/graph": resolve(__dirname, "build/packages/esm/graph"),
+                        "@pnp/msaljsclient": resolve(__dirname, "build/packages/esm/msaljsclient"),
+                        "@pnp/odata": resolve(__dirname, "build/packages/esm/odata"),
+                        "@pnp/sp": resolve(__dirname, "build/packages/esm/sp"),
+                        "@pnp/sp-addinhelpers": resolve(__dirname, "build/packages/esm/sp-addinhelpers"),
+                    },
+                    extensions: [".js", ".ts", ".json"],
                 },
                 stats: {
                     assets: false,

@@ -1,10 +1,10 @@
-import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable";
+import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 
 /**
  * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range,
  * from the user's default calendar, or from some other calendar of the user's
- * 
+ *
  * @param this IGraphQueryable instance
  * @param start start time
  * @param end end time

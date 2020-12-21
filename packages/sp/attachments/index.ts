@@ -1,4 +1,4 @@
-import "./item";
+import "./item.js";
 
 export {
     IAttachment,
@@ -8,4 +8,4 @@ export {
     IAttachmentAddResult,
     IAttachmentFileInfo,
     IAttachmentInfo,
-} from "./types";
+} from "./types.js";

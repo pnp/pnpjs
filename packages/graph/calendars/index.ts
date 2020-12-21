@@ -1,5 +1,5 @@
-import "./groups";
-import "./users";
+import "./groups.js";
+import "./users.js";
 
 export {
     Calendar,
@@ -11,8 +11,8 @@ export {
     ICalendars,
     IEvent,
     IEvents,
-} from "./types";
+} from "./types.js";
 
 export {
     ICalendarViewInfo,
-} from "./funcs";
+} from "./funcs.js";

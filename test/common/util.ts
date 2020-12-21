@@ -1,5 +1,20 @@
 import { expect } from "chai";
-import { dateAdd, combine, getRandomString, getGUID, isFunc, isArray, assign, getCtxCallback, objectDefinedNotNull, isUrlAbsolute, stringIsNullOrEmpty, jsS, hOP, getHashCode } from "@pnp/common";
+import {
+    dateAdd,
+    combine,
+    getRandomString,
+    getGUID,
+    isFunc,
+    isArray,
+    assign,
+    getCtxCallback,
+    objectDefinedNotNull,
+    isUrlAbsolute,
+    stringIsNullOrEmpty,
+    jsS,
+    hOP,
+    getHashCode,
+} from "@pnp/common";
 
 // tslint:disable:no-unused-expression
 
@@ -174,12 +189,18 @@ describe("getGUID", function () {
 
 describe("isFunc", function () {
     it("Should find that a function is a function", function () {
-        expect(isFunc(function () { return; })).to.be.true;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(isFunc(function () {
+            return;
+        })).to.be.true;
     });
 
     it("Should find that a non-function is not a function", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isFunc({ val: 0 })).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isFunc(null)).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isFunc(undefined)).to.be.false;
     });
 });
@@ -205,66 +226,82 @@ describe("objectDefinedNotNull", function () {
 
 describe("isArray", function () {
     it("Should find that an Array is an Array", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray([1, 2, 3, 4])).to.be.true;
     });
 
     it("Should find that a non-Array is not an Array", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray(null)).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray("")).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray(3)).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray({})).to.be.false;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray(undefined)).to.be.false;
     });
 });
 
 describe("isUrlAbsolute", function () {
     it("Yes", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("https://something.com")).to.be.true;
     });
 
     it("Yes", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("//something.com")).to.be.true;
     });
 
     it("Yes", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("http://something.com")).to.be.true;
     });
 
     it("No", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("/sites/dev")).to.be.false;
     });
 
     it("No", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("sites/dev")).to.be.false;
     });
 
     it("Empty", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isUrlAbsolute("")).to.be.false;
     });
 });
 
 describe("stringIsNullOrEmpty", function () {
     it("Yes", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(stringIsNullOrEmpty(null)).to.be.true;
     });
 
     it("Yes", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(stringIsNullOrEmpty("")).to.be.true;
     });
 
     it("No", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(stringIsNullOrEmpty("not empty")).to.be.false;
     });
 });
 
 describe("jsS", function () {
     it("Sucess", function () {
-        expect(jsS({ test: true })).to.eq(`{"test":true}`);
+        expect(jsS({ test: true })).to.eq("{\"test\":true}");
     });
 });
 
 describe("hOP", function () {
     it("Success", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(hOP({ test: true }, "test")).to.be.true;
     });
 });

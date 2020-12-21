@@ -1,9 +1,0 @@
-language: node_js
-
-node_js:
-  - 10
-
-script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run lint && npm run package && mocha --mode pr --cleanup; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run lint && mocha --mode push --cleanup; fi'
-  

@@ -1,6 +1,6 @@
-import "./web";
-import { SPRest } from "../rest";
-import { ISiteDesigns, SiteDesigns } from "./types";
+import "./web.js";
+import { SPRest } from "../rest.js";
+import { ISiteDesigns, SiteDesigns } from "./types.js";
 
 export {
     ISiteDesignCreationInfo,
@@ -12,7 +12,7 @@ export {
     ISiteDesignRun,
     ISiteDesignTask,
     ISiteScriptActionStatus,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -24,6 +24,8 @@ Reflect.defineProperty(SPRest.prototype, "siteDesigns", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return SiteDesigns(this._baseUrl);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return SiteDesigns(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

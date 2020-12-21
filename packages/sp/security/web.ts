@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
-import { _Web } from "../webs/types";
-import { RoleDefinitions, IRoleDefinitions, RoleAssignments, ISecurableMethods } from "./types";
-import { SharePointQueryableInstance } from "../sharepointqueryable";
+import { _Web } from "../webs/types.js";
+import { RoleDefinitions, IRoleDefinitions, RoleAssignments, ISecurableMethods } from "./types.js";
+import { SharePointQueryableInstance } from "../sharepointqueryable.js";
 import {
     getUserEffectivePermissions,
     getCurrentUserEffectivePermissions,
@@ -10,7 +10,7 @@ import {
     userHasPermissions,
     currentUserHasPermissions,
     hasPermissions,
-} from "./funcs";
+} from "./funcs.js";
 
 declare module "../webs/types" {
     interface _Web extends ISecurableMethods {

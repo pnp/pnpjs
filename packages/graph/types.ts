@@ -4,8 +4,8 @@ export class GraphEndpoints {
     public static V1 = "v1.0";
 
     /**
-     * 
-     * @param url The url to set the endpoint 
+     *
+     * @param url The url to set the endpoint
      */
     public static ensure(url: string, endpoint: string): string {
         const all = [GraphEndpoints.Beta, GraphEndpoints.V1];

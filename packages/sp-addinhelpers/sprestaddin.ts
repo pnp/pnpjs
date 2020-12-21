@@ -60,7 +60,10 @@ export class SPRestAddIn extends SPRest {
 
         const instance = factory(url, urlPart);
         instance.query.set("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
-        return instance.configure(this._options);
+
+        return this.childConfigHook(({ options, runtime }) => {
+            return instance.configure(options).setRuntime(runtime);
+        });
     }
 }
 

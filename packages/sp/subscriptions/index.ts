@@ -1,4 +1,4 @@
-import "./list";
+import "./list.js";
 
 export {
     ISubscription,
@@ -7,4 +7,4 @@ export {
     ISubscriptions,
     Subscription,
     Subscriptions,
-} from "./types";
+} from "./types.js";

@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _User } from "../users/types";
-import { IOneNote, OneNote } from "./types";
+import { _User } from "../users/types.js";
+import { IOneNote, OneNote } from "./types.js";
 
 declare module "../users/types" {
     interface _User {

@@ -7,10 +7,10 @@ import {
     spInvokableFactory,
     SharePointQueryable,
     SharePointQueryableInstance,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 export class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
 
@@ -83,7 +83,7 @@ export class _WebPartDefinitions extends _SharePointQueryableCollection {
         return WebPartDefinition(this, `getByControlId('${id}')`);
     }
 }
-export interface IWebPartDefinitions extends _WebPartDefinitions { }
+export interface IWebPartDefinitions extends _WebPartDefinitions {}
 export const WebPartDefinitions = spInvokableFactory<IWebPartDefinitions>(_WebPartDefinitions);
 
 export class _WebPartDefinition extends _SharePointQueryableInstance {
@@ -133,7 +133,7 @@ export class _WebPartDefinition extends _SharePointQueryableInstance {
         return spPost(this.clone(WebPartDefinition, "DeleteWebPart"));
     }
 }
-export interface IWebPartDefinition extends _WebPartDefinition { }
+export interface IWebPartDefinition extends _WebPartDefinition {}
 export const WebPartDefinition = spInvokableFactory<IWebPartDefinition>(_WebPartDefinition);
 
 export enum WebPartsPersonalizationScope {

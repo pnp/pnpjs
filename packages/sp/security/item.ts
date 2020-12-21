@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/odata";
-import { _Item } from "../items/types";
-import { RoleAssignments, ISecurableMethods } from "./types";
-import { _SharePointQueryableInstance, SharePointQueryableInstance } from "../sharepointqueryable";
+import { _Item } from "../items/types.js";
+import { RoleAssignments, ISecurableMethods } from "./types.js";
+import { SharePointQueryableInstance } from "../sharepointqueryable.js";
 import {
     getUserEffectivePermissions,
     getCurrentUserEffectivePermissions,
@@ -10,11 +10,11 @@ import {
     userHasPermissions,
     currentUserHasPermissions,
     hasPermissions,
-} from "./funcs";
+} from "./funcs.js";
 
 declare module "../items/types" {
-    interface _Item extends ISecurableMethods { }
-    interface IItem extends ISecurableMethods { }
+    interface _Item extends ISecurableMethods {}
+    interface IItem extends ISecurableMethods {}
 }
 
 addProp(_Item, "roleAssignments", RoleAssignments);

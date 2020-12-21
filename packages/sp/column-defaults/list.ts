@@ -1,13 +1,13 @@
 import { addProp, TextParser, headers, body } from "@pnp/odata";
-import { _List, List } from "../lists/types";
-import { Folder } from "../folders/types";
-import { IFieldDefault } from "./types";
-import { IResourcePath } from "../utils/toResourcePath";
+import { _List, List } from "../lists/types.js";
+import { Folder } from "../folders/types.js";
+import { IFieldDefault } from "./types.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 import { combine, isArray } from "@pnp/common";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { Logger, LogLevel } from "@pnp/logging";
-import { spPost } from "../operations";
-import { SharePointQueryableCollection } from "../presets/all";
+import { spPost } from "../operations.js";
+import { SharePointQueryableCollection } from "../presets/all.js";
 
 declare module "../lists/types" {
     interface _List {
@@ -82,32 +82,33 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         const subTags = subMatches === null ? [] : subMatches.map(st => st.trim());
 
         subTags.map(st => {
-          const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
-          // if things worked out captures are:
-          // 0: whole string
-          // 1: Field internal name
-          // 2: Default value as string
+            const sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+            // if things worked out captures are:
+            // 0: whole string
+            // 1: Field internal name
+            // 2: Default value as string
 
-          if (sm.length < 1) {
-            Logger.write(`Could not parse default column value from '${st}'`, LogLevel.Warning);
-          } else {
-            defVals.push({
-              name: sm[1],
-              path: decodeURIComponent(m[1]),
-              value: sm[2],
-            });
-          }
+            if (sm.length < 1) {
+                Logger.write(`Could not parse default column value from '${st}'`, LogLevel.Warning);
+            } else {
+                defVals.push({
+                    name: sm[1],
+                    path: decodeURIComponent(m[1]),
+                    value: sm[2],
+                });
+            }
         });
 
         return defVals;
 
-      }, []).filter(v => v !== null);
+    }, []).filter(v => v !== null);
 };
 
 _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: IFieldDefault[]): Promise<void> {
 
     // we need the field types from the list to map the values
-    const fieldDefs: { InternalName: string; TypeAsString: string; }[] = await SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")();
+    // eslint-disable-next-line max-len
+    const fieldDefs: { InternalName: string; TypeAsString: string }[] = await SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")();
 
     // map the values into the right format and produce our xml elements
     const tags: string[] = defaults.map(fieldDefault => {
@@ -163,7 +164,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
             case "TaxonomyMulti":
             case "TaxonomyFieldTypeMulti":
                 if (isArray(fieldDefault.value)) {
-                    value = (<{ wssId: string, termName: string, termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                    value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                 }
                 value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
                 break;
@@ -178,7 +179,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");
     const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`, "files");
 
-    await spPost(Folder(baseFilePath, `add(overwrite=true,url='client_LocationBasedDefaults.html')`), { body: xml });
+    await spPost(Folder(baseFilePath, "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
 
     // finally we need to ensure this list has the right event receiver added
     const existingReceivers = await this.eventReceivers.filter("ReceiverName eq 'LocationBasedMetadataDefaultsReceiver ItemAdded'").select("ReceiverId")();

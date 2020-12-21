@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { ITermStore, TermStore } from "./types";
+import { SPRest } from "../rest.js";
+import { ITermStore, TermStore } from "./types.js";
 
 export {
     ITermStore,
@@ -31,7 +31,7 @@ export {
     ITermSortOrderInfo,
     ITerms,
     Terms,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -43,6 +43,8 @@ Reflect.defineProperty(SPRest.prototype, "termStore", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return TermStore(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return TermStore(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

@@ -1,16 +1,16 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IInvokable } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/odata";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPBatch } from "./batch";
-import { metadata } from "./utils/metadata";
-import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations";
-import { tag } from "./telemetry";
+import { SPBatch } from "./batch.js";
+import { metadata } from "./utils/metadata.js";
+import { spGet, spPost, spPostDelete, spPostDeleteETag } from "./operations.js";
+import { tag } from "./telemetry.js";
 
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
 
-export type ISPInvokableFactory<R = any> = (baseUrl: string | ISharePointQueryable, path?: string) => R;
+export type ISPInvokableFactory<R extends any> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R>(f: any): ISPInvokableFactory<R> => {
     return invokableFactory<R>(f);
@@ -154,7 +154,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> {
 
     /**
      * The default action for this object (unless overridden spGet)
-     * 
+     *
      * @param options optional request options
      */
     public defaultAction(options?: IFetchOptions): Promise<GetType> {
@@ -184,8 +184,12 @@ export class _SharePointQueryable<GetType = any> extends Queryable<GetType> {
         return parent;
     }
 }
-export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType>, IInvokable<GetType> { }
-export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> { }
+export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType> { }
+// this interface is to fix build issues when moving to typescript 4. _SharePointQueryable is itself not invokable but we need to match signatures
+// eslint-disable-next-line no-redeclare
+export interface _SharePointQueryable<GetType = any> {
+    <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
+}
 export const SharePointQueryable = spInvokableFactory<ISharePointQueryable>(_SharePointQueryable);
 
 /**
@@ -238,8 +242,7 @@ export class _SharePointQueryableCollection<GetType = any[]> extends _SharePoint
         return this;
     }
 }
-export interface _SharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType> { }
-export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType>, IInvokable<GetType> { }
+export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType> { }
 export const SharePointQueryableCollection = spInvokableFactory<ISharePointQueryableCollection>(_SharePointQueryableCollection);
 
 /**
@@ -250,9 +253,9 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
 
     /**
      * Curries the update function into the common pieces
-     * 
-     * @param type 
-     * @param mapper 
+     *
+     * @param type
+     * @param mapper
      */
     protected _update<Return, Props = any>(type: string, mapper: (data: any, props: Props) => Return): (props: Props) => Promise<Return> {
         return (props: any) => spPost(tag.configure(this, `${type}.Update`), {
@@ -263,8 +266,7 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
         }).then((d: any) => mapper(d, props));
     }
 }
-export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType>, IInvokable<GetType> { }
-export interface _SharePointQueryableInstance<GetType = any> extends IInvokable<GetType> { }
+export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType> { }
 export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);
 
 /**

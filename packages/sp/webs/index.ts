@@ -1,6 +1,6 @@
-import { Web, IWeb } from "./types";
-import { SPRest } from "../rest";
-import { SPBatch } from "../batch";
+import { Web, IWeb } from "./types.js";
+import { SPRest } from "../rest.js";
+import { SPBatch } from "../batch.js";
 
 export {
     IWeb,
@@ -12,7 +12,7 @@ export {
     IWebInfo,
     IStorageEntity,
     IWebInfosData,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -34,7 +34,9 @@ Reflect.defineProperty(SPRest.prototype, "web", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return Web(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Web(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });
 

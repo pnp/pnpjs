@@ -1,9 +1,9 @@
 import { addProp } from "@pnp/odata";
-import { _Web, Web } from "../webs/types";
-import { ISiteGroups, SiteGroups, ISiteGroup } from "./types";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import "../security/web";
+import { _Web, Web } from "../webs/types.js";
+import { ISiteGroups, SiteGroups, ISiteGroup } from "./types.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import "../security/web.js";
 
 declare module "../webs/types" {
 

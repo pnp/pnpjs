@@ -1,14 +1,15 @@
-import { IGraphQueryable } from "./graphqueryable";
-import { graphDelete, graphPatch, graphPost } from "./operations";
+import { IGraphQueryable } from "./graphqueryable.js";
+import { graphDelete, graphPatch, graphPost } from "./operations.js";
 import { body, headers } from "@pnp/odata";
 
 /**
  * Decorator used to specify the default path for Queryable objects
- * 
- * @param path 
+ *
+ * @param path
  */
 export function defaultPath(path: string) {
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -23,6 +24,7 @@ export function defaultPath(path: string) {
  * Adds the delete method to the tagged class
  */
 export function deleteable() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -44,12 +46,13 @@ export interface IDeleteable {
  * Adds the delete method to the tagged class
  */
 export function deleteableWithETag() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
             public delete(this: IGraphQueryable, eTag = "*"): Promise<void> {
                 return graphDelete(this, headers({
-                        "If-Match": eTag,
+                    "If-Match": eTag,
                 }));
             }
         };
@@ -67,6 +70,7 @@ export interface IDeleteableWithETag {
  * Adds the update method to the tagged class
  */
 export function updateable() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -80,7 +84,7 @@ export function updateable() {
 export interface IUpdateable<T = any> {
     /**
      * Update the properties of an event object
-     * 
+     *
      * @param props Set of properties to update
      */
     update(props: T): Promise<void>;
@@ -90,6 +94,7 @@ export interface IUpdateable<T = any> {
  * Adds the update method to the tagged class
  */
 export function updateableWithETag() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -105,7 +110,7 @@ export function updateableWithETag() {
 export interface IUpdateableWithETag<T = any> {
     /**
      * Update the properties of an event object
-     * 
+     *
      * @param props Set of properties to update
      */
     update(props: T, eTag?: string): Promise<void>;
@@ -115,6 +120,7 @@ export interface IUpdateableWithETag<T = any> {
  * Adds the add method to the tagged class
  */
 export function addable() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -128,7 +134,7 @@ export function addable() {
 export interface IAddable<T = any, R = { id: string }> {
     /**
      * Adds a new item to this collection
-     * 
+     *
      * @param props properties used to create the new thread
      */
     add(props: T): Promise<R>;
@@ -138,6 +144,7 @@ export interface IAddable<T = any, R = { id: string }> {
  * Adds the getById method to a collection
  */
 export function getById<R>(factory: (...args: any[]) => R) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -150,7 +157,7 @@ export function getById<R>(factory: (...args: any[]) => R) {
 export interface IGetById<R = any, T = string> {
     /**
      * Adds a new item to this collection
-     * 
+     *
      * @param props properties used to create the new thread
      */
     getById(id: T): R;

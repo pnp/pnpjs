@@ -1,19 +1,19 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
 import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
-import { IFile, IFileInfo } from "../files/types";
-import { Item, IItem } from "../items/types";
-import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable";
-import { metadata } from "../utils/metadata";
-import { List } from "../lists/types";
-import { odataUrlFrom } from "../odata";
-import { Web, IWeb } from "../webs/types";
-import { extractWebUrl } from "../utils/extractweburl";
-import { Site } from "../sites/types";
-import { spPost } from "../operations";
-import { getNextOrder, reindex } from "./funcs";
-import "../files/web";
-import "../comments/item";
-import { tag } from "../telemetry";
+import { IFile, IFileInfo } from "../files/types.js";
+import { Item, IItem } from "../items/types.js";
+import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { metadata } from "../utils/metadata.js";
+import { List } from "../lists/types.js";
+import { odataUrlFrom } from "../odata.js";
+import { Web, IWeb } from "../webs/types.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { Site } from "../sites/types.js";
+import { spPost } from "../operations.js";
+import { getNextOrder, reindex } from "./funcs.js";
+import "../files/web.js";
+import "../comments/item.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Page promotion state
@@ -47,10 +47,10 @@ function initFrom(o: ISharePointQueryable, url: string): IClientsidePage {
     return ClientsidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
 }
 
-/** 
+/**
  * Represents the data and methods associated with client side "modern" pages
  */
-export class _ClientsidePage extends _SharePointQueryable implements IClientsidePage {
+export class _ClientsidePage extends _SharePointQueryable {
 
     private _pageSettings: IClientsidePageSettingsSlice;
     private _layoutPart: ILayoutPartsContent;
@@ -267,7 +267,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Loads this instance from the appropriate JSON data
-     * 
+     *
      * @param pageData JSON data to load (replaces any existing data)
      */
     public fromJSON(pageData: Partial<IPageData>): this {
@@ -292,7 +292,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
     @tag("csp.load")
     public async load(): Promise<IClientsidePage> {
 
-        const item = await this.getItem<{ Id: number, CommentsDisabled: boolean }>("Id", "CommentsDisabled");
+        const item = await this.getItem<{ Id: number; CommentsDisabled: boolean }>("Id", "CommentsDisabled");
         const pageData = await SharePointQueryable(this, `_api/sitepages/pages(${item.Id})`)<IPageData>();
         this.commentsDisabled = item.CommentsDisabled;
         return this.fromJSON(pageData);
@@ -300,7 +300,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Persists the content changes (sections, columns, and controls) [does not work with batching]
-     * 
+     *
      * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published [Default: true]
      */
     @tag("csp.save")
@@ -459,7 +459,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Creates a copy of this page
-     * 
+     *
      * @param web The web where we will create the copy
      * @param pageName The file name of the new page
      * @param title The title of the new page
@@ -532,7 +532,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Sets the modern page banner image
-     * 
+     *
      * @param url Url of the image to display
      * @param altText Alt text to describe the image
      * @param bannerProps Additional properties to control display of the banner
@@ -541,7 +541,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
         if (isUrlAbsolute(url)) {
             // do our best to make this a server relative url by removing the x.sharepoint.com part
-            url = url.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
+            url = url.replace(/^https?:\/\/[a-z0-9.]*?\.[a-z]{2,3}\//i, "/");
         }
 
         this.json.BannerImageUrl = url;
@@ -578,7 +578,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Sets the banner image url from an external source. You must call save to persist the changes
-     * 
+     *
      * @param url absolute url of the external file
      * @param props optional set of properties to control display of the banner image
      */
@@ -591,7 +591,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         const pageName = this.json.FileName.replace(/\.[^/.]+$/, "");
 
         // get the filename we will use
-        const filename = fileUrl.pathname.split(/[\\\/]/i).pop();
+        const filename = fileUrl.pathname.split(/[\\/]/i).pop();
 
         const request = initFrom(this, "_api/sitepages/AddImageFromExternalUrl");
         request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
@@ -606,7 +606,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Sets the authors for this page from the supplied list of user integer ids
-     * 
+     *
      * @param authorId The integer id of the user to set as the author
      */
     public async setAuthorById(authorId: number): Promise<void> {
@@ -625,7 +625,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Sets the authors for this page from the supplied list of user integer ids
-     * 
+     *
      * @param authorLoginName The login name of the user (ex: i:0#.f|membership|name@tenant.com)
      */
     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
@@ -633,7 +633,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
         const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
             .configureFrom(this)
             .filter(`LoginName eq '${encodeURIComponent(authorLoginName)}'`)
-            .select("UserPrincipalName", "Title")<{ UserPrincipalName: string, Title: string }[]>();
+            .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
         if (userLoginData.length < 1) {
             throw Error(`Could not find user with login name '${authorLoginName}'.`);
@@ -651,22 +651,22 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Gets the list item associated with this clientside page
-     * 
+     *
      * @param selects Specific set of fields to include when getting the item
      */
     @tag("csp.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
-        const listData = await spPost<{ Id: string, "odata.id": string }>(initer);
+        const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
         const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
-        const itemData: T = await item.select.apply(item, selects)();
+        const itemData: T = await item.select(...selects)();
         return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
     }
 
     /**
-     * Extends this queryable from the provided parent 
-     * 
+     * Extends this queryable from the provided parent
+     *
      * @param parent Parent queryable from which we will derive a base url
      * @param path Additional path
      */
@@ -711,15 +711,17 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
                             this.mergeColumnToTree(new CanvasColumn(<IClientsidePageColumnData>controls[i]));
                         }
                         break;
-                    case 3:
+                    case 3: {
                         const part = new ClientsideWebpart(<IClientsideWebPartData>controls[i]);
                         this.mergePartToTree(part, part.data.position);
                         break;
-                    case 4:
+                    }
+                    case 4: {
                         const textData = <IClientsideTextData>controls[i];
                         const text = new ClientsideText(textData.innerHTML, textData);
                         this.mergePartToTree(text, text.data.position);
                         break;
+                    }
                 }
             }
 
@@ -788,7 +790,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Merges the control into the tree of sections and columns for this page
-     * 
+     *
      * @param control The control to merge
      */
     private mergePartToTree(control: any, positionData: IPosition): void {
@@ -831,7 +833,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Merges the supplied column into the tree
-     * 
+     *
      * @param column Column to merge
      * @param position The position data for the column
      */
@@ -846,7 +848,7 @@ export class _ClientsidePage extends _SharePointQueryable implements IClientside
 
     /**
      * Handle the logic to get or create a section based on the supplied order and layoutIndex
-     * 
+     *
      * @param order Section order
      * @param layoutIndex Layout Index (1 === normal, 2 === vertical section)
      * @param emphasis The section emphasis
@@ -885,7 +887,7 @@ const ClientsidePage = (
 
 /**
  * Loads a client side page from the supplied IFile instance
- * 
+ *
  * @param file Source IFile instance
  */
 export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePage> => {
@@ -897,7 +899,7 @@ export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePa
 
 /**
  * Creates a new client side page
- * 
+ *
  * @param web The web or list
  * @param pageName The name of the page (filename)
  * @param title The page's title
@@ -1480,8 +1482,8 @@ interface ILayoutPartsContent {
                 webId: string;
                 listId: string;
                 uniqueId: string;
-            },
-        }
+            };
+        };
     };
     dataVersion: string;
     properties: {
@@ -1494,7 +1496,7 @@ interface ILayoutPartsContent {
         topicHeader: string;
         authorByline: string[];
         authors: {
-            id: string,
+            id: string;
             upn: string;
             name: string;
             role: string;

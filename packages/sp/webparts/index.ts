@@ -1,4 +1,4 @@
-import "./file";
+import "./file.js";
 
 export {
     ILimitedWebPartManager,
@@ -8,4 +8,4 @@ export {
     LimitedWebPartManager,
     IWebPartDefinitions,
     IWebPartDefinition,
-} from "./types";
+} from "./types.js";

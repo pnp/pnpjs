@@ -1,11 +1,11 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
-import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
+import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/common";
+import { metadata } from "../utils/metadata.js";
 import { CachingOptions, body } from "@pnp/odata";
-import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types";
-import { spPost } from "../operations";
-import { defaultPath } from "../decorators";
-import { tag } from "../telemetry";
+import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
+import { spPost } from "../operations.js";
+import { defaultPath } from "../decorators.js";
+import { tag } from "../telemetry.js";
 
 const funcs = new Map<string, string>([
     ["text", "Querytext"],
@@ -48,7 +48,7 @@ function toPropCase(str: string) {
 
 /**
  * Creates a new instance of the SearchQueryBuilder
- * 
+ *
  * @param queryText Initial query text
  * @param _query Any initial query configuration
  */
@@ -59,27 +59,27 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
             Querytext: queryText,
         }, _query),
     },
-        {
-            get(self, propertyKey, proxy) {
+    {
+        get(self, propertyKey, proxy) {
 
-                const pk = propertyKey.toString();
+            const pk = propertyKey.toString();
 
-                if (pk === "toSearchQuery") {
-                    return () => self.query;
-                }
+            if (pk === "toSearchQuery") {
+                return () => self.query;
+            }
 
-                if (funcs.has(pk)) {
-                    return (...value: any[]) => {
-                        const mappedPk = funcs.get(pk);
-                        self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
-                        return proxy;
-                    };
-                }
-                const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
-                self.query[propKey] = true;
-                return proxy;
-            },
-        });
+            if (funcs.has(pk)) {
+                return (...value: any[]) => {
+                    const mappedPk = funcs.get(pk);
+                    self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
+                    return proxy;
+                };
+            }
+            const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
+            self.query[propKey] = true;
+            return proxy;
+        },
+    });
 }
 
 const queryRegex = /_api\/search\/postquery$/i;
@@ -153,8 +153,8 @@ export class _Search extends _SharePointQueryableInstance {
 
     /**
      * Translates one of the query initializers into a SearchQuery instance
-     * 
-     * @param query 
+     *
+     * @param query
      */
     private parseQuery(query: SearchQueryInit): ISearchQuery {
 
@@ -176,8 +176,8 @@ export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
 
-export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).configure(options).execute(queryInit);
+export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISearch => (queryInit: SearchQueryInit) => {
+    return (new _Search(baseUrl)).configure(options).setRuntime(runtime).execute(queryInit);
 };
 
 export class SearchResults {
@@ -266,7 +266,7 @@ export class SearchResults {
 
         for (const tempResult of tempResults) {
 
-            const cells: { Key: string, Value: any }[] = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
+            const cells: { Key: string; Value: any }[] = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
 
             results.push(cells.reduce((res, cell) => {
 

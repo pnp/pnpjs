@@ -324,7 +324,7 @@ export interface ISearchResult {
 
 export interface ISearchResponse {
     ElapsedTime: number;
-    Properties?: { Key: string, Value: any, ValueType: string }[];
+    Properties?: { Key: string; Value: any; ValueType: string }[];
     PrimaryQueryResult?: IResultTableCollection;
     SecondaryQueryResults?: IResultTableCollection;
     SpellingSuggestion?: string;
@@ -344,14 +344,14 @@ export interface IResultTableCollection {
 
 export interface IRefiner {
     Name: string;
-    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string; }[];
+    Entries: { RefinementCount: string; RefinementName: string; RefinementToken: string; RefinementValue: string }[];
 }
 
 export interface IResultTable {
     GroupTemplateId?: string;
     ItemTemplateId?: string;
-    Properties?: { Key: string, Value: any, ValueType: string }[];
-    Table?: { Rows: { Cells: { Key: string, Value: any, ValueType: string }[] }[] };
+    Properties?: { Key: string; Value: any; ValueType: string }[];
+    Table?: { Rows: { Cells: { Key: string; Value: any; ValueType: string }[] }[] };
     Refiners?: IRefiner[];
     ResultTitle?: string;
     ResultTitleUrl?: string;

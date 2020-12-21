@@ -1,4 +1,4 @@
-import "./list";
+import "./list.js";
 
 export {
     IView,
@@ -11,4 +11,4 @@ export {
     IViewUpdateResult,
     IViewInfo,
     ViewScope,
-} from "./types";
+} from "./types.js";

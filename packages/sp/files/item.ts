@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Item } from "../items/types";
-import { File, IFile } from "./types";
+import { _Item } from "../items/types.js";
+import { File, IFile } from "./types.js";
 
 declare module "../items/types" {
     interface _Item {

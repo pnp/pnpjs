@@ -1,5 +1,5 @@
-import { IODataParser } from "./parsers";
-import { RuntimeConfig, dateAdd, IPnPClientStore, PnPClientStorage } from "@pnp/common";
+import { IODataParser } from "./parsers.js";
+import { IPnPClientStore, PnPClientStorage } from "@pnp/common";
 
 export interface ICachingOptions {
     expiration?: Date;
@@ -13,8 +13,8 @@ export class CachingOptions implements ICachingOptions {
 
     constructor(
         public key: string,
-        public storeName: "session" | "local" = RuntimeConfig.defaultCachingStore,
-        public expiration = dateAdd(new Date(), "second", RuntimeConfig.defaultCachingTimeoutSeconds)) { }
+        public storeName?: "session" | "local",
+        public expiration?: Date) { }
 
     public get store(): IPnPClientStore {
         if (this.storeName === "local") {

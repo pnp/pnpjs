@@ -2,7 +2,6 @@ import { addProp, body } from "@pnp/odata";
 import { GraphRest } from "../rest";
 import { _Group, Group } from "../groups/types";
 import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types";
-// ITeamProperties,
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
 import { graphPut } from "../operations";
 
@@ -27,7 +26,7 @@ export {
     Tabs,
     Team,
     Teams,
-} from "./types";
+} from "./types.js";
 
 // ITeamProperties, ITabsConfiguration,
 
@@ -64,6 +63,8 @@ Reflect.defineProperty(GraphRest.prototype, "teams", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return Teams(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Teams(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

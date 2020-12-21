@@ -1,6 +1,6 @@
-import { IConfigurationProvider } from "../configuration";
+import { IConfigurationProvider } from "../configuration.js";
 import { ITypedHash } from "@pnp/common";
-import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider";
+import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider.js";
 import { IWeb } from "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";

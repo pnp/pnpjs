@@ -1,6 +1,6 @@
-import "./item";
-import "./list";
-import "./web";
+import "./item.js";
+import "./list.js";
+import "./web.js";
 
 export {
     Folder,
@@ -12,4 +12,4 @@ export {
     IFolderInfo,
     IFolderDeleteParams,
     IFolderParentInfos,
-} from "./types";
+} from "./types.js";

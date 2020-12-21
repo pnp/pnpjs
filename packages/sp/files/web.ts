@@ -1,6 +1,6 @@
-import { _Web } from "../webs/types";
-import { File, IFile } from "./types";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { _Web } from "../webs/types.js";
+import { File, IFile } from "./types.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -34,7 +34,7 @@ declare module "../webs/types" {
 
         /**
          * Gets a file from a sharing link or absolute url
-         * 
+         *
          * @param fileUrl Absolute url of the file to get
          */
         getFileByUrl(fileUrl: string): IFile;

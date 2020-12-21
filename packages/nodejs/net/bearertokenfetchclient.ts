@@ -1,7 +1,5 @@
-declare var require: (path: string) => any;
-
 import { IHttpClientImpl, mergeHeaders, IFetchOptions } from "@pnp/common";
-import { fetch } from "./fetch";
+import { fetch } from "./fetch.js";
 
 /**
  * Makes requests using the fetch API adding the supplied token to the Authorization header

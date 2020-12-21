@@ -3,8 +3,8 @@ const fs = require("fs"),
     path = require("path");
 import { sync as ensurePath } from "mkdirp";
 
-import { PackageTargetMap } from "../../config";
-import getSubDirNames from "../../lib/getSubDirectoryNames";
+import { PackageTargetMap } from "../../config.js";
+import getSubDirNames from "../../lib/getSubDirectoryNames.js";
 
 interface TSConfig {
     compilerOptions: {

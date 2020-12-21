@@ -1,8 +1,8 @@
-import { SPRest } from "../rest";
-import { HubSites, IHubSites } from "./types";
+import { SPRest } from "../rest.js";
+import { HubSites, IHubSites } from "./types.js";
 
-import "./site";
-import "./web";
+import "./site.js";
+import "./web.js";
 
 export {
     HubSite,
@@ -11,7 +11,7 @@ export {
     IHubSiteInfo,
     IHubSiteWebData,
     IHubSites,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -26,6 +26,8 @@ Reflect.defineProperty(SPRest.prototype, "hubSites", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return HubSites(this._baseUrl).configure(this._options);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return HubSites(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

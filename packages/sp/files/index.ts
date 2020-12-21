@@ -1,6 +1,6 @@
-import "./folder";
-import "./item";
-import "./web";
+import "./folder.js";
+import "./item.js";
+import "./web.js";
 
 export {
     File,
@@ -18,4 +18,4 @@ export {
     Versions,
     IAddUsingPathProps,
     IFileInfo,
-} from "./types";
+} from "./types.js";

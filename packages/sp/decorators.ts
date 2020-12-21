@@ -4,11 +4,12 @@
 
 /**
  * Decorator used to specify the default path for SharePointQueryable objects
- * 
- * @param path 
+ *
+ * @param path
  */
 export function defaultPath(path: string) {
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
@@ -19,7 +20,7 @@ export function defaultPath(path: string) {
     };
 }
 
- // TODO::?
+// TODO::?
 // performance tracking method decorator
 // redirect to graph api
 

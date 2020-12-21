@@ -1,10 +1,10 @@
-import { _File } from "../files/types";
+import { _File } from "../files/types.js";
 import {
     ISharingEmailData,
     ISharingResult,
     SharingRole,
     ISharedFuncs,
-} from "./types";
+} from "./types.js";
 import {
     shareWith,
     getShareLink,
@@ -14,7 +14,7 @@ import {
     unshareObject,
     deleteLinkByKind,
     unshareLink,
-} from "./funcs";
+} from "./funcs.js";
 
 declare module "../files/types" {
     interface _File extends ISharedFuncs {

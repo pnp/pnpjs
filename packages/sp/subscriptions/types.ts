@@ -2,11 +2,11 @@ import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { body, headers } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost, spDelete, spPatch } from "../operations";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { spPost, spDelete, spPatch } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("subscriptions")
 export class _Subscriptions extends _SharePointQueryableCollection {
@@ -46,7 +46,7 @@ export class _Subscriptions extends _SharePointQueryableCollection {
         return { data, subscription: this.getById(data.id) };
     }
 }
-export interface ISubscriptions extends _Subscriptions { }
+export interface ISubscriptions extends _Subscriptions {}
 export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
 export class _Subscription extends _SharePointQueryableInstance {
@@ -89,7 +89,7 @@ export class _Subscription extends _SharePointQueryableInstance {
         return spDelete(this);
     }
 }
-export interface ISubscription extends _Subscription { }
+export interface ISubscription extends _Subscription {}
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 /**

@@ -1,10 +1,10 @@
-import { _Item } from "../items/types";
+import { _Item } from "../items/types.js";
 import {
     ISharingEmailData,
     ISharingResult,
     SharingRole,
     ISharedFuncs,
-} from "./types";
+} from "./types.js";
 
 import {
     shareWith,
@@ -15,7 +15,7 @@ import {
     unshareObject,
     deleteLinkByKind,
     unshareLink,
-} from "./funcs";
+} from "./funcs.js";
 
 declare module "../items/types" {
     interface _Item extends ISharedFuncs {

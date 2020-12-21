@@ -1,5 +1,5 @@
-import { _Site, Site } from "../sites/types";
-import { spPost } from "../operations";
+import { _Site, Site } from "../sites/types.js";
+import { spPost } from "../operations.js";
 
 declare module "../sites/types" {
     interface _Site {
@@ -11,7 +11,7 @@ declare module "../sites/types" {
 
         /**
          * Associates a site collection to a hub site.
-         * 
+         *
          * @param siteId Id of the hub site collection you want to join.
          * If you want to disassociate the site collection from hub site, then
          * pass the siteId as 00000000-0000-0000-0000-000000000000
@@ -35,9 +35,9 @@ _Site.prototype.joinHubSite = async function (this: _Site, siteId: string): Prom
 };
 
 _Site.prototype.registerHubSite = async function (this: _Site): Promise<void> {
-    await spPost(this.clone(Site, `registerHubSite`));
+    await spPost(this.clone(Site, "registerHubSite"));
 };
 
 _Site.prototype.unRegisterHubSite = async function (this: _Site): Promise<void> {
-    await spPost(this.clone(Site, `unRegisterHubSite`));
+    await spPost(this.clone(Site, "unRegisterHubSite"));
 };

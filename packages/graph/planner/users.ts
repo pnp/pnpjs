@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _User } from "../users/types";
-import { ITasks, Tasks } from "./types";
+import { _User } from "../users/types.js";
+import { ITasks, Tasks } from "./types.js";
 
 declare module "../users/types" {
     interface _User {

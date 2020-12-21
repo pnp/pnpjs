@@ -168,7 +168,6 @@ export interface IChangeQuery {
 /**
  * Specifies the type of a principal.
  */
-/* tslint:disable:no-bitwise */
 export const enum PrincipalType {
     /**
      * Enumeration whose value specifies no principal type.
@@ -193,14 +192,13 @@ export const enum PrincipalType {
     /**
      * Enumeration whose value specifies all principal types.
      */
+    // eslint-disable-next-line no-bitwise
     All = SharePointGroup | SecurityGroup | DistributionList | User,
 }
-/* tslint:enable:no-bitwise */
 
 /**
  * Specifies the source of a principal.
  */
-/* tslint:disable:no-bitwise */
 export const enum PrincipalSource {
     /**
      * Enumeration whose value specifies no principal source.
@@ -225,9 +223,9 @@ export const enum PrincipalSource {
     /**
      * Enumeration whose value specifies all principal sources.
      */
+    // eslint-disable-next-line no-bitwise
     All = RoleProvider | MembershipProvider | Windows | UserInfoList,
 }
-/* tslint:enable:no-bitwise */
 
 export interface IPrincipalInfo {
     Department: string;

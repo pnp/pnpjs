@@ -1,4 +1,4 @@
-import "./web";
+import "./web.js";
 
 export {
     ISiteUser,
@@ -8,4 +8,4 @@ export {
     ISiteUsers,
     ISiteUserProps,
     IUserUpdateResult,
-} from "./types";
+} from "./types.js";

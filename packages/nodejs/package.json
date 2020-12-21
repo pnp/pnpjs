@@ -14,7 +14,7 @@
     "https-proxy-agent": "^5.0.0",
     "jsonwebtoken": "8.3.0",
     "node-fetch": "2.2.0",
-    "tslib": "2.0.0"
+    "tslib": "2.0.3"
   },
   "author": {
     "name": "Microsoft and other contributors"

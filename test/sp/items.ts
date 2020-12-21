@@ -1,5 +1,5 @@
 import { getRandomString } from "@pnp/common";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/lists/web";
@@ -46,11 +46,11 @@ describe("Items", () => {
         it("get paged", async function () {
 
             let page = await list.items.top(2).getPaged();
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(page.hasNext).to.be.true;
             expect(page.results.length).to.eql(2);
             page = await page.getNext();
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(page.hasNext).to.be.true;
             expect(page.results.length).to.eql(2);
         });
@@ -106,7 +106,7 @@ describe("Items", () => {
             const iur = await list.items.getById(item.Id).update({
                 Title: `Item ${getRandomString(4)}`,
             });
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(iur).to.not.be.null;
         });
 

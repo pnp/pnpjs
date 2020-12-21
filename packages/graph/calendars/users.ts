@@ -1,8 +1,8 @@
 import { addProp } from "@pnp/odata";
-import { _User } from "../users/types";
-import { Calendar, ICalendar, IEvents, Events, Calendars, ICalendars } from "./types";
-import { calendarView, ICalendarViewInfo } from "./funcs";
-import { IGraphQueryableCollection } from "../graphqueryable";
+import { _User } from "../users/types.js";
+import { Calendar, ICalendar, IEvents, Events, Calendars, ICalendars } from "./types.js";
+import { calendarView, ICalendarViewInfo } from "./funcs.js";
+import { IGraphQueryableCollection } from "../graphqueryable.js";
 
 declare module "../users/types" {
     interface _User {

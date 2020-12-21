@@ -16,7 +16,7 @@ export interface ISPFXContext {
 
     pageContext: {
         web: {
-            absoluteUrl: string,
-        },
+            absoluteUrl: string;
+        };
     };
 }

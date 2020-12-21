@@ -34,17 +34,29 @@ describe("Logging", () => {
         });
 
         it("Should return an accurate count of subscribers", () => {
-            logger.subscribe(new FunctionListener(() => { return; }));
-            logger.subscribe(new FunctionListener(() => { return; }));
-            logger.subscribe(new FunctionListener(() => { return; }));
+            logger.subscribe(new FunctionListener(() => {
+                return;
+            }));
+            logger.subscribe(new FunctionListener(() => {
+                return;
+            }));
+            logger.subscribe(new FunctionListener(() => {
+                return;
+            }));
             expect(logger.count).to.eq(3);
         });
 
         it("Should allow multiple subscribes to be added in one call", () => {
             logger.subscribe(
-                new FunctionListener(() => { return; }),
-                new FunctionListener(() => { return; }),
-                new FunctionListener(() => { return; }),
+                new FunctionListener(() => {
+                    return;
+                }),
+                new FunctionListener(() => {
+                    return;
+                }),
+                new FunctionListener(() => {
+                    return;
+                }),
             );
             expect(logger.count).to.eq(3);
         });
@@ -54,9 +66,15 @@ describe("Logging", () => {
             let message2 = "";
             let message3 = "";
             logger.subscribe(
-                new FunctionListener((e) => { message1 = e.message; }),
-                new FunctionListener((e) => { message2 = e.message; }),
-                new FunctionListener((e) => { message3 = e.message; }),
+                new FunctionListener((e) => {
+                    message1 = e.message;
+                }),
+                new FunctionListener((e) => {
+                    message2 = e.message;
+                }),
+                new FunctionListener((e) => {
+                    message3 = e.message;
+                }),
             );
             logger.activeLogLevel = LogLevel.Verbose;
             logger.write("Test message");

@@ -1,6 +1,6 @@
 import {
     _Folder,
-} from "../folders/types";
+} from "../folders/types.js";
 import {
     ISharingEmailData,
     ISharingResult,
@@ -9,7 +9,7 @@ import {
     ISharingInformationRequest,
     SharingLinkKind,
     ISharingRecipient,
-} from "./types";
+} from "./types.js";
 
 declare module "../folders/types" {
     interface _Folder extends ISharedFuncs {

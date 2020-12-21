@@ -19,7 +19,7 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
 
     /**
      * Archives this Team
-     * 
+     *
      * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
      */
     public archive(shouldSetSpoSiteReadOnlyForMembers = false): Promise<void> {
@@ -38,7 +38,7 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
      * @param name The name of the new Group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
-     * @param visibility Set visibility to public or private 
+     * @param visibility Set visibility to public or private
      */
     public async cloneTeam(
         name: string,
@@ -131,7 +131,7 @@ export class _Channels extends _GraphQueryableCollection {
      * Creates a new Channel in the Team
      * @param displayName The display name of the new channel
      * @param description Optional description of the channel
-     * 
+     *
      */
     public async add(displayName: string, description = ""): Promise<IChannelCreateResult> {
 

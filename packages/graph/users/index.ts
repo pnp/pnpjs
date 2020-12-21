@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { IUser, User, IUsers, Users } from "./types";
+import { GraphRest } from "../rest.js";
+import { IUser, User, IUsers, Users } from "./types.js";
 
 export {
     IUser,
@@ -8,7 +8,7 @@ export {
     Users,
     IPeople,
     People,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {
@@ -21,7 +21,9 @@ Reflect.defineProperty(GraphRest.prototype, "me", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return User(this, "me");
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return User(baseUrl, "me").configure(options).setRuntime(runtime);
+        });
     },
 });
 
@@ -29,6 +31,8 @@ Reflect.defineProperty(GraphRest.prototype, "users", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return Users(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Users(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

@@ -1,4 +1,4 @@
-import "./users";
+import "./users.js";
 
 export {
     IMailFolder,
@@ -11,4 +11,4 @@ export {
     MailboxSettings,
     Message,
     Messages,
-} from "./types";
+} from "./types.js";

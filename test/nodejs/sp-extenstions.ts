@@ -6,7 +6,7 @@ import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { getRandomString } from "@pnp/common";
 
 describe("nodejs - sp-extensions", () => {
@@ -22,12 +22,12 @@ describe("nodejs - sp-extensions", () => {
 
             const stream = await files.getByName(name).getStream();
 
-            // tslint:disable-next-line: no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(stream).to.not.be.null;
 
             expect(stream.knownLength).to.be.greaterThan(0);
 
-            // tslint:disable-next-line: no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(stream.body).to.not.be.null;
 
             const txt = await new Promise<string>((resolve) => {

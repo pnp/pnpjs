@@ -7,7 +7,7 @@ export interface ISettings {
         secret?: string;
         tenant?: string;
         msal?: {
-            init: Configuration,
+            init: Configuration;
             scopes: string[];
         };
     };
@@ -18,7 +18,7 @@ export interface ISettings {
         secret?: string;
         url: string;
         msal?: {
-            init: Configuration,
+            init: Configuration;
             scopes: string[];
         };
     };

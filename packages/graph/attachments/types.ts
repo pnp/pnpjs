@@ -1,9 +1,9 @@
 import { Attachment as IAttachmentType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/odata";
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
-import { graphPost } from "../operations";
-import { defaultPath, getById, IGetById } from "../decorators";
-import { type } from "../utils/type";
+import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { graphPost } from "../operations.js";
+import { defaultPath, getById, IGetById } from "../decorators.js";
+import { type } from "../utils/type.js";
 
 /**
  * Attachment
@@ -21,7 +21,7 @@ export class _Attachments extends _GraphQueryableCollection<IAttachmentType[]> {
 
     /**
      * Add attachment to this collection
-     * 
+     *
      * @param name Name given to the attachment file
      * @param bytes File content
      */

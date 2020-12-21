@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
@@ -20,8 +20,8 @@ describe("Web.SiteGroups", () => {
             const groupName = `test_new_sitegroup_${getRandomString(6)}`;
             newGroup = await sp.web.siteGroups.add({ "Title": groupName });
 
-            const users = await sp.web.siteUsers.top(1).select("LoginName,Id")<{ LoginName: string, Id: number }[]>();
-            const usersSPUser = await sp.web.siteUsers.filter("PrincipalType eq 1").select("Id").top(1)<{ LoginName: string, Id: number }[]>();
+            const users = await sp.web.siteUsers.top(1).select("LoginName,Id")<{ LoginName: string; Id: number }[]>();
+            const usersSPUser = await sp.web.siteUsers.filter("PrincipalType eq 1").select("Id").top(1)<{ LoginName: string; Id: number }[]>();
             testuser = users[0].LoginName;
             testuserId = usersSPUser[0].Id;
         });

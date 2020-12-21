@@ -1,8 +1,8 @@
 {
   "name": "@pnp/buildsystem",
-  "version": "2.2.3",
+  "version": "2.3.1",
   "bin": {
-    "pnpbuild": "./bin/buildsystem.js"
+    "pnpbuild": "bin/buildsystem.js"
   },
   "description": "pnp - the build system used within the @pnp repo",
   "main": "./index.js",
@@ -49,7 +49,8 @@
     "@types/mkdirp": "^0.5.2",
     "@types/pump": "^1.1.0",
     "@types/yargs": "^13.0.0",
-    "del-cli": "^1.1.0"
+    "del-cli": "^1.1.0",
+    "typescript": "^4.1.3"
   },
   "funding": {
     "type": "individual",

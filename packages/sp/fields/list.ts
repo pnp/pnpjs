@@ -1,17 +1,17 @@
 import { addProp } from "@pnp/odata";
-import { _List } from "../lists/types";
-import { Fields, IFields } from "./types";
+import { _List } from "../lists/types.js";
+import { Fields, IFields } from "./types.js";
 
 declare module "../lists/types" {
-  interface _List {
-    readonly fields: IFields;
-  }
-  interface IList {
+    interface _List {
+        readonly fields: IFields;
+    }
+    interface IList {
     /**
      * This list's collection of fields
      */
-    readonly fields: IFields;
-  }
+        readonly fields: IFields;
+    }
 }
 
 addProp(_List, "fields", Fields);

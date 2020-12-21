@@ -1,10 +1,12 @@
-import { IHttpClientImpl, combine, isUrlAbsolute, safeGlobal } from "@pnp/common";
-import { NodeFetchClient } from "./nodefetchclient";
-import { getAddInOnlyAccessToken } from "../sptokenutils";
-import { SPOAuthEnv, AuthToken } from "../types";
+import { IHttpClientImpl, combine, isUrlAbsolute } from "@pnp/common";
+import { NodeFetchClient } from "./nodefetchclient.js";
+import { getAddInOnlyAccessToken } from "../sptokenutils.js";
+import { SPOAuthEnv, AuthToken } from "../types.js";
 
 /**
- * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
+ * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions.
+ *
+ * See either the MSAL client or ADAL client for more modern options
  */
 export class SPFetchClient implements IHttpClientImpl {
 
@@ -16,13 +18,7 @@ export class SPFetchClient implements IHttpClientImpl {
         protected _clientSecret: string,
         public authEnv: SPOAuthEnv = SPOAuthEnv.SPO,
         protected _realm = "",
-        protected _fetchClient: IHttpClientImpl = new NodeFetchClient()) {
-
-        // this is a patch to ensure we can resolve urls correctly with in the sp library's toAbsoluteUrl util function
-        safeGlobal._spPageContextInfo = {
-            webAbsoluteUrl: siteUrl,
-        };
-    }
+        protected _fetchClient: IHttpClientImpl = new NodeFetchClient()) { }
 
     public async fetch(url: string, options: any = {}): Promise<Response> {
 
@@ -79,7 +75,7 @@ export class SPFetchClient implements IHttpClientImpl {
         const url = `https://${this.getAuthHostUrl(this.authEnv)}/metadata/json/1?realm=${realm}`;
 
         const r = await this._fetchClient.fetch(url, { method: "GET" });
-        const json: { endpoints: { protocol: string, location: string }[] } = await r.json();
+        const json: { endpoints: { protocol: string; location: string }[] } = await r.json();
 
         const eps = json.endpoints.filter(ep => ep.protocol === "OAuth2");
         if (eps.length > 0) {

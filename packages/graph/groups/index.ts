@@ -1,5 +1,5 @@
-import { GraphRest } from "../rest";
-import { IGroups, Groups } from "./types";
+import { GraphRest } from "../rest.js";
+import { IGroups, Groups } from "./types.js";
 
 export {
     Group,
@@ -8,7 +8,7 @@ export {
     IGroup,
     IGroupAddResult,
     IGroups,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {
@@ -20,6 +20,8 @@ Reflect.defineProperty(GraphRest.prototype, "groups", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return Groups(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Groups(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

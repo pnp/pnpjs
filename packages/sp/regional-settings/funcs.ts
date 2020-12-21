@@ -1,5 +1,5 @@
-import { _SharePointQueryable, SharePointQueryable } from "../sharepointqueryable";
-import { spPost } from "../operations";
+import { _SharePointQueryable, SharePointQueryable } from "../sharepointqueryable.js";
+import { spPost } from "../operations.js";
 import { body } from "@pnp/odata";
 
 export function getValueForUICultureBinder(propName: string): (this: _SharePointQueryable, cultureName: string) => Promise<string> {
