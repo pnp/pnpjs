@@ -13,5 +13,7 @@ jobs:
         run: npm ci
       - name: Run lint
         run: npm run lint
+      - name: Run package
+        run: npm run package
       - name: Run tests
         run: npm test -- --mode pr

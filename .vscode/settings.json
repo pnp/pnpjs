@@ -6,9 +6,10 @@
         "**/node_modules": true,
         "coverage": true,
         ".nyc_output": true,
-        "build": false,
+        "build": true,
         "dist": true,
-        "site": true
+        "site": true,
+        "buildsystem-config.js": true
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "./node_modules/typescript/lib",

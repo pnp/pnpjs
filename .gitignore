@@ -47,3 +47,6 @@ debug/serve/*
 
 # project settings
 settings.js
+
+# don't save the locally produced .js of the buildsystem config
+buildsystem-config.js

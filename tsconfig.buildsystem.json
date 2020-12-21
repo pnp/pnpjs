@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": ".",
+        "rootDir": ".",
+        "composite": false,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": false
+    },
+    "include": [
+        "buildsystem-config.ts"
+    ],
+    "exclude": []
+}
