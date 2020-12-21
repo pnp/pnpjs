@@ -29,7 +29,7 @@
     "@typescript-eslint/parser": "^4.9.1",
     "adal-angular": "^1.0.17",
     "adal-node": "^0.1.28",
-    "ansi-colors": "^3.2.4",
+    "ansi-colors": "^4.1.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "del-cli": "^1.1.0",
