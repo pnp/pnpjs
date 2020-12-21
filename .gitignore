@@ -43,6 +43,7 @@ debug/launch/*
 debug/serve/*
 !debug/serve/main.ts
 !debug/serve/tsconfig.json
+!debug/serve/plumbing
 
 # project settings
 settings.js
