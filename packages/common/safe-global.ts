@@ -1,11 +1,11 @@
 // this is the ambient nodejs global var which may or may not exist
-declare var global: any;
+declare let global: any;
 
 // all the things we expect to maybe exist on global
 export interface IGlobal {
     _spPageContextInfo?: {
         webAbsoluteUrl?: string;
-        webServerRelativeUrl?: string
+        webServerRelativeUrl?: string;
     };
 
     location?: string;

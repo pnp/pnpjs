@@ -1,10 +1,11 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/odata";
-import getValidUser from "./utilities/getValidUser";
+import { stringIsNullOrEmpty } from "@pnp/common";
+import getValidUser from "./utilities/getValidUser.js";
 
 describe("Calendar", function () {
 
@@ -199,8 +200,10 @@ describe("Calendar", function () {
 
         // Remove the test data we created
         this.afterAll(async function () {
-            await graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
-        });
 
+            if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
+                await graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
+            }
+        });
     }
 });

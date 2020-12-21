@@ -1,4 +1,4 @@
-import "./groups";
+import "./groups.js";
 
 export {
     Conversation,
@@ -16,4 +16,4 @@ export {
     Senders,
     Thread,
     Threads,
-} from "./types";
+} from "./types.js";

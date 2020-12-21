@@ -1,1 +1,1 @@
-export * from "./src/buildsystem";
+export * from "./src/buildsystem.js";

@@ -1,10 +1,10 @@
 import { assign, ITypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/odata";
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators";
-import { graphPost } from "../operations";
-import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types";
+import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
+import { graphPost } from "../operations.js";
+import { _DirectoryObject } from "../directory-objects/types.js";
 
 export enum GroupType {
     /**
@@ -61,7 +61,7 @@ export class _Group extends _DirectoryObject<IGroupType> {
     }
     /**
      * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
-     * 
+     *
      * @param start Start date and time of the time range
      * @param end End date and time of the time range
      */
@@ -86,7 +86,7 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> {
 
     /**
      * Create a new group as specified in the request body.
-     * 
+     *
      * @param name Name to display in the address book for the group
      * @param mailNickname Mail alias for the group
      * @param groupType Type of group being created

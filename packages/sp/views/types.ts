@@ -6,32 +6,14 @@ import {
     spInvokableFactory,
     IDeleteable,
     deleteable,
-} from "../sharepointqueryable";
-import { metadata } from "../utils/metadata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { metadata } from "../utils/metadata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("views")
 export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
-
-    /**	  
-     * Gets a view by guid id	    
-     *	   
-     * @param id The GUID id of the view	    
-     */
-    public getById(id: string): IView {
-        return View(this).concat(`('${id}')`);
-    }
-
-    /**
-     * Gets a view by title (case-sensitive)
-     *
-     * @param title The case-sensitive title of the view
-     */
-    public getByTitle(title: string): IView {
-        return View(this, `getByTitle('${title}')`);
-    }
 
     /**
      * Adds a new view to the collection
@@ -55,8 +37,26 @@ export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
             view: this.getById(data.Id),
         };
     }
+
+    /**
+     * Gets a view by guid id
+     *
+     * @param id The GUID id of the view
+     */
+    public getById(id: string): IView {
+        return View(this).concat(`('${id}')`);
+    }
+
+    /**
+     * Gets a view by title (case-sensitive)
+     *
+     * @param title The case-sensitive title of the view
+     */
+    public getByTitle(title: string): IView {
+        return View(this, `getByTitle('${title}')`);
+    }
 }
-export interface IViews extends _Views { }
+export interface IViews extends _Views {}
 export const Views = spInvokableFactory<IViews>(_Views);
 
 export class _View extends _SharePointQueryableInstance<IViewInfo> {
@@ -85,7 +85,7 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
 
     /**
      * Sets the view schema
-     * 
+     *
      * @param viewXml The view XML to set
      */
     @tag("v.setViewXml")
@@ -97,7 +97,7 @@ export interface IView extends _View, IDeleteable { }
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: string; }> {
+export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: string }> {
 
     /**
      * Gets a value that specifies the XML schema that represents the collection.
@@ -146,7 +146,7 @@ export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: str
         return spPost(this.clone(ViewFields, `removeviewfield('${fieldInternalName}')`));
     }
 }
-export interface IViewFields extends _ViewFields { }
+export interface IViewFields extends _ViewFields {}
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
 
 export interface IViewAddResult {
@@ -188,7 +188,7 @@ export interface IViewInfo {
     RequiresClientIntegration: boolean;
     RowLimit: number;
     Scope: ViewScope;
-    ServerRelativePath: { DecodedUrl: string; };
+    ServerRelativePath: { DecodedUrl: string };
     ServerRelativeUrl: string;
     StyleId: string | null;
     TabularView: boolean;

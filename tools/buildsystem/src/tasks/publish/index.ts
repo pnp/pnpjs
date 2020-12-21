@@ -1,2 +1,2 @@
-export * from "./publish-package";
-export * from "./publish-beta-package";
+export * from "./publish-package.js";
+export * from "./publish-beta-package.js";

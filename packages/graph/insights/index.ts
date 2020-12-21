@@ -1,4 +1,4 @@
-import "./users";
+import "./users.js";
 
 export {
     IInsights,
@@ -17,4 +17,4 @@ export {
     UsedInsights,
     IResource,
     Resource,
-} from "./types";
+} from "./types.js";

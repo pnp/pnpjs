@@ -6,14 +6,14 @@ import {
     isUrlAbsolute,
     assign,
 } from "@pnp/common";
-import { NodeFetchClient } from "./nodefetchclient";
+import { NodeFetchClient } from "./nodefetchclient.js";
 
 /**
- * 
+ *
  * Creates a fetch client that will aquire an access token using the client credentials
  * flow with a certificate as the credentials.  Used for app only or server-to-server api
  * requests.
- * 
+ *
  * See https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow#service-to-service-access-token-request
  */
 export class AdalCertificateFetchClient implements IHttpClientImpl  {
@@ -21,7 +21,7 @@ export class AdalCertificateFetchClient implements IHttpClientImpl  {
     private _authContext: AuthenticationContext;
 
     /**
-     * 
+     *
      * @param _tenant - Azure AD tenant id (guid)
      * @param _clientId - Client Id from Azure AD app registration
      * @param _thumbprint - Thumbprint of the client certificate
@@ -40,7 +40,7 @@ export class AdalCertificateFetchClient implements IHttpClientImpl  {
         protected _fetchClient: IHttpClientImpl = new NodeFetchClient(),
     ) {
 
-            this._authContext = new AuthenticationContext(combine(this._authority, this._tenant));
+        this._authContext = new AuthenticationContext(combine(this._authority, this._tenant));
 
     }
 

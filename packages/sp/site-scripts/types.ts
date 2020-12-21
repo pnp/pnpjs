@@ -1,9 +1,9 @@
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
-import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
+import { spPost } from "../operations.js";
+import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { tag } from "../telemetry.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 export class _SiteScripts extends _SharePointQueryable {
 
@@ -26,7 +26,7 @@ export class _SiteScripts extends _SharePointQueryable {
 
     /**
      * Creates a new site script.
-     * 
+     *
      * @param title The display name of the site script.
      * @param content JSON value that describes the script. For more information, see JSON reference.
      */
@@ -39,7 +39,7 @@ export class _SiteScripts extends _SharePointQueryable {
 
     /**
      * Gets information about a specific site script. It also returns the JSON of the script.
-     * 
+     *
      * @param id The ID of the site script to get information about.
      */
     @tag("ss.getSiteScriptMetadata")
@@ -49,7 +49,7 @@ export class _SiteScripts extends _SharePointQueryable {
 
     /**
      * Deletes a site script.
-     * 
+     *
      * @param id The ID of the site script to delete.
      */
     @tag("ss.deleteSiteScript")
@@ -59,8 +59,8 @@ export class _SiteScripts extends _SharePointQueryable {
 
     /**
      * Updates a site script with new values. In the REST call, all parameters are optional except the site script Id.
-     * 
-     * @param siteScriptUpdateInfo Object that contains the information to update a site script. 
+     *
+     * @param siteScriptUpdateInfo Object that contains the information to update a site script.
      *                             Make sure you stringify the content object or pass it in the second 'content' parameter
      * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
      */
@@ -80,7 +80,7 @@ export class _SiteScripts extends _SharePointQueryable {
      */
     @tag("ss.getSiteScriptFromList")
     public getSiteScriptFromList(listUrl: string): Promise<string> {
-        return this.clone(SiteScriptsCloneFactory, `GetSiteScriptFromList`).execute<string>({ listUrl });
+        return this.clone(SiteScriptsCloneFactory, "GetSiteScriptFromList").execute<string>({ listUrl });
     }
 
     /**
@@ -90,21 +90,21 @@ export class _SiteScripts extends _SharePointQueryable {
      */
     @tag("ss.getSiteScriptFromWeb")
     public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
-        return this.clone(SiteScriptsCloneFactory, `getSiteScriptFromWeb`).execute<ISiteScriptSerializationResult>({ webUrl, info });
+        return this.clone(SiteScriptsCloneFactory, "getSiteScriptFromWeb").execute<ISiteScriptSerializationResult>({ webUrl, info });
     }
 
     /**
      * Executes the indicated site design action on the indicated web.
-     * 
+     *
      * @param webUrl The absolute url of the web to retrieve site script
      * @param extractInfo configuration object to specify what to extract
      */
     @tag("ss.executeSiteScriptAction")
     public executeSiteScriptAction(actionDefinition: string): Promise<ISiteScriptActionResult> {
-        return this.clone(SiteScriptsCloneFactory, `executeSiteScriptAction`).execute<ISiteScriptActionResult>({ actionDefinition });
+        return this.clone(SiteScriptsCloneFactory, "executeSiteScriptAction").execute<ISiteScriptActionResult>({ actionDefinition });
     }
 }
-export interface ISiteScripts extends _SiteScripts { }
+export interface ISiteScripts extends _SiteScripts {}
 export const SiteScripts = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
 
 type SiteScriptsCloneType = ISiteScripts & ISharePointQueryable & { execute<T>(props: any): Promise<T> };

@@ -1,8 +1,8 @@
-import { SPRest } from "../rest";
-import { IWeb, Web } from "../webs/types";
+import { SPRest } from "../rest.js";
+import { IWeb, Web } from "../webs/types.js";
 
-import "./web";
-import { SharePointQueryable } from "../sharepointqueryable";
+import "./web.js";
+import { SharePointQueryable } from "../sharepointqueryable.js";
 
 export {
     IAppAddResult,
@@ -10,7 +10,7 @@ export {
     IAppCatalog,
     App,
     AppCatalog,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -19,6 +19,9 @@ declare module "../rest" {
 }
 
 SPRest.prototype.getTenantAppCatalogWeb = async function (this: SPRest): Promise<IWeb> {
-    const data: { CorporateCatalogUrl: string } = await SharePointQueryable("/", "_api/SP_TenantSettings_Current")();
-    return Web(data.CorporateCatalogUrl);
+
+    return this.childConfigHook(async ({ options, runtime }) => {
+        const data: { CorporateCatalogUrl: string } = await SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)();
+        return Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime);
+    });
 };

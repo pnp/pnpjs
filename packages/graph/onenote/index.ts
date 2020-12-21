@@ -1,4 +1,4 @@
-import "./users";
+import "./users.js";
 
 export {
     INotebook,
@@ -13,4 +13,4 @@ export {
     OneNote,
     Section,
     Sections,
-} from "./types";
+} from "./types.js";

@@ -1,22 +1,22 @@
-import { defaultPath } from "../decorators";
+import { defaultPath } from "../decorators.js";
 import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { assign } from "@pnp/common";
-import { odataUrlFrom } from "../odata";
-import { metadata } from "../utils/metadata";
+import { odataUrlFrom } from "../odata.js";
+import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("comments")
 export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new comment to this collection
-     * 
+     *
      * @param info Comment information to add
      */
     @tag("coms.add")
@@ -35,7 +35,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Gets a comment by id
-     * 
+     *
      * @param id Id of the comment to load
      */
     public getById(id: string | number): IComment {
@@ -93,7 +93,7 @@ export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new reply to this collection
-     * 
+     *
      * @param info Comment information to add
      */
     @tag("reps.add")

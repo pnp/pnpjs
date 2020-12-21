@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -10,7 +10,11 @@ import { getRandomString, combine } from "@pnp/common";
 import { sp } from "@pnp/sp";
 import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import findupSync = require("findup-sync");
+
+// give ourselves a single reference to the projectRoot
+const projectRoot = resolve(dirname(findupSync("package.json")));
 
 describe("files", () => {
 
@@ -114,9 +118,9 @@ describe("files", () => {
         it.skip("addChunked", async function () {
 
             const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
-            const content = readFileSync(resolve(__dirname, "./assets/sample_file.jpg"));
+            const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
             const far = await files.addChunked(name, <any>content, null, true, 1000000);
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(far).to.not.be.null;
             return expect(far.file()).to.eventually.be.fulfilled;
         });
@@ -199,7 +203,7 @@ describe("file", () => {
 
             const name = `Testing check in out - ${getRandomString(4)}.txt`;
             await files.add(name, "Some test text content.");
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(files.getByName(name).checkout()).to.eventually.be.fulfilled;
             return expect(files.getByName(name).checkin()).to.eventually.be.fulfilled;
         });
@@ -215,7 +219,7 @@ describe("file", () => {
 
             await files.getByName(name).copyTo(path, true);
 
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
         });
 
@@ -230,7 +234,7 @@ describe("file", () => {
 
             await files.getByName(name).moveTo(path, MoveOperations.Overwrite);
 
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
         });
 
@@ -245,7 +249,7 @@ describe("file", () => {
 
             await files.getByName(name).copyByPath(path, true);
 
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
         });
 
@@ -260,7 +264,7 @@ describe("file", () => {
 
             await files.getByName(name).moveByPath(path, true);
 
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             return expect(files.getByName(name2)()).to.eventually.be.fulfilled;
         });
 
@@ -280,14 +284,14 @@ describe("file", () => {
             const name = `Testing Exists - ${getRandomString(4)}.txt`;
             await files.add(name, "Some test text content.");
             const exists = await files.getByName(name).exists();
-            // tslint:disable-next-line: no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(exists).to.be.true;
         });
 
         it("exists - false", async function () {
 
             const exists = await files.getByName(`Testing Exists - ${getRandomString(4)}.txt`).exists();
-            // tslint:disable-next-line: no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(exists).to.be.false;
         });
 

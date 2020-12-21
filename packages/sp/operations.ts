@@ -1,24 +1,30 @@
 import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/odata";
-import { SPHttpClient } from "./sphttpclient";
-import { ISharePointQueryable } from "./sharepointqueryable";
-import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc } from "@pnp/common";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { SPHttpClient } from "./sphttpclient.js";
+import { ISharePointQueryable } from "./sharepointqueryable.js";
+import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc, Runtime } from "@pnp/common";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
-    factory = isFunc(requestClientFactory) ? requestClientFactory : () => new SPHttpClient();
+    httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
 }
 
-let factory: () => IRequestClient = () => new SPHttpClient();
+const defaultFactory = (runtime: Runtime) => () => new SPHttpClient(runtime);
+let httpClientFactory: (runtime: Runtime) => () => IRequestClient = defaultFactory;
 
 const send = (method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT"): <T = any>(o: ISharePointQueryable, options?: IFetchOptions) => Promise<T> => {
 
-    const operation: IOperation = defaultPipelineBinder(factory)(method);
-
     return async function <T = any>(o: ISharePointQueryable, options?: IFetchOptions): Promise<T> {
 
+        // use the current runtime
+        const runtime = o.getRuntime();
+
+        const operation: IOperation = defaultPipelineBinder(httpClientFactory(runtime))(method);
+
         const data = cloneQueryableData(o.data);
-        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => { return; };
-        const url = await toAbsoluteUrl(o.toUrlAndQuery());
+        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => {
+            return;
+        };
+        const url = await toAbsoluteUrl(o.toUrlAndQuery(), runtime);
 
         mergeOptions(data.options, options);
 

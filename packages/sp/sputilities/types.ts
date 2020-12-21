@@ -1,15 +1,15 @@
-import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable";
+import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable.js";
 import { assign, ITypedHash } from "@pnp/common";
-import { SPBatch } from "../batch";
-import { ICachingOptions, body } from "@pnp/odata";
-import { odataUrlFrom } from "../odata";
-import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types";
-import { metadata } from "../utils/metadata";
-import { File, IFile } from "../files/types";
-import { extractWebUrl } from "../utils/extractweburl";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
-import { objectToSPKeyValueCollection } from "../utils/objectToSPKeyValueCollection";
+import { SPBatch } from "../batch.js";
+import { ICachingOptions, body, IQueryable } from "@pnp/odata";
+import { odataUrlFrom } from "../odata.js";
+import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
+import { metadata } from "../utils/metadata.js";
+import { File, IFile } from "../files/types.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
+import { objectToSPKeyValueCollection } from "../utils/objectToSPKeyValueCollection.js";
 
 export class _Utilities extends _SharePointQueryable implements IUtilities {
     constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
@@ -201,7 +201,7 @@ export interface IUtilities {
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 
-export const Utilities = spInvokableFactory<IUtilities>(_Utilities);
+export const Utilities = spInvokableFactory<IUtilities & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime">>(_Utilities);
 type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };
 const UtilitiesCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
 

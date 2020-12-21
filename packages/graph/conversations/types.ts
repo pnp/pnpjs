@@ -10,9 +10,9 @@ import {
     _GraphQueryableCollection,
     _GraphQueryableInstance,
     graphInvokableFactory,
-} from "../graphqueryable";
-import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators";
-import { graphPost, graphDelete } from "../operations";
+} from "../graphqueryable.js";
+import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators.js";
+import { graphPost, graphDelete } from "../operations.js";
 
 /**
  * Conversation
@@ -56,8 +56,8 @@ export class _Thread extends _GraphQueryableInstance {
 
     /**
      * Reply to a thread in a group conversation and add a new post to it
-     * 
-     * @param post Contents of the post 
+     *
+     * @param post Contents of the post
      */
     public reply(post: IPostType): Promise<void> {
         return graphPost(this.clone(Thread, "reply"), body(post));
@@ -91,8 +91,8 @@ export class _Post extends _GraphQueryableInstance<IPostType> {
 
     /**
      * Reply to a thread in a group conversation and add a new post to it
-     * 
-     * @param post Contents of the post 
+     *
+     * @param post Contents of the post
      */
     public reply(post: IPostType): Promise<void> {
         return graphPost(this.clone(Post, "reply"), body(post));
@@ -126,7 +126,7 @@ export class _Senders extends _GraphQueryableCollection<IUserType[]> {
 
     /**
      * Removes the entity from the collection
-     * 
+     *
      * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
     public remove(id: string): Promise<void> {

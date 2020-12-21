@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import "@pnp/sp/site-users";
-import { IInvokableTest } from "../types";
+import { IInvokableTest } from "../types.js";
 import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/common";

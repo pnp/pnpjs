@@ -1,7 +1,7 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
-import { hOP, IConfigOptions } from "@pnp/common";
-import { defaultPath } from "../decorators";
-import { tag } from "../telemetry";
+import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
+import { hOP, IConfigOptions, DefaultRuntime } from "@pnp/common";
+import { defaultPath } from "../decorators.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("_api/search/suggest")
 export class _Suggest extends _SharePointQueryableInstance {
@@ -50,17 +50,14 @@ export interface ISuggest {
     (query: ISuggestQuery): Promise<ISuggestResult>;
 }
 
-export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}): ISuggest => (query: ISuggestQuery) => {
-    return (new _Suggest(baseUrl)).configure(options).execute(query);
+export const Suggest = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISuggest => (query: ISuggestQuery) => {
+    return (new _Suggest(baseUrl)).configure(options).setRuntime(runtime).execute(query);
 };
 
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
 export interface ISuggestQuery {
-
-    [key: string]: string | number | boolean;
-
     /**
      * A string that contains the text for the search query.
      */
@@ -119,6 +116,8 @@ export interface ISuggestQuery {
      * query suggestions should match the full query word.
      */
     prefixMatch?: boolean;
+
+    [key: string]: string | number | boolean;
 }
 
 export interface ISuggestResult {

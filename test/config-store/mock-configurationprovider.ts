@@ -2,6 +2,7 @@ import { IConfigurationProvider } from "../../packages/config-store";
 import { ITypedHash } from "@pnp/common";
 
 export default class MockConfigurationProvider implements IConfigurationProvider {
+
     public shouldThrow = false;
     public shouldReject = false;
 

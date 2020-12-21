@@ -2,8 +2,8 @@ declare var require: (s: string) => any;
 const colors = require("ansi-colors"),
     log = require("fancy-log");
 
-import { BuildSchema, BuildTask } from "./config";
-import { build } from "./tasks/build/build";
+import { BuildSchema, BuildTask } from "./config.js";
+import { build } from "./tasks/build/build.js";
 
 /**
  * Engine function to process build files

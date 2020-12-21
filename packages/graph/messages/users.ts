@@ -1,7 +1,7 @@
 import { addProp, body } from "@pnp/odata";
-import { _User, User } from "../users/types";
-import { IMessages, Messages, IMailboxSettings, MailboxSettings, IMailFolders, MailFolders, IMessage } from "./types";
-import { graphPost } from "../operations";
+import { _User, User } from "../users/types.js";
+import { IMessages, Messages, IMailboxSettings, MailboxSettings, IMailFolders, MailFolders, IMessage } from "./types.js";
+import { graphPost } from "../operations.js";
 
 declare module "../users/types" {
     interface _User {

@@ -1,6 +1,6 @@
 declare var require: (s: string) => any;
-import { PackageTargetMap } from "../../config";
-import getSubDirNames from "../../lib/getSubDirectoryNames";
+import { PackageTargetMap } from "../../config.js";
+import getSubDirNames from "../../lib/getSubDirectoryNames.js";
 import * as findup from "findup-sync";
 import { sync as ensurePath } from "mkdirp";
 const path = require("path"),

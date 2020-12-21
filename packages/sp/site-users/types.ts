@@ -4,15 +4,15 @@ import {
     spInvokableFactory,
     IDeleteable,
     deleteable,
-} from "../sharepointqueryable";
-import { SiteGroups, ISiteGroups } from "../site-groups/types";
+} from "../sharepointqueryable.js";
+import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { ITypedHash, assign } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { PrincipalType } from "../types";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { PrincipalType } from "../types.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("siteusers")
 export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> {
@@ -61,7 +61,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
      */
     @tag("sus.remLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
-        const o = this.clone(SiteUsers, `removeByLoginName(@v)`);
+        const o = this.clone(SiteUsers, "removeByLoginName(@v)");
         o.query.set("@v", `'${encodeURIComponent(loginName)}'`);
         return spPost(o);
     }
@@ -78,7 +78,7 @@ export class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> 
         return this.getByLoginName(loginName);
     }
 }
-export interface ISiteUsers extends _SiteUsers { }
+export interface ISiteUsers extends _SiteUsers {}
 export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
 
 /**
@@ -126,49 +126,49 @@ export interface ISiteUserProps {
 
     /**
      * Contains Site user email
-     * 
+     *
      */
     Email: string;
 
     /**
      * Contains Site user Id
-     * 
+     *
      */
     Id: number;
 
     /**
      * Site user IsHiddenInUI
-     * 
+     *
      */
     IsHiddenInUI: boolean;
 
     /**
-     * Site user IsShareByEmailGuestUser 
-     * 
+     * Site user IsShareByEmailGuestUser
+     *
      */
     IsShareByEmailGuestUser: boolean;
 
     /**
-     * Describes if Site user Is Site Admin 
-     * 
+     * Describes if Site user Is Site Admin
+     *
      */
     IsSiteAdmin: boolean;
 
     /**
      * Site user LoginName
-     * 
+     *
      */
     LoginName: string;
 
     /**
      * Site user Principal type
-     * 
+     *
      */
     PrincipalType: number | PrincipalType;
 
     /**
      * Site user Title
-     * 
+     *
      */
     Title: string;
 }

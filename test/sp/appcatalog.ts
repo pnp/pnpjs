@@ -1,7 +1,7 @@
 
 import { getRandomString } from "@pnp/common";
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import { IWeb, Web } from "@pnp/sp/webs";
 import { sp } from "@pnp/sp";
@@ -10,8 +10,14 @@ import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
+import findupSync = require("findup-sync");
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => { r(); }, ms));
+const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
+    r();
+}, ms));
+
+// give ourselves a single reference to the projectRoot
+const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
 // currrently skipping due to permissions issues
 describe.skip("AppCatalog", function () {
@@ -19,7 +25,7 @@ describe.skip("AppCatalog", function () {
     if (testSettings.enableWebTests) {
         let appCatalog: IAppCatalog;
         let appCatWeb: IWeb;
-        const dirname = path.join(__dirname, "assets", "helloworld.sppkg");
+        const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
         const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
@@ -30,7 +36,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it gets all the apps", function () {
-            return expect(appCatalog.get(), `all apps should've been fetched`).to.eventually.be.fulfilled;
+            return expect(appCatalog.get(), "all apps should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("it adds an app", function () {
@@ -52,7 +58,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it fails to synchronize a solution to the Microsoft Teams App Catalog using a non existing app", async function () {
-            const msg = `app 'random' should not have been synchronized to the Microsoft Teams App Catalog`;
+            const msg = "app 'random' should not have been synchronized to the Microsoft Teams App Catalog";
             return expect(appCatalog.syncSolutionToTeams("random"), msg).to.not.eventually.be.fulfilled;
         });
 

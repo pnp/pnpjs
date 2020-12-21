@@ -1,4 +1,4 @@
-import "./users";
+import "./users.js";
 
 export {
     Contact,
@@ -11,4 +11,4 @@ export {
     IContactFolder,
     IContactFolders,
     IContacts,
-} from "./types";
+} from "./types.js";

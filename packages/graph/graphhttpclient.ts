@@ -5,16 +5,29 @@ import {
     IFetchOptions,
     IHttpClientImpl,
     getCtxCallback,
+    DefaultRuntime,
+    Runtime,
 } from "@pnp/common";
-import { GraphRuntimeConfig } from "./graphlibconfig";
+import { IGraphConfiguration, IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
 
 export class GraphHttpClient implements IRequestClient {
 
+    protected _runtime: Runtime;
     private _impl: IHttpClientImpl;
 
-    constructor() {
+    constructor(runtime: Runtime)
+    constructor(impl: IHttpClientImpl, runtime?: Runtime)
+    constructor(...args: any[]) {
+        // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
 
-        this._impl = GraphRuntimeConfig.fetchClientFactory();
+        if (args[0] instanceof Runtime) {
+            this._runtime = args[0];
+        } else {
+            this._runtime = args.length > 1 && args[1] instanceof Runtime ? args[1] : DefaultRuntime;
+            this._impl = args[0];
+        }
+
+        this._impl = this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory();
     }
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
@@ -22,7 +35,7 @@ export class GraphHttpClient implements IRequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, GraphRuntimeConfig.headers);
+        mergeHeaders(headers, this._runtime.get<IGraphConfiguration, IGraphConfigurationProps>("graph")?.headers);
 
         // second we add the local options so we can overwrite the globals
         mergeHeaders(headers, options.headers);

@@ -1,4 +1,4 @@
-import "./list";
+import "./list.js";
 
 export {
     Item,
@@ -15,4 +15,4 @@ export {
     PagedItemCollection,
     IItemDeleteParams,
     IItemParentInfos,
-} from "./types";
+} from "./types.js";

@@ -6,9 +6,11 @@ import "@pnp/sp/site-designs";
 import "@pnp/sp/site-users/web";
 import { ISiteDesignRun } from "@pnp/sp/site-designs";
 import { sp } from "@pnp/sp";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 
-const sleep = (ms: number) => new Promise(r => setTimeout(() => { r(); }, ms));
+const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
+    r();
+}, ms));
 
 describe("SiteDesigns", function () {
 
@@ -50,7 +52,7 @@ describe("SiteDesigns", function () {
         it("fails to delete a site design with non-existing id", function () {
 
             return expect(sp.siteDesigns.deleteSiteDesign(null),
-                `site design should NOT have been deleted`).to.eventually.be.rejected;
+                "site design should NOT have been deleted").to.eventually.be.rejected;
         });
 
         it("gets the site design metadata", async function () {
@@ -101,7 +103,7 @@ describe("SiteDesigns", function () {
         it("gets all the site designs", async function () {
 
             return expect(sp.siteDesigns.getSiteDesigns(),
-                `all the site designs should've been fetched`).to.eventually.be.fulfilled;
+                "all the site designs should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("gets the site designs rights", async function () {
@@ -153,7 +155,7 @@ describe("SiteDesigns", function () {
         it("gets the site design runs", async function () {
 
             return expect(sp.web.getSiteDesignRuns(),
-                `site design runs should've been fetched`).to.eventually.be.fulfilled;
+                "site design runs should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("adds a site design task with absolute web url", async function () {
@@ -167,7 +169,7 @@ describe("SiteDesigns", function () {
             createdSiteDesignIds.push(sd.Id);
 
             return expect(sp.siteDesigns.addSiteDesignTask(testSettings.sp.webUrl, sd.Id),
-                `site design task should've been created with absolute web url`).to.eventually.be.fulfilled;
+                "site design task should've been created with absolute web url").to.eventually.be.fulfilled;
         });
 
         it("adds a site design task", async function () {
@@ -181,7 +183,7 @@ describe("SiteDesigns", function () {
             createdSiteDesignIds.push(sd.Id);
 
             return expect(sp.web.addSiteDesignTask(sd.Id),
-                `site design task should've been created`).to.eventually.be.fulfilled;
+                "site design task should've been created").to.eventually.be.fulfilled;
         });
 
         it("gets a site design task", async function () {
@@ -197,11 +199,10 @@ describe("SiteDesigns", function () {
             const originalTask = await sp.web.addSiteDesignTask(sd.Id);
 
             return expect(sp.siteDesigns.getSiteDesignTask(originalTask.ID),
-                `site design task should've been fetched`).to.eventually.be.fulfilled;
+                "site design task should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("gets a site design run status", async function () {
-            this.enableTimeouts(false);
 
             const title = `Test_add_task_run_sitedesign_${getRandomString(8)}`;
             const sd = await sp.siteDesigns.createSiteDesign({
@@ -223,7 +224,7 @@ describe("SiteDesigns", function () {
             const siteDesignRuns: ISiteDesignRun[] = await sp.web.getSiteDesignRuns();
 
             return expect(sp.web.getSiteDesignRunStatus(siteDesignRuns[0].ID),
-                `site design task should've been created`).to.eventually.be.fulfilled;
+                "site design task should've been created").to.eventually.be.fulfilled;
         });
 
         after(() => {

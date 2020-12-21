@@ -6,9 +6,9 @@ import {
     _GraphQueryableCollection,
     IGraphQueryableCollection,
     graphInvokableFactory,
-} from "../graphqueryable";
-import { defaultPath, getById, IGetById } from "../decorators";
-import { graphPost } from "../operations";
+} from "../graphqueryable.js";
+import { defaultPath, getById, IGetById } from "../decorators.js";
+import { graphPost } from "../operations.js";
 
 /**
  * Represents a onenote entity
@@ -53,7 +53,7 @@ export const Notebook = graphInvokableFactory<INotebook>(_Notebook);
 export class _Notebooks extends _GraphQueryableCollection<INotebookType[]> {
     /**
      * Create a new notebook as specified in the request body.
-     * 
+     *
      * @param displayName Notebook display name
      */
     public async add(displayName: string): Promise<INotebookAddResult> {
@@ -86,7 +86,7 @@ export const Section = graphInvokableFactory<ISection>(_Section);
 export class _Sections extends _GraphQueryableCollection<ISectionType[]> {
     /**
      * Adds a new section
-     * 
+     *
      * @param displayName New section display name
      */
     public async add(displayName: string): Promise<ISectionAddResult> {

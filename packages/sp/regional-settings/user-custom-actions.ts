@@ -1,6 +1,6 @@
-import { _UserCustomAction } from "../user-custom-actions/types";
-import { getValueForUICultureBinder } from "./funcs";
-import { IUserResources } from "./types";
+import { _UserCustomAction } from "../user-custom-actions/types.js";
+import { getValueForUICultureBinder } from "./funcs.js";
+import { IUserResources } from "./types.js";
 
 declare module "../user-custom-actions/types" {
     interface _UserCustomAction extends IUserResources {}

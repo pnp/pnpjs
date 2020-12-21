@@ -5,13 +5,13 @@ import {
     spInvokableFactory,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { assign } from "@pnp/common";
-import { metadata } from "../utils/metadata";
+import { metadata } from "../utils/metadata.js";
 import { body, headers } from "@pnp/odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Represents a collection of navigation nodes
@@ -19,10 +19,10 @@ import { tag } from "../telemetry";
  */
 export class _NavigationNodes extends _SharePointQueryableCollection<INavNodeInfo[]> {
 
-    /**	    
-     * Gets a navigation node by id	
-     *	
-     * @param id The id of the node	
+    /**
+     * Gets a navigation node by id
+     *
+     * @param id The id of the node
      */
     public getById(id: number): INavigationNode {
         return tag.configure(NavigationNode(this).concat(`(${id})`), "nns.getById");
@@ -69,7 +69,7 @@ export class _NavigationNodes extends _SharePointQueryableCollection<INavNodeInf
         return spPost(this.clone(NavigationNodes, "MoveAfter"), postBody);
     }
 }
-export interface INavigationNodes extends _NavigationNodes { }
+export interface INavigationNodes extends _NavigationNodes {}
 export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationNodes);
 
 
@@ -90,7 +90,7 @@ export class _NavigationNode extends _SharePointQueryableInstance<INavNodeInfo> 
 
     /**
      * Updates this node
-     * 
+     *
      * @param properties Properties used to update this node
      */
     @tag("nn.update")
@@ -154,7 +154,7 @@ export class _NavigationService extends _SharePointQueryable {
 
     /**
      * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
-     * 
+     *
      * @param menuNodeKey MenuNode.Key of the start node within the SiteMapProvider If no key is provided the SiteMapProvider.RootNode will be the root of the menu state.
      * @param depth Depth of the dump. If no value is provided a dump with the depth of 10 is returned
      * @param mapProviderName The name identifying the SiteMapProvider to be used
@@ -173,7 +173,7 @@ export class _NavigationService extends _SharePointQueryable {
 
     /**
      * Tries to get a SiteMapNode.Key for a given URL within a site collection.
-     * 
+     *
      * @param currentUrl A url representing the SiteMapNode
      * @param mapProviderName The name identifying the SiteMapProvider to be used
      */
@@ -186,7 +186,7 @@ export class _NavigationService extends _SharePointQueryable {
         }));
     }
 }
-export interface INavigationService extends _NavigationService { }
+export interface INavigationService extends _NavigationService {}
 export const NavigationService = (path?: string) => <INavigationService>new _NavigationService(path);
 
 export interface IMenuNode {

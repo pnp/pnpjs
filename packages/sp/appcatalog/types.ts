@@ -4,13 +4,13 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable";
-import { spPost } from "../operations";
-import { odataUrlFrom } from "../odata";
-import { extractWebUrl } from "../utils/extractweburl";
-import { File, IFile } from "../files/types";
-import { tag } from "../telemetry";
-import { Web } from "../webs";
-import "../items";
+import { spPost } from "../operations.js";
+import { odataUrlFrom } from "../odata.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { File, IFile } from "../files/types.js";
+import { tag } from "../telemetry.js";
+import { Web } from "../webs/index.js";
+import "../items/index.js";
 
 export class _AppCatalog extends _SharePointQueryableCollection {
 
@@ -30,7 +30,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
      * Synchronize a solution to the Microsoft Teams App Catalog
      * @param id - Specify the guid of the app
      * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id.
-     *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter 
+     *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter
      */
     public async syncSolutionToTeams(id: string | number, useSharePointItemId = false): Promise<void> {
 
@@ -44,7 +44,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
         } else {
 
             const web = Web(webUrl);
-            const listId = (await web.lists.select("Id").filter(`EntityTypeName eq 'AppCatalog'`)())[0].Id;
+            const listId = (await web.lists.select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
             const listItems = await web.lists.getById(listId).items.filter(`AppProductID eq '${id}'`).top(1)();
 
             if (listItems && listItems.length > 0) {
@@ -94,7 +94,7 @@ export class _App extends _SharePointQueryableInstance {
     /**
      * This method deploys an app on the app catalog. It must be called in the context
      * of the tenant app catalog web or it will fail.
-     * 
+     *
      * @param skipFeatureDeployment Deploy the app to the entire tenant
      */
     @tag("app.deploy")

@@ -1,7 +1,7 @@
-import { ITestingSettings } from "../../test/settings";
+import { ITestingSettings } from "../../test/settings.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { sp } from "@pnp/sp";
-import { spSetup } from "./setup";
+import { spSetup } from "./setup.js";
 import "@pnp/sp/webs";
 
 declare var process: { exit(code?: number): void };

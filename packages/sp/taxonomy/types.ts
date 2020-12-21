@@ -1,6 +1,6 @@
-import { defaultPath } from "../decorators";
-import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable";
-import { tag } from "../telemetry";
+import { defaultPath } from "../decorators.js";
+import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { tag } from "../telemetry.js";
 
 /**
  * Describes a collection of Form objects
@@ -17,13 +17,13 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
     }
 
     /**
-     * Gets the term sets associated with this tenant
+     * Gets the term groups associated with this tenant
      */
     public get sets(): ITermSets {
         return tag.configure(TermSets(this), "txts.sets");
     }
 }
-export interface ITermStore extends _TermStore { }
+export interface ITermStore extends _TermStore {}
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
 
 
@@ -32,14 +32,14 @@ export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]
 
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermGroup {
         return tag.configure(TermGroup(this, id), "txtgs.getById");
     }
 }
-export interface ITermGroups extends _TermGroups { }
+export interface ITermGroups extends _TermGroups {}
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
 
 export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
@@ -51,7 +51,7 @@ export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
         return tag.configure(TermSets(this, "sets"), "txtg.sets");
     }
 }
-export interface ITermGroup extends _TermGroup { }
+export interface ITermGroup extends _TermGroup {}
 export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
 
 
@@ -60,21 +60,24 @@ export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
 
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermSet {
         return tag.configure(TermSet(this, id), "txts.getById");
     }
 }
-export interface ITermSets extends _TermSets { }
+export interface ITermSets extends _TermSets {}
 export const TermSets = spInvokableFactory<ITermSets>(_TermSets);
 
 export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
-    // public get terms(): ITerms {
-    //     return Terms(this);
-    // }
+    /**
+     * Gets all the terms in this set
+     */
+    public get terms(): ITerms {
+        return Terms(this);
+    }
 
     public get parentGroup(): ITermGroup {
         return tag.configure(TermGroup(this, "parentGroup"), "txts.parentGroup");
@@ -91,29 +94,90 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
     public getTermById(id: string): ITerm {
         return tag.configure(this.clone(Term, `terms/${id}`), "txts.getTermById");
     }
+
+    /**
+     * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
+     * ** This is an expensive operation and you should strongly consider caching the results **
+     */
+    public async getAllChildrenAsOrderedTree(): Promise<IOrderedTermInfo[]> {
+
+        const setInfo = await this.select("*", "customSortOrder")();
+        const tree: IOrderedTermInfo[] = [];
+
+        const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
+            // handle custom sort order
+            let ordering: string[] = null;
+            if (sorts === null && setSorts.length > 0) {
+                ordering = [...setSorts];
+            } else {
+                const index = sorts.findIndex(v => v.setId === setInfo.id);
+                if (index >= 0) {
+                    ordering = [...sorts[index].order];
+                }
+            }
+
+            if (ordering !== null) {
+                const orderedChildren = [];
+                ordering.forEach(o => {
+                    const found = terms.find(ch => o === ch.id);
+                    if (found) {
+                        orderedChildren.push(found);
+                    }
+                });
+                return orderedChildren;
+            }
+            return terms;
+        };
+
+        const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
+
+            const children = await source.children.select("*", "customSortOrder")();
+
+            for (let i = 0; i < children.length; i++) {
+
+                const child = children[i];
+
+                const orderedTerm = {
+                    children: <IOrderedTermInfo[]>[],
+                    defaultLabel: child.labels.find(l => l.isDefault).name,
+                    ...child,
+                };
+
+                if (child.childrenCount > 0) {
+                    await visitor(this.getTermById(children[i].id), orderedTerm.children);
+                    orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                }
+
+                parent.push(orderedTerm);
+            }
+        };
+
+        await visitor(this, tree);
+
+        return ensureOrder(tree, null, setInfo.customSortOrder);
+    }
 }
-export interface ITermSet extends _TermSet { }
+export interface ITermSet extends _TermSet {}
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
-
-// @defaultPath("terms")
-// export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
-
-//     /**
-//      * Gets a term group by id
-//      *
-//      * @param id Id of the term group to access
-//      */
-//     public getById(id: string): ITerm {
-//         return Term(this, id);
-//     }
-// }
-// export interface ITerms extends _Terms { }
-// export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 @defaultPath("children")
 export class _Children extends _SharePointQueryableCollection<ITermInfo[]> { }
-export interface IChildren extends _Children { }
+export interface IChildren extends _Children {}
 export const Children = spInvokableFactory<IChildren>(_Children);
+
+@defaultPath("terms")
+export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+    /**
+     * Gets a term group by id
+     *
+     * @param id Id of the term group to access
+     */
+    public getById(id: string): ITerm {
+        return Term(this, id);
+    }
+}
+export interface ITerms extends _Terms { }
+export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SharePointQueryableInstance<ITermInfo> {
 
@@ -133,7 +197,7 @@ export class _Term extends _SharePointQueryableInstance<ITermInfo> {
         return tag.configure(TermSet(this, "set"), "txt.set");
     }
 }
-export interface ITerm extends _Term { }
+export interface ITerm extends _Term {}
 export const Term = spInvokableFactory<ITerm>(_Term);
 
 
@@ -141,14 +205,14 @@ export const Term = spInvokableFactory<ITerm>(_Term);
 export class _Relations extends _SharePointQueryableCollection<IRelationInfo[]> {
     /**
      * Gets a term group by id
-     * 
+     *
      * @param id Id of the term group to access
      */
     public getById(id: string): IRelation {
         return tag.configure(Relation(this, id), "txrs.getById");
     }
 }
-export interface IRelations extends _Relations { }
+export interface IRelations extends _Relations {}
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
 export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
@@ -165,7 +229,7 @@ export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
         return tag.configure(TermSet(this, "set"), "txr.set");
     }
 }
-export interface IRelation extends _Relation { }
+export interface IRelation extends _Relation {}
 export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 
@@ -191,25 +255,47 @@ export interface ITermGroupInfo {
     lastModifiedDateTime: string;
     type: string;
     scope: "global" | "system" | "siteCollection";
-    managers?: ITaxonomyUserInfo[];
-    contributors?: ITaxonomyUserInfo[];
+    // managers?: ITaxonomyUserInfo[];
+    // contributors?: ITaxonomyUserInfo[];
 }
 
 export interface ITermSetInfo {
     id: string;
-    localizedNames: { name: string, languageTag: string }[];
+    localizedNames: { name: string; languageTag: string }[];
     description: string;
     createdDateTime: string;
-    properties: ITaxonomyProperty[];
+    customSortOrder: string[];
+    properties?: ITaxonomyProperty[];
+    childrenCount: number;
+    groupId: string;
+    isOpen: boolean;
+    isAvailableForTagging: boolean;
+    contact: string;
 }
 
 export interface ITermInfo {
+    childrenCount: number;
     id: string;
-    labels: { name: string, isDefault: boolean, languageTag: string }[];
+    labels: { name: string; isDefault: boolean; languageTag: string }[];
     createdDateTime: string;
+    customSortOrder: ITermSortOrderInfo[];
     lastModifiedDateTime: string;
-    descriptions: { description: string, languageTag: string }[];
+    descriptions: { description: string; languageTag: string }[];
     properties: ITaxonomyProperty[];
+    localProperties: ITaxonomyProperty[];
+    isDeprecated: boolean;
+    isAvailableForTagging: { setId: string; isAvailable: boolean }[];
+    topicRequested: boolean;
+}
+
+export interface ITermSortOrderInfo {
+    setId: string;
+    order: string[];
+}
+
+export interface IOrderedTermInfo extends ITermInfo {
+    children: IOrderedTermInfo[];
+    defaultLabel: string;
 }
 
 export interface IRelationInfo {

@@ -1,15 +1,16 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES2015",
         "module": "commonjs",
         "composite": true,
         "declaration": true,
         "declarationMap": true,
         "removeComments": false,
-        "types": [],
+        "allowJs": true,
         "lib": [
-            "es2015",
-            "dom"
+            "ES2015",
+            "dom",
+            "ES2017.Object"
         ],
         "baseUrl": ".",
         "rootDir": ".",
@@ -36,5 +37,7 @@
             ]
         }
     },
-    "include": []
+    "include": [
+        "./packages/**/*.ts",
+    ]
 }

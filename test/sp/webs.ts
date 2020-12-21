@@ -18,8 +18,8 @@ import "@pnp/sp/hubsites/web";
 import "@pnp/sp/appcatalog/web";
 import "@pnp/sp/regional-settings/web";
 import "@pnp/sp/clientside-pages";
-import { testSettings } from "../main";
-import { IInvokableTest } from "../types";
+import { testSettings } from "../main.js";
+import { IInvokableTest } from "../types.js";
 
 describe("Webs", function () {
 

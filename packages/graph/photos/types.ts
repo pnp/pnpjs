@@ -1,8 +1,8 @@
-import { _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable";
+import { _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { BlobParser, BufferParser } from "@pnp/odata";
 import { Photo as IPhotoType } from "@microsoft/microsoft-graph-types";
-import { defaultPath } from "../decorators";
-import { graphPatch } from "../operations";
+import { defaultPath } from "../decorators.js";
+import { graphPatch } from "../operations.js";
 
 @defaultPath("photo")
 export class _Photo extends _GraphQueryableInstance<IPhotoType> {
@@ -22,7 +22,7 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
 
     /**
      * Sets the file bytes
-     * 
+     *
      * @param content Image file contents, max 4 MB
      */
     public setContent(content: ArrayBuffer | Blob): Promise<void> {

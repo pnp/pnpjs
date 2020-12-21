@@ -1,8 +1,8 @@
-import "./web";
-import "./user-custom-actions";
-import "./list";
-import "./field";
-import "./content-type";
+import "./web.js";
+import "./user-custom-actions.js";
+import "./list.js";
+import "./field.js";
+import "./content-type.js";
 
 export {
     IRegionalSettings,
@@ -15,4 +15,4 @@ export {
     IRegionalSettingsInfo,
     ITimeZoneInfo,
     IUserResources,
-} from "./types";
+} from "./types.js";

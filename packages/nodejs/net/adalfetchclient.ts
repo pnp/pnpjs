@@ -1,6 +1,5 @@
-declare var require: (path: string) => any;
 import { AuthenticationContext } from "adal-node";
-import { AADToken } from "../types";
+import { AADToken } from "../types.js";
 import {
     combine,
     objectDefinedNotNull,
@@ -8,7 +7,7 @@ import {
     isUrlAbsolute,
     assign,
 } from "@pnp/common";
-import { fetch } from "./fetch";
+import { fetch } from "./fetch.js";
 
 export class AdalFetchClient implements IHttpClientImpl {
 

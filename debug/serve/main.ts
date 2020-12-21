@@ -1,4 +1,5 @@
 import { sp } from "@pnp/sp/presets/all";
+// import { graph } from "@pnp/graph/presets/all";
 
 // ******
 // Please edit this file and do any testing required. Please do not submit changes as part of a PR.
@@ -24,7 +25,7 @@ document.onreadystatechange = async () => {
 
         try {
 
-            const r = await sp.web.get();
+            const r = await sp.web();
 
             html.push(`<textarea cols="200" rows="40">${JSON.stringify(r, null, 4)}</textarea>`);
 

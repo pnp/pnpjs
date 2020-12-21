@@ -30,7 +30,7 @@ sp.setup({
     sp: {
         fetchClientFactory: MsalClientSetup({
             auth: {
-                authority: "https://login.microsoftonline.com/mytentant.onmicrosoft.com",
+                authority: "https://login.microsoftonline.com/mytentant.onmicrosoft.com/",
                 clientId: "00000000-0000-0000-0000-000000000000",
                 redirectUri: "https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx",
             },
@@ -53,7 +53,7 @@ graph.setup({
     graph: {
         fetchClientFactory: MsalClientSetup({
             auth: {
-                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com",
+                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com/",
                 clientId: "00000000-0000-0000-0000-000000000000",
                 redirectUri: "https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx",
             },
@@ -76,7 +76,7 @@ graph.setup({
     graph: {
         fetchClientFactory: MsalClientSetup({
             auth: {
-                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com",
+                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com/",
                 clientId: "00000000-0000-0000-0000-000000000000",
                 redirectUri: "https://myapp.com/login.aspx",
             },
@@ -98,7 +98,7 @@ import { MsalClient } from "@pnp/msaljsclient";
 // based on those scopes by making a call to getToken() without a param.
 const client = new MsalClient({
     auth: {
-        authority: "https://login.microsoftonline.com/{tenant}.onmicrosoft.com",
+        authority: "https://login.microsoftonline.com/{tenant}.onmicrosoft.com/",
         clientId: "00000000-0000-0000-0000-000000000000",
         redirectUri: "https://{tenant}.sharepoint.com/sites/dev/SitePages/webpacktest.aspx",
     },

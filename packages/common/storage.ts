@@ -1,5 +1,5 @@
-import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util";
-import { RuntimeConfig } from "./libconfig";
+import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util.js";
+import { ILibraryConfiguration, DefaultRuntime } from "./libconfig.js";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage
@@ -23,7 +23,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
 
         // if the cache timeout is enabled call the handler
         // this will clear any expired items and set the timeout function
-        if (RuntimeConfig.enableCacheExpiration) {
+        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("enableCacheExpiration")) {
             this.cacheExpirationHandler();
         }
     }
@@ -150,7 +150,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
         if (expire === undefined) {
 
             // ensure we are by default inline with the global library setting
-            let defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
+            let defaultTimeout = DefaultRuntime.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds");
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
@@ -169,10 +169,10 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
             return;
         }
 
-        this.deleteExpired().then(_ => {
+        this.deleteExpired().then(() => {
 
             // call ourself in the future
-            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
+            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
         }).catch(console.error);
     }
 }
@@ -231,6 +231,9 @@ class MemoryStorage {
 
     constructor(private _store = new Map<string, any>()) { }
 
+    [key: string]: any;
+    [index: number]: string;
+
     public get length(): number {
         return this._store.size;
     }
@@ -254,9 +257,6 @@ class MemoryStorage {
     public setItem(key: string, data: string): void {
         this._store.set(key, data);
     }
-
-    [key: string]: any;
-    [index: number]: string;
 }
 
 /**

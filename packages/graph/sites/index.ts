@@ -1,8 +1,8 @@
-import "./group";
+import "./group.js";
 
 export {
     ISites,
     Sites,
     ISite,
     Site,
-} from "./types";
+} from "./types.js";

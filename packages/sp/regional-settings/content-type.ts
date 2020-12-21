@@ -1,6 +1,6 @@
-import { _ContentType } from "../content-types/types";
-import { getValueForUICultureBinder } from "./funcs";
-import { IUserResources } from "./types";
+import { _ContentType } from "../content-types/types.js";
+import { getValueForUICultureBinder } from "./funcs.js";
+import { IUserResources } from "./types.js";
 
 declare module "../content-types/types" {
     interface _ContentType extends IUserResources {}

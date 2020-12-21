@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/groups";
 import "@pnp/graph/directory-objects";
 import { GroupType } from "@pnp/graph/groups";
 import { getRandomString, getGUID } from "@pnp/common";
-import getValidUser from "./utilities/getValidUser";
+import getValidUser from "./utilities/getValidUser.js";
 
 describe("Directory Objects", function () {
 

@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _Folder } from "../folders/types";
-import { IFiles, Files } from "./types";
+import { _Folder } from "../folders/types.js";
+import { IFiles, Files } from "./types.js";
 
 declare module "../folders/types" {
     interface _Folder {

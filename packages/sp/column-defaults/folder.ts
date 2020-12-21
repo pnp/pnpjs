@@ -1,11 +1,10 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
-import { odataUrlFrom } from "../odata";
-import { extractWebUrl } from "../utils/extractweburl";
-import { IResourcePath } from "../utils/toResourcePath";
-import { Web } from "../webs/types";
-import "../lists/web";
-import { _Folder, Folder } from "../folders/types";
-import { IFieldDefault, IFieldDefaultProps } from "./types";
+import { odataUrlFrom } from "../odata.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
+import { Web } from "../webs/types.js";
+import "../lists/web.js";
+import { _Folder, Folder } from "../folders/types.js";
+import { IFieldDefault, IFieldDefaultProps } from "./types.js";
 
 declare module "../folders/types" {
     interface _Folder {
@@ -19,9 +18,9 @@ declare module "../folders/types" {
          */
         getDefaultColumnValues(): Promise<IFieldDefault[]>;
         /**
-         * 
+         *
          * Sets the default column values for this folder
-         * 
+         *
          * @param fieldDefaults The values to set including field name and appropriate value
          * @param merge If true (default) existing values will be updated and new values added, otherwise all defaults are replaced for this folder
          */
@@ -35,7 +34,7 @@ declare module "../folders/types" {
 
 _Folder.prototype.getDefaultColumnValues = async function (this: _Folder): Promise<IFieldDefault[]> {
 
-    const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string; }>();
+    const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string }>();
     const { ServerRelativePath: serRelPath } = await this.select("ServerRelativePath")<{ ServerRelativePath: IResourcePath }>();
 
     const web = Web(extractWebUrl(odataUrlFrom(folderProps)));
@@ -49,7 +48,7 @@ _Folder.prototype.getDefaultColumnValues = async function (this: _Folder): Promi
 _Folder.prototype.setDefaultColumnValues = async function (fieldDefaults: IFieldDefaultProps[], merge = true): Promise<void> {
 
     // we start by figuring out where we are
-    const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string; }>();
+    const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string }>();
 
     // now we create a web, list and batch to get some info we need
     const web = Web(extractWebUrl(odataUrlFrom(folderProps)));

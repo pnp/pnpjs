@@ -4,7 +4,7 @@ import {
     IHttpClientImpl,
     assign,
 } from "@pnp/common";
-import { fetch } from "./fetch";
+import { fetch } from "./fetch.js";
 
 export class MsalFetchClient implements IHttpClientImpl {
 

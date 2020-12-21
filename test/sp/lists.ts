@@ -1,5 +1,5 @@
 import { sp, SPBatch, SPRest } from "@pnp/sp";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";
@@ -39,7 +39,7 @@ describe("Lists", function () {
         });
 
         it(".ensure", async function () {
-            const title = `pnp testing ensure`;
+            const title = "pnp testing ensure";
             return expect(sp.web.lists.ensure(title)).to.eventually.be.fulfilled;
         });
 
@@ -49,30 +49,30 @@ describe("Lists", function () {
         });
 
         it(".ensure fail update already existing list", async function () {
-            const title = `pnp testing ensure fail update already existing list`;
+            const title = "pnp testing ensure fail update already existing list";
             await sp.web.lists.ensure(title);
             return expect(sp.web.lists.ensure(title, title, 100, false, <any>{ RandomPropertyThatDoesntExistOnObject: "RandomValue" })).to.eventually.be.rejected;
         });
 
         it(".ensure with additional settings", async function () {
-            const title = `pnp testing ensure with additional settings`;
+            const title = "pnp testing ensure with additional settings";
             return expect(sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
         it(".ensure existing list with additional settings", async function () {
-            const title = `pnp testing ensure existing list with additional settings`;
+            const title = "pnp testing ensure existing list with additional settings";
             await sp.web.lists.ensure(title);
             return expect(sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
         });
 
         it(".ensure already existing list", async function () {
-            const title = `pnp testing ensure`;
+            const title = "pnp testing ensure";
             await sp.web.lists.ensure(title);
             return expect(sp.web.lists.ensure(title)).to.eventually.be.fulfilled;
         });
 
         it(".ensure with batch fails", async function () {
-            const title = `pnp testing ensure`;
+            const title = "pnp testing ensure";
             const batch: SPBatch = sp.web.createBatch();
             try {
                 await sp.web.lists.inBatch(batch).ensure(title);
@@ -162,7 +162,7 @@ describe("List", function () {
         it(".getListItemChangesSinceToken", async function () {
             const listEnsure: IListEnsureResult = await sp.web.lists.ensure("pnp testing getListItemChangesSinceToken");
             const query: IChangeLogItemQuery = {
-                Contains: `<Contains><FieldRef Name="Title"/><Value Type="Text">Testing</Value></Contains>`,
+                Contains: "<Contains><FieldRef Name=\"Title\"/><Value Type=\"Text\">Testing</Value></Contains>",
                 QueryOptions: `<QueryOptions>
                 <IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns>
                 <DateInUtc>False</DateInUtc>
@@ -313,7 +313,7 @@ describe("List", function () {
 
             const r = await rList.renderListDataAsStream(renderListDataParams, {}, new Map([["FilterField1", "Title"], ["FilterValue1", encodeURIComponent("Item 2")]]));
 
-            // tslint:disable-next-line:no-unused-expression
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(r).to.not.be.null;
             expect(r.Row.length).to.eq(1);
         });
@@ -366,12 +366,12 @@ describe("List", function () {
         });
 
         it(".addValidateUpdateItemUsingPath", async function () {
-            const listTitle = `pnp-testing-addValidateUpdateItemUsingPath`;
+            const listTitle = "pnp-testing-addValidateUpdateItemUsingPath";
             const listAddRes = await sp.web.lists.ensure(listTitle);
 
             const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
-            const title = `PnPTest_ListAddValidateUpdateItemUsingPath`;
+            const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
             const formValues: IListItemFormUpdateValue[] = [
                 {
                     FieldName: "Title",
@@ -388,12 +388,12 @@ describe("List", function () {
 
         it(".addValidateUpdateItemUsingPath Folder", async function () {
 
-            const listTitle = `pnp-testing-addValidateUpdateItemUsingPath2`;
+            const listTitle = "pnp-testing-addValidateUpdateItemUsingPath2";
             const listAddRes = await sp.web.lists.ensure(listTitle, "", 101);
 
             const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
-            const title = `PnPTest_ListAddValidateUpdateItemUsingPath`;
+            const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
             const formValues: IListItemFormUpdateValue[] = [
                 {
                     FieldName: "Title",
@@ -403,9 +403,9 @@ describe("List", function () {
 
             return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
                 `${testList.ParentWebUrl}/${listTitle}`, true, "", {
-                leafName: "MyFolder",
-                objectType: 1,
-            })).to.eventually.be.fulfilled;
+                    leafName: "MyFolder",
+                    objectType: 1,
+                })).to.eventually.be.fulfilled;
         });
 
         it(".contentTypes", function () {

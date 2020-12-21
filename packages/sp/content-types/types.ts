@@ -8,11 +8,11 @@ import {
     spInvokableFactory,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable";
-import { defaultPath } from "../decorators";
-import { metadata } from "../utils/metadata";
-import { spPost } from "../operations";
-import { tag } from "../telemetry";
+} from "../sharepointqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { metadata } from "../utils/metadata.js";
+import { spPost } from "../operations.js";
+import { tag } from "../telemetry.js";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeInfo[]> {
@@ -32,9 +32,9 @@ export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeIn
         };
     }
 
-    /**	
+    /**
      * Gets a ContentType by content type id
-     * @param id The id of the content type to get, in the following format, for example: 0x010102	
+     * @param id The id of the content type to get, in the following format, for example: 0x010102
      */
     public getById(id: string): IContentType {
         return tag.configure(ContentType(this).concat(`('${id}')`), "cts.getById");
@@ -70,7 +70,7 @@ export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeIn
         return { contentType: this.getById(data.id), data };
     }
 }
-export interface IContentTypes extends _ContentTypes { }
+export interface IContentTypes extends _ContentTypes {}
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 
@@ -127,7 +127,7 @@ export interface IContentTypeInfo {
     EditFormUrl: string;
     Group: string;
     Hidden: boolean;
-    Id: { StringValue: string; };
+    Id: { StringValue: string };
     JSLink: string;
     MobileDisplayFormUrl: string;
     MobileEditFormUrl: string;
@@ -146,19 +146,19 @@ export interface IContentTypeInfo {
 export class _FieldLinks extends _SharePointQueryableCollection<IFieldLinkInfo[]> {
 
     /**
-    *  Gets a FieldLink by GUID id	
-    * 
+    *  Gets a FieldLink by GUID id
+    *
     * @param id The GUID id of the field link
     */
     public getById(id: string): IFieldLink {
         return tag.configure(FieldLink(this).concat(`(guid'${id}')`), "fls.getById");
     }
 }
-export interface IFieldLinks extends _FieldLinks { }
+export interface IFieldLinks extends _FieldLinks {}
 export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
 
 export class _FieldLink extends _SharePointQueryableInstance<IFieldLinkInfo> { }
-export interface IFieldLink extends _FieldLink { }
+export interface IFieldLink extends _FieldLink {}
 export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
 
 export interface IFieldLinkInfo {

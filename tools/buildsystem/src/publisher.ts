@@ -2,7 +2,7 @@ declare var require: (s: string) => any;
 const colors = require("ansi-colors");
 const log = require("fancy-log");
 
-import { PublishSchema, PublishTask } from "./config";
+import { PublishSchema, PublishTask } from "./config.js";
 
 /**
  * Engine function to process publish files

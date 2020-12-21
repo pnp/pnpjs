@@ -16,7 +16,7 @@ import {
 } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
 import { sp as _sp, SPRestAddIn } from "@pnp/sp-addinhelpers";
-import { setup as _setup, PnPConfiguration } from "./pnplibconfig";
+import { setup as _setup, PnPConfiguration } from "./pnplibconfig.js";
 import { graph as _graph } from "@pnp/graph";
 
 // trigger attachment of all functionality to mimic the previous pnpjs impl
@@ -30,8 +30,8 @@ export * from "@pnp/common";
 export * from "@pnp/logging";
 export * from "@pnp/config-store";
 export * from "@pnp/odata";
-export * from "./sp-ns";
-export * from "./graph-ns";
+export * from "./sp-ns.js";
+export * from "./graph-ns.js";
 
 /**
  * Utility methods

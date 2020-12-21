@@ -1,6 +1,6 @@
-import { assign, objectDefinedNotNull } from "./util";
-import { ISPFXContext } from "./spfxcontextinterface";
-import { safeGlobal } from "./safe-global";
+import { assign, objectDefinedNotNull } from "./util.js";
+import { ISPFXContext } from "./spfxcontextinterface.js";
+import { safeGlobal } from "./safe-global.js";
 
 export interface IConfigOptions {
     headers?: string[][] | { [key: string]: string } | Headers;
@@ -40,7 +40,7 @@ export function mergeHeaders(target: Headers, source: HeadersInit): void {
 export function mergeOptions(target: IConfigOptions, source: IConfigOptions): void {
 
     if (objectDefinedNotNull(source)) {
-        const headers = assign(target.headers || {}, source.headers!);
+        const headers = assign(target.headers || {}, source.headers);
         target = assign(target, source);
         target.headers = headers;
     }
@@ -48,7 +48,7 @@ export function mergeOptions(target: IConfigOptions, source: IConfigOptions): vo
 
 /**
  * Parses out the root of the request url to use as the resource when getting the token
- * 
+ *
   * @param url The url to parse
  */
 export function getADALResource(url: string): string {
@@ -104,7 +104,7 @@ export class BearerTokenFetchClient extends FetchClient {
 export class SPFxAdalClient extends BearerTokenFetchClient {
 
     /**
-     * 
+     *
      * @param context provide the appropriate SPFx Context object
      */
     constructor(private context: ISPFXContext) {
@@ -113,7 +113,7 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
 
     /**
      * Executes a fetch request using the supplied url and options
-     * 
+     *
      * @param url Absolute url of the request
      * @param options Any options
      */
@@ -126,7 +126,7 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
 
     /**
      * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-     * 
+     *
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
     public async getToken(resource: string): Promise<string> {

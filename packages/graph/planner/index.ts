@@ -1,8 +1,8 @@
-import { GraphRest } from "../rest";
-import { IPlanner, Planner } from "./types";
+import { GraphRest } from "../rest.js";
+import { IPlanner, Planner } from "./types.js";
 
-import "./groups";
-import "./users";
+import "./groups.js";
+import "./users.js";
 
 export {
     Bucket,
@@ -25,7 +25,7 @@ export {
     Tasks,
     TaskDetails,
     PlanDetails,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface GraphRest {
@@ -37,6 +37,8 @@ Reflect.defineProperty(GraphRest.prototype, "planner", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return Planner(this);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Planner(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

@@ -1,10 +1,11 @@
-import { isFunc, isArray, ITypedHash, getGUID } from "@pnp/common";
+import { isFunc, ITypedHash, getGUID } from "@pnp/common";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
-export type ExtensionDelegateType<T extends object> = { (op: string, target: T, ...rest: any[]): void };
+export type ExtensionDelegateType<T extends Record<string, unknown>> = { (op: string, target: T, ...rest: any[]): void };
 
-export type ExtensionType<T extends object = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ExtensionType<T extends Record<string, unknown> = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
 
 let _enableExtensions = false;
 const globalExtensions: ExtensionType[] = [];
@@ -14,7 +15,7 @@ const ObjExtensionsSym = Symbol.for("43f7a601");
 
 /**
  * Creates global extensions across all invokable objects
- * 
+ *
  * @param e The global extensions to apply
  */
 export const extendGlobal = (e: ExtensionType | ExtensionType[]) => {
@@ -25,10 +26,11 @@ export const extendGlobal = (e: ExtensionType | ExtensionType[]) => {
 
 /**
  * Applies the supplied extensions to a single instance
- * 
+ *
  * @param target Object to which extensions are applied
  * @param extensions Extensions to apply
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const extendObj = <T extends object>(target: T, extensions: ExtensionType | ExtensionType[]): T => {
 
     _enableExtensions = true;
@@ -44,7 +46,7 @@ export const extendObj = <T extends object>(target: T, extensions: ExtensionType
 
 /**
  * Allows applying extensions to all instances created from the supplied factory
- * 
+ *
  * @param factory The Invokable Factory method to extend
  * @param extensions Extensions to apply
  */
@@ -72,11 +74,9 @@ export const extendFactory = <T extends (...args: any[]) => any>(factory: T, ext
 };
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
-    if (isArray(e)) {
-        // @ts-ignore
+    if (Array.isArray(e)) {
         a.push(...e);
     } else {
-        // @ts-ignore
         a.push(e);
     }
 }
@@ -104,10 +104,11 @@ export const enableExtensions = () => {
 
 /**
  * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
- * 
- * @param factory 
- * @param args 
+ *
+ * @param factory
+ * @param args
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const applyFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
 
     let o = factory(args);

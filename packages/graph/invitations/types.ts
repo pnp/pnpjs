@@ -1,9 +1,9 @@
 import { ITypedHash, assign } from "@pnp/common";
 import { body } from "@pnp/odata";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable";
-import { defaultPath } from "../decorators";
-import { graphPost } from "../operations";
+import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { defaultPath } from "../decorators.js";
+import { graphPost } from "../operations.js";
 
 /**
  * Invitations
@@ -13,7 +13,7 @@ export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> {
 
     /**
      * Create a new Invitation via invitation manager.
-     * 
+     *
      * @param invitedUserEmailAddress The email address of the user being invited.
      * @param inviteRedirectUrl The URL user should be redirected to once the invitation is redeemed.
      * @param additionalProperties A plain object collection of additional properties you want to set in the invitation

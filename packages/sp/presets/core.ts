@@ -1,14 +1,14 @@
-import { SPRest } from "../rest";
+import { SPRest } from "../rest.js";
 
-import "../items";
-import "../lists";
-import "../sites";
-import "../webs";
+import "../items/index.js";
+import "../lists/index.js";
+import "../sites/index.js";
+import "../webs/index.js";
 
-export * from "../items";
-export * from "../lists";
-export * from "../sites";
-export * from "../webs";
-export * from "../index";
+export * from "../items/index.js";
+export * from "../lists/index.js";
+export * from "../sites/index.js";
+export * from "../webs/index.js";
+export * from "../index.js";
 
 export const sp = new SPRest();

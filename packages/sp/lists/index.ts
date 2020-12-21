@@ -1,4 +1,4 @@
-import "./web";
+import "./web.js";
 
 export {
     List,
@@ -20,4 +20,4 @@ export {
     IListInfo,
     IListParentInfos,
     IRenderListDataAsStreamResult,
-} from "./types";
+} from "./types.js";

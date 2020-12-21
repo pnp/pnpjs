@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { Profiles, IProfiles } from "./types";
+import { SPRest } from "../rest.js";
+import { Profiles, IProfiles } from "./types.js";
 
 export {
     IProfiles,
@@ -13,7 +13,7 @@ export {
     IPeoplePickerQuerySettings,
     IUserProfile,
     UrlZone,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -25,6 +25,8 @@ Reflect.defineProperty(SPRest.prototype, "profiles", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return Profiles(this._baseUrl);
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Profiles(baseUrl).configure(options).setRuntime(runtime);
+        });
     },
 });

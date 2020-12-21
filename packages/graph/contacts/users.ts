@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
-import { _User } from "../users/types";
-import { IContacts, Contacts, ContactFolders, IContactFolders } from "./types";
+import { _User } from "../users/types.js";
+import { IContacts, Contacts, ContactFolders, IContactFolders } from "./types.js";
 
 declare module "../users/types" {
     interface _User {

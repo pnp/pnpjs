@@ -1,5 +1,5 @@
-import { _File } from "../files/types";
-import { WebPartsPersonalizationScope, ILimitedWebPartManager, LimitedWebPartManager } from "./types";
+import { _File } from "../files/types.js";
+import { WebPartsPersonalizationScope, ILimitedWebPartManager, LimitedWebPartManager } from "./types.js";
 
 declare module "../files/types" {
     interface _File {

@@ -15,7 +15,7 @@ export class SPRequestExecutorClient implements IHttpClientImpl {
         const addinWebUrl = url.substring(0, url.indexOf("/_api")),
             executor = new SP.RequestExecutor(addinWebUrl);
 
-        let headers: { [key: string]: string; } = {},
+        let headers: { [key: string]: string } = {},
             iterator: IterableIterator<[string, string]>,
             temp: IteratorResult<[string, string]>;
 
@@ -75,5 +75,5 @@ export class SPRequestExecutorClient implements IHttpClientImpl {
             status: spResponse.statusCode,
             statusText: spResponse.statusText,
         });
-    }
+    };
 }

@@ -1,12 +1,12 @@
-import { _Web, Web } from "../webs/types";
-import { ISharingEmailData, ISharingResult, SharingRole } from "./types";
-import { _SharePointQueryableInstance } from "../sharepointqueryable";
-import { extractWebUrl } from "../utils/extractweburl";
-import { RoleType } from "./types";
-import { shareObject } from "./funcs";
+import { _Web, Web } from "../webs/types.js";
+import { ISharingEmailData, ISharingResult, SharingRole } from "./types.js";
+import { _SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { RoleType } from "./types.js";
+import { shareObject } from "./funcs.js";
 import { combine } from "@pnp/common";
 import { body } from "@pnp/odata";
-import { spPost } from "../operations";
+import { spPost } from "../operations.js";
 
 /**
  * Extend _Web

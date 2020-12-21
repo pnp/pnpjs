@@ -1,4 +1,4 @@
-export type AllowedDefaultColumnValues = number | string | boolean | { wssId: string, termName: string, termId: string };
+export type AllowedDefaultColumnValues = number | string | boolean | { wssId: string; termName: string; termId: string };
 
 export interface IFieldDefaultProps {
     /**

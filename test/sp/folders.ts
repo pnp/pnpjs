@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { testSettings } from "../main";
+import { testSettings } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
-import { IInvokableTest } from "../types";
+import { IInvokableTest } from "../types.js";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/common";
 import { SharingLinkKind } from "@pnp/sp/sharing";

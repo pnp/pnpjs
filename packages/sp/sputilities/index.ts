@@ -1,5 +1,5 @@
-import { SPRest } from "../rest";
-import { IUtilities, Utilities } from "./types";
+import { SPRest } from "../rest.js";
+import { IUtilities, Utilities } from "./types.js";
 
 export {
     ICreateWikiPageResult,
@@ -7,7 +7,7 @@ export {
     IUtilities,
     IWikiPageCreationInfo,
     Utilities,
-} from "./types";
+} from "./types.js";
 
 declare module "../rest" {
     interface SPRest {
@@ -19,6 +19,8 @@ Reflect.defineProperty(SPRest.prototype, "utility", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest) {
-        return Utilities(this._baseUrl, "");
+        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+            return Utilities(baseUrl, "").configure(options).setRuntime(runtime);
+        });
     },
 });

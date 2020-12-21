@@ -14,4 +14,4 @@ jobs:
       - name: Run lint
         run: npm run lint
       - name: Run tests
-        run: npx mocha --mode pr
+        run: npm test -- --mode pr

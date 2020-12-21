@@ -1,16 +1,16 @@
 import { Batch, HttpRequestError } from "@pnp/odata";
-import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP } from "@pnp/common";
+import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Runtime, DefaultRuntime } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { SPHttpClient } from "./sphttpclient";
-import { SPRuntimeConfig } from "./splibconfig";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl";
+import { SPHttpClient } from "./sphttpclient.js";
+import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
+import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
 /**
  * Manages a batch of OData operations
  */
 export class SPBatch extends Batch {
 
-    constructor(private baseUrl: string) {
+    constructor(private url: string, private runtime: Runtime = DefaultRuntime) {
         super();
     }
 
@@ -46,7 +46,7 @@ export class SPBatch extends Batch {
                         state = "status";
                     }
                     break;
-                case "status":
+                case "status": {
                     const parts = statusRegExp.exec(line);
                     if (parts.length !== 3) {
                         throw Error(`Invalid status, line ${i}`);
@@ -55,6 +55,7 @@ export class SPBatch extends Batch {
                     statusText = parts[2];
                     state = "statusHeaders";
                     break;
+                }
                 case "statusHeaders":
                     if (line.trim() === "") {
                         state = "body";
@@ -81,18 +82,18 @@ export class SPBatch extends Batch {
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
         if (this.requests.length < 1) {
-            Logger.write(`Resolving empty batch.`, LogLevel.Info);
+            Logger.write("Resolving empty batch.", LogLevel.Info);
             return;
         }
 
         // creating the client here allows the url to be populated for nodejs client as well as potentially
         // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
         // below to be correct
-        const client = new SPHttpClient();
+        const client = new SPHttpClient(this.runtime);
 
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch
-        const absoluteRequestUrl = await toAbsoluteUrl(this.baseUrl);
+        const absoluteRequestUrl = await toAbsoluteUrl(this.url, this.runtime);
 
         // build all the requests, send them, pipe results in order to parsers
         const batchBody: string[] = [];
@@ -125,8 +126,8 @@ export class SPBatch extends Batch {
             }
 
             // common batch part prefix
-            batchBody.push(`Content-Type: application/http\n`);
-            batchBody.push(`Content-Transfer-Encoding: binary\n\n`);
+            batchBody.push("Content-Type: application/http\n");
+            batchBody.push("Content-Transfer-Encoding: binary\n\n");
 
             // these are the per-request headers
             const headers = new Headers();
@@ -156,7 +157,7 @@ export class SPBatch extends Batch {
             }
 
             // merge global config headers
-            mergeHeaders(headers, SPRuntimeConfig.headers);
+            mergeHeaders(headers, this.runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.headers);
 
             // merge per-request headers
             if (reqInfo.options) {
@@ -225,7 +226,7 @@ export class SPBatch extends Batch {
 
         // this structure ensures that we resolve the batched requests in the order we expect
         // using async this is not guaranteed depending on the requests
-        return responses.reduce((p, response, index) => p.then(async _ => {
+        return responses.reduce((p, response, index) => p.then(async () => {
 
             const request = this.requests[index];
 

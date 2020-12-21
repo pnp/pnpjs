@@ -1,5 +1,5 @@
-import { _Web } from "../webs/types";
-import { ISiteDesignRun, SiteDesigns, ISiteDesignTask, ISiteScriptActionStatus } from "./types";
+import { _Web } from "../webs/types.js";
+import { ISiteDesignRun, SiteDesigns, ISiteDesignTask, ISiteScriptActionStatus } from "./types.js";
 
 declare module "../webs/types" {
 

@@ -1,7 +1,7 @@
-import { IODataParser, ODataParser } from "./parsers";
+import { IODataParser, ODataParser } from "./parsers.js";
 import { IFetchOptions, IRequestClient, getGUID, objectDefinedNotNull } from "@pnp/common";
-import { IQueryableData, cloneQueryableData } from "./queryable";
-import { PipelineMethod, pipe, getDefaultPipeline } from "./pipeline";
+import { IQueryableData, cloneQueryableData } from "./queryable.js";
+import { PipelineMethod, pipe, getDefaultPipeline } from "./pipeline.js";
 
 export interface IRequestOptions<T> extends IFetchOptions {
     parser: IODataParser<T>;

@@ -9,8 +9,8 @@ import {
     _GraphQueryableInstance,
     _GraphQueryableCollection,
     graphInvokableFactory,
-} from "../graphqueryable";
-import { defaultPath, getById, IGetById } from "../decorators";
+} from "../graphqueryable.js";
+import { defaultPath, getById, IGetById } from "../decorators.js";
 
 /**
  * Represents a insights entity

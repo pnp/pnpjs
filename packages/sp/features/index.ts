@@ -1,5 +1,5 @@
-import "./site";
-import "./web";
+import "./site.js";
+import "./web.js";
 
 export {
     Feature,
@@ -8,4 +8,4 @@ export {
     IFeatures,
     IFeatureAddResult,
     IFeatureInfo,
-} from "./types";
+} from "./types.js";

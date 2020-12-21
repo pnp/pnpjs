@@ -6,12 +6,12 @@ import {
     IGraphQueryableCollection,
     _GraphQueryableCollection,
     graphInvokableFactory,
-} from "../graphqueryable";
+} from "../graphqueryable.js";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { assign, combine, safeGlobal } from "@pnp/common";
-import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators";
+import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParser } from "@pnp/odata";
-import { graphPatch, graphPut } from "../operations";
+import { graphPatch, graphPut } from "../operations.js";
 
 /**
  * Describes a Drive instance
@@ -102,7 +102,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
     }
 
     public async getContent(): Promise<Blob> {
-        const info = await this();
+        const info = await this.get();
         const r = await safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
             headers: {
                 "accept": "application/json",
@@ -115,7 +115,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
         return p.parse(r);
     }
 
-    public setContent(content: any): Promise<{ id: string, name: string, size: number }> {
+    public setContent(content: any): Promise<{ id: string; name: string; size: number }> {
         return graphPut(this.clone(DriveItem, "content"), {
             body: content,
         });
@@ -147,7 +147,7 @@ export interface IDriveItemVersionInfo {
         user: {
             id: string;
             displayName: string;
-        },
+        };
     };
     lastModifiedDateTime: string;
     size: number;

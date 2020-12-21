@@ -1,6 +1,6 @@
-import { _Web, IWeb } from "../webs/types";
-import { IClientsidePageComponent, CreateClientsidePage, IClientsidePage, ClientsidePageLayoutType, ClientsidePageFromFile, PromotedState } from "./types";
-import { SharePointQueryableCollection } from "../sharepointqueryable";
+import { _Web, IWeb } from "../webs/types.js";
+import { IClientsidePageComponent, CreateClientsidePage, IClientsidePage, ClientsidePageLayoutType, ClientsidePageFromFile, PromotedState } from "./types.js";
+import { SharePointQueryableCollection } from "../sharepointqueryable.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -25,7 +25,7 @@ declare module "../webs/types" {
 
         /**
          * Loads a page from the provided server relative path to the file
-         * 
+         *
          * @param path Server relative path to the file (ex: "/sites/dev/sitepages/page.aspx")
          */
         loadClientsidePage(path: string): Promise<IClientsidePage>;

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { PnPClientStorageWrapper} from "@pnp/common";
-import MockStorage  from "./mock-storage";
+import { MockStorage }  from "../types.js";
 
 describe("Storage", () => {
 
@@ -28,7 +28,9 @@ describe("Storage", () => {
         });
 
         it("Use getOrPut to add a value using a getter function and return it", () => {
-            wrapper.getOrPut("test", () => { return new Promise(() => "value"); }).then(() => {
+            wrapper.getOrPut("test", () => {
+                return new Promise(() => "value");
+            }).then(() => {
                 const ret = wrapper.get("test");
                 expect(ret).to.eq("value");
             });

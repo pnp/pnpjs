@@ -1,12 +1,12 @@
-export * from "./batch";
-export * from "./caching";
-export * from "./add-prop";
-export * from "./invokable-binder";
-export * from "./pipeline-binder";
-export * from "./parsers";
-export * from "./pipeline";
-export * from "./queryable";
-export * from "./request-builders";
+export * from "./batch.js";
+export * from "./caching.js";
+export * from "./add-prop.js";
+export * from "./invokable-binder.js";
+export * from "./pipeline-binder.js";
+export * from "./parsers.js";
+export * from "./pipeline.js";
+export * from "./queryable.js";
+export * from "./request-builders.js";
 export {
     extendGlobal,
     extendObj,
@@ -15,4 +15,4 @@ export {
     clearGlobalExtensions,
     enableExtensions,
     disableExtensions,
-} from "./invokable-extensions";
+} from "./invokable-extensions.js";

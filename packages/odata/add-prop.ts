@@ -1,6 +1,6 @@
 /**
  * Adds a property to a target instance
- * 
+ *
  * @param target The object to whose prototype we will add a property
  * @param name Property name
  * @param factory Factory method used to produce the property value

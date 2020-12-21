@@ -1,7 +1,7 @@
-import { IQueryable } from "./queryable";
-import { IRequestContext } from "./pipeline";
-import { IFetchOptions, RuntimeConfig } from "@pnp/common";
-import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions";
+import { IQueryable } from "./queryable.js";
+import { IRequestContext } from "./pipeline.js";
+import { IFetchOptions, ILibraryConfiguration, DefaultRuntime } from "@pnp/common";
+import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions.js";
 
 export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
@@ -9,17 +9,20 @@ export type IHybrid<R = any, T = any> = T & {
 
 export type IInvoker<R> = (this: IQueryable<any>, ...args: any[]) => Promise<R>;
 
-const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R => {
+const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R & IInvokable => {
 
     return (...args: any[]) => {
 
         const factory = (as: any[]) => {
-            const r = Object.assign(function (...ags: any[]) { return invoker.apply(r, ags); }, new constructor(...as));
+            const r = Object.assign(function (...ags: any[]) {
+                return invoker.call(r, ...ags);
+            }, new constructor(...as));
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
 
-        if (RuntimeConfig.ie11) {
+        // ie11 setting is always global
+        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("ie11") || false) {
 
             return factory(args);
         } else {

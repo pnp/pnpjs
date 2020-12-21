@@ -6,17 +6,17 @@ import {
     SharePointQueryableInstance,
     IDeleteableWithETag,
     deleteableWithETag,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
 import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
-import { Item, IItem } from "../items";
-import { odataUrlFrom } from "../odata";
-import { defaultPath } from "../decorators";
-import { spPost } from "../operations";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue";
-import { extractWebUrl } from "../utils/extractweburl";
-import { tag } from "../telemetry";
-import { toResourcePath } from "../utils/toResourcePath";
+import { Item, IItem } from "../items/index.js";
+import { odataUrlFrom } from "../odata.js";
+import { defaultPath } from "../decorators.js";
+import { spPost } from "../operations.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { tag } from "../telemetry.js";
+import { toResourcePath } from "../utils/toResourcePath.js";
 
 /**
  * Describes a collection of File objects
@@ -31,7 +31,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      * @param name The name of the file, including extension.
      */
     public getByName(name: string): IFile {
-        if (/\%#/.test(name)) {
+        if (/%#/.test(name)) {
             throw Error("For file names containing % or # please use web.getFileByServerRelativePath");
         }
         return tag.configure(File(this).concat(`('${escapeQueryStrValue(name)}')`), "fis.getByName");
@@ -58,7 +58,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
     /**
      * Adds a file using the pound percent safe methods
-     * 
+     *
      * @param url Excoded url of the file
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
@@ -103,8 +103,8 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
     @tag("fis.addChunked")
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        const info: { ServerRelativeUrl: string } = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
-        const file = File(`_api/web/getFileByServerRelativeUrl('${info.ServerRelativeUrl}')`);
+        const response: IFileInfo = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
+        const file = File(odataUrlFrom(response));
         return await file.setContentChunked(content, progress, chunkSize);
     }
 
@@ -124,7 +124,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
         };
     }
 }
-export interface IFiles extends _Files { }
+export interface IFiles extends _Files {}
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
@@ -319,7 +319,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
 
     /**
      * Deletes the file object with options.
-     * 
+     *
      * @param parameters Specifies the options to use when deleting a file.
      */
     @tag("fi.del-params")
@@ -428,7 +428,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const q = this.listItemAllFields;
-        const d = await q.select.apply(q, selects)();
+        const d = await q.select(...selects)();
         return assign(Item(odataUrlFrom(d)), d);
     }
 
@@ -540,10 +540,10 @@ export const File = spInvokableFactory<IFile>(_File);
 @defaultPath("versions")
 export class _Versions extends _SharePointQueryableCollection {
 
-    /**	
-     * Gets a version by id	
-     *	
-     * @param versionId The id of the version to retrieve	
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
      */
     public getById(versionId: number): IVersion {
         return tag.configure(Version(this).concat(`(${versionId})`), "vers.getById");
@@ -608,7 +608,7 @@ export class _Versions extends _SharePointQueryableCollection {
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-export interface IVersions extends _Versions { }
+export interface IVersions extends _Versions {}
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -622,7 +622,7 @@ export interface IVersion extends _Version, IDeleteableWithETag { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 
 /**
- * Types for document check in. 
+ * Types for document check in.
  * Minor = 0
  * Major = 1
  * Overwrite = 2
