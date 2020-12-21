@@ -177,7 +177,7 @@ const isolatedGraph = await graph.createIsolated<IGraphConfiguration>({
 
 _MSAL Support Added in 2.0.11_
 
-In this example you can see how you can setup the MSAL client once and then set a different baseUrl for an isolated instance. [More information specific to setting up the MSAL client is available](../authentication/derver-nodejs.md).
+In this example you can see how you can setup the MSAL client once and then set a different baseUrl for an isolated instance. [More information specific to setting up the MSAL client is available](../authentication/server-nodejs.md).
 
 ```TypeScript
 import { sp } from "@pnp/sp";
