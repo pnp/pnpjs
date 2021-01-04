@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
-import { body } from "@pnp/odata";
+import { body, LambdaParser } from "@pnp/odata";
 import { assign } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
@@ -54,11 +54,13 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
             visibility,
         };
 
-        const creator = Team(this, "clone").usingParser({
-            parse(r: Response) {
-                return Promise.resolve(r.headers);
-            },
-        });
+        const parser = new LambdaParser((r: Response) => Promise.resolve(r.headers));
+        const creator = Teams(this, "clone").usingParser(parser);
+        // const creator = Team(this, "clone").usingParser({
+        //     parse(r: Response) {
+        //         return (r.headers.has("location")) ? Promise.resolve(r.headers) : Promise.resolve(r);
+        //     },
+        // });
         const data: Headers = await graphPost(creator, body(postBody));
         const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
         if (data.has("location")) {
@@ -87,11 +89,8 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
 @getById(Team)
 export class _Teams extends _GraphQueryableCollection<ITeamType[]> {
     public async create(team: ITeamType): Promise<ITeamCreateResultAsync> {
-        const creator = Teams(this, null).usingParser({
-            parse(r: Response) {
-                return Promise.resolve(r.headers);
-            },
-        });
+        const parser = new LambdaParser((r: Response) => Promise.resolve(r.headers));
+        const creator = Teams(this, null).usingParser(parser);
         const data: Headers = await graphPost(creator, body(team));
         const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
         if (data.has("location")) {

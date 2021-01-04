@@ -244,9 +244,9 @@ In some cases you may be working in a way such that we cannot determine the base
 
 ### Set baseUrl through setup
 
-Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use verbose mode, something you may have to do when
+Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use `verbose` mode, something you may have to do when
 working against unpatched versions of SharePoint 2013 as [discussed here](https://blogs.msdn.microsoft.com/patrickrodgers/2016/06/13/pnp-jscore-1-0-1/).
-This is optional for 2016 or SharePoint Online.
+This is optional for 2016 or SharePoint Online. The library does not support setting the headers to use `nometadata` as we rely on the metadata in the response to do some of the more complicated functions. Some of the pure data calls will probably work but it is not a supported configuration.
 
 ```TypeScript
 import { sp } from "@pnp/sp/presets/all";
