@@ -54,6 +54,7 @@ nav:
       - onedrive: 'graph/onedrive.md'
       - photos: 'graph/photos.md'
       - planner: 'graph/planner.md'
+      - search: 'graph/search.md'
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
       - users: 'graph/users.md'
