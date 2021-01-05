@@ -10,7 +10,7 @@ export async function Example(settings: ITestingSettings) {
 
   spSetup(settings);
 
-  const w = sp.web();
+  const w = await sp.web();
 
   Logger.log({
     data: w,
