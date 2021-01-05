@@ -11,7 +11,7 @@ import {
 } from "../sharepointqueryable.js";
 import { assign, ITypedHash, hOP } from "@pnp/common";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { ODataParser, body, headers, extendObj } from "@pnp/odata";
+import { ODataParser, body, headers } from "@pnp/odata";
 import { IList } from "../lists/index.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata.js";
@@ -158,26 +158,12 @@ export class _Items extends _SharePointQueryableCollection {
      */
     private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
 
-        if (candidatelistItemEntityTypeFullName) {
-            return candidatelistItemEntityTypeFullName;
-        }
-
-        const name = await this.getParent<IList>(List).getListItemEntityTypeFullName();
-
-        extendObj(this, {
-            async ensureListItemEntityTypeName(): Promise<string> {
-                return name;
-            },
-        });
-
-        return name;
-
-        // return candidatelistItemEntityTypeFullName ?
-        //     Promise.resolve(candidatelistItemEntityTypeFullName) :
-        //     this.getParent<IList>(List).getListItemEntityTypeFullName();
+        return candidatelistItemEntityTypeFullName ?
+            candidatelistItemEntityTypeFullName :
+            this.getParent<IList>(List).getListItemEntityTypeFullName();
     }
 }
-export interface IItems extends _Items {}
+export interface IItems extends _Items { }
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
@@ -363,10 +349,10 @@ export class _Item extends _SharePointQueryableInstance {
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
-    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
+    private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
 
         return candidatelistItemEntityTypeFullName ?
-            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            candidatelistItemEntityTypeFullName :
             this.list.getListItemEntityTypeFullName();
     }
 }
@@ -388,7 +374,7 @@ export class _ItemVersions extends _SharePointQueryableCollection {
         return tag.configure(ItemVersion(this).concat(`(${versionId})`), "iv.getById");
     }
 }
-export interface IItemVersions extends _ItemVersions {}
+export interface IItemVersions extends _ItemVersions { }
 export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**

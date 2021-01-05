@@ -1,4 +1,4 @@
-import { assign, hOP, isArray, objectDefinedNotNull } from "@pnp/common";
+import { assign, dateAdd, hOP, isArray, objectDefinedNotNull } from "@pnp/common";
 import { body, headers } from "@pnp/odata";
 import {
     SharePointQueryable,
@@ -129,7 +129,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
         return List(odataUrlFrom(json));
     }
 }
-export interface ILists extends _Lists {}
+export interface ILists extends _Lists { }
 export const Lists = spInvokableFactory<ILists>(_Lists);
 
 export class _List extends _SharePointQueryableInstance<IListInfo> {
@@ -309,7 +309,14 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      */
     @tag("l.getListItemEntityTypeFullName")
     public getListItemEntityTypeFullName(): Promise<string> {
-        return this.clone(List, null, false).select("ListItemEntityTypeFullName").get<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
+
+        // we cache these requests as the entity name doesn't change and we can save traffic
+        // this is justified as this method generates our second highest number of monthly executions ahead of item add and update
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").usingCaching({
+            expiration: dateAdd(new Date(), "day", 5),
+            key: `PnPjs-ListEntityName:${this.toUrl()}`,
+            storeName: "local",
+        })<{ ListItemEntityTypeFullName: string }>().then(o => o.ListItemEntityTypeFullName);
     }
 
     /**
