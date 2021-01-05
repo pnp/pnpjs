@@ -58,7 +58,7 @@ export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
         };
     }
 }
-export interface IWebs extends _Webs {}
+export interface IWebs extends _Webs { }
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 /**
@@ -219,8 +219,9 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     * @param nWebTemplateFilter Specifies the site definition (default = -1)
     * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
     */
-    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): IWebs {
-        const o = this.clone(Webs, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISharePointQueryableCollection<IWebInfosData[]> {
+        const o = this.clone(SharePointQueryableCollection,
+            `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
         return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
     }
 
