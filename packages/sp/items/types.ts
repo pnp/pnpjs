@@ -156,14 +156,14 @@ export class _Items extends _SharePointQueryableCollection {
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
-    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
+    private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
 
         return candidatelistItemEntityTypeFullName ?
-            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            candidatelistItemEntityTypeFullName :
             this.getParent<IList>(List).getListItemEntityTypeFullName();
     }
 }
-export interface IItems extends _Items {}
+export interface IItems extends _Items { }
 export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
@@ -349,10 +349,10 @@ export class _Item extends _SharePointQueryableInstance {
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
-    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
+    private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
 
         return candidatelistItemEntityTypeFullName ?
-            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            candidatelistItemEntityTypeFullName :
             this.list.getListItemEntityTypeFullName();
     }
 }
@@ -374,7 +374,7 @@ export class _ItemVersions extends _SharePointQueryableCollection {
         return tag.configure(ItemVersion(this).concat(`(${versionId})`), "iv.getById");
     }
 }
-export interface IItemVersions extends _ItemVersions {}
+export interface IItemVersions extends _ItemVersions { }
 export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**

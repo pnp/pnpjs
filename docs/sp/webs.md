@@ -129,8 +129,13 @@ const web: IOpenWebByIdResult = web.getParentWeb();
 Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
 
 ```TypeScript
-const subWebs = await web.getSubwebsFilteredForCurrentUser().get();
+const subWebs = await web.getSubwebsFilteredForCurrentUser()();
+
+// apply odata operations to the collection
+const subWebs2 = await sp.web.getSubwebsFilteredForCurrentUser().select("Title", "Language").orderBy("Created", true)();
 ```
+
+> Note: getSubwebsFilteredForCurrentUser returns [IWebInfosData](#IWebInfosData) which is a subset of all the available fields on IWebInfo.
 
 ### allProperties
 
@@ -162,6 +167,8 @@ const infos4 = await web.webinfos.select("Title", "Description").filter("Title e
 // get the top 4 ordered by Title
 const infos5 = await web.webinfos.top(4).orderBy("Title")();
 ```
+
+> Note: webinfos returns [IWebInfosData](#IWebInfosData) which is a subset of all the available fields on IWebInfo.
 
 ### update
 
@@ -801,4 +808,24 @@ import { IUserCustomActions } from "@pnp/sp/user-custom-actions";
 const actions: IUserCustomActions = web.userCustomActions;
 
 const actionsData = await actions();
+```
+
+## IWebInfosData
+
+Some web operations return a subset of web information defined by the IWebInfosData interface, shown below. In those cases only these fields are available for select, orderby, and other odata operations.
+
+```TypeScript
+interface IWebInfosData {
+    Configuration: number;
+    Created: string;
+    Description: string;
+    Id: string;
+    Language: number;
+    LastItemModifiedDate: string;
+    LastItemUserModifiedDate: string;
+    ServerRelativeUrl: string;
+    Title: string;
+    WebTemplate: string;
+    WebTemplateId: number;
+}
 ```
