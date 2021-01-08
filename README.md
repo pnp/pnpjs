@@ -1,5 +1,3 @@
-![SharePoint Patterns and Practices](https://devofficecdn.azureedge.net/media/Default/PnP/sppnp.png)
-
 PnPjs is a fluent JavaScript API for consuming SharePoint and Microsoft Graph REST APIs in a type-safe way. You can use it with SharePoint Framework, Nodejs, or JavaScript projects. This an open source initiative complementing existing SDKs provided by Microsoft.
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
