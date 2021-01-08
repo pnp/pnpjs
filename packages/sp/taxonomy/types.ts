@@ -181,10 +181,6 @@ export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SharePointQueryableInstance<ITermInfo> {
 
-    public get parent(): ITerm {
-        return tag.configure(Term(this, "parent"), "txt.parent");
-    }
-
     public get children(): IChildren {
         return tag.configure(Children(this), "txt.children");
     }
@@ -286,6 +282,7 @@ export interface ITermInfo {
     isDeprecated: boolean;
     isAvailableForTagging: { setId: string; isAvailable: boolean }[];
     topicRequested: boolean;
+    parent?: ITermInfo;
 }
 
 export interface ITermSortOrderInfo {
