@@ -2,7 +2,7 @@
 
 The search module allows you to access the Microsoft Graph Search API. You can read full details of using the API, for library examples please see below.
 
-[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+[![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |

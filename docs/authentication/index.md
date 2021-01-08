@@ -4,6 +4,11 @@ One of the more challenging aspects of web development is ensuring you are prope
 
 There are two places the PnPjs libraries can be used to connect to various services [client (browser)](#client-scenarios) or [server](#server-scenarios).
 
+## Utility Scenarios
+
+- [BearerTokenFetchClient](./bearertokenclient.md)
+- [LambdaFetchClient](./lambdaclient.md)
+
 ## Client Scenarios
 
 - SharePoint Framework

@@ -29,6 +29,8 @@ nav:
       - 'SPA Auth': 'authentication/client-spa.md'
       - 'NodeJS Auth': 'authentication/server-nodejs.md'
       - 'SP App Reg': 'authentication/sp-app-registration.md'
+      - 'Bearer Token Client': 'authentication/bearertokenclient.md'
+      - 'Lambda Token Client': 'authentication/lambdaclient.md'
   - Packages:
     - Packages: 'packages.md'
     - common:
