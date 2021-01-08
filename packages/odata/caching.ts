@@ -7,9 +7,9 @@ export interface ICachingOptions {
     key: string;
 }
 
-export class CachingOptions implements ICachingOptions {
+const storage = new PnPClientStorage();
 
-    protected static storage = new PnPClientStorage();
+export class CachingOptions implements ICachingOptions {
 
     constructor(
         public key: string,
@@ -18,9 +18,9 @@ export class CachingOptions implements ICachingOptions {
 
     public get store(): IPnPClientStore {
         if (this.storeName === "local") {
-            return CachingOptions.storage.local;
+            return storage.local;
         } else {
-            return CachingOptions.storage.session;
+            return storage.session;
         }
     }
 }

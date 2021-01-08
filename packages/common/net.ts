@@ -72,16 +72,8 @@ export class FetchClient implements IHttpClientImpl {
  */
 export class BearerTokenFetchClient extends FetchClient {
 
-    constructor(private _token: string | null) {
+    constructor(public token: string | null) {
         super();
-    }
-
-    public get token() {
-        return this._token || "";
-    }
-
-    public set token(token: string) {
-        this._token = token;
     }
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
@@ -90,7 +82,7 @@ export class BearerTokenFetchClient extends FetchClient {
 
         mergeHeaders(headers, options.headers);
 
-        headers.set("Authorization", `Bearer ${this._token}`);
+        headers.set("Authorization", `Bearer ${this.token}`);
 
         options.headers = headers;
 
@@ -98,16 +90,20 @@ export class BearerTokenFetchClient extends FetchClient {
     }
 }
 
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-export class SPFxAdalClient extends BearerTokenFetchClient {
-
+export interface ILambdaTokenFactoryParams {
     /**
-     *
-     * @param context provide the appropriate SPFx Context object
+     * Url to which the request for which we are requesting a token will be sent
      */
-    constructor(private context: ISPFXContext) {
+    url: string;
+    /**
+     * Any options supplied for the request
+     */
+    options: IFetchOptions;
+}
+
+export class LambdaFetchClient extends BearerTokenFetchClient {
+
+    constructor(private tokenFactory: (parms: ILambdaTokenFactoryParams) => Promise<string>) {
         super(null);
     }
 
@@ -119,9 +115,25 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
      */
     public async fetch(url: string, options: IFetchOptions): Promise<Response> {
 
-        const token = await this.getToken(getADALResource(url));
-        this.token = token;
+        this.token = await this.tokenFactory({ url, options });
         return super.fetch(url, options);
+    }
+}
+
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+export class SPFxAdalClient extends LambdaFetchClient {
+
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    constructor(private context: ISPFXContext) {
+        super(async (params) => {
+            const provider = await context.aadTokenProviderFactory.getTokenProvider();
+            return provider.getToken(getADALResource(params.url));
+        });
     }
 
     /**
@@ -130,7 +142,6 @@ export class SPFxAdalClient extends BearerTokenFetchClient {
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
     public async getToken(resource: string): Promise<string> {
-
         const provider = await this.context.aadTokenProviderFactory.getTokenProvider();
         return provider.getToken(resource);
     }
