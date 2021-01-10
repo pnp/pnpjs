@@ -64,5 +64,20 @@ describe("nodejs - sp-extensions", () => {
 
         });
 
+        it("Should allow adding chunks non-stream", async function () {
+
+            const name = `Testing addChunked (with Nodejs buffer) - ${getRandomString(4)}.txt`;
+            const content = "Some test text content.";
+
+            const files = sp.web.defaultDocumentLibrary.rootFolder.files;
+
+            await files.addChunked(name, content as any, null, true, 10);
+
+            const fileContent = await files.getByName(name).getText();
+
+            expect(fileContent.length).be.equal(content.length);
+
+        });
+
     }
 });
