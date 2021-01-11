@@ -2,6 +2,9 @@ import { addProp } from "@pnp/odata";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
 import { spPost } from "../operations.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { combine } from "@pnp/common/util";
+import { SharePointQueryable } from "../sharepointqueryable.js";
 
 declare module "../items/types" {
     interface _Item {
@@ -18,15 +21,15 @@ declare module "../items/types" {
          */
         getLikedBy(): Promise<ILikeData[]>;
         /**
-         * Likes this item as the current user
+         * Likes this client-side page as the current user
          */
         like(): Promise<void>;
         /**
-         * Unlikes this item as the current user
+         * Unlikes this client-side page as the current user
          */
         unlike(): Promise<void>;
         /**
-         * Get the like by information for a modern site page
+         * Unlikes this item as the current user
          */
         getLikedByInformation(): Promise<ILikedByInformation>;
     }
@@ -38,12 +41,20 @@ _Item.prototype.getLikedBy = function (this: _Item): Promise<ILikeData[]> {
     return spPost<ILikeData[]>(this.clone(Item, "likedBy"));
 };
 
-_Item.prototype.like = function (this: _Item): Promise<void> {
-    return spPost<void>(this.clone(Item, "like"));
+_Item.prototype.like = async function (this: _Item) {
+    const itemInfo = await this.getParentInfos();
+    const baseUrl = extractWebUrl(this.toUrl());
+    const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
+    const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=true`;
+    return spPost(SharePointQueryable(likeUrl));
 };
 
-_Item.prototype.unlike = function (this: _Item): Promise<void> {
-    return spPost<void>(this.clone(Item, "unlike"));
+_Item.prototype.unlike = async function (this: _Item) {
+    const itemInfo = await this.getParentInfos();
+    const baseUrl = extractWebUrl(this.toUrl());
+    const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
+    const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=false`;
+    return spPost(SharePointQueryable(likeUrl));
 };
 
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {

@@ -226,7 +226,7 @@ export class _Item extends _SharePointQueryableInstance {
     }
 
     /**
-     * Updates this list intance with the supplied properties
+     * Updates this list instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"

@@ -1,98 +1,98 @@
 {
-  "name": "@pnp/monorepo",
-  "private": true,
-  "version": "2.1.0-beta11",
-  "description": "A JavaScript library for SharePoint development.",
-  "devDependencies": {
-    "@azure/msal-node": "^1.0.0-beta.2",
-    "@microsoft/microsoft-graph-types": "^1.28.0",
-    "@pnp/buildsystem": "^2.3.1",
-    "@types/adal-angular": "^1.0.1",
-    "@types/chai": "^4.1.7",
-    "@types/chai-as-promised": "^7.1.3",
-    "@types/core-js": "^2.5.0",
-    "@types/es6-promise": "^3.3.0",
-    "@types/findup-sync": "^2.0.1",
-    "@types/gulp": "^4.0.6",
-    "@types/gulp-replace": "^0.0.31",
-    "@types/jsonwebtoken": "^8.3.2",
-    "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.14",
-    "@types/pump": "^1.1.0",
-    "@types/sharepoint": "^2016.1.2",
-    "@types/through2": "^2.0.34",
-    "@types/webpack": "^4.41.25",
-    "@types/whatwg-fetch": "^0.0.33",
-    "@types/yargs": "^15.0.12",
-    "@typescript-eslint/eslint-plugin": "^4.12.0",
-    "@typescript-eslint/parser": "^4.12.0",
-    "adal-angular": "^1.0.17",
-    "adal-node": "^0.2.1",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "del-cli": "^3.0.1",
-    "eslint": "^7.16.0",
-    "findup-sync": "^4.0.0",
-    "https-proxy-agent": "^5.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "mocha": "^8.2.1",
-    "msal": "^1.4.4",
-    "node-fetch": "^2.6.1",
-    "prettyjson": "^1.2.1",
-    "string-replace-loader": "^3.0.1",
-    "tslib": "^2.0.3",
-    "typescript": "^4.1.2",
-    "webpack": "^5.10.0",
-    "webpack-cli": "^4.2.0",
-    "webpack-dev-server": "v4.0.0-beta.0",
-    "yargs": "^16.2.0"
-  },
-  "scripts": {
-    "build": "npm run pnp-buildsystem-init && pnpbuild -n build",
-    "buildDebug": "npm run clean && npm run pnp-buildsystem-init && pnpbuild -n build-debug",
-    "clean": "del-cli \"./?(dist|site|build|buildsystem-config.js)\"",
-    "clean-build": "npm run clean && npm run build",
-    "just-publish": "npm run pnp-buildsystem-init && pnpbuild -n publish",
-    "lint": "eslint ./packages ./test --ext .ts",
-    "package": "npm run build && pnpbuild -n package",
-    "pnp-buildsystem-init": "tsc -p tsconfig.buildsystem.json",
-    "pnp-publish": "cd tools/publish && publish-win.bat",
-    "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
-    "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js",
-    "start": "npm run serve",
-    "test": "tsc -p ./test/tsconfig.json && mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/pnp/pnpjs"
-  },
-  "author": {
-    "name": "Microsoft and other contributors"
-  },
-  "license": "MIT",
-  "keywords": [
-    "sharepoint",
-    "office365",
-    "tools",
-    "spfx",
-    "sharepoint framework"
-  ],
-  "engines": {
-    "node": ">=10.18.0"
-  },
-  "engineStrict": true,
-  "maintainers": [
-    {
-      "name": "patrick-rodgers",
-      "email": "patrick.rodgers@microsoft.com"
+    "name": "@pnp/monorepo",
+    "private": true,
+    "version": "2.1.0-beta11",
+    "description": "A JavaScript library for SharePoint development.",
+    "devDependencies": {
+        "@azure/msal-node": "^1.0.0-beta.2",
+        "@microsoft/microsoft-graph-types": "^1.28.0",
+        "@pnp/buildsystem": "^2.3.1",
+        "@types/adal-angular": "^1.0.1",
+        "@types/chai": "^4.1.7",
+        "@types/chai-as-promised": "^7.1.3",
+        "@types/core-js": "^2.5.0",
+        "@types/es6-promise": "^3.3.0",
+        "@types/findup-sync": "^2.0.1",
+        "@types/gulp": "^4.0.6",
+        "@types/gulp-replace": "^0.0.31",
+        "@types/jsonwebtoken": "^8.3.2",
+        "@types/mocha": "^8.2.0",
+        "@types/node": "^14.14.14",
+        "@types/pump": "^1.1.0",
+        "@types/sharepoint": "^2016.1.2",
+        "@types/through2": "^2.0.34",
+        "@types/webpack": "^4.41.25",
+        "@types/whatwg-fetch": "^0.0.33",
+        "@types/yargs": "^15.0.12",
+        "@typescript-eslint/eslint-plugin": "^4.12.0",
+        "@typescript-eslint/parser": "^4.12.0",
+        "adal-angular": "^1.0.17",
+        "adal-node": "^0.2.1",
+        "chai": "^4.2.0",
+        "chai-as-promised": "^7.1.1",
+        "del-cli": "^3.0.1",
+        "eslint": "^7.16.0",
+        "findup-sync": "^4.0.0",
+        "https-proxy-agent": "^5.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "mocha": "^8.2.1",
+        "msal": "^1.4.4",
+        "node-fetch": "^2.6.1",
+        "prettyjson": "^1.2.1",
+        "string-replace-loader": "^3.0.1",
+        "tslib": "^2.0.3",
+        "typescript": "^4.1.2",
+        "webpack": "^5.10.0",
+        "webpack-cli": "^4.2.0",
+        "webpack-dev-server": "v4.0.0-beta.0",
+        "yargs": "^16.2.0"
     },
-    {
-      "name": "juliemturner",
-      "email": "julie.turner@sympraxisconsulting.com"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/pnp/pnpjs/issues"
-  },
-  "homepage": "https://github.com/pnp/pnpjs"
+    "scripts": {
+        "build": "npm run pnp-buildsystem-init && pnpbuild -n build",
+        "buildDebug": "npm run clean && npm run pnp-buildsystem-init && pnpbuild -n build-debug",
+        "clean": "del-cli \"./?(dist|site|build|buildsystem-config.js)\"",
+        "clean-build": "npm run clean && npm run build",
+        "just-publish": "npm run pnp-buildsystem-init && pnpbuild -n publish",
+        "lint": "eslint ./packages ./test --ext .ts",
+        "package": "npm run build && pnpbuild -n package",
+        "pnp-buildsystem-init": "tsc -p tsconfig.buildsystem.json",
+        "pnp-publish": "cd tools/publish && publish-win.bat",
+        "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
+        "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js",
+        "start": "npm run serve",
+        "test": "tsc -p ./test/tsconfig.json && mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/pnp/pnpjs"
+    },
+    "author": {
+        "name": "Microsoft and other contributors"
+    },
+    "license": "MIT",
+    "keywords": [
+        "sharepoint",
+        "office365",
+        "tools",
+        "spfx",
+        "sharepoint framework"
+    ],
+    "engines": {
+        "node": ">=10.18.0"
+    },
+    "engineStrict": true,
+    "maintainers": [
+        {
+            "name": "patrick-rodgers",
+            "email": "patrick.rodgers@microsoft.com"
+        },
+        {
+            "name": "juliemturner",
+            "email": "julie.turner@sympraxisconsulting.com"
+        }
+    ],
+    "bugs": {
+        "url": "https://github.com/pnp/pnpjs/issues"
+    },
+    "homepage": "https://github.com/pnp/pnpjs"
 }

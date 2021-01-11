@@ -76,7 +76,7 @@ const team = {
         ],
     };
 
-const createdTeam: ITeamCreateResultAsync = await graph.teams.create(t);
+const createdTeam: ITeamCreateResultAsync = await graph.teams.create(team);
 //To check the status of the team creation, call getOperationById for the newly created team.
 const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
 ```

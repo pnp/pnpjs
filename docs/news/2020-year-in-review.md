@@ -20,9 +20,7 @@ These tenants generated 6.1 billion requests to the service in January growing t
 
 [Requests graph]
 
-
 > These numbers only include public cloud SPO usage, so true usage is even higher than we can track.
-
 
 ## Releases
 
@@ -140,7 +138,7 @@ We want to thank our sponsors for their continued support in 2020! This year the
 <a href="https://github.com/KEMiCZA" style="margin:20px" title="KEMiCZA">
     <img src="https://avatars0.githubusercontent.com/u/3862716?v=4" alt="KEMiCZA" width="100" height="100" />
 </a><a href="https://github.com/Sympraxis-Consulting" style="margin:20px" title="Sympraxis Consulting">
-    <img src="https://avatars0.githubusercontent.com/u/60528032?v=4" alt="Sympraxis Consulting" width="100" height="100" />
+    <img src="https://avatars3.githubusercontent.com/u/19271832?v=4" alt="Sympraxis Consulting" width="100" height="100" />
 </a><a href="https://github.com/thechriskent" style="margin:20px" title="thechriskent">
     <img src="https://avatars0.githubusercontent.com/u/8364109?v=4" alt="thechriskent" width="100" height="100" />
 </a><a href="https://github.com/erwinvanhunen" style="margin:20px" title="erwinvanhunen">
@@ -152,7 +150,6 @@ We want to thank our sponsors for their continued support in 2020! This year the
 </a><a href="https://github.com/LauraKokkarinen" style="margin:20px" title="LauraKokkarinen">
     <img src="https://avatars0.githubusercontent.com/u/41330990?v=4" alt="LauraKokkarinen" width="100" height="100" />
 </a>
-
 
 ## Closing
 

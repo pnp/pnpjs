@@ -14,7 +14,7 @@ var settings = {
             // for new deployments we recommend the msal settings that can then be applied to both graph and SharePoint
             msal: {
                 init: {
-                    // any of the settings available for msal-node client, passed to the contructor
+                    // any of the settings available for msal-node client, passed to the constructor
                     // https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node
 
                     // PnP example: https://pnp.github.io/pnpjs/authentication/server-nodejs/#call-sharepoint
@@ -32,7 +32,7 @@ var settings = {
             // for new deployments we recommend the msal settings that can then be applied to both graph and SharePoint
             msal: {
                 init: {
-                    // any of the settings available for msal-node client, passed to the contructor
+                    // any of the settings available for msal-node client, passed to the constructor
                     // https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node
 
                     // PnP example: https://pnp.github.io/pnpjs/authentication/server-nodejs/#call-sharepoint
