@@ -44,7 +44,7 @@ _Item.prototype.getLikedBy = function (this: _Item): Promise<ILikeData[]> {
 _Item.prototype.like = async function (this: _Item) {
     const itemInfo = await this.getParentInfos();
     const baseUrl = extractWebUrl(this.toUrl());
-    const reputationUrl = `_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)`;
+    const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=true`;
     return spPost(SharePointQueryable(likeUrl));
 };
@@ -52,7 +52,7 @@ _Item.prototype.like = async function (this: _Item) {
 _Item.prototype.unlike = async function (this: _Item) {
     const itemInfo = await this.getParentInfos();
     const baseUrl = extractWebUrl(this.toUrl());
-    const reputationUrl = `_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)`;
+    const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=false`;
     return spPost(SharePointQueryable(likeUrl));
 };
