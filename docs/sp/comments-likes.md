@@ -189,7 +189,7 @@ const replies = await comments[0].replies();
 
 ## Like
 
-You can like items and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.
+You can like/unlike client-side pages, items, and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -207,4 +207,21 @@ const likedByData: ILikeData[] = await item.getLikedBy();
 
 // get the liked by information
 const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
+```
+
+To like/unlike a client-side page and get liked by information.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/comments/clientside-page";
+import { ILikedByInformation } from "@pnp/sp/comments";
+
+// like a page
+await page.like();
+
+// unlike a page
+await page.unlike();
+
+// get the liked by information
+const likedByInfo: ILikedByInformation = await page.getLikedByInformation();
 ```
