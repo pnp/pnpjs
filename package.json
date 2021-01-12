@@ -21,7 +21,7 @@
         "@types/pump": "^1.1.0",
         "@types/sharepoint": "^2016.1.2",
         "@types/through2": "^2.0.34",
-        "@types/webpack": "^4.41.25",
+        "@types/webpack": "^4.41.26",
         "@types/whatwg-fetch": "^0.0.33",
         "@types/yargs": "^15.0.12",
         "@typescript-eslint/eslint-plugin": "^4.12.0",
