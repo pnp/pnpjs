@@ -1,8 +1,8 @@
 # 2020 Year End Report
 
-Welcome to our first year in review for PnPjs. This year has marked usage milestones, seen more contributors than ever, and expanded the core maintainers team. But none of this would be possible without everyone's support, and participation - so we start by saying Thank You! We deeply appreciate everyone that has helped us grow and improve the library over the last year.
+Welcome to our first year in review report for PnPjs. This year has marked usage milestones, seen more contributors than ever, and expanded the core maintainers team. But none of this would be possible without everyones support and participation - so we start by saying Thank You! We deeply appreciate everyone that has used, helped us grow, and improved the library over the last year.
 
-This year we introduced MSAL clients for node and client side, improved our testing/local development plumbing, and updated the libraries to work with the node 15 module resolution rules.
+This year we introduced MSAL clients for node and browser, improved our testing/local development plumbing, and updated the libraries to work with the node 15 module resolution rules.
 
 We fixed 43 reported bugs, answered 131 questions, and made 55 suggested enhancements to the library - all driven by feedback from users and the community.
 
@@ -12,19 +12,17 @@ Finally we made many tooling and project improvements such as moving to GitHub a
 
 ## Usage
 
-In 2020 we tracked steady month/month growth in raw usage measured by requests as well as in the number of tenants deploying the library. Starting the year we were used in 14605 tenants and by December that number grew to XXXX, peaking in November at 20875.
+In 2020 we tracked steady month/month growth in raw usage measured by requests as well as in the number of tenants deploying the library. Starting the year we were used in 14605 tenants and by December that number grew to 21,227.
 
-[Tenant usage graph]
+These tenants generated 6.1 billion requests to the service in January growing to 9.2 billion by December, peaking at 10.1 billion requests in November.
 
-These tenants generated 6.1 billion requests to the service in January growing to XXXX, peaking at 10.1 billion requests in November.
+![Graph showing requests and tenants/month for @pnp/sp](../img/usage-2020-eoy.png)
 
-[Requests graph]
-
-> These numbers only include public cloud SPO usage, so true usage is even higher than we can track.
+> 1) There was a data glitch in October so the numbers do not fully represent usage. 2) These numbers only include public cloud SPO usage, true usage is higher than we can track due to on-premesis and gov/sovereign clouds
 
 ## Releases
 
-We continued our monthly release cadence this year as it represents a good pace for addressing issues while not expecting folks to update too often and it keeps each update to a reasonable size. All changes can be tracked in our [change log](https://github.com/pnp/pnpjs/blob/version-2/CHANGELOG.md), updated with each release. You can track our scheduled releases through [project milestones](https://github.com/pnp/pnpjs/milestones), understanding there are occasionally delays. This monthly cadence allows us to ensure bugs do not linger and we continually improve and expand the capabilities of the libraries.
+We continued our monthly release cadence as it represents a good pace for addressing issues while not expecting folks to update too often and keeping each update to a reasonable size. All changes can be tracked in our [change log](https://github.com/pnp/pnpjs/blob/version-2/CHANGELOG.md), updated with each release. You can check our scheduled releases through [project milestones](https://github.com/pnp/pnpjs/milestones), understanding there are occasionally delays. Monthly releases allows us to ensure bugs do not linger and we continually improve and expand the capabilities of the libraries.
 
 ### NPM Package download statistics (@pnp/sp):
 
@@ -35,11 +33,11 @@ We continued our monthly release cadence this year as it represents a good pace 
 | March    | 34,574  | *   | September   | 45,968 |
 | April    | 32,436  | *   | October     | 46,655 |
 | May      | 34,482  | *   | November    | 45,511 |
-| June     | 34,408  | *   | December    | XXX    |
+| June     | 34,408  | *   | December    | 58,977 |
 |          |         |     |             |        |
-|          |         |     | Grand Total | XXX    |
+|          |         |     | Grand Total | 543,836|
 
-With 2020 our total all time downloads of @pnp/sp is now at: XXXXX
+With 2020 our total all time downloads of @pnp/sp is now at: 949,638
 
 > Stats from https://npm-stat.com/
 
@@ -55,11 +53,11 @@ With the close of 2020 we are very excited to announce a new lead maintainer for
 
 Over the last year she has gotten more involved with handling releases, responding to issues, and helping to keep the code updated and clean.
 
-We are very lucky to have her working on the project and look forward to seeing her begin to lead the growth and direction for years to come.
+We are very lucky to have her working on the project and look forward to seeing her lead the growth and direction for years to come.
 
 ## Contributors
 
-As always we have abundant thanks and appreciation for your contributors. Taking your time to help improve PnPjs for the community is massive and valuable to ensure our sustainability. Thank you for all your help in 2020!
+As always we have abundant thanks and appreciation for your contributors. Taking your time to help improve PnPjs for the community is massive and valuable to ensure our sustainability. Thank you for all your help in 2020! If you are interested in becoming a contributor [check out our guide](../contributing/index.md) on ways to get started.
 
 <a href="https://github.com/AJIXuMuK" style="margin:10px" title=AJIXuMuK>
     <img src="https://avatars3.githubusercontent.com/u/17036219?v=4" alt="AJIXuMuK" width="50" height="50" />
@@ -131,7 +129,7 @@ As always we have abundant thanks and appreciation for your contributors. Taking
 
 ## Sponsors
 
-We want to thank our sponsors for their continued support in 2020! This year the money went towards helping offset the cost and shipping of hoodies to contributors and sponsors. Your continued generosity makes a big difference in our ability to recognize and reward the folks building PnPjs.
+We want to thank our sponsors for their support in 2020! This year we put the money towards helping offset the cost and shipping of hoodies to contributors and sponsors. Your continued generosity makes a big difference in our ability to recognize and reward the folks building PnPjs.
 
 **Thank You**
 
@@ -149,6 +147,10 @@ We want to thank our sponsors for their continued support in 2020! This year the
     <img src="https://avatars0.githubusercontent.com/u/7446437?v=4" alt="VesaJuvonen" width="100" height="100" />
 </a><a href="https://github.com/LauraKokkarinen" style="margin:20px" title="LauraKokkarinen">
     <img src="https://avatars0.githubusercontent.com/u/41330990?v=4" alt="LauraKokkarinen" width="100" height="100" />
+</a><a href="https://github.com/ricardocarneiro" style="margin:20px" title="ricardocarneiro">
+    <img src="https://avatars0.githubusercontent.com/u/4666947?v=4" alt="ricardocarneiro" width="100" height="100" />
+</a><a href="https://github.com/andrewconnell" style="margin:20px" title="andrewconnell">
+    <img src="https://avatars0.githubusercontent.com/u/2068657?v=4" alt="andrewconnell" width="100" height="100" />
 </a>
 
 ## Closing
