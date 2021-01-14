@@ -8,7 +8,11 @@ import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { testSettings } from "../main.js";
 import { getRandomString } from "@pnp/common";
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
 
+// npm run test -- -g 'nodejs - sp-extensions'
 describe("nodejs - sp-extensions", () => {
 
     if (testSettings.enableWebTests) {
@@ -38,5 +42,42 @@ describe("nodejs - sp-extensions", () => {
 
             expect(txt).to.eq(content);
         });
+
+        it("Should allow adding chunks via stream", async function () {
+
+            const name = `Testing addChunked (with Nodejs stream) - ${getRandomString(4)}.txt`;
+            const content = "Some test text content.";
+
+            const tmpFilePath = path.join(os.tmpdir(), name);
+            fs.writeFileSync(tmpFilePath, content);
+
+            const stream = fs.createReadStream(tmpFilePath);
+            const files = sp.web.defaultDocumentLibrary.rootFolder.files;
+
+            await files.addChunked(name, stream, null, true, 10);
+
+            const fileContent = await files.getByName(name).getText();
+
+            expect(fileContent.length).be.equal(content.length);
+
+            fs.rmSync(tmpFilePath);
+
+        });
+
+        it("Should allow adding chunks non-stream", async function () {
+
+            const name = `Testing addChunked (with Nodejs buffer) - ${getRandomString(4)}.txt`;
+            const content = "Some test text content.";
+
+            const files = sp.web.defaultDocumentLibrary.rootFolder.files;
+
+            await files.addChunked(name, content as any, null, true, 10);
+
+            const fileContent = await files.getByName(name).getText();
+
+            expect(fileContent.length).be.equal(content.length);
+
+        });
+
     }
 });
