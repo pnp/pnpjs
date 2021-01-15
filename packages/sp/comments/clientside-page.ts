@@ -3,6 +3,8 @@ import { ICommentInfo, IComment, Comment, ILikedByInformation } from "./types.js
 import { spODataEntity } from "../odata.js";
 import { tag } from "../telemetry.js";
 import { IItemUpdateResult, Item } from "../items/index.js";
+import { spPost } from "../operations.js";
+import { SharePointQueryable } from "../sharepointqueryable.js";
 
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {
@@ -85,13 +87,11 @@ _ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): 
 };
 
 _ClientsidePage.prototype.like = async function (this: _ClientsidePage): Promise<void> {
-    const item = await this.getItem("ID");
-    return item.like();
+    return spPost<void>(this.clone(SharePointQueryable, "like"));
 };
 
 _ClientsidePage.prototype.unlike = async function (this: _ClientsidePage): Promise<void> {
-    const item = await this.getItem("ID");
-    return item.unlike();
+    return spPost<void>(this.clone(SharePointQueryable, "unlike"));
 };
 
 _ClientsidePage.prototype.getLikedByInformation = async function (this: _ClientsidePage): Promise<ILikedByInformation> {
