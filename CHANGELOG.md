@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.0 - 2021-Jan-15
+
+### Added
+
+sp: Adds addChunked stream version for node [@koltyakov](https://github.com/koltyakov) [[PR](https://github.com/pnp/pnpjs/pull/1517)]
+general: Push tags on release #1484 [@pdecat](https://github.com/pdecat) [[PR](https://github.com/pnp/pnpjs/pull/1485)]
+general: Isolated Runtimes for sp and graph + node module updates [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1403)]
+graph: Graph search, getListItemEntityTypeFullName caching, and dev deps updates [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1510)]
+
+### Changed
+
+docs: Fix graph group sample [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1527)]
+
+### Fixed
+
+docs: Fix bug in settings.example [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1520)]
+sp: Bug fix for parser in creating teams & docs [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1520)]
+sp: validateUpdateListItem on file item ref doesn't work #1477 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1520)]
+sp: Likes are not supported in this item #1498 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1520)]
+docs: Minor documentation update [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1529)]
+
 ## 2.0.13 - 2020-Dec-14
 
 ### Added
