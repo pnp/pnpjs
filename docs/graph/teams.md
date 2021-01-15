@@ -57,7 +57,7 @@ const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec3324
 
 ## Create new Team/Group - Method #2
 
-The second way to create a new TEam and corresponding Group is to do so in one call. This can be done by using the createTeam method.
+The second way to create a new Team and corresponding Group is to do so in one call. This can be done by using the createTeam method.
 
 ```TypeScript
 import { graph } from "@pnp/graph";
