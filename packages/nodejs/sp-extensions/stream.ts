@@ -88,7 +88,7 @@ extendFactory(Files, {
         const file = File(odataUrlFrom(response));
 
         if ("function" === typeof (content as ReadStream).read) {
-            return await file.setStreamContentChunked(content as ReadStream, progress, chunkSize);
+            return file.setStreamContentChunked(content as ReadStream, progress, chunkSize);
         }
 
         return file.setContentChunked(content as Blob, progress, chunkSize);

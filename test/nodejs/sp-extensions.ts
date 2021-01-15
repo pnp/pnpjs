@@ -7,7 +7,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { testSettings } from "../main.js";
-import { getRandomString } from "@pnp/common";
+import { getRandomString, isFunc } from "@pnp/common";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
@@ -60,8 +60,11 @@ describe("nodejs - sp-extensions", () => {
 
             expect(fileContent.length).be.equal(content.length);
 
-            fs.rmSync(tmpFilePath);
-
+            if (isFunc((<any>fs).rmSync)) {
+                (<any>fs).rmSync(tmpFilePath);
+            } else {
+                fs.unlinkSync(tmpFilePath);
+            }            
         });
 
         it("Should allow adding chunks non-stream", async function () {
@@ -76,8 +79,6 @@ describe("nodejs - sp-extensions", () => {
             const fileContent = await files.getByName(name).getText();
 
             expect(fileContent.length).be.equal(content.length);
-
         });
-
     }
 });
