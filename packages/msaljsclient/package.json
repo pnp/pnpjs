@@ -7,7 +7,7 @@
   "dependencies": {
     "@pnp/common": "0.0.0-PLACEHOLDER",
     "msal": "1.4.4",
-    "tslib": "2.0.3"
+    "tslib": "2.1.0"
   },
   "author": {
     "name": "Microsoft and other contributors"
