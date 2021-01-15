@@ -131,7 +131,7 @@
     
       <div class="md-header-nav__source">
         
-<a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
+<a href="https://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
@@ -169,7 +169,7 @@
   
     <div class="md-nav__source">
       
-<a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
+<a href="https://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
@@ -350,8 +350,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../transition-guide/" class="md-nav__link">
-      Transition Guide
+    <a href="../news/2020-year-in-review/" class="md-nav__link">
+      2020 Year In Review
     </a>
   </li>
 
@@ -806,6 +806,30 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/bearertokenclient/" class="md-nav__link">
+      Bearer Token Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/lambdaclient/" class="md-nav__link">
+      Lambda Token Client
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -1158,6 +1182,18 @@
   <li class="md-nav__item">
     <a href="../graph/planner/" class="md-nav__link">
       planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../graph/search/" class="md-nav__link">
+      search
     </a>
   </li>
 
@@ -2362,7 +2398,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/version-2/docs/getting-started.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/pnp/pnpjs/tree/version-2/docs/getting-started.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -2563,9 +2599,9 @@ graph.groups.get().then(g =&gt; {
 <h2 id="getting-started-outside-sharepoint-framework">Getting Started outside SharePoint Framework<a class="headerlink" href="#getting-started-outside-sharepoint-framework" title="Permanent link">&para;</a></h2>
 <p>In some cases you may be working in a way such that we cannot determine the base url for the web. In this scenario you have two options.</p>
 <h3 id="set-baseurl-through-setup">Set baseUrl through setup<a class="headerlink" href="#set-baseurl-through-setup" title="Permanent link">&para;</a></h3>
-<p>Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use verbose mode, something you may have to do when
+<p>Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use <code>verbose</code> mode, something you may have to do when
 working against unpatched versions of SharePoint 2013 as <a href="https://blogs.msdn.microsoft.com/patrickrodgers/2016/06/13/pnp-jscore-1-0-1/">discussed here</a>.
-This is optional for 2016 or SharePoint Online.</p>
+This is optional for 2016 or SharePoint Online. The library does not support setting the headers to use <code>nometadata</code> as we rely on the metadata in the response to do some of the more complicated functions. Some of the pure data calls will probably work but it is not a supported configuration.</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
 
 sp.setup({
@@ -2606,7 +2642,7 @@ const w = await web.get();
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../transition-guide/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../news/2020-year-in-review/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -2615,7 +2651,7 @@ const w = await web.get();
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Transition Guide
+                2020 Year In Review
               </div>
             </div>
           </a>
