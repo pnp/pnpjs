@@ -37,11 +37,51 @@ const txt = await new Promise<string>((resolve) => {
 });
 ```
 
+## IFiles.addChunked
+
+_Added in 2.1.0_
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders/web";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/files/web";
+import "@pnp/sp/files/folder";
+import * as fs from "fs";
+
+
+const stream = fs.createReadStream("{file path}");
+const files = sp.web.defaultDocumentLibrary.rootFolder.files;
+
+await files.addChunked(name, stream, null, true, 10);
+```
+
+## IFile.setStreamContentChunked
+
+_Added in 2.1.0_
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders/web";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/files/web";
+import "@pnp/sp/files/folder";
+import * as fs from "fs";
+
+const stream = fs.createReadStream("{file path}");
+const file = sp.web.defaultDocumentLibrary.rootFolder.files..getByName("file-name.txt");
+
+await file.setStreamContentChunked(stream);
+```
+
 ## Explicit import
 
 If you don't need to import anything from the library, but would like to include the extensions just import the library as shown.
 
 ```TypeScript
+// ES Modules:  import "@pnp/nodejs";
 import "@pnp/nodejs-commonjs";
 
 // get the stream
