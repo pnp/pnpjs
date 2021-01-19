@@ -64,7 +64,7 @@ describe("nodejs - sp-extensions", () => {
                 (<any>fs).rmSync(tmpFilePath);
             } else {
                 fs.unlinkSync(tmpFilePath);
-            }            
+            }
         });
 
         it("Should allow adding chunks non-stream", async function () {
