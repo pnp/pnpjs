@@ -14,6 +14,7 @@ Import the library into your application and access the root sp object
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/groups";
 
 (function main() {
 
@@ -35,6 +36,7 @@ Import the library into your application, update OnInit, and access the root sp 
 
 ```TypeScript
 import { graph } from "@pnp/graph";
+import "@pnp/graph/groups";
 
 // ...
 
@@ -76,6 +78,7 @@ Import the library into your application, setup the node client, make a request
 ```TypeScript
 import { graph } from "@pnp/graph";
 import { AdalFetchClient } from "@pnp/nodejs";
+import "@pnp/graph/groups";
 
 // do this once per page load
 graph.setup({
