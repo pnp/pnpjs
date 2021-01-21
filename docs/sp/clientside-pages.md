@@ -298,7 +298,7 @@ part.DisplayTitle = "My New Title!";
 await page.save();
 ```
 
-> Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart without loading it and examining how the properties are stored.
+> Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart are stored without loading it and examining the properties.
 
 ## Page Operations
 
