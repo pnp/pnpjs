@@ -5,7 +5,7 @@ import { graphPost } from "@pnp/graph";
 import { body } from "@pnp/odata";
 
 /**
- * Calendar
+ * Outlook
  */
 export class _Outlook extends _GraphQueryableInstance<IOutlookType> {
 
