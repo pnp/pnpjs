@@ -124,6 +124,12 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
                         orderedChildren.push(found);
                     }
                 });
+                // we have a case where if a set is ordered and a term is added to that set
+                // AND the ordering information hasn't been updated the new term will not have
+                // any associated ordering information. See #1547 which reported this. So here we
+                // append any terms remaining in "terms" not in "orderedChildren" to the end of "orderedChildren"
+                orderedChildren.push(...terms.filter(info => ordering.indexOf(info.id) < 0));
+
                 return orderedChildren;
             }
             return terms;

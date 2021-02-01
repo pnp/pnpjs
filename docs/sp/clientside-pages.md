@@ -8,7 +8,7 @@ The 'clientside-pages' module allows you to create, edit, and delete modern Shar
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
 | Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
-| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                    |
+| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                     |
 
 ## Create a new Page
 
@@ -260,6 +260,45 @@ page.addSection().addControl(part);
 
 await page.save();
 ```
+
+### Handle Different Webpart's Settings
+
+There are many ways that client side web parts are implemented and we can't provide handling within the library for all possibilities. This example shows how to handle a property set within the serverProcessedContent, in this case a List part's display title.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
+
+// we create a class to wrap our functionality in a reusable way
+class ListWebpart extends ClientsideWebpart {
+
+  constructor(control: ClientsideWebpart) {
+    super((<any>control).json);
+  }
+
+  // add property getter/setter for what we need, in this case "listTitle" within searchablePlainTexts
+  public get DisplayTitle(): string {
+    return this.json.webPartData?.serverProcessedContent?.searchablePlainTexts?.listTitle || "";
+  }
+
+  public set DisplayTitle(value: string) {
+    this.json.webPartData.serverProcessedContent.searchablePlainTexts.listTitle = value;
+  }
+}
+
+// now we load our page
+const page = await sp.web.loadClientsidePage("/sites/dev/SitePages/List-Web-Part.aspx");
+
+// get our part and pass it to the constructor of our wrapper class
+const part = new ListWebpart(page.sections[0].columns[0].getControl(0));
+
+part.DisplayTitle = "My New Title!";
+
+await page.save();
+```
+
+> Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart are stored without loading it and examining the properties.
 
 ## Page Operations
 
