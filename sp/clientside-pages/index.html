@@ -1479,6 +1479,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#handle-different-webparts-settings" class="md-nav__link">
+    Handle Different Webpart's Settings
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2445,6 +2452,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#handle-different-webparts-settings" class="md-nav__link">
+    Handle Different Webpart's Settings
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2872,6 +2886,42 @@ page.addSection().addControl(part);
 
 await page.save();
 </code></pre>
+<h3 id="handle-different-webparts-settings">Handle Different Webpart's Settings<a class="headerlink" href="#handle-different-webparts-settings" title="Permanent link">&para;</a></h3>
+<p>There are many ways that client side web parts are implemented and we can't provide handling within the library for all possibilities. This example shows how to handle a property set within the serverProcessedContent, in this case a List part's display title.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { ClientsideWebpart } from &quot;@pnp/sp/clientside-pages&quot;;
+
+// we create a class to wrap our functionality in a reusable way
+class ListWebpart extends ClientsideWebpart {
+
+  constructor(control: ClientsideWebpart) {
+    super((&lt;any&gt;control).json);
+  }
+
+  // add property getter/setter for what we need, in this case &quot;listTitle&quot; within searchablePlainTexts
+  public get DisplayTitle(): string {
+    return this.json.webPartData?.serverProcessedContent?.searchablePlainTexts?.listTitle || &quot;&quot;;
+  }
+
+  public set DisplayTitle(value: string) {
+    this.json.webPartData.serverProcessedContent.searchablePlainTexts.listTitle = value;
+  }
+}
+
+// now we load our page
+const page = await sp.web.loadClientsidePage(&quot;/sites/dev/SitePages/List-Web-Part.aspx&quot;);
+
+// get our part and pass it to the constructor of our wrapper class
+const part = new ListWebpart(page.sections[0].columns[0].getControl(0));
+
+part.DisplayTitle = &quot;My New Title!&quot;;
+
+await page.save();
+</code></pre>
+<blockquote>
+<p>Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart are stored without loading it and examining the properties.</p>
+</blockquote>
 <h2 id="page-operations">Page Operations<a class="headerlink" href="#page-operations" title="Permanent link">&para;</a></h2>
 <p>There are other operation you can perform on a page in addition to manipulating the content.</p>
 <h3 id="pagelayout">pageLayout<a class="headerlink" href="#pagelayout" title="Permanent link">&para;</a></h3>
