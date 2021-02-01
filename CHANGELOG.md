@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.1 - 2021-Feb-01
+
+### Changed
+
+-sp: Updated docs to cover setting properties for clientside webparts [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1547)]
+
+### Fixed
+
+- sp: Fix issue with isolated runtimes and global headers [@tavikukko](https://github.com/tavikukko) [[PR](https://github.com/pnp/pnpjs/pull/1541)]
+- sp: Fix issue with clientside-page like/unlike [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1546)]
+- sp: Fix for taxonomy getAllChildrenAsOrderedTree method for terms without ordering information [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1547)]
+- sp: Fix for setProxyUrl not using configured setting for some auth tasks [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1547)]
+
 ## 2.1.0 - 2021-Jan-15
 
 ### Added
