@@ -1,7 +1,7 @@
 {
     "name": "@pnp/monorepo",
     "private": true,
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A JavaScript library for SharePoint development.",
     "devDependencies": {
         "@azure/msal-node": "^1.0.0-beta.3",
@@ -24,7 +24,7 @@
         "@types/webpack": "^4.41.26",
         "@types/whatwg-fetch": "^0.0.33",
         "@types/yargs": "^15.0.12",
-        "@typescript-eslint/eslint-plugin": "^4.13.0",
+        "@typescript-eslint/eslint-plugin": "^4.14.2",
         "@typescript-eslint/parser": "^4.13.0",
         "adal-angular": "^1.0.17",
         "adal-node": "^0.2.1",
