@@ -87,11 +87,13 @@ _ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): 
 };
 
 _ClientsidePage.prototype.like = async function (this: _ClientsidePage): Promise<void> {
-    return spPost<void>(this.clone(SharePointQueryable, "like"));
+    const item = await this.getItem("ID");
+    return spPost<void>(SharePointQueryable(item, "like"));
 };
 
 _ClientsidePage.prototype.unlike = async function (this: _ClientsidePage): Promise<void> {
-    return spPost<void>(this.clone(SharePointQueryable, "unlike"));
+    const item = await this.getItem("ID");
+    return spPost<void>(SharePointQueryable(item, "unlike"));
 };
 
 _ClientsidePage.prototype.getLikedByInformation = async function (this: _ClientsidePage): Promise<ILikedByInformation> {
