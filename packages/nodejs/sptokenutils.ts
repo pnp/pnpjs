@@ -1,8 +1,8 @@
 import { parse } from "url";
-import nodeFetch from "node-fetch";
 import * as jwt from "jsonwebtoken";
 import { ITypedHash } from "@pnp/common";
 import { AuthToken, SharePointServicePrincipal, ITokenCacheManager } from "./types.js";
+import { fetch } from "./net/fetch.js";
 
 class MapCacheManager implements ITokenCacheManager {
 
@@ -85,7 +85,7 @@ async function getTokenInternal(params: GetTokenInternalParams): Promise<AuthTok
     body.push(`client_secret=${encodeURIComponent(params.clientSecret)}`);
     body.push(`resource=${resource}`);
 
-    const r = await nodeFetch(params.stsUri, {
+    const r = await fetch(params.stsUri, {
         body: body.join("&"),
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
