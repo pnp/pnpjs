@@ -166,7 +166,6 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                 if (isArray(fieldDefault.value)) {
                     value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                 }
-                value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
                 break;
         }
 
