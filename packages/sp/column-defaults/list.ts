@@ -165,15 +165,21 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
             case "TaxonomyFieldTypeMulti":
                 if (isArray(fieldDefault.value)) {
                     value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                } else {
+                    value = (<{ wssId: string; termName: string; termId: string }[]>[fieldDefault.value]).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                 }
-                value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
                 break;
         }
 
-        return `<a href="${fieldDefault.path.replace(/ /gi, "%20")}"><DefaultValue FieldName="${fieldDefault.name}">${value}</DefaultValue></a>`;
+        return `<DefaultValue FieldName="${fieldDefault.name}">${value}</DefaultValue>`;
     });
 
-    const xml = `<MetadataDefaults>${tags.join("")}</MetadataDefaults>`;
+    // makes the assumption that if there are multiple defaults add that the path is set correctly for all and uses the first entry for the path
+    let defaultXml = "";
+    if (defaults.length > 0) {
+        defaultXml = `<a href="${defaults[0].path.replace(/ /gi, "%20")}">${tags.join("")}</a>`;
+    }
+    const xml = `<MetadataDefaults>${defaultXml}</MetadataDefaults>`;
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");

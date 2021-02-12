@@ -1,6 +1,6 @@
 # @pnp/sp/column-defaults
 
-The column defaults sub-module allows you to manage the default column values on a list or folder.
+The column defaults sub-module allows you to manage the default column values on a library or library folder.
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
@@ -44,6 +44,10 @@ The resulting structure will have the form:
 
 When setting the defaults for a folder you need to include the field's internal name and the value.
 
+>For more examples of other field types see the section [Pattern for setting defaults on various column types](#Pattern-for-setting-defaults-on-various-column-types)
+
+>_Note: Be very careful when setting the path as the site collection url is case sensitive_
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -59,8 +63,6 @@ await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_G
   value: 14,
 }]);
 ```
-
-> When setting defaults you must use the _Internal_ name of the field.
 
 ## Get Library Defaults
 
@@ -94,7 +96,11 @@ The resulting structure will have the form:
 
 ## Set Library Defaults
 
-You can also set the defaults for an entire library at once (root and all sub-folders). This may be helpful in provisioning a library or other scenarios. When setting the defaults for the entire library you must also include the path value with is the server relative path to the folder.
+You can also set the defaults for an entire library at once (root and all sub-folders). This may be helpful in provisioning a library or other scenarios. When setting the defaults for the entire library you must also include the path value with is the server relative path to the folder. When setting the defaults for a folder you need to include the field's internal name and the value.
+
+>For more examples of other field types see the section [Pattern for setting defaults on various column types](#Pattern-for-setting-defaults-on-various-column-types)
+
+>_Note: Be very careful when setting the path as the site collection url is case sensitive_
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -102,26 +108,10 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-await sp.web.lists.getByTitle("DefaultColumnValues").getDefaultColumnValues([{
+await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
                 name: "TextField",
-                path: `/sites/dev/DefaultColumnValues`,
+                path: "/sites/dev/DefaultColumnValues",
                 value: "#PnPjs Rocks!",
-            }, {
-                name: "NumberField",
-                path: `/sites/dev/DefaultColumnValues`,
-                value: 42,
-            }, {
-                name: "MultiChoiceField",
-                path: `/sites/dev/DefaultColumnValues`,
-                value: ["Item 1", "Item 2"],
-            }, {
-                name: "TextField",
-                path: `/sites/dev/DefaultColumnValues/folder1`,
-                value: "#PnPjs Rocks in sub-folders too!",
-            }, {
-                name: "MultiChoiceField",
-                path: `/sites/dev/DefaultColumnValues/folder2`,
-                value: ["Item 1"],
             }]);
 ```
 
@@ -149,4 +139,54 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([]);
+```
+
+## Pattern for setting defaults on various column types
+
+The following is an example of the structure for setting the default column value when using the setDefaultColumnValues that covers the various field types.
+
+```TS
+[{
+    // Text/Boolean/CurrencyDateTime/Choice/User
+    name: "TextField":
+    path: "/sites/dev/DefaultColumnValues",
+    value: "#PnPjs Rocks!",
+}, {
+    //Number
+    name: "NumberField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: 42,
+}, {
+    //MultiChoice
+    name: "MultiChoiceField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: ["Item 1", "Item 2"],
+}, {
+    //MultiChoice - single value
+    name: "MultiChoiceField",
+    path: "/sites/dev/DefaultColumnValues/folder2",
+    value: ["Item 1"],
+}, {
+    //Taxonomy - single value
+    name: "TaxonomyField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: {
+        wssId:"-1",
+        termName: "TaxValueName",
+        termId: "924d2077-d5e3-4507-9f36-4a3655e74274"
+        }
+}, {
+    //Taxonomy - multiple value
+    name: "TaxonomyMultiField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: [{
+        wssId:"-1",
+        termName: "TaxValueName",
+        termId: "924d2077-d5e3-4507-9f36-4a3655e74274"
+        },{
+        wssId:"-1",
+        termName: "TaxValueName2",
+        termId: "95d4c307-dde5-49d8-b861-392e145d94d3"
+        },]
+}]);
 ```
