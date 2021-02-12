@@ -24,8 +24,16 @@ npm run serve
 
 Runs the tests and coverage for the library.
 
+### Test using Legacy SP App authentication
+
 ```cmd
 npm test
+```
+
+### Test using MSAL authentication
+
+```cmd
+npm test -- --msal
 ```
 
 ### Options
