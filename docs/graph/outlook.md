@@ -14,16 +14,6 @@ You can learn more  by reading the [Official Microsoft Graph Documentation](http
 |Selective 2|import { graph } from "@pnp/graph";<br />import "@pnp/graph/outlook";|
 |Preset: All|import { graph, Outlook, IOutlook, MasterCategories, IMasterCategories } from "@pnp/graph/presets/all";|
 
-## Current User Outlook Services
-
-```TypeScript
-import { graph } from "@pnp/graph";
-import "@pnp/graph/users";
-import "@pnp/graph/outlook";
-
-const currentOutlookUser = await graph.me.outlook();
-```
-
 ## Get All Categories for Current User
 
 ```TypeScript
