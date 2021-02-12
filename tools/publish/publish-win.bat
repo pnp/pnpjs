@@ -28,7 +28,7 @@ call npm install
 ::
 :: update the version
 ::
-call npm version patch
+call npm version minor
 git push
 git push --tags
 
