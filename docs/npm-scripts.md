@@ -112,7 +112,7 @@ _Added in 2.0.13_
 This flag opts into using msal authentication settings from the [settings.js](./concepts/settings.md) file.
 
 ```cmd
-npm test -- --spverbose
+npm test -- --msal
 ```
 
 #### spVerbose

@@ -1,3 +1,4 @@
+import { isArray } from "@pnp/common";
 import { defaultPath } from "../decorators.js";
 import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { tag } from "../telemetry.js";
@@ -23,7 +24,7 @@ export class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
         return tag.configure(TermSets(this), "txts.sets");
     }
 }
-export interface ITermStore extends _TermStore {}
+export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
 
 
@@ -39,7 +40,7 @@ export class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]
         return tag.configure(TermGroup(this, id), "txtgs.getById");
     }
 }
-export interface ITermGroups extends _TermGroups {}
+export interface ITermGroups extends _TermGroups { }
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
 
 export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
@@ -51,7 +52,7 @@ export class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
         return tag.configure(TermSets(this, "sets"), "txtg.sets");
     }
 }
-export interface ITermGroup extends _TermGroup {}
+export interface ITermGroup extends _TermGroup { }
 export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
 
 
@@ -67,7 +68,7 @@ export class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
         return tag.configure(TermSet(this, id), "txts.getById");
     }
 }
-export interface ITermSets extends _TermSets {}
+export interface ITermSets extends _TermSets { }
 export const TermSets = spInvokableFactory<ITermSets>(_TermSets);
 
 export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
@@ -105,7 +106,12 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
         const tree: IOrderedTermInfo[] = [];
 
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
-            // handle custom sort order
+
+            // handle no custom sort information present
+            if (!isArray(sorts) && !isArray(setSorts)) {
+                return terms;
+            }
+
             let ordering: string[] = null;
             if (sorts === null && setSorts.length > 0) {
                 ordering = [...setSorts];
@@ -163,12 +169,12 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
         return ensureOrder(tree, null, setInfo.customSortOrder);
     }
 }
-export interface ITermSet extends _TermSet {}
+export interface ITermSet extends _TermSet { }
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 @defaultPath("children")
 export class _Children extends _SharePointQueryableCollection<ITermInfo[]> { }
-export interface IChildren extends _Children {}
+export interface IChildren extends _Children { }
 export const Children = spInvokableFactory<IChildren>(_Children);
 
 @defaultPath("terms")
@@ -199,7 +205,7 @@ export class _Term extends _SharePointQueryableInstance<ITermInfo> {
         return tag.configure(TermSet(this, "set"), "txt.set");
     }
 }
-export interface ITerm extends _Term {}
+export interface ITerm extends _Term { }
 export const Term = spInvokableFactory<ITerm>(_Term);
 
 
@@ -214,7 +220,7 @@ export class _Relations extends _SharePointQueryableCollection<IRelationInfo[]> 
         return tag.configure(Relation(this, id), "txrs.getById");
     }
 }
-export interface IRelations extends _Relations {}
+export interface IRelations extends _Relations { }
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
 export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
@@ -231,7 +237,7 @@ export class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
         return tag.configure(TermSet(this, "set"), "txr.set");
     }
 }
-export interface IRelation extends _Relation {}
+export interface IRelation extends _Relation { }
 export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 
