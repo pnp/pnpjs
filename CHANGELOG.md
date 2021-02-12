@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.2.0 - 2021-Feb-12
+
+### Changed
+
+### Fixed
+
+- sp: Fix issue with setting TaxonomyFieldTypeMulti [@FredrikEkstroem](https://github.com/FredrikEkstroem) [[PR](https://github.com/pnp/pnpjs/pull/1568)]/[[PR](https://github.com/pnp/pnpjs/pull/1582)]
+
+### Added
+
+- docs: Added missing `addNumber()` method to IFields documentation [@gitbrent](https://github.com/gitbrent) [[PR](https://github.com/pnp/pnpjs/pull/1580)]
+
 ## 2.1.1 - 2021-Feb-01
 
 ### Changed
