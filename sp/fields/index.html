@@ -1520,6 +1520,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add-a-number-field" class="md-nav__link">
+    Add a Number Field
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-url-field" class="md-nav__link">
     Add a URL Field
   </a>
@@ -2299,6 +2306,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add-a-number-field" class="md-nav__link">
+    Add a Number Field
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-url-field" class="md-nav__link">
     Add a URL Field
   </a>
@@ -2414,7 +2428,7 @@
                 <h1 id="pnpsplists">@pnp/sp/lists<a class="headerlink" href="#pnpsplists" title="Permanent link">&para;</a></h1>
 <p>Fields in SharePoint can be applied to both webs and lists. When referencing a webs' fields you are effectively looking at site columns which are common fields that can be utilized in any list/library in the site. When referencing a lists' fields you are looking at the fields only associated to that particular list.</p>
 <h2 id="ifields">IFields<a class="headerlink" href="#ifields" title="Permanent link">&para;</a></h2>
-<p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
+<p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
 <table>
 <thead>
 <tr>
@@ -2641,6 +2655,24 @@ import &quot;@pnp/sp/fields&quot;;
 const field = await sp.web.fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
 // create a new multi-line text field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
+
+// we can use this 'field' variable to run more queries on the field:
+const r = await field.field.select(&quot;Id&quot;)();
+
+// log the field Id to console
+console.log(r.Id);
+</code></pre>
+<h3 id="add-a-number-field">Add a Number Field<a class="headerlink" href="#add-a-number-field" title="Permanent link">&para;</a></h3>
+<p>Use the addNumber method to create a new number field.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists&quot;;
+import &quot;@pnp/sp/fields&quot;;
+
+// create a new number field called 'My Field' in web
+const field = await sp.web.fields.addNumber(&quot;My Field&quot;, 1, 100, { Group: &quot;My Group&quot; });
+// create a new number field called 'My Field' in list 'My List'
+const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addNumber(&quot;My Field&quot;, 1, 100, { Group: &quot;My Group&quot; });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select(&quot;Id&quot;)();
