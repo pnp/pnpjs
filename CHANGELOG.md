@@ -7,11 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2.2.0 - 2021-Feb-12
 
-### Changed
-
 ### Fixed
 
-- sp: Fix issue with setting TaxonomyFieldTypeMulti [@FredrikEkstroem](https://github.com/FredrikEkstroem) [[PR](https://github.com/pnp/pnpjs/pull/1568)]/[[PR](https://github.com/pnp/pnpjs/pull/1582)]
+- sp: getAllChildrenAsOrderedTree and root folder getItem bug fixes #1567, #1572 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1584)]
+- sp: Fix issue with setting TaxonomyFieldTypeMulti [@FredrikEkstroem](https://github.com/FredrikEkstroem)/[@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1568)]/[[PR](https://github.com/pnp/pnpjs/pull/1582)]
 
 ### Added
 
