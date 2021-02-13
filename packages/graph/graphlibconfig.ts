@@ -34,7 +34,7 @@ onRuntimeCreate((runtime: Runtime) => {
             if (objectDefinedNotNull(context)) {
                 return new SPFxAdalClient(context);
             }
-            throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context.");
+            throw Error("There is no Graph Client available, either set one using configuration or provide a valid SPFx Context.");
         },
     }, existing);
 
