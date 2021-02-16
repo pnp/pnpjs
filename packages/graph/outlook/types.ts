@@ -1,6 +1,6 @@
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "@pnp/graph/graphqueryable";
 import { OutlookUser as IOutlookType, OutlookCategory as IOutlookCategoryType } from "@microsoft/microsoft-graph-types";
-import { defaultPath } from "@pnp/graph/decorators";
+import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "@pnp/graph/decorators";
 import { graphPost } from "@pnp/graph";
 import { body } from "@pnp/odata";
 
@@ -13,13 +13,24 @@ export class _Outlook extends _GraphQueryableInstance<IOutlookType> {
         return MasterCategories(this);
     }
 }
-export interface IOutlook extends _Outlook {}
+export interface IOutlook extends _Outlook { }
 export const Outlook = graphInvokableFactory<IOutlook>(_Outlook);
+
+
+/**
+ * Describes an Outlook Category instance
+ */
+@deleteable()
+@updateable()
+export class _OutlookCategory extends _GraphQueryableInstance<IOutlookCategoryType> { }
+export interface IOutlookCategory extends _OutlookCategory, IUpdateable<IOutlookCategoryType>, IDeleteable { }
+export const OutlookCategory = graphInvokableFactory<IOutlookCategory>(_OutlookCategory);
 
 /**
  * Categories
  */
 @defaultPath("masterCategories")
+@getById(OutlookCategory)
 export class _MasterCategories extends _GraphQueryableCollection<IOutlookCategoryType[]> {
 
     /**
@@ -36,7 +47,7 @@ export class _MasterCategories extends _GraphQueryableCollection<IOutlookCategor
         };
     }
 }
-export interface IMasterCategories extends _MasterCategories { }
+export interface IMasterCategories extends _MasterCategories, IGetById<IOutlookCategory> { }
 export const MasterCategories = graphInvokableFactory<IMasterCategories>(_MasterCategories);
 
 /**

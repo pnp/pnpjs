@@ -6,4 +6,6 @@ export {
     IMasterCategories,
     MasterCategories,
     IMasterCategoryAddResult,
+    OutlookCategory,
+    IOutlookCategory
 } from "./types.js";
