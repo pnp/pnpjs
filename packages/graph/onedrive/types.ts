@@ -6,7 +6,6 @@ import {
     IGraphQueryableCollection,
     _GraphQueryableCollection,
     graphInvokableFactory,
-    IGraphQueryable,
 } from "../graphqueryable.js";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { assign, combine, safeGlobal } from "@pnp/common";

@@ -11,7 +11,7 @@ import getValidUser from "./utilities/getValidUser.js";
 describe("Outlook", function () {
     if (testSettings.enableWebTests) {
         let testUserName = "";
-        let testCategoryList: string[] = [];
+        const testCategoryList: string[] = [];
 
         // Ensure we have the data to test against
         this.beforeAll(async function () {
@@ -25,7 +25,7 @@ describe("Outlook", function () {
         this.afterAll(async function () {
             if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
                 for (let i = 0; i < testCategoryList.length; i++) {
-                    await graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete()
+                    await graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete();
                 }
             }
         });
@@ -63,7 +63,7 @@ describe("Outlook", function () {
             testCategoryList.push(addedCategory.data.id);
 
             const updateCategory: OutlookCategory = {
-                color: "preset3"
+                color: "preset3",
             };
 
             const updatedCategory = graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).update(updateCategory);
@@ -79,7 +79,7 @@ describe("Outlook", function () {
 
             const addedCategory = await graph.users.getById(testUserName).outlook.masterCategories.add(testCategory);
 
-            const deleteCategory = graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).delete()
+            const deleteCategory = graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).delete();
 
             return expect(deleteCategory).to.eventually.be.fulfilled;
         });
