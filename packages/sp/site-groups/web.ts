@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/odata";
 import { _Web, Web } from "../webs/types.js";
-import { ISiteGroups, SiteGroups, ISiteGroup } from "./types.js";
+import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import "../security/web.js";
@@ -51,9 +51,9 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "siteGroups", SiteGroups);
-addProp(_Web, "associatedOwnerGroup", SiteGroups, "associatedownergroup");
-addProp(_Web, "associatedMemberGroup", SiteGroups, "associatedmembergroup");
-addProp(_Web, "associatedVisitorGroup", SiteGroups, "associatedvisitorgroup");
+addProp(_Web, "associatedOwnerGroup", SiteGroup, "associatedownergroup");
+addProp(_Web, "associatedMemberGroup", SiteGroup, "associatedmembergroup");
+addProp(_Web, "associatedVisitorGroup", SiteGroup, "associatedvisitorgroup");
 
 _Web.prototype.createDefaultAssociatedGroups = async function (
     this: _Web,
