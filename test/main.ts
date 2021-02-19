@@ -1,7 +1,7 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 import { getGUID, combine } from "@pnp/common";
 import { graph, IGraphConfigurationPart } from "@pnp/graph";
-import { SPFetchClient, AdalFetchClient, MsalFetchClient } from "@pnp/nodejs";
+import { MsalFetchClient } from "@pnp/nodejs";
 import { ISPConfigurationPart, sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import * as chai from "chai";
@@ -24,7 +24,6 @@ let skipWeb = false;
 let deleteWeb = false;
 let logging = false;
 let spVerbose = false;
-let useMSAL = false;
 let deleteAllWebs = false;
 
 for (let i = 0; i < process.argv.length; i++) {
@@ -58,9 +57,6 @@ for (let i = 0; i < process.argv.length; i++) {
     if (/^--spverbose/i.test(arg)) {
         spVerbose = true;
     }
-    if (/^--msal/i.test(arg)) {
-        useMSAL = true;
-    }
 }
 
 console.log("*****************************");
@@ -71,7 +67,7 @@ console.log(`skipWeb: ${skipWeb}`);
 console.log(`deleteWeb: ${deleteWeb}`);
 console.log(`logging: ${logging}`);
 console.log(`spVerbose: ${spVerbose}`);
-console.log(`useMSAL: ${useMSAL}`);
+console.log("useMSAL: true");
 console.log("*****************************");
 
 function readEnvVar(key: string, parse = false): any {
@@ -96,47 +92,25 @@ switch (mode) {
 
     case "online":
 
-        if (useMSAL) {
-
-            settings = {
-                testing: {
-                    enableWebTests: true,
-                    graph: {
-                        msal: {
-                            init: readEnvVar("PNPTESTING_MSAL_GRAPH_CONFIG", true),
-                            scopes: readEnvVar("PNPTESTING_MSAL_GRAPH_SCOPES", true),
-                        },
-                    },
-                    sp: {
-                        msal: {
-                            init: readEnvVar("PNPTESTING_MSAL_SP_CONFIG", true),
-                            scopes: readEnvVar("PNPTESTING_MSAL_SP_SCOPES", true),
-                        },
-                        notificationUrl: readEnvVar("PNPTESTING_NOTIFICATIONURL") || null,
-                        url: readEnvVar("PNPTESTING_SITEURL"),
+        settings = {
+            testing: {
+                enableWebTests: true,
+                graph: {
+                    msal: {
+                        init: readEnvVar("PNPTESTING_MSAL_GRAPH_CONFIG", true),
+                        scopes: readEnvVar("PNPTESTING_MSAL_GRAPH_SCOPES", true),
                     },
                 },
-            };
-
-        } else {
-
-            settings = {
-                testing: {
-                    enableWebTests: true,
-                    graph: {
-                        id: "",
-                        secret: "",
-                        tenant: "",
+                sp: {
+                    msal: {
+                        init: readEnvVar("PNPTESTING_MSAL_SP_CONFIG", true),
+                        scopes: readEnvVar("PNPTESTING_MSAL_SP_SCOPES", true),
                     },
-                    sp: {
-                        id: readEnvVar("PnPTesting_ClientId"),
-                        notificationUrl: readEnvVar("PnPTesting_NotificationUrl") || null,
-                        secret: readEnvVar("PnPTesting_ClientSecret"),
-                        url: readEnvVar("PnPTesting_SiteUrl"),
-                    },
+                    notificationUrl: readEnvVar("PNPTESTING_NOTIFICATIONURL") || null,
+                    url: readEnvVar("PNPTESTING_SITEURL"),
                 },
-            };
-        }
+            },
+        };
 
         break;
     case "online-noweb":
@@ -171,36 +145,21 @@ async function spTestSetup(ts: ISettings): Promise<void> {
 
     let siteUsed = false;
 
-    if (useMSAL) {
+    if (typeof ts.sp.msal === "undefined") {
+        throw Error("No MSAL settings defined for sp but useMSAL flag set to true.");
+    }
 
-        if (typeof ts.sp.msal === "undefined") {
-            throw Error("No MSAL settings defined for sp but useMSAL flag set to true.");
-        }
+    settingsPart.sp.fetchClientFactory = () => {
+        return new MsalFetchClient(ts.sp.msal.init, ts.sp.msal.scopes);
+    };
 
-        settingsPart.sp.fetchClientFactory = () => {
-            return new MsalFetchClient(ts.sp.msal.init, ts.sp.msal.scopes);
-        };
+    if (site && site.length > 0) {
 
-    } else {
+        settingsPart.sp.baseUrl = site;
 
-        if (site && site.length > 0) {
-
-            settingsPart.sp.fetchClientFactory = () => {
-                return new SPFetchClient(site, ts.sp.id, ts.sp.secret);
-            };
-
-            settingsPart.sp.baseUrl = site;
-
-            // and we will just use this as the url
-            ts.sp.webUrl = site;
-            siteUsed = true;
-
-        } else {
-
-            settingsPart.sp.fetchClientFactory = () => {
-                return new SPFetchClient(ts.sp.url, ts.sp.id, ts.sp.secret);
-            };
-        }
+        // and we will just use this as the url
+        ts.sp.webUrl = site;
+        siteUsed = true;
     }
 
     // do initial setup
@@ -223,17 +182,10 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     ts.sp.webUrl = url;
     settingsPart.sp.baseUrl = url;
 
-    if (!useMSAL) {
-        settingsPart.sp.fetchClientFactory = () => {
-            return new SPFetchClient(url, ts.sp.id, ts.sp.secret);
-        };
-    }
-
     if (spVerbose) {
         settingsPart.sp.headers = {
             "Accept": "application/json;odata=verbose",
         };
-        console.log("I think we set verbose.");
     }
 
     // re-setup the node client to use the new web
@@ -248,22 +200,13 @@ async function graphTestSetup(ts: ISettings): Promise<void> {
         },
     };
 
-    if (useMSAL) {
-
-        if (typeof ts.graph.msal === "undefined") {
-            throw Error("No MSAL settings defined for graph but useMSAL flag set to true.");
-        }
-
-        settingsPart.graph.fetchClientFactory = () => {
-            return new MsalFetchClient(ts.graph.msal.init, ts.graph.msal.scopes);
-        };
-
-    } else {
-
-        settingsPart.graph.fetchClientFactory = () => {
-            return new AdalFetchClient(ts.graph.tenant, ts.graph.id, ts.graph.secret);
-        };
+    if (typeof ts.graph.msal === "undefined") {
+        throw Error("No MSAL settings defined for graph but useMSAL flag set to true.");
     }
+
+    settingsPart.graph.fetchClientFactory = () => {
+        return new MsalFetchClient(ts.graph.msal.init, ts.graph.msal.scopes);
+    };
 
     graph.setup(settingsPart);
 }

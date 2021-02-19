@@ -40,7 +40,7 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
         return DriveItem(this, combine("items", id));
     }
 }
-export interface IDrive extends _Drive {}
+export interface IDrive extends _Drive { }
 export const Drive = graphInvokableFactory<IDrive>(_Drive);
 
 /**
@@ -48,8 +48,11 @@ export const Drive = graphInvokableFactory<IDrive>(_Drive);
  *
  */
 @defaultPath("drives")
-@getById(Drive)
-export class _Drives extends _GraphQueryableCollection<IDriveType[]> { }
+export class _Drives extends _GraphQueryableCollection<IDriveType[]> {
+    public getById(id: string): IDrive {
+        return Drive(this.getUrlBase(), `drives/${id}`);
+    }
+}
 export interface IDrives extends _Drives, IGetById<IDrive> { }
 export const Drives = graphInvokableFactory<IDrives>(_Drives);
 
@@ -74,7 +77,7 @@ export class _Root extends _GraphQueryableInstance<IDrive> {
         return this.clone(GraphQueryableCollection, "thumbnails");
     }
 }
-export interface IRoot extends _Root {}
+export interface IRoot extends _Root { }
 export const Root = graphInvokableFactory<IRoot>(_Root);
 
 /**
@@ -121,7 +124,7 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
         });
     }
 }
-export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable {}
+export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
 
 /**

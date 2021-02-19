@@ -64,6 +64,36 @@ const people = await graph.me.people();
 const people = await graph.me.people.top(3)();
 ```
 
+## People
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const people = await graph.me.people();
+
+// get the top 3 people
+const people = await graph.me.people.top(3)();
+```
+
+## Manager
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const manager = await graph.me.manager();
+```
+
+## Direct Reports
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const reports = await graph.me.directReports();
+```
+
 ## Photo
 
 ```TypeScript
