@@ -24,17 +24,7 @@ npm run serve
 
 Runs the tests and coverage for the library.
 
-### Test using Legacy SP App authentication
-
-```cmd
-npm test
-```
-
-### Test using MSAL authentication
-
-```cmd
-npm test -- --msal
-```
+> Starting with 2.3.0 ONLY MSAL auth is supported for running the tests. [More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal)
 
 ### Options
 
@@ -101,18 +91,6 @@ If you include this flag a console logger will be subscribed and the log level w
 ```cmd
 # enable logging during testing
 npm test -- --logging
-```
-
-#### msal
-
-_Added in 2.0.13_
-
->`--msal`
-
-This flag opts into using msal authentication settings from the [settings.js](./concepts/settings.md) file.
-
-```cmd
-npm test -- --spverbose
 ```
 
 #### spVerbose

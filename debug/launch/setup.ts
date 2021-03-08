@@ -1,5 +1,5 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { SPFetchClient, MsalFetchClient, AdalFetchClient } from "@pnp/nodejs";
+import { SPFetchClient, MsalFetchClient, AdalFetchClient, setProxyUrl } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 
@@ -35,6 +35,12 @@ export async function graphSetup(settings: ITestingSettings): Promise<void> {
         graph.setup({
             graph: {
                 fetchClientFactory: () => {
+                    // ignore certificate errors: ONLY FOR TESTING!!
+                    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+                    // this is my fiddler url locally
+                    // setProxyUrl("http://127.0.0.1:8888");
+                    //return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
                     return new MsalFetchClient(settings.testing.graph.msal.init, settings.testing.graph.msal.scopes);
                 },
             },

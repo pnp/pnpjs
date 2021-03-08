@@ -19,6 +19,20 @@ export class _User extends _DirectoryObject<IUserType> {
     public get people(): IPeople {
         return People(this);
     }
+
+    /**
+    * People that have direct reports to the user
+    */
+    public get directReports(): IPeople {
+        return People(this, "directReports");
+    }
+
+    /**
+    * The manager associated with this user
+    */
+    public get manager(): IUser {
+        return User(this, "manager");
+    }
 }
 export interface IUser extends _User, IUpdateable<IUserType>, IDeleteable { }
 export const User = graphInvokableFactory<IUser>(_User);
@@ -30,6 +44,6 @@ export interface IUsers extends _Users, IGetById<IUser> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);
 
 @defaultPath("people")
-export class _People extends _GraphQueryableCollection<IPersonType[]> {}
-export interface IPeople extends _People {}
+export class _People extends _GraphQueryableCollection<IPersonType[]> { }
+export interface IPeople extends _People { }
 export const People = graphInvokableFactory<IPeople>(_People);

@@ -1,4 +1,4 @@
-import { assign, ITypedHash, isUrlAbsolute, combine } from "@pnp/common";
+import { assign, ITypedHash, isUrlAbsolute, combine, hOP } from "@pnp/common";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,
@@ -151,6 +151,9 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
         const q = await this.listItemAllFields.select(...selects)();
+        if (hOP(q, "odata.null") && q["odata.null"]) {
+            throw Error("No associated item was found for this folder. It may be the root folder, which does not have an item.");
+        }
         return assign(Item(odataUrlFrom(q)), q);
     }
 

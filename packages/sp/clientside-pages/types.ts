@@ -458,17 +458,29 @@ export class _ClientsidePage extends _SharePointQueryable {
     }
 
     /**
-     * Creates a copy of this page
+     * Creates a new page with all of the content copied from this page
      *
      * @param web The web where we will create the copy
      * @param pageName The file name of the new page
      * @param title The title of the new page
-     * @param publish If true the page will be published
+     * @param publish If true the page will be published (Default: true)
      */
     @tag("csp.copy")
     public async copy(web: IWeb, pageName: string, title: string, publish = true, promotedState?: PromotedState): Promise<IClientsidePage> {
 
         const page = await CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState);
+        return this.copyTo(page, publish);
+    }
+
+    /**
+     * Copies the content from this page to the supplied page instance NOTE: fully overwriting any previous content!!
+     *
+     * @param page Page whose content we replace with this page's content
+     * @param publish If true the page will be published after the copy, if false it will be saved but left unpublished (Default: true)
+     */
+    @tag("csp.copyTo")
+    public async copyTo(page: IClientsidePage, publish = true): Promise<IClientsidePage> {
+
 
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());

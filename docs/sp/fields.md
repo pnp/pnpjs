@@ -4,7 +4,7 @@ Fields in SharePoint can be applied to both webs and lists. When referencing a w
 
 ## IFields
 
-[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
+[![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 |Scenario|Import Statement|
 |--|--|
@@ -256,6 +256,28 @@ import "@pnp/sp/fields";
 const field = await sp.web.fields.addMultilineText("My Field", 6, true, false, false, true, { Group: "My Group" });
 // create a new multi-line text field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addMultilineText("My Field", 6, true, false, false, true, { Group: "My Group" });
+
+// we can use this 'field' variable to run more queries on the field:
+const r = await field.field.select("Id")();
+
+// log the field Id to console
+console.log(r.Id);
+```
+
+### Add a Number Field
+
+Use the addNumber method to create a new number field.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/fields";
+
+// create a new number field called 'My Field' in web
+const field = await sp.web.fields.addNumber("My Field", 1, 100, { Group: "My Group" });
+// create a new number field called 'My Field' in list 'My List'
+const field2 = await sp.web.lists.getByTitle("My List").fields.addNumber("My Field", 1, 100, { Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();

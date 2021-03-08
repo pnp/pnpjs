@@ -650,6 +650,31 @@ const pageCopy2 = await page.copy(sp.web, "newpagename", "New Page Title", false
 pageCopy2.save();
 ```
 
+### copyTo
+
+Copies the contents of a page to another existing page instance.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+
+// our page instances, loaded in any of the ways shown above
+const source: IClientsidePage;
+const target: IClientsidePage;
+const target2: IClientsidePage;
+
+// creates a published copy of the page
+await source.copyTo(target);
+
+// creates a draft (unpublished) copy of the page
+await source.copyTo(target2, false);
+
+// edits to target2...
+
+// publish the page
+target2.save();
+```
+
 ### setBannerImage
 
 Sets the banner image url and optionally additional properties. Allows you to set additional properties if needed, if you do not need to set the additional properties they are equivalent.
