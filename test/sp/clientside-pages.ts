@@ -260,50 +260,49 @@ describe("Clientside Pages", () => {
             });
         });
 
-        describe("author", function () {
+        if (testSettings.testUser?.length > 0) {
+            describe("author", function () {
 
-            let web: IWeb;
-            let page: IClientsidePage;
-            let userId: number;
-            let pageUrl: string;
-            let userLogin: string;
+                let web: IWeb;
+                let page: IClientsidePage;
+                let userId: number;
+                let pageUrl: string;
 
-            before(async function () {
-                this.timeout(0);
-                web = Web(testSettings.sp.webUrl);
-                page = await web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
-                await page.save();
-                // we need the updated url info from the published page so we re-load things.
-                await page.load();
+                before(async function () {
+                    this.timeout(0);
+                    web = Web(testSettings.sp.webUrl);
+                    page = await web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
+                    await page.save();
+                    // we need the updated url info from the published page so we re-load things.
+                    await page.load();
 
-                const serverRelUrl = (await web.select("ServerRelativeUrl")()).ServerRelativeUrl;
-                pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+                    const serverRelUrl = (await web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+                    pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
-                const user = await web.currentUser.select("Id", "LoginName")();
-                userId = user.Id;
-                userLogin = user.LoginName;
+                    const ensureTestUser = await sp.web.ensureUser(testSettings.testUser);
+                    userId = ensureTestUser.data.Id;
+
+                });
+
+                it(".setAuthorById()", async function () {
+
+                    await page.setAuthorById(userId);
+                    await page.save();
+
+                    const page2 = await web.loadClientsidePage(pageUrl);
+                    expect(page2.authorByLine).to.eq(testSettings.testUser);
+                });
+
+                it(".setAuthorByLoginName()", async function () {
+                    await page.setAuthorByLoginName(testSettings.testUser);
+                    await page.save();
+
+                    const page2 = await web.loadClientsidePage(pageUrl);
+
+                    expect(page2.authorByLine).to.eq(testSettings.testUser);
+                });
             });
-
-            it(".setAuthorById()", async function () {
-
-                await page.setAuthorById(userId);
-                await page.save();
-
-                const page2 = await web.loadClientsidePage(pageUrl);
-
-                expect(page2.authorByLine).to.eq(userLogin);
-            });
-
-            it(".setAuthorByLoginName()", async function () {
-
-                await page.setAuthorByLoginName(userLogin);
-                await page.save();
-
-                const page2 = await web.loadClientsidePage(pageUrl);
-
-                expect(page2.authorByLine).to.eq(userLogin);
-            });
-        });
+        }
 
         describe("description", function () {
 

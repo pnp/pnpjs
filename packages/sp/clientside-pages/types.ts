@@ -644,7 +644,7 @@ export class _ClientsidePage extends _SharePointQueryable {
 
         const userLoginData = await SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
             .configureFrom(this)
-            .filter(`LoginName eq '${encodeURIComponent(authorLoginName)}'`)
+            .filter(`LoginName eq '${authorLoginName}'`)
             .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
         if (userLoginData.length < 1) {

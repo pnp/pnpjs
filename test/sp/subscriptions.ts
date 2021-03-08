@@ -8,7 +8,7 @@ import "@pnp/sp/subscriptions";
 import { dateAdd } from "@pnp/common";
 
 describe("Subscriptions", function () {
-    if (testSettings.enableWebTests) {
+    if (testSettings.enableWebTests && testSettings.sp.notificationUrl?.length > 0) {
 
         const listTitle = "Documents";
         const notificationUrl = testSettings.sp.notificationUrl;
