@@ -29,6 +29,6 @@
         "url": "git:github.com/pnp/pnpjs"
     },
     "devDependencies": {
-        "@types/node-fetch": "^2.5.7"
+        "@types/node-fetch": "^2.5.8"
     }
 }
