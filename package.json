@@ -4,7 +4,7 @@
     "version": "2.2.0",
     "description": "A JavaScript library for SharePoint development.",
     "devDependencies": {
-        "@azure/msal-node": "^1.0.0",
+        "@azure/msal-node": "^1.0.1",
         "@microsoft/microsoft-graph-types": "^1.31.0",
         "@pnp/buildsystem": "^2.3.1",
         "@types/adal-angular": "^1.0.1",
