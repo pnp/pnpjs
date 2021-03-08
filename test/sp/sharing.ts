@@ -17,7 +17,6 @@ describe("Sharing", () => {
     let webAbsUrl = "";
     let webRelativeUrl = "";
     let web: IWeb;
-    let userName = "";
 
     before(async function () {
 
@@ -34,11 +33,10 @@ describe("Sharing", () => {
         // we need a doc lib with a file and folder in it
         const ler = await web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
 
-        const users = await web.siteUsers.select("LoginName").top(1)();
-
         // we need a user to share to
-        await web.ensureUser(users[0].LoginName);
-        userName = users[0].LoginName;
+        if (testSettings.testUser?.length > 0) {
+            await web.ensureUser(testSettings.testUser);
+        }
 
         // add a file and folder
         await Promise.all([
@@ -81,25 +79,27 @@ describe("Sharing", () => {
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            it("Should allow sharing to a person with the edit role.", () => {
+            if (testSettings.testUser?.length > 0) {
+                it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(folder.shareWith(userName, SharingRole.Edit))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow sharing to a person with the edit role and share all content.", () => {
+                it("Should allow sharing to a person with the edit role and share all content.", () => {
 
-                return expect(folder.shareWith(userName, SharingRole.Edit, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit, true))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow for checking of sharing permissions.", () => {
+                it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(folder.checkSharingPermissions([{ alias: userName }]))
-                    .to.eventually.be.fulfilled;
-            });
+                    return expect(folder.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                        .to.eventually.be.fulfilled;
+                });
+            }
 
             it("Should allow getting Sharing Information.", () => {
 
@@ -168,25 +168,27 @@ describe("Sharing", () => {
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            it("Should allow sharing to a person with the edit role.", () => {
+            if (testSettings.testUser?.length > 0) {
+                it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(file.shareWith(userName, SharingRole.Edit))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(file.shareWith(testSettings.testUser, SharingRole.Edit))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow sharing to a person with the edit role and require sign-in.", () => {
+                it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(file.shareWith(userName, SharingRole.View, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(file.shareWith(testSettings.testUser, SharingRole.View, true))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow for checking of sharing permissions.", () => {
+                it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(file.checkSharingPermissions([{ alias: userName }]))
-                    .to.eventually.be.fulfilled;
-            });
+                    return expect(file.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                        .to.eventually.be.fulfilled;
+                });
+            }
 
             it("Should allow getting Sharing Information.", () => {
 
@@ -254,32 +256,34 @@ describe("Sharing", () => {
                     .and.have.deep.property("Url").that.is.not.null;
             });
 
-            it("Should allow sharing to a person with the edit role.", () => {
+            if (testSettings.testUser?.length > 0) {
+                it("Should allow sharing to a person with the edit role.", () => {
 
-                return expect(item.shareWith(userName, SharingRole.Edit))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(item.shareWith(testSettings.testUser, SharingRole.Edit))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow sharing to a person with the edit role and require sign-in.", () => {
+                it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(item.shareWith(userName, SharingRole.View, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(item.shareWith(testSettings.testUser, SharingRole.View, true))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow sharing to a person with the edit role and require sign-in.", () => {
+                it("Should allow sharing to a person with the edit role and require sign-in.", () => {
 
-                return expect(item.shareWith(userName, SharingRole.View, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(item.shareWith(testSettings.testUser, SharingRole.View, true))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
 
-            it("Should allow for checking of sharing permissions.", () => {
+                it("Should allow for checking of sharing permissions.", () => {
 
-                return expect(item.checkSharingPermissions([{ alias: userName }]))
-                    .to.eventually.be.fulfilled;
-            });
+                    return expect(item.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                        .to.eventually.be.fulfilled;
+                });
+            }
 
             it("Should allow getting Sharing Information.", () => {
 
@@ -318,12 +322,14 @@ describe("Sharing", () => {
 
         describe("can operate on webs", () => {
 
-            it("Should allow you to share an object by url", () => {
+            if (testSettings.testUser?.length > 0) {
+                it("Should allow you to share an object by url", () => {
 
-                return expect(web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), userName, SharingRole.View))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+                    return expect(web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), testSettings.testUser, SharingRole.View))
+                        .to.eventually.be.fulfilled
+                        .and.have.property("ErrorMessage").that.is.null;
+                });
+            }
         });
     }
 });

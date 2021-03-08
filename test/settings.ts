@@ -2,6 +2,7 @@ import { Configuration } from "@azure/msal-node";
 
 export interface ISettings {
     enableWebTests: boolean;
+    testUser?: string;
     graph?: {
         id?: string;
         secret?: string;

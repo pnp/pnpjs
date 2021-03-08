@@ -12,18 +12,16 @@ describe("Web.SiteGroups", () => {
     if (testSettings.enableWebTests) {
 
         let newGroup: IGroupAddResult;
-        let testuser = "";
         let testuserId: number;
 
         before(async function () {
             this.timeout(0);
             const groupName = `test_new_sitegroup_${getRandomString(6)}`;
             newGroup = await sp.web.siteGroups.add({ "Title": groupName });
-
-            const users = await sp.web.siteUsers.top(1).select("LoginName,Id")<{ LoginName: string; Id: number }[]>();
-            const usersSPUser = await sp.web.siteUsers.filter("PrincipalType eq 1").select("Id").top(1)<{ LoginName: string; Id: number }[]>();
-            testuser = users[0].LoginName;
-            testuserId = usersSPUser[0].Id;
+            if (testSettings.testUser?.length > 0) {
+                const ensureTestUser = await sp.web.ensureUser(testSettings.testUser);
+                testuserId = ensureTestUser.data.Id;
+            }
         });
 
         it("siteGroups()", function () {
@@ -42,14 +40,16 @@ describe("Web.SiteGroups", () => {
             return expect(sp.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
-        it(".createDefaultAssociatedGroups()", function () {
+        if (testSettings.testUser?.length > 0) {
+            it(".createDefaultAssociatedGroups()", function () {
 
-            return expect(sp.web.createDefaultAssociatedGroups("PNPTest",
-                testuser,
-                false,
-                false,
-                testuser)).to.be.eventually.fulfilled;
-        });
+                return expect(sp.web.createDefaultAssociatedGroups("PNPTest",
+                    testSettings.testUser,
+                    false,
+                    false,
+                    testSettings.testUser)).to.be.eventually.fulfilled;
+            });
+        }
 
         it(".getById()", async function () {
             return expect(sp.web.siteGroups.getById(newGroup.data.Id)());

@@ -112,34 +112,33 @@ describe("Batching", () => {
             expect(order).to.eql([1, 2, 3]);
         });
 
-        it("Should execute batches that have internally cloned requests but aren't items.add", async function () {
+        if (testSettings.testUser?.length > 0) {
+            it("Should execute batches that have internally cloned requests but aren't items.add", async function () {
+                const web = Web(testSettings.sp.webUrl);
 
-            const web = Web(testSettings.sp.webUrl);
+                const order = [];
 
-            const order = [];
+                const batch = web.createBatch();
 
-            const batch = web.createBatch();
+                const groupId = await web.associatedVisitorGroup.select("id")().then(r => r.Id);
 
-            const groupId = await web.associatedVisitorGroup.select("id")().then(r => r.Id);
-            const loginName = await web.siteUsers.top(1).select("loginName")().then(r => r[0].LoginName);
+                web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
+                    order.push(1);
+                });
 
-            web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
-                order.push(1);
+                web.siteGroups.getById(groupId).users.inBatch(batch).add(testSettings.testUser).then(() => {
+                    order.push(2);
+                });
+
+                web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
+                    order.push(3);
+                });
+
+                await batch.execute();
+                order.push(4);
+                expect(order).to.eql([1, 2, 3, 4]);
             });
-
-            web.siteGroups.getById(groupId).users.inBatch(batch).add(loginName).then(() => {
-                order.push(2);
-            });
-
-            web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
-                order.push(3);
-            });
-
-            await batch.execute();
-            order.push(4);
-            expect(order).to.eql([1, 2, 3, 4]);
-        });
-
+        }
         it("Should handle complex operation ordering", async function () {
 
             const web = Web(testSettings.sp.webUrl);
