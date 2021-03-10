@@ -121,8 +121,8 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     }
 
     const paths = Object.getOwnPropertyNames(defaultsByPath);
-    let pathDefaults: string[] = [];
-    //For each path, group field defaults
+    const pathDefaults: string[] = [];
+    // For each path, group field defaults
     for (let j = 0; j < paths.length; j++) {
         // map the values into the right format and produce our xml elements
         const pathFields = defaultsByPath[paths[j]];
@@ -189,10 +189,10 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
             return `<DefaultValue FieldName="${fieldDefault.name}">${value}</DefaultValue>`;
         });
         const href = pathFields[0].path.replace(/ /gi, "%20");
-        const pathDefault = `<a href="${href}">${tags.join("")}</a>`
+        const pathDefault = `<a href="${href}">${tags.join("")}</a>`;
         pathDefaults.push(pathDefault);
     }
-    //builds update to defaults
+    // builds update to defaults
     const xml = `<MetadataDefaults>${pathDefaults.join("")}</MetadataDefaults>`;
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();

@@ -7,7 +7,7 @@ import { testSettings } from "../../main.js";
 let cachedValidUser = null;
 const usersToCheck = 20;
 
-export default async function getValidUser(ignoreCache = false, ...selects: string[]): Promise<IUser> {
+export default async function getValidUser(ignoreCache = false): Promise<IUser> {
 
     if (!ignoreCache && cachedValidUser !== null) {
         return cachedValidUser;

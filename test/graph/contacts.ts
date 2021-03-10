@@ -66,10 +66,10 @@ describe("Contacts", function () {
                     address: "tmctester@contoso.onmicrosoft.com",
                     name: `Test ${testContactName}`,
                 }], ["+1 732 555 0102"]);
-                const contactId = contact.data.id;
+                contactId = contact.data.id;
                 contactAfterAdd = await graph.users.getById(testUserName).contacts.getById(contactId)();
             } catch (err) {
-
+                console.log(err.message);
             } finally {
                 // Clean up the added contact
                 if (contactId != null) {
@@ -139,9 +139,9 @@ describe("Contacts", function () {
                 const testFolderName = `TestFolder_${getRandomString(4)}`;
                 const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
                 folderId = folder.data.id;
-                folderAfterAdd = await graph.users.getById(testUserName).contactFolders.getById(folderId)();;
+                folderAfterAdd = await graph.users.getById(testUserName).contactFolders.getById(folderId)();
             } catch (err) {
-
+                console.log(err.message);
             } finally {
                 // Clean up the added contact
                 if (folderId != null) {
@@ -160,9 +160,9 @@ describe("Contacts", function () {
                 const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
                 folderId = folder.data.id;
                 await graph.users.getById(testUserName).contactFolders.getById(folderId).update({ displayName: folderDisplayName });
-                folderAfterUpdate = await graph.users.getById(testUserName).contactFolders.getById(folderId)();;
+                folderAfterUpdate = await graph.users.getById(testUserName).contactFolders.getById(folderId)();
             } catch (err) {
-                console.error(`Update Contact Folder: ${err}`)
+                console.log(err.message);
             } finally {
                 // Clean up the added contact
                 if (folderId != null) {
