@@ -181,9 +181,10 @@ describe("SiteDesigns", function () {
             });
 
             createdSiteDesignIds.push(sd.Id);
+            const siteDesignTask = await sp.web.addSiteDesignTask(sd.Id);
 
-            return expect(sp.web.addSiteDesignTask(sd.Id),
-                "site design task should've been created").to.eventually.be.fulfilled;
+            return expect(siteDesignTask,
+                "site design task should've been created").to.not.be.null;
         });
 
         it("gets a site design task", async function () {

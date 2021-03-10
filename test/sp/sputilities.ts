@@ -43,12 +43,15 @@ describe("SPUtilities", function () {
             return expect(sp.utility.resolvePrincipal(currentUserEmailAddress, PrincipalType.User, PrincipalSource.All, true, false, true)).to.be.eventually.fulfilled;
         });
 
-        it("searchPrincipals", async function () {
+        if (testSettings.testUser?.length > 0) {
+            it("searchPrincipals", async function () {
+                const ensureTestUser = await sp.web.ensureUser(testSettings.testUser);
+                const userId = ensureTestUser.data.Id;
+                const user = await sp.web.siteUsers.getById(userId)();
 
-            const users = await sp.web.siteUsers.top(1).select("Title")();
-
-            return expect(sp.utility.searchPrincipals(users[0].Title, PrincipalType.User, PrincipalSource.All, "", 1)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
-        });
+                return expect(sp.utility.searchPrincipals(user.Title, PrincipalType.User, PrincipalSource.All, "", 1)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
+            });
+        }
 
         it("createEmailBodyForInvitation", async function () {
             const homePageAddress = combine(testSettings.sp.webUrl, "/SitePages/Home.aspx");

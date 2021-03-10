@@ -41,13 +41,13 @@ describe("Web.SiteGroups", () => {
         });
 
         if (testSettings.testUser?.length > 0) {
-            it(".createDefaultAssociatedGroups()", function () {
-
-                return expect(sp.web.createDefaultAssociatedGroups("PNPTest",
+            it(".createDefaultAssociatedGroups()", async function () {
+                await sp.web.ensureUser(testSettings.testUser);
+                const groupName = `TestGroup_${getRandomString(4)}`;
+                return expect(sp.web.createDefaultAssociatedGroups(groupName,
                     testSettings.testUser,
                     false,
-                    false,
-                    testSettings.testUser)).to.be.eventually.fulfilled;
+                    false)).to.be.eventually.fulfilled;
             });
         }
 
