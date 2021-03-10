@@ -157,6 +157,16 @@ The following is an example of the structure for setting the default column valu
     path: "/sites/dev/DefaultColumnValues",
     value: 42,
 }, {
+    //Date
+    name: "NumberField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: "1900-01-01T00:00:00Z",
+}, {
+    //Date - Today
+    name: "NumberField",
+    path: "/sites/dev/DefaultColumnValues",
+    value: "[today]",
+}, {
     //MultiChoice
     name: "MultiChoiceField",
     path: "/sites/dev/DefaultColumnValues",

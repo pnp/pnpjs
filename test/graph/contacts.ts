@@ -4,8 +4,7 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/odata";
-import { stringIsNullOrEmpty } from "@pnp/common";
-import getValidUser from "./utilities/getValidUser.js";
+import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
 
 describe("Contacts", function () {
 
@@ -14,6 +13,7 @@ describe("Contacts", function () {
     if (testSettings.enableWebTests) {
         let testUserName = "";
         let testContactID = "";
+        let testContact2ID = "";
         let rootFolderID = "";
         let testFolderID = "";
         let subFolderID = "";
@@ -21,29 +21,30 @@ describe("Contacts", function () {
         // Ensure we have the data to test against
         this.beforeAll(async function () {
             // Get a sample user
-            const userInfo = await getValidUser();
-            testUserName = userInfo.userPrincipalName;
-
+            testUserName = testSettings.testUser.substr(testSettings.testUser.lastIndexOf("|") + 1);
+            const testFolderName = `TestFolder_${getRandomString(4)}`;
+            const testSubFolderName = `TestSubFolder_${getRandomString(4)}`;
             // Create a test contact
-            const contact = await graph.users.getById(testUserName).contacts.add("Pavel", "Bansky", [{
+            const testContactName = `TestUser_${getRandomString(4)}`;
+            const contact = await graph.users.getById(testUserName).contacts.add("Pavel", testContactName, [{
                 address: "pavelb@contoso.onmicrosoft.com",
-                name: "Pavel Bansky",
+                name: `Pavel ${testContactName}}`,
             }], ["+1 732 555 0102"]);
 
             testContactID = contact.data.id;
             rootFolderID = contact.data.parentFolderId;
 
             // Create a test folder
-            const folder = await graph.users.getById(testUserName).contactFolders.add("Test Folder", rootFolderID);
-            const subFolder = await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).childFolders.add("Test Sub Folder", folder.data.id);
-            // Add a test user in the new folder
-            await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).contacts.add("Jane", "Bansky", [{
-                address: "janeb@contoso.onmicrosoft.com",
-                name: "Jane Bansky",
-            }], ["+1 732 555 0102"]);
+            const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
             testFolderID = folder.data.id;
+            const subFolder = await graph.users.getById(testUserName).contactFolders.getById(testFolderID).childFolders.add(testSubFolderName, testFolderID);
             subFolderID = subFolder.data.id;
-
+            // Add a test user in the new folder
+            const contact2 = await graph.users.getById(testUserName).contactFolders.getById(testFolderID).contacts.add("Jane", testContactName, [{
+                address: "janeb@contoso.onmicrosoft.com",
+                name: `Pavel ${testContactName}}`,
+            }], ["+1 732 555 0102"]);
+            testContact2ID = contact2.data.id;
         });
 
         it("Get Contacts", async function () {
@@ -57,20 +58,32 @@ describe("Contacts", function () {
         });
 
         it("Add Contact", async function () {
-            const contact = await graph.users.getById(testUserName).contacts.add("Test", "McTester", [{
-                address: "tmctester@contoso.onmicrosoft.com",
-                name: "Test McTester",
-            }], ["+1 732 555 0102"]);
-            const contactAfterAdd = await graph.users.getById(testUserName).contacts.getById(contact.data.id)();
-            // Clean up the added contact
-            await graph.users.getById(testUserName).contacts.getById(contact.data.id).delete();
+            let contactId = null;
+            let contactAfterAdd = null;
+            try {
+                const testContactName = `TestUser_${getRandomString(4)}`;
+                const contact = await graph.users.getById(testUserName).contacts.add("Test", testContactName, [{
+                    address: "tmctester@contoso.onmicrosoft.com",
+                    name: `Test ${testContactName}`,
+                }], ["+1 732 555 0102"]);
+                contactId = contact.data.id;
+                contactAfterAdd = await graph.users.getById(testUserName).contacts.getById(contactId)();
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                // Clean up the added contact
+                if (contactId != null) {
+                    await graph.users.getById(testUserName).contacts.getById(contactId).delete();
+                }
+            }
             return expect(contactAfterAdd).is.not.null;
         });
 
         it("Update Contact", async function () {
-            const contact = await graph.users.getById(testUserName).contacts.add("Test", "McTester", [{
+            const testContactName = `TestUser_${getRandomString(4)}`;
+            const contact = await graph.users.getById(testUserName).contacts.add("Test", testContactName, [{
                 address: "tmctester@contoso.onmicrosoft.com",
-                name: "Test McTester",
+                name: `Test ${testContactName}`,
             }], ["+1 732 555 0102"]);
             await graph.users.getById(testUserName).contacts.getById(contact.data.id).update({ birthday: "1986-05-30" });
             const contact2 = await graph.users.getById(testUserName).contacts.getById(contact.data.id)();
@@ -81,9 +94,10 @@ describe("Contacts", function () {
 
         it("Delete Contact", async function () {
             // Add a contact that we can then delete
-            const contact = await graph.users.getById(testUserName).contacts.add("Test", "McTester", [{
+            const testContactName = `TestUser_${getRandomString(4)}`;
+            const contact = await graph.users.getById(testUserName).contacts.add("Test", testContactName, [{
                 address: "tmctester@contoso.onmicrosoft.com",
-                name: "Test McTester",
+                name: `Test ${testContactName}`,
             }], ["+1 732 555 0102"]);
             await graph.users.getById(testUserName).contacts.getById(contact.data.id).delete();
             let deletedUserFound = false;
@@ -119,25 +133,49 @@ describe("Contacts", function () {
         });
 
         it("Add Contact Folder", async function () {
-            const folder = await graph.users.getById(testUserName).contactFolders.add("Test Add Folder", rootFolderID);
-            const folderAfterAdd = await graph.users.getById(testUserName).contactFolders.getById(folder.data.id)();
-            // Clean up the added folder
-            await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).delete();
+            let folderId = null;
+            let folderAfterAdd = null;
+            try {
+                const testFolderName = `TestFolder_${getRandomString(4)}`;
+                const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
+                folderId = folder.data.id;
+                folderAfterAdd = await graph.users.getById(testUserName).contactFolders.getById(folderId)();
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                // Clean up the added contact
+                if (folderId != null) {
+                    await graph.users.getById(testUserName).contactFolders.getById(folderId).delete();
+                }
+            }
             return expect(folderAfterAdd).is.not.null;
         });
 
         it("Update Contact Folder", async function () {
-            const folder = await graph.users.getById(testUserName).contactFolders.add("Test Add Folder", rootFolderID);
-            await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).update({ displayName: "Test Add Folder Updated" });
-            const folderAfterUpdate = await graph.users.getById(testUserName).contactFolders.getById(folder.data.id)();
-            // Clean up the added folder
-            await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).delete();
-            return expect(folderAfterUpdate.displayName).equals("Test Add Folder Updated");
+            const folderDisplayName = "Folder_Updated";
+            let folderId = null;
+            let folderAfterUpdate = null;
+            try {
+                const testFolderName = `TestFolder_${getRandomString(4)}`;
+                const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
+                folderId = folder.data.id;
+                await graph.users.getById(testUserName).contactFolders.getById(folderId).update({ displayName: folderDisplayName });
+                folderAfterUpdate = await graph.users.getById(testUserName).contactFolders.getById(folderId)();
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                // Clean up the added contact
+                if (folderId != null) {
+                    await graph.users.getById(testUserName).contactFolders.getById(folderId).delete();
+                }
+            }
+            return expect(folderAfterUpdate?.displayName).equals(folderDisplayName);
         });
 
         it("Delete Contact Folder", async function () {
             // Add a folder that we can then delete
-            const folder = await graph.users.getById(testUserName).contactFolders.add("Test Add Folder", rootFolderID);
+            const testFolderName = `TestFolder_${getRandomString(4)}`;
+            const folder = await graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
             await graph.users.getById(testUserName).contactFolders.getById(folder.data.id).delete();
             let deletedFolderFound = false;
 
@@ -176,8 +214,9 @@ describe("Contacts", function () {
         });
 
         it("Add Contact to Child Folder", async function () {
+            const testContactName = `TestUser_${getRandomString(4)}`;
             const contact = await graph.users.getById(testUserName).contactFolders.getById(testFolderID).childFolders.getById(subFolderID)
-                .contacts.add("Test", "McTester", [{ address: "tmctester@contoso.onmicrosoft.com", name: "Test McTester" }], ["+1 732 555 0102"]);
+                .contacts.add("Test", testContactName, [{ address: "tmctester@contoso.onmicrosoft.com", name: `Test ${testContactName}` }], ["+1 732 555 0102"]);
             const contactAfterAdd = await graph.users.getById(testUserName).contactFolders.getById(testFolderID).childFolders.getById(subFolderID)
                 .contacts.getById(contact.data.id)();
             // Clean up the added contact
@@ -187,9 +226,13 @@ describe("Contacts", function () {
 
         // Remove the test contact we created
         this.afterAll(async function () {
-
             if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContactID)) {
                 await graph.users.getById(testUserName).contacts.getById(testContactID).delete();
+            }
+            if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContact2ID)) {
+                await graph.users.getById(testUserName).contacts.getById(testContact2ID).delete();
+            }
+            if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testFolderID)) {
                 await graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete();
             }
         });

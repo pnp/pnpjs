@@ -110,76 +110,90 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     // eslint-disable-next-line max-len
     const fieldDefs: { InternalName: string; TypeAsString: string }[] = await SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")();
 
-    // map the values into the right format and produce our xml elements
-    const tags: string[] = defaults.map(fieldDefault => {
-
-        const index = fieldDefs.findIndex(fd => fd.InternalName === fieldDefault.name);
-
-        if (index < 0) {
-            throw Error(`Field '${fieldDefault.name}' does not exist in the list. Please check the internal field name. Failed to set defaults.`);
+    // group field defaults by path
+    const defaultsByPath = {};
+    for (let i = 0; i < defaults.length; i++) {
+        if (defaultsByPath[defaults[i].path] == null) {
+            defaultsByPath[defaults[i].path] = [defaults[i]];
+        } else {
+            defaultsByPath[defaults[i].path].push(defaults[i]);
         }
-
-        const fieldDef = fieldDefs[index];
-        let value = "";
-
-        switch (fieldDef.TypeAsString) {
-            case "Boolean":
-            case "Currency":
-            case "Text":
-            case "DateTime":
-            case "Number":
-            case "Choice":
-            case "User":
-                if (isArray(fieldDefault.value)) {
-                    throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
-                }
-                value = `${fieldDefault.value}`;
-                break;
-
-            case "MultiChoice":
-                if (isArray(fieldDefault.value)) {
-                    value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";");
-                } else {
-                    value = `${fieldDefault.value}`;
-                }
-                break;
-
-            case "UserMulti":
-                if (isArray(fieldDefault.value)) {
-                    value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";#");
-                } else {
-                    value = `${fieldDefault.value}`;
-                }
-                break;
-
-            case "Taxonomy":
-            case "TaxonomyFieldType":
-                if (isArray(fieldDefault.value)) {
-                    throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
-                } else {
-                    value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
-                }
-                break;
-
-            case "TaxonomyMulti":
-            case "TaxonomyFieldTypeMulti":
-                if (isArray(fieldDefault.value)) {
-                    value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
-                } else {
-                    value = (<{ wssId: string; termName: string; termId: string }[]>[fieldDefault.value]).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
-                }
-                break;
-        }
-
-        return `<DefaultValue FieldName="${fieldDefault.name}">${value}</DefaultValue>`;
-    });
-
-    // makes the assumption that if there are multiple defaults add that the path is set correctly for all and uses the first entry for the path
-    let defaultXml = "";
-    if (defaults.length > 0) {
-        defaultXml = `<a href="${defaults[0].path.replace(/ /gi, "%20")}">${tags.join("")}</a>`;
     }
-    const xml = `<MetadataDefaults>${defaultXml}</MetadataDefaults>`;
+
+    const paths = Object.getOwnPropertyNames(defaultsByPath);
+    const pathDefaults: string[] = [];
+    // For each path, group field defaults
+    for (let j = 0; j < paths.length; j++) {
+        // map the values into the right format and produce our xml elements
+        const pathFields = defaultsByPath[paths[j]];
+        const tags: string[] = pathFields.map(fieldDefault => {
+
+            const index = fieldDefs.findIndex(fd => fd.InternalName === fieldDefault.name);
+
+            if (index < 0) {
+                throw Error(`Field '${fieldDefault.name}' does not exist in the list. Please check the internal field name. Failed to set defaults.`);
+            }
+
+            const fieldDef = fieldDefs[index];
+            let value = "";
+
+            switch (fieldDef.TypeAsString) {
+                case "Boolean":
+                case "Currency":
+                case "Text":
+                case "DateTime":
+                case "Number":
+                case "Choice":
+                case "User":
+                    if (isArray(fieldDefault.value)) {
+                        throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
+                    }
+                    value = `${fieldDefault.value}`;
+                    break;
+
+                case "MultiChoice":
+                    if (isArray(fieldDefault.value)) {
+                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";");
+                    } else {
+                        value = `${fieldDefault.value}`;
+                    }
+                    break;
+
+                case "UserMulti":
+                    if (isArray(fieldDefault.value)) {
+                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";#");
+                    } else {
+                        value = `${fieldDefault.value}`;
+                    }
+                    break;
+
+                case "Taxonomy":
+                case "TaxonomyFieldType":
+                    if (isArray(fieldDefault.value)) {
+                        throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
+                    } else {
+                        value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
+                    }
+                    break;
+
+                case "TaxonomyMulti":
+                case "TaxonomyFieldTypeMulti":
+                    if (isArray(fieldDefault.value)) {
+                        value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                    } else {
+                        value = (<{ wssId: string; termName: string; termId: string }[]>[fieldDefault.value]).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                    }
+                    break;
+            }
+
+            return `<DefaultValue FieldName="${fieldDefault.name}">${value}</DefaultValue>`;
+        });
+        const href = pathFields[0].path.replace(/ /gi, "%20");
+        const pathDefault = `<a href="${href}">${tags.join("")}</a>`;
+        pathDefaults.push(pathDefault);
+    }
+    // builds update to defaults
+    const xml = `<MetadataDefaults>${pathDefaults.join("")}</MetadataDefaults>`;
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");

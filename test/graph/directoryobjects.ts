@@ -11,7 +11,7 @@ import getValidUser from "./utilities/getValidUser.js";
 describe("Directory Objects", function () {
 
     // We can't test for graph.me calls in an application context
-    if (testSettings.enableWebTests) {
+    if (testSettings.enableWebTests && testSettings.testUser?.length > 0) {
         let testUserName = "";
         let testChildGroupID = "";
         let testParentGroupID = "";
