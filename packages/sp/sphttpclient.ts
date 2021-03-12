@@ -9,6 +9,7 @@ import {
     dateAdd,
     DefaultRuntime,
     Runtime,
+    objectDefinedNotNull,
 } from "@pnp/common";
 import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
 import { extractWebUrl } from "./utils/extractweburl.js";
@@ -21,19 +22,15 @@ export class SPHttpClient implements IRequestClient {
     protected _impl: IHttpClientImpl;
     protected _digestCache: IGetDigest;
 
-    constructor(runtime: Runtime)
-    constructor(impl: IHttpClientImpl, runtime?: Runtime)
+    constructor(runtime?: Runtime)
+    constructor(runtime?: Runtime, impl?: IHttpClientImpl)
     constructor(...args: any[]) {
         // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
 
-        if (args[0] instanceof Runtime) {
-            this._runtime = args[0];
-        } else {
-            this._runtime = args.length > 1 && args[1] instanceof Runtime ? args[1] : DefaultRuntime;
-            this._impl = args[0];
-        }
+        this._runtime = args.length > 0 && args[0] instanceof Runtime ? args[0] : DefaultRuntime;
+        this._impl = args.length > 1 && objectDefinedNotNull(args[1]) ?
+            args[1] : this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.fetchClientFactory() || null;
 
-        this._impl = this._runtime.get<ISPConfigurationPart, ISPConfigurationProps>("sp")?.fetchClientFactory() || null;
         if (this._impl === null) {
             throw Error("Could not generate fetchClientFactory in SPHttpClient.");
         }

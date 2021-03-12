@@ -124,7 +124,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
         };
     }
 }
-export interface IFiles extends _Files {}
+export interface IFiles extends _Files { }
 export const Files = spInvokableFactory<IFiles>(_Files);
 
 /**
@@ -608,7 +608,7 @@ export class _Versions extends _SharePointQueryableCollection {
         return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
-export interface IVersions extends _Versions {}
+export interface IVersions extends _Versions { }
 export const Versions = spInvokableFactory<IVersions>(_Versions);
 
 /**
@@ -642,12 +642,24 @@ export interface IFileAddResult {
 
 /**
  * File move opertions
- * Overwrite = 1
- * AllowBrokenThickets = 8
  */
 export enum MoveOperations {
+    /**
+     * Produce an error if a file with the same name exists in the destination
+     */
+    None = 0,
+    /**
+     * Overwrite a file with the same name if it exists. Value is 1.
+     */
     Overwrite = 1,
+    /**
+     * Complete the move operation even if supporting files are separated from the file. Value is 8.
+     */
     AllowBrokenThickets = 8,
+    /**
+     * Boolean specifying whether to retain the source of the move's editor and modified by datetime.
+     */
+    RetainEditorAndModifiedOnMove = 2048,
 }
 
 export enum TemplateFileType {
