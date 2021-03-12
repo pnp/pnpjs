@@ -7,6 +7,7 @@ import {
     getCtxCallback,
     DefaultRuntime,
     Runtime,
+    objectDefinedNotNull,
 } from "@pnp/common";
 import { IGraphConfiguration, IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
 
@@ -15,19 +16,18 @@ export class GraphHttpClient implements IRequestClient {
     protected _runtime: Runtime;
     private _impl: IHttpClientImpl;
 
-    constructor(runtime: Runtime)
-    constructor(impl: IHttpClientImpl, runtime?: Runtime)
+    constructor(runtime?: Runtime)
+    constructor(runtime?: Runtime, impl?: IHttpClientImpl)
     constructor(...args: any[]) {
         // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
 
-        if (args[0] instanceof Runtime) {
-            this._runtime = args[0];
-        } else {
-            this._runtime = args.length > 1 && args[1] instanceof Runtime ? args[1] : DefaultRuntime;
-            this._impl = args[0];
-        }
+        this._runtime = args.length > 0 && args[0] instanceof Runtime ? args[0] : DefaultRuntime;
+        this._impl = args.length > 1 && objectDefinedNotNull(args[1]) ?
+            args[1] : this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory()|| null;
 
-        this._impl = this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory();
+        if (this._impl === null) {
+            throw Error("Could not generate fetchClientFactory in SPHttpClient.");
+        }
     }
 
     public fetch(url: string, options: IFetchOptions = {}): Promise<Response> {
