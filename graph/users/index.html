@@ -1025,6 +1025,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#people_1" class="md-nav__link">
+    People
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manager" class="md-nav__link">
+    Manager
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-reports" class="md-nav__link">
+    Direct Reports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#photo" class="md-nav__link">
     Photo
   </a>
@@ -2131,6 +2152,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#people_1" class="md-nav__link">
+    People
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manager" class="md-nav__link">
+    Manager
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-reports" class="md-nav__link">
+    Direct Reports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#photo" class="md-nav__link">
     Photo
   </a>
@@ -2222,6 +2264,27 @@ const people = await graph.me.people();
 
 // get the top 3 people
 const people = await graph.me.people.top(3)();
+</code></pre>
+<h2 id="people_1">People<a class="headerlink" href="#people_1" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+
+const people = await graph.me.people();
+
+// get the top 3 people
+const people = await graph.me.people.top(3)();
+</code></pre>
+<h2 id="manager">Manager<a class="headerlink" href="#manager" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+
+const manager = await graph.me.manager();
+</code></pre>
+<h2 id="direct-reports">Direct Reports<a class="headerlink" href="#direct-reports" title="Permanent link">&para;</a></h2>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+
+const reports = await graph.me.directReports();
 </code></pre>
 <h2 id="photo">Photo<a class="headerlink" href="#photo" title="Permanent link">&para;</a></h2>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;

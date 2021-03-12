@@ -324,20 +324,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-using-legacy-sp-app-authentication" class="md-nav__link">
-    Test using Legacy SP App authentication
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-using-msal-authentication" class="md-nav__link">
-    Test using MSAL authentication
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#options" class="md-nav__link">
     Options
   </a>
@@ -376,13 +362,6 @@
           <li class="md-nav__item">
   <a href="#logging" class="md-nav__link">
     Logging
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msal" class="md-nav__link">
-    msal
   </a>
   
 </li>
@@ -2184,20 +2163,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-using-legacy-sp-app-authentication" class="md-nav__link">
-    Test using Legacy SP App authentication
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-using-msal-authentication" class="md-nav__link">
-    Test using MSAL authentication
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#options" class="md-nav__link">
     Options
   </a>
@@ -2236,13 +2201,6 @@
           <li class="md-nav__item">
   <a href="#logging" class="md-nav__link">
     Logging
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msal" class="md-nav__link">
-    msal
   </a>
   
 </li>
@@ -2322,12 +2280,9 @@
 </code></pre>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h2>
 <p>Runs the tests and coverage for the library.</p>
-<h3 id="test-using-legacy-sp-app-authentication">Test using Legacy SP App authentication<a class="headerlink" href="#test-using-legacy-sp-app-authentication" title="Permanent link">&para;</a></h3>
-<pre><code class="language-cmd">npm test
-</code></pre>
-<h3 id="test-using-msal-authentication">Test using MSAL authentication<a class="headerlink" href="#test-using-msal-authentication" title="Permanent link">&para;</a></h3>
-<pre><code class="language-cmd">npm test -- --msal
-</code></pre>
+<blockquote>
+<p>Starting with 2.3.0 ONLY MSAL auth is supported for running the tests. <a href="https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal">More details on setting up MSAL for node.</a></p>
+</blockquote>
 <h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
 <p>There are several options you can provide to the test command. All of these need to be separated using a "--" double hyphen so they are passed to the spawned sub-commands.</p>
 <h4 id="test-a-single-package">Test a Single Package<a class="headerlink" href="#test-a-single-package" title="Permanent link">&para;</a></h4>
@@ -2376,14 +2331,6 @@ npm test -- --cleanup
 <p>If you include this flag a console logger will be subscribed and the log level will be set to Info. This will provide console output for all the requests being made during testing. This flag is compatible with all other flags - however unless you are trying to debug a specific test this will produce a lot of chatty output.</p>
 <pre><code class="language-cmd"># enable logging during testing
 npm test -- --logging
-</code></pre>
-<h4 id="msal">msal<a class="headerlink" href="#msal" title="Permanent link">&para;</a></h4>
-<p><em>Added in 2.0.13</em></p>
-<blockquote>
-<p><code>--msal</code></p>
-</blockquote>
-<p>This flag opts into using msal authentication settings from the <a href="../concepts/settings/">settings.js</a> file.</p>
-<pre><code class="language-cmd">npm test -- --msal
 </code></pre>
 <h4 id="spverbose">spVerbose<a class="headerlink" href="#spverbose" title="Permanent link">&para;</a></h4>
 <p><em>Added in 2.0.13</em></p>

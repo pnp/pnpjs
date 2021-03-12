@@ -2039,14 +2039,14 @@ import &quot;@pnp/sp/webs&quot;;
 // create an isolated sp root instance
 const isolatedSP = await sp.createIsolated();
 
-// this configuraiton applies to all objects created from &quot;sp&quot;
+// this configuration applies to all objects created from &quot;sp&quot;
 sp.setup({
   sp: {
     baseUrl: &quot;https://mytenant.sharepoint.com/&quot;,
   },
 });
 
-// this configuraiton applies to all objects created from &quot;isolatedSP&quot;
+// this configuration applies to all objects created from &quot;isolatedSP&quot;
 isolatedSP.setup({
   sp: {
     baseUrl: &quot;https://mytenant.sharepoint.com/sites/dev&quot;,

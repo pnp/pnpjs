@@ -1647,6 +1647,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#copyto" class="md-nav__link">
+    copyTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setbannerimage" class="md-nav__link">
     setBannerImage
   </a>
@@ -2620,6 +2627,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#copyto" class="md-nav__link">
+    copyTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setbannerimage" class="md-nav__link">
     setBannerImage
   </a>
@@ -3192,6 +3206,27 @@ const pageCopy2 = await page.copy(sp.web, &quot;newpagename&quot;, &quot;New Pag
 
 // publish the page
 pageCopy2.save();
+</code></pre>
+<h3 id="copyto">copyTo<a class="headerlink" href="#copyto" title="Permanent link">&para;</a></h3>
+<p>Copies the contents of a page to another existing page instance.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+// our page instances, loaded in any of the ways shown above
+const source: IClientsidePage;
+const target: IClientsidePage;
+const target2: IClientsidePage;
+
+// creates a published copy of the page
+await source.copyTo(target);
+
+// creates a draft (unpublished) copy of the page
+await source.copyTo(target2, false);
+
+// edits to target2...
+
+// publish the page
+target2.save();
 </code></pre>
 <h3 id="setbannerimage">setBannerImage<a class="headerlink" href="#setbannerimage" title="Permanent link">&para;</a></h3>
 <p>Sets the banner image url and optionally additional properties. Allows you to set additional properties if needed, if you do not need to set the additional properties they are equivalent.</p>

@@ -1423,6 +1423,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#taxonomy-full-example" class="md-nav__link">
+    Taxonomy Full Example
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2130,6 +2137,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#taxonomy-full-example" class="md-nav__link">
+    Taxonomy Full Example
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2292,6 +2306,16 @@ await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).setDefaultColumnV
     path: &quot;/sites/dev/DefaultColumnValues&quot;,
     value: 42,
 }, {
+    //Date
+    name: &quot;NumberField&quot;,
+    path: &quot;/sites/dev/DefaultColumnValues&quot;,
+    value: &quot;1900-01-01T00:00:00Z&quot;,
+}, {
+    //Date - Today
+    name: &quot;NumberField&quot;,
+    path: &quot;/sites/dev/DefaultColumnValues&quot;,
+    value: &quot;[today]&quot;,
+}, {
     //MultiChoice
     name: &quot;MultiChoiceField&quot;,
     path: &quot;/sites/dev/DefaultColumnValues&quot;,
@@ -2324,6 +2348,32 @@ await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).setDefaultColumnV
         termId: &quot;95d4c307-dde5-49d8-b861-392e145d94d3&quot;
         },]
 }]);
+</code></pre>
+<h2 id="taxonomy-full-example">Taxonomy Full Example<a class="headerlink" href="#taxonomy-full-example" title="Permanent link">&para;</a></h2>
+<p>This example shows fully how to get the taxonomy values and set them as a default column value using PnPjs.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/column-defaults&quot;;
+import &quot;@pnp/sp/taxonomy&quot;;
+
+// get the term's info we want to use as the default
+const term = await sp.termStore.sets.getById(&quot;ea6fc521-d293-4f3d-9e84-f3a5bc0936ce&quot;).getTermById(&quot;775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a&quot;)();
+
+// get the default term label
+const defLabel = term.labels.find(v =&gt; v.isDefault);
+
+// set the default value using -1, the term id, and the term's default label name
+await sp.web.lists.getByTitle(&quot;MetaDataDocLib&quot;).rootFolder.setDefaultColumnValues([{
+    name: &quot;MetaDataColumnInternalName&quot;,
+    value: {
+        wssId: &quot;-1&quot;,
+        termId: term.id,
+        termName: defLabel.name,
+    }
+}])
+
+// check that the defaults have updated
+const newDefaults = await sp.web.lists.getByTitle(&quot;MetaDataDocLib&quot;).getDefaultColumnValues();
 </code></pre>
                 
               

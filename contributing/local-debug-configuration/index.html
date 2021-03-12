@@ -1912,20 +1912,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#sp-values" class="md-nav__link">
-    SP values
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#graph-value" class="md-nav__link">
-    Graph value
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2086,20 +2072,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#sp-values" class="md-nav__link">
-    SP values
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#graph-value" class="md-nav__link">
-    Graph value
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2132,56 +2104,10 @@
                 <h1 id="local-debugging-configuration">Local Debugging Configuration<a class="headerlink" href="#local-debugging-configuration" title="Permanent link">&para;</a></h1>
 <p>This article covers the local setup required to debug the library and run tests. This only needs to be done once (unless you update the app registrations, then you just need to update the settings.js file accordingly).</p>
 <h2 id="create-settingsjs">Create settings.js<a class="headerlink" href="#create-settingsjs" title="Permanent link">&para;</a></h2>
-<p>Both local debugging and tests make use of a settings.js file located in the root of the project. Ensure you create a settings.js files by copying settings.example.js and renaming it to settings.js.</p>
-<p>The default file content is below:</p>
-<pre><code class="language-js">var settings = {
-
-    testing: {
-        enableWebTests: true,
-        sp: {
-            id: &quot;{ client id }&quot;,
-            secret: &quot;{ client secret }&quot;,
-            url: &quot;{ site collection url }&quot;,
-            notificationUrl: &quot;{ notification url }&quot;,
-        },
-        graph: {
-            tenant: &quot;{tenant.onmicrosoft.com}&quot;,
-            id: &quot;{your app id}&quot;,
-            secret: &quot;{your secret}&quot;
-        },
-    }
-}
-
-module.exports = settings;
-</code></pre>
-<p>As you can see it is an export of a simple JS object, but as it is a js file you can include additional functionality here if you wish.</p>
-<p>The settings object has a single sub-object <code>testing</code> which contains the configuration used for debugging and testing PnPjs. The parts of this object are described in detail below.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>enableWebTests</strong></td>
-<td>Flag to toggle if tests are run against the live services or not. If this is set to false none of the other sections are required.</td>
-</tr>
-<tr>
-<td><strong>sp</strong></td>
-<td>Settings used to configure SharePoint (sp library) debugging and tests</td>
-</tr>
-<tr>
-<td><strong>graph</strong></td>
-<td>Settings used to configure Microsoft Graph (graph library) debugging and tests</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>You can control which tests are run by including or omitting sp and graph sections. If sp is present and graph is not, only sp tests are run. Include both and all tests are run, respecting the enableWebTests flag.</p>
-</blockquote>
+<p>Both local debugging and tests make use of a settings.js file located in the root of the project. Ensure you create a settings.js files by copying settings.example.js and renaming it to settings.js.
+For more information the settings file please see <a href="../../concepts/settings/"><code>Settings</code></a></p>
 <h3 id="minimal-configuration">Minimal Configuration<a class="headerlink" href="#minimal-configuration" title="Permanent link">&para;</a></h3>
+<p>You can control which tests are run by including or omitting sp and graph sections. If sp is present and graph is not, only sp tests are run. Include both and all tests are run, respecting the enableWebTests flag.</p>
 <p>The following configuration file allows you to run all the tests that do not contact services.</p>
 <pre><code class="language-js"> var sets = {
      testing: {
@@ -2191,58 +2117,6 @@ module.exports = settings;
 
 module.exports = sets;
 </code></pre>
-<h3 id="sp-values">SP values<a class="headerlink" href="#sp-values" title="Permanent link">&para;</a></h3>
-<p>The sp values are described in the table below and come from <a href="../../authentication/sp-app-registration/">registering a legacy SharePoint add-in</a>.</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>id</strong></td>
-<td>The client id of the registered application</td>
-</tr>
-<tr>
-<td><strong>secret</strong></td>
-<td>The client secret of the registered application</td>
-</tr>
-<tr>
-<td><strong>url</strong></td>
-<td>The url of the site to use for all requests. If a site parameter is not specified a child web will be created under the web at this url. See <a href="../../npm-scripts/">scripts article</a> for more details.</td>
-</tr>
-<tr>
-<td><strong>notificationUrl</strong></td>
-<td>Url used when registering test subscriptions</td>
-</tr>
-</tbody>
-</table>
-<h3 id="graph-value">Graph value<a class="headerlink" href="#graph-value" title="Permanent link">&para;</a></h3>
-<p>The graph values are described in the table below and come from <a href="https://docs.microsoft.com/en-us/graph/auth-register-app-v2">registering an AAD Application</a>. The permissions required by the registered application are dictated by the tests you want to run or resources you wish to test against.</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>tenant</strong></td>
-<td>Tenant to target for authentication and data (ex: contoso.onmicrosoft.com)</td>
-</tr>
-<tr>
-<td><strong>id</strong></td>
-<td>The application id</td>
-</tr>
-<tr>
-<td><strong>secret</strong></td>
-<td>The application secret</td>
-</tr>
-</tbody>
-</table>
 <h2 id="test-your-setup">Test your setup<a class="headerlink" href="#test-your-setup" title="Permanent link">&para;</a></h2>
 <p>If you hit F5 in VSCode now you should be able to see the full response from getting the web's title in the internal console window. If not, ensure that you have properly updated the settings file and registered the add-in perms correctly.</p>
                 
