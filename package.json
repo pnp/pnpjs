@@ -1,7 +1,7 @@
 {
     "name": "@pnp/monorepo",
     "private": true,
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "A JavaScript library for SharePoint development.",
     "devDependencies": {
         "@azure/msal-node": "^1.0.1",
