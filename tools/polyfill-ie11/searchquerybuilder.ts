@@ -129,7 +129,7 @@ class SearchQueryBuilderImpl {
         return this.extendQuery({ Timeout: milliseconds });
     }
 
-    public hithighlightedProperties(...properties: string[]): this {
+    public hitHighlightedProperties(...properties: string[]): this {
         return this.extendQuery({ HitHighlightedProperties: properties });
     }
 
