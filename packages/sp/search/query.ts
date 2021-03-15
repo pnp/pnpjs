@@ -24,7 +24,7 @@ const funcs = new Map<string, string>([
     ["hiddenConstraints", ""],
     ["sortList", ""],
     ["timeout", ""],
-    ["hithighlightedProperties", ""],
+    ["hitHighlightedProperties", ""],
     ["clientType", ""],
     ["personalizationData", ""],
     ["resultsURL", ""],

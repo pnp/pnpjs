@@ -32,7 +32,7 @@ export interface ISearchBuilder {
     hiddenConstraints(constraints: string): this;
     sortList(...sorts: ISort[]): this;
     timeout(milliseconds: number): this;
-    hithighlightedProperties(...properties: string[]): this;
+    hitHighlightedProperties(...properties: string[]): this;
     clientType(clientType: string): this;
     personalizationData(data: string): this;
     resultsURL(url: string): this;
