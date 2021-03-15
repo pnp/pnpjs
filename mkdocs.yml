@@ -54,6 +54,7 @@ nav:
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
       - onedrive: 'graph/onedrive.md'
+      - outlook: 'graph/outlook.md'
       - photos: 'graph/photos.md'
       - planner: 'graph/planner.md'
       - search: 'graph/search.md'

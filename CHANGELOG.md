@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.2.0 - 2021-March-12
+
+### Fixed
+
+- docs: typos [@PathToSharePoint](https://github.com/PathToSharePoint) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- graph: Fixed drive.getItemById #1559 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- build: Changed default testing to MSAL auth #1564 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- sp: fix for incorrect factory assignment for associated groups for web (SiteGroups vs SiteGroup) #1594 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- graph: Fix graph typings #1615 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1628)]
+- sp: Fix issues with setDefaultColumnValues for folders #1637 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1639)]
+- build: Fixed isolated runtime bug in openWebById #1625 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1642)]
+- build: fixing contructors for SPHttpClient and GraphHttpClient #1620 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1642)]
+- build: resetting to es5 target #1619 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1642)]
+
+### Added
+
+- graph: Outlook master categories [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1548)]
+- sp: adding copyTo method to clientside-page #1586 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- graph: added graph manager and direct reports to user #1590 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1589)]
+- build: Adds new testUser account to settings file to support debug and testing scenarios. #1512 [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1628)]
+- sp: Added additional MoveOperation flags for moveTo #1623 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1642)]
+
+### Changed
+
+- docs: Full example for default column value for a taxonomy field [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1611)]
+
 ## 2.2.0 - 2021-Feb-12
 
 ### Fixed
