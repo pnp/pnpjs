@@ -14,7 +14,7 @@ const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
 
 describe("SiteDesigns", function () {
 
-    let testuser = testSettings.testUser;
+    const testuser = testSettings.testUser;
 
     if (testSettings.enableWebTests) {
 
