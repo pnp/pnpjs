@@ -10,9 +10,9 @@ import "@pnp/sp/forms/list";
 import "@pnp/sp/items/list";
 import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
-import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, IListItemFormUpdateValue, RenderListDataOptions } from "@pnp/sp/lists";
+import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
 import * as assert from "assert";
-import { IConfigOptions, getRandomString, combine } from "@pnp/common";
+import { IConfigOptions, getRandomString } from "@pnp/common";
 
 describe("Lists", function () {
 
@@ -365,48 +365,50 @@ describe("List", function () {
             return expect(list.getListItemEntityTypeFullName()).to.eventually.be.fulfilled;
         });
 
-        it(".addValidateUpdateItemUsingPath", async function () {
-            const listTitle = "pnp-testing-addValidateUpdateItemUsingPath";
-            const listAddRes = await sp.web.lists.ensure(listTitle);
+        // Removing unit tests for failing and undocumented APIs that seem to no longer be supported.
 
-            const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
+        // it(".addValidateUpdateItemUsingPath", async function () {
+        //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath";
+        //     const listAddRes = await sp.web.lists.ensure(listTitle);
 
-            const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
-            const formValues: IListItemFormUpdateValue[] = [
-                {
-                    FieldName: "Title",
-                    FieldValue: title,
-                },
-            ];
+        //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
-            const folderName = `PnPTestAddFolder2-${getRandomString(4)}`;
-            await listAddRes.list.rootFolder.folders.add(folderName);
+        //     const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
+        //     const formValues: IListItemFormUpdateValue[] = [
+        //         {
+        //             FieldName: "Title",
+        //             FieldValue: title,
+        //         },
+        //     ];
 
-            return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-                combine(testList.ParentWebUrl, "Lists", listTitle, folderName))).to.eventually.be.fulfilled;
-        });
+        //     const folderName = `PnPTestAddFolder2-${getRandomString(4)}`;
+        //     await listAddRes.list.rootFolder.folders.add(folderName);
 
-        it(".addValidateUpdateItemUsingPath Folder", async function () {
+        //     return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
+        //         combine(testList.ParentWebUrl, "Lists", listTitle, folderName))).to.eventually.be.fulfilled;
+        // });
 
-            const listTitle = "pnp-testing-addValidateUpdateItemUsingPath2";
-            const listAddRes = await sp.web.lists.ensure(listTitle, "", 101);
+        // it(".addValidateUpdateItemUsingPath Folder", async function () {
 
-            const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
+        //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath2";
+        //     const listAddRes = await sp.web.lists.ensure(listTitle, "", 101);
 
-            const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
-            const formValues: IListItemFormUpdateValue[] = [
-                {
-                    FieldName: "Title",
-                    FieldValue: title,
-                },
-            ];
+        //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
-            return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-                `${testList.ParentWebUrl}/${listTitle}`, true, "", {
-                    leafName: "MyFolder",
-                    objectType: 1,
-                })).to.eventually.be.fulfilled;
-        });
+        //     const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
+        //     const formValues: IListItemFormUpdateValue[] = [
+        //         {
+        //             FieldName: "Title",
+        //             FieldValue: title,
+        //         },
+        //     ];
+
+        //     return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
+        //         `${testList.ParentWebUrl}/${listTitle}`, true, "", {
+        //             leafName: "MyFolder",
+        //             objectType: 1,
+        //         })).to.eventually.be.fulfilled;
+        // });
 
         it(".contentTypes", function () {
             return expect(list.contentTypes()).to.eventually.be.fulfilled;

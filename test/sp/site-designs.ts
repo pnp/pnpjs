@@ -14,13 +14,7 @@ const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
 
 describe("SiteDesigns", function () {
 
-    let testuser = "";
-
-    before(async function () {
-
-        const users = await sp.web.siteUsers.top(1).select("LoginName")<{ LoginName: string }[]>();
-        testuser = users[0].LoginName;
-    });
+    const testuser = testSettings.testUser;
 
     if (testSettings.enableWebTests) {
 

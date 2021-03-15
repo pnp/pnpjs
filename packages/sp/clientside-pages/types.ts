@@ -226,8 +226,8 @@ export class _ClientsidePage extends _SharePointQueryable {
     }
 
     public get authorByLine(): string | null {
-        if (isArray(this.json.AuthorByline) && this.json.AuthorByline.length > 0) {
-            return this.json.AuthorByline[0];
+        if (isArray(this._layoutPart.properties.authorByline) && this._layoutPart.properties.authorByline.length > 0) {
+            return this._layoutPart.properties.authorByline[0];
         }
 
         return null;
@@ -651,8 +651,8 @@ export class _ClientsidePage extends _SharePointQueryable {
             throw Error(`Could not find user with login name '${authorLoginName}'.`);
         }
 
-        this.json.AuthorByline = [authorLoginName];
-        this._layoutPart.properties.authorByline = [authorLoginName];
+        this.json.AuthorByline = [userLoginData[0].UserPrincipalName];
+        this._layoutPart.properties.authorByline = [userLoginData[0].UserPrincipalName];
         this._layoutPart.properties.authors = [{
             id: authorLoginName,
             name: userLoginData[0].Title,
