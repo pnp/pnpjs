@@ -36,7 +36,7 @@
         "https-proxy-agent": "^5.0.0",
         "jsonwebtoken": "^8.5.1",
         "mocha": "^8.3.2",
-        "msal": "^1.4.6",
+        "msal": "^1.4.8",
         "node-fetch": "^2.6.1",
         "prettyjson": "^1.2.1",
         "string-replace-loader": "^3.0.1",
