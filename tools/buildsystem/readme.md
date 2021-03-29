@@ -8,6 +8,10 @@ Configuration is driven entirely by the `buildsystem-config.ts` file, which uses
 
 For each of the three roles, build, package, and publish there exists an interface defining what it should contain. You can have multiple configurations per role, differentiated by name.
 
+> The definitions for the [configuration options](https://github.com/pnp/pnpjs/blob/version-2/tools/buildsystem/src/config.ts) are available in the source. It is intended your buildsystem.config.ts export a valid `ConfigCollection`;
+
+For an [example buildsystem-config](https://github.com/pnp/pnpjs/blob/version-2/buildsystem-config.ts) please see the one used by PnPjs within this repo.
+
 ## Run
 
 You can install the tool globally but that isn't requried as it is installed locally when you `npm install` within the root of the main library project. It has a simple command line:
