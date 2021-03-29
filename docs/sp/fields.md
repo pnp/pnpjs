@@ -244,7 +244,8 @@ console.log(r.Id);
 
 ### Add a Multi-line Text Field
 
-Use the addMultilineText method to create a new multi-line text field.
+Use the addMultilineText method to create a new multi-line text field. 
+>For Enhanced Rich Text mode, see the next section.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
@@ -256,6 +257,28 @@ import "@pnp/sp/fields";
 const field = await sp.web.fields.addMultilineText("My Field", 6, true, false, false, true, { Group: "My Group" });
 // create a new multi-line text field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addMultilineText("My Field", 6, true, false, false, true, { Group: "My Group" });
+
+// we can use this 'field' variable to run more queries on the field:
+const r = await field.field.select("Id")();
+
+// log the field Id to console
+console.log(r.Id);
+```
+
+### Add a Multi-line Text Field with Enhanced Rich Text
+
+The REST endpoint doesn't support setting the `RichTextMode` field therefore you will need to revert to Xml to create the field. The following is an example that will create a multi-line text field in Enhanced Rich Text mode.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/fields";
+
+//Create a new multi-line text field called 'My Field' in web
+const field = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(
+    `<Field Type="Note" Name="MyField" DisplayName="My Field" Required="FALSE" RichText="TRUE" RichTextMode="FullHtml" />`
+);
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
