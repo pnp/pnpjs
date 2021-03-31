@@ -38,6 +38,7 @@ You can now use the [@azure/msal-node](https://github.com/AzureAD/microsoft-auth
 You can call the Microsoft Graph API with a client id and secret or certificate (see SharePoint example for cert auth)
 
 ```TypeScript
+import { MsalFetchClient } from "@pnp/nodejs";
 import { graph } from "@pnp/graph/presets/all";
 
 // configure your node options
@@ -74,6 +75,7 @@ Using the above code you end up with three files, "cert.pem", "key.pem", and "ke
 > You need to set the baseUrl property when using the MsalFetchClient
 
 ```TypeScript
+import { MsalFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { readFileSync } from "fs";
