@@ -45,6 +45,8 @@ const ownerGroup = await sp.web.associatedOwnerGroup();
 
 ### Create the default associated groups for a web
 
+![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) CreateDefaultAssociatedGroups throws a 403 "Access Denied" if "No Script Site" is set to true. For more information please follow: [sp-dev-docs Issue 6760](https://github.com/SharePoint/sp-dev-docs/issues/6760).
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";

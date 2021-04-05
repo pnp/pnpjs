@@ -1,22 +1,22 @@
 {
-  "name": "@pnp/common",
-  "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - provides shared functionality across all pnp libraries",
-  "main": "./index.js",
-  "typings": "./index",
-  "dependencies": {
-    "tslib": "2.1.0"
-  },
-  "author": {
-    "name": "Microsoft and other contributors"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pnp/pnpjs/issues"
-  },
-  "homepage": "https://github.com/pnp/pnpjs",
-  "repository": {
-    "type": "git",
-    "url": "git:github.com/pnp/pnpjs"
-  }
+    "name": "@pnp/common",
+    "version": "0.0.0-PLACEHOLDER",
+    "description": "pnp - provides shared functionality across all pnp libraries",
+    "main": "./index.js",
+    "typings": "./index",
+    "dependencies": {
+        "tslib": "2.2.0"
+    },
+    "author": {
+        "name": "Microsoft and other contributors"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/pnp/pnpjs/issues"
+    },
+    "homepage": "https://github.com/pnp/pnpjs",
+    "repository": {
+        "type": "git",
+        "url": "git:github.com/pnp/pnpjs"
+    }
 }
