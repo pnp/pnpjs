@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.4.0 - 2021-April-9
+
+### Fixed
+
+- sp: Fixed search query 'hitHighlightedProperties' property spelling [@ytasyol](https://github.com/ytasyol) [[PR](https://github.com/pnp/pnpjs/pull/1646)]
+- sp: Fix client-side pages AuthorByline bug; various other testing/tooling updates  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1648)]
+- docs: Changelog typo [@viceice](https://github.com/viceice) [[PR](https://github.com/pnp/pnpjs/pull/1651)]
+- docs: Add missing import [@AriGunawan](https://github.com/AriGunawan) [[PR](https://github.com/pnp/pnpjs/pull/1672)]
+- docs: Add missing import [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1677)]
+- docs: Testing/tooling updates  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1679)]
+- graph: Fixed addChunked file error with apostrophe #1645, #1659 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1684)]
+
+### Changed
+
+- docs: Documentation Update Multi-line Text Field - Enhanced Rich Text [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1671)]
+
 ## 2.3.0 - 2021-March-12
 
 ### Fixed
