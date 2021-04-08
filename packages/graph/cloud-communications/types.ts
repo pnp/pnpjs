@@ -24,7 +24,7 @@ export class _Communications extends _GraphQueryableCollection<IUserPresence[]> 
 
         const postBody = { ids };
 
-        return graphPost<IUserPresence[]>(this.clone(Communications, "getPresencesByUserId"), body(postBody));;
+        return graphPost<IUserPresence[]>(this.clone(Communications, "getPresencesByUserId"), body(postBody));
     }
 }
 export interface ICommunications extends _Communications { }
