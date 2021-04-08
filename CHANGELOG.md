@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - docs: Testing/tooling updates  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1679)]
 - graph: Fixed addChunked file error with apostrophe #1645, #1659 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1684)]
 
+### Added
+
+- graph: Added Graph User Presence endpoint & unit test fixes  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1691)]
+
 ### Changed
 
 - docs: Documentation Update Multi-line Text Field - Enhanced Rich Text [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1671)]
