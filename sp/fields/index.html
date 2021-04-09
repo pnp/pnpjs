@@ -1532,6 +1532,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add-a-multi-line-text-field-with-enhanced-rich-text" class="md-nav__link">
+    Add a Multi-line Text Field with Enhanced Rich Text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-number-field" class="md-nav__link">
     Add a Number Field
   </a>
@@ -2318,6 +2325,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#add-a-multi-line-text-field-with-enhanced-rich-text" class="md-nav__link">
+    Add a Multi-line Text Field with Enhanced Rich Text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#add-a-number-field" class="md-nav__link">
     Add a Number Field
   </a>
@@ -2470,7 +2484,7 @@
 <h3 id="get-field-by-id">Get Field by Id<a class="headerlink" href="#get-field-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists/web&quot;;
 import &quot;@pnp/sp/fields&quot;;
@@ -2489,7 +2503,7 @@ console.log(r.Title);
 <h3 id="get-field-by-title">Get Field by Title<a class="headerlink" href="#get-field-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection by title.</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;
 import &quot;@pnp/sp/fields&quot;;
@@ -2508,7 +2522,7 @@ console.log(r.Id);
 <h3 id="get-field-by-internal-name-or-title">Get Field by Internal Name or Title<a class="headerlink" href="#get-field-by-internal-name-or-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection regardless of if the string is the fields internal name or title which can be different.</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;
 import &quot;@pnp/sp/fields&quot;;
@@ -2657,7 +2671,10 @@ const r = await field.field.select(&quot;Id&quot;)();
 console.log(r.Id);
 </code></pre>
 <h3 id="add-a-multi-line-text-field">Add a Multi-line Text Field<a class="headerlink" href="#add-a-multi-line-text-field" title="Permanent link">&para;</a></h3>
-<p>Use the addMultilineText method to create a new multi-line text field.</p>
+<p>Use the addMultilineText method to create a new multi-line text field. </p>
+<blockquote>
+<p>For Enhanced Rich Text mode, see the next section.</p>
+</blockquote>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;;
@@ -2667,6 +2684,24 @@ import &quot;@pnp/sp/fields&quot;;
 const field = await sp.web.fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
 // create a new multi-line text field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
+
+// we can use this 'field' variable to run more queries on the field:
+const r = await field.field.select(&quot;Id&quot;)();
+
+// log the field Id to console
+console.log(r.Id);
+</code></pre>
+<h3 id="add-a-multi-line-text-field-with-enhanced-rich-text">Add a Multi-line Text Field with Enhanced Rich Text<a class="headerlink" href="#add-a-multi-line-text-field-with-enhanced-rich-text" title="Permanent link">&para;</a></h3>
+<p>The REST endpoint doesn't support setting the <code>RichTextMode</code> field therefore you will need to revert to Xml to create the field. The following is an example that will create a multi-line text field in Enhanced Rich Text mode.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists&quot;;
+import &quot;@pnp/sp/fields&quot;;
+
+//Create a new multi-line text field called 'My Field' in web
+const field = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.createFieldAsXml(
+    `&lt;Field Type=&quot;Note&quot; Name=&quot;MyField&quot; DisplayName=&quot;My Field&quot; Required=&quot;FALSE&quot; RichText=&quot;TRUE&quot; RichTextMode=&quot;FullHtml&quot; /&gt;`
+);
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select(&quot;Id&quot;)();

@@ -2172,7 +2172,8 @@ const w = await sp.web.get();
 </blockquote>
 <h3 id="call-graph">Call Graph<a class="headerlink" href="#call-graph" title="Permanent link">&para;</a></h3>
 <p>You can call the Microsoft Graph API with a client id and secret or certificate (see SharePoint example for cert auth)</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<pre><code class="language-TypeScript">import { MsalFetchClient } from &quot;@pnp/nodejs&quot;;
+import { graph } from &quot;@pnp/graph/presets/all&quot;;
 
 // configure your node options
 graph.setup({
@@ -2202,7 +2203,8 @@ openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
 <blockquote>
 <p>You need to set the baseUrl property when using the MsalFetchClient</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { MsalFetchClient } from &quot;@pnp/nodejs&quot;;
+import { sp } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import { readFileSync } from &quot;fs&quot;;
 
