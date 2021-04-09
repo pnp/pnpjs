@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - docs: Add missing import [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/1677)]
 - docs: Testing/tooling updates  [@juliemturner](https://github.com/juliemturner) [[PR](https://github.com/pnp/pnpjs/pull/1679)]
 - graph: Fixed addChunked file error with apostrophe #1645, #1659 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1684)]
+- sp: Fixed MoveTo issue #1686 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1692)]
 
 ### Added
 
