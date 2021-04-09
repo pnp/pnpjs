@@ -23,7 +23,7 @@
             "path": "./nodejs/tsconfig.esm.json"
         },
         {
-            "path": "./odata/tsconfig.esm.json"
+            "path": "./queryable/tsconfig.esm.json"
         },
         {
             "path": "./sp/tsconfig.esm.json"

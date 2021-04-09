@@ -1,4 +1,4 @@
-import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/odata";
+import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/queryable";
 import { SPHttpClient } from "./sphttpclient.js";
 import { ISharePointQueryable } from "./sharepointqueryable.js";
 import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc, Runtime } from "@pnp/common";

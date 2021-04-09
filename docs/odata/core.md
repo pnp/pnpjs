@@ -1,6 +1,6 @@
-# @pnp/odata/core
+# @pnp/queryable/core
 
-This module contains shared interfaces and abstract classes used within the @pnp/odata package and those items that inherit from it.
+This module contains shared interfaces and abstract classes used within the @pnp/queryable package and those items that inherit from it.
 
 ## ProcessHttpClientResponseException
 

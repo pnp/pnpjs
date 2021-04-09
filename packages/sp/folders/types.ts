@@ -14,7 +14,7 @@ import {
 } from "../sharepointqueryable.js";
 import { odataUrlFrom } from "../odata.js";
 import { IItem, Item } from "../items/types.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";

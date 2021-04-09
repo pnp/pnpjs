@@ -6,7 +6,7 @@ import {
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
 import { assign, ITypedHash, hOP } from "@pnp/common";
 import { metadata } from "../utils/metadata.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";

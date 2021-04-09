@@ -93,7 +93,7 @@ You can also use the AdalClient to execute AAD authenticated requests to any API
 ```TypeScript
 import { FetchOptions } from "@pnp/common";
 import { AdalClient } from "@pnp/adaljsclient";
-import { ODataDefaultParser } from "@pnp/odata";
+import { ODataDefaultParser } from "@pnp/queryable";
 
 // ...
 

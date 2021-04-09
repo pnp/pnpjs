@@ -1,4 +1,4 @@
-import { Batch, HttpRequestError } from "@pnp/odata";
+import { Batch, HttpRequestError } from "@pnp/queryable";
 import { getGUID, isUrlAbsolute, combine, mergeHeaders, hOP, Runtime, DefaultRuntime } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPHttpClient } from "./sphttpclient.js";

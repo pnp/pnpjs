@@ -10,7 +10,7 @@
         "./**/*.ts",
         "../common/**/*.ts",
         "../logging/**/*.ts",
-        "../odata/**/*.ts"
+        "../queryable/**/*.ts"
     ],
     "references": [
         {
@@ -20,7 +20,7 @@
             "path": "../logging/tsconfig.esm.json"
         },
         {
-            "path": "../odata/tsconfig.esm.json"
+            "path": "../queryable/tsconfig.esm.json"
         }
     ]
 }

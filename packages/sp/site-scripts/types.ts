@@ -1,4 +1,4 @@
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";

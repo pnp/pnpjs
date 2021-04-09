@@ -206,37 +206,37 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/caching/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/caching/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/core/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/core/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/odata-batch/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/odata-batch/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/parsers/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/parsers/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/pipeline/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/pipeline/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://pnp.github.io/pnpjs/odata/docs/queryable/</loc>
+     <loc>https://pnp.github.io/pnpjs/queryable/docs/queryable/</loc>
      <lastmod>2019-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>

@@ -1,6 +1,6 @@
 import { ISharePointQueryable } from "./sharepointqueryable.js";
 import { stringIsNullOrEmpty } from "@pnp/common";
-import { headers } from "@pnp/odata";
+import { headers } from "@pnp/queryable";
 
 /**
  * Includes this method name in the X-ClientService-ClientTag used to record pnpjs usage

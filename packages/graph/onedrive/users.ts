@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _User } from "../users/types.js";
 import { IDrive, Drive, IDrives, Drives } from "./types.js";
 

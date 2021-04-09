@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Folder } from "../folders/types.js";
 import { IFiles, Files } from "./types.js";
 

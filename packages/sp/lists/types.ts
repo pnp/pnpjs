@@ -1,5 +1,5 @@
 import { assign, dateAdd, hOP, isArray, objectDefinedNotNull } from "@pnp/common";
-import { body, headers } from "@pnp/odata";
+import { body, headers } from "@pnp/queryable";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,

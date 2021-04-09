@@ -1,5 +1,5 @@
 import { assign, ITypedHash } from "@pnp/common";
-import { body, headers } from "@pnp/odata";
+import { body, headers } from "@pnp/queryable";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,

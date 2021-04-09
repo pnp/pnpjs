@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Group } from "../groups/types.js";
 import { IPlans, Plans } from "./types.js";
 

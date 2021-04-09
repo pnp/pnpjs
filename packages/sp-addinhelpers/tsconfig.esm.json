@@ -9,7 +9,7 @@
         "./**/*.ts",
         "../logging/**/*.ts",
         "../common/**/*.ts",
-        "../odata/**/*.ts",
+        "../queryable/**/*.ts",
         "../sp/**/*.ts"
     ],
     "references": [

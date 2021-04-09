@@ -1,4 +1,4 @@
-import { addProp, body } from "@pnp/odata";
+import { addProp, body } from "@pnp/queryable";
 import { _Web, Web } from "../webs/types.js";
 import { ISiteUsers, SiteUsers, ISiteUser, SiteUser, IWebEnsureUserResult } from "./types.js";
 import { odataUrlFrom } from "../odata.js";

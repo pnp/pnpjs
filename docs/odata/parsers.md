@@ -1,4 +1,4 @@
-# @pnp/odata/parsers
+# @pnp/queryable/parsers
 
 This modules contains a set of generic parsers. These can be used or extended as needed, though it is likely in most cases the default parser will be all you need.
 
@@ -8,7 +8,7 @@ The simplest parser used to transform a Response into its JSON representation. T
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { JSONParser } from "@pnp/odata";
+import { JSONParser } from "@pnp/queryable";
 
 try {
 
@@ -62,7 +62,7 @@ Specialized parser used to parse the response using the .arrayBuffer() [node] fo
 Allows you to pass in any handler function you want, called if the request does not result in an error that transforms the raw, unread request into the result type.
 
 ```TypeScript
-import { LambdaParser } from "@pnp/odata";
+import { LambdaParser } from "@pnp/queryable";
 import { sp } from "@pnp/sp";
 
 // here a simple parser duplicating the functionality of the JSONParser

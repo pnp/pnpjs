@@ -1,4 +1,4 @@
-# @pnp/odata/odatabatch
+# @pnp/queryable/odatabatch
 
 This module contains an abstract class used as a base when inheriting libraries support batching.
 
@@ -9,5 +9,5 @@ be responsible for processing that info by implementing the abstract executeImpl
 
 ## ODataBatch
 
-Base class for building batching support for a library inheriting from @pnp/odata. You can see implementations of this abstract class in the @pnp/sp
+Base class for building batching support for a library inheriting from @pnp/queryable. You can see implementations of this abstract class in the @pnp/sp
 and @pnp/graph modules.

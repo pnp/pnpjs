@@ -1,4 +1,4 @@
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import {
     ConversationThread as IConversationThreadType,
     Post as IPostType,

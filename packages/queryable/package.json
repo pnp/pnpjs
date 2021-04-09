@@ -1,5 +1,5 @@
 {
-  "name": "@pnp/odata",
+  "name": "@pnp/queryable",
   "version": "0.0.0-PLACEHOLDER",
   "description": "pnp - provides shared odata functionality and base classes",
   "main": "./index.js",

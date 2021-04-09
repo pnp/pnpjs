@@ -178,7 +178,7 @@ To understand is how to extend functionality within the selective imports struct
 
 ```ts
 // import the addProp helper
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 // import the _List concrete class from the types module (not the index!)
 import { _List } from "../lists/types";
 // import the interface and factory we are going to add to the List

@@ -1,6 +1,6 @@
-# @pnp/odata/pipeline
+# @pnp/queryable/pipeline
 
-All of the odata requests processed by @pnp/odata pass through an extensible request pipeline. Each request is executed in a specific request context defined by the `RequestContext<T>` interface with the type parameter representing the type ultimately returned at the end a successful processing through the pipeline. Unless you are writing a pipeline method it is unlikely you will ever interact directly with the request pipeline.
+All of the odata requests processed by @pnp/queryable pass through an extensible request pipeline. Each request is executed in a specific request context defined by the `RequestContext<T>` interface with the type parameter representing the type ultimately returned at the end a successful processing through the pipeline. Unless you are writing a pipeline method it is unlikely you will ever interact directly with the request pipeline.
 
 ## interface `RequestContext<T>`
 

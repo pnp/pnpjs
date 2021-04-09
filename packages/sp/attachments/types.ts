@@ -7,7 +7,7 @@ import {
     deleteableWithETag,
     IDeleteableWithETag,
 } from "../sharepointqueryable.js";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/odata";
+import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/queryable";
 import { tag } from "../telemetry.js";
 
 @defaultPath("AttachmentFiles")

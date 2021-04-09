@@ -1,4 +1,4 @@
-import { invokableFactory, body, headers, IQueryable } from "@pnp/odata";
+import { invokableFactory, body, headers, IQueryable } from "@pnp/queryable";
 import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";

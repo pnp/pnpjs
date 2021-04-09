@@ -1,4 +1,4 @@
-import { Batch, IODataBatchRequestInfo } from "@pnp/odata";
+import { Batch, IODataBatchRequestInfo } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { assign, jsS, isUrlAbsolute, hOP, Runtime, DefaultRuntime } from "@pnp/common";
 import { IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";

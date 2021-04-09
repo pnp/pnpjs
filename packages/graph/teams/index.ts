@@ -1,4 +1,4 @@
-import { addProp, body } from "@pnp/odata";
+import { addProp, body } from "@pnp/queryable";
 import { GraphRest } from "../rest";
 import { _Group, Group } from "../groups/types";
 import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types";

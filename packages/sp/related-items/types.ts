@@ -2,7 +2,7 @@ import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryab
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { tag } from "../telemetry.js";
 
 @defaultPath("_api/SP.RelatedItemManager")

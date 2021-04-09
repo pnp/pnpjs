@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
-import { body, LambdaParser } from "@pnp/odata";
+import { body, LambdaParser } from "@pnp/queryable";
 import { assign } from "@pnp/common";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";

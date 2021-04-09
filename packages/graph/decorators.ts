@@ -1,6 +1,6 @@
 import { IGraphQueryable } from "./graphqueryable.js";
 import { graphDelete, graphPatch, graphPost } from "./operations.js";
-import { body, headers } from "@pnp/odata";
+import { body, headers } from "@pnp/queryable";
 
 /**
  * Decorator used to specify the default path for Queryable objects

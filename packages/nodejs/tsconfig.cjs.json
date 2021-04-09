@@ -3,7 +3,7 @@
     "include": [
         "./**/*.ts",
         "../common/**/*.ts",
-        "../odata/**/*.ts",
+        "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"
     ],
@@ -12,7 +12,7 @@
             "path": "../common/tsconfig.cjs.json"
         },
         {
-            "path": "../odata/tsconfig.cjs.json"
+            "path": "../queryable/tsconfig.cjs.json"
         },
         {
             "path": "../logging/tsconfig.cjs.json"

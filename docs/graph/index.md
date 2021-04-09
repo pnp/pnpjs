@@ -8,7 +8,7 @@ This package contains the fluent api used to call the graph rest services.
 
 Install the library and required dependencies
 
-`npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph --save`
+`npm install @pnp/logging @pnp/common @pnp/queryable @pnp/graph --save`
 
 Import the library into your application and access the root sp object
 
@@ -30,7 +30,7 @@ import "@pnp/graph/groups";
 
 Install the library and required dependencies
 
-`npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph --save`
+`npm install @pnp/logging @pnp/common @pnp/queryable @pnp/graph --save`
 
 Import the library into your application, update OnInit, and access the root sp object in render
 
@@ -71,7 +71,7 @@ public render(): void {
 
 Install the library and required dependencies
 
-`npm install @pnp/logging @pnp/common @pnp/odata @pnp/graph @pnp/nodejs --save`
+`npm install @pnp/logging @pnp/common @pnp/queryable @pnp/graph @pnp/nodejs --save`
 
 Import the library into your application, setup the node client, make a request
 

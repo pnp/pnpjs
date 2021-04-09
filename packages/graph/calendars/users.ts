@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _User } from "../users/types.js";
 import { Calendar, ICalendar, IEvents, Events, Calendars, ICalendars } from "./types.js";
 import { calendarView, ICalendarViewInfo } from "./funcs.js";

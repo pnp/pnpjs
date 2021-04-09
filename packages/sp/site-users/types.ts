@@ -8,7 +8,7 @@ import {
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { ITypedHash, assign } from "@pnp/common";
 import { metadata } from "../utils/metadata.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { PrincipalType } from "../types.js";

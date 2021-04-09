@@ -23,7 +23,7 @@
             "path": "./nodejs/tsconfig.cjs.json"
         },
         {
-            "path": "./odata/tsconfig.cjs.json"
+            "path": "./queryable/tsconfig.cjs.json"
         },
         {
             "path": "./sp/tsconfig.cjs.json"

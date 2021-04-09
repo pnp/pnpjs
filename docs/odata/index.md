@@ -1,4 +1,4 @@
-# @pnp/odata
+# @pnp/queryable
 
 [![npm version](https://badge.fury.io/js/%40pnp%2Fodata.svg)](https://badge.fury.io/js/%40pnp%2Fodata)
 
@@ -10,7 +10,7 @@ the core code is solid and well tested, with any updates benefitting all inherit
 
 Install the library and required dependencies
 
-`npm install @pnp/logging @pnp/common @pnp/odata --save`
+`npm install @pnp/logging @pnp/common @pnp/queryable --save`
 
 ## Library Topics
 

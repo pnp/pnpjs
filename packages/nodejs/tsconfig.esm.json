@@ -3,7 +3,7 @@
     "include": [
         "./**/*.ts",
         "../common/**/*.ts",
-        "../odata/**/*.ts",
+        "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"
     ],
@@ -15,7 +15,7 @@
             "path": "../logging/tsconfig.esm.json"
         },
         {
-            "path": "../odata/tsconfig.esm.json"
+            "path": "../queryable/tsconfig.esm.json"
         },
         {
             "path": "../sp/tsconfig.esm.json"

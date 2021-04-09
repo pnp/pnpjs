@@ -1,4 +1,4 @@
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";

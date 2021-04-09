@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pnp.github.io/pnpjs/odata/docs/parsers/">
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/queryable/docs/parsers/">
       
       
       
@@ -1706,15 +1706,15 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/odata/docs/parsers.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/queryable/docs/parsers.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpodataparsers">@pnp/odata/parsers<a class="headerlink" href="#pnpodataparsers" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpodataparsers">@pnp/queryable/parsers<a class="headerlink" href="#pnpodataparsers" title="Permanent link">&para;</a></h1>
 <p>This modules contains a set of generic parsers. These can be used or extended as needed, though it is likely in most cases the default parser will be all you need.</p>
 <h2 id="odatadefaultparser">ODataDefaultParser<a class="headerlink" href="#odatadefaultparser" title="Permanent link">&para;</a></h2>
 <p>The simplest parser used to transform a Response into its JSON representation. The default parser will handle errors in a consistent manner throwing an HttpRequestError instance. This class extends Error and adds the response, status, and statusText properties. The response object is unread. You can use this custom error as shown below to gather more information about what went wrong in the request.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">JSONParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">JSONParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/queryable&quot;</span><span class="p">;</span>
 
 <span class="k">try</span> <span class="p">{</span>
 
@@ -1758,7 +1758,7 @@
 <p>Specialized parser used to parse the response using the .arrayBuffer() [node] for .buffer() [browser] method with no other processing. Used primarily for files.</p>
 <h2 id="lambdaparser">LambdaParser<a class="headerlink" href="#lambdaparser" title="Permanent link">&para;</a></h2>
 <p>Allows you to pass in any handler function you want, called if the request does not result in an error that transforms the raw, unread request into the result type.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LambdaParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LambdaParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/queryable&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="c1">// here a simple parser duplicating the functionality of the JSONParser</span>
@@ -1856,7 +1856,7 @@
       
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/odata/docs/parsers/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/queryable/docs/parsers/" alt="spacer" />
 
   </body>
 </html>

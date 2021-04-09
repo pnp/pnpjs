@@ -1,7 +1,7 @@
 import { SPRest } from "../rest.js";
 import { SearchQueryInit } from "./types.js";
 import { _Search } from "./query.js";
-import { ICachingOptions } from "@pnp/odata";
+import { ICachingOptions } from "@pnp/queryable";
 import { SearchResults, Search } from "./query.js";
 import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest.js";
 

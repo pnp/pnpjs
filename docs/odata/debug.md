@@ -2,7 +2,7 @@
 
 Because all queryables are now represented as Proxy objects you can't immediately see the properties/method of the object or the data stored about the request. In certain debugging scenarios it can help to get visibility into the object that is wrapped by the proxy. To enable this we provide [a set of extensions](./extensions.md) to help.
 
-The debug extensions are added by including the `import "@pnp/odata/debug";` statement in your project. It should be removed for production. This module provides several methods to help with debugging Queryable Proxy objects.
+The debug extensions are added by including the `import "@pnp/queryable/debug";` statement in your project. It should be removed for production. This module provides several methods to help with debugging Queryable Proxy objects.
 
 ## Unwrap
 
@@ -11,7 +11,7 @@ The `__unwrap()` method returns the concrete Queryable instance wrapped by the P
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/odata/debug";
+import "@pnp/queryable/debug";
 
 // unwrap the underlying concrete queryable instance
 const unwrapped = sp.web.__unwrap();
@@ -28,7 +28,7 @@ All of the information related to a queryable's request is contained within the 
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/odata/debug";
+import "@pnp/queryable/debug";
 
 // get the underlying queryable's data
 const data = sp.web.__data;
@@ -43,7 +43,7 @@ You can also get a representation of the wrapped instance in JSON format consist
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/odata/debug";
+import "@pnp/queryable/debug";
 
 // get the underlying queryable's as JSON
 const data = sp.web.__json();
@@ -59,7 +59,7 @@ Deep tracing is the ability to write every property and method access to the log
 import { Logger, ConsoleListener } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/odata/debug";
+import "@pnp/queryable/debug";
 
 Logger.subscribe(new ConsoleListener());
 

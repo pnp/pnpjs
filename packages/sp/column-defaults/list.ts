@@ -1,4 +1,4 @@
-import { addProp, TextParser, headers, body } from "@pnp/odata";
+import { addProp, TextParser, headers, body } from "@pnp/queryable";
 import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";

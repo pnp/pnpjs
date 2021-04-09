@@ -949,7 +949,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -961,7 +961,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -973,7 +973,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -985,7 +985,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -997,7 +997,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1009,7 +1009,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1021,7 +1021,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1846,7 +1846,7 @@
                 <h1 id="pnpspfiles">@pnp/sp/files<a class="headerlink" href="#pnpspfiles" title="Permanent link">&para;</a></h1>
 <p>One of the more challenging tasks on the client side is working with SharePoint files, especially if they are large files. We have added some methods to the library to help and their use is outlined below.</p>
 <h2 id="reading-files">Reading Files<a class="headerlink" href="#reading-files" title="Permanent link">&para;</a></h2>
-<p>Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your <a href="../../../odata/docs/parsers/">own parser</a>.</p>
+<p>Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your <a href="../../../queryable/docs/parsers/">own parser</a>.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/documents/file.avi&quot;</span><span class="p">).</span><span class="nx">getBlob</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">blob</span>: <span class="kt">Blob</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{});</span>

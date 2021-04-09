@@ -25,7 +25,7 @@ This function is passed the current operation as the first argument, currently o
 Named extensions are designed to add or replace a single property or method, though you can register multiple using the same object. These extensions are defined by using an object which has the property/methods you want to override described. Registering named extensions globally will override that operation to all invokables.
 
 ```TypeScript
-import { extendFactory } from "@pnp/odata";
+import { extendFactory } from "@pnp/queryable";
 import { sp, List, Lists, IWeb, ILists, List, IList, Web } from "@pnp/sp/presets/all";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 
@@ -68,7 +68,7 @@ console.log(JSON.stringify(items.length, null, 2));
 You can also register a partial ProxyHandler implementation as an extension. You can implement one or more of the ProxyHandler methods as needed. Here we implement the same override of getByTitle globally. This is the most complicated method of creating an extension and assumes an understanding of how ProxyHandlers work.
 
 ```TypeScript
-import { extendFactory } from "@pnp/odata";
+import { extendFactory } from "@pnp/queryable";
 import { sp, Lists, IWeb, ILists, Web } from "@pnp/sp/presets/all";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeSingleQuote";
 
@@ -108,7 +108,7 @@ You can register Extensions either globally, on an invocable factory, or on a pe
 Globally registering an extension allows you to inject functionality into every invocable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.
 
 ```TypeScript
-import { extendGlobal } from "@pnp/odata";
+import { extendGlobal } from "@pnp/queryable";
 
 // we can add a logging method to very verbosely track what things are called in our application
 extendGlobal((op: string, _target: any, ...rest: any[]): void => {
@@ -136,7 +136,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IWeb, Web } from "@pnp/sp/webs";
 import { ILists, Lists } from "@pnp/sp/lists";
-import { extendFactory } from "@pnp/odata";
+import { extendFactory } from "@pnp/queryable";
 import { sp } from "@pnp/sp";
 
 // sets up the types correctly when importing across your application
@@ -192,7 +192,7 @@ You can also register Extensions on a single object instance, which is often the
 Here we show the same override operation of getByTitle on the lists collection, but safely only overriding the single instance.
 
 ``` TypeScript
-import { extendObj } from "@pnp/odata";
+import { extendObj } from "@pnp/queryable";
 import { sp, List, ILists } from "@pnp/sp/presets/all";
 
 const myExtensions = {
@@ -219,7 +219,7 @@ console.log(JSON.stringify(items.length, null, 2));
 Extensions are automatically enabled when you set an extension through any of the above outlined methods. You can disable and enable extensions on demand if needed.
 
 ```TypeScript
-import { enableExtensions, disableExtensions, clearGlobalExtensions } from "@pnp/odata";
+import { enableExtensions, disableExtensions, clearGlobalExtensions } from "@pnp/queryable";
 
 // disable Extensions
 disableExtensions();

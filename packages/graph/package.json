@@ -9,7 +9,7 @@
         "tslib": "2.1.0",
         "@pnp/common": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
-        "@pnp/odata": "0.0.0-PLACEHOLDER"
+        "@pnp/queryable": "0.0.0-PLACEHOLDER"
     },
     "author": {
         "name": "Microsoft and other contributors"

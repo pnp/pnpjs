@@ -291,7 +291,7 @@ _Happy Valentine's Day ❤_
 
 ### Added
 
-- docs: added [article](https://pnp.github.io/pnpjs/odata/debug.html) on using odata debugging extensions [[PR](https://github.com/pnp/pnpjs/pull/1037)]
+- docs: added [article](https://pnp.github.io/pnpjs/queryable/debug.html) on using odata debugging extensions [[PR](https://github.com/pnp/pnpjs/pull/1037)]
 - sp: added getFolderById and getFileById methods with tests and docs [[PR](https://github.com/pnp/pnpjs/pull/1042)]
 - graph: added people property to user [[PR](https://github.com/pnp/pnpjs/pull/1042)]
 - sp: added additional props to addValidateUpdateItemUsingPath method [[PR](https://github.com/pnp/pnpjs/pull/1042)]

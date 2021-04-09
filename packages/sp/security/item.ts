@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Item } from "../items/types.js";
 import { RoleAssignments, ISecurableMethods } from "./types.js";
 import { SharePointQueryableInstance } from "../sharepointqueryable.js";

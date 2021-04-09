@@ -3,7 +3,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable.js";
-import { body, headers } from "@pnp/odata";
+import { body, headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spDelete, spPatch } from "../operations.js";
 import { tag } from "../telemetry.js";

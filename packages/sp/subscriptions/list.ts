@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _List } from "../lists/types.js";
 import { Subscriptions, ISubscriptions } from "./types.js";
 

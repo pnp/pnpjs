@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Web, Web } from "../webs/types.js";
 import { Lists, ILists, IList, List } from "./types.js";
 import { odataUrlFrom } from "../odata.js";

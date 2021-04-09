@@ -1,5 +1,5 @@
 import { getGUID, isFunc } from "@pnp/common/util";
-import { ODataParser, extendFactory, headers } from "@pnp/odata";
+import { ODataParser, extendFactory, headers } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
 import { odataUrlFrom } from "@pnp/sp/odata";
 import { spPost } from "@pnp/sp/operations";

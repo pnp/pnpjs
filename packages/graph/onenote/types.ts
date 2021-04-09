@@ -1,4 +1,4 @@
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { Notebook as INotebookType, Onenote as IOnenoteType, OnenoteSection as ISectionType, OnenotePage as IOnenotePageType } from "@microsoft/microsoft-graph-types";
 import {
     GraphQueryableCollection,

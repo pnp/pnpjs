@@ -2,7 +2,7 @@ import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFacto
 import { OutlookUser as IOutlookType, OutlookCategory as IOutlookCategoryType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "@pnp/graph/decorators";
 import { graphPost } from "@pnp/graph";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 
 /**
  * Outlook

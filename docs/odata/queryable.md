@@ -1,4 +1,4 @@
-# @pnp/odata/queryable
+# @pnp/queryable/queryable
 
 The Queryable class is the base class for all of the libraries building fluent request apis.
 
@@ -23,7 +23,7 @@ Directly concatenates the supplied string to the current url, not normalizing "/
 Sets custom options for current object and all derived objects accessible via chaining
 
 ```TypeScript
-import { ConfigOptions } from "@pnp/odata";
+import { ConfigOptions } from "@pnp/queryable";
 import { sp } from "@pnp/sp";
 
 const headers: ConfigOptions = {

@@ -1,7 +1,7 @@
 import { ISPInvokableFactory } from "./sharepointqueryable.js";
 import { assign, combine, hOP, isUrlAbsolute } from "@pnp/common";
 import { Logger, LogLevel } from "@pnp/logging";
-import { ODataParser } from "@pnp/odata";
+import { ODataParser } from "@pnp/queryable";
 import { extractWebUrl } from "./utils/extractweburl.js";
 
 export function odataUrlFrom(candidate: any): string {

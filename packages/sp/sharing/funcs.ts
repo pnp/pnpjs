@@ -1,4 +1,4 @@
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { jsS, assign } from "@pnp/common";
 import { SharePointQueryableCollection, SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";

@@ -11,7 +11,7 @@ import {
 } from "../sharepointqueryable.js";
 import { assign, ITypedHash, hOP } from "@pnp/common";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { ODataParser, body, headers } from "@pnp/odata";
+import { ODataParser, body, headers } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata.js";

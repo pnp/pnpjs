@@ -122,7 +122,7 @@ const randomString = getRandomString(10);
 Shortcut for Object.hasOwnProperty. Determines if an object has a specified property.
 
 ```TypeScript
-import { HttpRequestError } from "@pnp/odata";
+import { HttpRequestError } from "@pnp/queryable";
 import { hOP } from "@pnp/common";
 
 export async function handleError(e: Error | HttpRequestError): Promise<void> {

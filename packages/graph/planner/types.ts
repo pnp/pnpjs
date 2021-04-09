@@ -7,7 +7,7 @@ import {
     PlannerBucket as IPlannerBucketType,
     Planner as IPlannerType,
 } from "@microsoft/microsoft-graph-types";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators.js";
 import { graphPost } from "../operations.js";

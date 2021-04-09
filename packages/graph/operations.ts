@@ -1,5 +1,5 @@
 import { Runtime, IFetchOptions, IRequestClient, isFunc, mergeOptions, objectDefinedNotNull } from "@pnp/common";
-import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/odata";
+import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/queryable";
 import { GraphHttpClient } from "./graphhttpclient.js";
 import { IGraphQueryable } from "./graphqueryable.js";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";

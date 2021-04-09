@@ -1,6 +1,6 @@
 import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { headers, body } from "@pnp/odata";
+import { headers, body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { hOP } from "@pnp/common";
 import { tag } from "../telemetry.js";

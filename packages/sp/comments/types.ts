@@ -7,7 +7,7 @@ import {
 import { assign } from "@pnp/common";
 import { odataUrlFrom } from "../odata.js";
 import { metadata } from "../utils/metadata.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 

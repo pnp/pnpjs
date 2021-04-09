@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
-import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/odata";
+import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
 import { metadata } from "./utils/metadata.js";

@@ -5,7 +5,7 @@ import { extractWebUrl } from "../utils/extractweburl.js";
 import { RoleType } from "./types.js";
 import { shareObject } from "./funcs.js";
 import { combine } from "@pnp/common";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 
 /**

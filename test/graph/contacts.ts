@@ -3,7 +3,7 @@ import { testSettings } from "../main.js";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/contacts";
-import { HttpRequestError } from "@pnp/odata";
+import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
 
 describe("Contacts", function () {

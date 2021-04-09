@@ -50,7 +50,7 @@ In some cases the response body will have additional details such as a localized
 
 ```TypeScript
 import { sp } from "@pnp/sp/presets/all";
-import { HttpRequestError } from "@pnp/odata";
+import { HttpRequestError } from "@pnp/queryable";
 
 try {
   
@@ -104,7 +104,7 @@ You may want to read the response and customize the message as described above:
 ```TypeScript
 import { Logger } from "@pnp/logging";
 import { sp } from "@pnp/sp/presets/all";
-import { HttpRequestError } from "@pnp/odata";
+import { HttpRequestError } from "@pnp/queryable";
 
 try {
   // get a list that doesn't exist
@@ -144,7 +144,7 @@ After reviewing the above section you might have thought it seems like a lot of 
 
 ```TypeScript
 import { Logger } from "@pnp/logging";
-import { HttpRequestError } from "@pnp/odata";
+import { HttpRequestError } from "@pnp/queryable";
 import { hOP } from "@pnp/common";
 
 export async function handleError(e: Error | HttpRequestError): Promise<void> {

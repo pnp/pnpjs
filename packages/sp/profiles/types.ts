@@ -8,7 +8,7 @@ import {
 } from "../sharepointqueryable.js";
 import { assign } from "@pnp/common";
 import { metadata } from "../utils/metadata.js";
-import { body } from "@pnp/odata";
+import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";

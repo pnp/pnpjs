@@ -1,8 +1,8 @@
-# @pnp/odata/caching
+# @pnp/queryable/caching
 
 Often times data doesn't change that quickly, especially in the case of rolling up corporate news or upcoming events. These types of things can be cached for minutes if not hours. To help make caching easy you just need to insert the usingCaching method in your chain. This only applies to get requests. The usingCaching method can be used with the inBatch method as well to cache the results of batched requests.
 
-The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/odata base classes, such as @pnp/graph.
+The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/queryable base classes, such as @pnp/graph.
 
 ## Basic example
 

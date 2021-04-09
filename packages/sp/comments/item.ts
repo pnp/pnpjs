@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
 import { spPost } from "../operations.js";

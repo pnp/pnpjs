@@ -9,7 +9,7 @@
 
 
 // we import the extendFactory function for use below
-import { extendFactory } from "@pnp/odata";
+import { extendFactory } from "@pnp/queryable";
 
 // we grab the SPRest object so we can export an sp const from this "preset"
 import { SPRest } from "@pnp/sp";
@@ -38,7 +38,7 @@ declare module "@pnp/sp/webs/types" {
 
 
 // we can also add an extension here that will be applied within our entire project
-// for more info checkout the article on extensions: ./docs/odata/extensions.md
+// for more info checkout the article on extensions: ./docs/queryable/extensions.md
 extendFactory(Web, {
 
     ensureSpecialList: async function (this: IWeb, title: string, description: string = "An example"): Promise<void> {

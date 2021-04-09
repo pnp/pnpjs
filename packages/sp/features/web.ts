@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { Features, IFeatures } from "./types.js";
 

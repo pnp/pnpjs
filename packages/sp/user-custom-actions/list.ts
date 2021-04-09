@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/odata";
+import { addProp } from "@pnp/queryable";
 import { _List } from "../lists/types.js";
 import { UserCustomActions, IUserCustomActions } from "./types.js";
 
