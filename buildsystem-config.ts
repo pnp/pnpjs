@@ -1,21 +1,5 @@
 import { resolve } from "path";
 import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
-const webpack = Tasks.Package.webpack;
-import * as wp from "webpack";
-
-const pkg = require("./package.json");
-
-const banner = [
-    "/**",
-    ` * @license`,
-    ` * v${pkg.version}`,
-    ` * ${pkg.license} (https://github.com/pnp/pnpjs/blob/main/LICENSE)`,
-    ` * Copyright (c) ${new Date().getFullYear()} Microsoft`,
-    " * docs: https://pnp.github.io/pnpjs/",
-    ` * source: ${pkg.homepage}`,
-    ` * bugs: ${pkg.bugs.url}`,
-    " */",
-].join("\n");
 
 export default <ConfigCollection>[
     <BuildSchema>{
@@ -122,51 +106,7 @@ export default <ConfigCollection>[
             },
         ],
 
-        postPackageTasks: [
-            webpack({
-                devtool: "source-map",
-                entry: resolve("./build/packages/esm/pnpjs/index.js"),
-                mode: "production",
-                output: {
-                    filename: "pnp.js",
-                    library: "pnp",
-                    libraryTarget: "umd",
-                    path: resolve("./dist/packages/esm/pnpjs/dist"),
-                },
-                performance: {
-                    // we are making a big package, but this is designed to be non-optimal
-                    maxAssetSize: 400000,
-                    maxEntrypointSize: 400000,
-                },
-                plugins: [
-                    new wp.BannerPlugin({
-                        banner,
-                        raw: true,
-                    }),
-                ],
-                resolve: {
-                    alias: {
-                        // a list of module name aliases
-                        // aliases are imported relative to the current context
-                        "@pnp/adaljsclient": resolve(__dirname, "build/packages/esm/adaljsclient"),
-                        "@pnp/common": resolve(__dirname, "build/packages/esm/common"),
-                        "@pnp/logging": resolve(__dirname, "build/packages/esm/logging"),
-                        // tslint:disable-next-line: object-literal-sort-keys
-                        "@pnp/config-store": resolve(__dirname, "build/packages/esm/config-store"),
-                        "@pnp/graph": resolve(__dirname, "build/packages/esm/graph"),
-                        "@pnp/msaljsclient": resolve(__dirname, "build/packages/esm/msaljsclient"),
-                        "@pnp/odata": resolve(__dirname, "build/packages/esm/odata"),
-                        "@pnp/sp": resolve(__dirname, "build/packages/esm/sp"),
-                        "@pnp/sp-addinhelpers": resolve(__dirname, "build/packages/esm/sp-addinhelpers"),
-                    },
-                    extensions: [".js", ".ts", ".json"],
-                },
-                stats: {
-                    assets: false,
-                    colors: true,
-                },
-            }),
-        ],
+        postPackageTasks: [],
     },
     <PublishSchema>{
 

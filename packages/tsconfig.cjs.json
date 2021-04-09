@@ -8,13 +8,7 @@
     "include": [],
     "references": [
         {
-            "path": "./adaljsclient/tsconfig.cjs.json"
-        },
-        {
             "path": "./common/tsconfig.cjs.json"
-        },
-        {
-            "path": "./config-store/tsconfig.cjs.json"
         },
         {
             "path": "./graph/tsconfig.cjs.json"
@@ -30,9 +24,6 @@
         },
         {
             "path": "./odata/tsconfig.cjs.json"
-        },
-        {
-            "path": "./pnpjs/tsconfig.cjs.json"
         },
         {
             "path": "./sp/tsconfig.cjs.json"

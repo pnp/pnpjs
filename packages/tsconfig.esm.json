@@ -8,13 +8,7 @@
     "include": [],
     "references": [
         {
-            "path": "./adaljsclient/tsconfig.esm.json"
-        },
-        {
             "path": "./common/tsconfig.esm.json"
-        },
-        {
-            "path": "./config-store/tsconfig.esm.json"
         },
         {
             "path": "./graph/tsconfig.esm.json"
@@ -30,9 +24,6 @@
         },
         {
             "path": "./odata/tsconfig.esm.json"
-        },
-        {
-            "path": "./pnpjs/tsconfig.esm.json"
         },
         {
             "path": "./sp/tsconfig.esm.json"
