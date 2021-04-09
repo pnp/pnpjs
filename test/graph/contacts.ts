@@ -8,9 +8,8 @@ import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
 
 describe("Contacts", function () {
 
-
     // We can't test for graph.me.contacts calls in an application context
-    if (testSettings.enableWebTests) {
+    if (testSettings.enableWebTests && (testSettings.testUser?.length > 0)) {
         let testUserName = "";
         let testContactID = "";
         let testContact2ID = "";

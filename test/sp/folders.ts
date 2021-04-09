@@ -23,7 +23,7 @@ describe("Folders", () => {
 
         it("adds new folder", function () {
             const name = `test_${getRandomString(4)}`;
-            return expect(web.folders.add(name)).to.eventually.be.fulfilled;
+            return expect(web.folders.add(`Shared Documents/${name}`)).to.eventually.be.fulfilled;
         });
 
         it("gets folder by name", function () {

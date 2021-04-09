@@ -8,15 +8,15 @@ declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
-  spSetup(settings);
+    spSetup(settings);
 
-  const w = await sp.web();
+    const w = await sp.web();
 
-  Logger.log({
-    data: w,
-    level: LogLevel.Info,
-    message: "List of Web Data",
-  });
+    Logger.log({
+        data: w,
+        level: LogLevel.Info,
+        message: "List of Web Data",
+    });
 
-  process.exit(0);
+    process.exit(0);
 }

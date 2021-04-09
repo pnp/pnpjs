@@ -266,6 +266,7 @@ describe("Clientside Pages", () => {
                 let web: IWeb;
                 let page: IClientsidePage;
                 let userId: number;
+                let userPrincipalName: string;
                 let pageUrl: string;
 
                 before(async function () {
@@ -281,7 +282,7 @@ describe("Clientside Pages", () => {
 
                     const ensureTestUser = await sp.web.ensureUser(testSettings.testUser);
                     userId = ensureTestUser.data.Id;
-
+                    userPrincipalName = ensureTestUser.data.Email;
                 });
 
                 it(".setAuthorById()", async function () {
@@ -290,7 +291,7 @@ describe("Clientside Pages", () => {
                     await page.save();
 
                     const page2 = await web.loadClientsidePage(pageUrl);
-                    expect(page2.authorByLine).to.eq(testSettings.testUser);
+                    expect(page2.authorByLine).to.eq(userPrincipalName);
                 });
 
                 it(".setAuthorByLoginName()", async function () {
@@ -299,7 +300,7 @@ describe("Clientside Pages", () => {
 
                     const page2 = await web.loadClientsidePage(pageUrl);
 
-                    expect(page2.authorByLine).to.eq(testSettings.testUser);
+                    expect(page2.authorByLine).to.eq(userPrincipalName);
                 });
             });
         }
