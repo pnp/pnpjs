@@ -39,7 +39,7 @@ function mergeRequestInit(target: QueryableRequestInit, source: QueryableRequest
 }
 
 const DefaultBehavior = {
-    first: function (handlers: (((message: string) => number) | ((num: number) => void))[]) {
+    pre: function (handlers: ((this: Queryable2) => Promise<void>)[]) {
         console.log(handlers.length);
     },
 };
@@ -65,10 +65,6 @@ export class Queryable2 extends Timeline<typeof DefaultBehavior> {
         this._url = url;
 
         this._parent = parent || null;
-
-        this.on.first((message) => {
-            console.log(message);
-        });
 
         // this._events = new Timeline();
 
