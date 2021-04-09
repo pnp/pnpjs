@@ -1,12 +1,11 @@
 import { expect } from "chai";
+import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 import { testSettings } from "../main";
 import { OutlookCategory } from "@microsoft/microsoft-graph-types";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
-
-import getValidUser from "./utilities/getValidUser.js";
 
 describe("Outlook", function () {
     if (testSettings.enableWebTests) {
@@ -15,10 +14,10 @@ describe("Outlook", function () {
 
         // Ensure we have the data to test against
         this.beforeAll(async function () {
-
-            const userInfo = await getValidUser();
-            testUserName = userInfo.userPrincipalName;
-
+            if (testSettings.testUser?.length > 0) {
+                const ensureTestUser = await sp.web.ensureUser(testSettings.testUser);
+                testUserName = ensureTestUser.data.LoginName;
+            }
         });
 
         // Clean up testing categories
