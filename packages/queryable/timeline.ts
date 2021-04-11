@@ -2,26 +2,27 @@ import { isArray, isFunc } from "@pnp/common";
 import { LogLevel } from "@pnp/logging";
 
 
-export type ObserverThis<F extends (...args: any[]) => any, T = Pick<_Timeline<any>, "error" | "log">> = (this: T, ...args: Parameters<F>) => ReturnType<F>;
 
-export type ObserverAction = ObserverThis<(...args: any[]) => void>;
+export type ObserverAction = (this: _Timeline<any>, ...args: any[]) => void;
 
-export type ObserverFunction = ObserverThis<(...args: any[]) => Promise<any>>;
+export type ObserverFunction<R = any> = (this: _Timeline<any>, ...args: any[]) => Promise<R>;
 
 export type ValidObservers = ObserverAction | ObserverFunction;
 
 export type Moments = Record<string, (this: _Timeline<any>, handlers: ValidObservers[], ...args: any[]) => void>;
 
-type DistributeOn<T extends Moments> = { [Prop in string & keyof T]: (handler: Parameters<T[Prop]>[0][number], prepend?: boolean) => ReturnType<Parameters<T[Prop]>[0][number]> };
+type DistributeOn<T extends Moments> =
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], prepend?: boolean) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
-type DistributeEmit<T extends Moments> = { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
+type DistributeEmit<T extends Moments> =
+    { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
  * Virtual events that are present on all Timelines
  */
 export type DefaultTimelineEvents = {
-    log: (observers: ObserverThis<(message: string, level: LogLevel) => void>[], ...args: any[]) => void;
-    error: (observers: ObserverThis<(err: string | Error) => void>[], ...args: any[]) => void;
+    log: (observers: ((this: _Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
+    error: (observers: ((this: _Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
 export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents>;
@@ -32,26 +33,25 @@ export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmi
 
 
 
-
-
-
 export function Timeline<T extends Moments>(moments: T): _Timeline<T> {
     return new _Timeline<T>(moments);
 }
 
-class _Timeline<T extends Moments> {
+export class _Timeline<T extends Moments> {
 
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     constructor(private readonly moments: T, private observers = {}) { }
 
     public get on(): OnProxyType<T> {
 
         if (this._onProxy === null) {
-            this._onProxy = new Proxy(this.observers, {
+            this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => (handler, prepend = false) => {
-                    return addObserver(target, p, handler, prepend);
+                    return addObserver(target.observers, p, handler, prepend);
                 },
             });
         }
@@ -62,10 +62,14 @@ class _Timeline<T extends Moments> {
     public get emit(): EmitProxyType<T> {
 
         if (this._emitProxy === null) {
-            this._emitProxy = new Proxy(this.observers, {
+            this._emitProxy = new Proxy(this, {
                 get: (target: any, p: string) => (...args: any[]) => {
-                    const moment = Reflect.get(this.moments, p);
-                    const observers = Reflect.get(target, p);
+
+                    const observers = Reflect.get(target.observers, p);
+
+                    // default to broadcasting any events without specific impl (will apply to defaults)
+                    const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+
                     return Reflect.apply(moment, this, [observers, ...args]);
                 },
             });
@@ -74,17 +78,12 @@ class _Timeline<T extends Moments> {
         return <any>this._emitProxy;
     }
 
-    public log(message: string) {
-        console.log(`timeline log: ${message}`);
+    public log(message: string, level: LogLevel = LogLevel.Info): void {
+        this.emit.log(message, level);
     }
 
-    public error(err: string | Error) {
-
-        if (err instanceof Error) {
-            throw err;
-        }
-
-        throw Error(err);
+    public error(err: string | Error): void {
+        this.emit.error(err);
     }
 }
 
@@ -102,16 +101,19 @@ export function broadcast<T extends ObserverAction>(): (handlers: T[], ...args: 
     };
 }
 
-export function asyncReduce<T extends ObserverFunction>(): (handlers: T[], ...args: any[]) => Promise<ReturnType<T>> {
+export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (handlers: T[], ...args: [...Parameters<T>]) => Promise<[...Parameters<T>]> {
 
-    return async function (handlers: T[], ...args: any[]): Promise<ReturnType<T>> {
+    return async function (handlers: T[], ...args: [...Parameters<T>]): Promise<[...Parameters<T>]> {
 
-        let r: ReturnType<T> = undefined;
+        // get our intial values
+        let r = args;
 
+        // process each handler which updates our "state" in order
+        // returning the new "state" as a tuple [...Parameters<T>]
         for (let i = 0; i < handlers.length; i++) {
 
             try {
-                r = await Reflect.apply(handlers[i], this, args);
+                r = await Reflect.apply(handlers[i], this, r);
             } catch (e) {
                 this.error(e);
             }

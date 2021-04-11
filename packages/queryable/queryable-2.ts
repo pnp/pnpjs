@@ -38,13 +38,13 @@ function mergeRequestInit(target: QueryableRequestInit, source: QueryableRequest
     return target;
 }
 
-const DefaultBehavior = {
-    pre: function (handlers: ((this: Queryable2) => Promise<void>)[]) {
-        console.log(handlers.length);
-    },
-};
+// const DefaultBehavior = {
+//     pre: function (handlers: ((this: Queryable2) => Promise<void>)[]) {
+//         console.log(handlers.length);
+//     },
+// };
 
-export class Queryable2 extends Timeline<typeof DefaultBehavior> {
+export class Queryable2 {
 
     private _runtime: Runtime;
     private _request: QueryableRequestInit;
@@ -53,8 +53,6 @@ export class Queryable2 extends Timeline<typeof DefaultBehavior> {
     // private _events: Timeline;
 
     constructor(init: QueryableInit) {
-
-        super(DefaultBehavior);
 
         const { requestInit, url, parent } = init;
 
