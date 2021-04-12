@@ -2,7 +2,6 @@ import { isArray, isFunc } from "@pnp/common";
 import { LogLevel } from "@pnp/logging";
 
 
-
 export type ObserverAction = (this: _Timeline<any>, ...args: any[]) => void;
 
 export type ObserverFunction<R = any> = (this: _Timeline<any>, ...args: any[]) => Promise<R>;
@@ -67,10 +66,13 @@ export class _Timeline<T extends Moments> {
 
                     const observers = Reflect.get(target.observers, p);
 
-                    // default to broadcasting any events without specific impl (will apply to defaults)
-                    const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+                    if (isArray(observers) && observers.length > 0) {
 
-                    return Reflect.apply(moment, this, [observers, ...args]);
+                        // default to broadcasting any events without specific impl (will apply to defaults)
+                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+
+                        return Reflect.apply(moment, this, [observers, ...args]);
+                    }
                 },
             });
         }
@@ -126,7 +128,7 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
 function addObserver(target: Record<string, any>, moment: string, observer: ValidObservers | ObserverFunction, prepend = false): any[] {
 
     if (!isFunc(observer)) {
-        throw Error("Event handlers must be functions.");
+        throw Error("Observers must be functions.");
     }
 
     if (!Reflect.has(target, moment)) {
