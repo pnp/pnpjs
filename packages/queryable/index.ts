@@ -7,8 +7,12 @@ export * from "./parsers.js";
 export * from "./pipeline.js";
 export * from "./queryable.js";
 export * from "./request-builders.js";
+
+
 export { Queryable2 } from "./queryable-2.js";
 export * from "./timeline.js";
+export * from "./moments.js";
+
 export {
     extendGlobal,
     extendObj,

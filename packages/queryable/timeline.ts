@@ -1,18 +1,36 @@
-import { isArray, isFunc } from "@pnp/common";
 import { LogLevel } from "@pnp/logging";
+import { isArray, isFunc } from "@pnp/common";
+import { broadcast } from "./moments.js";
 
+/**
+ * Represents an observer that does not affect the timeline
+ */
+export type ObserverAction = (this: Timeline<any>, ...args: any[]) => void;
 
-export type ObserverAction = (this: _Timeline<any>, ...args: any[]) => void;
+/**
+ * Represents an observer with side effects within the timeline
+ */
+export type ObserverFunction<R = any> = (this: Timeline<any>, ...args: any[]) => Promise<R>;
 
-export type ObserverFunction<R = any> = (this: _Timeline<any>, ...args: any[]) => Promise<R>;
+/**
+ * Defines the set of all valid observer types
+ */
+export type ValidObserver = ObserverAction | ObserverFunction;
 
-export type ValidObservers = ObserverAction | ObserverFunction;
+/**
+ * The set of moments that make up a timeline
+ */
+export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserver[], ...args: any[]) => void>;
 
-export type Moments = Record<string, (this: _Timeline<any>, handlers: ValidObservers[], ...args: any[]) => void>;
-
+/**
+ * A type used to represent the proxied Timeline.on property
+ */
 type DistributeOn<T extends Moments> =
     { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], prepend?: boolean) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
+/**
+ * A type used to represent the proxied Timeline.emit property
+ */
 type DistributeEmit<T extends Moments> =
     { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
@@ -20,23 +38,25 @@ type DistributeEmit<T extends Moments> =
  * Virtual events that are present on all Timelines
  */
 export type DefaultTimelineEvents = {
-    log: (observers: ((this: _Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
-    error: (observers: ((this: _Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
+    log: (observers: ((this: Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
+    error: (observers: ((this: Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
+/**
+ * The type combining the defined moments and DefaultTimelineEvents
+ */
 export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents>;
 
+/**
+ * The type combining the defined moments and DefaultTimelineEvents
+ */
 export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents>;
 
-
-
-
-
-export function Timeline<T extends Moments>(moments: T): _Timeline<T> {
-    return new _Timeline<T>(moments);
-}
-
-export class _Timeline<T extends Moments> {
+/**
+ * Timeline represents a set of operations executed in order of definition,
+ * with each "moment's" behavior controlled by the implementing function
+ */
+export abstract class Timeline<T extends Moments> {
 
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
@@ -45,6 +65,9 @@ export class _Timeline<T extends Moments> {
     // @ts-ignore
     constructor(private readonly moments: T, private observers = {}) { }
 
+    /**
+     * Property allowing access to subscribe observers to all the moments within this timline
+     */
     public get on(): OnProxyType<T> {
 
         if (this._onProxy === null) {
@@ -58,6 +81,28 @@ export class _Timeline<T extends Moments> {
         return <any>this._onProxy;
     }
 
+    /**
+     * Shorthand method to emit a logging event tied to this timeline
+     *
+     * @param message The message to log
+     * @param level The level at which the message applies (default: LogLevel.Info)
+     */
+    public log(message: string, level: LogLevel = LogLevel.Info): void {
+        this.emit.log(message, level);
+    }
+
+    /**
+     * Shorthand method to emit an error tied to this timeline
+     *
+     * @param err The error details to emit
+     */
+    public error(err: string | Error): void {
+        this.emit.error(err);
+    }
+
+    /**
+     * Property allowing access to invoke a moment from within this timeline
+     */
     public get emit(): EmitProxyType<T> {
 
         if (this._emitProxy === null) {
@@ -72,6 +117,11 @@ export class _Timeline<T extends Moments> {
                         const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
 
                         return Reflect.apply(moment, this, [observers, ...args]);
+
+                    } else if (p === "error") {
+
+                        // if we are emitting an error, and no error observers are defined, we throw
+                        throw Error(`Unhandled Exception: ${args[0]}`);
                     }
                 },
             });
@@ -80,52 +130,21 @@ export class _Timeline<T extends Moments> {
         return <any>this._emitProxy;
     }
 
-    public log(message: string, level: LogLevel = LogLevel.Info): void {
-        this.emit.log(message, level);
-    }
-
-    public error(err: string | Error): void {
-        this.emit.error(err);
-    }
+    /**
+     * When implemented by an instance of Timeline orchestrates the moments within the timeline
+     */
+    protected abstract start(): Promise<void>;
 }
 
-export function broadcast<T extends ObserverAction>(): (handlers: T[], ...args: any[]) => void {
-
-    return function (handlers: T[], ...args: any[]): void {
-
-        for (let i = 0; i < handlers.length; i++) {
-            try {
-                Reflect.apply(handlers[i], this, args);
-            } catch (e) {
-                this.error(e);
-            }
-        }
-    };
-}
-
-export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (handlers: T[], ...args: [...Parameters<T>]) => Promise<[...Parameters<T>]> {
-
-    return async function (handlers: T[], ...args: [...Parameters<T>]): Promise<[...Parameters<T>]> {
-
-        // get our intial values
-        let r = args;
-
-        // process each handler which updates our "state" in order
-        // returning the new "state" as a tuple [...Parameters<T>]
-        for (let i = 0; i < handlers.length; i++) {
-
-            try {
-                r = await Reflect.apply(handlers[i], this, r);
-            } catch (e) {
-                this.error(e);
-            }
-        }
-
-        return r;
-    };
-}
-
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObservers | ObserverFunction, prepend = false): any[] {
+/**
+ * Adds an observer to a given target
+ *
+ * @param target The object to which events are registered
+ * @param moment The name of the moment to which the observer is registered
+ * @param prepend If true the observer is prepended to the collection (default: false)
+ *
+ */
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, prepend = false): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
