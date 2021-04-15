@@ -1,6 +1,9 @@
 import { LogLevel } from "@pnp/logging";
 import { isArray, isFunc } from "@pnp/common";
 import { broadcast } from "./moments.js";
+import { addListener } from "node:cluster";
+
+export type ObsererAddBehavior = "add" | "replace" | "prepend";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -26,7 +29,7 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
  * A type used to represent the proxied Timeline.on property
  */
 type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], prepend?: boolean) => ReturnType<Parameters<T[Prop]>[0][number]> };
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObsererAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -72,8 +75,8 @@ export abstract class Timeline<T extends Moments> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler, prepend = false) => {
-                    return addObserver(target.observers, p, handler, prepend);
+                get: (target: any, p: string) => (handler, addBehavior: ObsererAddBehavior = "add") => {
+                    return addObserver(target.observers, p, handler, addBehavior);
                 },
             });
         }
@@ -103,7 +106,7 @@ export abstract class Timeline<T extends Moments> {
     /**
      * Property allowing access to invoke a moment from within this timeline
      */
-    public get emit(): EmitProxyType<T> {
+    protected get emit(): EmitProxyType<T> {
 
         if (this._emitProxy === null) {
             this._emitProxy = new Proxy(this, {
@@ -113,10 +116,20 @@ export abstract class Timeline<T extends Moments> {
 
                     if (isArray(observers) && observers.length > 0) {
 
-                        // default to broadcasting any events without specific impl (will apply to defaults)
-                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+                        try {
+                            // default to broadcasting any events without specific impl (will apply to defaults)
+                            const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
 
-                        return Reflect.apply(moment, this, [observers, ...args]);
+                            return Reflect.apply(moment, this, [observers, ...args]);
+
+                        } catch (e) {
+
+                            if (p !== "error") {
+                                this.emit.error(e);
+                            } else {
+                                throw e;
+                            }
+                        }
 
                     } else if (p === "error") {
 
@@ -129,11 +142,6 @@ export abstract class Timeline<T extends Moments> {
 
         return <any>this._emitProxy;
     }
-
-    /**
-     * When implemented by an instance of Timeline orchestrates the moments within the timeline
-     */
-    protected abstract start(): Promise<void>;
 }
 
 /**
@@ -144,25 +152,36 @@ export abstract class Timeline<T extends Moments> {
  * @param prepend If true the observer is prepended to the collection (default: false)
  *
  */
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, prepend = false): any[] {
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObsererAddBehavior = "add"): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
     }
 
     if (!Reflect.has(target, moment)) {
+
+        // if we don't have a registration for this moment, then we just add a new prop
         Reflect.defineProperty(target, moment, {
             value: [observer],
             configurable: true,
             enumerable: true,
             writable: true,
         });
+
     } else {
 
-        if (prepend) {
-            target[moment].unshift(observer);
-        } else {
-            target[moment].push(observer);
+        // if we have an existing property then we follow the specified behavior
+        switch (addBehavior) {
+            case "add":
+                target[moment].push(observer);
+                break;
+            case "prepend":
+                target[moment].unshift(observer);
+                break;
+            case "replace":
+                target[moment].length = 0;
+                target[moment].push(observer);
+                break;
         }
     }
 

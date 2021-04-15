@@ -26,22 +26,19 @@ export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "re
     headers?: Record<string, string>;
 };
 
-function mergeRequestInit(target: QueryableRequestInit, source: QueryableRequestInit): QueryableRequestInit {
-    if (!objectDefinedNotNull(target)) {
-        target = {};
-    }
-    const headers = assign(target.headers || {}, source.headers);
-    target = Object.assign(target, source);
-    target.headers = headers;
+export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<[string, RequestInit]>;
 
-    return target;
-}
+export type QueryableSendObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
+
+export type QueryablePostObserver = (this: IQueryable2, url: string, response: Response, result: any | undefined) => Promise<[string, Response, any]>;
+
+export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
 
 const DefaultBehaviors = {
-    pre: asyncReduce<(this: IQueryable2, url: string, init: RequestInit) => Promise<[string, RequestInit]>>(),
-    send: request<(this: IQueryable2, url: string, init: RequestInit) => Promise<Response>>(),
-    post: asyncReduce<(this: IQueryable2, url: string, response: Response, result: any | undefined) => Promise<[string, Response, any]>>(),
-    data: broadcast<(this: IQueryable2, result: any) => void>(),
+    pre: asyncReduce<QueryablePreObserver>(),
+    send: request<QueryableSendObserver>(),
+    post: asyncReduce<QueryablePostObserver>(),
+    data: broadcast<QueryableDataObserver>(),
 } as const;
 
 // export interface IQueryableData<DefaultActionType = any> {
@@ -110,16 +107,23 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         this._runtime = null;
     }
 
+    public async using(behavior: (intance: this) => Promise<void>): Promise<this> {
+        await behavior(this);
+        return this;
+    }
+
     public async start(): Promise<any> {
 
         setTimeout(async () => {
 
             const [url, init] = await this.emit.pre(this.toUrl(), {
                 method: "GET",
+                headers: {},
             });
 
             const response = await this.emit.send(url, init);
 
+            // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const [_url, _resp, result] = await this.emit.post(url, response, undefined);
 
