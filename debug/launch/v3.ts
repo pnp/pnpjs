@@ -2,64 +2,28 @@ import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 import { spSetup } from "./setup.js";
-import { broadcast, asyncReduce, Queryable2, InjectHeaders, Timeline, Moments } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError } from "@pnp/queryable";
 import "@pnp/sp/webs";
-import { default as nodeFetch } from "node-fetch";
-import { MSAL, NodeSend, MSAL2 } from "@pnp/nodejs";
-import { combine } from "@pnp/common";
+import { NodeSend, MSAL2 } from "@pnp/nodejs";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
 
 declare var process: { exit(code?: number): void };
 
-const moments = {
-    event1: broadcast(),
-    event2: broadcast(),
-} as const;
-
-class OrderedEmitter extends Timeline<typeof moments> {
-    constructor() {
-        super(moments);
-    }
-
-    public async run(...args: any[]): Promise<void> {
-
-        // each timeline needs to define how it runs and has full freedom to do so. The base class
-        // is just there to control typings and plumbing for subscribe and emit
-        // in our base example we will take the moments in order and emit the args passed to "run"
-        this.emit.event1(...args);
-
-        this.emit.event2(...args);
-    }
-}
-
-const emitter = new OrderedEmitter();
-
-emitter.on.event1((...args: any[]) => {
-    console.log(`event1 - args: ${args.join(", ")}`);
-});
-
-emitter.on.event2((...args: any[]) => {
-    console.log(`event2 - args: ${args.join(", ")}`);
-});
-
-// absolutely no typing on the args, pass whatever we want
-emitter.run("hello", "world", 42, [1, 2]);
-
-
-
-
-
-
-
-
 export async function Example(settings: ITestingSettings) {
 
+
     const t = new Queryable2({
-        url: combine(settings.testing.sp.url, "_api/web"),
+        url: combine(settings.testing.sp.url, "_api/web45"),
     });
 
     // most basic implementation
     t.on.log((message: string, level: LogLevel) => {
+        console.log(`[${level}] ${message}`);
+    });
 
+    // super easy debug
+    t.on.error((err) => {
+        console.error(err);
     });
 
     // MSAL config via using?
@@ -87,43 +51,64 @@ export async function Example(settings: ITestingSettings) {
         "Content-Type": "application/json;odata=verbose;charset=utf-8",
     }));
 
-    t.on.send(NodeSend());
+    // use the basic caching that mimics v2
+    t.using(Caching());
 
+    // we can replace
+    t.on.send(NodeSend());
     t.on.send(NodeSend(), "replace");
 
-    t.on.post(async function (url: string, response: Response, result: any) {
+    // we can register multiple parse handlers to run in sequence
+    // here we are doing some error checking??
+    // TODO:: do we want a specific response validation step? seems maybe too specialized?
+    t.on.parse(async function (url: string, response: Response, result: any) {
+
+        if (!response.ok) {
+            // within these observers we just throw to indicate an unrecoverable error within the pipeline
+            throw await HttpRequestError.init(response);
+        }
+
+        return [url, response, result];
+    });
+
+    // we can register multiple parse handlers to run in sequence
+    t.on.parse(async function (url: string, response: Response, result: any) {
 
         // only update result if not done?
         if (typeof result === "undefined") {
-
-            try {
-                result = await response.text();
-            } catch (e) {
-                this.error(e);
-            }
+            result = await response.text();
         }
 
         return [url, response, result];
     });
 
-    t.on.post(async function (url: string, response: Response, result: any) {
+    // we can register multiple parse handlers to run in sequence
+    t.on.parse(async function (url: string, response: Response, result: any) {
 
         // only update result if not done?
         if (typeof result !== "undefined") {
-
-            try {
-                result = JSON.parse(result);
-            } catch (e) {
-                this.error(e);
-            }
+            result = JSON.parse(result);
         }
 
         return [url, response, result];
     });
 
-    const y = await t.start();
+    try {
 
-    console.log(y);
+        const y = await t.start();
+
+        const y2 = await t.start();
+    
+        console.log(y);
+    
+        console.log(y2);
+
+    } catch(e) {
+        console.error("this");
+        console.error(e);
+    }
+
+
 
     process.exit(0);
 }
