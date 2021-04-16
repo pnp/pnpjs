@@ -11,13 +11,13 @@ export function MSAL(config: Configuration, scopes: string[] = ["https://graph.m
 
     const confidentialClient = new ConfidentialClientApplication(config);
 
-    return async function (url: string, init: RequestInit): Promise<[string, RequestInit]> {
+    return async function (url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
         const token = await confidentialClient.acquireTokenByClientCredential({ scopes });
 
         // eslint-disable-next-line @typescript-eslint/dot-notation
         init.headers["Authorization"] = `${token.tokenType} ${token.accessToken}`;
 
-        return [url, init];
+        return [url, init, result];
     };
 }
