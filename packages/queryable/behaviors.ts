@@ -16,3 +16,11 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
         });
     };
 }
+
+// NullErrorSink
+
+// PnPLogging (take LogLevel)
+
+// DefaultErrorBehavior
+
+// 

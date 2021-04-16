@@ -68,6 +68,9 @@ export abstract class Timeline<T extends Moments> {
     // @ts-ignore
     constructor(private readonly moments: T, private observers = {}) { }
 
+    // TODO:: clear registered observers
+    // TODO:: reset observers to parent
+
     /**
      * Property allowing access to subscribe observers to all the moments within this timline
      */
