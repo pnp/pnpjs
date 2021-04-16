@@ -13,92 +13,132 @@ import {
     dateAdd,
     stringIsNullOrEmpty,
 } from "@pnp/common";
-import { Moments, Timeline } from "./timeline.js";
-import { LogLevel } from "@pnp/logging";
-import { Queryable } from "./queryable.js";
+import { asyncReduce, broadcast, request } from "./moments.js";
+import { Timeline } from "./timeline.js";
 
-interface QueryableInit {
+interface Queryable2Init {
     parent?: Queryable2;
     url: string;
-    requestInit: QueryableRequestInit;
+    query?: Map<string, string>;
 }
 
 export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "referrerPolicy" | "mode" | "credentials" | "cache" | "redirect" | "integrity"> & {
     headers?: Record<string, string>;
 };
 
-function mergeRequestInit(target: QueryableRequestInit, source: QueryableRequestInit): QueryableRequestInit {
-    if (!objectDefinedNotNull(target)) {
-        target = {};
-    }
-    const headers = assign(target.headers || {}, source.headers);
-    target = Object.assign(target, source);
-    target.headers = headers;
+export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<[string, RequestInit]>;
 
-    return target;
+export type QueryableSendObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
+
+export type QueryablePostObserver = (this: IQueryable2, url: string, response: Response, result: any | undefined) => Promise<[string, Response, any]>;
+
+export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
+
+const DefaultBehaviors = {
+    pre: asyncReduce<QueryablePreObserver>(),
+    send: request<QueryableSendObserver>(),
+    post: asyncReduce<QueryablePostObserver>(),
+    data: broadcast<QueryableDataObserver>(),
+} as const;
+
+// export interface IQueryableData<DefaultActionType = any> {
+
+//     batch: Batch | null;
+//     batchIndex: number;
+//     batchDependency: () => void | null;
+
+//     cachingOptions: ICachingOptions | null;
+
+//     cloneParentCacheOptions: ICachingOptions | null;
+//     cloneParentWasCaching: boolean;
+
+//     query: Map<string, string>;
+
+
+//     options: IFetchOptions | null;
+//     url: string;
+//     parentUrl: string;
+
+//     useCaching: boolean;
+//     pipes?: PipelineMethod<DefaultActionType>[];
+//     parser?: IODataParser<DefaultActionType>;
+
+//     clientFactory?: () => IRequestClient;
+
+//     method?: string;
+
+// }
+
+export interface IQueryable2 extends Timeline<any> {
+    // data: Partial<IQueryableData<DefaultActionType>>;
+    // query: Map<string, string>;
+    // append(pathPart: string): void;
+    // inBatch(batch: Batch): this;
+    // addBatchDependency(): () => void;
+    // toUrlAndQuery(): string;
+    toUrl(): string;
+    // concat(pathPart: string): this;
+    // configure(options: IConfigOptions): this;
+    // configureFrom(o: IQueryable<DefaultActionType>): this;
+    // usingCaching(options?: ICachingOptions): this;
+    // usingParser(parser: IODataParser<any>): this;
+    // withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
+    // defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
+    // getRuntime(): Runtime;
+    // setRuntime(runtime: Runtime): this;
+    // setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
 }
 
-// const DefaultBehavior = {
-//     pre: function (handlers: ((this: Queryable2) => Promise<void>)[]) {
-//         console.log(handlers.length);
-//     },
-// };
-
-export class Queryable2 {
+export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
 
     private _runtime: Runtime;
-    private _request: QueryableRequestInit;
     private _parent: Queryable2;
     private _url: string;
-    // private _events: Timeline;
+    private _query: Map<string, string>;
 
-    constructor(init: QueryableInit) {
+    constructor(init: Queryable2Init) {
+        super(DefaultBehaviors);
 
-        const { requestInit, url, parent } = init;
-
-        this._request = mergeRequestInit({
-            method: "GET",
-        }, requestInit);
+        const { url, parent, query } = init;
 
         this._url = url;
-
         this._parent = parent || null;
-
-        // this._events = new Timeline();
-
-
-        // this._data = Object.assign({}, {
-        //     cloneParentWasCaching: false,
-        //     options: {},
-        //     parentUrl: "",
-        //     parser: new ODataParser<DefaultActionType>(),
-        //     query: new Map<string, string>(),
-        //     url: "",
-        //     useCaching: false,
-        // }, cloneQueryableData(dataSeed));
-
+        this._query = query || new Map<string, string>();
         this._runtime = null;
     }
 
-    // public on(args: ["log", (message: string, level: LogLevel) => void] |
-    // ["error", (err?: Error) => void] |
-    // ["pre", (query: Queryable2) => Promise<boolean>] |
-    // ["send", (query: Queryable2) => Promise<boolean>] |
-    // ["post", (query: Queryable2, resp: Response) => Promise<boolean>]) {
+    public async using(behavior: (intance: this) => Promise<void>): Promise<this> {
+        await behavior(this);
+        return this;
+    }
 
-    //     this._events.on(args[0], args[1]);
-    // }
+    public async start(): Promise<any> {
 
-    // public on(e: "error", handler: (err?: Error | string) => void): this;
-    // public on(e: "log", handler: (message: string, level: LogLevel) => void): this;
-    // public on(e: "pre", handler: (query: Queryable2) => Promise<boolean>): this;
-    // public on(e: "send", handler: <T = any>(query: Queryable2) => Promise<boolean>): this;
-    // public on(e: "data", handler: (query: Queryable2, response: Response) => void): this;
-    // public on(e: "post", handler: (ctx: any, query: Queryable2, response: Response) => Promise<boolean>): this;
-    // public on(e: string, handler: (...args: any[]) => any): this {
-    //     this._events.on(e, handler);
-    //     return this;
-    // }
+        setTimeout(async () => {
+
+            const [url, init] = await this.emit.pre(this.toUrl(), {
+                method: "GET",
+                headers: {},
+            });
+
+            const response = await this.emit.send(url, init);
+
+            // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const [_url, _resp, result] = await this.emit.post(url, response, undefined);
+
+            if (typeof result !== "undefined") {
+                this.emit.data(result);
+            }
+
+        }, 0);
+
+        return new Promise((resolve, reject) => {
+            this.on.data(resolve);
+            this.on.error(reject);
+        });
+    }
+
 
     // interface IRequestContext {
     //     events: Timeline;
@@ -242,10 +282,10 @@ export class Queryable2 {
    *
    * @param options custom options
    */
-    public configure(options: QueryableRequestInit): this {
-        mergeRequestInit(this._request, options);
-        return this;
-    }
+    // public configure(options: QueryableRequestInit): this {
+    //     mergeRequestInit(this._request, options);
+    //     return this;
+    // }
 
     /**
    * Configures this instance from the configure options of the supplied instance
