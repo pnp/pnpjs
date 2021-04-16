@@ -110,9 +110,8 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         this._runtime = null;
     }
 
-    public async using(behavior: (intance: this) => Promise<void>): Promise<this> {
-        await behavior(this);
-        return this;
+    public using(behavior: (intance: this) => this): this {
+        return behavior(this);
     }
 
     public async start(): Promise<any> {

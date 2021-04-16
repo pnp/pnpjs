@@ -1,9 +1,10 @@
 import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
 import { QueryablePreObserver, Queryable2 } from "@pnp/queryable";
 
-export function MSAL2(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): (instance: Queryable2) => Promise<void> {
-    return async (instance: Queryable2) => {
+export function MSAL2(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): (instance: Queryable2) => Queryable2 {
+    return (instance: Queryable2) => {
         instance.on.pre(MSAL(config, scopes));
+        return instance;
     };
 }
 

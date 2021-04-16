@@ -13,7 +13,7 @@ export async function Example(settings: ITestingSettings) {
 
 
     const t = new Queryable2({
-        url: combine(settings.testing.sp.url, "_api/web45"),
+        url: combine(settings.testing.sp.url, "_api/web"),
     });
 
     // most basic implementation

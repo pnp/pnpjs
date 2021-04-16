@@ -1,9 +1,9 @@
 import { Queryable2 } from "./queryable-2.js";
 import { isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
 
-export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Promise<void> {
+export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Queryable2 {
 
-    return async (instance: Queryable2) => {
+    return (instance: Queryable2) => {
 
         instance.on.pre(async function (url: string, init: RequestInit, result: any) {
 
@@ -15,10 +15,12 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
 
             return [url, init, result];
         });
+
+        return instance;
     };
 }
 
-export function Caching(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Promise<void> {
+export function Caching(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
 
     const storage = new PnPClientStorage();
     const s = store === "session" ? storage.session : storage.local;
@@ -32,7 +34,7 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
         expireFunc = () => dateAdd(new Date(), "minute", 5);
     }
 
-    return async (instance: Queryable2) => {
+    return (instance: Queryable2) => {
 
         instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
@@ -58,6 +60,8 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
             return [url, init, result];
         });
+
+        return instance;
     };
 }
 
