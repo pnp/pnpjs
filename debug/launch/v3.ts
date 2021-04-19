@@ -3,6 +3,7 @@ import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch } from "@pnp/queryable";
 import { NodeSend, MSAL2, MSAL } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
+import { SSL_OP_NO_TLSv1_1 } from "node:constants";
 
 declare var process: { exit(code?: number): void };
 
@@ -127,6 +128,10 @@ export async function Example(settings: ITestingSettings) {
 
         return [url, response, result];
     });
+
+    // TODO:: must have a passthrough handler for each moment
+    t.on.post(async (url, result) => [url, result]);
+    t2.on.post(async (url, result) => [url, result]);
 
     try {
 
