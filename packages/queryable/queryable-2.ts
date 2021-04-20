@@ -26,17 +26,20 @@ export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "re
     headers?: Record<string, string>;
 };
 
-export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<[string, RequestInit]>;
+export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
 export type QueryableSendObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
 
-export type QueryablePostObserver = (this: IQueryable2, url: string, response: Response, result: any | undefined) => Promise<[string, Response, any]>;
+export type QueryableParseObserver = (this: IQueryable2, url: string, response: Response, result: any | undefined) => Promise<[string, Response, any]>;
+
+export type QueryablePostObserver = (this: IQueryable2, url: string, result: any | undefined) => Promise<[string, any]>;
 
 export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
 
 const DefaultBehaviors = {
     pre: asyncReduce<QueryablePreObserver>(),
     send: request<QueryableSendObserver>(),
+    parse: asyncReduce<QueryableParseObserver>(),
     post: asyncReduce<QueryablePostObserver>(),
     data: broadcast<QueryableDataObserver>(),
 } as const;
@@ -107,30 +110,46 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         this._runtime = null;
     }
 
-    public async using(behavior: (intance: this) => Promise<void>): Promise<this> {
-        await behavior(this);
-        return this;
+    public using(behavior: (intance: this) => this): this {
+        return behavior(this);
     }
 
     public async start(): Promise<any> {
 
         setTimeout(async () => {
 
-            const [url, init] = await this.emit.pre(this.toUrl(), {
-                method: "GET",
-                headers: {},
-            });
+            try {
 
-            const response = await this.emit.send(url, init);
+                const [url, init, preResult] = await this.emit.pre(this.toUrl(), {
+                    method: "GET",
+                    headers: {},
+                }, undefined);
 
-            // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_url, _resp, result] = await this.emit.post(url, response, undefined);
+                if (typeof preResult !== "undefined") {
+                    this.emit.data(preResult);
 
-            if (typeof result !== "undefined") {
-                this.emit.data(result);
+                    // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
+                    return;
+                }
+
+                const response = await this.emit.send(url, init);
+
+                // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const [_url, _resp, result] = await this.emit.parse(url, response, undefined);
+
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const [_url2, result2] = await this.emit.post(url, result);
+
+                if (typeof result2 !== "undefined") {
+                    this.emit.data(result2);
+                }
+
+            } catch (e) {
+
+                // anything that throws we emit and continue
+                this.emit.error(e);
             }
-
         }, 0);
 
         return new Promise((resolve, reject) => {

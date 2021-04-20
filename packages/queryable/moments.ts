@@ -8,11 +8,7 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
         const obs = [...observers];
 
         for (let i = 0; i < obs.length; i++) {
-            try {
-                Reflect.apply(obs[i], this, args);
-            } catch (e) {
-                this.error(e);
-            }
+            Reflect.apply(obs[i], this, args);
         }
     };
 }
@@ -29,13 +25,7 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
         // process each handler which updates our "state" in order
         // returning the new "state" as a tuple [...Parameters<T>]
         for (let i = 0; i < obs.length; i++) {
-
-            try {
-                r = await Reflect.apply(obs[i], this, r);
-            } catch (e) {
-                this.error(e);
-                break;
-            }
+            r = await Reflect.apply(obs[i], this, r);
         }
 
         return r;
@@ -55,10 +45,6 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
 
         const handler = observers[0];
 
-        try {
-            return Reflect.apply(handler, this, args);
-        } catch (e) {
-            this.error(e);
-        }
+        return Reflect.apply(handler, this, args);
     };
 }

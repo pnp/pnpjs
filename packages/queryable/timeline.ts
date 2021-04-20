@@ -120,6 +120,7 @@ export abstract class Timeline<T extends Moments> {
                     if (isArray(observers) && observers.length > 0) {
 
                         try {
+
                             // default to broadcasting any events without specific impl (will apply to defaults)
                             const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
 
@@ -130,6 +131,7 @@ export abstract class Timeline<T extends Moments> {
                             if (p !== "error") {
                                 this.emit.error(e);
                             } else {
+                                // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
                                 throw e;
                             }
                         }

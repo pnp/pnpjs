@@ -1,69 +1,44 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { sp } from "@pnp/sp";
-import { spSetup } from "./setup.js";
-import { broadcast, asyncReduce, Queryable2, InjectHeaders, Timeline, Moments } from "@pnp/queryable";
-import "@pnp/sp/webs";
-import { default as nodeFetch } from "node-fetch";
-import { MSAL, NodeSend, MSAL2 } from "@pnp/nodejs";
-import { combine } from "@pnp/common";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch } from "@pnp/queryable";
+import { NodeSend, MSAL2, MSAL } from "@pnp/nodejs";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
+import { SSL_OP_NO_TLSv1_1 } from "node:constants";
 
 declare var process: { exit(code?: number): void };
 
-const moments = {
-    event1: broadcast(),
-    event2: broadcast(),
-} as const;
-
-class OrderedEmitter extends Timeline<typeof moments> {
-    constructor() {
-        super(moments);
-    }
-
-    public async run(...args: any[]): Promise<void> {
-
-        // each timeline needs to define how it runs and has full freedom to do so. The base class
-        // is just there to control typings and plumbing for subscribe and emit
-        // in our base example we will take the moments in order and emit the args passed to "run"
-        this.emit.event1(...args);
-
-        this.emit.event2(...args);
-    }
-}
-
-const emitter = new OrderedEmitter();
-
-emitter.on.event1((...args: any[]) => {
-    console.log(`event1 - args: ${args.join(", ")}`);
-});
-
-emitter.on.event2((...args: any[]) => {
-    console.log(`event2 - args: ${args.join(", ")}`);
-});
-
-// absolutely no typing on the args, pass whatever we want
-emitter.run("hello", "world", 42, [1, 2]);
-
-
-
-
-
-
-
-
 export async function Example(settings: ITestingSettings) {
+
 
     const t = new Queryable2({
         url: combine(settings.testing.sp.url, "_api/web"),
     });
 
-    // most basic implementation
-    t.on.log((message: string, level: LogLevel) => {
-
+    const t2 = new Queryable2({
+        url: combine(settings.testing.sp.url, "_api/web/lists"),
     });
 
+
+    const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
+    const [, init,] = await Reflect.apply(hackAuth, t, ["", { headers: {} }, undefined]);
+
+
+    const [register, execute] = createBatch(settings.testing.sp.url, NodeSend(), init.headers["Authorization"]);
+
+    t.using(register);
+    t2.using(register);
+
+    // most basic implementation
+    t.on.log((message: string, level: LogLevel) => {
+        console.log(`[${level}] ${message}`);
+    });
+
+    // super easy debug
+    t.on.error(console.error);
+    t2.on.error(console.error);
+
     // MSAL config via using?
-    t.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
+    // t.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
 
     // or directly into the event?
     // t.on.pre(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
@@ -87,43 +62,94 @@ export async function Example(settings: ITestingSettings) {
         "Content-Type": "application/json;odata=verbose;charset=utf-8",
     }));
 
-    t.on.send(NodeSend());
+    t2.using(InjectHeaders({
+        "Accept": "application/json",
+        "Content-Type": "application/json;odata=verbose;charset=utf-8",
+    }));
 
-    t.on.send(NodeSend(), "replace");
+    // use the basic caching that mimics v2
+    // t.using(Caching());
 
-    t.on.post(async function (url: string, response: Response, result: any) {
+    // we can replace
+    // t.on.send(NodeSend());
+    // t.on.send(NodeSend(), "replace");
+
+    // we can register multiple parse handlers to run in sequence
+    // here we are doing some error checking??
+    // TODO:: do we want a specific response validation step? seems maybe too specialized?
+    t.on.parse(async function (url: string, response: Response, result: any) {
+
+        if (!response.ok) {
+            // within these observers we just throw to indicate an unrecoverable error within the pipeline
+            throw await HttpRequestError.init(response);
+        }
+
+        return [url, response, result];
+    });
+
+    t2.on.parse(async function (url: string, response: Response, result: any) {
+
+        if (!response.ok) {
+            // within these observers we just throw to indicate an unrecoverable error within the pipeline
+            throw await HttpRequestError.init(response);
+        }
+
+        return [url, response, result];
+    });
+
+    // we can register multiple parse handlers to run in sequence
+    t.on.parse(async function (url: string, response: Response, result: any) {
 
         // only update result if not done?
         if (typeof result === "undefined") {
-
-            try {
-                result = await response.text();
-            } catch (e) {
-                this.error(e);
-            }
+            result = await response.text();
         }
-
-        return [url, response, result];
-    });
-
-    t.on.post(async function (url: string, response: Response, result: any) {
 
         // only update result if not done?
         if (typeof result !== "undefined") {
-
-            try {
-                result = JSON.parse(result);
-            } catch (e) {
-                this.error(e);
-            }
+            result = JSON.parse(result);
         }
 
         return [url, response, result];
     });
 
-    const y = await t.start();
+    // we can register multiple parse handlers to run in sequence
+    t2.on.parse(async function (url: string, response: Response, result: any) {
 
-    console.log(y);
+        // only update result if not done?
+        if (typeof result === "undefined") {
+            result = await response.text();
+        }
 
-    process.exit(0);
+        // only update result if not done?
+        if (typeof result !== "undefined") {
+            result = JSON.parse(result);
+        }
+
+        return [url, response, result];
+    });
+
+    // TODO:: must have a passthrough handler for each moment
+    t.on.post(async (url, result) => [url, result]);
+    t2.on.post(async (url, result) => [url, result]);
+
+    try {
+
+        t.start().then(d => {
+            console.log(d)
+        });
+        t2.start().then(d => {
+            console.log(d)
+        });
+
+        await execute();
+
+    } catch (e) {
+        console.error("fail");
+        console.error(e);
+    }
+
+
+
+    // process.exit(0);
 }
