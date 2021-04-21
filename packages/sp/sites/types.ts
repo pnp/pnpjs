@@ -66,7 +66,7 @@ export class _Site extends _SharePointQueryableInstance {
     public async getContextInfo(): Promise<IContextInfo> {
 
         const q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
-        const data = await spPost(q);
+        const data = await spPost(q, this.data.options);
 
         if (hOP(data, "GetContextWebInformation")) {
             const info = data.GetContextWebInformation;
