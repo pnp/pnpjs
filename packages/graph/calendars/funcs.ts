@@ -31,10 +31,10 @@ export interface ICalendarViewInfo extends IEvent {
  * @param roomList The SMTP address associated with the room list.
  */
 export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQueryableCollection<EmailAddress[]> {
-    const query = this.clone(GraphQueryableCollection, "findRooms");
+    const query = this.clone(GraphQueryableCollection, roomList ? "findRooms(RoomList=@roomList)" : "findRooms");
     query.setEndpoint("beta");
     if(roomList) {
-        query.query.set("RoomList", encodeURIComponent(roomList));
+        query.query.set("@roomList", `'${encodeURIComponent(roomList)}'`);
     }
     return query;
 }
