@@ -1,5 +1,5 @@
 import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
-import { Event as IEvent } from "@microsoft/microsoft-graph-types";
+import { EmailAddress, Event as IEvent } from '@microsoft/microsoft-graph-types';
 
 /**
  * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range,
@@ -22,4 +22,19 @@ export function calendarView(this: IGraphQueryable, start: string, end: string):
  */
 export interface ICalendarViewInfo extends IEvent {
     "@odata.etag": string;
+}
+
+/**
+ * Get the emailAddress objects that represent all the meeting rooms in the user's tenant or in a specific room list.
+ *
+ * @param this IGraphQueryable instance
+ * @param roomList The SMTP address associated with the room list.
+ */
+export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQueryableCollection<EmailAddress[]> {
+    const query = this.clone(GraphQueryableCollection, "findRooms");
+    query.setEndpoint("beta");
+    if(roomList) {
+        query.query.set("RoomList", encodeURIComponent(roomList));
+    }
+    return query;
 }
