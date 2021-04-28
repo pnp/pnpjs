@@ -1530,3 +1530,16 @@ export interface IBannerImageProps {
     translateX?: number;
     translateY?: number;
 }
+
+export interface IRepostPage {
+    Description?: string;
+    IsBannerImageUrlExternal?: boolean;
+    OriginalSourceListId?: string;
+    ShouldSaveAsDraft?: boolean;
+    OriginalSourceSiteId?: string;
+    BannerImageUrl?: string;
+    Title?: string;
+    OriginalSourceItemId?: string;
+    OriginalSourceUrl?: string;
+    OriginalSourceWebId?: string;
+}
