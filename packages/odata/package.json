@@ -1,24 +1,24 @@
 {
-  "name": "@pnp/odata",
-  "version": "0.0.0-PLACEHOLDER",
-  "description": "pnp - provides shared odata functionality and base classes",
-  "main": "./index.js",
-  "typings": "./index",
-  "dependencies": {
-    "tslib": "2.1.0",
-    "@pnp/logging": "0.0.0-PLACEHOLDER",
-    "@pnp/common": "0.0.0-PLACEHOLDER"
-  },
-  "author": {
-    "name": "Microsoft and other contributors"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pnp/pnpjs/issues"
-  },
-  "homepage": "https://github.com/pnp/pnpjs",
-  "repository": {
-    "type": "git",
-    "url": "git:github.com/pnp/pnpjs"
-  }
+    "name": "@pnp/odata",
+    "version": "0.0.0-PLACEHOLDER",
+    "description": "pnp - provides shared odata functionality and base classes",
+    "main": "./index.js",
+    "typings": "./index",
+    "dependencies": {
+        "tslib": "2.2.0",
+        "@pnp/logging": "0.0.0-PLACEHOLDER",
+        "@pnp/common": "0.0.0-PLACEHOLDER"
+    },
+    "author": {
+        "name": "Microsoft and other contributors"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/pnp/pnpjs/issues"
+    },
+    "homepage": "https://github.com/pnp/pnpjs",
+    "repository": {
+        "type": "git",
+        "url": "git:github.com/pnp/pnpjs"
+    }
 }

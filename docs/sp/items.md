@@ -389,6 +389,43 @@ console.log("Done")
 
 ```
 
+### Update Multi-value Taxonomy field
+
+_Based on [this excellent article](https://www.aerieconsulting.com/blog/update-using-rest-to-update-a-multi-value-taxonomy-field-in-sharepoint) from Beau Cameron._
+
+As he says you must update a hidden field to get this to work via REST. My meta data field accepting multiple values is called "MultiMetaData".
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/fields";
+
+// first we need to get the hidden field's internal name.
+// The Title of that hidden field is, in my case and in the linked article just the visible field name with "_0" appended.
+const fields = await sp.web.lists.getByTitle("TestList").fields.filter("Title eq 'MultiMetaData_0'").select("Title", "InternalName")();
+
+// get an item to update, here we just create one for testing
+const newItem = await sp.web.lists.getByTitle("TestList").items.add({
+  Title: "Testing",
+});
+
+// now we have to create an update object
+// to do that for each field value you need to serialize each as -1;#{field label}|{field id} joined by ";#"
+
+// update with the values you want, this also works in the add call directly to avoid a second call
+const updateVal = {};
+Reflect.defineProperty(updateVal, fields[0].InternalName, {
+  value: "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+});
+
+// execute the update call
+await newItem.item.update(updateVal);
+```
+
+P.S. If you have a question, please mark is as a question and not a bug. Choosing bug doesn't get a higher priority and if it turns out to be a bug we can always update the tags. Thanks!
+
 ## Recycle
 
 To send an item to the recycle bin use recycle.

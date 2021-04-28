@@ -19,7 +19,7 @@ Gets a field from the collection by id (guid). Note that the library will handle
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/fields";
@@ -42,7 +42,7 @@ You can also get a field from the collection by title.
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
@@ -65,7 +65,7 @@ You can also get a field from the collection regardless of if the string is the 
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";

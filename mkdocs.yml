@@ -50,6 +50,7 @@ nav:
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
+      - 'cloud communications': 'graph/cloud-communications.md'
       - calendars: 'graph/calendars.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'

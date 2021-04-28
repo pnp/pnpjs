@@ -1,4 +1,4 @@
-import { getGUID, isFunc } from "@pnp/common/util";
+import { getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common/util";
 import { ODataParser, extendFactory, headers } from "@pnp/odata";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
 import { odataUrlFrom } from "@pnp/sp/odata";
@@ -85,7 +85,11 @@ extendFactory(Files, {
     ): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
-        const file = File(odataUrlFrom(response));
+        let odataUrl = odataUrlFrom(response);
+        if (!stringIsNullOrEmpty(odataUrl) && /%27/i.test(odataUrl)) {
+            odataUrl = odataUrl.replace(/%27/ig, "''");
+        }
+        const file = File(odataUrl);
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress, chunkSize);

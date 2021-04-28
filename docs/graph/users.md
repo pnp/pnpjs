@@ -108,3 +108,7 @@ const specificUser = await graph.users.getById('jane@contoso.com').photo();
 ## User Photo Operations
 
 See [Photos](./photos.md)
+
+## User Presence Operation
+
+See [Cloud Communications](./cloud-communications.md)
