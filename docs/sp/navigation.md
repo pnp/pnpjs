@@ -66,7 +66,17 @@ const top = await sp.web.navigation.topNavigationBar();
 const quick = await sp.web.navigation.quicklaunch();
 ```
 
-For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch.
+For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch:
+
+```TypeScript
+// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.topNavigationBar;
+
+// -- OR -- 
+
+// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.quicklaunch;
+```
 
 ### getById
 
