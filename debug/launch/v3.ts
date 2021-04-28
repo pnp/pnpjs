@@ -1,14 +1,12 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging } from "@pnp/queryable";
 import { NodeSend, MSAL2, MSAL } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
-import { SSL_OP_NO_TLSv1_1 } from "node:constants";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
-
 
     const t = new Queryable2({
         url: combine(settings.testing.sp.url, "_api/web"),
@@ -18,15 +16,15 @@ export async function Example(settings: ITestingSettings) {
         url: combine(settings.testing.sp.url, "_api/web/lists"),
     });
 
-
     const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
     const [, init,] = await Reflect.apply(hackAuth, t, ["", { headers: {} }, undefined]);
 
+    const [batch, executeBatch] = createBatch(settings.testing.sp.url, NodeSend(), init.headers["Authorization"]);
 
-    const [register, execute] = createBatch(settings.testing.sp.url, NodeSend(), init.headers["Authorization"]);
+    t.using(batch);
+    t2.using(batch);
 
-    t.using(register);
-    t2.using(register);
+    Logger.subscribe(new ConsoleListener());
 
     // most basic implementation
     t.on.log((message: string, level: LogLevel) => {
@@ -44,7 +42,7 @@ export async function Example(settings: ITestingSettings) {
     // t.on.pre(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
 
     // how to register your own pre-handler
-    // t.on.pre(async function (url: string, init: RequestInit) {
+    // t.on.pre(async function (url: string, init: RequestInit, result: any) {
 
     //     // example of setting up default values
     //     url = combine(url, "_api/web");
@@ -54,7 +52,7 @@ export async function Example(settings: ITestingSettings) {
 
     //     this.log(`Url: ${url}`);
 
-    //     return [url, init];
+    //     return [url, init, result];
     // });
 
     t.using(InjectHeaders({
@@ -129,6 +127,10 @@ export async function Example(settings: ITestingSettings) {
         return [url, response, result];
     });
 
+    // const uu = t2.clear.parse();
+
+    // console.log(uu);
+
     // TODO:: must have a passthrough handler for each moment
     t.on.post(async (url, result) => [url, result]);
     t2.on.post(async (url, result) => [url, result]);
@@ -138,11 +140,12 @@ export async function Example(settings: ITestingSettings) {
         t.start().then(d => {
             console.log(d)
         });
+
         t2.start().then(d => {
             console.log(d)
         });
 
-        await execute();
+        await executeBatch();
 
     } catch (e) {
         console.error("fail");

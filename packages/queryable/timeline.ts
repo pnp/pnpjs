@@ -1,7 +1,6 @@
 import { LogLevel } from "@pnp/logging";
 import { isArray, isFunc } from "@pnp/common";
 import { broadcast } from "./moments.js";
-import { addListener } from "node:cluster";
 
 export type ObsererAddBehavior = "add" | "replace" | "prepend";
 
@@ -38,6 +37,12 @@ type DistributeEmit<T extends Moments> =
     { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
+ * A type used to represent the proxied Timeline.clear property
+ */
+type DistributeClear<T extends Moments> =
+    { [Prop in string & keyof T]: () => boolean };
+
+/**
  * Virtual events that are present on all Timelines
  */
 export type DefaultTimelineEvents = {
@@ -56,6 +61,11 @@ export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<Defa
 export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents>;
 
 /**
+ * The type combining the defined moments and DefaultTimelineEvents
+ */
+export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents>;
+
+/**
  * Timeline represents a set of operations executed in order of definition,
  * with each "moment's" behavior controlled by the implementing function
  */
@@ -63,13 +73,13 @@ export abstract class Timeline<T extends Moments> {
 
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
+    private _clearProxy: typeof Proxy | null = null;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     constructor(private readonly moments: T, private observers = {}) { }
 
-    // TODO:: clear registered observers
-    // TODO:: reset observers to parent
+    // TODO:: reset observers to parent?
 
     /**
      * Property allowing access to subscribe observers to all the moments within this timline
@@ -85,6 +95,29 @@ export abstract class Timeline<T extends Moments> {
         }
 
         return <any>this._onProxy;
+    }
+
+    /**
+     * Property allowing access to subscribe observers to all the moments within this timline
+     */
+    public get clear(): ClearProxyType<T> {
+
+        if (this._clearProxy === null) {
+            this._clearProxy = new Proxy(this, {
+                get: (target: any, p: string) => () => {
+
+                    if (Reflect.has(target.observers, p)) {
+                        // we trust outselves that this will be an array
+                        target.observers[p].length = 0;
+                        return true;
+                    }
+
+                    return false;
+                },
+            });
+        }
+
+        return <any>this._clearProxy;
     }
 
     /**

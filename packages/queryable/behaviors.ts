@@ -1,6 +1,6 @@
 import { Queryable2 } from "./queryable-2.js";
 import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, isUrlAbsolute, combine } from "@pnp/common";
-import { LogLevel } from "@pnp/logging";
+import { LogLevel, Logger } from "@pnp/logging";
 import { HttpRequestError } from "./parsers.js";
 
 export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Queryable2 {
@@ -16,6 +16,21 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
             }
 
             return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
+export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Queryable2 {
+
+    // we set the active level here
+    Logger.activeLogLevel = activeLevel;
+
+    return (instance: Queryable2) => {
+
+        instance.on.log(function (message: string, level: LogLevel) {
+            Logger.write(message, level);
         });
 
         return instance;
@@ -207,7 +222,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
         return responses.reduce((p, response, index) => p.then(() => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_queryable, _url, _init, resolve, reject] = requests[index];
+            const [, , , resolve, reject] = requests[index];
 
             try {
 
@@ -223,7 +238,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
 
     const register = (instance: Queryable2) => {
 
-        let registrationResolver;
+        let registrationResolver: (value: void | PromiseLike<void>) => void;
 
         // we need to ensure we wait to execute until all our batch children hit the .send method to be fully registered
         registrationPromises.push(new Promise((resolve) => {
@@ -242,6 +257,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
             requests.push(requestTuple);
 
             registrationResolver();
+
             return promise;
 
         }, "replace");
