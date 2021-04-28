@@ -57,7 +57,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return tag.configure(Web(web.Url), "si.getRootWeb");
+        return tag.configure(Web(web.Url).configureFrom(this), "si.getRootWeb");
     }
 
     /**
@@ -65,7 +65,8 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getContextInfo(): Promise<IContextInfo> {
 
-        const q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
+        const site = Site(this.parentUrl, "_api/contextinfo").configureFrom(this);
+        const q = tag.configure(site, "si.getContextInfo");
         const data = await spPost(q);
 
         if (hOP(data, "GetContextWebInformation")) {
