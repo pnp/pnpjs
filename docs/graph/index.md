@@ -26,6 +26,16 @@ import "@pnp/graph/groups";
 })()
 ```
 
+### Selecting an Endpoint
+
+The Microsoft Graph supports two end points "v1.0" and "beta" and you can easily switch between them using the `setEndpoint` method available on all graph queryable objects.
+
+```TypeScript
+const betaResult = await graph.me.setEndpoint("beta")();
+
+const v1Result = await graph.me.setEndpoint("v1.0")();
+```
+
 ## Getting Started with SharePoint Framework
 
 Install the library and required dependencies
