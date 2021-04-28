@@ -1,5 +1,5 @@
 import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
-import { EmailAddress, Event as IEvent } from '@microsoft/microsoft-graph-types';
+import { EmailAddress, Event as IEvent } from "@microsoft/microsoft-graph-types";
 
 /**
  * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range,
