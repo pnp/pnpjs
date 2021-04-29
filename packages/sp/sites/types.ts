@@ -21,7 +21,7 @@ export class _Site extends _SharePointQueryableInstance {
      *
      */
     public get rootWeb(): IWeb {
-        return tag.configure(Web(this, "rootweb"), "si.rootWeb");
+        return tag.configure(Web(this, "rootweb").configureFrom(this), "si.rootWeb");
     }
 
     /**

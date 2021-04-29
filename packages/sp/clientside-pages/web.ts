@@ -64,8 +64,3 @@ _Web.prototype.addRepostPage = async function (this: IWeb, details: IRepostPage)
     const r: { AbsoluteUrl: string } = await spPost(query, body(assign(metadata("SP.Publishing.RepostPage"), details)));
     return r.AbsoluteUrl;
 };
-
-
-
-
-

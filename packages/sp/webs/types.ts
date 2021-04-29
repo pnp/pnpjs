@@ -54,7 +54,7 @@ export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
 
         return {
             data,
-            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
+            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).configureFrom(this),
         };
     }
 }

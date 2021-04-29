@@ -112,5 +112,5 @@ _Web.prototype.shareObjectRaw = function (this: _Web, options: any): Promise<ISh
  * @param options The set of options to send to ShareObject
  */
 _Web.prototype.unshareObject = function (this: _Web, url: string): Promise<ISharingResult> {
-    return spPost(Web(this, "unshareObject"), body({ url }));
+    return spPost(Web(this, "unshareObject").configureFrom(this), body({ url }));
 };

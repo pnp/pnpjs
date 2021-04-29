@@ -17,5 +17,5 @@ declare module "../webs/types" {
 }
 
 _Web.prototype.getAppCatalog = function (this: _Web, url?: string | _Web): IAppCatalog {
-    return AppCatalog(url || this);
+    return AppCatalog(url || this).configureFrom(this);
 };

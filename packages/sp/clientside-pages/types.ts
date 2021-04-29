@@ -317,7 +317,7 @@ export class _ClientsidePage extends _SharePointQueryable {
             let imgInfo: Pick<IFileInfo, "ListId" | "WebId" | "UniqueId" | "Name" | "SiteId">;
             let webUrl: string;
 
-            const web = Web(extractWebUrl(this.toUrl()));
+            const web = Web(extractWebUrl(this.toUrl())).configureFrom(this);
             const batch = web.createBatch();
             web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
                 .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(r1 => imgInfo = r1);

@@ -215,6 +215,7 @@ export async function shareWith(
 function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<ISharingResult> {
 
     const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
+    w.configureFrom(this);
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 
@@ -231,12 +232,12 @@ async function getRoleValue(role: SharingRole, group: RoleType): Promise<string>
 
         switch (group) {
             case RoleType.Contributor: {
-                const g1 = await Web("_api/web", "associatedmembergroup").select("Id")<{ Id: number }>();
+                const g1 = await Web("_api/web", "associatedmembergroup").configureFrom(this).select("Id")<{ Id: number }>();
                 return `group: ${g1.Id}`;
             }
             case RoleType.Reader:
             case RoleType.Guest: {
-                const g2 = await Web("_api/web", "associatedvisitorgroup").select("Id")<{ Id: number }>();
+                const g2 = await Web("_api/web", "associatedvisitorgroup").configureFrom(this).select("Id")<{ Id: number }>();
                 return `group: ${g2.Id}`;
             }
             default:
