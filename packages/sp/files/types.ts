@@ -426,7 +426,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 
     /**
-     * Gets the associated list item for this folder, loading the default properties
+     * Gets the associated list item for this file, loading the default properties
      */
     @tag("fi.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
