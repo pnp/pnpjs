@@ -17,7 +17,7 @@ import { IList } from "@pnp/sp/lists";
 
 describe("Items", () => {
 
-    // any tests that make a web request should be withing a block checking if web tests are enabled
+    // any tests that make a web request should be within a block checking if web tests are enabled
     if (testSettings.enableWebTests) {
 
         // a block scoped var we will use across our tests
