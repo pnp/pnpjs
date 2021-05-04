@@ -1,10 +1,11 @@
 import { stringIsNullOrEmpty, mergeOptions, IConfigOptions, objectDefinedNotNull } from "@pnp/common";
-import { HttpsProxyAgent } from "https-proxy-agent";
+import pkg from "https-proxy-agent";
+const { HttpsProxyAgent } = pkg;
 
 let proxyUrl = "";
 let proxyAgent = null;
 
-export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { agent: typeof HttpsProxyAgent } {
+export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { agent: typeof pkg } {
 
     if (!stringIsNullOrEmpty(proxyUrl) || objectDefinedNotNull(proxyAgent)) {
         mergeOptions(opts, {
@@ -12,7 +13,7 @@ export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { 
         });
     }
 
-    return <T & { agent: typeof HttpsProxyAgent }>opts;
+    return <T & { agent: typeof pkg }>opts;
 }
 
 /**

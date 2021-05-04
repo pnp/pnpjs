@@ -1,9 +1,7 @@
-import { getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common/util";
+import { getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common";
 import { ODataParser, extendFactory, headers } from "@pnp/odata";
-import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
-import { odataUrlFrom } from "@pnp/sp/odata";
-import { spPost } from "@pnp/sp/operations";
-import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
+import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files/index.js";
+import { spPost, odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
 
