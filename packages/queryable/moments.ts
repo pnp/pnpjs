@@ -17,7 +17,7 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
 
     return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<[...Parameters<T>]> {
 
-        // get our intial values
+        // get our initial values
         let r = args;
 
         const obs = [...observers];
