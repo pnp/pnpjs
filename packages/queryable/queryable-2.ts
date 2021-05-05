@@ -1,17 +1,23 @@
+// import {
+//     combine,
+//     IFetchOptions,
+//     IConfigOptions,
+//     mergeOptions,
+//     objectDefinedNotNull,
+//     IRequestClient,
+//     assign,
+//     ILibraryConfiguration,
+//     ITypedHash,
+//     Runtime,
+//     DefaultRuntime,
+//     dateAdd,
+//     stringIsNullOrEmpty,
+// } from "@pnp/common";
 import {
-    combine,
-    IFetchOptions,
-    IConfigOptions,
-    mergeOptions,
     objectDefinedNotNull,
-    IRequestClient,
-    assign,
-    ILibraryConfiguration,
     ITypedHash,
     Runtime,
     DefaultRuntime,
-    dateAdd,
-    stringIsNullOrEmpty,
 } from "@pnp/common";
 import { asyncReduce, broadcast, request } from "./moments.js";
 import { Timeline } from "./timeline.js";
@@ -26,7 +32,8 @@ export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "re
     headers?: Record<string, string>;
 };
 
-export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
+//TODO: is this result supposed to be any | undefined?
+export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any | undefined) => Promise<[string, RequestInit, any]>;
 
 export type QueryableSendObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
 
@@ -95,6 +102,7 @@ export interface IQueryable2 extends Timeline<any> {
 export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
 
     private _runtime: Runtime;
+    /* eslint-disable  @typescript-eslint/no-unused-locals */
     private _parent: Queryable2;
     private _url: string;
     private _query: Map<string, string>;
@@ -108,30 +116,72 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         this._parent = parent || null;
         this._query = query || new Map<string, string>();
         this._runtime = null;
+
+        //Used to avoid eslint errors
+        console.log(this._parent);
+        console.log(this._query);
     }
 
     public using(behavior: (intance: this) => this): this {
         return behavior(this);
     }
 
-    public async start(): Promise<any> {
+    // public async start(): Promise<any> {
 
-        setTimeout(async () => {
+    //     setTimeout(async () => {
 
-            try {
+    //         try {
 
-                const [url, init, preResult] = await this.emit.pre(this.toUrl(), {
-                    method: "GET",
-                    headers: {},
-                }, undefined);
+    //             const [url, init, preResult] = await this.emit.pre(this.toUrl(), {
+    //                 method: "GET",
+    //                 headers: {},
+    //             }, undefined);
 
-                if (typeof preResult !== "undefined") {
-                    this.emit.data(preResult);
+    //             if (typeof preResult !== "undefined") {
+    //                 this.emit.data(preResult);
 
-                    // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
-                    return;
-                }
+    //                 // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
+    //                 return;
+    //             }
 
+    //             const response = await this.emit.send(url, init);
+
+    //             // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
+    //             // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    //             const [_url, _resp, result] = await this.emit.parse(url, response, undefined);
+
+    //             // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    //             const [_url2, result2] = await this.emit.post(url, result);
+
+    //             if (typeof result2 !== "undefined") {
+    //                 this.emit.data(result2);
+    //             }
+
+    //         } catch (e) {
+
+    //             // anything that throws we emit and continue
+    //             this.emit.error(e);
+    //         }
+    //     }, 0);
+
+    //     return new Promise((resolve, reject) => {
+    //         this.on.data(resolve);
+    //         this.on.error(reject);
+    //     });
+    // }
+
+    public async start2(): Promise<any> {
+        let retVal: any = null;
+        try {
+            const [url, init, preResult] = await this.emit.pre(this.toUrl(), {
+                method: "GET",
+                headers: {},
+            }, undefined);
+
+            if (typeof preResult !== "undefined") {
+                retVal = preResult;
+            }
+            if (this.Waiting || retVal == null) {
                 const response = await this.emit.send(url, init);
 
                 // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
@@ -139,23 +189,43 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
                 const [_url, _resp, result] = await this.emit.parse(url, response, undefined);
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const [_url2, result2] = await this.emit.post(url, result);
+                const [_url2, result2] = await this.emit.post(_url, result);
 
                 if (typeof result2 !== "undefined") {
-                    this.emit.data(result2);
+                    retVal = result2;
                 }
+            } else {
+                setTimeout(async () => {
+                    try {
+                        const response = await this.emit.send(url, init);
 
-            } catch (e) {
+                        // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const [_url, _resp, result] = await this.emit.parse(url, response, undefined);
 
-                // anything that throws we emit and continue
-                this.emit.error(e);
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const [_url2, result2] = await this.emit.post(_url, result);
+                        console.log(result2);
+                    } catch (err) {
+                        this.emit.error(err);
+                    }
+                }, 0);
             }
-        }, 0);
+        } catch (e) {
 
-        return new Promise((resolve, reject) => {
-            this.on.data(resolve);
-            this.on.error(reject);
-        });
+            // anything that throws we emit and continue
+            this.emit.error(e);
+        }
+        return retVal;
+        // setTimeout(async () => {
+
+
+        // }, 0);
+
+        // return new Promise((resolve, reject) => {
+        //     this.on.data(resolve);
+        //     this.on.error(reject);
+        // });
     }
 
 

@@ -44,6 +44,7 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
             const cached = s.get(key);
 
+            // we need to ensure that result stays "undefined" unless we mean to set null as the result
             if (cached === null) {
 
                 // if we don't have a cached result we need to get it after the request is sent and parsed
@@ -56,7 +57,46 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
             } else {
 
-                // we need to ensure that result stays "undefined" unless we mean to set null as the result
+                result = cached;
+            }
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
+export function Caching2(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
+
+    const storage = new PnPClientStorage();
+    const s = store === "session" ? storage.session : storage.local;
+
+    if (!isFunc(keyFactory)) {
+        keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
+    }
+
+    if (!isFunc(expireFunc)) {
+        // TODO:: tie this default timeline to config? or the config is having to create the function
+        expireFunc = () => dateAdd(new Date(), "minute", 5);
+    }
+
+    return (instance: Queryable2) => {
+        instance.Waiting = false;
+        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            const key = keyFactory(url);
+
+            const cached = s.get(key);
+
+            this.on.post(async function (url: string, result: any) {
+
+                s.put(key, result, expireFunc(url));
+
+                return [url, result];
+            });
+
+            if (cached !== null) {
                 result = cached;
             }
 

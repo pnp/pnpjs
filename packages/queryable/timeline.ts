@@ -1,9 +1,9 @@
 import { LogLevel } from "@pnp/logging";
 import { isArray, isFunc } from "@pnp/common";
 import { broadcast } from "./moments.js";
-import { addListener } from "node:cluster";
+//import { addListener } from "node:cluster";
 
-export type ObsererAddBehavior = "add" | "replace" | "prepend";
+export type ObserverAddBehavior = "add" | "replace" | "prepend";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -29,7 +29,7 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
  * A type used to represent the proxied Timeline.on property
  */
 type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObsererAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -61,6 +61,8 @@ export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmi
  */
 export abstract class Timeline<T extends Moments> {
 
+    private _waiting: boolean = true;
+
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
 
@@ -71,14 +73,24 @@ export abstract class Timeline<T extends Moments> {
     // TODO:: clear registered observers
     // TODO:: reset observers to parent
 
+    //JULIE
+    public get Waiting(): boolean {
+        return this._waiting;
+    }
+
+    public set Waiting(value: boolean) {
+        this._waiting = value;
+    }
+    //JULIE
+
     /**
-     * Property allowing access to subscribe observers to all the moments within this timline
+     * Property allowing access to subscribe observers to all the moments within this timeline
      */
     public get on(): OnProxyType<T> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler, addBehavior: ObsererAddBehavior = "add") => {
+                get: (target: any, p: string) => (handler, addBehavior: ObserverAddBehavior = "add") => {
                     return addObserver(target.observers, p, handler, addBehavior);
                 },
             });
@@ -157,7 +169,7 @@ export abstract class Timeline<T extends Moments> {
  * @param prepend If true the observer is prepended to the collection (default: false)
  *
  */
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObsererAddBehavior = "add"): any[] {
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObserverAddBehavior = "add"): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
