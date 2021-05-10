@@ -31,7 +31,7 @@
         "chai": "^4.3.4",
         "chai-as-promised": "^7.1.1",
         "del-cli": "^3.0.1",
-        "eslint": "^7.23.0",
+        "eslint": "^7.26.0",
         "findup-sync": "^4.0.0",
         "https-proxy-agent": "^5.0.0",
         "jsonwebtoken": "^8.5.1",
