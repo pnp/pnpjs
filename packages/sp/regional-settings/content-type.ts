@@ -7,5 +7,5 @@ declare module "../content-types/types" {
     interface IContentType extends IUserResources {}
 }
 
-_ContentType.prototype.titleResource = getValueForUICultureBinder("titleResource");
+_ContentType.prototype.titleResource = getValueForUICultureBinder("nameResource");
 _ContentType.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
