@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -docs: fixed typeo in debug-tests.md [@chimenjoku](https://github.com/chimenjoku) [[PR](https://github.com/pnp/pnpjs/pull/1736)]
 -sp: Fix getting content type name in the proper language [@magarma](https://github.com/magarma) [[PR](https://github.com/pnp/pnpjs/pull/1753)]
 -sp: searchUsingCaching where results shared a cache key so were not being updated #1678 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
+-sp: Fixed issues with isolated runtimes not inheriting properly #1755 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
 
 ### Added
 
