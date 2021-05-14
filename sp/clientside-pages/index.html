@@ -3336,6 +3336,24 @@ await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.
 // save the changes
 await page.save();
 </code></pre>
+<h1 id="add-repost-page">Add Repost Page<a class="headerlink" href="#add-repost-page" title="Permanent link">&para;</a></h1>
+<p><em>Added in 2.5.0</em></p>
+<p>You can use the <code>addRepostPage</code> method to add a report page. The method returns the absolute url of the created page. All properties are optional but it is recommended to include as much as possible to improve the quality of the repost card's display.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+
+const w = await sp.web.addRepostPage({
+    BannerImageUrl: &quot;https://some.absolute/path/to/an/image.jpg&quot;,
+    IsBannerImageUrlExternal: true,
+    Description: &quot;My Description&quot;,
+    Title: &quot;This is my title!&quot;,
+    OriginalSourceUrl: &quot;https://absolute/path/to/article&quot;,
+});
+</code></pre>
+<blockquote>
+<p>To specify an existing item in another list all of the four properties OriginalSourceSiteId, OriginalSourceWebId, OriginalSourceListId, and OriginalSourceItemId are required.</p>
+</blockquote>
                 
               
               

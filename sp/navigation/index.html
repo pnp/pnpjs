@@ -2321,7 +2321,15 @@ import &quot;@pnp/sp/navigation&quot;;
 const top = await sp.web.navigation.topNavigationBar();
 const quick = await sp.web.navigation.quicklaunch();
 </code></pre>
-<p>For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch.</p>
+<p>For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch:</p>
+<pre><code class="language-TypeScript">// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.topNavigationBar;
+
+// -- OR -- 
+
+// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.quicklaunch;
+</code></pre>
 <h3 id="getbyid">getById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;

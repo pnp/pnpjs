@@ -831,6 +831,19 @@
     Getting Started
   </a>
   
+    <nav class="md-nav" aria-label="Getting Started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-an-endpoint" class="md-nav__link">
+    Selecting an Endpoint
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2082,6 +2095,19 @@
     Getting Started
   </a>
   
+    <nav class="md-nav" aria-label="Getting Started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-an-endpoint" class="md-nav__link">
+    Selecting an Endpoint
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2133,6 +2159,12 @@ import &quot;@pnp/graph/groups&quot;;
         console.log(`Groups: ${JSON.stringify(g, null, 4)}`);
     });
 })()
+</code></pre>
+<h3 id="selecting-an-endpoint">Selecting an Endpoint<a class="headerlink" href="#selecting-an-endpoint" title="Permanent link">&para;</a></h3>
+<p>The Microsoft Graph supports two end points "v1.0" and "beta" and you can easily switch between them using the <code>setEndpoint</code> method available on all graph queryable objects.</p>
+<pre><code class="language-TypeScript">const betaResult = await graph.me.setEndpoint(&quot;beta&quot;)();
+
+const v1Result = await graph.me.setEndpoint(&quot;v1.0&quot;)();
 </code></pre>
 <h2 id="getting-started-with-sharepoint-framework">Getting Started with SharePoint Framework<a class="headerlink" href="#getting-started-with-sharepoint-framework" title="Permanent link">&para;</a></h2>
 <p>Install the library and required dependencies</p>
