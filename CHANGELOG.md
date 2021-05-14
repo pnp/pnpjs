@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.5.0 - 2021-May-14
+
+### Fixed
+
+-sp: sp.site.getContextInfo() compatible with SP2013 [@lukju](https://github.com/lukju) [[PR](https://github.com/pnp/pnpjs/pull/1716)]
+-docs: fixed typeo in Files/types.ts [@AriGunawan](https://github.com/AriGunawan) [[PR](https://github.com/pnp/pnpjs/pull/1733)]
+-docs: fixed typeo in debug-tests.md [@chimenjoku](https://github.com/chimenjoku) [[PR](https://github.com/pnp/pnpjs/pull/1736)]
+-sp: Fix getting content type name in the proper language [@magarma](https://github.com/magarma) [[PR](https://github.com/pnp/pnpjs/pull/1753)]
+-sp: searchUsingCaching where results shared a cache key so were not being updated #1678 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
+
+### Added
+
+-docs: mention in docs for setEndpoint in graph library #1693 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
+-sp: Adds an addRepostPage method with clientside-pages #1703 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
+
+### Changed
+
+-docs: Updates the nav docs to clear up some confusion #1694 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1730)]
+
 ## 2.4.0 - 2021-April-9
 
 ### Fixed
