@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
-import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/common";
+import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime, stringIsNullOrEmpty } from "@pnp/common";
 import { metadata } from "../utils/metadata.js";
 import { CachingOptions, body } from "@pnp/odata";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
@@ -126,7 +126,7 @@ export class _Search extends _SharePointQueryableInstance {
 
             if (objectDefinedNotNull(this.data.cachingOptions)) {
                 // if our key ends in the postquery url we overwrite it
-                if (queryRegex.test(this.data.cachingOptions.key)) {
+                if (stringIsNullOrEmpty(this.data.cachingOptions.key) || queryRegex.test(this.data.cachingOptions.key)) {
                     this.data.cachingOptions.key = cacheKey;
                 }
             } else {

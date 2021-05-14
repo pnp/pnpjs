@@ -43,6 +43,10 @@ export {
 } from "./utils/extractweburl.js";
 
 export {
+    escapeQueryStrValue,
+} from "./utils/escapeQueryStrValue.js";
+
+export {
     ISPKeyValueCollection,
     objectToSPKeyValueCollection,
 } from "./utils/objectToSPKeyValueCollection.js";
@@ -51,3 +55,7 @@ export {
     stripInvalidFileFolderChars,
     containsInvalidFileFolderChars,
 } from "./utils/file-names.js";
+
+export {
+    odataUrlFrom,
+} from "./odata.js";

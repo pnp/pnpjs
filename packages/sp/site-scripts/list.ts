@@ -21,7 +21,7 @@ declare module "../lists/types" {
 _List.prototype.getSiteScript = async function (this: _List): Promise<string> {
 
     const rootFolder = await this.clone(List).rootFolder.get<{ Name: string }>();
-    const web = await Web(extractWebUrl(this.toUrl())).select("Url").get();
+    const web = await Web(extractWebUrl(this.toUrl())).configureFrom(this).select("Url").get();
     const absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
     return SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
 };

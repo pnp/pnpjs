@@ -67,7 +67,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
         };
     }
 }
-export interface IFolders extends _Folders {}
+export interface IFolders extends _Folders { }
 export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 
@@ -150,11 +150,13 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
+
         const q = await this.listItemAllFields.select(...selects)();
         if (hOP(q, "odata.null") && q["odata.null"]) {
             throw Error("No associated item was found for this folder. It may be the root folder, which does not have an item.");
         }
-        return assign(Item(odataUrlFrom(q)), q);
+
+        return assign(Item(odataUrlFrom(q)).configureFrom(this), q);
     }
 
     /**
@@ -169,7 +171,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(urlInfo.ParentWeb.Url, "/_api/SP.MoveCopyUtil.MoveFolder()"),
+        await spPost(Folder(urlInfo.ParentWeb.Url, "/_api/SP.MoveCopyUtil.MoveFolder()").configureFrom(this),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
@@ -190,7 +192,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()").configureFrom(this),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -217,7 +219,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()").configureFrom(this),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
@@ -238,7 +240,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
+        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()").configureFrom(this),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -321,7 +323,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
 
-        let shareable = Item(odataUrlFrom(d));
+        let shareable = Item(odataUrlFrom(d)).configureFrom(this);
 
         // we need to handle batching
         if (this.hasBatch) {

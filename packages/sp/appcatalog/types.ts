@@ -23,7 +23,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
      * @param id - Specify the guid of the app
      */
     public getAppById(id: string): IApp {
-        return tag.configure(App(this, `getById('${id}')`), "ac.getAppById");
+        return tag.configure(App(this, `getById('${id}')`).configureFrom(this), "ac.getAppById");
     }
 
     /**
@@ -43,7 +43,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
             appId = id;
         } else {
 
-            const web = Web(webUrl);
+            const web = Web(webUrl).configureFrom(this);
             const listId = (await web.lists.select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
             const listItems = await web.lists.getById(listId).items.filter(`AppProductID eq '${id}'`).top(1)();
 
@@ -57,7 +57,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
         }
 
         const poster = tag.configure(AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
-
+        poster.configureFrom(this);
         return await spPost(poster, {});
     }
 
@@ -73,6 +73,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
 
         // you don't add to the availableapps collection
         const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
+        adder.configureFrom(this);
 
         const r = await spPost(adder, {
             body: content, headers: {
@@ -86,7 +87,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
         };
     }
 }
-export interface IAppCatalog extends _AppCatalog {}
+export interface IAppCatalog extends _AppCatalog { }
 export const AppCatalog = spInvokableFactory<IAppCatalog>(_AppCatalog);
 
 export class _App extends _SharePointQueryableInstance {
@@ -149,7 +150,7 @@ export class _App extends _SharePointQueryableInstance {
         return spPost(this.clone(App, path));
     }
 }
-export interface IApp extends _App {}
+export interface IApp extends _App { }
 export const App = spInvokableFactory<IApp>(_App);
 
 /**

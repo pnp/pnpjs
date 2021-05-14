@@ -317,7 +317,7 @@ export class _ClientsidePage extends _SharePointQueryable {
             let imgInfo: Pick<IFileInfo, "ListId" | "WebId" | "UniqueId" | "Name" | "SiteId">;
             let webUrl: string;
 
-            const web = Web(extractWebUrl(this.toUrl()));
+            const web = Web(extractWebUrl(this.toUrl())).configureFrom(this);
             const batch = web.createBatch();
             web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
                 .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(r1 => imgInfo = r1);
@@ -761,7 +761,7 @@ export class _ClientsidePage extends _SharePointQueryable {
                 } else {
                     column.controls.forEach(control => {
                         control.data.emphasis = this.getEmphasisObj(section.emphasis);
-                        canvasData.push(control.data);
+                        canvasData.push(this.specialSaveHandling(control).data);
                     });
                 }
             });
@@ -879,6 +879,30 @@ export class _ClientsidePage extends _SharePointQueryable {
         }
 
         return section;
+    }
+
+    /**
+     * Based on issue #1690 we need to take special case actions to ensure some things
+     * can be saved properly without breaking existing pages.
+     *
+     * @param control The control we are ensuring is "ready" to be saved
+     */
+    private specialSaveHandling(control: ColumnControl<any>): ColumnControl<any> {
+
+        // this is to handle the special case in issue #1690
+        // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
+        if ((<any>control).data.controlType === 3 && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd") {
+            const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
+            if (objectDefinedNotNull(texts)) {
+                const keys = Object.getOwnPropertyNames(texts);
+                for(let i = 0; i < keys.length; i++) {
+                    texts[keys[i]] = texts[keys[i]].replace(/</ig, "&lt;");
+                    (<any>control).data.webPartData.serverProcessedContent.searchablePlainTexts = texts;
+                }
+            }
+        }
+
+        return control;
     }
 }
 export interface IClientsidePage extends _ClientsidePage { }
@@ -1529,4 +1553,17 @@ export interface IBannerImageProps {
     imageSourceType?: number;
     translateX?: number;
     translateY?: number;
+}
+
+export interface IRepostPage {
+    Description?: string;
+    IsBannerImageUrlExternal?: boolean;
+    OriginalSourceListId?: string;
+    ShouldSaveAsDraft?: boolean;
+    OriginalSourceSiteId?: string;
+    BannerImageUrl?: string;
+    Title?: string;
+    OriginalSourceItemId?: string;
+    OriginalSourceUrl?: string;
+    OriginalSourceWebId?: string;
 }
