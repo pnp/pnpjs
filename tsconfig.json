@@ -31,7 +31,6 @@
         "preserveConstEnums": true,
         "importHelpers": true,
         "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
         "paths": {
             "@pnp/*": [
                 "./packages/*"

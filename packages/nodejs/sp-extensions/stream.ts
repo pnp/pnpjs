@@ -1,6 +1,6 @@
 import { getGUID, isFunc, stringIsNullOrEmpty } from "@pnp/common";
 import { ODataParser, extendFactory, headers } from "@pnp/odata";
-import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files/index.js";
+import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData, IFiles } from "@pnp/sp/files/index.js";
 import { spPost, odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
@@ -75,6 +75,7 @@ extendFactory(Files, {
      */
     // @tag("fis.addChunked")
     async addChunked(
+        this: IFiles,
         url: string,
         content: Blob | ReadStream,
         progress?: (data: IFileUploadProgressData) => void,

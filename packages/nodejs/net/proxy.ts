@@ -1,19 +1,18 @@
 import { stringIsNullOrEmpty, mergeOptions, IConfigOptions, objectDefinedNotNull } from "@pnp/common";
-import pkg from "https-proxy-agent";
-const { HttpsProxyAgent } = pkg;
+import * as HttpsProxyAgent from "https-proxy-agent";
 
 let proxyUrl = "";
 let proxyAgent = null;
 
-export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { agent: typeof pkg } {
+export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { agent: typeof HttpsProxyAgent } {
 
     if (!stringIsNullOrEmpty(proxyUrl) || objectDefinedNotNull(proxyAgent)) {
         mergeOptions(opts, {
-            agent: proxyAgent || new HttpsProxyAgent(proxyUrl),
+            agent: proxyAgent || HttpsProxyAgent(proxyUrl),
         });
     }
 
-    return <T & { agent: typeof pkg }>opts;
+    return <T & { agent: typeof HttpsProxyAgent }>opts;
 }
 
 /**
@@ -28,7 +27,7 @@ export function setProxyUrl(url: string) {
 /**
  * Sets the given agent as a proxy on all requests
  *
- * @param url The proxy agent to use
+ * @param agent The proxy agent to use
  */
 export function setProxyAgent(agent: any) {
     proxyAgent = agent;
