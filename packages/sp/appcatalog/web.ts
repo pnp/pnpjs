@@ -11,11 +11,12 @@ declare module "../webs/types" {
          * as an IAppCatalog instance
          *
          * @param url [Optional] Url of the web to get (default: current web)
+         * @param scope [Optional] The scope of the app catalog (default: tenant)
          */
-        getAppCatalog(url?: string | _Web): IAppCatalog;
+        getAppCatalog(url?: string | _Web, scope?: AppCatalogScope): IAppCatalog;
     }
 }
 
 _Web.prototype.getAppCatalog = function (this: _Web, url?: string | _Web, scope: AppCatalogScope = "tenant"): IAppCatalog {
-    return AppCatalog(url || this, scope).configureFrom(this);
+    return AppCatalog(url || this, `_api/web/${scope}appcatalog/AvailableApps`).configureFrom(this);
 };
