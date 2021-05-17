@@ -12,10 +12,20 @@ import { tag } from "../telemetry.js";
 import { Web } from "../webs/index.js";
 import "../items/index.js";
 
+export type AppCatalogScope = "tenant" | "sitecollection";
+
 export class _AppCatalog extends _SharePointQueryableCollection {
 
-    constructor(baseUrl: string | ISharePointQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+    private readonly scope: AppCatalogScope;
+
+    constructor(baseUrl: string | ISharePointQueryable, path?: string, scope: AppCatalogScope = "tenant") {
+        if(!path) {
+            path =  `_api/web/${scope}appcatalog/AvailableApps`;
+        }
+
         super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
+
+        this.scope = scope;
     }
 
     /**
@@ -56,7 +66,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
             }
         }
 
-        const poster = tag.configure(AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
+        const poster = tag.configure(AppCatalog(webUrl, `_api/web/${this.scope}appcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
         poster.configureFrom(this);
         return await spPost(poster, {});
     }
@@ -72,7 +82,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
+        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/${this.scope}appcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
         adder.configureFrom(this);
 
         const r = await spPost(adder, {

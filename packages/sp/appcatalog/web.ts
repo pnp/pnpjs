@@ -1,5 +1,5 @@
 import { _Web } from "../webs/types.js";
-import { AppCatalog, IAppCatalog } from "./types.js";
+import { AppCatalog, AppCatalogScope, IAppCatalog } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -16,6 +16,6 @@ declare module "../webs/types" {
     }
 }
 
-_Web.prototype.getAppCatalog = function (this: _Web, url?: string | _Web): IAppCatalog {
-    return AppCatalog(url || this).configureFrom(this);
+_Web.prototype.getAppCatalog = function (this: _Web, url?: string | _Web, scope: AppCatalogScope = "tenant"): IAppCatalog {
+    return AppCatalog(url || this, scope).configureFrom(this);
 };
