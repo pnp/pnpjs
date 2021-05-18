@@ -12,7 +12,7 @@
         "@types/chai-as-promised": "^7.1.4",
         "@types/core-js": "^2.5.4",
         "@types/es6-promise": "^3.3.0",
-        "@types/findup-sync": "^2.0.2",
+        "@types/findup-sync": "^4.0.0",
         "@types/gulp": "^4.0.8",
         "@types/gulp-replace": "^0.0.31",
         "@types/jsonwebtoken": "^8.5.1",
