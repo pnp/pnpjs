@@ -6,7 +6,7 @@
     "devDependencies": {
         "@azure/msal-node": "^1.1.0",
         "@microsoft/microsoft-graph-types": "^1.37.0",
-        "@pnp/buildsystem": "^2.3.1",
+        "@pnp/buildsystem": "^2.3.2",
         "@types/adal-angular": "^1.0.1",
         "@types/chai": "^4.2.18",
         "@types/chai-as-promised": "^7.1.4",
