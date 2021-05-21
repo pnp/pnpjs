@@ -9,7 +9,7 @@ import { odataUrlFrom } from "../odata.js";
 import { Web, IWeb } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Site } from "../sites/types.js";
-import { spDelete, spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";
