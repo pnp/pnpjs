@@ -77,7 +77,7 @@ export abstract class Timeline<T extends Moments> {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    constructor(private readonly moments: T, private observers = {}) { }
+    constructor(protected readonly moments: T, protected observers = {}) { }
 
     // TODO:: reset observers to parent?
 
@@ -148,31 +148,29 @@ export abstract class Timeline<T extends Moments> {
             this._emitProxy = new Proxy(this, {
                 get: (target: any, p: string) => (...args: any[]) => {
 
-                    const observers = Reflect.get(target.observers, p);
+                    // handle the case there are no observers registered to the target
+                    const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (isArray(observers) && observers.length > 0) {
-
-                        try {
-
-                            // default to broadcasting any events without specific impl (will apply to defaults)
-                            const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
-
-                            return Reflect.apply(moment, this, [observers, ...args]);
-
-                        } catch (e) {
-
-                            if (p !== "error") {
-                                this.emit.error(e);
-                            } else {
-                                // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
-                                throw e;
-                            }
-                        }
-
-                    } else if (p === "error") {
-
+                    if (p === "error" && (!isArray(observers) || observers.length < 1)) {
                         // if we are emitting an error, and no error observers are defined, we throw
                         throw Error(`Unhandled Exception: ${args[0]}`);
+                    }
+
+                    try {
+
+                        // default to broadcasting any events without specific impl (will apply to defaults)
+                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+
+                        return Reflect.apply(moment, this, [observers, ...args]);
+
+                    } catch (e) {
+
+                        if (p !== "error") {
+                            this.emit.error(e);
+                        } else {
+                            // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
+                            throw e;
+                        }
                     }
                 },
             });

@@ -16,17 +16,13 @@ import {
 import { asyncReduce, broadcast, request } from "./moments.js";
 import { Timeline } from "./timeline.js";
 
-interface Queryable2Init {
-    parent?: Queryable2;
-    url: string;
-    query?: Map<string, string>;
-}
-
 export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "referrerPolicy" | "mode" | "credentials" | "cache" | "redirect" | "integrity"> & {
     headers?: Record<string, string>;
 };
 
 export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
+
+export type QueryableAuthObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<[string, RequestInit]>;
 
 export type QueryableSendObserver = (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
 
@@ -38,6 +34,7 @@ export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => v
 
 const DefaultBehaviors = {
     pre: asyncReduce<QueryablePreObserver>(),
+    auth: asyncReduce<QueryableAuthObserver>(),
     send: request<QueryableSendObserver>(),
     parse: asyncReduce<QueryableParseObserver>(),
     post: asyncReduce<QueryablePostObserver>(),
@@ -99,14 +96,31 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
     private _url: string;
     private _query: Map<string, string>;
 
-    constructor(init: Queryable2Init) {
-        super(DefaultBehaviors);
+    constructor(init: Queryable2 | string, path?: string) {
 
-        const { url, parent, query } = init;
+        let url = "";
+        let parent = null;
+        let observers = {};
+
+        if (typeof init === "string") {
+
+            url = combine(init, path);
+
+        } else {
+
+            const { _url, _parent } = init;
+
+            url = combine(_url, path);
+            parent = _parent || null;
+            observers = init.observers;
+        }
+
+        super(DefaultBehaviors, observers);
 
         this._url = url;
-        this._parent = parent || null;
-        this._query = query || new Map<string, string>();
+        this._parent = parent;
+        this._query = new Map<string, string>();
+        // TODO:: do we need this??
         this._runtime = null;
     }
 
@@ -114,16 +128,16 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         return behavior(this);
     }
 
-    public async start(): Promise<any> {
+    public async start(init: RequestInit = {
+        method: "GET",
+        headers: {},
+    }): Promise<any> {
 
         setTimeout(async () => {
 
             try {
 
-                const [url, init, preResult] = await this.emit.pre(this.toUrl(), {
-                    method: "GET",
-                    headers: {},
-                }, undefined);
+                const [preUrl, preInit, preResult] = await this.emit.pre(this.toUrl(), init, undefined);
 
                 if (typeof preResult !== "undefined") {
                     this.emit.data(preResult);
@@ -132,15 +146,20 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
                     return;
                 }
 
-                const response = await this.emit.send(url, init);
+                const [authUrl, authInit] = await this.emit.auth(preUrl, preInit);
+
+                const response = await this.emit.send(authUrl, authInit);
 
                 // the unused vars MUST remain in the output tuple or the tslib helpers fail with non-iterable exceptions
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const [_url, _resp, result] = await this.emit.parse(url, response, undefined);
+                const [_url, _resp, result] = await this.emit.parse(authUrl, response, undefined);
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const [_url2, result2] = await this.emit.post(url, result);
+                const [_url2, result2] = await this.emit.post(authUrl, result);
 
+                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
+                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
+                // completed event to signal the request is completed?
                 if (typeof result2 !== "undefined") {
                     this.emit.data(result2);
                 }
@@ -157,76 +176,6 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
             this.on.error(reject);
         });
     }
-
-
-    // interface IRequestContext {
-    //     events: Timeline;
-    //     query: Queryable;
-    //     response: null;
-    //     resolve: null;
-    //     reject: null;
-    // }
-
-    // public async execute(): Promise<any> {
-
-    //     const events = this._events;
-    //     let ctx = {
-    //         events,
-    //         query: this, // TODO:: clone
-    //         response: null,
-    //     };
-
-    //     const promise = new Promise((resolve, reject) => {
-    //         ctx = Object.assign(ctx, { resolve, reject });
-    //     });
-
-    //     try {
-
-    //         // we register how we handle data event, this event should emit only once per-execution
-    //         // data my come from web request, cache, or other
-    //         events.on("data", async (query: Queryable2, response: Response) => {
-
-    //             events.emit("log", `Emitting "post" event for: ${this.toUrl()}`, LogLevel.Verbose);
-    //             await events.emitAsync("post", query, response);
-    //             events.emit("log", `Emitted "post" event for: ${this.toUrl()}`, LogLevel.Verbose);
-    //         });
-
-    //         events.emit("log", `Beginning request: ${this.toUrl()}`, LogLevel.Info);
-
-    //         events.emit("log", `Emitting "pre" event for: ${this.toUrl()}`, LogLevel.Verbose);
-    //         ctx = await events.emitAsync("pre", ctx);
-    //         events.emit("log", `Emitted "pre" event for: ${this.toUrl()}`, LogLevel.Verbose);
-
-    //         events.emit("log", `Emitting "send" event for: ${this.toUrl()}`, LogLevel.Verbose);
-    //         await events.emitAsync("send", ctx);
-    //         events.emit("log", `Emitted "send" event for: ${this.toUrl()}`, LogLevel.Verbose);
-
-    //     } catch (e) {
-
-    //         events.emit("error", e);
-    //     }
-
-    //     return promise;
-    // }
-
-
-
-
-    // [runtime: Runtime] | [cloneGlobal: boolean, additionalConfig?: ITypedHash<any>]
-
-
-
-
-
-
-
-    // public get data(): Partial<IQueryableData<DefaultActionType>> {
-    //     return this._data;
-    // }
-
-    // public set data(value: Partial<IQueryableData<DefaultActionType>>) {
-    //     this._data = Object.assign({}, this.data, cloneQueryableData(value));
-    // }
 
     public getRuntime(): Runtime {
 

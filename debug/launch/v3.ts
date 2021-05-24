@@ -1,39 +1,53 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging } from "@pnp/queryable";
-import { NodeSend, MSAL2, MSAL } from "@pnp/nodejs";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
+import { NodeSend, MSAL } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
+import { DefaultParsing } from "@pnp/queryable/parsers-2.js";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
-    const t = new Queryable2({
-        url: combine(settings.testing.sp.url, "_api/web"),
-    });
+    const testingRoot = new Queryable2(combine(settings.testing.sp.url, "_api/web"));
+    testingRoot
+        .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
+        .using(InjectHeaders({
+            "Accept": "application/json",
+            "Content-Type": "application/json;odata=verbose;charset=utf-8",
+        }))
+        .using(NodeSend())
+        .using(DefaultParsing())
+        .on.post(async (_url: string, result: any) => {
 
-    const t2 = new Queryable2({
-        url: combine(settings.testing.sp.url, "_api/web/lists"),
-    });
+            console.log(JSON.stringify(result));
 
-    const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
-    const [, init,] = await Reflect.apply(hackAuth, t, ["", { headers: {} }, undefined]);
+            return [_url, result];
+        });
 
-    const [batch, executeBatch] = createBatch(settings.testing.sp.url, NodeSend(), init.headers["Authorization"]);
+    const t2 = new Queryable2(testingRoot, "lists");
 
-    t.using(batch);
-    t2.using(batch);
+    const u = await get(t2);
 
-    Logger.subscribe(new ConsoleListener());
+    // TODO:: still need to fix up auth for batches. Can it get it from some central place?? DO we now run batch as a queryable with associated events for the core request? Yes for consistency.
+    // const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
+    // const [, init,] = await Reflect.apply(hackAuth, t, ["", { headers: {} }, undefined]);
 
-    // most basic implementation
-    t.on.log((message: string, level: LogLevel) => {
-        console.log(`[${level}] ${message}`);
-    });
+    // const [batch, executeBatch] = createBatch(settings.testing.sp.url, NodeSend(), init.headers["Authorization"]);
 
-    // super easy debug
-    t.on.error(console.error);
-    t2.on.error(console.error);
+    // t.using(batch);
+    // t2.using(batch);
+
+    // Logger.subscribe(new ConsoleListener());
+
+    // // most basic implementation
+    // t.on.log((message: string, level: LogLevel) => {
+    //     console.log(`[${level}] ${message}`);
+    // });
+
+    // // super easy debug
+    // t.on.error(console.error);
+    // t2.on.error(console.error);
 
     // MSAL config via using?
     // t.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
@@ -55,15 +69,15 @@ export async function Example(settings: ITestingSettings) {
     //     return [url, init, result];
     // });
 
-    t.using(InjectHeaders({
-        "Accept": "application/json",
-        "Content-Type": "application/json;odata=verbose;charset=utf-8",
-    }));
+    // t.using(InjectHeaders({
+    //     "Accept": "application/json",
+    //     "Content-Type": "application/json;odata=verbose;charset=utf-8",
+    // }));
 
-    t2.using(InjectHeaders({
-        "Accept": "application/json",
-        "Content-Type": "application/json;odata=verbose;charset=utf-8",
-    }));
+    // t2.using(InjectHeaders({
+    //     "Accept": "application/json",
+    //     "Content-Type": "application/json;odata=verbose;charset=utf-8",
+    // }));
 
     // use the basic caching that mimics v2
     // t.using(Caching());
@@ -75,82 +89,82 @@ export async function Example(settings: ITestingSettings) {
     // we can register multiple parse handlers to run in sequence
     // here we are doing some error checking??
     // TODO:: do we want a specific response validation step? seems maybe too specialized?
-    t.on.parse(async function (url: string, response: Response, result: any) {
+    // t.on.parse(async function (url: string, response: Response, result: any) {
 
-        if (!response.ok) {
-            // within these observers we just throw to indicate an unrecoverable error within the pipeline
-            throw await HttpRequestError.init(response);
-        }
+    //     if (!response.ok) {
+    //         // within these observers we just throw to indicate an unrecoverable error within the pipeline
+    //         throw await HttpRequestError.init(response);
+    //     }
 
-        return [url, response, result];
-    });
+    //     return [url, response, result];
+    // });
 
-    t2.on.parse(async function (url: string, response: Response, result: any) {
+    // t2.on.parse(async function (url: string, response: Response, result: any) {
 
-        if (!response.ok) {
-            // within these observers we just throw to indicate an unrecoverable error within the pipeline
-            throw await HttpRequestError.init(response);
-        }
+    //     if (!response.ok) {
+    //         // within these observers we just throw to indicate an unrecoverable error within the pipeline
+    //         throw await HttpRequestError.init(response);
+    //     }
 
-        return [url, response, result];
-    });
+    //     return [url, response, result];
+    // });
 
-    // we can register multiple parse handlers to run in sequence
-    t.on.parse(async function (url: string, response: Response, result: any) {
+    // // we can register multiple parse handlers to run in sequence
+    // t.on.parse(async function (url: string, response: Response, result: any) {
 
-        // only update result if not done?
-        if (typeof result === "undefined") {
-            result = await response.text();
-        }
+    //     // only update result if not done?
+    //     if (typeof result === "undefined") {
+    //         result = await response.text();
+    //     }
 
-        // only update result if not done?
-        if (typeof result !== "undefined") {
-            result = JSON.parse(result);
-        }
+    //     // only update result if not done?
+    //     if (typeof result !== "undefined") {
+    //         result = JSON.parse(result);
+    //     }
 
-        return [url, response, result];
-    });
+    //     return [url, response, result];
+    // });
 
-    // we can register multiple parse handlers to run in sequence
-    t2.on.parse(async function (url: string, response: Response, result: any) {
+    // // we can register multiple parse handlers to run in sequence
+    // t2.on.parse(async function (url: string, response: Response, result: any) {
 
-        // only update result if not done?
-        if (typeof result === "undefined") {
-            result = await response.text();
-        }
+    //     // only update result if not done?
+    //     if (typeof result === "undefined") {
+    //         result = await response.text();
+    //     }
 
-        // only update result if not done?
-        if (typeof result !== "undefined") {
-            result = JSON.parse(result);
-        }
+    //     // only update result if not done?
+    //     if (typeof result !== "undefined") {
+    //         result = JSON.parse(result);
+    //     }
 
-        return [url, response, result];
-    });
+    //     return [url, response, result];
+    // });
 
     // const uu = t2.clear.parse();
 
     // console.log(uu);
 
-    // TODO:: must have a passthrough handler for each moment
-    t.on.post(async (url, result) => [url, result]);
-    t2.on.post(async (url, result) => [url, result]);
+    // a passthrough handler for each moment is no longer required
+    // t.on.post(async (url, result) => [url, result]);
+    // t2.on.post(async (url, result) => [url, result]);
 
-    try {
+    // try {
 
-        t.start().then(d => {
-            console.log(d)
-        });
+    //     t.start().then(d => {
+    //         console.log(d)
+    //     });
 
-        t2.start().then(d => {
-            console.log(d)
-        });
+    //     t2.start().then(d => {
+    //         console.log(d)
+    //     });
 
-        await executeBatch();
+    //     await executeBatch();
 
-    } catch (e) {
-        console.error("fail");
-        console.error(e);
-    }
+    // } catch (e) {
+    //     console.error("fail");
+    //     console.error(e);
+    // }
 
 
 

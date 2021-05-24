@@ -83,12 +83,19 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 }
 
 // TODO: this would live on sp or web or site and get the url from there
+// TODO: how do we handle auth here? Inherit a batch queryable from the parent like "web" and clear out the other settings?
 // eslint-disable-next-line max-len
 export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[]) => Promise<Response>, hackAuthHeader: string): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
 
-    //  (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
-    // const h: QueryableSendObserver = null;
-
+    /**
+     * The request record defines a tuple that is
+     *
+     * [0]: The queryable object representing the request
+     * [1]: The request url
+     * [2]: Any request init values (headers, etc)
+     * [3]: The resolve function back to the promise for the original operation
+     * [4]: The reject function back to the promise for the original operation
+     */
     type RequestRecord = [Queryable2, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
     const registrationPromises: Promise<void>[] = [];
