@@ -9,6 +9,8 @@
         "outDir": "../../build/debugging",
         "incremental": true,
         "noUnusedLocals": false,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": true,
         "types": [
             "sharepoint"
         ],

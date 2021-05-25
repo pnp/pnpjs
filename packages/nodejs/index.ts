@@ -29,4 +29,4 @@ export {
 export { AADToken, SPOAuthEnv } from "./types.js";
 export { ProviderHostedRequestContext } from "./providerhosted.js";
 export * from "./net/index.js";
-export { setProxyUrl, setProxyAgent } from "./net/proxy.js";
+export { Proxy } from "./net/proxy.js";

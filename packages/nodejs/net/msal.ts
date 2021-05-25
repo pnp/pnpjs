@@ -1,5 +1,5 @@
 import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
-import { QueryableAuthObserver, Queryable2 } from "@pnp/queryable";
+import { Queryable2 } from "@pnp/queryable";
 
 export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): (instance: Queryable2) => Queryable2 {
 

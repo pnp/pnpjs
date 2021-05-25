@@ -1,9 +1,9 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
-import { NodeSend, MSAL } from "@pnp/nodejs";
+import { NodeFetchWithRetry, MSAL, Proxy } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
-import { DefaultParsing } from "@pnp/queryable/parsers-2.js";
+import { DefaultParse } from "@pnp/queryable/parsers-2.js";
 
 declare var process: { exit(code?: number): void };
 
@@ -15,15 +15,28 @@ export async function Example(settings: ITestingSettings) {
         .using(InjectHeaders({
             "Accept": "application/json",
             "Content-Type": "application/json;odata=verbose;charset=utf-8",
+            "User-Agent": "NONISV|SharePointPnP|PnPjs",
+            "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
         }))
-        .using(NodeSend())
-        .using(DefaultParsing())
-        .on.post(async (_url: string, result: any) => {
-
-            console.log(JSON.stringify(result));
-
-            return [_url, result];
+        .using(NodeFetchWithRetry(2))
+        .using(DefaultParse())
+        // .using(Proxy("https://127.0.0.1:8888"))
+        .on.error((err) => {
+            console.error("caught it");
+            console.error(err);
         });
+
+        // TODO:: make on.x chainable to y.on.x().on.z().on.u();
+    testingRoot.on.post(async (_url: string, result: any) => {
+
+        console.log(JSON.stringify(result));
+
+        return [_url, result];
+    });
+
+    testingRoot.on.log((message) => {
+        console.log(`Cheap log: ${message}.`);
+    });
 
     const t2 = new Queryable2(testingRoot, "lists");
 
