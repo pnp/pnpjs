@@ -98,15 +98,15 @@ export function Caching2(store: "local" | "session" = "session", keyFactory?: (u
 
     return (instance: Queryable2) => {
         instance.Waiting = false;
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
 
-            const key = keyFactory(url);
+            const key = keyFactory(url.toString());
 
             const cached = s.get(key);
 
-            this.on.post(async function (url: string, result: any) {
+            this.on.post(async function (url: URL, result: any) {
 
-                s.put(key, result, expireFunc(url));
+                s.put(key, result, expireFunc(url.toString()));
 
                 return [url, result];
             });

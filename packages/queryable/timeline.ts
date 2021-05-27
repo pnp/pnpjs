@@ -9,6 +9,7 @@ const cloneDeep = require("lodash.clonedeep");
 // TODO:: make .on chainable
 // TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
+
 export type ObserverAddBehavior = "add" | "replace" | "prepend";
 
 /**
@@ -83,9 +84,8 @@ export abstract class Timeline<T extends Moments> {
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
+    private _waiting: boolean;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     constructor(protected readonly moments: T, protected observers?: any) {
 
         if (objectDefinedNotNull(this.observers)) {
@@ -94,17 +94,19 @@ export abstract class Timeline<T extends Moments> {
             this._inheritingObservers = false;
             this.observers = {};
         }
+
+        this.Waiting = false;
     }
 
-    // //JULIE
-    // public get Waiting(): boolean {
-    //     return this._waiting;
-    // }
+    // JULIE
+    public get Waiting(): boolean {
+        return this._waiting;
+    }
 
-    // public set Waiting(value: boolean) {
-    //     this._waiting = value;
-    // }
-    // //JULIE
+    public set Waiting(value: boolean) {
+        this._waiting = value;
+    }
+    // JULIE
 
     /**
      * Property allowing access to subscribe observers to all the moments within this timeline
@@ -113,7 +115,7 @@ export abstract class Timeline<T extends Moments> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler, addBehavior: ObsererAddBehavior = "add") => {
+                get: (target: any, p: string) => (handler, addBehavior: ObserverAddBehavior = "add") => {
 
                     // TODO:: we might need better logic here depending on how objects are constructed
                     if (this._inheritingObservers) {
