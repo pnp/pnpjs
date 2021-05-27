@@ -9,7 +9,7 @@ const cloneDeep = require("lodash.clonedeep");
 // TODO:: make .on chainable
 // TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
-export type ObsererAddBehavior = "add" | "replace" | "prepend";
+export type ObserverAddBehavior = "add" | "replace" | "prepend";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -35,7 +35,7 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
  * A type used to represent the proxied Timeline.on property
  */
 type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObsererAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -96,8 +96,18 @@ export abstract class Timeline<T extends Moments> {
         }
     }
 
+    // //JULIE
+    // public get Waiting(): boolean {
+    //     return this._waiting;
+    // }
+
+    // public set Waiting(value: boolean) {
+    //     this._waiting = value;
+    // }
+    // //JULIE
+
     /**
-     * Property allowing access to subscribe observers to all the moments within this timline
+     * Property allowing access to subscribe observers to all the moments within this timeline
      */
     public get on(): OnProxyType<T> {
 
@@ -221,7 +231,7 @@ export abstract class Timeline<T extends Moments> {
  * @param prepend If true the observer is prepended to the collection (default: false)
  *
  */
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObsererAddBehavior = "add"): any[] {
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObserverAddBehavior = "add"): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");

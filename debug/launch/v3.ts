@@ -106,11 +106,18 @@ export async function Example(settings: ITestingSettings) {
     // t.on.error(console.error);
     // t2.on.error(console.error);
 
-    // MSAL config via using?
-    // t.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
+    // let notExist: boolean = false;
+    // t3.on.error((err: HttpRequestError) => {
+    //     if (err.status == 404) {
+    //         notExist = true;
+    //     }
+    // });
+    // // MSAL config via using?
+    // // t.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
+    // t3.using(MSAL2(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
 
-    // or directly into the event?
-    // t.on.pre(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
+    // // or directly into the event?
+    // // t.on.pre(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes));
 
     // how to register your own pre-handler
     // t.on.pre(async function (url: string, init: RequestInit, result: any) {
@@ -136,12 +143,16 @@ export async function Example(settings: ITestingSettings) {
     //     "Content-Type": "application/json;odata=verbose;charset=utf-8",
     // }));
 
+    // t3.using(Caching2());
+
     // use the basic caching that mimics v2
     // t.using(Caching());
 
     // we can replace
     // t.on.send(NodeSend());
     // t.on.send(NodeSend(), "replace");
+
+    // t3.on.send(NodeSend());
 
     // we can register multiple parse handlers to run in sequence
     // here we are doing some error checking??
