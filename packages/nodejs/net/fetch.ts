@@ -11,98 +11,76 @@ export function fetch(url: string, options: any): Promise<any> {
 export function NodeFetch(): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
-        instance.on.send((url: string, init: RequestInit) => nodeFetch(url, init));
+
+        instance.on.send((url: URL, init: RequestInit) => nodeFetch(url.toString(), init), "replace");
+
         return instance;
     };
 }
 
-export function NodeFetchWithRetry(retryCount = 3, retryInterval = 3000, minRetryInterval = 3000, maxRetryInterval = 90000): (instance: Queryable2) => Queryable2 {
-
-    function updateRetryData(retryData: IRetryData, err: any): IRetryData {
-
-        const data: IRetryData = retryData || {
-            error: null,
-            retryCount: 0,
-            retryInterval: 0,
-        };
-
-        const newError = err || null;
-
-        // Keep track of errors from previous retries
-        // if they exist
-        if (newError) {
-
-            if (data.error) {
-                newError.innerError = data.error;
-            }
-
-            data.error = newError;
-        }
-
-        // Adjust retry interval and cap based on the min and max intervals specified
-        let incrementDelta = Math.pow(2, data.retryCount) - 1;
-        const boundedRandDelta = retryInterval * 0.8 +
-            Math.floor(Math.random() * (retryInterval * 1.2 - retryInterval * 0.8));
-        incrementDelta *= boundedRandDelta;
-
-        // Adjust retry count
-        data.retryCount++;
-        data.retryInterval = Math.min(minRetryInterval + incrementDelta, maxRetryInterval);
-
-        return data;
-    }
+export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        instance.on.send(async function (this: Queryable2, url: string, init: RequestInit) {
+        instance.on.send(function (this: Queryable2, url: URL, init: RequestInit): Promise<Response> {
 
-            const wrapper = async (retryData?: any): Promise<Response> => {
+            let response: Response;
+            let wait = interval;
+            let count = 1;
+
+            const retry = async (): Promise<Response> => {
+
+                if (response?.ok) {
+                    return response;
+                }
+
+                if (count >= retries) {
+                    throw Error(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`);
+                }
+
+                // we have been throttled
+                // http status code 503 or 504, we can retry this
+                if (response?.status === 429 || response?.status === 503 || response?.status === 504) {
+
+                    if (response.headers.has("Retry-After")) {
+
+                        // if we have gotten a header, use that value as the delay value in seconds
+                        wait = parseInt(response.headers.get("Retry-After"), 10) * 1000;
+                    } else {
+
+                        // Increment our counters.
+                        wait *= 2;
+                    }
+
+                    count++;
+
+                    await delay(wait);
+
+                    this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
+                    return retry();
+                }
 
                 try {
 
-                    return await nodeFetch(url, init);
+                    response = await nodeFetch(url.toString(), init);
+                    return retry();
 
                 } catch (err) {
 
-                    // If there is no error code, this wasn't a transient error
-                    // so we throw immediately.
-                    if (!err.code) {
+                    if (err && err.code && ["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) < 0) {
+                        // this is some non-transient node error, no retry
                         throw err;
                     }
 
-                    // Get the latest retry information.
-                    const retry = updateRetryData(retryData, err);
-
-                    // Watching for specific error codes.
-                    if (["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) > -1) {
-
-                        this.emit.log(`Attempt #${retry.retryCount} - Retrying error code: ${err.code}...`, LogLevel.Verbose);
-
-                        // If current amount of retries is less than the max amount, try again
-                        if (retry.retryCount < retryCount) {
-
-                            await delay(retry.retryInterval);
-                            return await wrapper(retry);
-
-                        } else { // max amount of retries reached, so throw the error
-                            throw err;
-                        }
-                    }
+                    return retry();
                 }
             };
 
-            return await wrapper();
+            // this the the first call to retry that starts the cycle
+            // response is undefined and the other values have their defaults
+            return retry();
         });
 
         return instance;
     };
-}
-
-/**
- * Payload from transient errors
- */
-interface IRetryData {
-    retryCount: number;
-    error: any;
-    retryInterval: number;
 }

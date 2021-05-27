@@ -1,19 +1,18 @@
-import { Queryable2 } from "./queryable-2";
+import { Queryable2, queryableDefaultRequest } from "./queryable-2";
 
-const initDefault: RequestInit = {
-    method: "GET",
-    headers: {},
-};
 
-export function get<T>(q: Queryable2): Promise<T> {
-    return q.start(initDefault);
+export function get<T = any>(q: Queryable2, init = { method: "GET", headers: {} }): Promise<T> {
+    return Reflect.apply(queryableDefaultRequest, q, [init]);
 }
 
-export function post<T>(q: Queryable2): Promise<T> {
-    const y = JSON.parse(JSON.stringify(initDefault));
-    y.method = "POST";
-    return q.start(y);
+export function post<T = any>(q: Queryable2, init = { method: "POST", headers: {} }): Promise<T> {
+    return Reflect.apply(queryableDefaultRequest, q, [init]);
 }
 
-// easily have any execute type method you want that applies defaults to the RequestInit!
+export function put<T = any>(q: Queryable2, init = { method: "POST", headers: {} }): Promise<T> {
+    return Reflect.apply(queryableDefaultRequest, q, [init]);
+}
 
+export function del<T = any>(q: Queryable2, init = { method: "DELETE", headers: {} }): Promise<T> {
+    return Reflect.apply(queryableDefaultRequest, q, [init]);
+}

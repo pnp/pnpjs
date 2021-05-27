@@ -7,7 +7,7 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (url: string, init: RequestInit, result: any) {
+        instance.on.pre(async function (url: URL, init: RequestInit, result: any) {
 
             const keys = Object.getOwnPropertyNames(headers);
 
@@ -53,18 +53,18 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
 
-            const key = keyFactory(url);
+            const key = keyFactory(url.toString());
 
             const cached = s.get(key);
 
             if (cached === null) {
 
                 // if we don't have a cached result we need to get it after the request is sent and parsed
-                this.on.post(async function (url: string, result: any) {
+                this.on.post(async function (url: URL, result: any) {
 
-                    s.put(key, result, expireFunc(url));
+                    s.put(key, result, expireFunc(url.toString()));
 
                     return [url, result];
                 });
@@ -253,12 +253,12 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
         }));
 
         // we setup this batch to "send" each of the requests, while saving the contextual "this" reference with each
-        instance.on.send(async function (this: Queryable2, url: string, init: RequestInit) {
+        instance.on.send(async function (this: Queryable2, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
 
             const promise = new Promise<Response>((resolve, reject) => {
-                requestTuple = [this, url, init, resolve, reject];
+                requestTuple = [this, url.toString(), init, resolve, reject];
             });
 
             requests.push(requestTuple);

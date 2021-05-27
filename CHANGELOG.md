@@ -30,3 +30,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - nodejs: 
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient -> use MSAL behavior
   - BearerTokenFetchClient -> use @pnp/Queryable BearerToken behavior
+  - SPFetchClient -> Use SPNodeFetch which includes SP retry logic

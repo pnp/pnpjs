@@ -14,6 +14,7 @@ export * from "./timeline.js";
 export * from "./moments.js";
 export * from "./behaviors.js";
 export * from "./operations.js";
+export * from "./parsers-2.js";
 
 export {
     extendGlobal,

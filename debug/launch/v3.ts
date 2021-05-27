@@ -1,15 +1,21 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
-import { NodeFetchWithRetry, MSAL, Proxy } from "@pnp/nodejs";
+import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
-import { DefaultParse } from "@pnp/queryable/parsers-2.js";
+import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
+import { sp } from "@pnp/sp/rest.js";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
+    // TODO:: a way to wrap up different sets of configurations like below.
+    // Need a lib default, plus others like Node default, etc.
+    // Maybe a default with caching always on, etc.
+
     const testingRoot = new Queryable2(combine(settings.testing.sp.url, "_api/web"));
+
     testingRoot
         .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
         .using(InjectHeaders({
@@ -18,29 +24,64 @@ export async function Example(settings: ITestingSettings) {
             "User-Agent": "NONISV|SharePointPnP|PnPjs",
             "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
         }))
-        .using(NodeFetchWithRetry(2))
+        .using(NodeFetchWithRetry())
+        // .using(NodeFetchWithRetry(2))
+        // .using(NodeFetch())
         .using(DefaultParse())
+        // .using(TextParse())
+        // .using(JSONParse())
         // .using(Proxy("https://127.0.0.1:8888"))
         .on.error((err) => {
             console.error("caught it");
             console.error(err);
         });
 
-        // TODO:: make on.x chainable to y.on.x().on.z().on.u();
-    testingRoot.on.post(async (_url: string, result: any) => {
+    testingRoot.on.pre(async (url, init, result) => {
 
-        console.log(JSON.stringify(result));
+        init.cache = "no-cache";
+        init.credentials = "same-origin";
 
-        return [_url, result];
+        return [url, init, result];
     });
 
-    testingRoot.on.log((message) => {
-        console.log(`Cheap log: ${message}.`);
+    // TODO:: make on.x chainable to y.on.x().on.z().on.u();
+    // testingRoot.on.post(async (_url: URL, result: any) => {
+
+    //     console.log(JSON.stringify(result));
+
+    //     return [_url, result];
+    // });
+
+    testingRoot.on.log((message, level) => {
+
+        if (level >= LogLevel.Verbose) {
+
+            console.log(`Cheap log: ${message}.`);
+        }
     });
 
     const t2 = new Queryable2(testingRoot, "lists");
 
-    const u = await get(t2);
+    t2.on.pre(async function (this: Queryable2, url, init, result) {
+        this.emit.log("Howdy, you shouldn't see me :)");
+        return [url, init, result];
+    });
+
+    // TODO:: need to track if timeline is active and create a running clone of the timeline or how 
+    // do we handle the case where a timeline modifies itself?
+    // t2.resetObservers();
+
+    // sending a request uses one of the helper methods get(), post(), put(), delete(), etc.
+    try {
+
+        const u = await get(t2);
+
+        console.log("here");
+
+    } catch (e) {
+
+        console.error(e);
+    }
 
     // TODO:: still need to fix up auth for batches. Can it get it from some central place?? DO we now run batch as a queryable with associated events for the core request? Yes for consistency.
     // const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
@@ -50,6 +91,9 @@ export async function Example(settings: ITestingSettings) {
 
     // t.using(batch);
     // t2.using(batch);
+
+    // await executeBatch();
+
 
     // Logger.subscribe(new ConsoleListener());
 

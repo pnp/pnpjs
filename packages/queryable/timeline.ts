@@ -1,6 +1,13 @@
 import { LogLevel } from "@pnp/logging";
 import { isArray, isFunc } from "@pnp/common";
 import { broadcast } from "./moments.js";
+import { objectDefinedNotNull } from "@pnp/common";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cloneDeep = require("lodash.clonedeep");
+
+// TODO:: work on these typings some more for improvements
+// TODO:: make .on chainable
+// TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
 export type ObsererAddBehavior = "add" | "replace" | "prepend";
 
@@ -46,7 +53,7 @@ type DistributeClear<T extends Moments> =
  * Virtual events that are present on all Timelines
  */
 export type DefaultTimelineEvents = {
-    log: (observers: ((this: Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
+    log: (observers: ((this: Timeline<any>, message: string, level?: LogLevel) => void)[], ...args: any[]) => void;
     error: (observers: ((this: Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
@@ -67,19 +74,27 @@ export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeC
 
 /**
  * Timeline represents a set of operations executed in order of definition,
- * with each "moment's" behavior controlled by the implementing function
+ * with each moment's behavior controlled by the implementing function
  */
 export abstract class Timeline<T extends Moments> {
 
+    private _inheritingObservers: boolean;
+    private _parentObservers;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    constructor(protected readonly moments: T, protected observers = {}) { }
+    constructor(protected readonly moments: T, protected observers?: any) {
 
-    // TODO:: reset observers to parent?
+        if (objectDefinedNotNull(this.observers)) {
+            this._inheritingObservers = true;
+        } else {
+            this._inheritingObservers = false;
+            this.observers = {};
+        }
+    }
 
     /**
      * Property allowing access to subscribe observers to all the moments within this timline
@@ -89,6 +104,16 @@ export abstract class Timeline<T extends Moments> {
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => (handler, addBehavior: ObsererAddBehavior = "add") => {
+
+                    // TODO:: we might need better logic here depending on how objects are constructed
+                    if (this._inheritingObservers) {
+                        // ONLY clone the observers the first time this instance of timeline sets an observer
+                        // this should work all up and down the tree.
+                        this._parentObservers = target.observers;
+                        target.observers = cloneDeep(target.observers);
+                        this._inheritingObservers = false;
+                    }
+
                     return addObserver(target.observers, p, handler, addBehavior);
                 },
             });
@@ -137,6 +162,14 @@ export abstract class Timeline<T extends Moments> {
      */
     public error(err: string | Error): void {
         this.emit.error(err);
+    }
+
+    public resetObservers(): void {
+        if (!this._inheritingObservers && objectDefinedNotNull(this._parentObservers)) {
+            this.observers = this._parentObservers;
+            this._inheritingObservers = true;
+            this._parentObservers = null;
+        }
     }
 
     /**

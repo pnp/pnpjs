@@ -7,7 +7,7 @@ export function MSAL(config: Configuration, scopes: string[] = ["https://graph.m
 
     return (instance: Queryable2) => {
 
-        instance.on.auth(async (url: string, init: RequestInit) => {
+        instance.on.auth(async (url: URL, init: RequestInit) => {
 
             const token = await confidentialClient.acquireTokenByClientCredential({ scopes });
 
