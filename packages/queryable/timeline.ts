@@ -9,7 +9,6 @@ const cloneDeep = require("lodash.clonedeep");
 // TODO:: make .on chainable
 // TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
-
 export type ObserverAddBehavior = "add" | "replace" | "prepend";
 
 /**
@@ -36,7 +35,7 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
  * A type used to represent the proxied Timeline.on property
  */
 type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<T> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -50,11 +49,13 @@ type DistributeEmit<T extends Moments> =
 type DistributeClear<T extends Moments> =
     { [Prop in string & keyof T]: () => boolean };
 
+type ObserverGraph = Record<string, ValidObserver>;
+
 /**
  * Virtual events that are present on all Timelines
  */
 export type DefaultTimelineEvents = {
-    log: (observers: ((this: Timeline<any>, message: string, level?: LogLevel) => void)[], ...args: any[]) => void;
+    log: (observers: ((this: Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
     error: (observers: ((this: Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
@@ -77,16 +78,16 @@ export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeC
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
-export abstract class Timeline<T extends Moments> {
+export class Timeline<T extends Moments> {
 
     private _inheritingObservers: boolean;
-    private _parentObservers;
+    private _parentObservers: ObserverGraph;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
     private _waiting: boolean;
 
-    constructor(protected readonly moments: T, protected observers?: any) {
+    constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
 
         if (objectDefinedNotNull(this.observers)) {
             this._inheritingObservers = true;
@@ -115,7 +116,7 @@ export abstract class Timeline<T extends Moments> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler, addBehavior: ObserverAddBehavior = "add") => {
+                get: (target: any, p: string) => (handler: ValidObserver, addBehavior: ObserverAddBehavior = "add") => {
 
                     // TODO:: we might need better logic here depending on how objects are constructed
                     if (this._inheritingObservers) {
@@ -126,7 +127,8 @@ export abstract class Timeline<T extends Moments> {
                         this._inheritingObservers = false;
                     }
 
-                    return addObserver(target.observers, p, handler, addBehavior);
+                    addObserver(target.observers, p, handler, addBehavior);
+                    return target;
                 },
             });
         }
@@ -165,15 +167,6 @@ export abstract class Timeline<T extends Moments> {
      */
     public log(message: string, level: LogLevel = LogLevel.Info): void {
         this.emit.log(message, level);
-    }
-
-    /**
-     * Shorthand method to emit an error tied to this timeline
-     *
-     * @param err The error details to emit
-     */
-    public error(err: string | Error): void {
-        this.emit.error(err);
     }
 
     public resetObservers(): void {

@@ -216,12 +216,14 @@ export function getHashCode(s: string): number {
 }
 /* eslint-enable no-bitwise */
 
-export async function delay(ms: number): Promise<any> {
+/**
+ * Waits a specified number of milliseconds before resolving
+ *
+ * @param ms Number of ms to wait
+ */
+export async function delay(ms: number): Promise<void> {
 
-    return new Promise((resolve: any) => {
-        setTimeout(() => {
-            resolve();
-        }, ms);
+    return new Promise((resolve: () => void) => {
+        setTimeout(resolve, ms);
     });
-
 }

@@ -141,10 +141,14 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         const u = new URL(this.toUrl());
 
         if (this._query.size > 0) {
-            u.search = Array.from(this._query).map((v: [string, string]) => encodeURIComponent(v[0]) + "=" + encodeURIComponent(v[1])).join("&");
+            u.search = Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
         }
 
         return u;
+    }
+
+    public get query(): Map<string, string> {
+        return this._query;
     }
 
     /**

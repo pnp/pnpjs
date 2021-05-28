@@ -44,14 +44,6 @@ export async function Example(settings: ITestingSettings) {
         return [url, init, result];
     });
 
-    // TODO:: make on.x chainable to y.on.x().on.z().on.u();
-    // testingRoot.on.post(async (_url: URL, result: any) => {
-
-    //     console.log(JSON.stringify(result));
-
-    //     return [_url, result];
-    // });
-
     testingRoot.on.log((message, level) => {
 
         if (level >= LogLevel.Verbose) {
@@ -62,10 +54,19 @@ export async function Example(settings: ITestingSettings) {
 
     const t2 = new Queryable2(testingRoot, "lists");
 
+    t2.query.set("$select", "title,description");
+    t2.query.set("Test429", "true");
+
     t2.on.pre(async function (this: Queryable2, url, init, result) {
-        this.emit.log("Howdy, you shouldn't see me :)");
+        this.emit.log("Howdy, you shouldn't see me :)", LogLevel.Error);
         return [url, init, result];
-    });
+    }).on.post(async (_url: URL, result: any) => {
+
+        console.log(JSON.stringify(result));
+
+        return [_url, result];
+
+    }).log("Done config.");
 
     // TODO:: need to track if timeline is active and create a running clone of the timeline or how 
     // do we handle the case where a timeline modifies itself?

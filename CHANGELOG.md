@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - TextParser, BlobParser, JSONParser, BufferParser -> TextParse, BlobParse, JSONParse, BufferParse behaviors
 
 - nodejs: 
-  - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient -> use MSAL behavior
+  - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
   - BearerTokenFetchClient -> use @pnp/Queryable BearerToken behavior
   - SPFetchClient -> Use SPNodeFetch which includes SP retry logic
+  - 

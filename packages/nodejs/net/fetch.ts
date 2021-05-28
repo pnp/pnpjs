@@ -1,12 +1,7 @@
 import { LogLevel } from "@pnp/logging";
-import { Queryable2 } from "@pnp/queryable";
+import { HttpRequestError, Queryable2 } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
 import { delay } from "@pnp/common";
-
-// TODO:: remove
-export function fetch(url: string, options: any): Promise<any> {
-    return nodeFetch(url, options);
-}
 
 export function NodeFetch(): (instance: Queryable2) => Queryable2 {
 
@@ -30,49 +25,54 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Quer
 
             const retry = async (): Promise<Response> => {
 
-                if (response?.ok) {
-                    return response;
-                }
-
+                // if we've tried too many times, throw
                 if (count >= retries) {
-                    throw Error(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`);
+                    throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`, response);
                 }
 
-                // we have been throttled
-                // http status code 503 or 504, we can retry this
-                if (response?.status === 429 || response?.status === 503 || response?.status === 504) {
+                if (typeof response == "undefined" || response?.status === 429 || response?.status === 503 || response?.status === 504) {
+                    // this is our first try and response isn't defined yet
+                    // we have been throttled OR http status code 503 or 504, we can retry this
 
-                    if (response.headers.has("Retry-After")) {
+                    if (typeof response !== "undefined") {
 
-                        // if we have gotten a header, use that value as the delay value in seconds
-                        wait = parseInt(response.headers.get("Retry-After"), 10) * 1000;
-                    } else {
+                        // this isn't our first try so we need to calculate delay
+                        if (response.headers.has("Retry-After")) {
 
-                        // Increment our counters.
-                        wait *= 2;
+                            // if we have gotten a header, use that value as the delay value in seconds
+                            wait = parseInt(response.headers.get("Retry-After"), 10) * 1000;
+                        } else {
+
+                            // Increment our counters.
+                            wait *= 2;
+                        }
+
+                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
+                        count++;
+
+                        await delay(wait);
                     }
 
-                    count++;
+                    try {
 
-                    await delay(wait);
+                        response = await nodeFetch(url.toString(), init);
 
-                    this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
-                    return retry();
-                }
+                        // if we got a good response, return it, otherwise see if we can retry
+                        return response.ok ? response : retry();
 
-                try {
+                    } catch (err) {
 
-                    response = await nodeFetch(url.toString(), init);
-                    return retry();
+                        if (err && err.code && ["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) < 0) {
+                            // this is some non-transient node error, no retry
+                            throw err;
+                        }
 
-                } catch (err) {
-
-                    if (err && err.code && ["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) < 0) {
-                        // this is some non-transient node error, no retry
-                        throw err;
+                        return retry();
                     }
 
-                    return retry();
+                } else {
+
+                    return response;
                 }
             };
 
