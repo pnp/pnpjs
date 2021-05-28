@@ -24,6 +24,8 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
 
         // process each handler which updates our "state" in order
         // returning the new "state" as a tuple [...Parameters<T>]
+        // this is conceptually the redux pattern, each function gets a copy of the
+        // previous state, may optionally modify it, and return a new state
         for (let i = 0; i < obs.length; i++) {
             r = await Reflect.apply(obs[i], this, r);
         }

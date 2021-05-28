@@ -1,7 +1,12 @@
 import { LogLevel } from "@pnp/logging";
 import { isArray, isFunc } from "@pnp/common";
 import { broadcast } from "./moments.js";
-//import { addListener } from "node:cluster";
+import { objectDefinedNotNull } from "@pnp/common";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cloneDeep = require("lodash.clonedeep");
+
+// TODO:: work on these typings some more for improvements
+// TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
 export type ObserverAddBehavior = "add" | "replace" | "prepend";
 
@@ -29,13 +34,21 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
  * A type used to represent the proxied Timeline.on property
  */
 type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => ReturnType<Parameters<T[Prop]>[0][number]> };
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<T> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
  */
 type DistributeEmit<T extends Moments> =
     { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
+
+/**
+ * A type used to represent the proxied Timeline.clear property
+ */
+type DistributeClear<T extends Moments> =
+    { [Prop in string & keyof T]: () => boolean };
+
+type ObserverGraph = Record<string, ValidObserver>;
 
 /**
  * Virtual events that are present on all Timelines
@@ -56,24 +69,36 @@ export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<Defa
 export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents>;
 
 /**
- * Timeline represents a set of operations executed in order of definition,
- * with each "moment's" behavior controlled by the implementing function
+ * The type combining the defined moments and DefaultTimelineEvents
  */
-export abstract class Timeline<T extends Moments> {
+export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents>;
 
-    private _waiting: boolean = true;
+/**
+ * Timeline represents a set of operations executed in order of definition,
+ * with each moment's behavior controlled by the implementing function
+ */
+export class Timeline<T extends Moments> {
 
+    private _inheritingObservers: boolean;
+    private _parentObservers: ObserverGraph;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
+    private _clearProxy: typeof Proxy | null = null;
+    private _waiting: boolean;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    constructor(private readonly moments: T, private observers = {}) { }
+    constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
 
-    // TODO:: clear registered observers
-    // TODO:: reset observers to parent
+        if (objectDefinedNotNull(this.observers)) {
+            this._inheritingObservers = true;
+        } else {
+            this._inheritingObservers = false;
+            this.observers = {};
+        }
 
-    //JULIE
+        this.Waiting = false;
+    }
+
+    // JULIE
     public get Waiting(): boolean {
         return this._waiting;
     }
@@ -81,7 +106,7 @@ export abstract class Timeline<T extends Moments> {
     public set Waiting(value: boolean) {
         this._waiting = value;
     }
-    //JULIE
+    // JULIE
 
     /**
      * Property allowing access to subscribe observers to all the moments within this timeline
@@ -90,13 +115,47 @@ export abstract class Timeline<T extends Moments> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler, addBehavior: ObserverAddBehavior = "add") => {
-                    return addObserver(target.observers, p, handler, addBehavior);
+                get: (target: any, p: string) => (handler: ValidObserver, addBehavior: ObserverAddBehavior = "add") => {
+
+                    // TODO:: we might need better logic here depending on how objects are constructed
+                    if (this._inheritingObservers) {
+                        // ONLY clone the observers the first time this instance of timeline sets an observer
+                        // this should work all up and down the tree.
+                        this._parentObservers = target.observers;
+                        target.observers = cloneDeep(target.observers);
+                        this._inheritingObservers = false;
+                    }
+
+                    addObserver(target.observers, p, handler, addBehavior);
+                    return target;
                 },
             });
         }
 
         return <any>this._onProxy;
+    }
+
+    /**
+     * Property allowing access to subscribe observers to all the moments within this timline
+     */
+    public get clear(): ClearProxyType<T> {
+
+        if (this._clearProxy === null) {
+            this._clearProxy = new Proxy(this, {
+                get: (target: any, p: string) => () => {
+
+                    if (Reflect.has(target.observers, p)) {
+                        // we trust outselves that this will be an array
+                        target.observers[p].length = 0;
+                        return true;
+                    }
+
+                    return false;
+                },
+            });
+        }
+
+        return <any>this._clearProxy;
     }
 
     /**
@@ -109,13 +168,12 @@ export abstract class Timeline<T extends Moments> {
         this.emit.log(message, level);
     }
 
-    /**
-     * Shorthand method to emit an error tied to this timeline
-     *
-     * @param err The error details to emit
-     */
-    public error(err: string | Error): void {
-        this.emit.error(err);
+    public resetObservers(): void {
+        if (!this._inheritingObservers && objectDefinedNotNull(this._parentObservers)) {
+            this.observers = this._parentObservers;
+            this._inheritingObservers = true;
+            this._parentObservers = null;
+        }
     }
 
     /**
@@ -127,31 +185,29 @@ export abstract class Timeline<T extends Moments> {
             this._emitProxy = new Proxy(this, {
                 get: (target: any, p: string) => (...args: any[]) => {
 
-                    const observers = Reflect.get(target.observers, p);
+                    // handle the case there are no observers registered to the target
+                    const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (isArray(observers) && observers.length > 0) {
-
-                        try {
-
-                            // default to broadcasting any events without specific impl (will apply to defaults)
-                            const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
-
-                            return Reflect.apply(moment, this, [observers, ...args]);
-
-                        } catch (e) {
-
-                            if (p !== "error") {
-                                this.emit.error(e);
-                            } else {
-                                // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
-                                throw e;
-                            }
-                        }
-
-                    } else if (p === "error") {
-
+                    if (p === "error" && (!isArray(observers) || observers.length < 1)) {
                         // if we are emitting an error, and no error observers are defined, we throw
                         throw Error(`Unhandled Exception: ${args[0]}`);
+                    }
+
+                    try {
+
+                        // default to broadcasting any events without specific impl (will apply to defaults)
+                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
+
+                        return Reflect.apply(moment, this, [observers, ...args]);
+
+                    } catch (e) {
+
+                        if (p !== "error") {
+                            this.emit.error(e);
+                        } else {
+                            // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
+                            throw e;
+                        }
                     }
                 },
             });

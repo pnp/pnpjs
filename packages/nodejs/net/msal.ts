@@ -1,24 +1,22 @@
 import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
-import { QueryablePreObserver, Queryable2 } from "@pnp/queryable";
+import { Queryable2 } from "@pnp/queryable";
 
-export function MSAL2(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): (instance: Queryable2) => Queryable2 {
-    return (instance: Queryable2) => {
-        instance.on.pre(MSAL(config, scopes));
-        return instance;
-    };
-}
-
-export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): QueryablePreObserver {
+export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): (instance: Queryable2) => Queryable2 {
 
     const confidentialClient = new ConfidentialClientApplication(config);
 
-    return async function (url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+    return (instance: Queryable2) => {
 
-        const token = await confidentialClient.acquireTokenByClientCredential({ scopes });
+        instance.on.auth(async (url: URL, init: RequestInit) => {
 
-        // eslint-disable-next-line @typescript-eslint/dot-notation
-        init.headers["Authorization"] = `${token.tokenType} ${token.accessToken}`;
+            const token = await confidentialClient.acquireTokenByClientCredential({ scopes });
 
-        return [url, init, result];
+            // eslint-disable-next-line @typescript-eslint/dot-notation
+            init.headers["Authorization"] = `${token.tokenType} ${token.accessToken}`;
+
+            return [url, init];
+        });
+
+        return instance;
     };
 }
