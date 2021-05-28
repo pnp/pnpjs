@@ -1,13 +1,13 @@
 import { Queryable2 } from "./queryable-2.js";
 import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, isUrlAbsolute, combine } from "@pnp/common";
-import { LogLevel } from "@pnp/logging";
+import { LogLevel, Logger } from "@pnp/logging";
 import { HttpRequestError } from "./parsers.js";
 
 export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (url: string, init: RequestInit, result: any) {
+        instance.on.pre(async function (url: URL, init: RequestInit, result: any) {
 
             const keys = Object.getOwnPropertyNames(headers);
 
@@ -16,6 +16,21 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
             }
 
             return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
+export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Queryable2 {
+
+    // we set the active level here
+    Logger.activeLogLevel = activeLevel;
+
+    return (instance: Queryable2) => {
+
+        instance.on.log(function (message: string, level: LogLevel) {
+            Logger.write(message, level);
         });
 
         return instance;
@@ -38,9 +53,9 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
 
-            const key = keyFactory(url);
+            const key = keyFactory(url.toString());
 
             const cached = s.get(key);
 
@@ -48,9 +63,9 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
             if (cached === null) {
 
                 // if we don't have a cached result we need to get it after the request is sent and parsed
-                this.on.post(async function (url: string, result: any) {
+                this.on.post(async function (url: URL, result: any) {
 
-                    s.put(key, result, expireFunc(url));
+                    s.put(key, result, expireFunc(url.toString()));
 
                     return [url, result];
                 });
@@ -83,15 +98,15 @@ export function Caching2(store: "local" | "session" = "session", keyFactory?: (u
 
     return (instance: Queryable2) => {
         instance.Waiting = false;
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
 
-            const key = keyFactory(url);
+            const key = keyFactory(url.toString());
 
             const cached = s.get(key);
 
-            this.on.post(async function (url: string, result: any) {
+            this.on.post(async function (url: URL, result: any) {
 
-                s.put(key, result, expireFunc(url));
+                s.put(key, result, expireFunc(url.toString()));
 
                 return [url, result];
             });
@@ -108,12 +123,19 @@ export function Caching2(store: "local" | "session" = "session", keyFactory?: (u
 }
 
 // TODO: this would live on sp or web or site and get the url from there
+// TODO: how do we handle auth here? Inherit a batch queryable from the parent like "web" and clear out the other settings?
 // eslint-disable-next-line max-len
 export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[]) => Promise<Response>, hackAuthHeader: string): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
 
-    //  (this: IQueryable2, url: string, init: RequestInit) => Promise<Response>;
-    // const h: QueryableSendObserver = null;
-
+    /**
+     * The request record defines a tuple that is
+     *
+     * [0]: The queryable object representing the request
+     * [1]: The request url
+     * [2]: Any request init values (headers, etc)
+     * [3]: The resolve function back to the promise for the original operation
+     * [4]: The reject function back to the promise for the original operation
+     */
     type RequestRecord = [Queryable2, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
     const registrationPromises: Promise<void>[] = [];
@@ -247,7 +269,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
         return responses.reduce((p, response, index) => p.then(() => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_queryable, _url, _init, resolve, reject] = requests[index];
+            const [, , , resolve, reject] = requests[index];
 
             try {
 
@@ -263,7 +285,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
 
     const register = (instance: Queryable2) => {
 
-        let registrationResolver;
+        let registrationResolver: (value: void | PromiseLike<void>) => void;
 
         // we need to ensure we wait to execute until all our batch children hit the .send method to be fully registered
         registrationPromises.push(new Promise((resolve) => {
@@ -271,17 +293,18 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
         }));
 
         // we setup this batch to "send" each of the requests, while saving the contextual "this" reference with each
-        instance.on.send(async function (this: Queryable2, url: string, init: RequestInit) {
+        instance.on.send(async function (this: Queryable2, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
 
             const promise = new Promise<Response>((resolve, reject) => {
-                requestTuple = [this, url, init, resolve, reject];
+                requestTuple = [this, url.toString(), init, resolve, reject];
             });
 
             requests.push(requestTuple);
 
             registrationResolver();
+
             return promise;
 
         }, "replace");

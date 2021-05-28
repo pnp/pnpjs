@@ -1,34 +1,24 @@
-import { stringIsNullOrEmpty, mergeOptions, IConfigOptions, objectDefinedNotNull } from "@pnp/common";
+import { Queryable2 } from "@pnp/queryable";
 import { HttpsProxyAgent } from "https-proxy-agent";
 
-let proxyUrl = "";
-let proxyAgent = null;
+export function Proxy(proxyInit: string): (instance: Queryable2) => Queryable2;
+// eslint-disable-next-line no-redeclare
+export function Proxy(proxyInit: any): (instance: Queryable2) => Queryable2;
+// eslint-disable-next-line no-redeclare
+export function Proxy(proxyInit: any): (instance: Queryable2) => Queryable2 {
 
-export function configureProxyOptions<T extends IConfigOptions>(opts: T): T & { agent: typeof HttpsProxyAgent } {
+    const proxy = typeof proxyInit === "string" ? new HttpsProxyAgent(proxyInit) : proxyInit;
 
-    if (!stringIsNullOrEmpty(proxyUrl) || objectDefinedNotNull(proxyAgent)) {
-        mergeOptions(opts, {
-            agent: proxyAgent || new HttpsProxyAgent(proxyUrl),
+    return (instance: Queryable2) => {
+
+        instance.on.pre(async (url, init, result) => {
+
+            // we add the proxy to the request
+            (<any>init).agent = proxy;
+
+            return [url, init, result];
         });
-    }
 
-    return <T & { agent: typeof HttpsProxyAgent }>opts;
-}
-
-/**
- * Sets the given url as a proxy on all requests
- *
- * @param url The url of the proxy
- */
-export function setProxyUrl(url: string) {
-    proxyUrl = url;
-}
-
-/**
- * Sets the given agent as a proxy on all requests
- *
- * @param url The proxy agent to use
- */
-export function setProxyAgent(agent: any) {
-    proxyAgent = agent;
+        return instance;
+    };
 }
