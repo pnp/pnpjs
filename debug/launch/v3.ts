@@ -13,8 +13,7 @@ export async function Example(settings: ITestingSettings) {
     // TODO:: a way to wrap up different sets of configurations like below.
     // Need a lib default, plus others like Node default, etc.
     // Maybe a default with caching always on, etc.
-
-    const testingRoot = new Queryable2(combine(settings.testing.sp.url, "_api/web"));
+    const testingRoot = new Queryable2(settings.testing.sp.url, "_api/web");
 
     testingRoot
         .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
@@ -55,11 +54,13 @@ export async function Example(settings: ITestingSettings) {
     const t2 = new Queryable2(testingRoot, "lists");
 
     t2.query.set("$select", "title,description");
-    t2.query.set("Test429", "true");
+    // t2.query.set("Test429", "true");
 
     t2.on.pre(async function (this: Queryable2, url, init, result) {
+
         this.emit.log("Howdy, you shouldn't see me :)", LogLevel.Error);
         return [url, init, result];
+
     }).on.post(async (_url: URL, result: any) => {
 
         console.log(JSON.stringify(result));

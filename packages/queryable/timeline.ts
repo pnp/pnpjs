@@ -6,7 +6,6 @@ import { objectDefinedNotNull } from "@pnp/common";
 const cloneDeep = require("lodash.clonedeep");
 
 // TODO:: work on these typings some more for improvements
-// TODO:: make .on chainable
 // TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 
 export type ObserverAddBehavior = "add" | "replace" | "prepend";

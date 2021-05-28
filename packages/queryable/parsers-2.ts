@@ -10,7 +10,6 @@ export function DefaultParse(): (instance: Queryable2) => Queryable2 {
         if ((response.headers.has("Content-Length") && parseFloat(response.headers.get("Content-Length")) === 0) || response.status === 204) {
 
             return {};
-
         }
 
         // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
