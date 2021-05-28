@@ -84,7 +84,7 @@ export class Timeline<T extends Moments> {
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
-    private _waiting: boolean;
+    private _asyncOverride: boolean = false;
 
     constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
 
@@ -94,19 +94,15 @@ export class Timeline<T extends Moments> {
             this._inheritingObservers = false;
             this.observers = {};
         }
-
-        this.Waiting = false;
     }
 
-    // JULIE
-    public get Waiting(): boolean {
-        return this._waiting;
+    public get AsyncOverride(): boolean {
+        return this._asyncOverride;
     }
 
-    public set Waiting(value: boolean) {
-        this._waiting = value;
+    public set AsyncOverride(value: boolean) {
+        this._asyncOverride = value;
     }
-    // JULIE
 
     /**
      * Property allowing access to subscribe observers to all the moments within this timeline

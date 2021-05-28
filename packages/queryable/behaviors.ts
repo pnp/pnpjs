@@ -37,7 +37,8 @@ export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Que
     };
 }
 
-export function Caching(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
+//TODO:: (PR?)Allow for null expiration date
+export function Caching(store: "local" | "session" = "session", lazy: boolean = false, keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
 
     const storage = new PnPClientStorage();
     const s = store === "session" ? storage.session : storage.local;
@@ -52,7 +53,8 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
     }
 
     return (instance: Queryable2) => {
-
+        //Regardless of cached result, update cache async
+        instance.AsyncOverride = lazy;
         instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
 
             const key = keyFactory(url.toString());
@@ -72,46 +74,6 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: (ur
 
             } else {
 
-                result = cached;
-            }
-
-            return [url, init, result];
-        });
-
-        return instance;
-    };
-}
-
-export function Caching2(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
-
-    const storage = new PnPClientStorage();
-    const s = store === "session" ? storage.session : storage.local;
-
-    if (!isFunc(keyFactory)) {
-        keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
-    }
-
-    if (!isFunc(expireFunc)) {
-        // TODO:: tie this default timeline to config? or the config is having to create the function
-        expireFunc = () => dateAdd(new Date(), "minute", 5);
-    }
-
-    return (instance: Queryable2) => {
-        instance.Waiting = false;
-        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
-
-            const key = keyFactory(url.toString());
-
-            const cached = s.get(key);
-
-            this.on.post(async function (url: URL, result: any) {
-
-                s.put(key, result, expireFunc(url.toString()));
-
-                return [url, result];
-            });
-
-            if (cached !== null) {
                 result = cached;
             }
 

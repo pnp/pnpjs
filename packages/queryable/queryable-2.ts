@@ -18,6 +18,7 @@ import {
     getGUID,
 } from "@pnp/common";
 import { LogLevel } from "@pnp/logging/logger.js";
+import { NoEmitOnErrorsPlugin } from "webpack";
 import { asyncReduce, broadcast, request } from "./moments.js";
 import { Timeline } from "./timeline.js";
 
@@ -221,6 +222,94 @@ export async function queryableDefaultRequest(this: Queryable2, requestInit: Req
             this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
         }
 
+    }, 0);
+
+    return new Promise((resolve, reject) => {
+        this.on.data(resolve);
+        this.on.error(reject);
+    });
+}
+
+export async function queryableDefaultRequest2(this: Queryable2, requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
+    setTimeout(async () => {
+        const requestId = getGUID();
+
+        const emitError = (e) => {
+            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+            this.emit.error(e);
+            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+        }
+
+        try {
+            let retVal: any = undefined;
+
+            const emitSend = async (): Promise<any> => {
+                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                [url, init] = await this.emit.auth(url, init);
+                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                let response = await this.emit.send(url, init);
+                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                [url, response, result] = await this.emit.parse(url, response, result);
+                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                [url, result] = await this.emit.post(url, result);
+                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose)
+
+                return result;
+            }
+
+            const emitData = () => {
+                this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                this.emit.data(retVal);
+                this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+            }
+
+            this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+
+            let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+
+            this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
+
+            if (typeof result !== "undefined") {
+                retVal = result;
+            }
+
+            // Waiting is false by default, result is undefined by default, unless cached value is returned
+            if (this.AsyncOverride || retVal != undefined) {
+                //AsyncOverride is true, and a return value exists -> assume lazy cache update pipeline execution.
+                setTimeout(async () => {
+                    try {
+                        await emitSend();
+                    } catch (e) {
+                        emitError(e);
+                    }
+                }, 0);
+
+                emitData();
+            } else if (retVal == undefined) {
+                //If retVal is undefined then regardless of AsyncOverride execute pipeline
+                retVal = await emitSend();
+
+                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
+                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
+                // completed event to signal the request is completed?
+                if (typeof retVal !== "undefined") {
+                    emitData();
+                }
+            } else {
+                // Return cached value
+                emitData();
+            }
+        } catch (e) {
+            emitError(e);
+        } finally {
+            this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+        }
     }, 0);
 
     return new Promise((resolve, reject) => {
