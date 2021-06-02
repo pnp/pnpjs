@@ -30,6 +30,7 @@ export async function Example(settings: ITestingSettings) {
         // .using(TextParse())
         // .using(JSONParse())
         // .using(Proxy("https://127.0.0.1:8888"))
+        .using(Caching("session", true))
         .on.error((err) => {
             console.error("caught it");
             console.error(err);
@@ -58,7 +59,7 @@ export async function Example(settings: ITestingSettings) {
 
     t2.on.pre(async function (this: Queryable2, url, init, result) {
 
-        this.emit.log("Howdy, you shouldn't see me :)", LogLevel.Error);
+        this.emit.log("Howdy, Pre log :)", LogLevel.Error);
         return [url, init, result];
 
     }).on.post(async (_url: URL, result: any) => {
@@ -77,6 +78,8 @@ export async function Example(settings: ITestingSettings) {
     try {
 
         const u = await get(t2);
+
+        const u2 = await get(t2);
 
         console.log("here");
 
