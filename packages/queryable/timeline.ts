@@ -33,8 +33,8 @@ export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserv
 /**
  * A type used to represent the proxied Timeline.on property
  */
-type DistributeOn<T extends Moments> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<T> };
+type DistributeOn<T extends Moments, R extends Moments = T> =
+    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<R> };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -53,25 +53,25 @@ type ObserverGraph = Record<string, ValidObserver>;
 /**
  * Virtual events that are present on all Timelines
  */
-export type DefaultTimelineEvents = {
-    log: (observers: ((this: Timeline<any>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
-    error: (observers: ((this: Timeline<any>, err: string | Error) => void)[], ...args: any[]) => void;
+export type DefaultTimelineEvents<T extends Moments> = {
+    log: (observers: ((this: Timeline<T>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
+    error: (observers: ((this: Timeline<T>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents>;
+export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents<T>, T>;
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents>;
+export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents>;
+export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents<T>>;
 
 /**
  * Timeline represents a set of operations executed in order of definition,
@@ -84,7 +84,7 @@ export class Timeline<T extends Moments> {
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
-    private _asyncOverride: boolean = false;
+    private _asyncOverride = false;
 
     constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
 

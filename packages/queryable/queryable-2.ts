@@ -1,24 +1,8 @@
-// import {
-//     combine,
-//     IFetchOptions,
-//     IConfigOptions,
-//     mergeOptions,
-//     objectDefinedNotNull,
-//     IRequestClient,
-//     assign,
-//     ILibraryConfiguration,
-//     ITypedHash,
-//     Runtime,
-//     DefaultRuntime,
-//     dateAdd,
-//     stringIsNullOrEmpty,
-// } from "@pnp/common";
 import {
     combine,
     getGUID,
 } from "@pnp/common";
 import { LogLevel } from "@pnp/logging/logger.js";
-import { NoEmitOnErrorsPlugin } from "webpack";
 import { asyncReduce, broadcast, request } from "./moments.js";
 import { Timeline } from "./timeline.js";
 
@@ -26,7 +10,7 @@ export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "re
     headers?: Record<string, string>;
 };
 
-export type QueryablePreObserver = (this: IQueryable2, url: URL, init: RequestInit, result: any) => Promise<[URL, RequestInit, any]>;
+export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
 export type QueryableAuthObserver = (this: IQueryable2, url: URL, init: RequestInit) => Promise<[URL, RequestInit]>;
 
@@ -49,61 +33,13 @@ const DefaultBehaviors = {
     data: broadcast<QueryableDataObserver>(),
 } as const;
 
-// export interface IQueryableData<DefaultActionType = any> {
+export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> {
 
-//     batch: Batch | null;
-//     batchIndex: number;
-//     batchDependency: () => void | null;
-
-//     cachingOptions: ICachingOptions | null;
-
-//     cloneParentCacheOptions: ICachingOptions | null;
-//     cloneParentWasCaching: boolean;
-
-//     query: Map<string, string>;
-
-
-//     options: IFetchOptions | null;
-//     url: string;
-//     parentUrl: string;
-
-//     useCaching: boolean;
-//     pipes?: PipelineMethod<DefaultActionType>[];
-//     parser?: IODataParser<DefaultActionType>;
-
-//     clientFactory?: () => IRequestClient;
-
-//     method?: string;
-
-// }
-
-export interface IQueryable2 extends Timeline<any> {
-    // data: Partial<IQueryableData<DefaultActionType>>;
-    // query: Map<string, string>;
-    // append(pathPart: string): void;
-    // inBatch(batch: Batch): this;
-    // addBatchDependency(): () => void;
-    // toUrlAndQuery(): string;
-    toUrl(): string;
-    // concat(pathPart: string): this;
-    // configure(options: IConfigOptions): this;
-    // configureFrom(o: IQueryable<DefaultActionType>): this;
-    // usingCaching(options?: ICachingOptions): this;
-    // usingParser(parser: IODataParser<any>): this;
-    // withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
-    // defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
-    // getRuntime(): Runtime;
-    // setRuntime(runtime: Runtime): this;
-    // setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
-}
-
-export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
-
-    private _parent: Queryable2;
+    private _parent: Queryable2<R>;
     private _url: string;
     private _query: Map<string, string>;
 
-    constructor(init: Queryable2 | string, path?: string) {
+    constructor(init: Queryable2<any> | string, path?: string) {
 
         let url = "";
         let parent = null;
@@ -117,11 +53,13 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
 
             const { _url, _parent } = init;
 
-            url = combine(_url, path);
+            url = (new URL(path, _url)).toString();
             parent = _parent || null;
             observers = init.observers;
         }
 
+        // TODO:: need to maybe filter out some handlers, like on data??
+        // need to trace through multiple objects inheriting and not
         super(DefaultBehaviors, observers);
 
         this._url = url;
@@ -137,12 +75,12 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
      * Gets the full url with query information
      *
      */
-    public toRequestUrl(): URL {
+    public toRequestUrl(): string {
 
-        const u = new URL(this.toUrl());
+        let u = this.toUrl();
 
         if (this._query.size > 0) {
-            u.search = Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
+            u += "?" + Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
         }
 
         return u;
@@ -160,6 +98,28 @@ export class Queryable2 extends Timeline<typeof DefaultBehaviors> {
         return this._url;
     }
 }
+// eslint-disable-next-line no-redeclare
+export interface Queryable2<R = any> {
+    (init?: RequestInit): Promise<R>;
+}
+
+export interface IQueryable2 extends Timeline<any> {
+    // data: Partial<IQueryableData<DefaultActionType>>;
+    // query: Map<string, string>;
+    // append(pathPart: string): void;
+
+
+    // toUrlAndQuery(): string;
+    toUrl(): string;
+    // concat(pathPart: string): this;
+
+    // defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
+
+}
+
+// TODO:: need a factory function for Queryable2 here
+
+
 
 // TODO:: do you like the idea that the pipeline logic is contained in functions with this signature
 // then anyone can write any pipeline that can be applied to a Queryable2 - making it super easy to add moments to the timeline and then use them
@@ -169,11 +129,13 @@ export async function queryableDefaultRequest(this: Queryable2, requestInit: Req
     setTimeout(async () => {
 
         const requestId = getGUID();
+        let requestUrl: URL;
 
         try {
 
             this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
 
+            // eslint-disable-next-line prefer-const
             let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
             this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
@@ -186,19 +148,19 @@ export async function queryableDefaultRequest(this: Queryable2, requestInit: Req
             }
 
             this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
-            [url, init] = await this.emit.auth(url, init);
+            [requestUrl, init] = await this.emit.auth(new URL(url), init);
             this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
 
             this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
-            let response = await this.emit.send(url, init);
+            let response = await this.emit.send(requestUrl, init);
             this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
 
             this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
-            [url, response, result] = await this.emit.parse(url, response, result);
+            [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
             this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
 
             this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
-            [url, result] = await this.emit.post(url, result);
+            [requestUrl, result] = await this.emit.post(requestUrl, result);
             this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
 
             // TODO:: how do we handle the case where the request pipeline has worked as expected, however
@@ -230,93 +192,95 @@ export async function queryableDefaultRequest(this: Queryable2, requestInit: Req
     });
 }
 
-export async function queryableDefaultRequest2(this: Queryable2, requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
-    setTimeout(async () => {
-        const requestId = getGUID();
+// export async function queryableDefaultRequest2(this: Queryable2, requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
 
-        const emitError = (e) => {
-            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
-            this.emit.error(e);
-            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
-        }
+//     setTimeout(async () => {
+//         const requestId = getGUID();
+//         let requestUrl: URL;
 
-        try {
-            let retVal: any = undefined;
+//         const emitError = (e) => {
+//             this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+//             this.emit.error(e);
+//             this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+//         };
 
-            const emitSend = async (): Promise<any> => {
-                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
-                [url, init] = await this.emit.auth(url, init);
-                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+//         try {
+//             let retVal: any = undefined;
 
-                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
-                let response = await this.emit.send(url, init);
-                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+//             const emitSend = async (): Promise<any> => {
+//                 this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+//                 [url, init] = await this.emit.auth(url, init);
+//                 this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
 
-                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
-                [url, response, result] = await this.emit.parse(url, response, result);
-                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+//                 this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+//                 let response = await this.emit.send(url, init);
+//                 this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
 
-                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
-                [url, result] = await this.emit.post(url, result);
-                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose)
+//                 this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+//                 [url, response, result] = await this.emit.parse(url, response, result);
+//                 this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
 
-                return result;
-            }
+//                 this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+//                 [url, result] = await this.emit.post(url, result);
+//                 this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose)
 
-            const emitData = () => {
-                this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
-                this.emit.data(retVal);
-                this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
-            }
+//                 return result;
+//             };
 
-            this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+//             const emitData = () => {
+//                 this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+//                 this.emit.data(retVal);
+//                 this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+//             };
 
-            let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+//             this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
 
-            this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
+//             let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-            if (typeof result !== "undefined") {
-                retVal = result;
-            }
+//             this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
 
-            // Waiting is false by default, result is undefined by default, unless cached value is returned
-            if (this.AsyncOverride || retVal != undefined) {
-                //AsyncOverride is true, and a return value exists -> assume lazy cache update pipeline execution.
-                setTimeout(async () => {
-                    try {
-                        await emitSend();
-                    } catch (e) {
-                        emitError(e);
-                    }
-                }, 0);
+//             if (typeof result !== "undefined") {
+//                 retVal = result;
+//             }
 
-                emitData();
-            } else if (retVal == undefined) {
-                //If retVal is undefined then regardless of AsyncOverride execute pipeline
-                retVal = await emitSend();
+//             // Waiting is false by default, result is undefined by default, unless cached value is returned
+//             if (this.AsyncOverride || retVal !== undefined) {
+//                 // AsyncOverride is true, and a return value exists -> assume lazy cache update pipeline execution.
+//                 setTimeout(async () => {
+//                     try {
+//                         await emitSend();
+//                     } catch (e) {
+//                         emitError(e);
+//                     }
+//                 }, 0);
 
-                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
-                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
-                // completed event to signal the request is completed?
-                if (typeof retVal !== "undefined") {
-                    emitData();
-                }
-            } else {
-                // Return cached value
-                emitData();
-            }
-        } catch (e) {
-            emitError(e);
-        } finally {
-            this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
-        }
-    }, 0);
+//                 emitData();
+//             } else if (retVal === undefined) {
+//                 // If retVal is undefined then regardless of AsyncOverride execute pipeline
+//                 retVal = await emitSend();
 
-    return new Promise((resolve, reject) => {
-        this.on.data(resolve);
-        this.on.error(reject);
-    });
-}
+//                 // TODO:: how do we handle the case where the request pipeline has worked as expected, however
+//                 // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
+//                 // completed event to signal the request is completed?
+//                 if (typeof retVal !== "undefined") {
+//                     emitData();
+//                 }
+//             } else {
+//                 // Return cached value
+//                 emitData();
+//             }
+//         } catch (e) {
+//             emitError(e);
+//         } finally {
+//             this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+//         }
+//     }, 0);
+
+//     return new Promise((resolve, reject) => {
+//         this.on.data(resolve);
+//         this.on.error(reject);
+//     });
+// }
 
 /**
 * Directly concatenates the supplied string to the current url, not normalizing "/" chars
@@ -328,155 +292,7 @@ export async function queryableDefaultRequest2(this: Queryable2, requestInit: Re
 //     return this;
 // }
 
-/**
-* Provides access to the query builder for this url
-*
-*/
-// public get query(): Map<string, string> {
-//     return this.data.query;
-// }
 
-/**
-* Sets custom options for current object and all derived objects accessible via chaining
-*
-* @param options custom options
-*/
-// public configure(options: QueryableRequestInit): this {
-//     mergeRequestInit(this._request, options);
-//     return this;
-// }
-
-/**
-* Configures this instance from the configure options of the supplied instance
-*
-* @param o Instance from which options should be taken
-*/
-// public configureFrom(o: IQueryable<any>): this {
-
-//     mergeOptions(this.data.options, o.data.options);
-
-//     const sourceRuntime = o.getRuntime();
-//     if (!sourceRuntime.get<{ "__isDefault__": boolean }, boolean>("__isDefault__")) {
-//         this.setRuntime(sourceRuntime);
-//     }
-//     return this;
-// }
-
-/**
-* Enables caching for this request
-*
-* @param options Defines the options used when caching this request
-*/
-// public usingCaching(options?: string | ICachingOptions): this {
-
-//     const runtime = this.getRuntime();
-
-//     if (!runtime.get<ILibraryConfiguration, boolean>("globalCacheDisable")) {
-
-//         this.data.useCaching = true;
-
-//         // handle getting just the key
-//         if (typeof options === "string") {
-//             if (stringIsNullOrEmpty(options)) {
-//                 throw Error("Cache key cannot be empty.");
-//             }
-//             options = <ICachingOptions>{ key: options };
-//         }
-
-//         // this uses our local options if they are defined as defaults
-//         const defaultOpts: Partial<ICachingOptions> = {
-//             expiration: dateAdd(new Date(), "second", runtime.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds")),
-//             storeName: runtime.get<ILibraryConfiguration, "session" | "local">("defaultCachingStore"),
-//         };
-
-//         this.data.cachingOptions = assign(defaultOpts, options);
-//     }
-
-//     return this;
-// }
-
-// public usingParser(parser: IODataParser<any>): this {
-//     this.data.parser = parser;
-//     return this;
-// }
-
-/**
-* Allows you to set a request specific processing pipeline
-*
-* @param pipeline The set of methods, in order, to execute a given request
-*/
-// public withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this {
-//     this.data.pipes = pipeline.slice(0);
-//     return this;
-// }
-
-/**
-* Appends the given string and normalizes "/" chars
-*
-* @param pathPart The string to append
-*/
-// public append(pathPart: string): void {
-//     this.data.url = combine(this.data.url, pathPart);
-// }
-
-/**
-* Adds this query to the supplied batch
-*
-* @example
-* ```
-*
-* let b = pnp.sp.createBatch();
-* pnp.sp.web.inBatch(b).get().then(...);
-* b.execute().then(...)
-* ```
-*/
-// public inBatch(batch: Batch): this {
-
-//     if (this.hasBatch) {
-//         throw Error("This query is already part of a batch.");
-//     }
-
-//     if (objectDefinedNotNull(batch)) {
-//         batch.track(this);
-//     }
-
-//     return this;
-// }
-
-/**
-* Blocks a batch call from occuring, MUST be cleared by calling the returned function
-*/
-// public addBatchDependency(): () => void {
-//     if (objectDefinedNotNull(this.data.batch)) {
-//         return this.data.batch.addDependency();
-//     }
-
-//     return () => null;
-// }
-
-/**
-* Indicates if the current query has a batch associated
-*
-*/
-//     protected get hasBatch(): boolean {
-//         return objectDefinedNotNull(this.data.batch);
-//     }
-
-//     /**
-//    * The batch currently associated with this query or null
-//    *
-//    */
-//     protected get batch(): Batch | null {
-//         return this.hasBatch ? this.data.batch : null;
-//     }
-
-//     /**
-//    * Gets the parent url used when creating this instance
-//    *
-//    */
-//     protected get parentUrl(): string {
-//         return this.data.parentUrl;
-//     }
 
 /**
 * Clones this instance's data to target

@@ -2,73 +2,99 @@ import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
-import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/common";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { sp2, SPRest2 } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { WebPartDefinition } from "@pnp/sp/webparts/types.js";
 
 declare var process: { exit(code?: number): void };
+
+function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Queryable2 {
+
+    return (instance) => {
+
+        instance
+            .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
+            .using(InjectHeaders({
+                "Accept": "application/json",
+                "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                "User-Agent": "NONISV|SharePointPnP|PnPjs",
+                "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
+            }))
+            .using(NodeFetchWithRetry())
+            // .using(NodeFetchWithRetry(2))
+            // .using(NodeFetch())
+            .using(DefaultParse())
+            // .using(TextParse())
+            // .using(JSONParse())
+            // .using(Proxy("https://127.0.0.1:8888"))
+            .using(Caching("session", true))
+            .on.pre(async (url, init, result) => {
+
+                // TODO:: replacement for isAbsolute? SHould this be its own behavior?
+                if (!isUrlAbsolute(url)) {
+                    url = (new URL(url, settings.testing.sp.url)).toString();
+                }
+
+                init.cache = "no-cache";
+                init.credentials = "same-origin";
+
+                return [url, init, result];
+            })
+            .on.error((err) => {
+                console.error("caught it");
+                console.error(err);
+            })
+            .on.log(function (message, level) {
+
+                if (level >= LogLevel.Info) {
+
+                    console.log(`Cheap log: ${message}.`);
+                }
+
+
+            }).on.post(async (_url: URL, result: any) => {
+
+                console.log(JSON.stringify(result));
+
+                return [_url, result];
+
+            });
+
+        return instance;
+    };
+}
+
 
 export async function Example(settings: ITestingSettings) {
 
     // TODO:: a way to wrap up different sets of configurations like below.
     // Need a lib default, plus others like Node default, etc.
     // Maybe a default with caching always on, etc.
-    const testingRoot = new Queryable2(settings.testing.sp.url, "_api/web");
 
-    testingRoot
-        .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
-        .using(InjectHeaders({
-            "Accept": "application/json",
-            "Content-Type": "application/json;odata=verbose;charset=utf-8",
-            "User-Agent": "NONISV|SharePointPnP|PnPjs",
-            "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
-        }))
-        .using(NodeFetchWithRetry())
-        // .using(NodeFetchWithRetry(2))
-        // .using(NodeFetch())
-        .using(DefaultParse())
-        // .using(TextParse())
-        // .using(JSONParse())
-        // .using(Proxy("https://127.0.0.1:8888"))
-        .using(Caching("session", true))
-        .on.error((err) => {
-            console.error("caught it");
-            console.error(err);
-        });
+    // sp2.using(testingConfig(settings));
 
-    testingRoot.on.pre(async (url, init, result) => {
+    const sp3 = sp2(settings.testing.sp.url);
+    sp3.using(testingConfig(settings));
 
-        init.cache = "no-cache";
-        init.credentials = "same-origin";
+    const sp4 = sp2(sp3.web);
 
-        return [url, init, result];
-    });
 
-    testingRoot.on.log((message, level) => {
 
-        if (level >= LogLevel.Verbose) {
 
-            console.log(`Cheap log: ${message}.`);
-        }
-    });
+    // const testingRoot = new Queryable2(settings.testing.sp.url, "_api/web");
 
-    const t2 = new Queryable2(testingRoot, "lists");
+    // testingRoot.using();
 
-    t2.query.set("$select", "title,description");
+
+    // const t2 = new Queryable2(testingRoot, "lists");
+
+    // t2.query.set("$select", "title,description");
+
+
+
     // t2.query.set("Test429", "true");
-
-    t2.on.pre(async function (this: Queryable2, url, init, result) {
-
-        this.emit.log("Howdy, Pre log :)", LogLevel.Error);
-        return [url, init, result];
-
-    }).on.post(async (_url: URL, result: any) => {
-
-        console.log(JSON.stringify(result));
-
-        return [_url, result];
-
-    }).log("Done config.");
 
     // TODO:: need to track if timeline is active and create a running clone of the timeline or how 
     // do we handle the case where a timeline modifies itself?
@@ -77,9 +103,20 @@ export async function Example(settings: ITestingSettings) {
     // sending a request uses one of the helper methods get(), post(), put(), delete(), etc.
     try {
 
-        const u = await get(t2);
+        const w = sp3.web;
 
-        const u2 = await get(t2);
+        // TODO:: need to work on the inheritance and ensuring the right events are fired for 
+        // on data etc and that requests are really going out.
+        w.on.post(async (url: URL, result: any) => {
+
+            console.log("I am here!");
+
+            return [url, result];
+        });
+
+        const u = await w();
+
+        const uu = await sp4.web();
 
         console.log("here");
 

@@ -1,5 +1,5 @@
 import { Queryable2 } from "./queryable-2.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, isUrlAbsolute, combine } from "@pnp/common";
+import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, isUrlAbsolute, combine, objectDefinedNotNull } from "@pnp/common";
 import { LogLevel, Logger } from "@pnp/logging";
 import { HttpRequestError } from "./parsers.js";
 
@@ -7,9 +7,13 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (url: URL, init: RequestInit, result: any) {
+        instance.on.pre(async function (url: string, init: RequestInit, result: any) {
 
             const keys = Object.getOwnPropertyNames(headers);
+
+            if (!objectDefinedNotNull(init.headers)) {
+                init.headers = {};
+            }
 
             for (let i = 0; i < keys.length; i++) {
                 init.headers[keys[i]] = headers[keys[i]];
@@ -24,7 +28,7 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
 
 export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Queryable2 {
 
-    // we set the active level here
+    // TODO: we set the active level here?
     Logger.activeLogLevel = activeLevel;
 
     return (instance: Queryable2) => {
@@ -37,8 +41,9 @@ export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Que
     };
 }
 
-//TODO:: (PR?)Allow for null expiration date
-export function Caching(store: "local" | "session" = "session", lazy: boolean = false, keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
+// TODO:: (PR?)Allow for null expiration date
+// eslint-disable-next-line max-len
+export function Caching(store: "local" | "session" = "session", lazy = false, keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
 
     const storage = new PnPClientStorage();
     const s = store === "session" ? storage.session : storage.local;
@@ -53,9 +58,9 @@ export function Caching(store: "local" | "session" = "session", lazy: boolean = 
     }
 
     return (instance: Queryable2) => {
-        //Regardless of cached result, update cache async
+        // Regardless of cached result, update cache async
         instance.AsyncOverride = lazy;
-        instance.on.pre(async function (this: Queryable2, url: URL, init: RequestInit, result: any): Promise<[URL, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             const key = keyFactory(url.toString());
 

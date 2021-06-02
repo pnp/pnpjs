@@ -1,5 +1,5 @@
 import { assign, ITypedHash } from "@pnp/common";
-import { body, headers } from "@pnp/queryable";
+import { body, headers, Queryable2, invokableFactory2 } from "@pnp/queryable";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,
@@ -246,6 +246,20 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 }
 export interface IWeb extends _Web, IDeleteable { }
 export const Web = spInvokableFactory<IWeb>(_Web);
+
+
+
+
+@defaultPath("/_api/web")
+export class _Web2 extends Queryable2<IWebInfo> {
+
+}
+
+export const Web2 = invokableFactory2<_Web2, IWebInfo>(_Web2);
+
+
+
+
 
 /**
  * Result from adding a web

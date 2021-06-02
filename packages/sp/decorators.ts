@@ -24,6 +24,4 @@ export function defaultPath(path: string) {
 // performance tracking method decorator
 // redirect to graph api
 
-
-
-
+// TODO:: auto register a request re-writer thinger to redirect requests to graph??

@@ -1,5 +1,6 @@
-import { Web, IWeb } from "./types.js";
+import { Web, IWeb, Web2, _Web2 } from "./types.js";
 import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 import { SPBatch } from "../batch.js";
 
 export {
@@ -43,3 +44,33 @@ Reflect.defineProperty(SPRest.prototype, "web", {
 SPRest.prototype.createBatch = function (this: SPRest): SPBatch {
     return this.web.createBatch();
 };
+
+declare module "../rest-2" {
+    interface SPRest2 {
+
+        /**
+         * Access to the current web instance
+         */
+        readonly web: ReturnType<typeof Web2>;
+
+        /**
+         * Creates a new batch object for use with the SharePointQueryable.addToBatch method
+         *
+         */
+        createBatch(): SPBatch;
+    }
+}
+
+Reflect.defineProperty(SPRest2.prototype, "web", {
+    configurable: true,
+    enumerable: true,
+    get: function (this: SPRest2) {
+        return Web2(this._root);
+    },
+});
+
+SPRest2.prototype.createBatch = function (this: SPRest2): SPBatch {
+    return null;
+    // return this.web.createBatch();
+};
+
