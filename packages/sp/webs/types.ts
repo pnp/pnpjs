@@ -251,11 +251,11 @@ export const Web = spInvokableFactory<IWeb>(_Web);
 
 
 @defaultPath("/_api/web")
-export class _Web2 extends Queryable2<IWebInfo> {
+export class _Web2 extends Queryable2<IWebInfo> {}
+export interface IWeb2 extends _Web2 {}
+export const Web2 = invokableFactory2<IWeb2, IWebInfo>(_Web2);
 
-}
 
-export const Web2 = invokableFactory2<_Web2, IWebInfo>(_Web2);
 
 
 

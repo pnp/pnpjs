@@ -6,7 +6,7 @@ import { Queryable2 } from "@pnp/queryable";
  */
 export class SPRest2 {
 
-    protected _root: Queryable2;
+    private _root: Queryable2;
 
     /**
      * Creates a new instance of the SPRest class
@@ -26,6 +26,19 @@ export class SPRest2 {
 
         this._root.using(behavior);
         return this;
+    }
+
+    /**
+     * Used by extending classes to create new objects directly from the root
+     * 
+     * @param factory The factory for the type of object to create
+     * @returns A configured instance of that object
+     */
+    protected create<T>(factory: (q: Queryable2) => T): T {
+
+        // TODO:: any other configuration we have to perform to pass on the settings.
+        // shouldn't be anything as it is all in the _root's observers
+        return factory(this._root);
     }
 }
 

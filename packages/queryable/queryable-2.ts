@@ -1,14 +1,8 @@
-import {
-    combine,
-    getGUID,
-} from "@pnp/common";
+import { combine, getGUID } from "@pnp/common";
 import { LogLevel } from "@pnp/logging/logger.js";
+import { IHybrid2 } from "./invokable-binder2.js";
 import { asyncReduce, broadcast, request } from "./moments.js";
 import { Timeline } from "./timeline.js";
-
-export type QueryableRequestInit = Pick<RequestInit, "method" | "referrer" | "referrerPolicy" | "mode" | "credentials" | "cache" | "redirect" | "integrity"> & {
-    headers?: Record<string, string>;
-};
 
 export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -22,8 +16,6 @@ export type QueryablePostObserver = (this: IQueryable2, url: URL, result: any | 
 
 export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
 
-export type QueryableNewObserver = (this: IQueryable2, s: string) => void;
-
 const DefaultBehaviors = {
     pre: asyncReduce<QueryablePreObserver>(),
     auth: asyncReduce<QueryableAuthObserver>(),
@@ -33,9 +25,13 @@ const DefaultBehaviors = {
     data: broadcast<QueryableDataObserver>(),
 } as const;
 
-export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> {
+export interface Queryable2<R = any> {
+    (init?: RequestInit): Promise<R>;
+}
+// eslint-disable-next-line no-redeclare
+export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements IQueryable2<R> {
 
-    private _parent: Queryable2<R>;
+    private _parent: Queryable2<any>;
     private _url: string;
     private _query: Map<string, string>;
 
@@ -97,29 +93,20 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> {
     public toUrl(): string {
         return this._url;
     }
+
+    protected clone<T extends IQueryable2>(factory: (init: IQueryable2<any>, path?: string) => T, path?: string): T {
+
+        const o = factory(this, path);
+        return o;
+    }
 }
-// eslint-disable-next-line no-redeclare
-export interface Queryable2<R = any> {
-    (init?: RequestInit): Promise<R>;
-}
-
-export interface IQueryable2 extends Timeline<any> {
-    // data: Partial<IQueryableData<DefaultActionType>>;
-    // query: Map<string, string>;
-    // append(pathPart: string): void;
-
-
-    // toUrlAndQuery(): string;
+// this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
+export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
+    readonly query: Map<string, string>;
+    using(behavior: (intance: this) => this): this;
+    toRequestUrl(): string;
     toUrl(): string;
-    // concat(pathPart: string): this;
-
-    // defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
-
 }
-
-// TODO:: need a factory function for Queryable2 here
-
-
 
 // TODO:: do you like the idea that the pipeline logic is contained in functions with this signature
 // then anyone can write any pipeline that can be applied to a Queryable2 - making it super easy to add moments to the timeline and then use them

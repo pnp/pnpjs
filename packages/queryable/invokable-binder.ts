@@ -1,7 +1,7 @@
 import { IQueryable } from "./queryable.js";
 import { IRequestContext } from "./pipeline.js";
 import { IFetchOptions } from "@pnp/common";
-import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions.js";
+import { extensionOrDefault } from "./invokable-extensions.js";
 
 export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
@@ -21,7 +21,7 @@ const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor:
             return r;
         };
 
-        return new Proxy<IHybrid<R>>(applyFactoryExtensions(factory, args), {
+        return new Proxy<IHybrid<R>>(factory(args), {
             apply: (target: any, _thisArg: any, argArray?: any) => {
                 return extensionOrDefault("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
             },

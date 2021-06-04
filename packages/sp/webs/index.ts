@@ -1,4 +1,4 @@
-import { Web, IWeb, Web2, _Web2 } from "./types.js";
+import { Web, IWeb, Web2 } from "./types.js";
 import { SPRest } from "../rest.js";
 import { SPRest2 } from "../rest-2.js";
 import { SPBatch } from "../batch.js";
@@ -65,7 +65,7 @@ Reflect.defineProperty(SPRest2.prototype, "web", {
     configurable: true,
     enumerable: true,
     get: function (this: SPRest2) {
-        return Web2(this._root);
+        return this.create(Web2);
     },
 });
 

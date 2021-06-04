@@ -185,6 +185,7 @@ export class Timeline<T extends Moments> {
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
                     if (p === "error" && (!isArray(observers) || observers.length < 1)) {
+
                         // if we are emitting an error, and no error observers are defined, we throw
                         throw Error(`Unhandled Exception: ${args[0]}`);
                     }

@@ -1,34 +1,45 @@
 import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions.js";
-import { Queryable2 } from "./queryable-2.js";
+import { IQueryable2 } from "./queryable-2.js";
 import { get } from "./operations.js";
 
-type defaultActionType<T, R> = (this: T, init?: RequestInit) => Promise<R>;
+export type ActionType<T, R> = (this: T, init?: RequestInit) => Promise<R>;
 
-export type IHybrid2<T extends Queryable2, R> = T & {
+/**
+ * Represents a type comprised of an object and a function, allowing the object to be invoked directly
+ */
+export type IHybrid2<T extends IQueryable2, R> = T & {
     (this: T, init?: RequestInit): Promise<R>;
 };
 
+/**
+ * Creates an factory function binding the supplied constructor to a function enabling it to be invoked directly
+ *
+ * @param constructor Constructor of the underlying object which will be wrapped in the Proxy
+ * @param invokeableAction The action executed when the object is called as a function
+ * @returns Factory used to create extendable hybrid objects
+ */
+export function invokableFactory2<InstanceType extends IQueryable2, InvokableReturnType>(
+    constructor: { new(init: IQueryable2<any> | string, path?: string): InstanceType },
+    invokeableAction?: ActionType<InstanceType, InvokableReturnType>
+): (init: IQueryable2<any>, path?: string) => InstanceType {
 
-// eslint-disable-next-line max-len
-export function invokableFactory2<T extends Queryable2, R>(constructor: { new(...args: any[]): T }, defaultAction?: defaultActionType<T, R>): (...args: any[]) => IHybrid2<T, R> {
-
-    if (typeof defaultAction !== "function") {
-        defaultAction = function (this: T, init?: RequestInit) {
+    if (typeof invokeableAction !== "function") {
+        invokeableAction = function (this: InstanceType, init?: RequestInit) {
             return get(this, init);
         };
     }
 
-    return (...args: any[]) => {
+    return (init: IQueryable2<any> | string, path?: string) => {
 
-        const factory = (passedArgs: any[]) => {
-            const r = Object.assign(function (init?: RequestInit) {
-                return Reflect.apply(defaultAction, r, [init]);
-            }, new constructor(...passedArgs));
+        const factory = () => {
+            const r = Object.assign(function (init2?: RequestInit) {
+                return Reflect.apply(invokeableAction, r, [init2]);
+            }, new constructor(init, path));
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
 
-        return new Proxy<IHybrid2<T, R>>(applyFactoryExtensions(factory, args), {
+        return <any>new Proxy<IHybrid2<InstanceType, InvokableReturnType>>(applyFactoryExtensions(factory), {
             apply: (target: any, _thisArg: any, argArray?: any) => {
                 return extensionOrDefault("apply", (...a: any[]) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
             },
