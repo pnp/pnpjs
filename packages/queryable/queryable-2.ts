@@ -103,6 +103,7 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
     readonly query: Map<string, string>;
+    (this: any, init?: RequestInit): Promise<R>;
     using(behavior: (intance: this) => this): this;
     toRequestUrl(): string;
     toUrl(): string;

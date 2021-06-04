@@ -18,7 +18,7 @@ export type IHybrid2<T extends IQueryable2, R> = T & {
  * @param invokeableAction The action executed when the object is called as a function
  * @returns Factory used to create extendable hybrid objects
  */
-export function invokableFactory2<InstanceType extends IQueryable2, InvokableReturnType>(
+export function invokableFactory2<InstanceType extends IQueryable2, InvokableReturnType = ReturnType<InstanceType>>(
     constructor: { new(init: IQueryable2<any> | string, path?: string): InstanceType },
     invokeableAction?: ActionType<InstanceType, InvokableReturnType>
 ): (init: IQueryable2<any>, path?: string) => InstanceType {
