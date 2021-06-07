@@ -40,6 +40,7 @@ debug/launch/*
 !debug/launch/tsconfig.json
 !debug/launch/setup.ts
 !debug/launch/v3.ts
+!debug/launch/v3-patrick.ts
 
 debug/serve/*
 !debug/serve/main.ts

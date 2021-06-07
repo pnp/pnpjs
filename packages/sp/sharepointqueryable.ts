@@ -10,6 +10,8 @@ export interface ISharePointQueryableConstructor<T extends ISharePointQueryable 
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
 
+
+
 export type ISPInvokableFactory<R extends any> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R>(f: any): ISPInvokableFactory<R> => {

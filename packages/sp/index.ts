@@ -32,6 +32,10 @@ export {
     sp,
 } from "./rest.js";
 
+export {
+    sp as sp2,
+} from "./rest-2.js";
+
 export * from "./types.js";
 
 export {
