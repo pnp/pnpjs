@@ -51,6 +51,9 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 
             url = (new URL(path, _url)).toString();
             parent = _parent || null;
+            // TODO:: doesn't work due to data event (maybe others)
+            // pre, post, send, auth, error, log
+            // data
             observers = init.observers;
         }
 
@@ -98,6 +101,74 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 
         const o = factory(this, path);
         return o;
+    }
+
+    protected execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
+
+        setTimeout(async () => {
+
+            const requestId = getGUID();
+            let requestUrl: URL;
+
+            try {
+
+                this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+
+                // eslint-disable-next-line prefer-const
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+
+                this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
+
+                if (typeof result !== "undefined") {
+                    this.emit.data(result);
+
+                    // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
+                    return;
+                }
+
+                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                [requestUrl, init] = await this.emit.auth(new URL(url), init);
+                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                let response = await this.emit.send(requestUrl, init);
+                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
+                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+
+                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                [requestUrl, result] = await this.emit.post(requestUrl, result);
+                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
+
+                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
+                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
+                // completed event to signal the request is completed?
+                if (typeof result !== "undefined") {
+                    this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                    this.emit.data(result);
+                    this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                }
+
+            } catch (e) {
+
+                this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+                // anything that throws we emit and continue
+                this.emit.error(e);
+                this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+
+            } finally {
+
+                this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+            }
+
+        }, 0);
+
+        return new Promise((resolve, reject) => {
+            this.on.data(resolve);
+            this.on.error(reject);
+        });
     }
 }
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type

@@ -1,6 +1,6 @@
 import { extensionOrDefault, applyFactoryExtensions } from "./invokable-extensions.js";
 import { IQueryable2 } from "./queryable-2.js";
-import { get } from "./operations.js";
+import { get, op } from "./operations.js";
 
 export type ActionType<T, R> = (this: T, init?: RequestInit) => Promise<R>;
 
@@ -19,13 +19,16 @@ export type IHybrid2<T extends IQueryable2, R> = T & {
  * @returns Factory used to create extendable hybrid objects
  */
 export function invokableFactory2<InstanceType extends IQueryable2, InvokableReturnType = ReturnType<InstanceType>>(
+
     constructor: { new(init: IQueryable2<any> | string, path?: string): InstanceType },
     invokeableAction?: ActionType<InstanceType, InvokableReturnType>
+
 ): (init: IQueryable2<any>, path?: string) => InstanceType {
 
     if (typeof invokeableAction !== "function") {
         invokeableAction = function (this: InstanceType, init?: RequestInit) {
-            return get(this, init);
+            return op(this, get, init);
+            // return Reflect.apply(get, this, [init]);
         };
     }
 

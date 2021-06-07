@@ -77,7 +77,7 @@ export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeC
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
-export class Timeline<T extends Moments> {
+export abstract class Timeline<T extends Moments> {
 
     private _inheritingObservers: boolean;
     private _parentObservers: ObserverGraph;
@@ -212,6 +212,8 @@ export class Timeline<T extends Moments> {
 
         return <any>this._emitProxy;
     }
+
+    protected abstract execute(init?: RequestInit): Promise<any>;
 }
 
 /**

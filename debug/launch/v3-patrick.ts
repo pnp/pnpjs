@@ -1,6 +1,6 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get, extendObj } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/common";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
@@ -30,7 +30,11 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
             // .using(JSONParse())
             // .using(Proxy("https://127.0.0.1:8888"))
             .using(Caching("session", true))
-            .on.pre(async (url, init, result) => {
+            .on.pre(async function (url, init, result) {
+
+                extendObj(this, {
+                    execute: ""
+                });
 
                 // TODO:: replacement for isAbsolute? SHould this be its own behavior?
                 if (!isUrlAbsolute(url)) {
@@ -76,12 +80,10 @@ export async function Example(settings: ITestingSettings) {
     // sp2.using(testingConfig(settings));
 
     const sp3 = sp2(settings.testing.sp.url);
+
     sp3.using(testingConfig(settings));
 
     const sp4 = sp2(sp3.web);
-
-
-
 
     // const testingRoot = new Queryable2(settings.testing.sp.url, "_api/web");
 
@@ -116,6 +118,8 @@ export async function Example(settings: ITestingSettings) {
 
         const u = await w();
 
+        // TODO:: right now this request isn't sent because sp4 shares the data observers with sp3 due to inheritance so once the first
+        // request resolves the second also instantly resolves. In this case it is the same request, but later it wouldn't be
         const uu = await sp4.web();
 
         console.log("here");
