@@ -109,9 +109,9 @@ export const enableExtensions = () => {
  * @param args
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const applyFactoryExtensions = <T extends object = {}>(factory: (args: any[]) => T, args: any[]): T => {
+export const applyFactoryExtensions = <T extends object = {}>(factory: () => T): T => {
 
-    let o = factory(args);
+    let o = factory();
 
     const proto = Reflect.getPrototypeOf(factory);
 
