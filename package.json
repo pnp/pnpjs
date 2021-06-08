@@ -24,7 +24,7 @@
         "@types/webpack": "^5.28.0",
         "@types/whatwg-fetch": "^0.0.33",
         "@types/yargs": "^16.0.1",
-        "@typescript-eslint/eslint-plugin": "^4.23.0",
+        "@typescript-eslint/eslint-plugin": "^4.26.1",
         "@typescript-eslint/parser": "^4.23.0",
         "adal-angular": "^1.0.18",
         "adal-node": "^0.2.2",
