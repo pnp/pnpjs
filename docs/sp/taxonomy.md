@@ -4,7 +4,7 @@ Provides access to the v2.1 api term store
 
 ### Docs updated with v2.0.9 release as the underlying API changed.
 
-> NOTE: This API may change so please be aware updates to the taxonomy module will not trigger a major version bump in PnPjs even if they are breaking. Once things stabalize this note will be removed.
+> NOTE: This API may change so please be aware updates to the taxonomy module will not trigger a major version bump in PnPjs even if they are breaking. Once things stabilize this note will be removed.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
@@ -58,7 +58,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermSetInfo } from "@pnp/sp/taxonomy";
 
-// get get set info
+// get set info
 const info: ITermSetInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets();
 ```
 
@@ -69,8 +69,11 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermSetInfo } from "@pnp/sp/taxonomy";
 
-// get term set data
+// get term set data by group id then by term set id
 const info: ITermSetInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72")();
+
+// get term set data by term set id
+const infoByTermSetId: ITermSetInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72")();
 ```
 
 ### getAllChildrenAsOrderedTree
@@ -131,8 +134,11 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
 
-// list all the terms that are direct children of this set
+// list all the terms available in this term set by group id then by term set id
 const infos: ITermInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
+
+// list all the terms available in this term set by term set id
+const infosByTermSetId: ITermInfo[] = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
 ```
 
 ### Get By Id
