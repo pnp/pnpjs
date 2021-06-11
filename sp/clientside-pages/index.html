@@ -1408,6 +1408,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddfullpageapp" class="md-nav__link">
+    Create using IWeb.addFullPageApp
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1687,6 +1694,34 @@
           <li class="md-nav__item">
   <a href="#setbannerimagefromexternalurl" class="md-nav__link">
     setBannerImageFromExternalUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recycle" class="md-nav__link">
+    recycle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saveastemplate" class="md-nav__link">
+    saveAsTemplate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    share
   </a>
   
 </li>
@@ -2388,6 +2423,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddfullpageapp" class="md-nav__link">
+    Create using IWeb.addFullPageApp
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2671,6 +2713,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#recycle" class="md-nav__link">
+    recycle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saveastemplate" class="md-nav__link">
+    saveAsTemplate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    share
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2774,6 +2844,21 @@ const page3 = await CreateClientsidePage(Web(&quot;https://{absolute web url}&qu
 
 // you must publish the new page
 await page3.save();
+</code></pre>
+<h3 id="create-using-iwebaddfullpageapp">Create using IWeb.addFullPageApp<a class="headerlink" href="#create-using-iwebaddfullpageapp" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.6.0</em></p>
+<p>Using this method you can easily create a full page app page given the component id. Don't forget the page will not be published and you will need to call save.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { Web } from &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+
+const page = await web.addFullPageApp(&quot;name333&quot;, &quot;My Title&quot;, &quot;2CE4E250-B997-11EB-A9D2-C9D2FF95D000&quot;);
+
+// ... other page actions
+
+// you must save the page to publish it
+await page.save();
 </code></pre>
 <h2 id="load-pages">Load Pages<a class="headerlink" href="#load-pages" title="Permanent link">&para;</a></h2>
 <p>There are a few ways to load pages, each of which results in an IClientsidePage instance being returned.</p>
@@ -3335,6 +3420,55 @@ await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.
 
 // save the changes
 await page.save();
+</code></pre>
+<h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.6.0</em></p>
+<p>Allows you to recycle a page without first needing to use getItem</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.recycle();
+</code></pre>
+<h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.6.0</em></p>
+<p>Allows you to delete a page without first needing to use getItem</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.delete();
+</code></pre>
+<h3 id="saveastemplate">saveAsTemplate<a class="headerlink" href="#saveastemplate" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.6.0</em></p>
+<p>Save page as a template from which other pages can be created. If it doesn't exist a special folder "Templates" will be added to the doc lib</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.saveAsTemplate();
+
+
+// save a template, but don't publish it allowing you to make changes before it is available to users
+// you 
+await page.saveAsTemplate(false);
+
+// ... changes to the page
+
+// you must publish the template so it is available
+await page.save();
+</code></pre>
+<h3 id="share">share<a class="headerlink" href="#share" title="Permanent link">&para;</a></h3>
+<p><em>Added in 2.6.0</em></p>
+<p>Allows sharing a page with one or more email addresses, optionall including a message in the email</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;]);
+
+// optionally include a message
+await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;], &quot;Please check out this cool page!&quot;);
 </code></pre>
 <h1 id="add-repost-page">Add Repost Page<a class="headerlink" href="#add-repost-page" title="Permanent link">&para;</a></h1>
 <p><em>Added in 2.5.0</em></p>

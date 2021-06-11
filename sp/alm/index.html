@@ -1374,6 +1374,19 @@
     Referencing an App Catalog
   </a>
   
+    <nav class="md-nav" aria-label="Referencing an App Catalog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#site-collection-app-catalog" class="md-nav__link">
+    Site Collection App Catalog
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2124,6 +2137,19 @@
     Referencing an App Catalog
   </a>
   
+    <nav class="md-nav" aria-label="Referencing an App Catalog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#site-collection-app-catalog" class="md-nav__link">
+    Site Collection App Catalog
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2195,7 +2221,7 @@
 import &quot;@pnp/sp/appcatalog&quot;;
 import &quot;@pnp/sp/webs&quot;;
 
-// get the current context web's app catalog
+// get the current context web's tenant app catalog
 const catalog = await sp.web.getAppCatalog()();
 
 // you can also chain off the app catalog
@@ -2214,7 +2240,7 @@ const appCatalog = await appCatWeb.getAppCatalog()();
 // get the tenant app catalog
 const tenantCatalog = await sp.web.getAppCatalog(&quot;https://mytenant.sharepoint.com/sites/appcatalog&quot;)();
 
-// get a different app catalog
+// get a different web's tenant app catalog
 const catalog = await sp.web.getAppCatalog(&quot;https://mytenant.sharepoint.com/sites/anothersite&quot;)();
 </code></pre>
 <pre><code class="language-TypeScript">// alternatively you can create a new app catalog instance directly by importing the AppCatalog class
@@ -2228,6 +2254,17 @@ import { AppCatalog } from '@pnp/sp/appcatalog';
 
 const web = Web(&quot;https://mytenant.sharepoint.com/sites/apps&quot;);
 const catalog = await AppCatalog(web)();
+</code></pre>
+<h3 id="site-collection-app-catalog">Site Collection App Catalog<a class="headerlink" href="#site-collection-app-catalog" title="Permanent link">&para;</a></h3>
+<p>By default, getting an app catalog instance will return the tenant app catalog associated with that site. 
+Fetching the site collection's app catalog relies on a separate endpoint so must be explicitly requested.
+This can be done by passing a second argument to <code>getAppCatalog</code>:</p>
+<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/appcatalog&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+// get the current context web's site collection app catalog
+const catalog = await sp.web.getAppCatalog(undefined, 'sitecollection')();
 </code></pre>
 <p>The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.</p>
 <h2 id="list-available-apps">List Available Apps<a class="headerlink" href="#list-available-apps" title="Permanent link">&para;</a></h2>
