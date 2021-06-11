@@ -75,6 +75,26 @@ const page3 = await CreateClientsidePage(Web("https://{absolute web url}"), "myp
 await page3.save();
 ```
 
+### Create using IWeb.addFullPageApp
+
+_Added in 2.6.0_
+
+Using this method you can easily create a full page app page given the component id. Don't forget the page will not be published and you will need to call save.
+
+```TypeScript
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages";
+
+const page = await web.addFullPageApp("name333", "My Title", "2CE4E250-B997-11EB-A9D2-C9D2FF95D000");
+
+// ... other page actions
+
+// you must save the page to publish it
+await page.save();
+```
+
 ## Load Pages
 
 There are a few ways to load pages, each of which results in an IClientsidePage instance being returned.
@@ -773,6 +793,75 @@ await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg",
 await page.save();
 ```
 
+### recycle
+
+_Added in 2.6.0_
+
+Allows you to recycle a page without first needing to use getItem
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.recycle();
+```
+
+### delete
+
+_Added in 2.6.0_
+
+Allows you to delete a page without first needing to use getItem
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.delete();
+```
+
+### saveAsTemplate
+
+_Added in 2.6.0_
+
+Save page as a template from which other pages can be created. If it doesn't exist a special folder "Templates" will be added to the doc lib
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.saveAsTemplate();
+
+
+// save a template, but don't publish it allowing you to make changes before it is available to users
+// you 
+await page.saveAsTemplate(false);
+
+// ... changes to the page
+
+// you must publish the template so it is available
+await page.save();
+```
+
+### share
+
+_Added in 2.6.0_
+
+Allows sharing a page with one or more email addresses, optionall including a message in the email
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+
+// you must await this method
+await page.share(["email@place.com", "email2@otherplace.com"]);
+
+// optionally include a message
+await page.share(["email@place.com", "email2@otherplace.com"], "Please check out this cool page!");
+```
+
 # Add Repost Page
 
 _Added in 2.5.0_
@@ -794,4 +883,5 @@ const w = await sp.web.addRepostPage({
 ```
 
 > To specify an existing item in another list all of the four properties OriginalSourceSiteId, OriginalSourceWebId, OriginalSourceListId, and OriginalSourceItemId are required.
+
 

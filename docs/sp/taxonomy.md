@@ -79,6 +79,8 @@ _Added in 2.0.13_
 
 This method will get all of a set's child terms in an ordered array. It is a costly method in terms of requests so we suggest you cache the results as taxonomy trees seldom change.
 
+> Starting with version 2.6.0 you can now include an optional param to retrieve all of the term's properties and localProperties in the tree. Default is false.
+
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
@@ -96,6 +98,11 @@ const store = new PnPClientStorage();
 const cachedTree = await store.local.getOrPut("myKey", () => {
     return sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getAllChildrenAsOrderedTree();
 }, dateAdd(new Date(), "minute", 30));
+
+
+// you can also get all the properties and localProperties
+const set = sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72");
+const childTree = await set.getAllChildrenAsOrderedTree({ retrieveProperties: true });
 ```
 
 ## Terms
