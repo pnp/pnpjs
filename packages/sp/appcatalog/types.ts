@@ -12,10 +12,19 @@ import { tag } from "../telemetry.js";
 import { Web } from "../webs/index.js";
 import "../items/index.js";
 
+export type AppCatalogScope = "tenant" | "sitecollection";
+
 export class _AppCatalog extends _SharePointQueryableCollection {
 
-    constructor(baseUrl: string | ISharePointQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+    private readonly catalogPath: string;
+
+    constructor(baseUrl: string | ISharePointQueryable, path?: string) {
         super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
+
+        // get the catalog path without the AvailableApps suffix
+        // used for adding, syncing to teams
+        const pathSplit = path.split("/");
+        this.catalogPath = pathSplit.slice(0, pathSplit.length-1).join("/");
     }
 
     /**
@@ -56,7 +65,7 @@ export class _AppCatalog extends _SharePointQueryableCollection {
             }
         }
 
-        const poster = tag.configure(AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
+        const poster = tag.configure(AppCatalog(webUrl, `${this.catalogPath}/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
         poster.configureFrom(this);
         return await spPost(poster, {});
     }
@@ -70,9 +79,8 @@ export class _AppCatalog extends _SharePointQueryableCollection {
      * @returns Promise<IAppAddResult>
      */
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
-
         // you don't add to the availableapps collection
-        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
+        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `${this.catalogPath}/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
         adder.configureFrom(this);
 
         const r = await spPost(adder, {
