@@ -14,7 +14,7 @@ import {
 import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
 import { extractWebUrl } from "./utils/extractweburl.js";
 import { tag } from "./telemetry.js";
-import { ODataParser } from "@pnp/odata";
+import { ODataParser, HttpRequestError } from "@pnp/odata";
 
 export class SPHttpClient implements IRequestClient {
 
@@ -110,7 +110,8 @@ export class SPHttpClient implements IRequestClient {
 
                 // If we have exceeded the retry count, reject.
                 if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(Error(`Retry count exceeded (${ctx.retryCount}) for request. Response status: [${response.status}] ${response.statusText}`));
+                    // eslint-disable-next-line max-len
+                    ctx.reject(new HttpRequestError(`Retry count exceeded (${ctx.retryCount}) for request. Response status: [${response.status}] ${response.statusText}`, response));
                 } else {
                     // Set our retry timeout for {delay} milliseconds.
                     setTimeout(getCtxCallback(this, retry, ctx), delay);

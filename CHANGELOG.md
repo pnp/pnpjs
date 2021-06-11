@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.6.0 - 2021-June-11
+
+### Fixed
+
+- graph: all preset missing outlook [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1766)]
+
+### Added
+
+- graph: user/calendar findrooms endpoint [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1729)]
+- sp: ability to use sitecollection app catalogs [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1760)]
+- sp: Client-side page improvements #1751 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1769)]
+
+### Changed
+
+- sp: Check if CorporateCatalogUrl before returning Web [@allanhvam](https://github.com/allanhvam) [[PR](https://github.com/pnp/pnpjs/pull/1774)]
+- docs: Added examples showing how to access a term set [@mrebuffet](https://github.com/mrebuffet) [[PR](https://github.com/pnp/pnpjs/pull/1798)]
+
 ## 2.5.0 - 2021-May-14
 
 ### Fixed

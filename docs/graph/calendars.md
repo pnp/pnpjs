@@ -212,3 +212,23 @@ const view3 = await graph.users.getById('user@tenant.onmicrosoft.com').calendarV
 
 const view4 = await graph.me.calendarView("2020-01-01", "2020-03-01")();
 ```
+
+## Find Rooms
+
+_Added in 2.5.0_
+Gets the `emailAddress` objects that represent all the meeting rooms in the user's tenant or in a specific room list.
+
+```ts
+import { graph } from '@pnp/graph';
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+// basic request, note need to invoke the returned queryable
+const rooms1 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms()();
+
+// you can pass a room list to filter results
+const rooms2 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms('roomlist@tenant.onmicrosoft.com')();
+
+// you can use select, top, etc to filter your returned results
+const rooms3 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms().select('name').top(10)();
+```

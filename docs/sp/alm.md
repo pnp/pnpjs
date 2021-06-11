@@ -15,7 +15,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-// get the current context web's app catalog
+// get the current context web's tenant app catalog
 const catalog = await sp.web.getAppCatalog()();
 
 // you can also chain off the app catalog
@@ -36,10 +36,9 @@ const appCatalog = await appCatWeb.getAppCatalog()();
 // get the tenant app catalog
 const tenantCatalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog")();
 
-// get a different app catalog
+// get a different web's tenant app catalog
 const catalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite")();
 ```
-
 ```TypeScript
 // alternatively you can create a new app catalog instance directly by importing the AppCatalog class
 import { IAppCatalog, AppCatalog } from '@pnp/sp/appcatalog';
@@ -54,6 +53,21 @@ import { AppCatalog } from '@pnp/sp/appcatalog';
 
 const web = Web("https://mytenant.sharepoint.com/sites/apps");
 const catalog = await AppCatalog(web)();
+```
+
+### Site Collection App Catalog
+
+By default, getting an app catalog instance will return the tenant app catalog associated with that site. 
+Fetching the site collection's app catalog relies on a separate endpoint so must be explicitly requested.
+This can be done by passing a second argument to `getAppCatalog`:
+
+```ts
+import { sp } from "@pnp/sp";
+import "@pnp/sp/appcatalog";
+import "@pnp/sp/webs";
+
+// get the current context web's site collection app catalog
+const catalog = await sp.web.getAppCatalog(undefined, 'sitecollection')();
 ```
 
 The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.
