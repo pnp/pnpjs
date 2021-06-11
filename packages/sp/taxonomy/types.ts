@@ -99,10 +99,17 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
     /**
      * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
      * ** This is an expensive operation and you should strongly consider caching the results **
+     *
+     * @param props Optional set of properties controlling how the tree is retrieved.
      */
-    public async getAllChildrenAsOrderedTree(): Promise<IOrderedTermInfo[]> {
+    public async getAllChildrenAsOrderedTree(props: Partial<IGetOrderedTreeProps> = {}): Promise<IOrderedTermInfo[]> {
 
-        const setInfo = await this.select("*", "customSortOrder")();
+        const selects = ["*", "customSortOrder"];
+        if (props.retrieveProperties) {
+            selects.push("properties", "localProperties");
+        }
+
+        const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
 
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
@@ -131,7 +138,7 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
                     }
                 });
                 // we have a case where if a set is ordered and a term is added to that set
-                // AND the ordering information hasn't been updated the new term will not have
+                // AND the ordering information hasn't been updated in the UI the new term will not have
                 // any associated ordering information. See #1547 which reported this. So here we
                 // append any terms remaining in "terms" not in "orderedChildren" to the end of "orderedChildren"
                 orderedChildren.push(...terms.filter(info => ordering.indexOf(info.id) < 0));
@@ -143,7 +150,7 @@ export class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
 
         const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
 
-            const children = await source.children.select("*", "customSortOrder")();
+            const children = await source.children.select(...selects)();
 
             for (let i = 0; i < children.length; i++) {
 
@@ -289,8 +296,8 @@ export interface ITermInfo {
     customSortOrder: ITermSortOrderInfo[];
     lastModifiedDateTime: string;
     descriptions: { description: string; languageTag: string }[];
-    properties: ITaxonomyProperty[];
-    localProperties: ITaxonomyProperty[];
+    properties?: ITaxonomyProperty[];
+    localProperties?: ITaxonomyLocalProperty[];
     isDeprecated: boolean;
     isAvailableForTagging: { setId: string; isAvailable: boolean }[];
     topicRequested: boolean;
@@ -323,4 +330,13 @@ export interface ITaxonomyUserInfo {
 export interface ITaxonomyProperty {
     key: string;
     value: string;
+}
+
+export interface ITaxonomyLocalProperty {
+    setId: string;
+    properties: ITaxonomyProperty[];
+}
+
+export interface IGetOrderedTreeProps {
+    retrieveProperties: boolean;
 }

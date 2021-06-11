@@ -379,7 +379,7 @@ export class _ClientsidePage extends _SharePointQueryable {
         }
 
         const updater = initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
-        await spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
+        await spPost<IPageData>(updater, headers({ "if-match": "*" }, body(saveBody)));
 
         let r = true;
 
@@ -392,6 +392,9 @@ export class _ClientsidePage extends _SharePointQueryable {
 
         this._bannerImageDirty = false;
         this._bannerImageThumbnailUrlDirty = false;
+
+        // we need to ensure we reload from the latest data to ensure all urls are updated and current in the object (expecially for new pages)
+        await this.load();
 
         return r;
     }
@@ -677,6 +680,77 @@ export class _ClientsidePage extends _SharePointQueryable {
     }
 
     /**
+     * Recycle this page
+     */
+    public async recycle(): Promise<void> {
+        const item = await this.getItem();
+        await item.recycle();
+    }
+
+    /**
+     * Delete this page
+     */
+    public async delete(): Promise<void> {
+        const item = await this.getItem();
+        await item.delete();
+    }
+
+    // not yet active in service
+    // /**
+    //  * Schedules a page for publishing
+    //  *
+    //  * @param publishDate Date to publish the item
+    //  * @returns Publish work item details
+    //  */
+    // public async schedulePublish(publishDate: Date): Promise<string> {
+
+    //     let r: string;
+
+    //     // currently the server throws an exception, but then the page is published as expected
+    //     // so we just ignore that error for now, YMMV
+    //     try {
+    //         r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+    //             sitePage: { PublishStartDate: publishDate },
+    //         }));
+    //     } catch {
+    //         r = "";
+    //     }
+
+    //     return r;
+    // }
+
+    /**
+     * Saves a copy of this page as a template in this library's Templates folder
+     *
+     * @param publish If true the template is published, false the template is not published (default: true)
+     * @returns IClientsidePage instance representing the new template page
+     */
+    public async saveAsTemplate(publish = true): Promise<IClientsidePage> {
+
+        const data = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SavePageAsTemplate`));
+        const page = ClientsidePage(this, null, data);
+        page.title = this.title;
+        await page.save(publish);
+        return page;
+    }
+
+    /**
+     * Share this Page's Preview content by Email
+     *
+     * @param emails Set of emails to which the preview is shared
+     * @param message The message to include
+     * @returns void
+     */
+    public share(emails: string[], message: string): Promise<void> {
+
+        return spPost(initFrom(this, "_api/SP.Publishing.RichSharing/SharePageByEmail"), body({
+            recipientEmails: emails,
+            message,
+            url: this.json.AbsoluteUrl,
+        }));
+    }
+
+    /**
      * Extends this queryable from the provided parent
      *
      * @param parent Parent queryable from which we will derive a base url
@@ -895,7 +969,7 @@ export class _ClientsidePage extends _SharePointQueryable {
             const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
             if (objectDefinedNotNull(texts)) {
                 const keys = Object.getOwnPropertyNames(texts);
-                for(let i = 0; i < keys.length; i++) {
+                for (let i = 0; i < keys.length; i++) {
                     texts[keys[i]] = texts[keys[i]].replace(/</ig, "&lt;");
                     (<any>control).data.webPartData.serverProcessedContent.searchablePlainTexts = texts;
                 }

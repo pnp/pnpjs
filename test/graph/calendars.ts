@@ -198,6 +198,11 @@ describe("Calendar", function () {
             return expect(view.length).is.greaterThan(0);
         });
 
+        it("Find Rooms", async function () {
+            const rooms = await graph.users.getById(testUserName).findRooms();
+            return expect(rooms.length).is.greaterThan(0);
+        });
+
         // Remove the test data we created
         this.afterAll(async function () {
 

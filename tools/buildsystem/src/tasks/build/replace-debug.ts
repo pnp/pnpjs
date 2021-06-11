@@ -24,7 +24,7 @@ export async function replaceDebug(version: string, config: BuildSchema): Promis
     };
 
     const optionsRequireTemplate = {
-        from: /require\(['|"]@pnp\/[\w-\/]*?['|"]/ig,
+        from: /require\(['|"]@pnp\/[\w-\/\.]*?['|"]/ig,
     };
 
     const requireOptionsCollection = [];
@@ -46,7 +46,7 @@ export async function replaceDebug(version: string, config: BuildSchema): Promis
                 path.resolve(sourceRoot, outDir, "**/*.d.ts"),
             ],
             to: (match: string) => {
-                const m = /require\(['|"]@pnp\/([\w-\/]*?)['|"]/ig.exec(match);
+                const m = /require\(['|"]@pnp\/([\w-\/\.]*?)['|"]/ig.exec(match);
                 return `require("${path.resolve(sourceRoot, outDir, `packages/${m[1]}`).replace(/\\/g, "/")}"`;
             },
         }));

@@ -1,5 +1,14 @@
 import { _Web, IWeb } from "../webs/types.js";
-import { IClientsidePageComponent, CreateClientsidePage, IClientsidePage, ClientsidePageLayoutType, ClientsidePageFromFile, PromotedState, IRepostPage } from "./types.js";
+import {
+    IClientsidePageComponent,
+    CreateClientsidePage,
+    IClientsidePage,
+    ClientsidePageLayoutType,
+    ClientsidePageFromFile,
+    PromotedState,
+    IRepostPage,
+    ClientsideWebpart,
+} from "./types.js";
 import { SharePointQueryableInstance, SharePointQueryableCollection } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { spPost } from "../operations.js";
@@ -13,6 +22,7 @@ declare module "../webs/types" {
         addClientsidePage(pageName: string, title?: string, libraryTitle?: string, promotedState?: PromotedState): Promise<IClientsidePage>;
         loadClientsidePage(path: string): Promise<IClientsidePage>;
         addRepostPage(details: IRepostPage): Promise<string>;
+        addFullPageApp(pageName: string, title: string, componentId: string, promotedState?: PromotedState): Promise<IClientsidePage>;
     }
     interface IWeb {
 
@@ -42,6 +52,13 @@ declare module "../webs/types" {
          * @param details The request details to create the page
          */
         addRepostPage(details: IRepostPage): Promise<string>;
+
+        /**
+         * Creates a new single page app page and installs the indicated component
+         *
+         * @param componentId
+         */
+        addFullPageApp(pageName: string, title: string, componentId: string, promotedState?: PromotedState): Promise<IClientsidePage>;
     }
 }
 
@@ -63,4 +80,16 @@ _Web.prototype.addRepostPage = async function (this: IWeb, details: IRepostPage)
     const query = SharePointQueryableInstance(extractWebUrl(this.toUrl()), "_api/sitepages/pages/reposts").configureFrom(this);
     const r: { AbsoluteUrl: string } = await spPost(query, body(assign(metadata("SP.Publishing.RepostPage"), details)));
     return r.AbsoluteUrl;
+};
+
+// eslint-disable-next-line max-len
+_Web.prototype.addFullPageApp = async function (this: IWeb, pageName: string, title = pageName.replace(/\.[^/.]+$/, ""), componentId: string, promotedState?: PromotedState): Promise<IClientsidePage> {
+
+    const parts = await this.getClientsideWebParts();
+    const test = new RegExp(`{?${componentId}}?`, "i");
+    const partDef = parts.find(p => test.test(p.Id));
+    const part = ClientsideWebpart.fromComponentDef(partDef);
+    const page = await this.addClientsidePage(pageName, title, "SingleWebPartAppPage", promotedState);
+    page.addSection().addColumn(12).addControl(part);
+    return page;
 };
