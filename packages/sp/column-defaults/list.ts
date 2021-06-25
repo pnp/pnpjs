@@ -3,7 +3,7 @@ import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
-import { combine, isArray } from "@pnp/common";
+import { combine, isArray } from "@pnp/core";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { spPost } from "../operations.js";

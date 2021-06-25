@@ -1,7 +1,7 @@
 import { LogLevel } from "@pnp/logging";
 import { HttpRequestError, Queryable2 } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
-import { delay } from "@pnp/common";
+import { delay } from "@pnp/core";
 
 export function NodeFetch(): (instance: Queryable2) => Queryable2 {
 
@@ -30,7 +30,7 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Quer
                     throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`, response);
                 }
 
-                if (typeof response == "undefined" || response?.status === 429 || response?.status === 503 || response?.status === 504) {
+                if (typeof response === "undefined" || response?.status === 429 || response?.status === 503 || response?.status === 504) {
                     // this is our first try and response isn't defined yet
                     // we have been throttled OR http status code 503 or 504, we can retry this
 

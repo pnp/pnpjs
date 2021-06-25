@@ -1,4 +1,4 @@
-import { isArray } from "@pnp/common";
+import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 import { _SharePointQueryableCollection, spInvokableFactory, _SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { tag } from "../telemetry.js";

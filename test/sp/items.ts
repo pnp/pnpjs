@@ -1,4 +1,4 @@
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 import { testSettings } from "../main.js";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";

@@ -1,4 +1,4 @@
-import { combine, getGUID } from "@pnp/common";
+import { combine, getGUID } from "@pnp/core";
 import { LogLevel } from "@pnp/logging/logger.js";
 import { IHybrid2 } from "./invokable-binder2.js";
 import { asyncReduce, broadcast, request } from "./moments.js";

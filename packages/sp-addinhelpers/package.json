@@ -7,7 +7,7 @@
   "dependencies": {
     "tslib": "2.1.0",
     "@types/sharepoint": "2016.1.2",
-    "@pnp/common": "0.0.0-PLACEHOLDER",
+    "@pnp/core": "0.0.0-PLACEHOLDER",
     "@pnp/sp": "0.0.0-PLACEHOLDER"
   },
   "author": {

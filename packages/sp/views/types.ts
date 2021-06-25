@@ -1,4 +1,4 @@
-import { ITypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
     _SharePointQueryableInstance,

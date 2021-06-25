@@ -1,4 +1,4 @@
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 import { _List, List } from "../lists/types.js";
 import { SiteScripts } from "./types.js";
 import "../folders/list.js";

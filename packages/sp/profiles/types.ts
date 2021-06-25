@@ -6,7 +6,7 @@ import {
     ISharePointQueryable,
     spInvokableFactory,
 } from "../sharepointqueryable.js";
-import { assign } from "@pnp/common";
+import { assign } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";

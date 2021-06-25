@@ -1,11 +1,11 @@
-# @pnp/common/util
+# @pnp/core/util
 
 This module contains utility methods that you can import individually from the common library.
 
 ```TypeScript
 import {
     getRandomString,
-} from "@pnp/common";
+} from "@pnp/core";
 
 // use from individually imported method
 console.log(getRandomString(10));
@@ -17,7 +17,7 @@ Merges a source object's own enumerable properties into a single target object. 
 properties.
 
 ```TypeScript
-import { assign } from "@pnp/common";
+import { assign } from "@pnp/core";
 
 let obj1 = {
     prop: 1,
@@ -42,7 +42,7 @@ const example2 = assign(obj1, obj2, true);
 Combines any number of paths, normalizing the slashes as required
 
 ```TypeScript
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 
 // "https://microsoft.com/something/more"
 const paths = combine("https://microsoft.com", "something", "more");
@@ -56,7 +56,7 @@ const paths2 = combine("/also/", "/works", "with/", "/relative\\");
 Manipulates a date, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object) from where this method was taken.
 
 ```TypeScript
-import { dateAdd } from "@pnp/common";
+import { dateAdd } from "@pnp/core";
 
 const testDate = new Date();
 
@@ -68,7 +68,7 @@ dateAdd(testDate,'minute',10);
 Gets a callback function which will maintain context across async calls.
 
 ```TypeScript
-import { getCtxCallback } from "@pnp/common";
+import { getCtxCallback } from "@pnp/core";
 
 const contextThis = {
     myProp: 6,
@@ -102,7 +102,7 @@ callback2(); // returns 10 (6 + 4)
 Creates a random guid, please see the [Stack Overflow discussion](https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript) from where this method was taken.
 
 ```TypeScript
-import { getGUID } from "@pnp/common";
+import { getGUID } from "@pnp/core";
 
 const newGUID = getGUID();
 ```
@@ -112,7 +112,7 @@ const newGUID = getGUID();
 Gets a random string consisting of the number of characters requested.
 
 ```TypeScript
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 const randomString = getRandomString(10);
 ```
@@ -123,7 +123,7 @@ Shortcut for Object.hasOwnProperty. Determines if an object has a specified prop
 
 ```TypeScript
 import { HttpRequestError } from "@pnp/queryable";
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 
 export async function handleError(e: Error | HttpRequestError): Promise<void> {
 
@@ -142,7 +142,7 @@ export async function handleError(e: Error | HttpRequestError): Promise<void> {
 Determines if a supplied variable represents an array.
 
 ```TypeScript
-import { isArray } from "@pnp/common";
+import { isArray } from "@pnp/core";
 
 let x:String[] = [1,2,3]];
 
@@ -158,7 +158,7 @@ if (isArray(x)){
 Determines if a supplied variable represents a function.
 
 ```TypeScript
-import { isFunc } from "@pnp/common";
+import { isFunc } from "@pnp/core";
 
 public testFunction() {
     console.log("test function");
@@ -176,7 +176,7 @@ if (isFunc(testFunction)){
 Determines if a supplied url is absolute and returns true; otherwise returns false.
 
 ```TypeScript
-import { isUrlAbsolute } from "@pnp/common";
+import { isUrlAbsolute } from "@pnp/core";
 
 const webPath = 'https://{tenant}.sharepoint.com/sites/dev/';
 
@@ -192,7 +192,7 @@ if (isUrlAbsolute(webPath)){
 Determines if an object is defined and not null.
 
 ```TypeScript
-import { objectDefinedNotNull } from "@pnp/common";
+import { objectDefinedNotNull } from "@pnp/core";
 
 let obj = {
     prop: 1
@@ -210,7 +210,7 @@ if (objectDefinedNotNull(obj)){
 Determines if a supplied string is null or empty.
 
 ```TypeScript
-import { stringIsNullOrEmpty } from "@pnp/common";
+import { stringIsNullOrEmpty } from "@pnp/core";
 
 let x:String = "hello";
 

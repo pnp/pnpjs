@@ -206,7 +206,7 @@ await web.delete();
 Applies the theme specified by the contents of each of the files specified in the arguments to the site
 
 ```TypeScript
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 
 // we are going to apply the theme to this sub web as an example
 const web = Web("https://{tenant}.sharepoint.com/sites/dev/subweb");
@@ -255,7 +255,7 @@ const changes = await web.getChanges({
 Returns the name of the image file for the icon that is used to represent the specified file
 
 ```TypeScript
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 
 const iconFileName = await web.mapToIcon("test.docx");
 // iconPath === "icdocx.png"

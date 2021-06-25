@@ -1,4 +1,4 @@
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 import { Logger, LogLevel } from "@pnp/logging";
 import { extendGlobal } from "./invokable-extensions.js";
 import { IQueryable } from "./queryable.js";

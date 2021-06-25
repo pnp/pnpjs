@@ -15,7 +15,7 @@ import {
     FieldUserSelectionMode,
     ChoiceFieldFormatType,
 } from "@pnp/sp/fields";
-import { getRandomString, getGUID } from "@pnp/common";
+import { getRandomString, getGUID } from "@pnp/core";
 
 describe("Fields", function () {
     const testFieldName = "PnPJSTest";

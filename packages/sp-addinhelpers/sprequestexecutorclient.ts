@@ -1,4 +1,4 @@
-import { assign, IHttpClientImpl } from "@pnp/common";
+import { assign, IHttpClientImpl } from "@pnp/core";
 
 /**
  * Makes requests using the SP.RequestExecutor library.

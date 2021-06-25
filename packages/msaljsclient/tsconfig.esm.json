@@ -2,11 +2,11 @@
     "extends": "../tsconfig.esm.json",
     "include": [
         "./**/*.ts",
-        "../common/**/*.ts"
+        "../queryable/**/*.ts"
     ],
     "references": [
         {
-            "path": "../common/tsconfig.esm.json"
+            "path": "../queryable/tsconfig.esm.json"
         }
     ]
 }

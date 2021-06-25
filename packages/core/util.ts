@@ -1,5 +1,3 @@
-import { ITypedHash } from "./collections.js";
-
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -121,7 +119,7 @@ export function isArray(array: any): boolean {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export function assign<T extends ITypedHash<any> = any, S extends ITypedHash<any> = any>(target: T, source: S, noOverwrite = false,
+export function assign<T extends Record<string, any> = any, S extends Record<string, any> = any>(target: T, source: S, noOverwrite = false,
     filter: (propName: string) => boolean = () => true): T & S {
 
     if (!objectDefinedNotNull(source)) {

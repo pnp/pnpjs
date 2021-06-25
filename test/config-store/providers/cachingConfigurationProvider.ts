@@ -1,4 +1,4 @@
-import { PnPClientStorageWrapper, IPnPClientStore, ITypedHash } from "@pnp/common";
+import { PnPClientStorageWrapper, IPnPClientStore, ITypedHash } from "@pnp/core";
 import { expect } from "chai";
 import { CachingConfigurationProvider, Settings } from "@pnp/config-store";
 import { default as MockConfigurationProvider } from "../mock-configurationprovider.js";

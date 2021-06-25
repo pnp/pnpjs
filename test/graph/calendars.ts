@@ -4,7 +4,7 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/queryable";
-import { stringIsNullOrEmpty } from "@pnp/common";
+import { stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
 describe("Calendar", function () {

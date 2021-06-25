@@ -1,4 +1,4 @@
-import { combine, IFetchOptions } from "@pnp/common";
+import { combine, IFetchOptions } from "@pnp/core";
 import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/queryable";
 import { GraphEndpoints } from "./types.js";
 import { graphGet } from "./operations.js";

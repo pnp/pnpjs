@@ -8,7 +8,7 @@ import {
     deleteableWithETag,
 } from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/queryable";
-import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
+import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../odata.js";
 import { defaultPath } from "../decorators.js";

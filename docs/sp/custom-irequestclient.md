@@ -57,7 +57,7 @@ registerCustomRequestClientFactory(null);
 If you want to 100% roll your own client you need to implement the below interface, found in common.
 
 ```ts
-import { IRequestClient } from "@pnp/common";
+import { IRequestClient } from "@pnp/core";
 ```
 
 ```ts

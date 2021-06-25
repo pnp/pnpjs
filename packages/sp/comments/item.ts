@@ -3,7 +3,7 @@ import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
 import { spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { combine } from "@pnp/common/util";
+import { combine } from "@pnp/core/util";
 import { SharePointQueryable } from "../sharepointqueryable.js";
 
 declare module "../items/types" {

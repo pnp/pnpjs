@@ -1,4 +1,4 @@
-import { assign, hOP } from "@pnp/common";
+import { assign, hOP } from "@pnp/core";
 import { body, headers } from "@pnp/queryable";
 import {
     _SharePointQueryableInstance,

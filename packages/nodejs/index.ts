@@ -26,4 +26,4 @@ export {
     SPNS,
 };
 
-export * from "./net/index.js";
+export * from "./behaviors/index.js";

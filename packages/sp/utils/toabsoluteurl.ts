@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, DefaultRuntime, stringIsNullOrEmpty, ILibraryConfiguration, ISPFXContext, hOP, safeGlobal } from "@pnp/common";
+import { combine, isUrlAbsolute, DefaultRuntime, stringIsNullOrEmpty, ILibraryConfiguration, ISPFXContext, hOP, safeGlobal } from "@pnp/core";
 import { ISPConfigurationPart, ISPConfigurationProps } from "../splibconfig.js";
 
 /**

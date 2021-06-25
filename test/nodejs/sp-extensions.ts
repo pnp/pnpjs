@@ -7,7 +7,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { testSettings } from "../main.js";
-import { getRandomString, isFunc } from "@pnp/common";
+import { getRandomString, isFunc } from "@pnp/core";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";

@@ -8,13 +8,13 @@
     "include": [
         "./**/*.ts",
         "../logging/**/*.ts",
-        "../common/**/*.ts",
+        "../core/**/*.ts",
         "../queryable/**/*.ts",
         "../sp/**/*.ts"
     ],
     "references": [
         {
-            "path": "../common/tsconfig.esm.json"
+            "path": "../core/tsconfig.esm.json"
         },
         {
             "path": "../sp/tsconfig.esm.json"
