@@ -6,7 +6,7 @@ import "@pnp/sp/comments/item";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 describe("Comments", function () {
 

@@ -1,94 +1,8 @@
-import { Queryable2 } from "./queryable-2.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, isUrlAbsolute, combine, objectDefinedNotNull } from "@pnp/common";
-import { LogLevel, Logger } from "@pnp/logging";
-import { HttpRequestError } from "./parsers.js";
+import { getGUID, isUrlAbsolute, combine } from "@pnp/core";
+import { LogLevel } from "@pnp/logging";
+import { HttpRequestError, Queryable2 } from "@pnp/queryable";
 
-export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Queryable2 {
-
-    return (instance: Queryable2) => {
-
-        instance.on.pre(async function (url: string, init: RequestInit, result: any) {
-
-            const keys = Object.getOwnPropertyNames(headers);
-
-            if (!objectDefinedNotNull(init.headers)) {
-                init.headers = {};
-            }
-
-            for (let i = 0; i < keys.length; i++) {
-                init.headers[keys[i]] = headers[keys[i]];
-            }
-
-            return [url, init, result];
-        });
-
-        return instance;
-    };
-}
-
-export function PnPLogging(activeLevel: LogLevel): (instance: Queryable2) => Queryable2 {
-
-    // TODO: we set the active level here?
-    Logger.activeLogLevel = activeLevel;
-
-    return (instance: Queryable2) => {
-
-        instance.on.log(function (message: string, level: LogLevel) {
-            Logger.write(message, level);
-        });
-
-        return instance;
-    };
-}
-
-// TODO:: (PR?)Allow for null expiration date
-// eslint-disable-next-line max-len
-export function Caching(store: "local" | "session" = "session", lazy = false, keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
-
-    const storage = new PnPClientStorage();
-    const s = store === "session" ? storage.session : storage.local;
-
-    if (!isFunc(keyFactory)) {
-        keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
-    }
-
-    if (!isFunc(expireFunc)) {
-        // TODO:: tie this default timeline to config? or the config is having to create the function
-        expireFunc = () => dateAdd(new Date(), "minute", 5);
-    }
-
-    return (instance: Queryable2) => {
-        // Regardless of cached result, update cache async
-        instance.AsyncOverride = lazy;
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
-
-            const key = keyFactory(url.toString());
-
-            const cached = s.get(key);
-
-            // we need to ensure that result stays "undefined" unless we mean to set null as the result
-            if (cached === null) {
-
-                // if we don't have a cached result we need to get it after the request is sent and parsed
-                this.on.post(async function (url: URL, result: any) {
-
-                    s.put(key, result, expireFunc(url.toString()));
-
-                    return [url, result];
-                });
-
-            } else {
-
-                result = cached;
-            }
-
-            return [url, init, result];
-        });
-
-        return instance;
-    };
-}
-
+// TODO:: this needs to be reworked as a behavior meaning all requests would batch? How does that play? maybe need the creatBatch concept so you can get the execute
 // TODO: this would live on sp or web or site and get the url from there
 // TODO: how do we handle auth here? Inherit a batch queryable from the parent like "web" and clear out the other settings?
 // eslint-disable-next-line max-len
@@ -337,9 +251,3 @@ function parseResponse(body: string): Response[] {
 
     return responses;
 }
-
-// NullErrorSink
-
-// PnPLogging (take LogLevel)
-
-// DefaultErrorBehavior

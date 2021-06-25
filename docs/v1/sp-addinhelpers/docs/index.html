@@ -1644,7 +1644,7 @@
 <p>This module contains classes to allow use of the libraries within a SharePoint add-in.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>Install the library and all dependencies,</p>
-<p><code>npm install @pnp/logging @pnp/common @pnp/queryable @pnp/sp @pnp/sp-addinhelpers --save</code></p>
+<p><code>npm install @pnp/logging @pnp/core @pnp/queryable @pnp/sp @pnp/sp-addinhelpers --save</code></p>
 <p>Now you can make requests to the host web from your add-in using the crossDomainWeb method.</p>
 <div class="codehilite"><pre><span></span><span class="c1">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">SPRequestExecutorClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-addinhelpers&quot;</span><span class="p">;</span>

@@ -4,7 +4,7 @@ import { testSettings } from "../main.js";
 import { Web } from "@pnp/sp/webs";
 import { sp } from "@pnp/sp";
 import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "@pnp/sp/presets/all";
-import { getRandomString, combine } from "@pnp/common";
+import { getRandomString, combine } from "@pnp/core";
 
 describe("webparts", function () {
     if (testSettings.enableWebTests) {

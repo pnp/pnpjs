@@ -83,7 +83,7 @@ This method will get all of a set's child terms in an ordered array. It is a cos
 import { sp } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
-import { dateAdd, PnPClientStorage } from "@pnp/common";
+import { dateAdd, PnPClientStorage } from "@pnp/core";
 
 // here we get all the children of a given set
 const childTree = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getAllChildrenAsOrderedTree();

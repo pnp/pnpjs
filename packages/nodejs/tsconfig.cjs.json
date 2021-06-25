@@ -9,7 +9,7 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.cjs.json"
+            "path": "../core/tsconfig.cjs.json"
         },
         {
             "path": "../queryable/tsconfig.cjs.json"

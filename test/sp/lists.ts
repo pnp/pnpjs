@@ -12,7 +12,7 @@ import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
 import * as assert from "assert";
-import { IConfigOptions, getRandomString } from "@pnp/common";
+import { IConfigOptions, getRandomString } from "@pnp/core";
 
 describe("Lists", function () {
 

@@ -8,7 +8,7 @@
     "include": [],
     "references": [
         {
-            "path": "./common/tsconfig.cjs.json"
+            "path": "./core/tsconfig.cjs.json"
         },
         {
             "path": "./graph/tsconfig.cjs.json"

@@ -4,7 +4,7 @@ import { _SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { RoleType } from "./types.js";
 import { shareObject } from "./funcs.js";
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 

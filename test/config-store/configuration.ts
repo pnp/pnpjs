@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as Collections from "@pnp/common";
+import * as Collections from "@pnp/core";
 import { Settings } from "../../packages/config-store";
 import { default as MockConfigurationProvider } from "./mock-configurationprovider.js";
 

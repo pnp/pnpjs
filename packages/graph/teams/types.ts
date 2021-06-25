@@ -1,6 +1,6 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
 import { body, LambdaParser } from "@pnp/queryable";
-import { assign } from "@pnp/common";
+import { assign } from "@pnp/core";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";

@@ -1772,7 +1772,7 @@
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Creates a sharing link for the given resource with an optional expiration.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">,</span> <span class="nx">SharingLinkKind</span><span class="p">,</span> <span class="nx">ShareLinkResponse</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">).</span><span class="nx">then</span><span class="p">(((</span><span class="nx">result</span>: <span class="kt">ShareLinkResponse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 

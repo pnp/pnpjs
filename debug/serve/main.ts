@@ -1,4 +1,6 @@
-import { sp } from "@pnp/sp/presets/all";
+import { sp2 } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { testingConfig } from "./v3-patrick";
 // import { graph } from "@pnp/graph/presets/all";
 
 // ******
@@ -24,6 +26,8 @@ document.onreadystatechange = async () => {
         const html = [];
 
         try {
+
+            const sp = sp2("https://318studios.sharepoint.com/sites/dev/").using(testingConfig("https://318studios.sharepoint.com/sites/dev/"));
 
             const r = await sp.web();
 

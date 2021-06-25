@@ -1,4 +1,4 @@
-# @pnp/common/net
+# @pnp/core/net
 
 This module contains a set of classes and interfaces used to characterize shared http interactions and configuration of the libraries. Some of the interfaces
 are described below (many have no use outside the library) as well as several classes.
@@ -24,7 +24,7 @@ This module export two classes of note, FetchClient and BearerTokenFetchClient. 
 Basic implementation that calls the global (window) fetch method with no additional processing.
 
 ```TypeScript
-import { FetchClient } from "@pnp/common";
+import { FetchClient } from "@pnp/core";
 
 const client = new FetchClient();
 
@@ -36,7 +36,7 @@ client.fetch("{url}", {});
 A simple implementation that takes a provided authentication token and adds the Authentication Bearer header to the request. No other processing is done and the token is treated as a static string.
 
 ```TypeScript
-import { BearerTokenFetchClient } from "@pnp/common";
+import { BearerTokenFetchClient } from "@pnp/core";
 
 const client = new BearerTokenFetchClient("{authentication token}");
 

@@ -1,4 +1,4 @@
-import { combine, ILibraryConfiguration, ISPFXContext, isUrlAbsolute, objectDefinedNotNull, DefaultRuntime, stringIsNullOrEmpty } from "@pnp/common";
+import { combine, ILibraryConfiguration, ISPFXContext, isUrlAbsolute, objectDefinedNotNull, DefaultRuntime, stringIsNullOrEmpty } from "@pnp/core";
 import { IGraphConfigurationPart, IGraphConfigurationProps } from "../graphlibconfig.js";
 
 /**

@@ -1,5 +1,5 @@
 import { IQueryable2 } from "./queryable-2";
-import { objectDefinedNotNull } from "@pnp/common";
+import { objectDefinedNotNull } from "@pnp/core";
 
 function ensureInit(method: string, init?: RequestInit): RequestInit {
 

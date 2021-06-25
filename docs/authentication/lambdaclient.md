@@ -1,4 +1,4 @@
-# @pnp/common/LambdaFetchClient
+# @pnp/core/LambdaFetchClient
 
 The LambdaFetchClient class allows you to provide an async function that returns an access token using any logic/supporting libraries you need. This provides total freedom to define how you do authentication, so long as it results in a usable Bearer token to call the target resource. The advantage to the LambdaFetchClient is that you get the url for each request, meaning your logic can account for where the request is headed.
 
@@ -32,7 +32,7 @@ This example shows how to use [@azure/msal-browser](https://github.com/AzureAD/m
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
-import { LambdaFetchClient } from "@pnp/common";
+import { LambdaFetchClient } from "@pnp/core";
 import { PublicClientApplication, Configuration } from "@azure/msal-browser";
 
 const config: Configuration = {

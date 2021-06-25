@@ -238,7 +238,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import { getGUID } from "@pnp/common";
+import { getGUID } from "@pnp/core";
 
 const i = await sp.web.lists.getByTitle("PeopleFields").items.add({
   Title: getGUID(),
@@ -281,7 +281,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import { getGUID } from "@pnp/common";
+import { getGUID } from "@pnp/core";
 
 await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),

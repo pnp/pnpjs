@@ -1,4 +1,4 @@
-import { assign, ITypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/core";
 import { body, headers, Queryable2, invokableFactory2 } from "@pnp/queryable";
 import {
     _SharePointQueryableInstance,
@@ -255,7 +255,12 @@ export class _Web2 extends Queryable2<IWebInfo> {}
 export interface IWeb2 extends _Web2 {}
 export const Web2 = invokableFactory2<IWeb2>(_Web2);
 
-
+// TODO:: open things
+// - batching off web
+// - test all the things urls, querystring, select, expand, filter
+// - caching seems to be working browser and node
+// - rethink tagging as a behavior
+// - then we need to update all the objects :)
 
 
 

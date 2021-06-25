@@ -3,7 +3,7 @@ import { testSettings } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/content-types";
 import "@pnp/sp/lists/web";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 describe("Content Types", function () {
 

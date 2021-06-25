@@ -2,7 +2,7 @@ import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryab
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 import { tag } from "../telemetry.js";
 
 export class _SiteDesigns extends _SharePointQueryable {

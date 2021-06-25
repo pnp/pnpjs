@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
-import { hOP, IConfigOptions, DefaultRuntime } from "@pnp/common";
+import { hOP, IConfigOptions, DefaultRuntime } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 import { tag } from "../telemetry.js";
 

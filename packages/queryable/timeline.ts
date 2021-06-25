@@ -1,7 +1,7 @@
 import { LogLevel } from "@pnp/logging";
-import { isArray, isFunc } from "@pnp/common";
+import { isArray, isFunc } from "@pnp/core";
 import { broadcast } from "./moments.js";
-import { objectDefinedNotNull } from "@pnp/common";
+import { objectDefinedNotNull } from "@pnp/core";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
 

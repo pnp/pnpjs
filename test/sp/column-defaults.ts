@@ -7,7 +7,7 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { Web, IWeb } from "@pnp/sp/webs";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 import { IList } from "@pnp/sp/lists";
 import "@pnp/sp/fields/list";
 import "@pnp/sp/column-defaults";

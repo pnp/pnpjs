@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { testSettings } from "../main.js";
-import { getRandomString, combine } from "@pnp/common";
+import { getRandomString, combine } from "@pnp/core";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users";

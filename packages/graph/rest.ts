@@ -3,7 +3,7 @@ import {
     IGraphConfiguration,
 } from "./graphlibconfig.js";
 import { GraphBatch } from "./batch.js";
-import { Runtime, IConfigOptions, ISPFXContext, ITypedHash, DefaultRuntime } from "@pnp/common";
+import { Runtime, IConfigOptions, ISPFXContext, ITypedHash, DefaultRuntime } from "@pnp/core";
 
 export class GraphRest {
 

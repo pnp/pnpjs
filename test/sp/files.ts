@@ -6,7 +6,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
-import { getRandomString, combine } from "@pnp/common";
+import { getRandomString, combine } from "@pnp/core";
 import { sp } from "@pnp/sp";
 import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";

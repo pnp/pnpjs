@@ -1,5 +1,5 @@
 import { IODataParser, ODataParser } from "./parsers.js";
-import { IFetchOptions, IRequestClient, getGUID, objectDefinedNotNull } from "@pnp/common";
+import { IFetchOptions, IRequestClient, getGUID, objectDefinedNotNull } from "@pnp/core";
 import { IQueryableData, cloneQueryableData } from "./queryable.js";
 import { PipelineMethod, pipe, getDefaultPipeline } from "./pipeline.js";
 

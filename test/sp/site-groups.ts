@@ -4,7 +4,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
 import "@pnp/sp/site-users/web";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 import { IGroupAddResult } from "@pnp/sp/site-groups";
 
 describe("Web.SiteGroups", () => {

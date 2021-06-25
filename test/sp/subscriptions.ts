@@ -5,7 +5,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions";
-import { dateAdd } from "@pnp/common";
+import { dateAdd } from "@pnp/core";
 
 describe("Subscriptions", function () {
     if (testSettings.enableWebTests && testSettings.sp.notificationUrl?.length > 0) {

@@ -1,5 +1,5 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine } from "@pnp/common";
+import { getGUID, combine } from "@pnp/core";
 import { graph, IGraphConfigurationPart } from "@pnp/graph";
 import { MsalFetchClient } from "@pnp/nodejs";
 import { ISPConfigurationPart, sp } from "@pnp/sp";

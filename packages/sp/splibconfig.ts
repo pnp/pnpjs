@@ -6,7 +6,7 @@ import {
     DefaultRuntime,
     onRuntimeCreate,
     Runtime,
-} from "@pnp/common";
+} from "@pnp/core";
 
 export const emptyGuid = "00000000-0000-0000-0000-000000000000";
 

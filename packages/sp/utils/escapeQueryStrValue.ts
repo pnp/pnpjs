@@ -1,4 +1,4 @@
-import { stringIsNullOrEmpty } from "@pnp/common";
+import { stringIsNullOrEmpty } from "@pnp/core";
 import { LogLevel, Logger } from "@pnp/logging";
 
 export function escapeQueryStrValue(value: string): string {

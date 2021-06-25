@@ -1,4 +1,4 @@
-import { IFetchOptions, getGUID } from "@pnp/common";
+import { IFetchOptions, getGUID } from "@pnp/core";
 import { IODataParser } from "./parsers.js";
 import { IQueryable } from "./queryable.js";
 import { IRequestContext } from "./pipeline.js";

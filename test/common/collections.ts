@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { mergeMaps } from "@pnp/common";
+import { mergeMaps } from "@pnp/core";
 
 describe("Collections", () => {
 

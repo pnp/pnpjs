@@ -4,7 +4,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
-import { assign, ITypedHash, hOP } from "@pnp/common";
+import { assign, ITypedHash, hOP } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";

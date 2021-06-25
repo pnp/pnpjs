@@ -1,4 +1,4 @@
-import { DefaultRuntime, IConfigOptions, ISPFXContext, Runtime, ITypedHash } from "@pnp/common";
+import { DefaultRuntime, IConfigOptions, ISPFXContext, Runtime, ITypedHash } from "@pnp/core";
 import {
     setup as _setup,
     ISPConfiguration,

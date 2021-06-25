@@ -1,4 +1,4 @@
-import { ITypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/core";
 import {
     PlannerPlan as IPlannerPlanType,
     PlannerPlanDetails as IPlannerPlanDetailsType,

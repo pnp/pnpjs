@@ -1,4 +1,4 @@
-import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, SPFxAdalClient, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime, objectDefinedNotNull } from "@pnp/common";
+import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, SPFxAdalClient, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime, objectDefinedNotNull } from "@pnp/core";
 
 export interface IGraphConfigurationPart {
     graph?: IGraphConfigurationProps;
