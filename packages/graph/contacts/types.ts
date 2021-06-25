@@ -1,5 +1,5 @@
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
-import { ITypedHash, assign } from "@pnp/common";
+import { ITypedHash, assign } from "@pnp/core";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";

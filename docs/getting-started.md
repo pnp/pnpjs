@@ -14,7 +14,7 @@ Next we can import and use the functionality within our application. Below is a 
 for more details and examples.
 
 ```TypeScript
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 (function() {
 
@@ -30,14 +30,14 @@ The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within Shar
 
 ### Establish Context
 
-Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.
+Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/core or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.
 
 The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.
 
-#### Using @pnp/common setup
+#### Using @pnp/core setup
 
 ```TypeScript
-import { setup as pnpSetup } from "@pnp/common";
+import { setup as pnpSetup } from "@pnp/core";
 
 // ...
 

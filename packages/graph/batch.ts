@@ -1,6 +1,6 @@
 import { Batch, IODataBatchRequestInfo } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
-import { assign, jsS, isUrlAbsolute, hOP, Runtime, DefaultRuntime } from "@pnp/common";
+import { assign, jsS, isUrlAbsolute, hOP, Runtime, DefaultRuntime } from "@pnp/core";
 import { IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
 import { GraphHttpClient } from "./graphhttpclient.js";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";

@@ -12,7 +12,7 @@ import {
     DefaultRuntime,
     dateAdd,
     stringIsNullOrEmpty,
-} from "@pnp/common";
+} from "@pnp/core";
 import { ICachingOptions } from "./caching.js";
 import { Batch } from "./batch.js";
 import { PipelineMethod } from "./pipeline.js";

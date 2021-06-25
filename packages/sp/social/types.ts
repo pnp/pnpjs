@@ -4,7 +4,7 @@ import {
     spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { hOP, IFetchOptions } from "@pnp/common";
+import { hOP, IFetchOptions } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body, IQueryable } from "@pnp/queryable";
 import { spPost } from "../operations.js";

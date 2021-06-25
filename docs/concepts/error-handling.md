@@ -145,7 +145,7 @@ After reviewing the above section you might have thought it seems like a lot of 
 ```TypeScript
 import { Logger } from "@pnp/logging";
 import { HttpRequestError } from "@pnp/queryable";
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 
 export async function handleError(e: Error | HttpRequestError): Promise<void> {
 

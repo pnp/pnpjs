@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { PnPClientStorageWrapper} from "@pnp/common";
+import { PnPClientStorageWrapper} from "@pnp/core";
 import { MockStorage }  from "../types.js";
 
 describe("Storage", () => {

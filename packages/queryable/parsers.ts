@@ -1,4 +1,4 @@
-import { isFunc, hOP } from "@pnp/common";
+import { isFunc, hOP } from "@pnp/core";
 
 export interface IODataParser<T> {
     hydrate?: (d: any) => T;

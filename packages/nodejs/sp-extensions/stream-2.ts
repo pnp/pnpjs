@@ -1,5 +1,5 @@
-import { getGUID, isFunc } from "@pnp/common/util";
-import { extendFactory, headers, parseBinderWithErrorCheck, Queryable2 } from "@pnp/queryable";
+import { getGUID, isFunc } from "@pnp/core/util";
+import { extendFactory, headers } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
 import { odataUrlFrom } from "@pnp/sp/odata";
 import { spPost } from "@pnp/sp/operations";
@@ -13,12 +13,7 @@ export interface IResponseBodyStream {
     knownLength: number;
 }
 
-export function StreamParse(): (instance: Queryable2) => Queryable2 {
-
-    return parseBinderWithErrorCheck(async r => ({ body: r.body, knownLength: parseInt(r.headers.get("content-length"), 10) }));
-}
-
-
+// TODO:: getStream, setStreamContentChunked, etc. need to be updated to the new model
 extendFactory(File, {
 
     getStream(): Promise<IResponseBodyStream> {

@@ -8,7 +8,7 @@
     "include": [],
     "references": [
         {
-            "path": "./common/tsconfig.esm.json"
+            "path": "./core/tsconfig.esm.json"
         },
         {
             "path": "./graph/tsconfig.esm.json"

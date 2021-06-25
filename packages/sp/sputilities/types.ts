@@ -1,5 +1,5 @@
 import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable.js";
-import { assign, ITypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/core";
 import { SPBatch } from "../batch.js";
 import { ICachingOptions, body, IQueryable } from "@pnp/queryable";
 import { odataUrlFrom } from "../odata.js";

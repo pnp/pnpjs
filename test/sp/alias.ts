@@ -8,7 +8,7 @@ import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { testSettings } from "../main.js";
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 
 describe("Alias Parameters", () => {
 

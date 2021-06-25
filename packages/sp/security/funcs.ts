@@ -1,6 +1,6 @@
 import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
 import { SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable.js";
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 import { spPost } from "../operations.js";
 
 /**

@@ -1,4 +1,4 @@
-# @pnp/common/collections
+# @pnp/core/collections
 
 The collections module provides typings and classes related to working with dictionaries.
 

@@ -1,6 +1,6 @@
 import { IQueryable } from "./queryable.js";
 import { IRequestContext } from "./pipeline.js";
-import { IFetchOptions } from "@pnp/common";
+import { IFetchOptions } from "@pnp/core";
 import { extensionOrDefault } from "./invokable-extensions.js";
 
 export type IHybrid<R = any, T = any> = T & {

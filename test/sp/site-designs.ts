@@ -1,5 +1,5 @@
 
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-designs";

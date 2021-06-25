@@ -5,7 +5,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/groups";
 import "@pnp/graph/directory-objects";
 import { GroupType } from "@pnp/graph/groups";
-import { getRandomString, getGUID } from "@pnp/common";
+import { getRandomString, getGUID } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
 describe("Directory Objects", function () {

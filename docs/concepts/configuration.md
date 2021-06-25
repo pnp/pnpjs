@@ -315,7 +315,7 @@ All values are optional.
 > For more details on ie11 mode please see the [topic article](./ie11-mode.md)
 
 ```ts
-import { setup } from "@pnp/common";
+import { setup } from "@pnp/core";
 
 // called before other code
 setup({
@@ -345,7 +345,7 @@ All values are optional.
 
 ```ts
 import { sp } from "@pnp/sp";
-import { SPFxAdalClient } from "@pnp/common";
+import { SPFxAdalClient } from "@pnp/core";
 
 // note you can still set the global configuration such as ie11 using the same object as 
 // the interface extends ILibraryConfiguration
@@ -437,7 +437,7 @@ In some cases you might want to configure everything in one go. Because the conf
 ```ts
 import { ISPConfigurationPart } from "@pnp/sp";
 import { IGraphConfigurationPart } from "@pnp/graph";
-import { ILibraryConfiguration, setup } from "@pnp/common";
+import { ILibraryConfiguration, setup } from "@pnp/core";
 
 // you could also include your custom configuration parts
 export interface AllConfig extends ILibraryConfiguration, ISPConfigurationPart, IGraphConfigurationPart { }

@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Renamed package "odata" -> "queryable"
+- Renamed package "common" -> "core"
 
 ### Removed
 
@@ -32,4 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
   - BearerTokenFetchClient -> use @pnp/Queryable BearerToken behavior
   - SPFetchClient -> Use SPNodeFetch which includes SP retry logic
-  - 
+
+- common/core:
+
+

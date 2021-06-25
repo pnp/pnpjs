@@ -1,4 +1,4 @@
-import { Runtime, IFetchOptions, IRequestClient, isFunc, mergeOptions, objectDefinedNotNull } from "@pnp/common";
+import { Runtime, IFetchOptions, IRequestClient, isFunc, mergeOptions, objectDefinedNotNull } from "@pnp/core";
 import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/queryable";
 import { GraphHttpClient } from "./graphhttpclient.js";
 import { IGraphQueryable } from "./graphqueryable.js";

@@ -1,8 +1,8 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get, extendObj } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get, extendObj } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
-import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/common";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
 import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -56,7 +56,6 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
 
                     console.log(`Cheap log: ${message}.`);
                 }
-
 
             }).on.post(async (_url: URL, result: any) => {
 

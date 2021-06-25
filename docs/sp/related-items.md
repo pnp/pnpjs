@@ -14,7 +14,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import "@pnp/sp/files/list";
 import { IList } from "@pnp/sp/lists";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 // setup some lists (or just use existing ones this is just to show the complete process)
 // we need two lists to use for creating related items, they need to use template 107 (task list)

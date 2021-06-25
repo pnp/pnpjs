@@ -1,4 +1,4 @@
-import { IRequestClient, assign, isFunc, hOP } from "@pnp/common";
+import { IRequestClient, assign, isFunc, hOP } from "@pnp/core";
 import { LogLevel, Logger } from "@pnp/logging";
 import { CachingOptions, CachingParserWrapper } from "./caching.js";
 import { IQueryableData } from "./queryable.js";

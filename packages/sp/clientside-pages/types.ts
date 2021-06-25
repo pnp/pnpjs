@@ -1,5 +1,5 @@
 import { invokableFactory, body, headers, IQueryable } from "@pnp/queryable";
-import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/common";
+import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { SharePointQueryable, _SharePointQueryable, ISharePointQueryable, SharePointQueryableCollection } from "../sharepointqueryable.js";

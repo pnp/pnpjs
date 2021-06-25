@@ -1,4 +1,4 @@
-import { combine, getRandomString } from "@pnp/common";
+import { combine, getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";

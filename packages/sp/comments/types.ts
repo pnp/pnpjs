@@ -4,7 +4,7 @@ import {
     _SharePointQueryableCollection,
     spInvokableFactory,
 } from "../sharepointqueryable.js";
-import { assign } from "@pnp/common";
+import { assign } from "@pnp/core";
 import { odataUrlFrom } from "../odata.js";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";

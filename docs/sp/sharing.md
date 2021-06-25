@@ -47,7 +47,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import { SharingLinkKind, IShareLinkResponse } from "@pnp/sp/sharing";
-import { dateAdd } from "@pnp/common";
+import { dateAdd } from "@pnp/core";
 
 const result = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView);
 

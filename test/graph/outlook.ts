@@ -4,7 +4,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 import { testSettings } from "../main";
 import { OutlookCategory } from "@microsoft/microsoft-graph-types";
-import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
+import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
 import getValidUser from "./utilities/getValidUser.js";
 

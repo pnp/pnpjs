@@ -1,4 +1,4 @@
-import { dateAdd, hOP } from "@pnp/common";
+import { dateAdd, hOP } from "@pnp/core";
 import {
     _SharePointQueryableInstance,
     SharePointQueryableCollection,

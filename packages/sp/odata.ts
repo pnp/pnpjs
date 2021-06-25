@@ -1,5 +1,5 @@
 import { ISPInvokableFactory } from "./sharepointqueryable.js";
-import { assign, combine, hOP, isUrlAbsolute } from "@pnp/common";
+import { assign, combine, hOP, isUrlAbsolute } from "@pnp/core";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ODataParser } from "@pnp/queryable";
 import { extractWebUrl } from "./utils/extractweburl.js";

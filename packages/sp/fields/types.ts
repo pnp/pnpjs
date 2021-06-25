@@ -5,7 +5,7 @@ import {
     deleteable,
     IDeleteable,
 } from "../sharepointqueryable.js";
-import { assign, ITypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body, headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";

@@ -8,7 +8,7 @@ import { Site, ISite } from "@pnp/sp/sites";
 import {
     isUrlAbsolute,
     combine,
-} from "@pnp/common";
+} from "@pnp/core";
 
 import { ISharePointQueryable } from "@pnp/sp";
 

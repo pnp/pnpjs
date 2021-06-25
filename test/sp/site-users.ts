@@ -5,7 +5,7 @@ import "@pnp/sp/site-users";
 import { IInvokableTest } from "../types.js";
 import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
-import { stringIsNullOrEmpty } from "@pnp/common";
+import { stringIsNullOrEmpty } from "@pnp/core";
 
 describe("Web", () => {
     if (testSettings.enableWebTests) {

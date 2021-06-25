@@ -1679,7 +1679,7 @@
 <p>So you will need to handle any of those options along with the provided url when sending your request. The library will expect your implementation to return a Promise that resolves to a Response defined by the <a href="https://fetch.spec.whatwg.org/">fetch specification</a> - which you've already read 👍.</p>
 <h2 id="using-your-custom-httpclientimpl">Using Your Custom HttpClientImpl<a class="headerlink" href="#using-your-custom-httpclientimpl" title="Permanent link">&para;</a></h2>
 <p>Once you have written your implementation using it on your requests is done by setting it in the global library configuration:</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">MyAwesomeClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./awesomeclient&quot;</span><span class="p">;</span>
 
