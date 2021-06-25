@@ -1,6 +1,6 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, CachingPessimisticRefresh, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/common";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
@@ -30,7 +30,7 @@ export async function Example(settings: ITestingSettings) {
         // .using(TextParse())
         // .using(JSONParse())
         // .using(Proxy("https://127.0.0.1:8888"))
-        .using(Caching("session", true))
+        .using(CachingPessimisticRefresh("session"))
         .on.error((err) => {
             console.error("caught it");
             console.error(err);
