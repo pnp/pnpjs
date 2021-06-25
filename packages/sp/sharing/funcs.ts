@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { jsS, assign } from "@pnp/common";
+import { jsS, assign } from "@pnp/core";
 import { SharePointQueryableCollection, SharePointQueryableInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Web } from "../webs/types.js";

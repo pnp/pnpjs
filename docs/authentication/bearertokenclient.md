@@ -1,4 +1,4 @@
-# @pnp/common/BearerTokenFetchClient
+# @pnp/core/BearerTokenFetchClient
 
 The BearerTokenFetchClient takes a single parameter representing an access token and uses it to make the requests.
 
@@ -9,7 +9,7 @@ The BearerTokenFetchClient takes a single parameter representing an access token
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
-import { BearerTokenFetchClient } from "@pnp/common";
+import { BearerTokenFetchClient } from "@pnp/core";
 import { myTokenFactory } from "./my-auth.js";
 
 graph.setup({

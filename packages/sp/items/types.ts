@@ -9,7 +9,7 @@ import {
     deleteableWithETag,
     IDeleteableWithETag,
 } from "../sharepointqueryable.js";
-import { assign, ITypedHash, hOP } from "@pnp/common";
+import { assign, ITypedHash, hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { ODataParser, body, headers } from "@pnp/queryable";
 import { IList } from "../lists/index.js";

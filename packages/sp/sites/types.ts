@@ -1,7 +1,7 @@
 import { SharePointQueryable, _SharePointQueryableInstance, spInvokableFactory } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP, assign } from "@pnp/common";
+import { hOP, assign } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { odataUrlFrom } from "../odata.js";
 import { spPost } from "../operations.js";

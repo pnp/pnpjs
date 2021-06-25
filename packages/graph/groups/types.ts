@@ -1,4 +1,4 @@
-import { assign, ITypedHash } from "@pnp/common";
+import { assign, ITypedHash } from "@pnp/core";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";

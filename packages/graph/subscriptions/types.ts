@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
-import { assign } from "@pnp/common";
+import { assign } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";

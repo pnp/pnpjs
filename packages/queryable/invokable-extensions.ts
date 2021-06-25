@@ -1,4 +1,4 @@
-import { isFunc, ITypedHash, getGUID } from "@pnp/common";
+import { isFunc, ITypedHash, getGUID } from "@pnp/core";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 

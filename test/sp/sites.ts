@@ -6,7 +6,7 @@ import "@pnp/sp/lists/web";
 import { testSettings } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
-import { combine } from "@pnp/common";
+import { combine } from "@pnp/core";
 
 describe("Sites", () => {
 

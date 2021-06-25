@@ -1,5 +1,5 @@
 import { IODataParser } from "./parsers.js";
-import { IPnPClientStore, PnPClientStorage } from "@pnp/common";
+import { IPnPClientStore, PnPClientStorage } from "@pnp/core";
 
 export interface ICachingOptions {
     expiration?: Date;

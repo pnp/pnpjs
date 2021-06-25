@@ -1,4 +1,4 @@
-import { hOP } from "@pnp/common";
+import { hOP } from "@pnp/core";
 
 /**
  * Gets the next order value 1 based for the provided collection

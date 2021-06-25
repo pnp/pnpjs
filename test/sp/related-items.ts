@@ -8,7 +8,7 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/files/folder";
 import { IList } from "@pnp/sp/lists";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 describe("Related Items", () => {
 

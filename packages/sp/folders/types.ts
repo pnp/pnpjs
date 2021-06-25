@@ -1,4 +1,4 @@
-import { assign, ITypedHash, isUrlAbsolute, combine, hOP } from "@pnp/common";
+import { assign, ITypedHash, isUrlAbsolute, combine, hOP } from "@pnp/core";
 import {
     SharePointQueryable,
     SharePointQueryableCollection,

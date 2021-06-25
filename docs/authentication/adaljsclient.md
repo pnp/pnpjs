@@ -1,4 +1,4 @@
-# @pnp/common/adalclient
+# @pnp/core/adalclient
 
 This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with SharePoint Framework's permissions.
 
@@ -20,7 +20,7 @@ By providing the context in the onInit we can create the adal client from known 
 
 ```TypeScript
 import { graph } from "@pnp/graph";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 
 // ...
 
@@ -56,7 +56,7 @@ public render(): void {
 This example shows how to use the ADALClient with the @pnp/sp library to call an API secured with AAD from within SharePoint Framework.
 
 ```TypeScript
-import { SPFxAdalClient } from "@pnp/common";
+import { SPFxAdalClient } from "@pnp/core";
 import { sp } from "@pnp/sp/presets/all";
 
 // ...
@@ -91,7 +91,7 @@ public render(): void {
 You can also use the AdalClient to execute AAD authenticated requests to any API which is properly configured to accept the incoming tokens. This approach will only work within SharePoint Framework >= 1.6. Here we call the SharePoint REST API without the sp library as an example.
 
 ```TypeScript
-import { FetchOptions } from "@pnp/common";
+import { FetchOptions } from "@pnp/core";
 import { AdalClient } from "@pnp/adaljsclient";
 import { ODataDefaultParser } from "@pnp/queryable";
 

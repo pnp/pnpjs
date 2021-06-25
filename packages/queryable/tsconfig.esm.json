@@ -5,7 +5,7 @@
     ],
     "references": [
         {
-            "path": "../common/tsconfig.esm.json"
+            "path": "../core/tsconfig.esm.json"
         },
         {
             "path": "../logging/tsconfig.esm.json"

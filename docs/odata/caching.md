@@ -49,7 +49,7 @@ export interface ICachingOptions {
 
 ```TypeScript
 import { sp } from "@pnp/sp";
-import { dateAdd } from "@pnp/common";
+import { dateAdd } from "@pnp/core";
 
 const r = await sp.web.lists.getByTitle("Tasks").items.top(5).orderBy("Modified").usingCaching({
     expiration: dateAdd(new Date(), "minute", 20),

@@ -1,4 +1,4 @@
-# @pnp/common
+# @pnp/core
 
 [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon)
 
@@ -8,12 +8,12 @@ The common modules provides a set of utilities classes and reusable building blo
 
 Install the library and required dependencies
 
-`npm install @pnp/common --save`
+`npm install @pnp/core --save`
 
 Import and use functionality, see details on modules below.
 
 ```TypeScript
-import { getGUID } from "@pnp/common";
+import { getGUID } from "@pnp/core";
 
 console.log(getGUID());
 ```

@@ -4,7 +4,7 @@ import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/queryable";
-import { getRandomString, stringIsNullOrEmpty } from "@pnp/common";
+import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
 describe("Contacts", function () {
 

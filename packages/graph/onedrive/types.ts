@@ -8,7 +8,7 @@ import {
     graphInvokableFactory,
 } from "../graphqueryable.js";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
-import { assign, combine, safeGlobal } from "@pnp/common";
+import { assign, combine, safeGlobal } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParser } from "@pnp/queryable";
 import { graphPatch, graphPut } from "../operations.js";

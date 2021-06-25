@@ -5,14 +5,14 @@
     },
     "include": [
         "./**/*.ts",
-        "../common/**/*.ts",
+        "../core/**/*.ts",
         "../logging/**/*.ts",
         "../queryable/**/*.ts",
         "./presets/**/*.ts"
     ],
     "references": [
         {
-            "path": "../common/tsconfig.esm.json"
+            "path": "../core/tsconfig.esm.json"
         },
         {
             "path": "../logging/tsconfig.esm.json"

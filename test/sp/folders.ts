@@ -8,7 +8,7 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { IInvokableTest } from "../types.js";
 import { Web, IWeb } from "@pnp/sp/webs";
-import { getRandomString } from "@pnp/common";
+import { getRandomString } from "@pnp/core";
 import { SharingLinkKind } from "@pnp/sp/sharing";
 import { sp } from "@pnp/sp";
 

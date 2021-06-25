@@ -1,5 +1,5 @@
 import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
-import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/common";
+import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { CachingOptions, body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";

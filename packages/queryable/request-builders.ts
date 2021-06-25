@@ -1,4 +1,4 @@
-import { jsS, ITypedHash } from "@pnp/common";
+import { jsS, ITypedHash } from "@pnp/core";
 
 export function body<T = unknown, U = any>(o: U, previous?: T): T & { body: string } {
     return Object.assign({ body: jsS(o) }, previous);

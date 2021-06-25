@@ -1,7 +1,7 @@
 import { Queryable2 } from "./queryable-2";
 import { HttpRequestError } from "./parsers";
-import { hOP } from "@pnp/common";
-import { isFunc } from "@pnp/common";
+import { hOP } from "@pnp/core";
+import { isFunc } from "@pnp/core";
 
 export function DefaultParse(): (instance: Queryable2) => Queryable2 {
 

@@ -1,4 +1,4 @@
-import { getGUID, isFunc } from "@pnp/common/util";
+import { getGUID, isFunc } from "@pnp/core/util";
 import { ODataParser, extendFactory, headers } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
 import { odataUrlFrom } from "@pnp/sp/odata";

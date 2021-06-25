@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { SPListConfigurationProvider } from "../../../packages/config-store";
 import { MockStorage }  from "../../types.js";
-// import { TypedHash }  from "@pnp/common";
+// import { TypedHash }  from "@pnp/core";
 import { Web, IWeb } from "@pnp/sp/presets/all";
 
 declare let global: any;

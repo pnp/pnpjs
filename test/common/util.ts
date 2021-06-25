@@ -14,7 +14,7 @@ import {
     jsS,
     hOP,
     getHashCode,
-} from "@pnp/common";
+} from "@pnp/core";
 
 // tslint:disable:no-unused-expression
 

@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/common";
+import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/core";
 import { Queryable, invokableFactory, IInvokable, IRequestContext } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
@@ -9,8 +9,6 @@ import { tag } from "./telemetry.js";
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new(baseUrl: string | ISharePointQueryable, path?: string): T;
 }
-
-
 
 export type ISPInvokableFactory<R extends any> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
 

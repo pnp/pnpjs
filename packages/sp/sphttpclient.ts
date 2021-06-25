@@ -10,7 +10,7 @@ import {
     DefaultRuntime,
     Runtime,
     objectDefinedNotNull,
-} from "@pnp/common";
+} from "@pnp/core";
 import { ISPConfigurationPart, ISPConfigurationProps } from "./splibconfig.js";
 import { extractWebUrl } from "./utils/extractweburl.js";
 import { tag } from "./telemetry.js";

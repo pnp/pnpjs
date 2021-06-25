@@ -34,7 +34,7 @@ So you will need to handle any of those options along with the provided url when
 Once you have written your implementation using it on your requests is done by setting it in the global library configuration:
 
 ```TypeScript
-import { setup } from "@pnp/common";
+import { setup } from "@pnp/core";
 import { sp, Web } from "@pnp/sp";
 import { MyAwesomeClient } from "./awesomeclient";
 
