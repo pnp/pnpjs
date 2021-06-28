@@ -18,6 +18,7 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
     }
 
     return (instance: Queryable2) => {
+
         instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             const key = keyFactory(url.toString());
@@ -40,8 +41,8 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
                 result = cached;
             }
 
-            //Overwrite execute function with custom scheme for cache update
-            extendObj(this, {
+            //TODO::Cannot extend instance of execute here, as it's already running.
+            extendObj(instance, {
                 execute: (requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> => {
 
                     setTimeout(async () => {
@@ -95,7 +96,7 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
 
                             // Waiting is false by default, result is undefined by default, unless cached value is returned
                             if (retVal !== undefined) {
-                                // AsyncOverride is true, and a return value exists -> assume lazy cache update pipeline execution.
+                                // Return value exists -> assume lazy cache update pipeline execution.
                                 setTimeout(async () => {
                                     try {
                                         await emitSend();
@@ -103,6 +104,8 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
                                         emitError(e);
                                     }
                                 }, 0);
+
+                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, LogLevel.Info);
 
                                 emitData();
                             } else {
@@ -112,6 +115,9 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
                                 // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
                                 // completed event to signal the request is completed?
                                 if (typeof retVal !== "undefined") {
+
+                                    this.emit.log(`[id:${requestId}] Returning results`, LogLevel.Info);
+
                                     emitData();
                                 }
                             }
