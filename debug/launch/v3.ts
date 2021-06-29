@@ -1,15 +1,16 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, createBatch, PnPLogging, get } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, CachingPessimisticRefresh, Caching, HttpRequestError, PnPLogging, get } from "@pnp/queryable";
+import { createBatch } from "@pnp/sp/behaviors";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { sp2, SPRest2 } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
+import "@pnp/sp/webs";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
-
     // TODO:: a way to wrap up different sets of configurations like below.
     // Need a lib default, plus others like Node default, etc.
     // Maybe a default with caching always on, etc.
@@ -24,51 +25,26 @@ export async function Example(settings: ITestingSettings) {
             "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
         }))
         .using(NodeFetchWithRetry())
-        // .using(NodeFetchWithRetry(2))
-        // .using(NodeFetch())
         .using(DefaultParse())
-        // .using(TextParse())
-        // .using(JSONParse())
-        // .using(Proxy("https://127.0.0.1:8888"))
-        .using(Caching("session", true))
+        .using(CachingPessimisticRefresh("session"))
         .on.error((err) => {
             console.error("caught it");
             console.error(err);
+        })
+        .on.log(function (message, level) {
+
+            if (level >= LogLevel.Verbose) {
+
+                console.log(`Cheap log: ${message}.`);
+            }
+
+        }).on.post(async (_url: URL, result: any) => {
+
+            console.log(JSON.stringify(result));
+
+            return [_url, result];
+
         });
-
-    testingRoot.on.pre(async (url, init, result) => {
-
-        init.cache = "no-cache";
-        init.credentials = "same-origin";
-
-        return [url, init, result];
-    });
-
-    testingRoot.on.log((message, level) => {
-
-        if (level >= LogLevel.Verbose) {
-
-            console.log(`Cheap log: ${message}.`);
-        }
-    });
-
-    const t2 = new Queryable2(testingRoot, "lists");
-
-    t2.query.set("$select", "title,description");
-    // t2.query.set("Test429", "true");
-
-    t2.on.pre(async function (this: Queryable2, url, init, result) {
-
-        this.emit.log("Howdy, Pre log :)", LogLevel.Error);
-        return [url, init, result];
-
-    }).on.post(async (_url: URL, result: any) => {
-
-        console.log(JSON.stringify(result));
-
-        return [_url, result];
-
-    }).log("Done config.");
 
     // TODO:: need to track if timeline is active and create a running clone of the timeline or how 
     // do we handle the case where a timeline modifies itself?
@@ -76,10 +52,21 @@ export async function Example(settings: ITestingSettings) {
 
     // sending a request uses one of the helper methods get(), post(), put(), delete(), etc.
     try {
+        const sp3 = sp2(testingRoot);
+        //const w = sp3.web();
 
-        const u = await get(t2);
+        // TODO:: need to work on the inheritance and ensuring the right events are fired for 
+        // on data etc and that requests are really going out.
+        // w.on.post(async (url: URL, result: any) => {
 
-        const u2 = await get(t2);
+        //     console.log("I am here!");
+
+        //     return [url, result];
+        // });
+
+        const u = await sp3.web();
+
+        const u2 = await sp3.web();
 
         console.log("here");
 
