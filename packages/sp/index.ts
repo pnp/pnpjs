@@ -1,14 +1,5 @@
-export {
-    ISharePointQueryable,
-    ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
-    SharePointQueryableInstance,
-    SharePointQueryableCollection,
-    ISharePointQueryableConstructor,
-    SharePointQueryable,
-    spInvokableFactory,
-    ISPInvokableFactory,
-} from "./sharepointqueryable.js";
+// TODO:: scope this down once we are done refactoring
+export * from "./sharepointqueryable.js";
 
 export {
     SPBatch,
@@ -55,3 +46,5 @@ export {
     stripInvalidFileFolderChars,
     containsInvalidFileFolderChars,
 } from "./utils/file-names.js";
+
+export * from "./behaviors/index.js";

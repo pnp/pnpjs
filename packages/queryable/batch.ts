@@ -1,6 +1,6 @@
 import { IFetchOptions, getGUID } from "@pnp/core";
 import { IODataParser } from "./parsers.js";
-import { IQueryable } from "./queryable.js";
+import { OLD_IQueryable } from "./queryable.js";
 import { IRequestContext } from "./pipeline.js";
 
 export interface IODataBatchRequestInfo {
@@ -45,7 +45,7 @@ export abstract class Batch {
      *
      * @param batchee The IQueryable for this batch to track in order
      */
-    public track(batchee: IQueryable<any>): void {
+    public track(batchee: OLD_IQueryable<any>): void {
 
         batchee.data.batch = this;
 

@@ -1,21 +1,21 @@
 import { assign, dateAdd, hOP, isArray, objectDefinedNotNull } from "@pnp/core";
 import { body, headers } from "@pnp/queryable";
 import {
-    SharePointQueryable,
-    SharePointQueryableCollection,
-    ISharePointQueryableCollection,
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    ISharePointQueryable,
-    spInvokableFactory,
-    deleteableWithETag,
-    IDeleteableWithETag,
+    OLD_SharePointQueryable,
+    OLD_SharePointQueryableCollection,
+    OLD_ISharePointQueryableCollection,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_ISharePointQueryable,
+    OLD_spInvokableFactory,
+    OLD_deleteableWithETag,
+    OLD_IDeleteableWithETag,
 } from "../sharepointqueryable.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../odata.js";
 import { metadata } from "../utils/metadata.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { tag } from "../telemetry.js";
 import { IBasePermissions } from "../security/types.js";
@@ -27,7 +27,7 @@ import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
 import { IResourcePath, toResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("lists")
-export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
+export class _Lists extends _OLD_SharePointQueryableCollection<IListInfo[]> {
 
     /**
      * Gets a list from the collection by guid id
@@ -67,7 +67,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
             "Title": title,
         }, metadata("SP.List"), additionalSettings);
 
-        const data = await spPost(this, body(addSettings));
+        const data = await OLD_spPost(this, body(addSettings));
 
         return { data, list: this.getByTitle(addSettings.Title) };
     }
@@ -116,7 +116,7 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
      */
     @tag("ls.ensureSiteAssetsLibrary")
     public async ensureSiteAssetsLibrary(): Promise<IList> {
-        const json = await spPost(this.clone(Lists, "ensuresiteassetslibrary"));
+        const json = await OLD_spPost(this.clone(Lists, "ensuresiteassetslibrary"));
         return List(odataUrlFrom(json));
     }
 
@@ -125,47 +125,47 @@ export class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
      */
     @tag("ls.ensureSitePagesLibrary")
     public async ensureSitePagesLibrary(): Promise<IList> {
-        const json = await spPost(this.clone(Lists, "ensuresitepageslibrary"));
+        const json = await OLD_spPost(this.clone(Lists, "ensuresitepageslibrary"));
         return List(odataUrlFrom(json));
     }
 }
 export interface ILists extends _Lists { }
-export const Lists = spInvokableFactory<ILists>(_Lists);
+export const Lists = OLD_spInvokableFactory<ILists>(_Lists);
 
-export class _List extends _SharePointQueryableInstance<IListInfo> {
+export class _List extends _OLD_SharePointQueryableInstance<IListInfo> {
 
-    public delete = deleteableWithETag("l");
+    public delete = OLD_deleteableWithETag("l");
 
     /**
      * Gets the effective base permissions of this list
      *
      */
-    public get effectiveBasePermissions(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
+    public get effectiveBasePermissions(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
     }
 
     /**
      * Gets the event receivers attached to this list
      *
      */
-    public get eventReceivers(): ISharePointQueryableCollection {
-        return tag.configure(SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
+    public get eventReceivers(): OLD_ISharePointQueryableCollection {
+        return tag.configure(OLD_SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
     }
 
     /**
      * Gets the related fields of this list
      *
      */
-    public get relatedFields(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
+    public get relatedFields(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
     }
 
     /**
      * Gets the IRM settings for this list
      *
      */
-    public get informationRightsManagementSettings(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
+    public get informationRightsManagementSettings(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
     }
 
     /**
@@ -182,7 +182,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             "X-HTTP-Method": "MERGE",
         }));
 
-        const data = await spPost(this, postBody);
+        const data = await OLD_spPost(this, postBody);
 
         const list: IList = hOP(properties, "Title") ? this.getParent(List, this.parentUrl, `getByTitle('${properties.Title}')`) : List(this);
 
@@ -199,7 +199,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     @tag("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        return spPost(this.clone(List, "getchanges"), body({ query: assign(metadata("SP.ChangeQuery"), query) }));
+        return OLD_spPost(this.clone(List, "getchanges"), body({ query: assign(metadata("SP.ChangeQuery"), query) }));
     }
 
     /**
@@ -211,7 +211,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         const q = this.clone(List, "getitems");
-        return spPost(q.expand(...expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
+        return OLD_spPost(q.expand(...expands), body({ query: assign(metadata("SP.CamlQuery"), query) }));
     }
 
     /**
@@ -226,7 +226,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
                 return r.text();
             },
         });
-        return spPost(o, body({ "query": assign(metadata("SP.ChangeLogItemQuery"), query) }));
+        return OLD_spPost(o, body({ "query": assign(metadata("SP.ChangeLogItemQuery"), query) }));
     }
 
     /**
@@ -234,7 +234,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      */
     @tag("l.recycle")
     public async recycle(): Promise<string> {
-        const data = await spPost(this.clone(List, "recycle"));
+        const data = await OLD_spPost(this.clone(List, "recycle"));
         return hOP(data, "Recycle") ? data.Recycle : data;
     }
 
@@ -247,7 +247,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
 
         const q = this.clone(List, "renderlistdata(@viewXml)");
         q.query.set("@viewXml", `'${viewXml}'`);
-        const data = await spPost(q);
+        const data = await OLD_spPost(q);
 
         // data will be a string, so we parse it again
         return JSON.parse(hOP(data, "RenderListData") ? data.RenderListData : data);
@@ -279,7 +279,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             query.forEach((v, k) => clone.query.set(k, v));
         }
 
-        return spPost(clone, body(bodyOptions));
+        return OLD_spPost(clone, body(bodyOptions));
     }
 
     /**
@@ -290,7 +290,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      */
     @tag("l.renderListFormData")
     public async renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<IListFormData> {
-        const data = await spPost(this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`));
+        const data = await OLD_spPost(this.clone(List, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`));
         // data will be a string, so we parse it again
         return JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data);
     }
@@ -300,7 +300,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
      */
     @tag("l.reserveListItemId")
     public async reserveListItemId(): Promise<number> {
-        const data = await spPost(this.clone(List, "reservelistitemid"));
+        const data = await OLD_spPost(this.clone(List, "reservelistitemid"));
         return hOP(data, "ReserveListItemId") ? data.ReserveListItemId : data;
     }
 
@@ -361,7 +361,7 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
             }
         }
 
-        const res = await spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
+        const res = await OLD_spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
             bNewDocumentUpdate,
             checkInComment,
             formValues,
@@ -406,8 +406,8 @@ export class _List extends _SharePointQueryableInstance<IListInfo> {
         };
     }
 }
-export interface IList extends _List, IDeleteableWithETag { }
-export const List = spInvokableFactory<IList>(_List);
+export interface IList extends _List, OLD_IDeleteableWithETag { }
+export const List = OLD_spInvokableFactory<IList>(_List);
 
 /**
  * Represents the output of the add method

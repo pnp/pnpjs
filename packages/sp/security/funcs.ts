@@ -1,7 +1,7 @@
 import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
-import { SharePointQueryableInstance, SharePointQueryable } from "../sharepointqueryable.js";
+import { OLD_SharePointQueryableInstance, OLD_SharePointQueryable } from "../sharepointqueryable.js";
 import { hOP } from "@pnp/core";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 
 /**
 * Gets the effective permissions for the user supplied
@@ -10,7 +10,7 @@ import { spPost } from "../operations.js";
 */
 export async function getUserEffectivePermissions(this: SecurableQueryable, loginName: string): Promise<IBasePermissions> {
 
-    const q = this.clone(SharePointQueryableInstance, "getUserEffectivePermissions(@user)");
+    const q = this.clone(OLD_SharePointQueryableInstance, "getUserEffectivePermissions(@user)");
     q.query.set("@user", `'${encodeURIComponent(loginName)}'`);
     const r = await q.get<any>();
     // handle verbose mode
@@ -22,7 +22,7 @@ export async function getUserEffectivePermissions(this: SecurableQueryable, logi
  */
 export async function getCurrentUserEffectivePermissions(this: SecurableQueryable): Promise<IBasePermissions> {
 
-    const q = this.clone(SharePointQueryable, "EffectiveBasePermissions");
+    const q = this.clone(OLD_SharePointQueryable, "EffectiveBasePermissions");
     return q.get<any>().then(r => {
         // handle verbose mode
         return hOP(r, "EffectiveBasePermissions") ? r.EffectiveBasePermissions : r;
@@ -36,7 +36,7 @@ export async function getCurrentUserEffectivePermissions(this: SecurableQueryabl
  * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
  */
 export async function breakRoleInheritance(this: SecurableQueryable, copyRoleAssignments = false, clearSubscopes = false): Promise<void> {
-    await spPost(this.clone(SharePointQueryable, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
+    await OLD_spPost(this.clone(OLD_SharePointQueryable, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
 }
 
 /**
@@ -44,7 +44,7 @@ export async function breakRoleInheritance(this: SecurableQueryable, copyRoleAss
  *
  */
 export async function resetRoleInheritance(this: SecurableQueryable): Promise<void> {
-    await spPost(this.clone(SharePointQueryable, "resetroleinheritance"));
+    await OLD_spPost(this.clone(OLD_SharePointQueryable, "resetroleinheritance"));
 }
 
 /**

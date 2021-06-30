@@ -1,18 +1,18 @@
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
 import { assign, ITypedHash, hOP } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("sitegroups")
-export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {
+export class _SiteGroups extends _OLD_SharePointQueryableCollection<ISiteGroupInfo[]> {
 
     /**
      * Gets a group from the collection by id
@@ -32,7 +32,7 @@ export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]
 
         const postBody = body(assign(metadata("SP.Group"), properties));
 
-        const data = await spPost(tag.configure(this, "sgs.add"), postBody);
+        const data = await OLD_spPost(tag.configure(this, "sgs.add"), postBody);
         return {
             data,
             group: this.getById(data.Id),
@@ -55,7 +55,7 @@ export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]
      */
     @tag("sgs.removeById")
     public removeById(id: number): Promise<void> {
-        return spPost(this.clone(SiteGroups, `removeById('${id}')`));
+        return OLD_spPost(this.clone(SiteGroups, `removeById('${id}')`));
     }
 
     /**
@@ -65,13 +65,13 @@ export class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]
      */
     @tag("sgs.removeByLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
-        return spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
+        return OLD_spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
     }
 }
 export interface ISiteGroups extends _SiteGroups {}
-export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
+export const SiteGroups = OLD_spInvokableFactory<ISiteGroups>(_SiteGroups);
 
-export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
+export class _SiteGroup extends _OLD_SharePointQueryableInstance<ISiteGroupInfo> {
 
     /**
      * Gets the users for this group
@@ -102,11 +102,11 @@ export class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
      */
     @tag("sg.setUserAsOwner")
     public setUserAsOwner(userId: number): Promise<any> {
-        return spPost(this.clone(SiteGroup, `SetUserAsOwner(${userId})`));
+        return OLD_spPost(this.clone(SiteGroup, `SetUserAsOwner(${userId})`));
     }
 }
 export interface ISiteGroup extends _SiteGroup {}
-export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
+export const SiteGroup = OLD_spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 /**
  * Result from updating a group

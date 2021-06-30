@@ -1,19 +1,19 @@
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
-    deleteable,
-    IDeleteable,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
+    OLD_deleteable,
+    OLD_IDeleteable,
 } from "../sharepointqueryable.js";
 import { assign, ITypedHash } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body, headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("fields")
-export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
+export class _Fields extends _OLD_SharePointQueryableCollection<IFieldInfo[]> {
 
     /**
      * Creates a field based on the specified schema
@@ -32,7 +32,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
                 assign(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
         });
 
-        const data = await spPost<{ Id: string }>(this.clone(Fields, "createfieldasxml"), postBody);
+        const data = await OLD_spPost<{ Id: string }>(this.clone(Fields, "createfieldasxml"), postBody);
 
         return {
             data,
@@ -84,7 +84,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
             tag.configure(this, "fs.add");
         }
 
-        const data = await spPost<{ Id: string }>(this.clone(Fields, null), postBody);
+        const data = await OLD_spPost<{ Id: string }>(this.clone(Fields, null), postBody);
 
         return {
             data,
@@ -325,7 +325,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
                 assign(metadata("SP.FieldCreationInformation"), props),
         });
 
-        const data = await spPost<{ Id: string }>(this.clone(Fields, "addfield"), postBody);
+        const data = await OLD_spPost<{ Id: string }>(this.clone(Fields, "addfield"), postBody);
 
         return {
             data,
@@ -412,7 +412,7 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
         const path = `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`;
 
-        const data = await spPost(this.clone(Fields, path));
+        const data = await OLD_spPost(this.clone(Fields, path));
 
         return {
             data,
@@ -435,11 +435,11 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
     }
 }
 export interface IFields extends _Fields {}
-export const Fields = spInvokableFactory<IFields>(_Fields);
+export const Fields = OLD_spInvokableFactory<IFields>(_Fields);
 
-export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
+export class _Field extends _OLD_SharePointQueryableInstance<IFieldInfo> {
 
-    public delete = deleteable("f");
+    public delete = OLD_deleteable("f");
 
     /**
    * Updates this field instance with the supplied properties
@@ -461,7 +461,7 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
 
         const req = body(assign(metadata(fieldType), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
-        const data = await spPost(this, req);
+        const data = await OLD_spPost(this, req);
 
         return {
             data,
@@ -474,7 +474,7 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
    */
     @tag("f.setShowInDisplayForm")
     public setShowInDisplayForm(show: boolean): Promise<void> {
-        return spPost(this.clone(Field, `setshowindisplayform(${show})`));
+        return OLD_spPost(this.clone(Field, `setshowindisplayform(${show})`));
     }
 
     /**
@@ -482,7 +482,7 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
    */
     @tag("f.setShowInEditForm")
     public setShowInEditForm(show: boolean): Promise<void> {
-        return spPost(this.clone(Field, `setshowineditform(${show})`));
+        return OLD_spPost(this.clone(Field, `setshowineditform(${show})`));
     }
 
     /**
@@ -490,11 +490,11 @@ export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
    */
     @tag("f.setShowInNewForm")
     public setShowInNewForm(show: boolean): Promise<void> {
-        return spPost(this.clone(Field, `setshowinnewform(${show})`));
+        return OLD_spPost(this.clone(Field, `setshowinnewform(${show})`));
     }
 }
-export interface IField extends _Field, IDeleteable { }
-export const Field = spInvokableFactory<IField>(_Field);
+export interface IField extends _Field, OLD_IDeleteable { }
+export const Field = OLD_spInvokableFactory<IField>(_Field);
 
 /**
  * This interface defines the result of adding a field

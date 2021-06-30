@@ -1,12 +1,22 @@
 import { getGUID, isUrlAbsolute, combine } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
 import { HttpRequestError, Queryable2 } from "@pnp/queryable";
+import { spPost } from "../operations";
+import { _SharePointQueryable } from "../sharepointqueryable";
+import { IWeb } from ".";
+
+class BatchQueryable extends _SharePointQueryable {
+
+    constructor(web: IWeb, public requestBaseUrl = web.toUrl().replace(/_api\/.*$/i, "")) {
+        super(requestBaseUrl, "_api/$batch");
+    }
+}
 
 // TODO:: this needs to be reworked as a behavior meaning all requests would batch? How does that play? maybe need the creatBatch concept so you can get the execute
 // TODO: this would live on sp or web or site and get the url from there
 // TODO: how do we handle auth here? Inherit a batch queryable from the parent like "web" and clear out the other settings?
 // eslint-disable-next-line max-len
-export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[]) => Promise<Response>, hackAuthHeader: string): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
 
     /**
      * The request record defines a tuple that is
@@ -22,6 +32,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
     const registrationPromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
+    const batchQuery = new BatchQueryable(base);
 
     const execute = async () => {
 
@@ -68,7 +79,7 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
             const headers = new Headers(init.headers);
 
             // this is the url of the individual request within the batch
-            const reqUrl = isUrlAbsolute(url) ? url : combine(absoluteRequestUrl, url);
+            const reqUrl = isUrlAbsolute(url) ? url : combine(batchQuery.requestBaseUrl, url);
 
             queryable.log(`[${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${reqUrl} to batch.`, LogLevel.Verbose);
 
@@ -124,14 +135,10 @@ export function createBatch(absoluteRequestUrl: string, runFetch: (...args: any[
             "body": batchBody.join(""),
             "headers": {
                 "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
-                // TODO:: this is obviously a hack
-                "Authorization": hackAuthHeader,
             },
-            "method": "POST",
         };
 
-        // TODO:: we need a way to specify the client within batches since we are replacing the send method
-        const fetchResponse = await runFetch(combine(absoluteRequestUrl, "/_api/$batch"), batchOptions);
+        const fetchResponse = await spPost(batchQuery, batchOptions);
 
         if (!fetchResponse.ok) {
             // the entire batch resulted in an error and we need to handle that better #1356

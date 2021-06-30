@@ -1,10 +1,10 @@
 import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { combine } from "@pnp/core/util";
-import { SharePointQueryable } from "../sharepointqueryable.js";
+import { OLD_SharePointQueryable } from "../sharepointqueryable.js";
 
 declare module "../items/types" {
     interface _Item {
@@ -38,7 +38,7 @@ declare module "../items/types" {
 addProp(_Item, "comments", Comments);
 
 _Item.prototype.getLikedBy = function (this: _Item): Promise<ILikeData[]> {
-    return spPost<ILikeData[]>(this.clone(Item, "likedBy"));
+    return OLD_spPost<ILikeData[]>(this.clone(Item, "likedBy"));
 };
 
 _Item.prototype.like = async function (this: _Item) {
@@ -46,7 +46,7 @@ _Item.prototype.like = async function (this: _Item) {
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=true`;
-    return spPost(SharePointQueryable(likeUrl));
+    return OLD_spPost(OLD_SharePointQueryable(likeUrl));
 };
 
 _Item.prototype.unlike = async function (this: _Item) {
@@ -54,7 +54,7 @@ _Item.prototype.unlike = async function (this: _Item) {
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=false`;
-    return spPost(SharePointQueryable(likeUrl));
+    return OLD_spPost(OLD_SharePointQueryable(likeUrl));
 };
 
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {

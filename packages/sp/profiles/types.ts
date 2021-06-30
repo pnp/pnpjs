@@ -1,19 +1,19 @@
 import {
-    _SharePointQueryableInstance,
-    SharePointQueryableCollection,
-    ISharePointQueryableCollection,
-    _SharePointQueryable,
-    ISharePointQueryable,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    OLD_SharePointQueryableCollection,
+    OLD_ISharePointQueryableCollection,
+    _OLD_SharePointQueryable,
+    OLD_ISharePointQueryable,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { assign } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 
-export class _Profiles extends _SharePointQueryableInstance {
+export class _Profiles extends _OLD_SharePointQueryableInstance {
 
     private clientPeoplePickerQuery: ClientPeoplePickerQuery;
     private profileLoader: ProfileLoader;
@@ -23,7 +23,7 @@ export class _Profiles extends _SharePointQueryableInstance {
      *
      * @param baseUrl The url or SharePointQueryable which forms the parent of this user profile query
      */
-    constructor(baseUrl: string | ISharePointQueryable, path = "_api/sp.userprofiles.peoplemanager") {
+    constructor(baseUrl: string | OLD_ISharePointQueryable, path = "_api/sp.userprofiles.peoplemanager") {
         super(baseUrl, path);
 
         this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).configureFrom(this);
@@ -90,15 +90,15 @@ export class _Profiles extends _SharePointQueryableInstance {
      * Gets the people who are following the current user
      *
      */
-    public get myFollowers(): ISharePointQueryableCollection {
-        return SharePointQueryableCollection(this, "getmyfollowers");
+    public get myFollowers(): OLD_ISharePointQueryableCollection {
+        return OLD_SharePointQueryableCollection(this, "getmyfollowers");
     }
 
     /**
      * Gets user properties for the current user
      *
      */
-    public get myProperties(): _SharePointQueryableInstance {
+    public get myProperties(): _OLD_SharePointQueryableInstance {
         return new _Profiles(this, "getmyproperties");
     }
 
@@ -154,7 +154,7 @@ export class _Profiles extends _SharePointQueryableInstance {
     public hideSuggestion(loginName: string): Promise<void> {
         const q = this.clone(Profiles, "hidesuggestion(@v)");
         q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
-        return spPost(q);
+        return OLD_spPost(q);
     }
 
     /**
@@ -183,7 +183,7 @@ export class _Profiles extends _SharePointQueryableInstance {
             reader.onload = async (e: any) => {
                 const buffer = e.target.result;
                 try {
-                    await spPost(Profiles(this, "setmyprofilepicture"), { body: buffer });
+                    await OLD_spPost(Profiles(this, "setmyprofilepicture"), { body: buffer });
                     resolve();
                 } catch (e) {
                     reject(e);
@@ -202,7 +202,7 @@ export class _Profiles extends _SharePointQueryableInstance {
      */
     public setSingleValueProfileProperty(accountName: string, propertyName: string, propertyValue: string): Promise<void> {
 
-        return spPost(this.clone(Profiles, "SetSingleValueProfileProperty"), body({
+        return OLD_spPost(this.clone(Profiles, "SetSingleValueProfileProperty"), body({
             accountName: accountName,
             propertyName: propertyName,
             propertyValue: propertyValue,
@@ -218,7 +218,7 @@ export class _Profiles extends _SharePointQueryableInstance {
      */
     public setMultiValuedProfileProperty(accountName: string, propertyName: string, propertyValues: string[]): Promise<void> {
 
-        return spPost(this.clone(Profiles, "SetMultiValuedProfileProperty"), body({
+        return OLD_spPost(this.clone(Profiles, "SetMultiValuedProfileProperty"), body({
             accountName: accountName,
             propertyName: propertyName,
             propertyValues: propertyValues,
@@ -286,10 +286,10 @@ export class _Profiles extends _SharePointQueryableInstance {
     }
 }
 export interface IProfiles extends _Profiles {}
-export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
+export const Profiles = OLD_spInvokableFactory<IProfiles>(_Profiles);
 
 @defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")
-class ProfileLoader extends _SharePointQueryable {
+class ProfileLoader extends _OLD_SharePointQueryable {
 
     /**
      * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only) Doesn't support batching
@@ -298,7 +298,7 @@ class ProfileLoader extends _SharePointQueryable {
      */
     public createPersonalSiteEnqueueBulk(emails: string[]): Promise<void> {
 
-        return spPost(this.clone(ProfileLoaderFactory, "createpersonalsiteenqueuebulk", false), body({ "emailIDs": emails }));
+        return OLD_spPost(this.clone(ProfileLoaderFactory, "createpersonalsiteenqueuebulk", false), body({ "emailIDs": emails }));
     }
 
     /**
@@ -312,7 +312,7 @@ class ProfileLoader extends _SharePointQueryable {
             q = q.inBatch(this.batch);
         }
 
-        return spPost(q);
+        return OLD_spPost(q);
     }
 
     /**
@@ -320,7 +320,7 @@ class ProfileLoader extends _SharePointQueryable {
      *
      */
     public get userProfile(): Promise<IUserProfile> {
-        return spPost(this.clone(ProfileLoaderFactory, "getuserprofile"));
+        return OLD_spPost(this.clone(ProfileLoaderFactory, "getuserprofile"));
     }
 
     /**
@@ -329,7 +329,7 @@ class ProfileLoader extends _SharePointQueryable {
      * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
      */
     public createPersonalSite(interactiveRequest = false): Promise<void> {
-        return spPost(this.clone(ProfileLoaderFactory, `getuserprofile/createpersonalsiteenque(${interactiveRequest})`));
+        return OLD_spPost(this.clone(ProfileLoaderFactory, `getuserprofile/createpersonalsiteenque(${interactiveRequest})`));
     }
 
     /**
@@ -338,16 +338,16 @@ class ProfileLoader extends _SharePointQueryable {
      * @param share true to make all social data public; false to make all social data private.
      */
     public shareAllSocialData(share: boolean): Promise<void> {
-        return spPost(this.clone(ProfileLoaderFactory, `getuserprofile/shareallsocialdata(${share})`));
+        return OLD_spPost(this.clone(ProfileLoaderFactory, `getuserprofile/shareallsocialdata(${share})`));
     }
 }
 
-const ProfileLoaderFactory = (baseUrl: string | ISharePointQueryable, path?: string) => {
+const ProfileLoaderFactory = (baseUrl: string | OLD_ISharePointQueryable, path?: string) => {
     return new ProfileLoader(baseUrl, path);
 };
 
 @defaultPath("_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface")
-class ClientPeoplePickerQuery extends _SharePointQueryable {
+class ClientPeoplePickerQuery extends _OLD_SharePointQueryable {
 
     /**
      * Resolves user or group using specified query parameters
@@ -357,7 +357,7 @@ class ClientPeoplePickerQuery extends _SharePointQueryable {
     public async clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): Promise<IPeoplePickerEntity> {
         const q = this.clone(ClientPeoplePickerFactory, null);
         q.concat(".clientpeoplepickerresolveuser");
-        const res = await spPost<string | { ClientPeoplePickerResolveUser: string }>(q, this.getBodyFrom(queryParams));
+        const res = await OLD_spPost<string | { ClientPeoplePickerResolveUser: string }>(q, this.getBodyFrom(queryParams));
 
         return JSON.parse(typeof res === "object" ? res.ClientPeoplePickerResolveUser : res);
     }
@@ -370,7 +370,7 @@ class ClientPeoplePickerQuery extends _SharePointQueryable {
     public async clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): Promise<IPeoplePickerEntity[]> {
         const q = this.clone(ClientPeoplePickerFactory, null);
         q.concat(".clientpeoplepickersearchuser");
-        const res = await spPost<string | { ClientPeoplePickerSearchUser: string }>(q, this.getBodyFrom(queryParams));
+        const res = await OLD_spPost<string | { ClientPeoplePickerSearchUser: string }>(q, this.getBodyFrom(queryParams));
 
         return JSON.parse(typeof res === "object" ? res.ClientPeoplePickerSearchUser : res);
     }
@@ -385,7 +385,7 @@ class ClientPeoplePickerQuery extends _SharePointQueryable {
     }
 }
 
-const ClientPeoplePickerFactory = (baseUrl: string | ISharePointQueryable, path?: string) => {
+const ClientPeoplePickerFactory = (baseUrl: string | OLD_ISharePointQueryable, path?: string) => {
     return new ClientPeoplePickerQuery(baseUrl, path);
 };
 

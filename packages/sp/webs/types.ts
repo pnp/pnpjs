@@ -1,14 +1,14 @@
 import { assign, ITypedHash } from "@pnp/core";
-import { body, headers, Queryable2, invokableFactory2 } from "@pnp/queryable";
+import { body, headers, Queryable2 } from "@pnp/queryable";
 import {
+    _SharePointQueryableCollection,
+    OLD_deleteable,
+    spInvokableFactory,
     _SharePointQueryableInstance,
     SharePointQueryableCollection,
-    _SharePointQueryableCollection,
     ISharePointQueryableCollection,
-    ISharePointQueryableInstance,
-    spInvokableFactory,
     SharePointQueryableInstance,
-    deleteable,
+    ISharePointQueryableInstance,
     IDeleteable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
@@ -17,9 +17,10 @@ import { odataUrlFrom } from "../odata.js";
 import { SPBatch } from "../batch.js";
 import { metadata } from "../utils/metadata.js";
 import { Site, IOpenWebByIdResult } from "../sites/index.js";
-import { spPost, spGet } from "../operations.js";
+import { spGet, spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { tag } from "../telemetry.js";
+import { createBatch } from "./batching.js";
 
 @defaultPath("webs")
 export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
@@ -50,7 +51,7 @@ export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
                     }),
         });
 
-        const data = await spPost(this.clone(Webs, "add"), postBody);
+        const data = await spPost(Webs(this, "add"), postBody);
 
         return {
             data,
@@ -68,7 +69,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
 @defaultPath("_api/web")
 export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 
-    public delete = deleteable("w");
+    public delete = OLD_deleteable("w");
 
     /**
      * Gets this web's subwebs
@@ -82,7 +83,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * Allows access to the web's all properties collection
      */
     public get allProperties(): ISharePointQueryableInstance {
-        return tag.configure(this.clone(SharePointQueryableInstance, "allproperties"), "w.allprops");
+        return tag.configure(SharePointQueryableInstance(this, "allproperties"), "w.allprops");
     }
 
     /**
@@ -99,8 +100,30 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.getParentWeb")
     public async getParentWeb(): Promise<IOpenWebByIdResult> {
-        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
-        return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
+
+        // TODO::
+        //         <EntityType Name="WebInformation">
+        // <Key>
+        // <PropertyRef Name="Id"/>
+        // </Key>
+        // <Property Name="Configuration" Type="Edm.Int16" Nullable="false"/>
+        // <Property Name="Created" Type="Edm.DateTime" Nullable="false"/>
+        // <Property Name="Description" Type="Edm.String"/>
+        // <Property Name="Id" Type="Edm.Guid" Nullable="false"/>
+        // <Property Name="Language" Type="Edm.Int32" Nullable="false"/>
+        // <Property Name="LastItemModifiedDate" Type="Edm.DateTime" Nullable="false"/>
+        // <Property Name="LastItemUserModifiedDate" Type="Edm.DateTime" Nullable="false"/>
+        // <Property Name="ServerRelativeUrl" Type="Edm.String"/>
+        // <Property Name="Title" Type="Edm.String"/>
+        // <Property Name="WebTemplate" Type="Edm.String"/>
+        // <Property Name="WebTemplateId" Type="Edm.Int32" Nullable="false"/>
+        // </EntityType>
+
+
+        // const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
+        // return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
+
+        return null;
     }
 
     /**
@@ -136,7 +159,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
             shareGenerated,
         });
 
-        return spPost(this.clone(Web, "applytheme"), postBody);
+        return spPost(Web(this, "applytheme"), postBody);
     }
 
     /**
@@ -147,9 +170,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     @tag("w.applyWebTemplate")
     public applyWebTemplate(template: string): Promise<void> {
 
-        const q = this.clone(Web, "applywebtemplate");
-        q.concat(`(webTemplate='${escapeQueryStrValue(template)}')`);
-        return spPost(q);
+        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`));
     }
 
     /**
@@ -160,7 +181,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     @tag("w.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
         const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
-        return spPost(this.clone(Web, "getchanges"), postBody);
+        return spPost(Web(this, "getchanges"), postBody);
     }
 
     /**
@@ -172,7 +193,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.mapToIcon")
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
-        return spGet(this.clone(Web, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`));
+        return spGet(Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`));
     }
 
     /**
@@ -182,7 +203,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.getStorageEntity")
     public getStorageEntity(key: string): Promise<IStorageEntity> {
-        return spGet(this.clone(Web, `getStorageEntity('${escapeQueryStrValue(key)}')`));
+        return spGet(Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`));
     }
 
     /**
@@ -195,7 +216,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.setStorageEntity")
     public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
-        return spPost(this.clone(Web, "setStorageEntity"), body({
+        return spPost(Web(this, "setStorageEntity"), body({
             comments,
             description,
             key,
@@ -210,7 +231,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.removeStorageEntity")
     public removeStorageEntity(key: string): Promise<void> {
-        return spPost(this.clone(Web, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
+        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
     }
 
     /**
@@ -220,7 +241,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
     */
     public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISharePointQueryableCollection<IWebInfosData[]> {
-        const o = this.clone(SharePointQueryableCollection,
+        const o = SharePointQueryableCollection(this,
             `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
         return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
     }
@@ -229,8 +250,8 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * Creates a new batch for requests within the context of this web
      *
      */
-    public createBatch(): SPBatch {
-        return new SPBatch(this.parentUrl, this.getRuntime());
+    public createBatch(): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+        return createBatch(this);
     }
 
     /**
@@ -246,25 +267,6 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 }
 export interface IWeb extends _Web, IDeleteable { }
 export const Web = spInvokableFactory<IWeb>(_Web);
-
-
-
-
-@defaultPath("/_api/web")
-export class _Web2 extends Queryable2<IWebInfo> {}
-export interface IWeb2 extends _Web2 {}
-export const Web2 = invokableFactory2<IWeb2>(_Web2);
-
-// TODO:: open things
-// - batching off web
-// - test all the things urls, querystring, select, expand, filter
-// - caching seems to be working browser and node
-// - rethink tagging as a behavior
-// - then we need to update all the objects :)
-
-
-
-
 
 /**
  * Result from adding a web

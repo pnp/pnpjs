@@ -5,3 +5,5 @@ export * from "./spfxcontextinterface.js";
 export * from "./storage.js";
 export * from "./util.js";
 export * from "./safe-global.js";
+
+export * from "./timeline/index.js";

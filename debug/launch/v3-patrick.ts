@@ -4,9 +4,8 @@ import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get, 
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { sp2 } from "@pnp/sp";
+import { sp2, createBatch, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { WebPartDefinition } from "@pnp/sp/webparts/types.js";
 
 declare var process: { exit(code?: number): void };
 
@@ -72,61 +71,38 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
 
 export async function Example(settings: ITestingSettings) {
 
-    // TODO:: a way to wrap up different sets of configurations like below.
-    // Need a lib default, plus others like Node default, etc.
-    // Maybe a default with caching always on, etc.
-
-    // sp2.using(testingConfig(settings));
-
-    const sp3 = sp2(settings.testing.sp.url);
-
-    sp3.using(testingConfig(settings));
-
-    const sp4 = sp2(sp3.web);
-
-    // const testingRoot = new Queryable2(settings.testing.sp.url, "_api/web");
-
-    // testingRoot.using();
-
-
-    // const t2 = new Queryable2(testingRoot, "lists");
-
-    // t2.query.set("$select", "title,description");
-
-
-
-    // t2.query.set("Test429", "true");
-
-    // TODO:: need to track if timeline is active and create a running clone of the timeline or how 
-    // do we handle the case where a timeline modifies itself?
-    // t2.resetObservers();
-
-    // sending a request uses one of the helper methods get(), post(), put(), delete(), etc.
     try {
 
-        const w = sp3.web;
+        const sp = sp2(settings.testing.sp.url).using(testingConfig(settings));
 
-        // TODO:: need to work on the inheritance and ensuring the right events are fired for 
-        // on data etc and that requests are really going out.
-        w.on.post(async (url: URL, result: any) => {
+        const yyy = await sp.web.availableWebTemplates()();
 
-            console.log("I am here!");
+        // const [y, h] = createBatch(sp.web);
 
-            return [url, result];
-        });
+        // const yyyyy = await sp.web();
 
-        const u = await w();
-
-        // TODO:: right now this request isn't sent because sp4 shares the data observers with sp3 due to inheritance so once the first
-        // request resolves the second also instantly resolves. In this case it is the same request, but later it wouldn't be
-        const uu = await sp4.web();
-
-        console.log("here");
+        console.log(JSON.stringify(yyy));
 
     } catch (e) {
 
         console.error(e);
     }
+
+    // TODO:: need to work on the inheritance and ensuring the right events are fired for 
+    // on data etc and that requests are really going out.
+    // w.on.post(async (url: URL, result: any) => {
+
+    //     console.log("I am here!");
+
+    //     return [url, result];
+    // });
+
+    // const u = await w();
+
+    // // TODO:: right now this request isn't sent because sp4 shares the data observers with sp3 due to inheritance so once the first
+    // // request resolves the second also instantly resolves. In this case it is the same request, but later it wouldn't be
+    // const uu = await sp4.web();
+
 
     // TODO:: still need to fix up auth for batches. Can it get it from some central place?? DO we now run batch as a queryable with associated events for the core request? Yes for consistency.
     // const hackAuth = MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);

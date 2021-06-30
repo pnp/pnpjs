@@ -23,7 +23,7 @@ export function invokableFactory2<InstanceType extends IQueryable2, InvokableRet
     constructor: { new(init: IQueryable2<any> | string, path?: string): InstanceType },
     invokeableAction?: ActionType<InstanceType, InvokableReturnType>
 
-): (init: IQueryable2<any>, path?: string) => InstanceType {
+): (init: IQueryable2<any> | string, path?: string) => InstanceType {
 
     if (typeof invokeableAction !== "function") {
         invokeableAction = function (this: InstanceType, init?: RequestInit) {
