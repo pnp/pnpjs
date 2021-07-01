@@ -1,7 +1,5 @@
-import { LogLevel } from "@pnp/logging";
-import { isArray, isFunc } from "@pnp/core";
 import { broadcast } from "./moments.js";
-import { objectDefinedNotNull } from "@pnp/core";
+import { objectDefinedNotNull, isArray, isFunc } from "../util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
 
@@ -31,9 +29,14 @@ export type ValidObserver = ObserverAction | ObserverFunction;
 export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserver[], ...args: any[]) => void>;
 
 /**
+ * Represents the collection of observers
+ */
+export type ObserverCollection = Record<string, ValidObserver[]>;
+
+/**
  * A type used to represent the proxied Timeline.on property
  */
-type DistributeOn<T extends Moments, R extends Moments = T> =
+ type DistributeOn<T extends Moments, R extends Moments = T> =
     { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<R> };
 
 /**
@@ -48,30 +51,28 @@ type DistributeEmit<T extends Moments> =
 type DistributeClear<T extends Moments> =
     { [Prop in string & keyof T]: () => boolean };
 
-type ObserverGraph = Record<string, ValidObserver>;
-
 /**
  * Virtual events that are present on all Timelines
  */
-export type DefaultTimelineEvents<T extends Moments> = {
-    log: (observers: ((this: Timeline<T>, message: string, level: LogLevel) => void)[], ...args: any[]) => void;
+type DefaultTimelineEvents<T extends Moments> = {
+    log: (observers: ((this: Timeline<T>, message: string, level: number) => void)[], ...args: any[]) => void;
     error: (observers: ((this: Timeline<T>, err: string | Error) => void)[], ...args: any[]) => void;
 };
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents<T>, T>;
+type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents<T>, T>;
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
+type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents<T>>;
+type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents<T>>;
 
 /**
  * Timeline represents a set of operations executed in order of definition,
@@ -80,14 +81,15 @@ export type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeC
 export abstract class Timeline<T extends Moments> {
 
     private _inheritingObservers: boolean;
-    private _parentObservers: ObserverGraph;
+    private _parentObservers: ObserverCollection;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
     private _asyncOverride = false;
 
-    constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
+    constructor(protected readonly moments: T, protected observers?: ObserverCollection) {
 
+        // TODO:: this work isn't correct
         if (objectDefinedNotNull(this.observers)) {
             this._inheritingObservers = true;
         } else {
@@ -142,7 +144,7 @@ export abstract class Timeline<T extends Moments> {
 
                     if (Reflect.has(target.observers, p)) {
                         // we trust outselves that this will be an array
-                        target.observers[p].length = 0;
+                        (<ObserverCollection>target.observers)[p].length = 0;
                         return true;
                     }
 
@@ -158,12 +160,13 @@ export abstract class Timeline<T extends Moments> {
      * Shorthand method to emit a logging event tied to this timeline
      *
      * @param message The message to log
-     * @param level The level at which the message applies (default: LogLevel.Info)
+     * @param level The level at which the message applies
      */
-    public log(message: string, level: LogLevel = LogLevel.Info): void {
+    public log(message: string, level: number): void {
         this.emit.log(message, level);
     }
 
+    // TODO:: WIP to correctly enable this capability
     public resetObservers(): void {
         if (!this._inheritingObservers && objectDefinedNotNull(this._parentObservers)) {
             this.observers = this._parentObservers;

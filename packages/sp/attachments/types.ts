@@ -1,17 +1,17 @@
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
-    deleteableWithETag,
-    IDeleteableWithETag,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
+    OLD_deleteableWithETag,
+    OLD_IDeleteableWithETag,
 } from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/queryable";
 import { tag } from "../telemetry.js";
 
 @defaultPath("AttachmentFiles")
-export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo[]> {
+export class _Attachments extends _OLD_SharePointQueryableCollection<IAttachmentInfo[]> {
 
     /**
     * Gets a Attachment File by filename
@@ -32,7 +32,7 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
      */
     @tag("ats.add")
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
-        const response = await spPost(this.clone(Attachments, `add(FileName='${name}')`, false), { body: content });
+        const response = await OLD_spPost(this.clone(Attachments, `add(FileName='${name}')`, false), { body: content });
         return {
             data: response,
             file: this.getByName(name),
@@ -78,11 +78,11 @@ export class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo
     }
 }
 export interface IAttachments extends _Attachments {}
-export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
+export const Attachments = OLD_spInvokableFactory<IAttachments>(_Attachments);
 
-export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
+export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInfo> {
 
-    public delete = deleteableWithETag("at");
+    public delete = OLD_deleteableWithETag("at");
 
     /**
      * Gets the contents of the file as text
@@ -130,7 +130,7 @@ export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
     @tag("at.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
-        await spPost(this.clone(Attachment, "$value", false), headers({ "X-HTTP-Method": "PUT" }, {
+        await OLD_spPost(this.clone(Attachment, "$value", false), headers({ "X-HTTP-Method": "PUT" }, {
             body: content,
         }));
 
@@ -145,7 +145,7 @@ export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
     @tag("at.recycle")
     public recycle(eTag = "*"): Promise<void> {
 
-        return spPost(this.clone(Attachment, "recycleObject"), headers({
+        return OLD_spPost(this.clone(Attachment, "recycleObject"), headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "DELETE",
         }));
@@ -156,8 +156,8 @@ export class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
         return this.clone(Attachment, "$value", false).usingParser(parser)();
     }
 }
-export interface IAttachment extends _Attachment, IDeleteableWithETag { }
-export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
+export interface IAttachment extends _Attachment, OLD_IDeleteableWithETag { }
+export const Attachment = OLD_spInvokableFactory<IAttachment>(_Attachment);
 
 export interface IAttachmentAddResult {
     file: IAttachment;

@@ -2,7 +2,7 @@ import { getGUID, isFunc } from "@pnp/core/util";
 import { extendFactory, headers } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
 import { odataUrlFrom } from "@pnp/sp/odata";
-import { spPost } from "@pnp/sp/operations";
+import { OLD_spPost } from "@pnp/sp/operations";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
@@ -79,7 +79,7 @@ extendFactory(Files, {
         chunkSize = 10485760
     ): Promise<IFileAddResult> {
 
-        const response: IFileInfo = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
+        const response: IFileInfo = await OLD_spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
         const file = File(odataUrlFrom(response));
 
         if ("function" === typeof (content as ReadStream).read) {

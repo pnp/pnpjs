@@ -1,18 +1,18 @@
 import {
-    _SharePointQueryableInstance,
-    ISharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
-    SharePointQueryableInstance,
-    IDeleteableWithETag,
-    deleteableWithETag,
+    _OLD_SharePointQueryableInstance,
+    OLD_ISharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
+    OLD_SharePointQueryableInstance,
+    OLD_IDeleteableWithETag,
+    OLD_deleteableWithETag,
 } from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/queryable";
 import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../odata.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { tag } from "../telemetry.js";
@@ -23,7 +23,7 @@ import { toResourcePath } from "../utils/toResourcePath.js";
  *
  */
 @defaultPath("files")
-export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
+export class _Files extends _OLD_SharePointQueryableCollection<IFileInfo[]> {
 
     /**
      * Gets a File by filename
@@ -47,7 +47,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      */
     @tag("fis.add")
     public async add(url: string, content: any, shouldOverWrite = true): Promise<IFileAddResult> {
-        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
+        const response = await OLD_spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });
         return {
@@ -82,7 +82,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
         path.push(")");
 
-        const resp: IFileInfo = await spPost(Files(this, path.join("")), { body: content });
+        const resp: IFileInfo = await OLD_spPost(Files(this, path.join("")), { body: content });
 
         return {
             data: resp,
@@ -103,7 +103,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
     @tag("fis.addChunked")
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        const response: IFileInfo = await spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
+        const response: IFileInfo = await OLD_spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
         const file = File(odataUrlFrom(response));
         return await file.setContentChunked(content, progress, chunkSize);
     }
@@ -117,7 +117,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      */
     @tag("fis.addTemplateFile")
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
-        const response = await spPost(this.clone(Files, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`, false));
+        const response = await OLD_spPost(this.clone(Files, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`, false));
         return {
             data: response,
             file: File(odataUrlFrom(response)),
@@ -125,22 +125,22 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
     }
 }
 export interface IFiles extends _Files { }
-export const Files = spInvokableFactory<IFiles>(_Files);
+export const Files = OLD_spInvokableFactory<IFiles>(_Files);
 
 /**
  * Describes a single File instance
  *
  */
-export class _File extends _SharePointQueryableInstance<IFileInfo> {
+export class _File extends _OLD_SharePointQueryableInstance<IFileInfo> {
 
-    public delete = deleteableWithETag("fi");
+    public delete = OLD_deleteableWithETag("fi");
 
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
      */
-    public get listItemAllFields(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "listItemAllFields"), "fi.listItemAllFields");
+    public get listItemAllFields(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "listItemAllFields"), "fi.listItemAllFields");
     }
 
     /**
@@ -159,7 +159,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.approve")
     public approve(comment = ""): Promise<void> {
-        return spPost(this.clone(File, `approve(comment='${escapeQueryStrValue(comment)}')`));
+        return OLD_spPost(this.clone(File, `approve(comment='${escapeQueryStrValue(comment)}')`));
     }
 
     /**
@@ -173,7 +173,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.cancelUpload")
     public cancelUpload(uploadId: string): Promise<void> {
-        return spPost(this.clone(File, `cancelUpload(uploadId=guid'${uploadId}')`, false));
+        return OLD_spPost(this.clone(File, `cancelUpload(uploadId=guid'${uploadId}')`, false));
     }
 
     /**
@@ -189,7 +189,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
             throw Error("The maximum comment length is 1023 characters.");
         }
 
-        return spPost(this.clone(File, `checkin(comment='${escapeQueryStrValue(comment)}',checkintype=${checkinType})`));
+        return OLD_spPost(this.clone(File, `checkin(comment='${escapeQueryStrValue(comment)}',checkintype=${checkinType})`));
     }
 
     /**
@@ -197,7 +197,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.checkout")
     public checkout(): Promise<void> {
-        return spPost(this.clone(File, "checkout"));
+        return OLD_spPost(this.clone(File, "checkout"));
     }
 
     /**
@@ -208,7 +208,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.copyTo")
     public copyTo(url: string, shouldOverWrite = true): Promise<void> {
-        return spPost(this.clone(File, `copyTo(strnewurl='${escapeQueryStrValue(url)}',boverwrite=${shouldOverWrite})`));
+        return OLD_spPost(this.clone(File, `copyTo(strnewurl='${escapeQueryStrValue(url)}',boverwrite=${shouldOverWrite})`));
     }
 
     /**
@@ -225,7 +225,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = extractWebUrl(absoluteUrl);
         const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        await OLD_spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
@@ -251,7 +251,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(this.clone(File, `deny(comment='${escapeQueryStrValue(comment)}')`));
+        return OLD_spPost(this.clone(File, `deny(comment='${escapeQueryStrValue(comment)}')`));
     }
 
     /**
@@ -262,7 +262,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.moveTo")
     public moveTo(url: string, moveOperations = MoveOperations.Overwrite): Promise<void> {
-        return spPost(this.clone(File, `moveTo(newurl='${escapeQueryStrValue(url)}',flags=${moveOperations})`));
+        return OLD_spPost(this.clone(File, `moveTo(newurl='${escapeQueryStrValue(url)}',flags=${moveOperations})`));
     }
 
     /**
@@ -279,7 +279,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = extractWebUrl(absoluteUrl);
         const hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-        await spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        await OLD_spPost(File(webBaseUrl, `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${hostUrl}${destUrl}`),
                 options: {
@@ -304,7 +304,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(this.clone(File, `publish(comment='${escapeQueryStrValue(comment)}')`));
+        return OLD_spPost(this.clone(File, `publish(comment='${escapeQueryStrValue(comment)}')`));
     }
 
     /**
@@ -314,7 +314,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.recycle")
     public recycle(): Promise<string> {
-        return spPost(this.clone(File, "recycle"));
+        return OLD_spPost(this.clone(File, "recycle"));
     }
 
     /**
@@ -324,7 +324,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.del-params")
     public async deleteWithParams(parameters: Partial<IFileDeleteParams>): Promise<void> {
-        return spPost(this.clone(File, "DeleteWithParameters"), body({ parameters }));
+        return OLD_spPost(this.clone(File, "DeleteWithParameters"), body({ parameters }));
     }
 
     /**
@@ -333,7 +333,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.undoCheckout")
     public undoCheckout(): Promise<void> {
-        return spPost(this.clone(File, "undoCheckout"));
+        return OLD_spPost(this.clone(File, "undoCheckout"));
     }
 
     /**
@@ -346,7 +346,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(this.clone(File, `unpublish(comment='${escapeQueryStrValue(comment)}')`));
+        return OLD_spPost(this.clone(File, `unpublish(comment='${escapeQueryStrValue(comment)}')`));
     }
 
     /**
@@ -412,7 +412,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     @tag("fi.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IFile> {
 
-        await spPost(this.clone(File, "$value", false), {
+        await OLD_spPost(this.clone(File, "$value", false), {
             body: content,
             headers: {
                 "X-HTTP-Method": "PUT",
@@ -479,7 +479,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.startUpload")
     protected async startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
-        let n = await spPost(this.clone(File, `startUpload(uploadId=guid'${uploadId}')`, false), { body: fragment });
+        let n = await OLD_spPost(this.clone(File, `startUpload(uploadId=guid'${uploadId}')`, false), { body: fragment });
         if (typeof n === "object") {
             // When OData=verbose the payload has the following shape:
             // { StartUpload: "10485760" }
@@ -501,7 +501,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.continueUpload")
     protected async continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
-        let n = await spPost(this.clone(File, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false), { body: fragment });
+        let n = await OLD_spPost(this.clone(File, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false), { body: fragment });
         if (typeof n === "object") {
             // When OData=verbose the payload has the following shape:
             // { ContinueUpload: "20971520" }
@@ -522,7 +522,7 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     @tag("fi.finishUpload")
     protected async finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<IFileAddResult> {
-        const response = await spPost(this.clone(File, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false), { body: fragment });
+        const response = await OLD_spPost(this.clone(File, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`, false), { body: fragment });
         return {
             data: response,
             file: File(odataUrlFrom(response)),
@@ -530,15 +530,15 @@ export class _File extends _SharePointQueryableInstance<IFileInfo> {
     }
 }
 
-export interface IFile extends _File, IDeleteableWithETag { }
-export const File = spInvokableFactory<IFile>(_File);
+export interface IFile extends _File, OLD_IDeleteableWithETag { }
+export const File = OLD_spInvokableFactory<IFile>(_File);
 
 /**
  * Describes a collection of Version objects
  *
  */
 @defaultPath("versions")
-export class _Versions extends _SharePointQueryableCollection {
+export class _Versions extends _OLD_SharePointQueryableCollection {
 
     /**
      * Gets a version by id
@@ -555,7 +555,7 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.deleteAll")
     public deleteAll(): Promise<void> {
-        return spPost(Versions(this, "deleteAll"));
+        return OLD_spPost(Versions(this, "deleteAll"));
     }
 
     /**
@@ -565,7 +565,7 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.deleteById")
     public deleteById(versionId: number): Promise<void> {
-        return spPost(this.clone(Versions, `deleteById(vid=${versionId})`));
+        return OLD_spPost(this.clone(Versions, `deleteById(vid=${versionId})`));
     }
 
     /**
@@ -575,7 +575,7 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.recycleByID")
     public recycleByID(versionId: number): Promise<void> {
-        return spPost(this.clone(Versions, `recycleByID(vid=${versionId})`));
+        return OLD_spPost(this.clone(Versions, `recycleByID(vid=${versionId})`));
     }
 
     /**
@@ -585,7 +585,7 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.deleteByLabel")
     public deleteByLabel(label: string): Promise<void> {
-        return spPost(this.clone(Versions, `deleteByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return OLD_spPost(this.clone(Versions, `deleteByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 
     /**
@@ -595,7 +595,7 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.recycleByLabel")
     public recycleByLabel(label: string): Promise<void> {
-        return spPost(this.clone(Versions, `recycleByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return OLD_spPost(this.clone(Versions, `recycleByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 
     /**
@@ -605,21 +605,21 @@ export class _Versions extends _SharePointQueryableCollection {
      */
     @tag("vers.restoreByLabel")
     public restoreByLabel(label: string): Promise<void> {
-        return spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return OLD_spPost(this.clone(Versions, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
 }
 export interface IVersions extends _Versions { }
-export const Versions = spInvokableFactory<IVersions>(_Versions);
+export const Versions = OLD_spInvokableFactory<IVersions>(_Versions);
 
 /**
  * Describes a single Version instance
  *
  */
-export class _Version extends _SharePointQueryableInstance {
-    public delete = deleteableWithETag("ver");
+export class _Version extends _OLD_SharePointQueryableInstance {
+    public delete = OLD_deleteableWithETag("ver");
 }
-export interface IVersion extends _Version, IDeleteableWithETag { }
-export const Version = spInvokableFactory<IVersion>(_Version);
+export interface IVersion extends _Version, OLD_IDeleteableWithETag { }
+export const Version = OLD_spInvokableFactory<IVersion>(_Version);
 
 /**
  * Types for document check in.

@@ -1,29 +1,29 @@
 import { assign, ITypedHash, isUrlAbsolute, combine, hOP } from "@pnp/core";
 import {
-    SharePointQueryable,
-    SharePointQueryableCollection,
-    SharePointQueryableInstance,
-    _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    _SharePointQueryableCollection,
-    ISharePointQueryableInstance,
-    ISharePointQueryable,
-    spInvokableFactory,
-    deleteableWithETag,
-    IDeleteableWithETag,
+    OLD_SharePointQueryable,
+    OLD_SharePointQueryableCollection,
+    OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableInstance,
+    OLD_ISharePointQueryableCollection,
+    _OLD_SharePointQueryableCollection,
+    OLD_ISharePointQueryableInstance,
+    OLD_ISharePointQueryable,
+    OLD_spInvokableFactory,
+    OLD_deleteableWithETag,
+    OLD_IDeleteableWithETag,
 } from "../sharepointqueryable.js";
 import { odataUrlFrom } from "../odata.js";
 import { IItem, Item } from "../items/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { tag } from "../telemetry.js";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("folders")
-export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
+export class _Folders extends _OLD_SharePointQueryableCollection<IFolderInfo[]> {
 
     /**
      * Gets a folder by it's name
@@ -42,7 +42,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
     @tag("fs.add")
     public async add(url: string): Promise<IFolderAddResult> {
 
-        const data = await spPost(this.clone(Folders, `add('${escapeQueryStrValue(url)}')`));
+        const data = await OLD_spPost(this.clone(Folders, `add('${escapeQueryStrValue(url)}')`));
 
         return {
             data,
@@ -59,7 +59,7 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
     @tag("fs.addUsingPath")
     public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
 
-        const data = await spPost(this.clone(Folders, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
+        const data = await OLD_spPost(this.clone(Folders, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
 
         return {
             data,
@@ -68,19 +68,19 @@ export class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
     }
 }
 export interface IFolders extends _Folders {}
-export const Folders = spInvokableFactory<IFolders>(_Folders);
+export const Folders = OLD_spInvokableFactory<IFolders>(_Folders);
 
 
-export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
+export class _Folder extends _OLD_SharePointQueryableInstance<IFolderInfo> {
 
-    public delete = deleteableWithETag("f");
+    public delete = OLD_deleteableWithETag("f");
 
     /**
      * Specifies the sequence in which content types are displayed.
      *
      */
-    public get contentTypeOrder(): ISharePointQueryableCollection {
-        return tag.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
+    public get contentTypeOrder(): OLD_ISharePointQueryableCollection {
+        return tag.configure(OLD_SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
     }
 
     /**
@@ -95,8 +95,8 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Gets this folder's list item field values
      *
      */
-    public get listItemAllFields(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
+    public get listItemAllFields(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
     }
 
     /**
@@ -111,24 +111,24 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Gets this folder's properties
      *
      */
-    public get properties(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
+    public get properties(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "properties"), "f.properties");
     }
 
     /**
      * Gets this folder's server relative url
      *
      */
-    public get serverRelativeUrl(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
+    public get serverRelativeUrl(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
     }
 
     /**
      * Gets a value that specifies the content type order.
      *
      */
-    public get uniqueContentTypeOrder(): ISharePointQueryableCollection {
-        return tag.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
+    public get uniqueContentTypeOrder(): OLD_ISharePointQueryableCollection {
+        return tag.configure(OLD_SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
     }
 
     /**
@@ -142,7 +142,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     @tag("f.recycle")
     public recycle(): Promise<string> {
-        return spPost(this.clone(Folder, "recycle"));
+        return OLD_spPost(this.clone(Folder, "recycle"));
     }
 
     /**
@@ -169,7 +169,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolder()"),
+        await OLD_spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolder()"),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
@@ -190,7 +190,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
+        await OLD_spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -217,7 +217,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"),
+        await OLD_spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
@@ -238,7 +238,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
+        await OLD_spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
@@ -260,7 +260,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     @tag("f.del-params")
     public async deleteWithParams(parameters: Partial<IFolderDeleteParams>): Promise<void> {
-        return spPost(this.clone(Folder, "DeleteWithParameters"), body({ parameters }));
+        return OLD_spPost(this.clone(Folder, "DeleteWithParameters"), body({ parameters }));
     }
 
     /**
@@ -269,7 +269,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * @param leafPath leafName of the new folder
      */
     public async addSubFolderUsingPath(leafPath: string): Promise<IFolder> {
-        await spPost(this.clone(Folder, "AddSubFolderUsingPath"), body({ leafPath: toResourcePath(leafPath) }));
+        await OLD_spPost(this.clone(Folder, "AddSubFolderUsingPath"), body({ leafPath: toResourcePath(leafPath) }));
         return this.folders.getByName(leafPath);
     }
 
@@ -319,7 +319,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
-        const d = await this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
+        const d = await this.clone(OLD_SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")();
 
         let shareable = Item(odataUrlFrom(d));
 
@@ -331,8 +331,8 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
         return shareable;
     }
 }
-export interface IFolder extends _Folder, IDeleteableWithETag { }
-export const Folder = spInvokableFactory<IFolder>(_Folder);
+export interface IFolder extends _Folder, OLD_IDeleteableWithETag { }
+export const Folder = OLD_spInvokableFactory<IFolder>(_Folder);
 
 /**
  * Describes result of adding a folder

@@ -2,7 +2,7 @@ import { SPRest } from "../rest.js";
 import { IWeb, Web } from "../webs/types.js";
 
 import "./web.js";
-import { SharePointQueryable } from "../sharepointqueryable.js";
+import { OLD_SharePointQueryable } from "../sharepointqueryable.js";
 
 export {
     IAppAddResult,
@@ -18,10 +18,10 @@ declare module "../rest" {
     }
 }
 
-SPRest.prototype.getTenantAppCatalogWeb = async function (this: SPRest): Promise<IWeb> {
+// SPRest.prototype.getTenantAppCatalogWeb = async function (this: SPRest): Promise<IWeb> {
 
-    return this.childConfigHook(async ({ options, runtime }) => {
-        const data: { CorporateCatalogUrl: string } = await SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)();
-        return Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime);
-    });
-};
+//     return this.childConfigHook(async ({ options, runtime }) => {
+//         const data: { CorporateCatalogUrl: string } = await OLD_SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)();
+//         return Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime);
+//     });
+// };

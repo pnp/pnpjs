@@ -1,19 +1,19 @@
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
-import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
+import { OLD_spPost } from "../operations.js";
+import { OLD_ISharePointQueryable, _OLD_SharePointQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { tag } from "../telemetry.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
-export class _SiteScripts extends _SharePointQueryable {
+export class _SiteScripts extends _OLD_SharePointQueryable {
 
-    constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
+    constructor(baseUrl: string | OLD_ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
 
     public execute<T>(props: any): Promise<T> {
-        return spPost<T>(this, body(props));
+        return OLD_spPost<T>(this, body(props));
     }
 
     /**
@@ -105,10 +105,10 @@ export class _SiteScripts extends _SharePointQueryable {
     }
 }
 export interface ISiteScripts extends _SiteScripts {}
-export const SiteScripts = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
+export const SiteScripts = (baseUrl: string | OLD_ISharePointQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
 
-type SiteScriptsCloneType = ISiteScripts & ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteScriptsCloneFactory = (baseUrl: string | ISharePointQueryable, methodName = ""): SiteScriptsCloneType => <any>SiteScripts(baseUrl, methodName);
+type SiteScriptsCloneType = ISiteScripts & OLD_ISharePointQueryable & { execute<T>(props: any): Promise<T> };
+const SiteScriptsCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, methodName = ""): SiteScriptsCloneType => <any>SiteScripts(baseUrl, methodName);
 
 /**
  * Result from creating or retrieving a site script

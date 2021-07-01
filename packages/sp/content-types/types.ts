@@ -1,21 +1,21 @@
 import { ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
-    SharePointQueryableCollection,
-    _SharePointQueryableInstance,
-    ISharePointQueryableCollection,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
-    deleteable,
-    IDeleteable,
+    OLD_SharePointQueryableCollection,
+    _OLD_SharePointQueryableInstance,
+    OLD_ISharePointQueryableCollection,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
+    OLD_deleteable,
+    OLD_IDeleteable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { metadata } from "../utils/metadata.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("contenttypes")
-export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeInfo[]> {
+export class _ContentTypes extends _OLD_SharePointQueryableCollection<IContentTypeInfo[]> {
 
     /**
      * Adds an existing contenttype to a content type collection
@@ -25,7 +25,7 @@ export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeIn
     @tag("cts.addAvailableContentType")
     public async addAvailableContentType(contentTypeId: string): Promise<IContentTypeAddResult> {
 
-        const data = await spPost(this.clone(ContentTypes, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }));
+        const data = await OLD_spPost(this.clone(ContentTypes, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }));
         return {
             contentType: this.getById(data.id),
             data: data,
@@ -65,18 +65,18 @@ export class _ContentTypes extends _SharePointQueryableCollection<IContentTypeIn
             "Name": name,
         }, additionalSettings));
 
-        const data = await spPost(this, postBody);
+        const data = await OLD_spPost(this, postBody);
 
         return { contentType: this.getById(data.id), data };
     }
 }
 export interface IContentTypes extends _ContentTypes {}
-export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
+export const ContentTypes = OLD_spInvokableFactory<IContentTypes>(_ContentTypes);
 
 
-export class _ContentType extends _SharePointQueryableInstance<IContentTypeInfo> {
+export class _ContentType extends _OLD_SharePointQueryableInstance<IContentTypeInfo> {
 
-    public delete = deleteable("ct");
+    public delete = OLD_deleteable("ct");
 
     /**
      * Gets the column (also known as field) references in the content type.
@@ -88,8 +88,8 @@ export class _ContentType extends _SharePointQueryableInstance<IContentTypeInfo>
     /**
      * Gets a value that specifies the collection of fields for the content type.
      */
-    public get fields(): ISharePointQueryableCollection {
-        return tag.configure(SharePointQueryableCollection(this, "fields"), "ct.fields");
+    public get fields(): OLD_ISharePointQueryableCollection {
+        return tag.configure(OLD_SharePointQueryableCollection(this, "fields"), "ct.fields");
     }
 
     /**
@@ -102,12 +102,12 @@ export class _ContentType extends _SharePointQueryableInstance<IContentTypeInfo>
     /**
      * Gets a value that specifies the collection of workflow associations for the content type.
      */
-    public get workflowAssociations(): ISharePointQueryableCollection {
-        return tag.configure(SharePointQueryableCollection(this, "workflowAssociations"), "ct.workflowAssociations");
+    public get workflowAssociations(): OLD_ISharePointQueryableCollection {
+        return tag.configure(OLD_SharePointQueryableCollection(this, "workflowAssociations"), "ct.workflowAssociations");
     }
 }
-export interface IContentType extends _ContentType, IDeleteable { }
-export const ContentType = spInvokableFactory<IContentType>(_ContentType);
+export interface IContentType extends _ContentType, OLD_IDeleteable { }
+export const ContentType = OLD_spInvokableFactory<IContentType>(_ContentType);
 
 /**
  * Represents the output of adding a content type
@@ -143,7 +143,7 @@ export interface IContentTypeInfo {
 }
 
 @defaultPath("fieldlinks")
-export class _FieldLinks extends _SharePointQueryableCollection<IFieldLinkInfo[]> {
+export class _FieldLinks extends _OLD_SharePointQueryableCollection<IFieldLinkInfo[]> {
 
     /**
     *  Gets a FieldLink by GUID id
@@ -155,11 +155,11 @@ export class _FieldLinks extends _SharePointQueryableCollection<IFieldLinkInfo[]
     }
 }
 export interface IFieldLinks extends _FieldLinks {}
-export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
+export const FieldLinks = OLD_spInvokableFactory<IFieldLinks>(_FieldLinks);
 
-export class _FieldLink extends _SharePointQueryableInstance<IFieldLinkInfo> { }
+export class _FieldLink extends _OLD_SharePointQueryableInstance<IFieldLinkInfo> { }
 export interface IFieldLink extends _FieldLink {}
-export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
+export const FieldLink = OLD_spInvokableFactory<IFieldLink>(_FieldLink);
 
 export interface IFieldLinkInfo {
     FieldInternalName: string | null;

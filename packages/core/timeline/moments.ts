@@ -1,5 +1,5 @@
-import { isArray } from "@pnp/core";
 import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
+import { isArray } from "../util.js";
 
 export function broadcast<T extends ObserverAction>(): (observers: T[], ...args: any[]) => void {
 

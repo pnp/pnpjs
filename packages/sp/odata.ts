@@ -1,4 +1,4 @@
-import { ISPInvokableFactory } from "./sharepointqueryable.js";
+import { OLD_ISPInvokableFactory } from "./sharepointqueryable.js";
 import { assign, combine, hOP, isUrlAbsolute } from "@pnp/core";
 import { Logger, LogLevel } from "@pnp/logging";
 import { ODataParser } from "@pnp/queryable";
@@ -47,7 +47,7 @@ export function odataUrlFrom(candidate: any): string {
 
 class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
-    constructor(protected factory: ISPInvokableFactory<any>) {
+    constructor(protected factory: OLD_ISPInvokableFactory<any>) {
         super();
     }
 
@@ -66,7 +66,7 @@ class SPODataEntityParserImpl<T, D> extends ODataParser<T & D> {
 
 class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
 
-    constructor(protected factory: ISPInvokableFactory<T>) {
+    constructor(protected factory: OLD_ISPInvokableFactory<T>) {
         super();
     }
 
@@ -87,10 +87,10 @@ class SPODataEntityArrayParserImpl<T, D> extends ODataParser<(T & D)[]> {
     }
 }
 
-export function spODataEntity<T, DataType = any>(factory: ISPInvokableFactory<T>): ODataParser<T & DataType> {
+export function spODataEntity<T, DataType = any>(factory: OLD_ISPInvokableFactory<T>): ODataParser<T & DataType> {
     return new SPODataEntityParserImpl<T, DataType>(factory);
 }
 
-export function spODataEntityArray<T, DataType = any>(factory: ISPInvokableFactory<T>): ODataParser<(T & DataType)[]> {
+export function spODataEntityArray<T, DataType = any>(factory: OLD_ISPInvokableFactory<T>): ODataParser<(T & DataType)[]> {
     return new SPODataEntityArrayParserImpl<T, DataType>(factory);
 }

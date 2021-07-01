@@ -1,15 +1,15 @@
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { body, headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spDelete, spPatch } from "../operations.js";
+import { OLD_spPost, OLD_spDelete, OLD_spPatch } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("subscriptions")
-export class _Subscriptions extends _SharePointQueryableCollection {
+export class _Subscriptions extends _OLD_SharePointQueryableCollection {
 
     /**
     * Returns all the webhook subscriptions or the specified webhook subscription
@@ -41,15 +41,15 @@ export class _Subscriptions extends _SharePointQueryableCollection {
             postBody.clientState = clientState;
         }
 
-        const data = await spPost(this, body(postBody, headers({ "Content-Type": "application/json" })));
+        const data = await OLD_spPost(this, body(postBody, headers({ "Content-Type": "application/json" })));
 
         return { data, subscription: this.getById(data.id) };
     }
 }
 export interface ISubscriptions extends _Subscriptions {}
-export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
+export const Subscriptions = OLD_spInvokableFactory<ISubscriptions>(_Subscriptions);
 
-export class _Subscription extends _SharePointQueryableInstance {
+export class _Subscription extends _OLD_SharePointQueryableInstance {
 
     /**
      * Renews this webhook subscription
@@ -75,7 +75,7 @@ export class _Subscription extends _SharePointQueryableInstance {
             postBody.clientState = clientState;
         }
 
-        const data = await spPatch(this, body(postBody, headers({ "Content-Type": "application/json" })));
+        const data = await OLD_spPatch(this, body(postBody, headers({ "Content-Type": "application/json" })));
 
         return { data, subscription: this };
     }
@@ -86,11 +86,11 @@ export class _Subscription extends _SharePointQueryableInstance {
      */
     @tag("sub.delete")
     public delete(): Promise<void> {
-        return spDelete(this);
+        return OLD_spDelete(this);
     }
 }
 export interface ISubscription extends _Subscription {}
-export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
+export const Subscription = OLD_spInvokableFactory<ISubscription>(_Subscription);
 
 /**
  * Result from adding a new subscription

@@ -1,19 +1,19 @@
 import { ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
-    IDeleteable,
-    deleteable,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
+    OLD_IDeleteable,
+    OLD_deleteable,
 } from "../sharepointqueryable.js";
 import { metadata } from "../utils/metadata.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("views")
-export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
+export class _Views extends _OLD_SharePointQueryableCollection<IViewInfo[]> {
 
     /**
      * Adds a new view to the collection
@@ -30,7 +30,7 @@ export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
             "Title": title,
         }, additionalSettings));
 
-        const data = await spPost(this.clone(Views, null), postBody);
+        const data = await OLD_spPost(this.clone(Views, null), postBody);
 
         return {
             data,
@@ -57,11 +57,11 @@ export class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
     }
 }
 export interface IViews extends _Views {}
-export const Views = spInvokableFactory<IViews>(_Views);
+export const Views = OLD_spInvokableFactory<IViews>(_Views);
 
-export class _View extends _SharePointQueryableInstance<IViewInfo> {
+export class _View extends _OLD_SharePointQueryableInstance<IViewInfo> {
 
-    public delete = deleteable("vw");
+    public delete = OLD_deleteable("vw");
 
     public get fields(): IViewFields {
         return ViewFields(this);
@@ -90,14 +90,14 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
      */
     @tag("v.setViewXml")
     public setViewXml(viewXml: string): Promise<void> {
-        return spPost(this.clone(View, "SetViewXml"), body({ viewXml }));
+        return OLD_spPost(this.clone(View, "SetViewXml"), body({ viewXml }));
     }
 }
-export interface IView extends _View, IDeleteable { }
-export const View = spInvokableFactory<IView>(_View);
+export interface IView extends _View, OLD_IDeleteable { }
+export const View = OLD_spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: string }> {
+export class _ViewFields extends _OLD_SharePointQueryableCollection<{ SchemaXml: string }> {
 
     /**
      * Gets a value that specifies the XML schema that represents the collection.
@@ -114,7 +114,7 @@ export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: str
      */
     @tag("vfs.add")
     public add(fieldTitleOrInternalName: string): Promise<void> {
-        return spPost(this.clone(ViewFields, `addviewfield('${fieldTitleOrInternalName}')`));
+        return OLD_spPost(this.clone(ViewFields, `addviewfield('${fieldTitleOrInternalName}')`));
     }
 
     /**
@@ -125,7 +125,7 @@ export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: str
      */
     @tag("vfs.move")
     public move(field: string, index: number): Promise<void> {
-        return spPost(this.clone(ViewFields, "moveviewfieldto"), body({ field, index }));
+        return OLD_spPost(this.clone(ViewFields, "moveviewfieldto"), body({ field, index }));
     }
 
     /**
@@ -133,7 +133,7 @@ export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: str
      */
     @tag("vfs.removeAll")
     public removeAll(): Promise<void> {
-        return spPost(this.clone(ViewFields, "removeallviewfields"));
+        return OLD_spPost(this.clone(ViewFields, "removeallviewfields"));
     }
 
     /**
@@ -143,11 +143,11 @@ export class _ViewFields extends _SharePointQueryableCollection<{ SchemaXml: str
      */
     @tag("vfs.remove")
     public remove(fieldInternalName: string): Promise<void> {
-        return spPost(this.clone(ViewFields, `removeviewfield('${fieldInternalName}')`));
+        return OLD_spPost(this.clone(ViewFields, `removeviewfield('${fieldInternalName}')`));
     }
 }
 export interface IViewFields extends _ViewFields {}
-export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
+export const ViewFields = OLD_spInvokableFactory<IViewFields>(_ViewFields);
 
 export interface IViewAddResult {
     view: IView;

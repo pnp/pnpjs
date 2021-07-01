@@ -1,13 +1,13 @@
 import {
-    SharePointQueryable,
-    _SharePointQueryableInstance,
-    ISharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    ISharePointQueryable,
-    SharePointQueryableInstance,
-    spInvokableFactory,
-    deleteableWithETag,
-    IDeleteableWithETag,
+    OLD_SharePointQueryable,
+    _OLD_SharePointQueryableInstance,
+    OLD_ISharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_ISharePointQueryable,
+    OLD_SharePointQueryableInstance,
+    OLD_spInvokableFactory,
+    OLD_deleteableWithETag,
+    OLD_IDeleteableWithETag,
 } from "../sharepointqueryable.js";
 import { assign, ITypedHash, hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
@@ -16,7 +16,7 @@ import { IList } from "../lists/index.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { metadata } from "../utils/metadata.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 
@@ -25,7 +25,7 @@ import { IResourcePath } from "../utils/toResourcePath.js";
  *
  */
 @defaultPath("items")
-export class _Items extends _SharePointQueryableCollection {
+export class _Items extends _OLD_SharePointQueryableCollection {
 
     /**
     * Gets an Item by id
@@ -139,7 +139,7 @@ export class _Items extends _SharePointQueryableCollection {
 
         const postBody = body(assign(metadata(listItemEntityType), properties));
 
-        const promise = spPost<{ Id: number }>(this.clone(Items, ""), postBody).then((data) => {
+        const promise = OLD_spPost<{ Id: number }>(this.clone(Items, ""), postBody).then((data) => {
             return {
                 data: data,
                 item: this.getById(data.Id),
@@ -164,54 +164,54 @@ export class _Items extends _SharePointQueryableCollection {
     }
 }
 export interface IItems extends _Items { }
-export const Items = spInvokableFactory<IItems>(_Items);
+export const Items = OLD_spInvokableFactory<IItems>(_Items);
 
 /**
  * Descrines a single Item instance
  *
  */
-export class _Item extends _SharePointQueryableInstance {
+export class _Item extends _OLD_SharePointQueryableInstance {
 
-    public delete = deleteableWithETag("i");
+    public delete = OLD_deleteableWithETag("i");
 
     /**
      * Gets the effective base permissions for the item
      *
      */
-    public get effectiveBasePermissions(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
+    public get effectiveBasePermissions(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
     }
 
     /**
      * Gets the effective base permissions for the item in a UI context
      *
      */
-    public get effectiveBasePermissionsForUI(): ISharePointQueryable {
-        return tag.configure(SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
+    public get effectiveBasePermissionsForUI(): OLD_ISharePointQueryable {
+        return tag.configure(OLD_SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
     }
 
     /**
      * Gets the field values for this list item in their HTML representation
      *
      */
-    public get fieldValuesAsHTML(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
+    public get fieldValuesAsHTML(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
     }
 
     /**
      * Gets the field values for this list item in their text representation
      *
      */
-    public get fieldValuesAsText(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
+    public get fieldValuesAsText(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
     }
 
     /**
      * Gets the field values for this list item for use in editing controls
      *
      */
-    public get fieldValuesForEdit(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
+    public get fieldValuesForEdit(): OLD_ISharePointQueryableInstance {
+        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
     }
 
     /**
@@ -246,7 +246,7 @@ export class _Item extends _SharePointQueryableInstance {
         removeDependency();
 
         const poster = tag.configure(this.clone(Item).usingParser(new ItemUpdatedParser()), "i.update");
-        const data = await spPost(poster, postBody);
+        const data = await OLD_spPost(poster, postBody);
 
         return {
             data,
@@ -259,7 +259,7 @@ export class _Item extends _SharePointQueryableInstance {
      */
     @tag("i.recycle")
     public recycle(): Promise<string> {
-        return spPost<string>(this.clone(Item, "recycle"));
+        return OLD_spPost<string>(this.clone(Item, "recycle"));
     }
 
     /**
@@ -269,7 +269,7 @@ export class _Item extends _SharePointQueryableInstance {
      */
     @tag("i.del-params")
     public async deleteWithParams(parameters: Partial<IItemDeleteParams>): Promise<void> {
-        return spPost(this.clone(Item, "DeleteWithParameters"), body({ parameters }));
+        return OLD_spPost(this.clone(Item, "DeleteWithParameters"), body({ parameters }));
     }
 
     /**
@@ -283,7 +283,7 @@ export class _Item extends _SharePointQueryableInstance {
         const i = this.clone(Item, "getWOPIFrameUrl(@action)");
         i.query.set("@action", <any>action);
 
-        const data = await spPost(i);
+        const data = await OLD_spPost(i);
 
         // handle verbose mode
         if (hOP(data, "GetWOPIFrameUrl")) {
@@ -301,7 +301,7 @@ export class _Item extends _SharePointQueryableInstance {
      */
     @tag("i.validateUpdateListItem")
     public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
-        return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
+        return OLD_spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
     }
 
     /**
@@ -356,15 +356,15 @@ export class _Item extends _SharePointQueryableInstance {
             this.list.getListItemEntityTypeFullName();
     }
 }
-export interface IItem extends _Item, IDeleteableWithETag { }
-export const Item = spInvokableFactory<IItem>(_Item);
+export interface IItem extends _Item, OLD_IDeleteableWithETag { }
+export const Item = OLD_spInvokableFactory<IItem>(_Item);
 
 /**
  * Describes a collection of Version objects
  *
  */
 @defaultPath("versions")
-export class _ItemVersions extends _SharePointQueryableCollection {
+export class _ItemVersions extends _OLD_SharePointQueryableCollection {
     /**
      * Gets a version by id
      *
@@ -375,17 +375,17 @@ export class _ItemVersions extends _SharePointQueryableCollection {
     }
 }
 export interface IItemVersions extends _ItemVersions { }
-export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
+export const ItemVersions = OLD_spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**
  * Describes a single Version instance
  *
  */
-export class _ItemVersion extends _SharePointQueryableInstance {
-    public delete = deleteableWithETag("iv");
+export class _ItemVersion extends _OLD_SharePointQueryableInstance {
+    public delete = OLD_deleteableWithETag("iv");
 }
-export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
-export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
+export interface IItemVersion extends _ItemVersion, OLD_IDeleteableWithETag { }
+export const ItemVersion = OLD_spInvokableFactory<IItemVersion>(_ItemVersion);
 
 /**
  * Provides paging functionality for list items

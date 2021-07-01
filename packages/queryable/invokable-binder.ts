@@ -1,4 +1,4 @@
-import { IQueryable } from "./queryable.js";
+import { OLD_IQueryable } from "./queryable.js";
 import { IRequestContext } from "./pipeline.js";
 import { IFetchOptions } from "@pnp/core";
 import { extensionOrDefault } from "./invokable-extensions.js";
@@ -7,9 +7,9 @@ export type IHybrid<R = any, T = any> = T & {
     (this: T, ...args: any[]): Promise<R>;
 };
 
-export type IInvoker<R> = (this: IQueryable<any>, ...args: any[]) => Promise<R>;
+export type IInvoker<R> = (this: OLD_IQueryable<any>, ...args: any[]) => Promise<R>;
 
-const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R & IInvokable => {
+const invokableBinder = (invoker: IInvoker<OLD_IQueryable<any>>) => <R>(constructor: { new(...args: any[]): any }): (...args: any[]) => R & IInvokable => {
 
     return (...args: any[]) => {
 
@@ -38,7 +38,7 @@ const invokableBinder = (invoker: IInvoker<IQueryable<any>>) => <R>(constructor:
     };
 };
 
-export const invokableFactory = invokableBinder(function <R = any>(this: IQueryable<R>, options?: IFetchOptions): Promise<R> {
+export const invokableFactory = invokableBinder(function <R = any>(this: OLD_IQueryable<R>, options?: IFetchOptions): Promise<R> {
     return this.defaultAction(options);
 });
 
