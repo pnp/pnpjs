@@ -1,6 +1,6 @@
 import { Web } from "./types.js";
 import { SPRest2 } from "../rest-2.js";
-import { SPBatch } from "../batch.js";
+import { Queryable2 } from "@pnp/queryable";
 
 export {
     IWeb,
@@ -26,7 +26,7 @@ declare module "../rest-2" {
          * Creates a new batch object for use with the SharePointQueryable.addToBatch method
          *
          */
-        createBatch(): SPBatch;
+        createBatch(): [(instance: Queryable2) => Queryable2, () => Promise<void>];
     }
 }
 
@@ -38,8 +38,6 @@ Reflect.defineProperty(SPRest2.prototype, "web", {
     },
 });
 
-SPRest2.prototype.createBatch = function (this: SPRest2): SPBatch {
-    return null;
-    // return this.web.createBatch();
+SPRest2.prototype.createBatch = function (this: SPRest2): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+    return this.web.createBatch();
 };
-

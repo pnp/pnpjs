@@ -1,14 +1,30 @@
-import { getGUID, isUrlAbsolute, combine } from "@pnp/core";
+import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
-import { HttpRequestError, Queryable2 } from "@pnp/queryable";
+import { InjectHeaders, parseBinderWithErrorCheck, Queryable2 } from "@pnp/queryable";
 import { spPost } from "../operations";
 import { _SharePointQueryable } from "../sharepointqueryable";
-import { IWeb } from ".";
+import { IWeb } from "./types.js";
+
+function BatchParse(): (instance: Queryable2) => Queryable2 {
+
+    return parseBinderWithErrorCheck(async (response): Promise<Response[]> => {
+
+        const text = await response.text();
+        return parseResponse(text);
+    });
+}
 
 class BatchQueryable extends _SharePointQueryable {
 
     constructor(web: IWeb, public requestBaseUrl = web.toUrl().replace(/_api\/.*$/i, "")) {
+
         super(requestBaseUrl, "_api/$batch");
+
+        // this will copy over the current observables from the web associated with this batch
+        this.using(From_JulieHatesThisName(web, "replace"));
+
+        // this will replace any other parsing present
+        this.using(BatchParse());
     }
 }
 
@@ -131,23 +147,14 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
 
         batchBody.push(`--batch_${this.batchId}--\n`);
 
-        const batchOptions = {
+        // we need to set our own headers here
+        batchQuery.using(InjectHeaders({
+            "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
+        }));
+
+        const responses: Response[] = await spPost(batchQuery, {
             "body": batchBody.join(""),
-            "headers": {
-                "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
-            },
-        };
-
-        const fetchResponse = await spPost(batchQuery, batchOptions);
-
-        if (!fetchResponse.ok) {
-            // the entire batch resulted in an error and we need to handle that better #1356
-            // things consistently with the rest of the http errors
-            throw (await HttpRequestError.init(fetchResponse));
-        }
-
-        const text = await fetchResponse.text();
-        const responses = parseResponse(text);
+        });
 
         if (responses.length !== requests.length) {
             throw Error("Could not properly parse responses to match requests in batch.");
@@ -203,6 +210,12 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
     return [register, execute];
 }
 
+/**
+ * Parses the text body returned by the server from a batch request
+ *
+ * @param body String body from the server response
+ * @returns Parsed response objects
+ */
 function parseResponse(body: string): Response[] {
 
     const responses: Response[] = [];

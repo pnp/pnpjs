@@ -29,6 +29,11 @@ export type ValidObserver = ObserverAction | ObserverFunction;
 export type Moments = Record<string, (this: Timeline<any>, handlers: ValidObserver[], ...args: any[]) => void>;
 
 /**
+ * Represents the collection of observers
+ */
+export type ObserverCollection = Record<string, ValidObserver[]>;
+
+/**
  * A type used to represent the proxied Timeline.on property
  */
  type DistributeOn<T extends Moments, R extends Moments = T> =
@@ -45,8 +50,6 @@ type DistributeEmit<T extends Moments> =
  */
 type DistributeClear<T extends Moments> =
     { [Prop in string & keyof T]: () => boolean };
-
-type ObserverGraph = Record<string, ValidObserver>;
 
 /**
  * Virtual events that are present on all Timelines
@@ -78,14 +81,15 @@ type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<De
 export abstract class Timeline<T extends Moments> {
 
     private _inheritingObservers: boolean;
-    private _parentObservers: ObserverGraph;
+    private _parentObservers: ObserverCollection;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
     private _clearProxy: typeof Proxy | null = null;
     private _asyncOverride = false;
 
-    constructor(protected readonly moments: T, protected observers?: ObserverGraph) {
+    constructor(protected readonly moments: T, protected observers?: ObserverCollection) {
 
+        // TODO:: this work isn't correct
         if (objectDefinedNotNull(this.observers)) {
             this._inheritingObservers = true;
         } else {
@@ -140,7 +144,7 @@ export abstract class Timeline<T extends Moments> {
 
                     if (Reflect.has(target.observers, p)) {
                         // we trust outselves that this will be an array
-                        target.observers[p].length = 0;
+                        (<ObserverCollection>target.observers)[p].length = 0;
                         return true;
                     }
 

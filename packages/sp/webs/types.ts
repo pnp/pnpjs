@@ -14,7 +14,6 @@ import {
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../odata.js";
-import { SPBatch } from "../batch.js";
 import { metadata } from "../utils/metadata.js";
 import { Site, IOpenWebByIdResult } from "../sites/index.js";
 import { spGet, spPost } from "../operations.js";

@@ -4,8 +4,10 @@ import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get, 
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { sp2, createBatch, _SharePointQueryable } from "@pnp/sp";
+import { sp2, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
+import { graph } from "@pnp/graph/rest.js";
 
 declare var process: { exit(code?: number): void };
 
@@ -75,13 +77,13 @@ export async function Example(settings: ITestingSettings) {
 
         const sp = sp2(settings.testing.sp.url).using(testingConfig(settings));
 
-        const yyy = await sp.web.availableWebTemplates()();
+        const [batch, execute] = sp.web.createBatch();
 
-        // const [y, h] = createBatch(sp.web);
+        sp.web.using(batch)();
+ 
+        sp.web.availableWebTemplates().using(batch)();
 
-        // const yyyyy = await sp.web();
-
-        console.log(JSON.stringify(yyy));
+        await execute();
 
     } catch (e) {
 

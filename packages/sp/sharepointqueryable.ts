@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/core";
+import { combine, isUrlAbsolute, assign, jsS, IFetchOptions, ObserverCollection } from "@pnp/core";
 import { IInvokable, invokableFactory, Queryable2, invokableFactory2, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
@@ -28,12 +28,12 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
      * Creates a new instance of the SharePointQueryable class
      *
      * @constructor
-     * @param baseUrl A string or SharePointQueryable that should form the base part of the url
+     * @param base A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(baseUrl: string | ISharePointQueryable | OLD_ISharePointQueryable, path?: string) {
+    constructor(base: string | ISharePointQueryable, path: string) {
 
-        if (typeof baseUrl === "string") {
+        if (typeof base === "string") {
 
             let url = "";
             let parentUrl = "";
@@ -41,38 +41,40 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
 
-            if (isUrlAbsolute(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
-                parentUrl = baseUrl;
-                url = combine(baseUrl, path);
-            } else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
+            if (isUrlAbsolute(base) || base.lastIndexOf("/") < 0) {
+                parentUrl = base;
+                url = combine(base, path);
+            } else if (base.lastIndexOf("/") > base.lastIndexOf("(")) {
                 // .../items(19)/fields
-                const index = baseUrl.lastIndexOf("/");
-                parentUrl = baseUrl.slice(0, index);
-                path = combine(baseUrl.slice(index), path);
+                const index = base.lastIndexOf("/");
+                parentUrl = base.slice(0, index);
+                path = combine(base.slice(index), path);
                 url = combine(parentUrl, path);
             } else {
                 // .../items(19)
-                const index = baseUrl.lastIndexOf("(");
-                parentUrl = baseUrl.slice(0, index);
-                url = combine(baseUrl, path);
+                const index = base.lastIndexOf("(");
+                parentUrl = base.slice(0, index);
+                url = combine(base, path);
             }
 
             // init base with corrected string value
             super(url);
 
+            this.parentUrl = parentUrl;
+
         } else {
 
-            // init base with values as passed
-            // TODO:: remove typing here once we are done refactoring
-            super(<ISharePointQueryable>baseUrl, path);
+            super(base, path);
 
-            this.parentUrl = baseUrl.toUrl();
+            this.parentUrl = base.toUrl();
 
-            const target = baseUrl.query.get("@target");
+            const target = base.query.get("@target");
             if (target !== undefined) {
                 this.query.set("@target", target);
             }
         }
+
+
 
         // post init actions
         // TODO:: I think we can remove this based on the new architecture

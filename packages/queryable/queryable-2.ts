@@ -60,8 +60,9 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
         this._query = new Map<string, string>();
     }
 
-    public using(behavior: (intance: this) => this): this {
-        return behavior(this);
+    public using(behavior: (intance: Timeline<any>) => Timeline<any>): this {
+        behavior(this);
+        return this;
     }
 
     /**
@@ -167,7 +168,7 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
     readonly query: Map<string, string>;
     (this: any, init?: RequestInit): Promise<R>;
-    using(behavior: (intance: this) => this): this;
+    using(behavior: (intance: Timeline<any>) => Timeline<any>): this;
     toRequestUrl(): string;
     toUrl(): string;
 }
