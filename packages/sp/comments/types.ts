@@ -1,18 +1,18 @@
 import { defaultPath } from "../decorators.js";
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { assign } from "@pnp/core";
 import { odataUrlFrom } from "../odata.js";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("comments")
-export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
+export class _Comments extends _OLD_SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new comment to this collection
@@ -28,7 +28,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
 
         const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
-        const d = await spPost(this.clone(Comments, null), postBody);
+        const d = await OLD_spPost(this.clone(Comments, null), postBody);
 
         return assign(this.getById(d.id), d);
     }
@@ -46,13 +46,13 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
      * Deletes all the comments in this collection
      */
     public clear(): Promise<boolean> {
-        return spPost<boolean>(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
+        return OLD_spPost<boolean>(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
     }
 }
 export interface IComments extends _Comments {}
-export const Comments = spInvokableFactory<IComments>(_Comments);
+export const Comments = OLD_spInvokableFactory<IComments>(_Comments);
 
-export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
+export class _Comment extends _OLD_SharePointQueryableInstance<ICommentInfo> {
 
     /**
      * A comment's replies
@@ -66,7 +66,7 @@ export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
      */
     @tag("com.like")
     public like(): Promise<void> {
-        return spPost(this.clone(Comment, "Like"));
+        return OLD_spPost(this.clone(Comment, "Like"));
     }
 
     /**
@@ -74,7 +74,7 @@ export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
      */
     @tag("com.unlike")
     public unlike(): Promise<void> {
-        return spPost(this.clone(Comment, "Unlike"));
+        return OLD_spPost(this.clone(Comment, "Unlike"));
     }
 
     /**
@@ -82,14 +82,14 @@ export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
      */
     @tag("com.delete")
     public delete(): Promise<void> {
-        return spPost(this.clone(Comment, "DeleteComment"));
+        return OLD_spPost(this.clone(Comment, "DeleteComment"));
     }
 }
 export interface IComment extends _Comment {}
-export const Comment = spInvokableFactory<IComment>(_Comment);
+export const Comment = OLD_spInvokableFactory<IComment>(_Comment);
 
 @defaultPath("replies")
-export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
+export class _Replies extends _OLD_SharePointQueryableCollection<ICommentInfo[]> {
 
     /**
      * Adds a new reply to this collection
@@ -105,13 +105,13 @@ export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
 
         const postBody = body(assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
 
-        const d = await spPost(this.clone(Replies, null), postBody);
+        const d = await OLD_spPost(this.clone(Replies, null), postBody);
 
         return assign(Comment(odataUrlFrom(d)), d);
     }
 }
 export interface IReplies extends _Replies {}
-export const Replies = spInvokableFactory<IReplies>(_Replies);
+export const Replies = OLD_spInvokableFactory<IReplies>(_Replies);
 
 /**
  * Defines the information for a comment author

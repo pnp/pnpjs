@@ -1,16 +1,16 @@
 import { body } from "@pnp/queryable";
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { SPBatch } from "../batch.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("features")
-export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
+export class _Features extends _OLD_SharePointQueryableCollection<IFeatureInfo[]> {
 
     /**
      * Adds (activates) the specified feature
@@ -21,7 +21,7 @@ export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
     @tag("fes.add")
     public async add(id: string, force = false): Promise<IFeatureAddResult> {
 
-        const data = await spPost(this.clone(Features, "add"), body({
+        const data = await OLD_spPost(this.clone(Features, "add"), body({
             featdefScope: 0,
             featureId: id,
             force: force,
@@ -53,16 +53,16 @@ export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
     @tag("fes.remove")
     public remove(id: string, force = false): Promise<any> {
 
-        return spPost(this.clone(Features, "remove"), body({
+        return OLD_spPost(this.clone(Features, "remove"), body({
             featureId: id,
             force: force,
         }));
     }
 }
 export interface IFeatures extends _Features {}
-export const Features = spInvokableFactory<IFeatures>(_Features);
+export const Features = OLD_spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
+export class _Feature extends _OLD_SharePointQueryableInstance<IFeatureInfo> {
 
     /**
      * Removes (deactivates) the feature
@@ -84,7 +84,7 @@ export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
     }
 }
 export interface IFeature extends _Feature {}
-export const Feature = spInvokableFactory<IFeature>(_Feature);
+export const Feature = OLD_spInvokableFactory<IFeature>(_Feature);
 
 /**
  * Result from adding (activating) a feature to the collection

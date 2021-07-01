@@ -225,3 +225,22 @@ export async function delay(ms: number): Promise<void> {
         setTimeout(resolve, ms);
     });
 }
+
+export function ensureHeaders(init: RequestInit, headers: Record<string, string>): RequestInit {
+
+    if (!objectDefinedNotNull(init)) {
+        init = {};
+    }
+
+    if (!objectDefinedNotNull(init.headers)) {
+        init.headers = {};
+    }
+
+    const keys = Object.getOwnPropertyNames(headers);
+
+    for (let i = 0; i < keys.length; i++) {
+        init.headers[keys[i]] = headers[keys[i]];
+    }
+
+    return init;
+}

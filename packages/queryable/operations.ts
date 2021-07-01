@@ -26,6 +26,10 @@ export function put<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> 
     return this.execute(ensureInit("PUT", init));
 }
 
+export function patch<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
+    return this.execute(ensureInit("PATCH", init));
+}
+
 export function del<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
     return this.execute(ensureInit("DELETE", init));
 }

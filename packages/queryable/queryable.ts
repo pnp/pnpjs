@@ -85,7 +85,7 @@ export interface IQueryableData<DefaultActionType = any> {
     method?: string;
 }
 
-export interface IQueryable<DefaultActionType> {
+export interface OLD_IQueryable<DefaultActionType> {
     data: Partial<IQueryableData<DefaultActionType>>;
     query: Map<string, string>;
     append(pathPart: string): void;
@@ -95,7 +95,7 @@ export interface IQueryable<DefaultActionType> {
     toUrl(): string;
     concat(pathPart: string): this;
     configure(options: IConfigOptions): this;
-    configureFrom(o: IQueryable<DefaultActionType>): this;
+    configureFrom(o: OLD_IQueryable<DefaultActionType>): this;
     usingCaching(options?: ICachingOptions): this;
     usingParser(parser: IODataParser<any>): this;
     withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
@@ -105,7 +105,7 @@ export interface IQueryable<DefaultActionType> {
     setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
 }
 
-export abstract class Queryable<DefaultActionType = any> implements IQueryable<DefaultActionType> {
+export abstract class OLD_Queryable<DefaultActionType = any> implements OLD_IQueryable<DefaultActionType> {
 
     private _data: Partial<IQueryableData<DefaultActionType>>;
     private _runtime: Runtime;
@@ -216,7 +216,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    *
    * @param o Instance from which options should be taken
    */
-    public configureFrom(o: IQueryable<any>): this {
+    public configureFrom(o: OLD_IQueryable<any>): this {
 
         mergeOptions(this.data.options, o.data.options);
 
@@ -349,7 +349,7 @@ export abstract class Queryable<DefaultActionType = any> implements IQueryable<D
    * @param target Instance to which data is written
    * @param settings [Optional] Settings controlling how clone is applied
    */
-    protected cloneTo<T extends IQueryable<any>>(target: T, settings: { includeBatch?: boolean; includeQuery?: boolean } = {}): T {
+    protected cloneTo<T extends OLD_IQueryable<any>>(target: T, settings: { includeBatch?: boolean; includeQuery?: boolean } = {}): T {
 
         // default values for settings
         settings = assign({

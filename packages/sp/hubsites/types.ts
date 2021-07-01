@@ -1,7 +1,7 @@
 import {
-    _SharePointQueryableInstance,
-    _SharePointQueryableCollection,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    _OLD_SharePointQueryableCollection,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { ISerializableNavigationNode } from "../navigation/types.js";
 import { defaultPath } from "../decorators.js";
@@ -9,7 +9,7 @@ import { Site, ISite } from "../sites/types.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("_api/hubsites")
-export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
+export class _HubSites extends _OLD_SharePointQueryableCollection<IHubSiteInfo[]> {
 
     /**
      * Gets a Hub Site from the collection by id
@@ -22,9 +22,9 @@ export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
     }
 }
 export interface IHubSites extends _HubSites {}
-export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
+export const HubSites = OLD_spInvokableFactory<IHubSites>(_HubSites);
 
-export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
+export class _HubSite extends _OLD_SharePointQueryableInstance<IHubSiteInfo> {
 
     /**
      * Gets the ISite instance associated with this hubsite
@@ -36,7 +36,7 @@ export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
     }
 }
 export interface IHubSite extends _HubSite {}
-export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
+export const HubSite = OLD_spInvokableFactory<IHubSite>(_HubSite);
 
 export interface IHubSiteInfo {
     ID: string;

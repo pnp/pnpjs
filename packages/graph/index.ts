@@ -30,3 +30,5 @@ export * from "./operations.js";
 export {
     toAbsoluteUrl,
 } from "./utils/toabsoluteurl.js";
+
+export * from "./behaviors/index.js";

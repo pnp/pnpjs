@@ -1,6 +1,7 @@
-import { ISharePointQueryable } from "./sharepointqueryable.js";
+import { OLD_ISharePointQueryable } from "./sharepointqueryable.js";
 import { stringIsNullOrEmpty } from "@pnp/core";
-import { headers } from "@pnp/queryable";
+
+// TODO:: rethink all this.
 
 /**
  * Includes this method name in the X-ClientService-ClientTag used to record pnpjs usage
@@ -15,9 +16,10 @@ export function tag(name: string) {
         }
         const originalMethod = descriptor.value;
 
-        descriptor.value = async function (this: ISharePointQueryable, ...args: any[]) {
+        descriptor.value = async function (this: OLD_ISharePointQueryable, ...args: any[]) {
 
-            this.configure(headers({ "X-PnPjs-Tracking": name }));
+            // TODO:: reimagine this
+            // this.configure(headers({ "X-PnPjs-Tracking": name }));
             return originalMethod.apply(this, args);
         };
 
@@ -36,9 +38,9 @@ tag.getClientTag = (h: Headers, deleteFromCollection = true): string => {
     }
     return "";
 };
-tag.configure = <T extends ISharePointQueryable>(o: T, name: string): T => {
-    return o.configure(headers({ "X-PnPjs-Tracking": name }));
+tag.configure = <T>(o: T, name: string): T => {
+    return o; // .configure(headers({ "X-PnPjs-Tracking": name }));
 };
-tag.isTagged = <T extends ISharePointQueryable>(o: T): T => {
-    return o.data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
+tag.isTagged = <T>(o: T): boolean => {
+    return false; // .data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
 };

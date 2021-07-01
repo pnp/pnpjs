@@ -1,17 +1,17 @@
 import {
-    _SharePointQueryableInstance,
-    ISharePointQueryable,
-    spInvokableFactory,
+    _OLD_SharePointQueryableInstance,
+    OLD_ISharePointQueryable,
+    OLD_spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { hOP, IFetchOptions } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
-import { body, IQueryable } from "@pnp/queryable";
-import { spPost } from "../operations.js";
+import { body, OLD_IQueryable } from "@pnp/queryable";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("_api/social.following")
-export class _Social extends _SharePointQueryableInstance implements ISocial {
+export class _Social extends _OLD_SharePointQueryableInstance implements ISocial {
 
     public get my(): IMySocial {
         return MySocial(this);
@@ -31,17 +31,17 @@ export class _Social extends _SharePointQueryableInstance implements ISocial {
 
     @tag("soc.follow")
     public async follow(actorInfo: ISocialActorInfo): Promise<SocialFollowResult> {
-        return await spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
+        return await OLD_spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     @tag("soc.isFollowed")
     public async isFollowed(actorInfo: ISocialActorInfo): Promise<boolean> {
-        return await spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
+        return await OLD_spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     @tag("soc.stopFollowing")
     public async stopFollowing(actorInfo: ISocialActorInfo): Promise<void> {
-        return await spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
+        return await OLD_spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     private createSocialActorInfoRequestBody(actorInfo: ISocialActorInfo): IFetchOptions {
@@ -93,14 +93,14 @@ export interface ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export const Social = (baseUrl: string | ISharePointQueryable): ISocial & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime"> => new _Social(baseUrl);
-const SocialCloneFactory = (baseUrl: string | ISharePointQueryable, paths?: string): ISocial & ISharePointQueryable => new _Social(baseUrl, paths);
+export const Social = (baseUrl: string | OLD_ISharePointQueryable): ISocial & Pick<OLD_IQueryable<any>, "configure" | "setRuntime" | "getRuntime"> => new _Social(baseUrl);
+const SocialCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, paths?: string): ISocial & OLD_ISharePointQueryable => new _Social(baseUrl, paths);
 
 /**
  * Current user's Social instance
  */
 @defaultPath("my")
-export class _MySocial extends _SharePointQueryableInstance implements IMySocial {
+export class _MySocial extends _OLD_SharePointQueryableInstance implements IMySocial {
 
     @tag("msoc.followed")
     public async followed(types: SocialActorTypes): Promise<ISocialActor[]> {
@@ -166,8 +166,8 @@ export interface IMySocial {
 /**
  * Invokable factory for IMySocial instances
  */
-export const MySocial = spInvokableFactory<IMySocial>(_MySocial);
-const MySocialCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): IMySocial & ISharePointQueryable => <any>MySocial(baseUrl, path);
+export const MySocial = OLD_spInvokableFactory<IMySocial>(_MySocial);
+const MySocialCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, path?: string): IMySocial & OLD_ISharePointQueryable => <any>MySocial(baseUrl, path);
 
 /**
  * Social actor info

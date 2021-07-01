@@ -1,24 +1,24 @@
-import { _SharePointQueryable, ISharePointQueryable, spInvokableFactory } from "../sharepointqueryable.js";
+import { _OLD_SharePointQueryable, OLD_ISharePointQueryable, OLD_spInvokableFactory } from "../sharepointqueryable.js";
 import { assign, ITypedHash } from "@pnp/core";
 import { SPBatch } from "../batch.js";
-import { ICachingOptions, body, IQueryable } from "@pnp/queryable";
+import { ICachingOptions, body, OLD_IQueryable } from "@pnp/queryable";
 import { odataUrlFrom } from "../odata.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { metadata } from "../utils/metadata.js";
 import { File, IFile } from "../files/types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 import { objectToSPKeyValueCollection } from "../utils/objectToSPKeyValueCollection.js";
 
-export class _Utilities extends _SharePointQueryable implements IUtilities {
-    constructor(baseUrl: string | ISharePointQueryable, methodName: string) {
+export class _Utilities extends _OLD_SharePointQueryable implements IUtilities {
+    constructor(baseUrl: string | OLD_ISharePointQueryable, methodName: string) {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/SP.Utilities.Utility.${methodName}`);
     }
 
     public excute<T>(props: any): Promise<T> {
-        return spPost(this, body(props));
+        return OLD_spPost(this, body(props));
     }
 
     public sendEmail(props: IEmailProperties): Promise<void> {
@@ -201,9 +201,9 @@ export interface IUtilities {
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 
-export const Utilities = spInvokableFactory<IUtilities & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime">>(_Utilities);
-type UtilitiesCloneType = IUtilities & ISharePointQueryable & { excute<T>(props: any): Promise<T> };
-const UtilitiesCloneFactory = (baseUrl: string | ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
+export const Utilities = OLD_spInvokableFactory<IUtilities & Pick<OLD_IQueryable<any>, "configure" | "setRuntime" | "getRuntime">>(_Utilities);
+type UtilitiesCloneType = IUtilities & OLD_ISharePointQueryable & { excute<T>(props: any): Promise<T> };
+const UtilitiesCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
 
 export interface ICreateWikiPageResult {
     /**

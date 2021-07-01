@@ -1,19 +1,19 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { _OLD_SharePointQueryable, OLD_ISharePointQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { hOP } from "@pnp/core";
 import { tag } from "../telemetry.js";
 
-export class _SiteDesigns extends _SharePointQueryable {
+export class _SiteDesigns extends _OLD_SharePointQueryable {
 
-    constructor(baseUrl: string | ISharePointQueryable, methodName = "") {
+    constructor(baseUrl: string | OLD_ISharePointQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
 
     public execute<T>(props: any): Promise<T> {
-        return spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
+        return OLD_spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
     }
 
     /**
@@ -170,10 +170,10 @@ export class _SiteDesigns extends _SharePointQueryable {
     }
 }
 export interface ISiteDesigns extends _SiteDesigns {}
-export const SiteDesigns = (baseUrl: string | ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
+export const SiteDesigns = (baseUrl: string | OLD_ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
-type SiteDesignsCloneType = ISiteDesigns & ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteDesignsCloneFactory = (baseUrl: string | ISharePointQueryable, methodName = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
+type SiteDesignsCloneType = ISiteDesigns & OLD_ISharePointQueryable & { execute<T>(props: any): Promise<T> };
+const SiteDesignsCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, methodName = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
 
 /**
  * Result from creating or retrieving a site design

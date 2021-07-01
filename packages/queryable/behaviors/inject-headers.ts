@@ -1,4 +1,4 @@
-import { objectDefinedNotNull } from "@pnp/core";
+import { ensureHeaders } from "@pnp/core";
 import { Queryable2 } from "../queryable-2.js";
 
 export function InjectHeaders(headers: Record<string, string>): (instance: Queryable2) => Queryable2 {
@@ -7,15 +7,7 @@ export function InjectHeaders(headers: Record<string, string>): (instance: Query
 
         instance.on.pre(async function (url: string, init: RequestInit, result: any) {
 
-            const keys = Object.getOwnPropertyNames(headers);
-
-            if (!objectDefinedNotNull(init.headers)) {
-                init.headers = {};
-            }
-
-            for (let i = 0; i < keys.length; i++) {
-                init.headers[keys[i]] = headers[keys[i]];
-            }
+            init = ensureHeaders(init, headers);
 
             return [url, init, result];
         });

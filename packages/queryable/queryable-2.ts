@@ -1,8 +1,6 @@
-import { combine, getGUID } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, broadcast, request } from "@pnp/core";
 import { LogLevel } from "@pnp/logging/logger.js";
 import { IHybrid2 } from "./invokable-binder2.js";
-import { asyncReduce, broadcast, request } from "./moments.js";
-import { Timeline } from "./timeline.js";
 
 export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -31,14 +29,12 @@ export interface Queryable2<R = any> {
 // eslint-disable-next-line no-redeclare
 export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements IQueryable2<R> {
 
-    private _parent: Queryable2<any>;
     private _url: string;
     private _query: Map<string, string>;
 
     constructor(init: Queryable2<any> | string, path?: string) {
 
         let url = "";
-        let parent = null;
         let observers;
 
         if (typeof init === "string") {
@@ -47,10 +43,9 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 
         } else {
 
-            const { _url, _parent } = init;
+            const { _url } = init;
 
-            url = (new URL(path, _url)).toString();
-            parent = _parent || null;
+            url = combine(_url, path);
             // TODO:: doesn't work due to data event (maybe others)
             // pre, post, send, auth, error, log
             // data
@@ -62,12 +57,12 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
         super(DefaultBehaviors, observers);
 
         this._url = url;
-        this._parent = parent;
         this._query = new Map<string, string>();
     }
 
-    public using(behavior: (intance: this) => this): this {
-        return behavior(this);
+    public using(behavior: (intance: Timeline<any>) => Timeline<any>): this {
+        behavior(this);
+        return this;
     }
 
     /**
@@ -97,12 +92,6 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
         return this._url;
     }
 
-    protected clone<T extends IQueryable2>(factory: (init: IQueryable2<any>, path?: string) => T, path?: string): T {
-
-        const o = factory(this, path);
-        return o;
-    }
-
     protected execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
 
         setTimeout(async () => {
@@ -120,7 +109,11 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
                 this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
 
                 if (typeof result !== "undefined") {
+
+                    this.emit.log(`[id:${requestId}] Result returned from pre`, LogLevel.Info);
+                    this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
                     this.emit.data(result);
+                    this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
 
                     // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
                     return;
@@ -175,7 +168,7 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
     readonly query: Map<string, string>;
     (this: any, init?: RequestInit): Promise<R>;
-    using(behavior: (intance: this) => this): this;
+    using(behavior: (intance: Timeline<any>) => Timeline<any>): this;
     toRequestUrl(): string;
     toUrl(): string;
 }

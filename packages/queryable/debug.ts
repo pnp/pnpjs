@@ -1,14 +1,14 @@
 import { hOP } from "@pnp/core";
 import { Logger, LogLevel } from "@pnp/logging";
 import { extendGlobal } from "./invokable-extensions.js";
-import { IQueryable } from "./queryable.js";
+import { OLD_IQueryable } from "./queryable.js";
 
 declare module "./queryable" {
     /**
      * Returns the instance wrapped by the invokable proxy
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    interface IQueryable<DefaultActionType = any> {
+    interface OLD_IQueryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;
@@ -17,7 +17,7 @@ declare module "./queryable" {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    interface Queryable<DefaultActionType = any> {
+    interface OLD_Queryable<DefaultActionType = any> {
         __deepTrace: boolean;
         __enableDeepTrace(): void;
         __disableDeepTrace(): void;
@@ -27,7 +27,7 @@ declare module "./queryable" {
 }
 
 extendGlobal([
-    (op: string, target: IQueryable<any>, ...rest: any[]): void => {
+    (op: string, target: OLD_IQueryable<any>, ...rest: any[]): void => {
         if (target.__deepTrace) {
             switch (op) {
                 case "apply":
@@ -43,7 +43,7 @@ extendGlobal([
     },
     {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        get: (target: IQueryable<any>, p: string | number | symbol, _receiver: any) => {
+        get: (target: OLD_IQueryable<any>, p: string | number | symbol, _receiver: any) => {
             switch (p) {
                 case "__enableDeepTrace":
                     return () => {

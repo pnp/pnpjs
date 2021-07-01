@@ -1,9 +1,9 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
+import { _OLD_SharePointQueryableInstance, OLD_ISharePointQueryable } from "../sharepointqueryable.js";
 import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { CachingOptions, body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
-import { spPost } from "../operations.js";
+import { OLD_spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 import { tag } from "../telemetry.js";
 
@@ -89,7 +89,7 @@ const queryRegex = /_api\/search\/postquery$/i;
  *
  */
 @defaultPath("_api/search/postquery")
-export class _Search extends _SharePointQueryableInstance {
+export class _Search extends _OLD_SharePointQueryableInstance {
 
     /**
      * @returns Promise
@@ -134,7 +134,7 @@ export class _Search extends _SharePointQueryableInstance {
             }
         }
 
-        const data = await spPost(this, postBody);
+        const data = await OLD_spPost(this, postBody);
         return new SearchResults(data, this.toUrl(), query);
     }
 
@@ -176,7 +176,7 @@ export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
 
-export const Search = (baseUrl: string | ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISearch => (queryInit: SearchQueryInit) => {
+export const Search = (baseUrl: string | OLD_ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISearch => (queryInit: SearchQueryInit) => {
     return (new _Search(baseUrl)).configure(options).setRuntime(runtime).execute(queryInit);
 };
 
