@@ -7,7 +7,13 @@ export function NodeFetch(): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        instance.on.send((url: URL, init: RequestInit) => nodeFetch(url.toString(), init), "replace");
+        instance.on.send(function (this: Queryable2, url: URL, init: RequestInit) {
+
+            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+
+            return nodeFetch(url.toString(), init);
+
+        }, "replace");
 
         return instance;
     };
@@ -54,6 +60,8 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Quer
                     }
 
                     try {
+
+                        this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
                         response = await nodeFetch(url.toString(), init);
 

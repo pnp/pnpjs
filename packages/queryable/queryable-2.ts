@@ -24,7 +24,7 @@ const DefaultBehaviors = {
 } as const;
 
 export interface Queryable2<R = any> {
-    (init?: RequestInit): Promise<R>;
+    <T = R>(init?: RequestInit): Promise<T>;
 }
 // eslint-disable-next-line no-redeclare
 export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements IQueryable2<R> {
@@ -62,6 +62,16 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 
     public using(behavior: (intance: Timeline<any>) => Timeline<any>): this {
         behavior(this);
+        return this;
+    }
+
+    /**
+    * Directly concatenates the supplied string to the current url, not normalizing "/" chars
+    *
+    * @param pathPart The string to concatenate to the url
+    */
+    public concat(pathPart: string): this {
+        this._url += pathPart;
         return this;
     }
 
@@ -167,7 +177,7 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
     readonly query: Map<string, string>;
-    (this: any, init?: RequestInit): Promise<R>;
+    <T = R>(this: IQueryable2, init?: RequestInit): Promise<T>;
     using(behavior: (intance: Timeline<any>) => Timeline<any>): this;
     toRequestUrl(): string;
     toUrl(): string;

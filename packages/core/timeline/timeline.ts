@@ -36,8 +36,14 @@ export type ObserverCollection = Record<string, ValidObserver[]>;
 /**
  * A type used to represent the proxied Timeline.on property
  */
- type DistributeOn<T extends Moments, R extends Moments = T> =
-    { [Prop in string & keyof T]: (handlers: Parameters<T[Prop]>[0][number], addBehavior?: ObserverAddBehavior) => Timeline<R> };
+type DistributeOn<T extends Moments, R extends Moments = T> =
+    { [Prop in string & keyof T]: {
+        (handler: Parameters<T[Prop]>[0][number]): Timeline<R>;
+        toArray(): Parameters<T[Prop]>[0][number][];
+        replace(handler: ValidObserver): Timeline<R>;
+        prepend(handler: ValidObserver): Timeline<R>;
+    }
+    };
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -113,9 +119,9 @@ export abstract class Timeline<T extends Moments> {
 
         if (this._onProxy === null) {
             this._onProxy = new Proxy(this, {
-                get: (target: any, p: string) => (handler: ValidObserver, addBehavior: ObserverAddBehavior = "add") => {
+                get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
-                    // TODO:: we might need better logic here depending on how objects are constructed
+                    // // TODO:: we might need better logic here depending on how objects are constructed
                     if (this._inheritingObservers) {
                         // ONLY clone the observers the first time this instance of timeline sets an observer
                         // this should work all up and down the tree.
@@ -124,9 +130,23 @@ export abstract class Timeline<T extends Moments> {
                         this._inheritingObservers = false;
                     }
 
-                    addObserver(target.observers, p, handler, addBehavior);
+                    addObserver(target.observers, p, handler, "add");
                     return target;
-                },
+                }, {
+                    toArray: (): ValidObserver[] => {
+                        return Reflect.has(target.observers, p) ? cloneDeep(Reflect.get(target.observers, p)) : [];
+                    },
+                    replace: (handler: ValidObserver) => {
+                        addObserver(target.observers, p, handler, "replace");
+                        return target;
+                        // Reflect.set(target, `__once${p}`, handler);
+                    },
+                    prepend: (handler: ValidObserver) => {
+                        addObserver(target.observers, p, handler, "prepend");
+                        return target;
+                        // Reflect.set(target, `__once${p}`, handler);
+                    },
+                }),
             });
         }
 
@@ -183,6 +203,13 @@ export abstract class Timeline<T extends Moments> {
         if (this._emitProxy === null) {
             this._emitProxy = new Proxy(this, {
                 get: (target: any, p: string) => (...args: any[]) => {
+
+                    // check for once
+                    if (Reflect.has(target, `__once${p}`)) {
+                        const onceHandler = target[`__once${p}`];
+                        delete target[`__once${p}`];
+                        console.log("here");
+                    }
 
                     // handle the case there are no observers registered to the target
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];

@@ -1,16 +1,15 @@
-import { body } from "@pnp/queryable";
+import { body, FromQueryable } from "@pnp/queryable";
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
+    _SharePointQueryableInstance,
+    _SharePointQueryableCollection,
+    spInvokableFactory,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
-import { SPBatch } from "../batch.js";
+import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("features")
-export class _Features extends _OLD_SharePointQueryableCollection<IFeatureInfo[]> {
+export class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
 
     /**
      * Adds (activates) the specified feature
@@ -21,7 +20,7 @@ export class _Features extends _OLD_SharePointQueryableCollection<IFeatureInfo[]
     @tag("fes.add")
     public async add(id: string, force = false): Promise<IFeatureAddResult> {
 
-        const data = await OLD_spPost(this.clone(Features, "add"), body({
+        const data = await spPost(Features(this, "add"), body({
             featdefScope: 0,
             featureId: id,
             force: force,
@@ -39,8 +38,7 @@ export class _Features extends _OLD_SharePointQueryableCollection<IFeatureInfo[]
      * @param id The Id of the feature (GUID)
      */
     public getById(id: string): IFeature {
-        const feature = Feature(this);
-        feature.concat(`('${id}')`);
+        const feature = Feature(this).concat(`('${id}')`);
         return tag.configure(feature, "fes.getById");
     }
 
@@ -53,16 +51,16 @@ export class _Features extends _OLD_SharePointQueryableCollection<IFeatureInfo[]
     @tag("fes.remove")
     public remove(id: string, force = false): Promise<any> {
 
-        return OLD_spPost(this.clone(Features, "remove"), body({
+        return spPost(Features(this, "remove"), body({
             featureId: id,
             force: force,
         }));
     }
 }
-export interface IFeatures extends _Features {}
-export const Features = OLD_spInvokableFactory<IFeatures>(_Features);
+export interface IFeatures extends _Features { }
+export const Features = spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _OLD_SharePointQueryableInstance<IFeatureInfo> {
+export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
 
     /**
      * Removes (deactivates) the feature
@@ -72,19 +70,19 @@ export class _Feature extends _OLD_SharePointQueryableInstance<IFeatureInfo> {
     @tag("fe.deactivate")
     public async deactivate(force = false): Promise<any> {
 
-        const removeDependency = this.addBatchDependency();
+        // TODO:: test if this works with batching?
+        // problems:
+        // - If the request is batched then the initial request is batched and things are wrong
+        // - we have at this point lost the non-batch .on.send, whatever it was, we need a way to recover?
+        // - perhaps we need a way really to indicate local
+        return Feature(this).using(FromQueryable(this)).select("DefinitionId")<{ DefinitionId: string }>().then(feature => {
 
-        const feature = await Feature(this).select("DefinitionId")<{ DefinitionId: string }>();
-
-        const promise = this.getParent<IFeatures>(Features, this.parentUrl, "", <SPBatch>this.batch).remove(feature.DefinitionId, force);
-
-        removeDependency();
-
-        return promise;
+            return Features(this.parentUrl, "").remove(feature.DefinitionId, force);
+        });
     }
 }
-export interface IFeature extends _Feature {}
-export const Feature = OLD_spInvokableFactory<IFeature>(_Feature);
+export interface IFeature extends _Feature { }
+export const Feature = spInvokableFactory<IFeature>(_Feature);
 
 /**
  * Result from adding (activating) a feature to the collection

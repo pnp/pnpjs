@@ -6,6 +6,7 @@ import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute 
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
 import { sp2, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/features";
 import { Web } from "@pnp/sp/webs";
 import { graph } from "@pnp/graph/rest.js";
 
@@ -53,9 +54,9 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
             })
             .on.log(function (message, level) {
 
-                if (level >= LogLevel.Info) {
+                if (level >= LogLevel.Verbose) {
 
-                    console.log(`Cheap log: ${message}.`);
+                    console.log(message);
                 }
 
             }).on.post(async (_url: URL, result: any) => {
@@ -75,14 +76,15 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        const sp = sp2(settings.testing.sp.url).using(testingConfig(settings));
+        const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));
 
-        const [batch, execute] = sp.web.createBatch();
+        const [batch, execute] = sp.createBatch();
 
-        sp.web.using(batch)();
+        // this model removes the difficulty of knowing when to call usingBatch and instead you call it upfront each time
+        sp.using(batch).web();
+
+        sp.using(batch).web.features.getById("e3dc7334-cec0-4d2c-8b90-e4857698fc4e").deactivate();
  
-        sp.web.availableWebTemplates().using(batch)();
-
         await execute();
 
     } catch (e) {
