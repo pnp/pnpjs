@@ -305,6 +305,35 @@ const r = await list.renderListDataAsStream(renderListDataParams);
 console.log(r.Row);
 ```
 
+You can also supply other options to renderListDataAsStream including [override parameters](https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.client.renderlistdataoverrideparameters?view=sharepoint-csom) and query params. This can be helpful when looking to apply sorting to the returned data.
+
+```TypeScript
+import { IRenderListDataParameters } from "@pnp/sp/lists";
+
+// setup parameters object
+const renderListDataParams: IRenderListDataParameters = {
+    ViewXml: "<View><RowLimit>5</RowLimit></View>",
+};
+
+const overrideParams = {
+    ViewId = "{view guid}"
+};
+
+// OR if you don't want to supply override params use null
+// overrideParams = null;
+
+// Set the query params using a map
+const query = new Map<string, string>();
+query.set("SortField", "{AField}");
+query.set("SortDir", "Desc");
+
+// render list data as stream
+const r = await list.renderListDataAsStream(renderListDataParams, overrideParams, query);
+
+// log array of items in response
+console.log(r.Row);
+```
+
 ### Reserve list item Id for idempotent list item creation
 
 ```TypeScript
