@@ -205,11 +205,12 @@ export abstract class Timeline<T extends Moments> {
                 get: (target: any, p: string) => (...args: any[]) => {
 
                     // check for once
-                    if (Reflect.has(target, `__once${p}`)) {
-                        const onceHandler = target[`__once${p}`];
-                        delete target[`__once${p}`];
-                        console.log("here");
-                    }
+                    // TODO::
+                    // if (Reflect.has(target, `__once${p}`)) {
+                    //     const onceHandler = target[`__once${p}`];
+                    //     delete target[`__once${p}`];
+                    //     console.log("here");
+                    // }
 
                     // handle the case there are no observers registered to the target
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
@@ -225,7 +226,7 @@ export abstract class Timeline<T extends Moments> {
                         // default to broadcasting any events without specific impl (will apply to defaults)
                         const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : broadcast();
 
-                        return Reflect.apply(moment, this, [observers, ...args]);
+                        return Reflect.apply(moment, target, [observers, ...args]);
 
                     } catch (e) {
 
