@@ -5,7 +5,7 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@azure/msal-node": "^1.0.1",
+        "@azure/msal-node": "^1.2.0",
         "@pnp/common": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
         "@pnp/odata": "0.0.0-PLACEHOLDER",
@@ -14,7 +14,7 @@
         "https-proxy-agent": "^5.0.0",
         "jsonwebtoken": "8.5.1",
         "node-fetch": "2.6.1",
-        "tslib": "2.2.0"
+        "tslib": "2.3.0"
     },
     "author": {
         "name": "Microsoft and other contributors"
