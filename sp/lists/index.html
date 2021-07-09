@@ -2978,6 +2978,32 @@ const r = await list.renderListDataAsStream(renderListDataParams);
 // log array of items in response
 console.log(r.Row);
 </code></pre>
+<p>You can also supply other options to renderListDataAsStream including <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.client.renderlistdataoverrideparameters?view=sharepoint-csom">override parameters</a> and query params. This can be helpful when looking to apply sorting to the returned data.</p>
+<pre><code class="language-TypeScript">import { IRenderListDataParameters } from &quot;@pnp/sp/lists&quot;;
+
+// setup parameters object
+const renderListDataParams: IRenderListDataParameters = {
+    ViewXml: &quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;,
+};
+
+const overrideParams = {
+    ViewId = &quot;{view guid}&quot;
+};
+
+// OR if you don't want to supply override params use null
+// overrideParams = null;
+
+// Set the query params using a map
+const query = new Map&lt;string, string&gt;();
+query.set(&quot;SortField&quot;, &quot;{AField}&quot;);
+query.set(&quot;SortDir&quot;, &quot;Desc&quot;);
+
+// render list data as stream
+const r = await list.renderListDataAsStream(renderListDataParams, overrideParams, query);
+
+// log array of items in response
+console.log(r.Row);
+</code></pre>
 <h3 id="reserve-list-item-id-for-idempotent-list-item-creation">Reserve list item Id for idempotent list item creation<a class="headerlink" href="#reserve-list-item-id-for-idempotent-list-item-creation" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">const listItemId = await list.reserveListItemId();
 
