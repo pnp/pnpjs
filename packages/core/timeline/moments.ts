@@ -1,6 +1,10 @@
 import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
 import { isArray } from "../util.js";
 
+// TODO:: docs
+// - you don't need error handling here because that is handled in emit within the timeline
+
+
 /**
  * Emits to all registered observers the supplied arguments. Any values returned by the observers are ignored
  *
@@ -71,6 +75,32 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
  *
  */
 export function init<T extends ObserverFunction>(): (observers: T[]) => ReturnType<T> {
+
+    return <any>function (this: Timeline<any>, observers: T[]): Timeline<any> {
+
+        // get our initial values
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        let r = this;
+
+        const obs = [...observers];
+
+        // process each handler which updates our instance in order
+        // very similar to asyncReduce but the state is the object itself
+        for (let i = 0; i < obs.length; i++) {
+            r = Reflect.apply(obs[i], r, []);
+        }
+
+        return r;
+    };
+}
+
+/**
+ * Defines a special moment used to dispose of the timeline itself after running. Each observer is executed in order,
+ * possibly modifying the "this" instance, with the final product returned. This allows for cleaning up any resources
+ * associated with the timeline run or removing any changes done during init.
+ *
+ */
+export function dispose<T extends ObserverFunction>(): (observers: T[]) => ReturnType<T> {
 
     return <any>function (this: Timeline<any>, observers: T[]): Timeline<any> {
 

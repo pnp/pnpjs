@@ -59,6 +59,7 @@ type DistributeEmit<T extends Moments> =
  */
 type DefaultTimelineEvents<T extends Moments> = {
     init: (observers: ((this: Timeline<T>) => Timeline<T>)[], ...args: any[]) => void;
+    dispose: (observers: ((this: Timeline<T>) => Timeline<T>)[], ...args: any[]) => void;
     log: (observers: ((this: Timeline<T>, message: string, level: number) => void)[], ...args: any[]) => void;
     error: (observers: ((this: Timeline<T>, err: string | Error) => void)[], ...args: any[]) => void;
 };
@@ -172,6 +173,33 @@ export abstract class Timeline<T extends Moments> {
     }
 
     /**
+     * Shorthand method to emit a dispose event tied to this timeline
+     *
+     */
+    protected dispose(): void {
+        this.emit.dispose();
+    }
+
+    /**
+     * Shorthand method to emit an error event tied to this timeline
+     *
+     * @param e Optional. Any error object to emit. If none is provided no emit occurs
+     */
+    protected error(e?: any): void {
+        if (objectDefinedNotNull(e)) {
+            this.emit.error(e);
+        }
+    }
+
+    /**
+     * Shorthand method to emit an init event tied to this timeline
+     *
+     */
+    protected init(): void {
+        this.emit.init();
+    }
+
+    /**
      * Property allowing access to invoke a moment from within this timeline
      */
     protected get emit(): EmitProxyType<T> {
@@ -222,14 +250,36 @@ export abstract class Timeline<T extends Moments> {
      */
     protected start(init?: any): Promise<any> {
 
-        // TODO:: should we somehow create a copy of "this" so that any modifications (extensions, whatever)
-        // are left only to each execution of start vs. running it twice init is called twice and things could be double extended etc.
+        try {
 
-        // initialize our timeline
-        this.emit.init();
+            // TODO:: should we somehow create a copy of "this" so that any modifications (extensions, whatever)
+            // are left only to each execution of start vs. running it twice init is called twice and things could be double extended etc.
 
-        // execute the timeline
-        return this.execute(init);
+            // initialize our timeline
+            this.init();
+
+            // execute the timeline
+            return this.execute(init);
+
+        } catch (e) {
+
+            this.error(e);
+
+        } finally {
+
+            try {
+
+                this.dispose();
+
+            } catch (e) {
+
+                const e2 = Object.assign(Error("Error in dispose."), {
+                    InnerException: e,
+                });
+
+                this.emit.error(e2);
+            }
+        }
     }
 
     /**

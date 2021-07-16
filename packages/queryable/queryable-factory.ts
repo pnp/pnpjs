@@ -8,6 +8,7 @@ export function queryableFactory<InstanceType extends IQueryable2>(
 
     return (init: IQueryable2<any> | string, path?: string) => {
 
+        // provides a point where we can potentially intercept any queryable being created
         return new constructor(init, path);
     };
 }

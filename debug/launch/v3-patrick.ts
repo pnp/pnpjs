@@ -2,13 +2,14 @@ import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
-import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute, extend } from "@pnp/core";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute, extend, extendable } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
 import { ISharePointQueryable, sp2, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
 import { IWeb, Web } from "@pnp/sp/webs";
 import { graph } from "@pnp/graph/rest.js";
+import { traceDeprecation } from "process";
 
 declare var process: { exit(code?: number): void };
 
@@ -16,17 +17,26 @@ function TestInitBehavior(): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        // instance.on.init(function (this: Queryable2) {
+        instance.on.init(function (this: Queryable2) {
 
-        //     const o = extend(this, {
+            const o = extend(this, {
 
-        //         async execute(): Promise<any> {
-        //             console.log("HA HA");
-        //         },
-        //     });
+                async execute(): Promise<any> {
+                    console.log("HA HA");
+                },
+            });
 
-        //     return o;
-        // });
+            return o;
+        });
+
+        instance.on.dispose(function (this: Queryable2) {
+
+            // TODO:: Need a way to remove extentions
+
+           this.log("I am in dispose.", 1);
+
+           return this;
+        });
 
         instance.on.pre(async function (url, init, result) {
 
@@ -105,7 +115,6 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
         return instance;
     };
 }
-
 
 export async function Example(settings: ITestingSettings) {
 
