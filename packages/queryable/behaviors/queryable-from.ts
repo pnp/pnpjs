@@ -10,7 +10,7 @@ export function FromQueryable(source: Queryable2, behavior: "replace" | "append"
         instance = <Queryable2>coreFrom(instance);
 
         if (!keepData) {
-            instance.clear.data();
+            instance.on.data.clear();
         }
 
         return instance;

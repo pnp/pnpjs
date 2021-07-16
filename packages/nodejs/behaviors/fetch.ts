@@ -7,13 +7,12 @@ export function NodeFetch(): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        instance.on.send(function (this: Queryable2, url: URL, init: RequestInit) {
+        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit) {
 
             this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
             return nodeFetch(url.toString(), init);
-
-        }, "replace");
+        });
 
         return instance;
     };
@@ -23,7 +22,7 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Quer
 
     return (instance: Queryable2) => {
 
-        instance.on.send(function (this: Queryable2, url: URL, init: RequestInit): Promise<Response> {
+        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit): Promise<Response> {
 
             let response: Response;
             let wait = interval;

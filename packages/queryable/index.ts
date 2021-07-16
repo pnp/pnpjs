@@ -12,8 +12,9 @@ export * from "./request-builders.js";
 export * from "./queryable-2.js";
 export * from "./operations.js";
 export * from "./parsers-2.js";
-export * from "./invokable-binder2.js";
+export * from "./queryable-factory.js";
 export * from "./behaviors/index.js";
+export * from "./invokable.js";
 
 export {
     extendGlobal,

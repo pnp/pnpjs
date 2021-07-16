@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - TextParser, BlobParser, JSONParser, BufferParser -> TextParse, BlobParse, JSONParse, BufferParse behaviors
   - Removed .get method in favor of invokable pattern. foo.get() becomes foo()
   - Removed .clone, .cloneTo in favor of using factories directly, i.e. this.clone(Web, "path") => Web(this, "path")
+  - Invokable Extensions is split, with core object extension functionality moved to core
 
 - nodejs: 
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
@@ -36,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - SPFetchClient -> Use SPNodeFetch which includes SP retry logic
 
 - common/core:
-
+  - Removed global extensions in favor of instance or factory. Global no longer aligned to our scoped model
 
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch

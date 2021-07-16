@@ -1,6 +1,6 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable } from "@pnp/core";
 import { LogLevel } from "@pnp/logging/logger.js";
-import { IHybrid2 } from "./invokable-binder2.js";
+import { invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -14,7 +14,7 @@ export type QueryablePostObserver = (this: IQueryable2, url: URL, result: any | 
 
 export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
 
-const DefaultBehaviors = {
+const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
     auth: asyncReduce<QueryableAuthObserver>(),
     send: request<QueryableSendObserver>(),
@@ -23,11 +23,9 @@ const DefaultBehaviors = {
     data: broadcast<QueryableDataObserver>(),
 } as const;
 
-export interface Queryable2<R = any> {
-    <T = R>(init?: RequestInit): Promise<T>;
-}
-// eslint-disable-next-line no-redeclare
-export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements IQueryable2<R> {
+@extendable()
+@invokable()
+export class Queryable2<R> extends Timeline<typeof DefaultMoments> implements IQueryable2<R> {
 
     private _url: string;
     private _query: Map<string, string>;
@@ -54,10 +52,12 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
 
         // TODO:: need to maybe filter out some handlers, like on data??
         // need to trace through multiple objects inheriting and not
-        super(DefaultBehaviors, observers);
+        // TODO:: do we want state to be inherited?
+        super(DefaultMoments, observers, {});
 
         this._url = url;
         this._query = new Map<string, string>();
+        // process this one different
     }
 
     public using(behavior: (intance: Timeline<any>) => Timeline<any>): this {
@@ -102,7 +102,7 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
         return this._url;
     }
 
-    protected execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
+    protected execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<void> {
 
         setTimeout(async () => {
 
@@ -174,8 +174,14 @@ export class Queryable2<R> extends Timeline<typeof DefaultBehaviors> implements 
         });
     }
 }
+
+// eslint-disable-next-line no-redeclare
+export interface Queryable2<R = any> {
+    <T = R>(init?: RequestInit): Promise<T>;
+}
+
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
-export interface IQueryable2<R = any> extends Timeline<any>, IHybrid2<any, R> {
+export interface IQueryable2<R = any> extends Timeline<any> {
     readonly query: Map<string, string>;
     <T = R>(this: IQueryable2, init?: RequestInit): Promise<T>;
     using(behavior: (intance: Timeline<any>) => Timeline<any>): this;

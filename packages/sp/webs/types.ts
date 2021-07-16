@@ -65,6 +65,9 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  * Describes a web
  *
  */
+// @invokable(async () => {
+//     console.log("whoop 99999");
+// })
 @defaultPath("_api/web")
 export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 

@@ -1,16 +1,50 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get, extendObj } from "@pnp/queryable";
+import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
-import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute } from "@pnp/core";
+import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute, extend } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { sp2, _SharePointQueryable } from "@pnp/sp";
+import { ISharePointQueryable, sp2, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
-import { Web } from "@pnp/sp/webs";
+import { IWeb, Web } from "@pnp/sp/webs";
 import { graph } from "@pnp/graph/rest.js";
 
 declare var process: { exit(code?: number): void };
+
+function TestInitBehavior(): (instance: Queryable2) => Queryable2 {
+
+    return (instance: Queryable2) => {
+
+        // instance.on.init(function (this: Queryable2) {
+
+        //     const o = extend(this, {
+
+        //         async execute(): Promise<any> {
+        //             console.log("HA HA");
+        //         },
+        //     });
+
+        //     return o;
+        // });
+
+        instance.on.pre(async function (url, init, result) {
+
+            this.log("PRE FROM TestInitBehavior", LogLevel.Warning);                        
+
+            return [url, init, result];
+        });
+
+        instance.on.post.prepend(async function (url, result) {
+            
+            this.log("POST FROM TestInitBehavior", LogLevel.Warning);   
+
+            return [url, result];
+        });
+
+        return instance;
+    };
+}
 
 function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Queryable2 {
 
@@ -32,9 +66,10 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
             // .using(JSONParse())
             // .using(Proxy("https://127.0.0.1:8888"))
             .using(Caching("session", true))
+            .using(TestInitBehavior())
             .on.pre(async function (url, init, result) {
 
-                extendObj(this, {
+                extend(this, {
                     execute: ""
                 });
 
@@ -56,7 +91,7 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
 
                 if (level >= LogLevel.Verbose) {
 
-                    console.log(message);
+                    console.log(`${Date.now()}: ${message}`);
                 }
 
             }).on.post(async (_url: URL, result: any) => {
@@ -78,14 +113,33 @@ export async function Example(settings: ITestingSettings) {
 
         const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));
 
-        const [batch, execute] = sp.createBatch();
+        const w = sp.web;
 
-        // this model removes the difficulty of knowing when to call usingBatch and instead you call it upfront each time
-        sp.using(batch).web();
+        // TODO:: can this replace extend factory?? sorta
+        // w.on.init(function (this: IWeb) {
 
-        sp.using(batch).web.features.getById("e3dc7334-cec0-4d2c-8b90-e4857698fc4e").deactivate();
- 
-        await execute();
+        //     const o = extend(this, {
+
+        //         async execute(): Promise<any> {
+        //             console.log("HA HA");
+        //         },
+        //     });
+
+        //     return o;
+        // });
+
+        const yyy = await w();
+
+        console.log(`here: ${JSON.stringify(yyy)}`);
+
+        // const [batch, execute] = sp.createBatch();
+
+        // // this model removes the difficulty of knowing when to call usingBatch and instead you call it upfront each time
+        // sp.using(batch).web();
+
+        // sp.using(batch).web.features.getById("e3dc7334-cec0-4d2c-8b90-e4857698fc4e").deactivate();
+
+        // await execute();
 
     } catch (e) {
 

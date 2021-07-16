@@ -15,28 +15,25 @@ function ensureInit(method: string, init?: RequestInit): RequestInit {
 export type Operation = <T = any>(this: IQueryable2, init?: RequestInit) => Promise<T>;
 
 export function get<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
-    return this.execute(ensureInit("GET", init));
+    return this.start(ensureInit("GET", init));
 }
 
 export function post<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
-    return this.execute(ensureInit("POST", init));
+    return this.start(ensureInit("POST", init));
 }
 
 export function put<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
-    return this.execute(ensureInit("PUT", init));
+    return this.start(ensureInit("PUT", init));
 }
 
 export function patch<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
-    return this.execute(ensureInit("PATCH", init));
+    return this.start(ensureInit("PATCH", init));
 }
 
 export function del<T = any>(this: IQueryable2, init?: RequestInit): Promise<T> {
-    return this.execute(ensureInit("DELETE", init));
+    return this.start(ensureInit("DELETE", init));
 }
 
-// TODO:: maybe we can clean this pattern up a bit, but we need to expose the protected execute within get, post, put, del
-// we could always just
 export function op<T>(q: IQueryable2, operation: Operation, init?: RequestInit): Promise<T> {
     return Reflect.apply(operation, q, [init]);
 }
-

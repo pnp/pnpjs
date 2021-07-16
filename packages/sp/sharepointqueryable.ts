@@ -1,5 +1,5 @@
-import { combine, isUrlAbsolute, assign, jsS, IFetchOptions, ObserverCollection } from "@pnp/core";
-import { IInvokable, invokableFactory, Queryable2, invokableFactory2, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext } from "@pnp/queryable";
+import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/core";
+import { IInvokable, invokableFactory, Queryable2, queryableFactory, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
 import { metadata } from "./utils/metadata.js";
@@ -13,7 +13,7 @@ export interface ISharePointQueryableConstructor<T extends ISharePointQueryable 
 export type ISPInvokableFactory<R extends IQueryable2> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableFactory<R> => {
-    return invokableFactory2<R>(f);
+    return queryableFactory<R>(f);
 };
 
 /**

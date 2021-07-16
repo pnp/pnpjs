@@ -75,6 +75,11 @@ export class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
         // - If the request is batched then the initial request is batched and things are wrong
         // - we have at this point lost the non-batch .on.send, whatever it was, we need a way to recover?
         // - perhaps we need a way really to indicate local
+
+
+        // make a request, outside the batch, but the batch needs to wait for that request
+
+
         return Feature(this).using(FromQueryable(this)).select("DefinitionId")<{ DefinitionId: string }>().then(feature => {
 
             return Features(this.parentUrl, "").remove(feature.DefinitionId, force);
