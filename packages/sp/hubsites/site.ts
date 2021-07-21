@@ -1,5 +1,5 @@
 import { _Site, Site } from "../sites/types.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 
 declare module "../sites/types" {
     interface _Site {
@@ -31,13 +31,13 @@ declare module "../sites/types" {
 }
 
 _Site.prototype.joinHubSite = async function (this: _Site, siteId: string): Promise<void> {
-    await OLD_spPost(this.clone(Site, `joinHubSite('${siteId}')`));
+    await spPost(Site(this, `joinHubSite('${siteId}')`));
 };
 
 _Site.prototype.registerHubSite = async function (this: _Site): Promise<void> {
-    await OLD_spPost(this.clone(Site, "registerHubSite"));
+    await spPost(Site(this, "registerHubSite"));
 };
 
 _Site.prototype.unRegisterHubSite = async function (this: _Site): Promise<void> {
-    await OLD_spPost(this.clone(Site, "unRegisterHubSite"));
+    await spPost(Site(this, "unRegisterHubSite"));
 };

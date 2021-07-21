@@ -10,7 +10,7 @@ import {
     combine,
 } from "@pnp/core";
 
-import { OLD_ISharePointQueryable } from "@pnp/sp";
+import { ISharePointQueryable } from "@pnp/sp";
 
 export class SPRestAddIn extends SPRest {
 
@@ -31,7 +31,7 @@ export class SPRestAddIn extends SPRest {
      * @param hostWebUrl The absolute url of the host web
      */
     public crossDomainWeb(addInWebUrl: string, hostWebUrl: string): IWeb {
-        return <any>this._cdImpl(<any>Web, addInWebUrl, hostWebUrl, "web");
+        return <any>this._cdImpl(Web, addInWebUrl, hostWebUrl, "web");
     }
 
     /**
@@ -42,7 +42,7 @@ export class SPRestAddIn extends SPRest {
      * @param hostWebUrl The absolute url of the host web
      * @param urlPart String part to append to the url "site" | "web"
      */
-    private _cdImpl<T extends OLD_ISharePointQueryable>(
+    private _cdImpl<T extends ISharePointQueryable>(
         factory: (...args: any[]) => T,
         addInWebUrl: string,
         hostWebUrl: string,
@@ -61,9 +61,12 @@ export class SPRestAddIn extends SPRest {
         const instance = factory(url, urlPart);
         instance.query.set("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
 
-        return this.childConfigHook(({ options, runtime }) => {
-            return instance.configure(options).setRuntime(runtime);
-        });
+        // TODO::
+        // return this.childConfigHook(({ options, runtime }) => {
+        //     return instance.configure(options).setRuntime(runtime);
+        // });
+
+        return instance;
     }
 }
 

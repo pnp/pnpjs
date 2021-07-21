@@ -32,7 +32,7 @@ function copyObservers(this: Timeline<any>, source: Timeline<any>, behavior: "re
     for (let i = 0; i < keys.length; i++) {
 
         if (behavior === "replace") {
-            this.clear[keys[i]]();
+            this.on[keys[i]].clear();
         }
 
         const momentObservers = clonedSource[keys[i]];

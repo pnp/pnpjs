@@ -1,5 +1,5 @@
 import { assign, ITypedHash } from "@pnp/core";
-import { body, headers, Queryable2 } from "@pnp/queryable";
+import { body, FromQueryable, headers, Queryable2 } from "@pnp/queryable";
 import {
     _SharePointQueryableCollection,
     OLD_deleteable,
@@ -65,6 +65,9 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  * Describes a web
  *
  */
+// @invokable(async () => {
+//     console.log("whoop 99999");
+// })
 @defaultPath("_api/web")
 export class _Web extends _SharePointQueryableInstance<IWebInfo> {
 
@@ -99,30 +102,8 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     @tag("w.getParentWeb")
     public async getParentWeb(): Promise<IOpenWebByIdResult> {
-
-        // TODO::
-        //         <EntityType Name="WebInformation">
-        // <Key>
-        // <PropertyRef Name="Id"/>
-        // </Key>
-        // <Property Name="Configuration" Type="Edm.Int16" Nullable="false"/>
-        // <Property Name="Created" Type="Edm.DateTime" Nullable="false"/>
-        // <Property Name="Description" Type="Edm.String"/>
-        // <Property Name="Id" Type="Edm.Guid" Nullable="false"/>
-        // <Property Name="Language" Type="Edm.Int32" Nullable="false"/>
-        // <Property Name="LastItemModifiedDate" Type="Edm.DateTime" Nullable="false"/>
-        // <Property Name="LastItemUserModifiedDate" Type="Edm.DateTime" Nullable="false"/>
-        // <Property Name="ServerRelativeUrl" Type="Edm.String"/>
-        // <Property Name="Title" Type="Edm.String"/>
-        // <Property Name="WebTemplate" Type="Edm.String"/>
-        // <Property Name="WebTemplateId" Type="Edm.Int32" Nullable="false"/>
-        // </EntityType>
-
-
-        // const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
-        // return ParentWeb?.Id ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null;
-
-        return null;
+        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
+        return ParentWeb?.Id ? Site(this.parentUrl).using(FromQueryable(this)).openWebById(ParentWeb.Id) : null;
     }
 
     /**

@@ -19,7 +19,7 @@ export function Caching(store: "local" | "session" = "session", lazy = false, ke
 
     return (instance: Queryable2) => {
         // Regardless of cached result, update cache async
-        instance.AsyncOverride = lazy;
+        // instance.AsyncOverride = lazy;
         instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             const key = keyFactory(url.toString());

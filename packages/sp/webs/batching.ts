@@ -188,7 +188,13 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
         }));
 
         // we setup this batch to "send" each of the requests, while saving the contextual "this" reference with each
-        instance.on.send(async function (this: Queryable2, url: URL, init: RequestInit) {
+        // TODO:: need not replace, but like a way to retain the previous send so we can unbatch
+        // maybe we have something like using(unbatch()), ugly but works?
+        // need to tie this into a dependency resolve
+        // <T>x.using(batchDependency((copyOf(x) with send reset) => {
+
+        // })))
+        instance.on.send.replace(async function (this: Queryable2, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
 
@@ -201,8 +207,9 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
             registrationResolver();
 
             return promise;
+        });
+        // }, "replace");
 
-        }, "replace");
 
         return instance;
     };
