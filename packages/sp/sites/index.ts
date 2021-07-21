@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2";
 import { ISite, Site } from "./types.js";
 
 export {
@@ -10,17 +10,15 @@ export {
 } from "./types.js";
 
 declare module "../rest" {
-    interface SPRest {
+    interface SPRest2 {
         readonly site: ISite;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "site", {
+Reflect.defineProperty(SPRest2.prototype, "site", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Site(baseUrl).configure(options).setRuntime(runtime);
-        });
+    get: function (this: SPRest2) {
+        return this.create(Site);
     },
 });

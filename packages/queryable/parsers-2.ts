@@ -85,7 +85,7 @@ export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): 
         // we clear anything else registered for parse
         // add error check
         // add the impl function we are supplied
-        instance.on.parse(errorCheck, "replace");
+        instance.on.parse.replace(errorCheck);
         instance.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
             if (typeof result === "undefined") {
