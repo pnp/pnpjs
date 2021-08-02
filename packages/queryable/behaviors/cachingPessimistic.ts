@@ -1,50 +1,62 @@
 import { Queryable2 } from "../queryable-2.js";
-import { extendObj } from "@pnp/queryable";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID } from "@pnp/core";
+import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, extend } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
 
-export function CachingPessimisticRefresh(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
-
-    const storage = new PnPClientStorage();
-    const s = store === "session" ? storage.session : storage.local;
+/**
+ * Pessimistic Caching Behavior
+ * Always returns the cached value if one exists but asyncronously executes the call and updates the cache.
+ * If a expireFunc is included then the cache update only happens if the cache has expired.
+ *
+ * @param store Use local or session storage
+ * @param keyFactory: a function that returns the key for the cache value, if not provided a default hash of the url will be used
+ * @param expireFunc: a function taht returns a date of expiration for the cache value, if not provided the cache never expires but is always udpated.
+ */
+export function CachingPessimisticRefresh(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
 
     if (!isFunc(keyFactory)) {
         keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
     }
 
-    if (!isFunc(expireFunc)) {
-        // TODO:: tie this default timeline to config? or the config is having to create the function
-        expireFunc = () => dateAdd(new Date(), "minute", 5);
+    const putStorage = (key: string, o: string) => {
+        if (isFunc(expireFunc)) {
+            const storage = new PnPClientStorage();
+            const s = store === "session" ? storage.session : storage.local;
+            s.put(key, o, expireFunc());
+        } else {
+            const cache = JSON.stringify({ pnp: 1, expiration: undefined, value: o });
+            if (store === "session") {
+                sessionStorage.setItem(key, cache);
+            } else {
+                localStorage.setItem(key, cache);
+            }
+        }
+    }
+
+    const getStorage = (key: string): any => {
+        let retVal: any = undefined;
+        if (isFunc(expireFunc)) {
+            const storage = new PnPClientStorage();
+            const s = store === "session" ? storage.session : storage.local;
+            retVal = s.get(key);
+        } else {
+            let cache = undefined;
+            if (store === "session") {
+                cache = sessionStorage.getItem(key);
+            } else {
+                cache = localStorage.getItem(key);
+            }
+            retVal = JSON.parse(cache);
+        }
+        return retVal;
     }
 
     return (instance: Queryable2) => {
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.init(function (this: Queryable2) {
 
-            const key = keyFactory(url.toString());
+            const newExecute = extend(this, {
 
-            const cached = s.get(key);
-
-            // we need to ensure that result stays "undefined" unless we mean to set null as the result
-            if (cached === null) {
-
-                // if we don't have a cached result we need to get it after the request is sent and parsed
-                this.on.post(async function (url: URL, result: any) {
-
-                    s.put(key, result, expireFunc(url.toString()));
-
-                    return [url, result];
-                });
-
-            } else {
-
-                result = cached;
-            }
-
-            //TODO::Cannot extend instance of execute here, as it's already running.
-            extendObj(instance, {
-                execute: (requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> => {
-
+                async execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
                     setTimeout(async () => {
                         const requestId = getGUID();
                         let requestUrl: URL;
@@ -132,8 +144,42 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
                         this.on.data(resolve);
                         this.on.error(reject);
                     });
-                }
+                },
             });
+
+            return newExecute;
+        });
+
+        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            const key = keyFactory(url.toString());
+
+            const cached = getStorage(key);
+            let expired: boolean = false;
+            if (cached !== undefined) {
+
+                //Return value
+                result = cached.value;
+
+                if (cached.expiration !== undefined) {
+                    if (new Date(cached.expiration) <= new Date()) {
+                        expired = true;
+                    }
+                }
+            }
+
+            // in these instances make sure we update cache after retrieving result
+            if (cached === undefined || expired || (!isFunc(expireFunc))) {
+
+                // if we don't have a cached result we need to get it after the request is sent and parsed
+                this.on.post(async function (url: URL, result: any) {
+
+                    putStorage(key, result);
+
+                    return [url, result];
+                });
+
+            }
 
             return [url, init, result];
         });
