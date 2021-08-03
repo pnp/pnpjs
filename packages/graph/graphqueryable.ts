@@ -261,13 +261,18 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
 }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
 
-export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
+export class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
 
     /**
      * 	To request second and subsequent pages of Graph data
      */
     public search(query: string): this {
-        this.query.set("$search", query);
+        this.configure({
+            headers: {
+                ConsistencyLevel: "eventual",
+            },
+        });
+        this.query.set("$search", `"${query}"`);
         return this;
     }
 }
