@@ -232,3 +232,27 @@ const rooms2 = await graph.users.getById('user@tenant.onmicrosoft.com').findRoom
 // you can use select, top, etc to filter your returned results
 const rooms3 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms().select('name').top(10)();
 ```
+
+## Get Event Instances
+
+_Added in 2.8.0_
+Get the instances (occurrences) of an event for a specified time range.
+
+If the event is a `seriesMaster` type, this returns the occurrences and exceptions of the event in the specified time range. 
+
+```ts
+import { graph } from '@pnp/graph';
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+const event = graph.me.events.getById('');
+
+// basic request, note need to invoke the returned queryable
+const instances = await event.instances("2020-01-01", "2020-03-01")();
+
+// you can use select, top, etc to filter your returned results
+const instances2 = await event.instances("2020-01-01", "2020-03-01").select("subject").top(3)();
+
+// you can specify times along with the dates
+const instance3 = await event.instances("2020-01-01T19:00:00-08:00", "2020-03-01T19:00:00-08:00")(); 
+```

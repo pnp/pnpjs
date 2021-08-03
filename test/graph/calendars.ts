@@ -45,6 +45,18 @@ describe("Calendar", function () {
                         "timeZone": "Pacific Standard Time",
                     },
                     "subject": "Let's go for lunch",
+                    "recurrence": {
+                        "pattern": {
+                            "type": "weekly",
+                            "interval": 1,
+                            "daysOfWeek": [ "monday" ],
+                        },
+                        "range": {
+                            "type": "endDate",
+                            "startDate": "2017-09-04",
+                            "endDate": "2017-12-31",
+                        },
+                    },
                 });
             testEventID = event.data.id;
         });
@@ -201,6 +213,15 @@ describe("Calendar", function () {
         it("Find Rooms", async function () {
             const rooms = await graph.users.getById(testUserName).findRooms();
             return expect(rooms.length).is.greaterThan(0);
+        });
+
+        it("Get Instances", async function () {
+            const startDate: Date = new Date();
+            const endDate: Date = new Date();
+            endDate.setDate(endDate.getDate() + 10);
+            const event = graph.users.getById(testUserName).events.getById(testEventID);
+            const instances = await event.instances(startDate.toISOString(), endDate.toISOString())();
+            return expect(instances.length).is.greaterThan(0);
         });
 
         // Remove the test data we created
