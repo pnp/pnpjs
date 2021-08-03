@@ -19,6 +19,8 @@ import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
+import { extractWebUrl } from "../utils/extractweburl.js";
+import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 /**
  * Describes a collection of Item objects
@@ -313,6 +315,7 @@ export class _Item extends _SharePointQueryableInstance {
             await this.select(
                 "Id",
                 "ParentList/Id",
+                "ParentList/Title",
                 "ParentList/RootFolder/UniqueId",
                 "ParentList/RootFolder/ServerRelativeUrl",
                 "ParentList/RootFolder/ServerRelativePath",
@@ -331,6 +334,7 @@ export class _Item extends _SharePointQueryableInstance {
             },
             ParentList: {
                 Id: urlInfo.ParentList.Id,
+                Title: urlInfo.ParentList.Title,
                 RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
                 RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
                 RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
@@ -342,6 +346,37 @@ export class _Item extends _SharePointQueryableInstance {
                 Url: urlInfo.ParentList.ParentWeb.Url,
             },
         };
+    }
+
+    public async setImageField(fieldName: string, imageName: string, imageContent: any): Promise<any> {
+
+        const contextInfo = await this.getParentInfos();
+
+        const webUrl = extractWebUrl(this.toUrl());
+
+        const q = SharePointQueryable(webUrl, "/_api/web/UploadImage");
+        q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
+        q.query.set("@a1", `'${escapeQueryStrValue(contextInfo.ParentList.Title)}'`);
+        q.query.set("@a2", `'${escapeQueryStrValue(imageName)}'`);
+        q.query.set("@a3", `'${escapeQueryStrValue(contextInfo.ParentList.Id)}'`);
+        q.query.set("@a4", contextInfo.Item.Id);
+
+        const result = await spPost<IItemImageUploadResult>(q, { body: imageContent });
+
+        const itemInfo = {
+            "type": "thumbnail",
+            "fileName": result.Name,
+            "nativeFile": {},
+            "fieldName": fieldName,
+            "serverUrl": contextInfo.ParentWeb.Url.replace(contextInfo.ParentWeb.ServerRelativeUrl, ""),
+            "serverRelativeUrl": result.ServerRelativeUrl,
+            "id": result.UniqueId,
+        };
+
+        return this.validateUpdateListItem([{
+            FieldName: fieldName,
+            FieldValue: JSON.stringify(itemInfo),
+        }]);
     }
 
     /**
@@ -463,6 +498,12 @@ export interface IItemUpdateResultData {
     "odata.etag": string;
 }
 
+export interface IItemImageUploadResult {
+    Name: string;
+    ServerRelativeUrl: string;
+    UniqueId: string;
+}
+
 export interface IItemDeleteParams {
 
     /**
@@ -480,6 +521,7 @@ export interface IItemParentInfos {
     };
     ParentList: {
         Id: string;
+        Title: string;
         RootFolderServerRelativePath: IResourcePath;
         RootFolderServerRelativeUrl: string;
         RootFolderUniqueId: string;
