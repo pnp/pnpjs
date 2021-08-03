@@ -261,7 +261,7 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
 }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
 
-export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
+export class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
 
     /**
      * 	To request second and subsequent pages of Graph data
