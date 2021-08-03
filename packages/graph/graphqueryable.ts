@@ -267,7 +267,12 @@ export class _GraphQueryableSearchableCollection<GetType = any[]> extends _Graph
      * 	To request second and subsequent pages of Graph data
      */
     public search(query: string): this {
-        this.query.set("$search", query);
+        this.configure({
+            headers: {
+                ConsistencyLevel: "eventual",
+            },
+        });
+        this.query.set("$search", `"${query}"`);
         return this;
     }
 }
