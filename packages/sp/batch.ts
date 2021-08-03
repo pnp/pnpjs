@@ -215,7 +215,7 @@ export class SPBatch extends Batch {
             throw (await HttpRequestError.init(fetchResponse));
         }
 
-        const text = await fetchResponse.clone().text();
+        const text = await fetchResponse.text();
         const responses = SPBatch.ParseResponse(text);
 
         if (responses.length !== this.requests.length) {

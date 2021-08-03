@@ -421,11 +421,11 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
     }
 
     /**
-   * Adds a new SP.FieldLocation to the collection
-   *
-   * @param title The field title.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
     @tag("fs.addLocation")
     public addLocation(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
@@ -433,8 +433,24 @@ export class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
 
         return this.add(title, "SP.FieldLocation", assign(props, properties));
     }
+
+    /**
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    @tag("fs.addImage")
+    public addImageField(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
+
+        const props = {
+            FieldTypeKind: 34,
+        };
+
+        return this.add(title, "SP.FieldMultiLineText", assign(props, properties));
+    }
 }
-export interface IFields extends _Fields {}
+export interface IFields extends _Fields { }
 export const Fields = spInvokableFactory<IFields>(_Fields);
 
 export class _Field extends _SharePointQueryableInstance<IFieldInfo> {
