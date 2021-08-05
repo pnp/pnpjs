@@ -11,18 +11,10 @@ export async function Example(settings: any) {
 
     graphSetup(settings);
 
-    const url = graph.me.outlook.masterCategories.toUrl();
+    const me = await graph.me();
+   
     Logger.log({
-        data: url,
-        level: LogLevel.Info,
-        message: "List of Groups",
-    });
-
-
-    const currentOutlookUser = await graph.me.outlook.masterCategories();
-
-    Logger.log({
-        data: currentOutlookUser,
+        data: me,
         level: LogLevel.Info,
         message: "List of Groups",
     });
