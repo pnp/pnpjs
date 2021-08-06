@@ -49,12 +49,6 @@ type DistributeEmit<T extends Moments> =
     { [Prop in string & keyof T]: (...args: Parameters<Parameters<T[Prop]>[0][number]>) => ReturnType<Parameters<T[Prop]>[0][number]> };
 
 /**
- * A type used to represent the proxied Timeline.clear property
- */
-// type DistributeClear<T extends Moments> =
-//     { [Prop in string & keyof T]: () => boolean };
-
-/**
  * Virtual events that are present on all Timelines
  */
 type DefaultTimelineEvents<T extends Moments> = {
@@ -73,11 +67,6 @@ type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTime
  * The type combining the defined moments and DefaultTimelineEvents
  */
 type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
-
-/**
- * The type combining the defined moments and DefaultTimelineEvents
- */
-// type ClearProxyType<T extends Moments> = DistributeClear<T> & DistributeClear<DefaultTimelineEvents<T>>;
 
 /**
  * Timeline represents a set of operations executed in order of definition,
@@ -107,10 +96,11 @@ export abstract class Timeline<T extends Moments> {
     public get on(): OnProxyType<T> {
 
         if (this._onProxy === null) {
+
             this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
-                    // // TODO:: we need better logic here depending on how objects are constructed
+                    // TODO:: we need better logic here depending on how objects are constructed
                     if (this._inheritingObservers) {
                         // ONLY clone the observers the first time this instance of timeline sets an observer
                         // this should work all up and down the tree.
@@ -129,12 +119,10 @@ export abstract class Timeline<T extends Moments> {
                     replace: (handler: ValidObserver) => {
                         addObserver(target.observers, p, handler, "replace");
                         return target;
-                        // Reflect.set(target, `__once${p}`, handler);
                     },
                     prepend: (handler: ValidObserver) => {
                         addObserver(target.observers, p, handler, "prepend");
                         return target;
-                        // Reflect.set(target, `__once${p}`, handler);
                     },
                     clear: (): boolean => {
 
@@ -219,7 +207,7 @@ export abstract class Timeline<T extends Moments> {
 
                     try {
 
-                        // default to broadcasting any events without specific impl (will apply to defaults)
+                        // default to broadcasting any events without specific impl (will apply to log and error as well)
                         const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : p === "init" ? init() : broadcast();
 
                         return Reflect.apply(moment, target, [observers, ...args]);
@@ -227,8 +215,11 @@ export abstract class Timeline<T extends Moments> {
                     } catch (e) {
 
                         if (p !== "error") {
-                            this.emit.error(e);
+
+                            this.error(e);
+
                         } else {
+
                             // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
                             throw e;
                         }
@@ -274,10 +265,10 @@ export abstract class Timeline<T extends Moments> {
             } catch (e) {
 
                 const e2 = Object.assign(Error("Error in dispose."), {
-                    InnerException: e,
+                    innerException: e,
                 });
 
-                this.emit.error(e2);
+                this.error(e2);
             }
         }
     }

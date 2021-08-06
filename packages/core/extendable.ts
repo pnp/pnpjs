@@ -29,11 +29,11 @@ export function extendable() {
                 const r = Reflect.construct(clz, args, newTarget);
 
                 const proxied = new Proxy(r, {
-                    apply: (target: any, thisArg: any, argArray?: any) => {
-                        // ensure we set the proper "this"
-                        const th = typeof thisArg === "undefined" ? proxied : thisArg;
+                    apply: (target: any, _thisArg: any, argArray?: any) => {
+                        // TODO:: ensure we set the proper "this"?? - we likely always need to use proxied here based on how Proxy seems to operate for chained operations
+                        // const th = typeof thisArg === "undefined" ? proxied : thisArg;
                         // eslint-disable-next-line @typescript-eslint/ban-types
-                        return extensionOrDefault("apply", (...a: [Function, any, ArrayLike<any>]) => Reflect.apply(...a), target, th, argArray);
+                        return extensionOrDefault("apply", (...a: [Function, any, ArrayLike<any>]) => Reflect.apply(...a), target, proxied, argArray);
                     },
                     get: (target: any, p: PropertyKey, receiver: any) => {
                         // eslint-disable-next-line @typescript-eslint/ban-types
