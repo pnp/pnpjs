@@ -7,9 +7,6 @@ import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
 import { ISharePointQueryable, sp2, _SharePointQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
-import { IWeb, Web } from "@pnp/sp/webs";
-import { graph } from "@pnp/graph/rest.js";
-import { traceDeprecation } from "process";
 
 declare var process: { exit(code?: number): void };
 
@@ -17,17 +14,17 @@ function TestInitBehavior(): (instance: Queryable2) => Queryable2 {
 
     return (instance: Queryable2) => {
 
-        instance.on.init(function (this: Queryable2) {
+        // instance.on.init(function (this: Queryable2) {
 
-            const o = extend(this, {
+        //     const o = extend(this, {
 
-                async execute(): Promise<any> {
-                    console.log("HA HA");
-                },
-            });
+        //         async execute(): Promise<any> {
+        //             console.log("HA HA");
+        //         },
+        //     });
 
-            return o;
-        });
+        //     return o;
+        // });
 
         instance.on.dispose(function (this: Queryable2) {
 
@@ -75,13 +72,13 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
             // .using(TextParse())
             // .using(JSONParse())
             // .using(Proxy("https://127.0.0.1:8888"))
-            .using(Caching("session", true))
+            // .using(Caching("session", true))
             .using(TestInitBehavior())
             .on.pre(async function (url, init, result) {
 
-                extend(this, {
-                    execute: ""
-                });
+                // extend(this, {
+                //     execute: ""
+                // });
 
                 // TODO:: replacement for isAbsolute? SHould this be its own behavior?
                 if (!isUrlAbsolute(url)) {
@@ -122,7 +119,7 @@ export async function Example(settings: ITestingSettings) {
 
         const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));
 
-        const w = sp.web;
+        const w = sp.web.features;
 
         // TODO:: can this replace extend factory?? sorta
         // w.on.init(function (this: IWeb) {
@@ -139,7 +136,12 @@ export async function Example(settings: ITestingSettings) {
 
         const yyy = await w();
 
+        const yyyy = await sp.web.features();
+
         console.log(`here: ${JSON.stringify(yyy)}`);
+
+
+        console.log(`here: ${JSON.stringify(yyyy)}`);
 
         // const [batch, execute] = sp.createBatch();
 
