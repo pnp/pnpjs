@@ -117,9 +117,10 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));
+        const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));    
 
-        const w = sp.web.features;
+        const w = sp.web;
+
 
         // TODO:: can this replace extend factory?? sorta
         // w.on.init(function (this: IWeb) {
@@ -133,6 +134,7 @@ export async function Example(settings: ITestingSettings) {
 
         //     return o;
         // });
+
 
         const yyy = await w();
 
