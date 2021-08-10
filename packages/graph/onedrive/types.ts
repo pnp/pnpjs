@@ -151,7 +151,7 @@ export class _DriveItems extends _GraphQueryableCollection {
 
     /**
      * Adds a folder to this collection of drive items
-     * 
+     *
      * @param name Name of the new folder
      * @returns result with folder data and chainable drive item object
      */
