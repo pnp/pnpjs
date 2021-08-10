@@ -136,9 +136,23 @@ const itemChildren = await graph.me.drives.getById('driveId').root.items.getById
 
 ```
 
-## Add folder or item
+## Add Item
 
-Using the add you can add a folder or an item
+Using the add you can add an item
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
+
+const add1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add("test.txt", "My File Content String");
+
+const add2 = await graph.me.drives.getById('driveId').root.children.add("filename.txt", "My File Content String");
+```
+
+## Add folder
+
+Using addFolder you can add a folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
@@ -146,10 +160,9 @@ import "@pnp/graph/onedrive";
 import "@pnp/graph/users"
 import { DriveItem as IDriveItem } from "@microsoft/microsoft-graph-types";
 
-const addFolder = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add('New Folder', <IDriveItem>{folder: {}});
+const addFolder1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.addFolder('New Folder');
 
-const addFolder = await graph.me.drives.getById('driveId').root.children.add('New Folder', <IDriveItem>{folder: {}});
-
+const addFolder2 = await graph.me.drives.getById('driveId').root.children.addFolder('New Folder');
 ```
 
 ## Search items
