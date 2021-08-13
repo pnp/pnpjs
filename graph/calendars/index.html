@@ -977,6 +977,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#get-event-instances" class="md-nav__link">
+    Get Event Instances
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2238,6 +2245,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#get-event-instances" class="md-nav__link">
+    Get Event Instances
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2457,6 +2471,25 @@ const rooms2 = await graph.users.getById('user@tenant.onmicrosoft.com').findRoom
 
 // you can use select, top, etc to filter your returned results
 const rooms3 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms().select('name').top(10)();
+</code></pre>
+<h2 id="get-event-instances">Get Event Instances<a class="headerlink" href="#get-event-instances" title="Permanent link">&para;</a></h2>
+<p><em>Added in 2.8.0</em>
+Get the instances (occurrences) of an event for a specified time range.</p>
+<p>If the event is a <code>seriesMaster</code> type, this returns the occurrences and exceptions of the event in the specified time range. </p>
+<pre><code class="language-ts">import { graph } from '@pnp/graph';
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+const event = graph.me.events.getById('');
+
+// basic request, note need to invoke the returned queryable
+const instances = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+
+// you can use select, top, etc to filter your returned results
+const instances2 = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
+
+// you can specify times along with the dates
+const instance3 = await event.instances(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)(); 
 </code></pre>
                 
               

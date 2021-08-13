@@ -2216,8 +2216,11 @@
 <h2 id="sendemail">sendEmail<a class="headerlink" href="#sendemail" title="Permanent link">&para;</a></h2>
 <p>This methods allows you to send an email based on the supplied arguments. The method takes a single argument, a plain object defined by the EmailProperties interface (shown below).</p>
 <h3 id="emailproperties">EmailProperties<a class="headerlink" href="#emailproperties" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">export interface EmailProperties {
+<pre><code class="language-TypeScript">export interface TypedHash&lt;T&gt; {
+    [key: string]: T;
+}
 
+export interface EmailProperties {
     To: string[];
     CC?: string[];
     BCC?: string[];
