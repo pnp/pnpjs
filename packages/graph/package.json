@@ -5,7 +5,7 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@microsoft/microsoft-graph-types": "^1.41.0",
+        "@microsoft/microsoft-graph-types": "^2.2.0",
         "tslib": "2.3.0",
         "@pnp/common": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
