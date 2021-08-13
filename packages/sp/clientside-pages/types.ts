@@ -310,7 +310,10 @@ export class _ClientsidePage extends _SharePointQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        if (this._bannerImageDirty) {
+        const previewPartialUrl = "_layouts/15/getpreview.ashx";
+
+        //If new banner image, and banner image url is not in getpreview.ashx format
+        if (this._bannerImageDirty && !this.bannerImageUrl.includes(previewPartialUrl)) {
 
             const serverRelativePath = this.bannerImageUrl;
 
@@ -326,7 +329,7 @@ export class _ClientsidePage extends _SharePointQueryable {
             // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await batch.execute();
 
-            const f = SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
+            const f = SharePointQueryable(webUrl, previewPartialUrl);
             f.query.set("guidSite", `${imgInfo.SiteId}`);
             f.query.set("guidWeb", `${imgInfo.WebId}`);
             f.query.set("guidFile", `${imgInfo.UniqueId}`);
@@ -367,6 +370,7 @@ export class _ClientsidePage extends _SharePointQueryable {
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
+            BannerImageUrl: this.bannerImageUrl
         });
 
         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
