@@ -9,8 +9,11 @@ This methods allows you to send an email based on the supplied arguments. The me
 ### EmailProperties
 
 ```TypeScript
-export interface EmailProperties {
+export interface TypedHash<T> {
+    [key: string]: T;
+}
 
+export interface EmailProperties {
     To: string[];
     CC?: string[];
     BCC?: string[];

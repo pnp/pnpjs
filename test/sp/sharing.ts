@@ -137,13 +137,13 @@ describe("Sharing", () => {
         });
 
         // files sharing is not testable
-        describe.skip("can operate on files", () => {
+        describe("can operate on files", () => {
 
             let file: IFile = null;
 
             before(() => {
 
-                file = web.getFileByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
+                file = web.getFileByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/test.txt"));
             });
 
             it("Should get a sharing link with default settings.", () => {

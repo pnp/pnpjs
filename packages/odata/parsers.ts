@@ -104,7 +104,6 @@ export class BufferParser extends ODataParser<ArrayBuffer> {
     protected parseImpl(r: Response, resolve: (value: any) => void): void {
 
         if (isFunc(r.arrayBuffer)) {
-
             r.arrayBuffer().then(resolve);
         } else {
 

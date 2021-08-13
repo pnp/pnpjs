@@ -269,7 +269,7 @@ export interface IWebInfosData {
     Configuration: number;
     Created: string;
     Description: string;
-    Id: string;
+    Id: number;
     Language: number;
     LastItemModifiedDate: string;
     LastItemUserModifiedDate: string;

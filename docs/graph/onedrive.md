@@ -9,7 +9,7 @@ you can manage drives and drive items in Onedrive.
 
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/onedrive"; |
+| Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/onedrive"; <br />import "@pnp/graph/users"; |
 | Preset: All | import "@pnp/graph/presets/all";    |
 
 ## Get the default drive
@@ -19,10 +19,11 @@ Using the drive.get() you can get the default drive from Onedrive
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
-const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get();
+const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drive.get();
 
-const drives = await graph.me.drives.get();
+const drives = await graph.me.drive.get();
 
 ```
 
@@ -33,6 +34,7 @@ Using the drives.get() you can get the users available drives from Onedrive
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get();
 
@@ -47,6 +49,7 @@ Using the drives.getById() you can get one of the available drives in Outlook
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const drive = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId');
 
@@ -61,6 +64,7 @@ Using the list.get() you get the associated list
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const list = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list.get();
 
@@ -75,6 +79,7 @@ Using the recent.get() you get the recent files
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const files = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent.get();
 
@@ -89,6 +94,7 @@ Using the sharedWithMe.get() you get the files shared with the user
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe.get();
 
@@ -103,6 +109,7 @@ Using the root.get() you get the root folder
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const root = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.get();
 
@@ -117,6 +124,7 @@ Using the children.get() you get the children
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const rootChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.get();
 
@@ -128,19 +136,33 @@ const itemChildren = await graph.me.drives.getById('driveId').root.items.getById
 
 ```
 
-## Add folder or item
+## Add Item
 
-Using the add you can add a folder or an item
+Using the add you can add an item
 
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
+
+const add1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add("test.txt", "My File Content String");
+
+const add2 = await graph.me.drives.getById('driveId').root.children.add("filename.txt", "My File Content String");
+```
+
+## Add folder
+
+Using addFolder you can add a folder
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 import { DriveItem as IDriveItem } from "@microsoft/microsoft-graph-types";
 
-const addFolder = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add('New Folder', <IDriveItem>{folder: {}});
+const addFolder1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.addFolder('New Folder');
 
-const addFolder = await graph.me.drives.getById('driveId').root.children.add('New Folder', <IDriveItem>{folder: {}});
-
+const addFolder2 = await graph.me.drives.getById('driveId').root.children.addFolder('New Folder');
 ```
 
 ## Search items
@@ -150,6 +172,7 @@ Using the search.get() you can search for items, and optionally select propertie
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText').get();
 
@@ -164,6 +187,7 @@ Using the items.getById() you can get a specific item from the current drive
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const item = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId');
 
@@ -178,6 +202,7 @@ Using the thumbnails.get() you get the thumbnails
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails.get();
 
@@ -192,6 +217,7 @@ Using the delete() you delete the current item
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').delete();
 
@@ -206,6 +232,7 @@ Using the update() you update the current item
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 const update = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').update({name: "New Name"});
 
@@ -220,6 +247,7 @@ Using the move() you move the current item, and optionally update it
 ```TypeScript
 import { graph } from "@pnp/graph";
 import "@pnp/graph/onedrive";
+import "@pnp/graph/users"
 
 // Requires a parentReference to the new folder location
 const move = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: "New Name"});

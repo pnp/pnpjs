@@ -215,7 +215,7 @@ export async function shareWith(
 function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<ISharingResult> {
 
     const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
-    w.configureFrom(this);
+    w.configureFrom(o);
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 
