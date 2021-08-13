@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.8.0 - 2021-Aug-13
+
+### Fixed
+
+- sp: Removed a call to .clone affecting batches in some cases #1837 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1839)]
+- sp: fixes sharing for files, fixes bug in shareObject code path #1827 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1840)]
+- docs: missing imports on OneDrive imports [@omarelanis](https://github.com/omarelanis) [[PR](https://github.com/pnp/pnpjs/pull/1843)]
+- graph: Fixes add in DriveItems [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1845)]
+- sp: ClientSide Pages: Always includes BannerImageUrl in save page payload to avoid null #1847 [@juliemturner](https://github.com/juliemturner)
+
+### Added
+
+- graph: Adds the $search query param for messages, people and directory objects [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1818)]
+- graph: Adds new function to events to get all instances. [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1832)]
+- sp: Add fields.addImageField, listitem.setImageField, item.getParentInfos returns "ParentList/Title" [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1839)]
+- graph: Adds addFolder to DriveItems [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1845)]
+
 ## 2.7.0 - 2021-July-09
 
 ### Fixed
