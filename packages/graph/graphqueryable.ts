@@ -214,6 +214,12 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      * 	Retrieves the total count of matching resources
      */
     public get count(): this {
+        this.configure({
+            headers: {
+                ConsistencyLevel: "eventual",
+            },
+        });
+
         this.query.set("$count", "true");
         return this;
     }
