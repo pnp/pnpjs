@@ -9,7 +9,9 @@ import { stringIsNullOrEmpty } from "@pnp/core";
  * @param name Method name, displayed in the
  */
 export function tag(name: string) {
+
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
+
 
         if (descriptor === undefined) {
             descriptor = Object.getOwnPropertyDescriptor(target, key);

@@ -10,7 +10,7 @@ import {
     combine,
 } from "@pnp/core";
 
-import { ISharePointQueryable } from "@pnp/sp";
+import { ISPQueryable } from "@pnp/sp";
 
 export class SPRestAddIn extends SPRest {
 
@@ -42,7 +42,7 @@ export class SPRestAddIn extends SPRest {
      * @param hostWebUrl The absolute url of the host web
      * @param urlPart String part to append to the url "site" | "web"
      */
-    private _cdImpl<T extends ISharePointQueryable>(
+    private _cdImpl<T extends ISPQueryable>(
         factory: (...args: any[]) => T,
         addInWebUrl: string,
         hostWebUrl: string,

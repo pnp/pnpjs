@@ -18,12 +18,7 @@ export function addObserver(target: Record<string, any>, moment: string, observe
     if (!Reflect.has(target, moment)) {
 
         // if we don't have a registration for this moment, then we just add a new prop
-        Reflect.defineProperty(target, moment, {
-            value: [observer],
-            configurable: true,
-            enumerable: true,
-            writable: true,
-        });
+        target[moment] = [observer];
 
     } else {
 

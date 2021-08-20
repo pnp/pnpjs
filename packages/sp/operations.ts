@@ -1,9 +1,8 @@
 import { op, get, post, patch, del } from "@pnp/queryable";
 import { OLD_ISharePointQueryable } from "./sharepointqueryable.js";
-import { ensureHeaders } from "@pnp/core";
 import { defaultPipelineBinder, IOperation, cloneQueryableData, headers } from "@pnp/queryable";
 import { SPHttpClient } from "./sphttpclient.js";
-import { ISharePointQueryable } from "./sharepointqueryable.js";
+import { ISPQueryable } from "./sharepointqueryable.js";
 import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc, Runtime } from "@pnp/core";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
@@ -39,7 +38,7 @@ import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 //     };
 // };
 
-export const spGet = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit): Promise<T> => {
+export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
     // TODO:: review this
     // Fix for #304 - when we clone objects we in some cases then execute a get request
     // in these cases the caching settings were getting dropped from the request
@@ -58,26 +57,22 @@ export const spGet = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit)
     return op(o, get, init);
 };
 
-export const spPost = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
+export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
 
-export const spDelete = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
+export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
 
-export const spPatch = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
+export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
 
-export const spPostDelete = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit): Promise<T> => {
+export const spPostDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
 
-    init = ensureHeaders(init, {
-        "X-HTTP-Method": "DELETE",
-    });
+    init.headers = { ...init.headers, "X-HTTP-Method": "DELETE" };
 
     return spPost<T>(o, init);
 };
 
-export const spPostDeleteETag = <T = any>(o: ISharePointQueryable<any>, init?: RequestInit, eTag = "*"): Promise<T> => {
+export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestInit, eTag = "*"): Promise<T> => {
 
-    init = ensureHeaders(init, {
-        "IF-Match": eTag,
-    });
+    init.headers = { ...init.headers, "IF-Match": eTag };
 
     return spPostDelete<T>(o, init);
 };

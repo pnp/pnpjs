@@ -1,28 +1,25 @@
-import { assign, ITypedHash } from "@pnp/core";
 import { body, FromQueryable, headers, Queryable2 } from "@pnp/queryable";
 import {
-    _SharePointQueryableCollection,
+    _SPCollection,
     OLD_deleteable,
     spInvokableFactory,
-    _SharePointQueryableInstance,
-    SharePointQueryableCollection,
-    ISharePointQueryableCollection,
-    SharePointQueryableInstance,
-    ISharePointQueryableInstance,
+    _SPInstance,
+    SPCollection,
+    ISPCollection,
+    SPInstance,
+    ISPInstance,
     IDeleteable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../odata.js";
-import { metadata } from "../utils/metadata.js";
-import { Site, IOpenWebByIdResult } from "../sites/index.js";
 import { spGet, spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { tag } from "../telemetry.js";
+import { tag } from "../telemetry-2.js";
 import { createBatch } from "./batching.js";
 
 @defaultPath("webs")
-export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
+export class _Webs extends _SPCollection<IWebInfo[]> {
 
     /**
      * Adds a new web to the collection
@@ -35,26 +32,24 @@ export class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
      * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
      */
     @tag("ws.add")
-    public async add(title: string, url: string, description = "", template = "STS", language = 1033, inheritPermissions = true): Promise<IWebAddResult> {
+    public async add(Title: string, Url: string, Description = "", WebTemplate = "STS", Language = 1033, UseSamePermissionsAsParentSite = true): Promise<IWebAddResult> {
 
         const postBody = body({
-            "parameters":
-                assign(metadata("SP.WebCreationInformation"),
-                    {
-                        Description: description,
-                        Language: language,
-                        Title: title,
-                        Url: url,
-                        UseSamePermissionsAsParentSite: inheritPermissions,
-                        WebTemplate: template,
-                    }),
+            "parameters": {
+                Description,
+                Language,
+                Title,
+                Url,
+                UseSamePermissionsAsParentSite,
+                WebTemplate,
+            },
         });
 
         const data = await spPost(Webs(this, "add"), postBody);
 
         return {
             data,
-            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
+            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(FromQueryable(this)),
         };
     }
 }
@@ -65,11 +60,8 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
  * Describes a web
  *
  */
-// @invokable(async () => {
-//     console.log("whoop 99999");
-// })
 @defaultPath("_api/web")
-export class _Web extends _SharePointQueryableInstance<IWebInfo> {
+export class _Web extends _SPInstance<IWebInfo> {
 
     public delete = OLD_deleteable("w");
 
@@ -84,16 +76,16 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     /**
      * Allows access to the web's all properties collection
      */
-    public get allProperties(): ISharePointQueryableInstance {
-        return tag.configure(SharePointQueryableInstance(this, "allproperties"), "w.allprops");
+    public get allProperties(): ISPInstance {
+        return tag.configure(SPInstance(this, "allproperties"), "w.allprops");
     }
 
     /**
      * Gets a collection of WebInfos for this web's subwebs
      *
      */
-    public get webinfos(): ISharePointQueryableCollection<IWebInfosData[]> {
-        return tag.configure(SharePointQueryableCollection(this, "webinfos"), "w.webinfos");
+    public get webinfos(): ISPCollection<IWebInfosData[]> {
+        return tag.configure(SPCollection(this, "webinfos"), "w.webinfos");
     }
 
     /**
@@ -101,9 +93,12 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      *
      */
     @tag("w.getParentWeb")
-    public async getParentWeb(): Promise<IOpenWebByIdResult> {
-        const { ParentWeb } = await spGet(this.select("ParentWeb/Id").expand("ParentWeb"));
-        return ParentWeb?.Id ? Site(this.parentUrl).using(FromQueryable(this)).openWebById(ParentWeb.Id) : null;
+    public async getParentWeb(): Promise<IWeb> {
+        const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
+        if (ParentWeb?.ServerRelativeUrl) {
+            return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length)).using(FromQueryable(this));
+        }
+        return null;
     }
 
     /**
@@ -112,13 +107,8 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * @param properties A plain object hash of values to update for the web
      */
     @tag("w.update")
-    public async update(properties: ITypedHash<any>): Promise<IWebUpdateResult> {
-
-        const postBody = body(assign(metadata("SP.Web"), properties), headers({ "X-HTTP-Method": "MERGE" }));
-
-        const data = await spPost(this, postBody);
-
-        return { data, web: <any>this };
+    public async update(properties: Record<string, any>): Promise<void> {
+        return spPost(this, body(properties, headers({ "X-HTTP-Method": "MERGE" })));
     }
 
     /**
@@ -160,8 +150,7 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
          */
     @tag("w.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
-        const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
-        return spPost(Web(this, "getchanges"), postBody);
+        return spPost(Web(this, "getchanges"), body({ query }));
     }
 
     /**
@@ -220,8 +209,8 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
     * @param nWebTemplateFilter Specifies the site definition (default = -1)
     * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
     */
-    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISharePointQueryableCollection<IWebInfosData[]> {
-        const o = SharePointQueryableCollection(this,
+    public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISPCollection<IWebInfosData[]> {
+        const o = SPCollection(this,
             `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
         return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
     }
@@ -240,9 +229,9 @@ export class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
      * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
      */
-    public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISharePointQueryableCollection {
+    public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISPCollection {
         const path = `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`;
-        return tag.configure(SharePointQueryableCollection(this, path), "w.availableWebTemplates");
+        return tag.configure(SPCollection(this, path), "w.availableWebTemplates");
     }
 }
 export interface IWeb extends _Web, IDeleteable { }

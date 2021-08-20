@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, spInvokableFactory, SharePointQueryable } from "../sharepointqueryable.js";
+import { _SPInstance, spInvokableFactory, SPQueryable } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { hOP, assign } from "@pnp/core";
@@ -13,7 +13,7 @@ import { extractWebUrl } from "../utils/extractweburl.js";
 import { emptyGuid } from "../splibconfig.js";
 
 @defaultPath("_api/site")
-export class _Site extends _SharePointQueryableInstance {
+export class _Site extends _SPInstance {
 
     /**
      * Gets the root web of the site collection
@@ -94,7 +94,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
 
-        const q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
+        const q = tag.configure(SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
         q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
@@ -107,7 +107,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
-        const q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
+        const q = tag.configure(SPQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
         q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;

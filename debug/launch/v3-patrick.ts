@@ -4,7 +4,7 @@ import { Queryable2, InjectHeaders, Caching, HttpRequestError, PnPLogging, get }
 import { NodeFetchWithRetry, MSAL, Proxy, NodeFetch } from "@pnp/nodejs";
 import { combine, isFunc, getHashCode, PnPClientStorage, dateAdd, isUrlAbsolute, extend, extendable } from "@pnp/core";
 import { DefaultParse, JSONParse, TextParse } from "@pnp/queryable";
-import { ISharePointQueryable, sp2, _SharePointQueryable } from "@pnp/sp";
+import { ISPQueryable, sp2, _SPQueryable } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
 
@@ -61,7 +61,7 @@ function testingConfig(settings: ITestingSettings): (instance: Queryable2) => Qu
             .using(MSAL(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes))
             .using(InjectHeaders({
                 "Accept": "application/json",
-                "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                "Content-Type": "application/json;charset=utf-8",
                 "User-Agent": "NONISV|SharePointPnP|PnPjs",
                 "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
             }))
@@ -117,9 +117,17 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
+
         const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(testingConfig(settings));    
 
-        const w = sp.web;
+        const w = await sp.web.getChanges({
+            List: true,
+            Web: true,
+            Add: true,
+        });
+
+        
+        console.log(`here: ${JSON.stringify(w)}`);
 
 
         // TODO:: can this replace extend factory?? sorta
@@ -136,14 +144,10 @@ export async function Example(settings: ITestingSettings) {
         // });
 
 
-        const yyy = await w();
+        // const yyy = await w();
 
-        const yyyy = await sp.web.features();
+        // console.log(`here: ${JSON.stringify(yyy)}`);
 
-        console.log(`here: ${JSON.stringify(yyy)}`);
-
-
-        console.log(`here: ${JSON.stringify(yyyy)}`);
 
         // const [batch, execute] = sp.createBatch();
 

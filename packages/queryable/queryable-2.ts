@@ -125,7 +125,6 @@ export class Queryable2<R> extends Timeline<typeof DefaultMoments> implements IQ
                     this.emit.data(result);
                     this.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
 
-                    // TODO:: do we still run post tasks here? We did NOT in v2, but different architecture
                     return;
                 }
 

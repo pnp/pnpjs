@@ -22,14 +22,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed package "odata" -> "queryable"
 - Renamed package "common" -> "core"
 
+- sp:
+  - web.update return changed to Promise<void>
+  - web.getParentWeb return changed to Promise<IWeb>
+
 ### Removed
 
 - queryable:
-  - LambdaParser -> just write a handler
+  - LambdaParser -> write an observer
   - TextParser, BlobParser, JSONParser, BufferParser -> TextParse, BlobParse, JSONParse, BufferParse behaviors
   - Removed .get method in favor of invokable pattern. foo.get() becomes foo()
   - Removed .clone, .cloneTo in favor of using factories directly, i.e. this.clone(Web, "path") => Web(this, "path")
   - Invokable Extensions is split, with core object extension functionality moved to core
+  - ensureHeaders => headers = { ...headers, ...newValues }
 
 - nodejs: 
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
@@ -41,4 +46,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch
+  - feature.deactivate => use features.remove
 

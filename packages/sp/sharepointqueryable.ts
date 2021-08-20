@@ -6,11 +6,11 @@ import { metadata } from "./utils/metadata.js";
 import { OLD_spGet, OLD_spPost, OLD_spPostDelete, OLD_spPostDeleteETag, spPost, spPostDelete, spPostDeleteETag } from "./operations.js";
 import { tag } from "./telemetry.js";
 
-export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
-    new(baseUrl: string | ISharePointQueryable, path?: string): T;
+export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
+    new(baseUrl: string | ISPQueryable, path?: string): T;
 }
 
-export type ISPInvokableFactory<R extends IQueryable2> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
+export type ISPInvokableFactory<R extends IQueryable2> = (baseUrl: string | ISPQueryable, path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
@@ -20,7 +20,7 @@ export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableF
  * SharePointQueryable Base Class
  *
  */
-export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> implements IQueryable2<GetType> {
+export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements IQueryable2<GetType> {
 
     protected parentUrl: string;
 
@@ -31,7 +31,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
      * @param base A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(base: string | ISharePointQueryable, path: string) {
+    constructor(base: string | ISPQueryable, path: string) {
 
         if (typeof base === "string") {
 
@@ -87,7 +87,7 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
     /**
      * Gets the full url with query information
      */
-    public toUrlAndQuery(): string {
+    public toRequestUrl(): string {
 
         const aliasedParams = new Map<string, string>(this.query);
 
@@ -134,9 +134,9 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends ISharePointQueryable>(
+    protected getParent<T extends ISPQueryable>(
         factory: ISPInvokableFactory<any>,
-        baseUrl: string | ISharePointQueryable = this.parentUrl,
+        baseUrl: string | ISPQueryable = this.parentUrl,
         path?: string,
         batch?: SPBatch): T {
 
@@ -169,19 +169,19 @@ export class _SharePointQueryable<GetType = any> extends Queryable2<GetType> imp
         return clone;
     }
 }
-export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType> { }
+export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }
 // this interface is to fix build issues when moving to typescript 4. _SharePointQueryable is itself not invokable but we need to match signatures
 // eslint-disable-next-line no-redeclare
 // export interface _SharePointQueryable<GetType = any> {
 //     <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
 // }
-export const SharePointQueryable = spInvokableFactory<ISharePointQueryable>(_SharePointQueryable);
+export const SPQueryable = spInvokableFactory<ISPQueryable>(_SPQueryable);
 
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class _SharePointQueryableCollection<GetType = any[]> extends _SharePointQueryable<GetType> {
+export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
 
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
@@ -227,14 +227,14 @@ export class _SharePointQueryableCollection<GetType = any[]> extends _SharePoint
         return this;
     }
 }
-export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType> { }
-export const SharePointQueryableCollection = spInvokableFactory<ISharePointQueryableCollection>(_SharePointQueryableCollection);
+export interface ISPCollection<GetType = any[]> extends _SPCollection<GetType> { }
+export const SPCollection = spInvokableFactory<ISPCollection>(_SPCollection);
 
 /**
  * Represents an instance that can be selected
  *
  */
-export class _SharePointQueryableInstance<GetType = any> extends _SharePointQueryable<GetType> {
+export class _SPInstance<GetType = any> extends _SPQueryable<GetType> {
 
     /**
      * Curries the update function into the common pieces
@@ -251,15 +251,15 @@ export class _SharePointQueryableInstance<GetType = any> extends _SharePointQuer
         }).then((d: any) => mapper(d, props));
     }
 }
-export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType> { }
-export const SharePointQueryableInstance = spInvokableFactory<ISharePointQueryableInstance>(_SharePointQueryableInstance);
+export interface ISPInstance<GetType = any> extends _SPInstance<GetType> { }
+export const SPInstance = spInvokableFactory<ISPInstance>(_SPInstance);
 
 /**
  * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
 export function deleteable(t: string) {
 
-    return function (this: ISharePointQueryable): Promise<void> {
+    return function (this: ISPQueryable): Promise<void> {
         return spPostDelete<void>(tag.configure(this, `${t}.delete`));
     };
 }
@@ -273,7 +273,7 @@ export interface IDeleteable {
 
 export function deleteableWithETag(t: string) {
 
-    return function (this: ISharePointQueryable, eTag = "*"): Promise<void> {
+    return function (this: ISPQueryable, eTag = "*"): Promise<void> {
         return spPostDeleteETag<void>(tag.configure(this, `${t}.delete`), {}, eTag);
     };
 }
