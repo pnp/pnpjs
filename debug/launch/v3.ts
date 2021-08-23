@@ -55,11 +55,9 @@ export async function Example(settings: ITestingSettings) {
         const tc = testingConfig(settings);
         const sp = sp2(settings.testing.sp.url).using(tc);
 
-        const w = sp.web;
+        const u = await sp.web();
 
-        const u = await w();
-
-        const u2 = await w();
+        const u2 = await sp.web();
 
         console.log("here");
 

@@ -17,7 +17,8 @@
         "removeComments": true,
     },
     "include": [
-        "./**/*.ts",
+        
+        "./core/*.ts",
         "../packages/**/*.ts",
         "../tools/local-module-resolver/**/*.ts"
     ]
