@@ -57,11 +57,8 @@ export class _Features extends _SPCollection<IFeatureInfo[]> {
         }));
     }
 }
-// export interface IFeatures extends _Features { }
-export const Features = spInvokableFactory<_Features>(_Features);
-
-const u = Features("");
-
+export interface IFeatures extends _Features { }
+export const Features = spInvokableFactory<IFeatures>(_Features);
 
 export class _Feature extends _SPInstance<IFeatureInfo> {}
 export interface IFeature extends _Feature { }
