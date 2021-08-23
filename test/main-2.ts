@@ -11,6 +11,7 @@ import * as findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
 import { SPRest2 } from "@pnp/sp/rest-2.js";
 import "@pnp/sp/webs";
+import { IWebInfo } from "@pnp/sp/webs";
 
 chai.use(chaiAsPromised);
 
@@ -136,7 +137,7 @@ switch (mode) {
 }
 
 
-function spTestBehavior(ts: ISettings): (instance: Queryable2) => Queryable2 {
+export function spTestBehavior(ts: ISettings): (instance: Queryable2) => Queryable2 {
     return (instance) => {
         instance
             .using(MSAL(ts.sp.msal.init, ts.sp.msal.scopes))
@@ -148,24 +149,19 @@ function spTestBehavior(ts: ISettings): (instance: Queryable2) => Queryable2 {
             }))
             .using(NodeFetchWithRetry())
             .using(DefaultParse())
-            .using(CachingPessimisticRefresh("session"))
             .on.error((err) => {
                 console.error("caught it");
                 console.error(`🛑 PnPjs Test Error Behaviors/Queryable - ${err.toString()}`);
             })
             .on.log(function (message, level) {
 
-                if (level >= LogLevel.Verbose) {
+                if (level >= LogLevel.Warning) {
 
                     console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
                 }
 
             }).on.post(async (_url: URL, result: any) => {
-                console.log("📨 RESULT:");
-                console.log(JSON.stringify(result));
-
                 return [_url, result];
-
             });
 
         return instance;
@@ -184,8 +180,6 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     }
 
     const mySP = sp2(ts.sp.webUrl).using(tc);
-    const webTesta = await mySP.web();
-    console.log(JSON.stringify(webTesta));
     _sp = mySP;
 
     if (siteUsed) { return; }
@@ -194,8 +188,6 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     const g = getGUID();
 
     const testWebResult = await _sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
-
-    const url = combine(ts.sp.url, g);
 
     // set the testing web url so our tests have access if needed
     ts.sp.webUrl = testWebResult.data.Url;
@@ -208,95 +200,9 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     // }
 
     _sp = sp2(ts.sp.webUrl).using(tc);
-    const webTest = await _sp.web();
-
-    console.log(JSON.stringify(webTest));
 }
 
-// async function spTestSetup(ts: ISettings): Promise<void> {
-
-//     // create skeleton settings
-//     const settingsPart: Partial<ISPConfigurationPart> = {
-//         sp: {
-//             baseUrl: ts.sp.url,
-//             fetchClientFactory: null,
-//             headers: {},
-//         },
-//     };
-
-//     let siteUsed = false;
-
-//     if (typeof ts.sp.msal === "undefined") {
-//         throw Error("No MSAL settings defined for sp but useMSAL flag set to true.");
-//     }
-
-//     settingsPart.sp.fetchClientFactory = () => {
-//         return new MsalFetchClient(ts.sp.msal.init, ts.sp.msal.scopes);
-//     };
-
-//     if (site && site.length > 0) {
-
-//         settingsPart.sp.baseUrl = site;
-
-//         // and we will just use this as the url
-//         ts.sp.webUrl = site;
-//         siteUsed = true;
-//     }
-
-//     // do initial setup
-//     sp.setup(settingsPart);
-
-//     // if we had a site specified we don't need to create one for testing
-//     if (siteUsed) {
-//         return;
-//     }
-
-//     // create the web in which we will test
-//     const d = new Date();
-//     const g = getGUID();
-
-//     await sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
-
-//     const url = combine(ts.sp.url, g);
-
-//     // set the testing web url so our tests have access if needed
-//     ts.sp.webUrl = url;
-//     settingsPart.sp.baseUrl = url;
-
-//     if (spVerbose) {
-//         settingsPart.sp.headers = {
-//             "Accept": "application/json;odata=verbose",
-//         };
-//     }
-
-//     // re-setup the node client to use the new web
-//     sp.setup(settingsPart);
-// }
-
-// async function graphTestSetup(ts: ISettings): Promise<void> {
-
-//     const settingsPart: IGraphConfigurationPart = {
-//         graph: {
-//             fetchClientFactory: null,
-//         },
-//     };
-
-//     if (typeof ts.graph.msal === "undefined") {
-//         throw Error("No MSAL settings defined for graph but useMSAL flag set to true.");
-//     }
-
-//     settingsPart.graph.fetchClientFactory = () => {
-//         return new MsalFetchClient(ts.graph.msal.init, ts.graph.msal.scopes);
-//     };
-
-//     graph.setup(settingsPart);
-// }
-
 export const testSettings: ISettings = settings.testing;
-// if (testSettings.enableWebTests) {
-//     testSettings.sp.webUrl = "";
-// }
-
 
 export const getSP = () => {
     return _sp;
@@ -342,7 +248,7 @@ after(async () => {
 
     if (deleteAllWebs) {
 
-        //await cleanUpAllSubsites();
+        await cleanUpAllSubsites();
 
     } else if (deleteWeb && testSettings.enableWebTests) {
 
@@ -371,26 +277,26 @@ after(async () => {
 
 // Function deletes all test subsites
 //TODO: Clean up subsites function
-// async function cleanUpAllSubsites(): Promise<void> {
+async function cleanUpAllSubsites(): Promise<void> {
 
-//     const w = await sp.site.rootWeb.webs.select("Title")();
+    const w = await _sp.web.webs.select("Title")();
 
-//     w.forEach(async (e: any) => {
+    w.forEach(async (e: IWebInfo) => {
 
-//         const web = Web(e["odata.id"], "");
+        // const web = Web(e["odata.id"], "");
 
-//         console.log(`Deleting: ${e["odata.id"]}`);
+        // console.log(`Deleting: ${e["odata.id"]}`);
 
-//         const children = await web.webs.select("Title")();
+        // const children = await web.webs.select("Title")();
 
-//         await Promise.all(children.map(async (value) => {
-//             const web2 = Web(value["odata.id"], "");
-//             console.log(`Deleting: ${value["odata.id"]}`);
-//             return web2.delete();
-//         }));
+        // await Promise.all(children.map(async (value) => {
+        //     const web2 = Web(value["odata.id"], "");
+        //     console.log(`Deleting: ${value["odata.id"]}`);
+        //     return web2.delete();
+        // }));
 
-//         await web.delete();
+        // await web.delete();
 
-//         console.log(`Deleted: ${e["odata.id"]}`);
-//     });
-// }
+        // console.log(`Deleted: ${e["odata.id"]}`);
+    });
+}
