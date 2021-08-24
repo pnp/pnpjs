@@ -2,7 +2,11 @@ import { ITestingSettings } from "../../test/settings.js";
 import { SPDefault } from "@pnp/nodejs";
 import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/sp/features";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/folders";
+import "@pnp/sp/appcatalog";
+import { DebugLogger } from "@pnp/core";
 
 declare var process: { exit(code?: number): void };
 
@@ -10,16 +14,22 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        const sp = sp2("https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f").using(SPDefault({
+        // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
+
+        const sp = sp2("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        }));
+        })).using(DebugLogger());
 
-        const w = await sp.web();
+        // 
 
-        console.log(`here: ${JSON.stringify(w)}`);       
+        const w = await sp.web.getFolderByServerRelativePath("/sites/dev/shared Documents/test-folder99").select("uniqueContentTypeOrder")();
+        
+        // const q = await w.syncSolutionToTeams("asd");
+
+        console.log(`here: ${JSON.stringify(w)}`);
 
     } catch (e) {
 
@@ -27,33 +37,33 @@ export async function Example(settings: ITestingSettings) {
     }
 
 
-     // TODO:: can this replace extend factory?? sorta
-        // w.on.init(function (this: IWeb) {
+    // TODO:: can this replace extend factory?? sorta
+    // w.on.init(function (this: IWeb) {
 
-        //     const o = extend(this, {
+    //     const o = extend(this, {
 
-        //         async execute(): Promise<any> {
-        //             console.log("HA HA");
-        //         },
-        //     });
+    //         async execute(): Promise<any> {
+    //             console.log("HA HA");
+    //         },
+    //     });
 
-        //     return o;
-        // });
-
-
-        // const yyy = await w();
-
-        // console.log(`here: ${JSON.stringify(yyy)}`);
+    //     return o;
+    // });
 
 
-        // const [batch, execute] = sp.createBatch();
+    // const yyy = await w();
 
-        // // this model removes the difficulty of knowing when to call usingBatch and instead you call it upfront each time
-        // sp.using(batch).web();
+    // console.log(`here: ${JSON.stringify(yyy)}`);
 
-        // sp.using(batch).web.features.getById("e3dc7334-cec0-4d2c-8b90-e4857698fc4e").deactivate();
 
-        // await execute();
+    // const [batch, execute] = sp.createBatch();
+
+    // // this model removes the difficulty of knowing when to call usingBatch and instead you call it upfront each time
+    // sp.using(batch).web();
+
+    // sp.using(batch).web.features.getById("e3dc7334-cec0-4d2c-8b90-e4857698fc4e").deactivate();
+
+    // await execute();
 
     // function TestInitBehavior(): (instance: Queryable2) => Queryable2 {
 

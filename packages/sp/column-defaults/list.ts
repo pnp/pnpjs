@@ -1,13 +1,13 @@
-import { addProp, TextParser, headers, body } from "@pnp/queryable";
+import { addProp, headers, body, TextParse } from "@pnp/queryable";
 import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 import { combine, isArray } from "@pnp/core";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { Logger, LogLevel } from "@pnp/logging";
-import { OLD_spPost } from "../operations.js";
-import { OLD_SharePointQueryableCollection } from "../presets/all.js";
+import { LogLevel } from "@pnp/logging";
+import { spPost } from "../operations.js";
+import { SPCollection } from "../presets/all.js";
 
 declare module "../lists/types" {
     interface _List {
@@ -43,7 +43,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
 
     try {
 
-        xml = await Folder(baseFilePath, "$value").usingParser(new TextParser())(headers({ "binaryStringResponseBody": "true" }));
+        xml = await Folder(baseFilePath, "$value").using(TextParse())(headers({ "binaryStringResponseBody": "true" }));
 
     } catch (e) {
 
@@ -73,7 +73,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         if (m.length < 1) {
             // this indicates an error somewhere, but we have no way to meaningfully recover
             // perhaps the way the tags are stored has changed on the server? Check that first.
-            Logger.write(`Could not parse default column value from '${t}'`, LogLevel.Warning);
+            this.log(`Could not parse default column value from '${t}'`, LogLevel.Warning);
             return null;
         }
 
@@ -89,7 +89,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
             // 2: Default value as string
 
             if (sm.length < 1) {
-                Logger.write(`Could not parse default column value from '${st}'`, LogLevel.Warning);
+                this.log(`Could not parse default column value from '${st}'`, LogLevel.Warning);
             } else {
                 defVals.push({
                     name: sm[1],
@@ -108,7 +108,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
 
     // we need the field types from the list to map the values
     // eslint-disable-next-line max-len
-    const fieldDefs: { InternalName: string; TypeAsString: string }[] = await OLD_SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")();
+    const fieldDefs: { InternalName: string; TypeAsString: string }[] = await SPCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")();
 
     // group field defaults by path
     const defaultsByPath = {};
@@ -199,13 +199,13 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");
     const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`, "files");
 
-    await OLD_spPost(Folder(baseFilePath, "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
+    await spPost(Folder(baseFilePath, "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
 
     // finally we need to ensure this list has the right event receiver added
     const existingReceivers = await this.eventReceivers.filter("ReceiverName eq 'LocationBasedMetadataDefaultsReceiver ItemAdded'").select("ReceiverId")();
 
     if (existingReceivers.length < 1) {
-        await OLD_spPost(List(this.eventReceivers, "add"), body({
+        await spPost(List(this.eventReceivers, "add"), body({
             eventReceiverCreationInformation: {
                 EventType: 10001,
                 ReceiverAssembly: "Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c",

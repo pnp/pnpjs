@@ -16,4 +16,4 @@ declare module "../webs/types" {
     }
 }
 
-addProp(_Web, "navigation", Navigation);
+addProp(_Web, "navigation", <any>Navigation);

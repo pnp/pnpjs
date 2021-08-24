@@ -1,23 +1,23 @@
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    _OLD_SharePointQueryable,
-    OLD_spInvokableFactory,
-    OLD_deleteable,
-    OLD_IDeleteable,
+    _SPCollection,
+    spInvokableFactory,
+    deleteable,
+    _SPInstance,
+    _SPQueryable,
+    IDeleteable,
 } from "../sharepointqueryable.js";
 import { assign } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body, headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 /**
  * Represents a collection of navigation nodes
  *
  */
-export class _NavigationNodes extends _OLD_SharePointQueryableCollection<INavNodeInfo[]> {
+export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
 
     /**
      * Gets a navigation node by id
@@ -44,7 +44,7 @@ export class _NavigationNodes extends _OLD_SharePointQueryableCollection<INavNod
             Url: url,
         }));
 
-        const data = await OLD_spPost(this.clone(NavigationNodes, null), postBody);
+        const data = await spPost(NavigationNodes(this, null), postBody);
 
         return {
             data,
@@ -66,20 +66,20 @@ export class _NavigationNodes extends _OLD_SharePointQueryableCollection<INavNod
             previousNodeId: previousNodeId,
         });
 
-        return OLD_spPost(this.clone(NavigationNodes, "MoveAfter"), postBody);
+        return spPost(NavigationNodes(this, "MoveAfter"), postBody);
     }
 }
 export interface INavigationNodes extends _NavigationNodes {}
-export const NavigationNodes = OLD_spInvokableFactory<INavigationNodes>(_NavigationNodes);
+export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationNodes);
 
 
 /**
  * Represents an instance of a navigation node
  *
  */
-export class _NavigationNode extends _OLD_SharePointQueryableInstance<INavNodeInfo> {
+export class _NavigationNode extends _SPInstance<INavNodeInfo> {
 
-    public delete = OLD_deleteable("nn");
+    public delete = deleteable("nn");
 
     /**
      * Represents the child nodes of this node
@@ -98,7 +98,7 @@ export class _NavigationNode extends _OLD_SharePointQueryableInstance<INavNodeIn
 
         const postBody = body(assign(metadata("SP.NavigationNode"), properties), headers({ "X-HTTP-Method": "MERGE" }));
 
-        const data = await OLD_spPost(this, postBody);
+        const data = await spPost(this, postBody);
 
         return {
             data,
@@ -106,8 +106,8 @@ export class _NavigationNode extends _OLD_SharePointQueryableInstance<INavNodeIn
         };
     }
 }
-export interface INavigationNode extends _NavigationNode, OLD_IDeleteable { }
-export const NavigationNode = OLD_spInvokableFactory<INavigationNode>(_NavigationNode);
+export interface INavigationNode extends _NavigationNode, IDeleteable { }
+export const NavigationNode = spInvokableFactory<INavigationNode>(_NavigationNode);
 
 export interface INavNodeUpdateResult {
     data: any;
@@ -119,7 +119,7 @@ export interface INavNodeUpdateResult {
  *
  */
 @defaultPath("navigation")
-export class _Navigation extends _OLD_SharePointQueryable {
+export class _Navigation extends _SPQueryable {
 
     /**
      * Gets the quicklaunch navigation nodes for the current context
@@ -141,12 +141,12 @@ export interface INavigation {
     readonly quicklaunch: INavigationNodes;
     readonly topNavigationBar: INavigationNodes;
 }
-export const Navigation = OLD_spInvokableFactory<INavigation>(_Navigation);
+export const Navigation: INavigation = <any>spInvokableFactory(_Navigation);
 
 /**
  * Represents the top level navigation service
  */
-export class _NavigationService extends _OLD_SharePointQueryable {
+export class _NavigationService extends _SPQueryable {
 
     constructor(path: string = null) {
         super("_api/navigation", path);
@@ -163,7 +163,7 @@ export class _NavigationService extends _OLD_SharePointQueryable {
     @tag("ns.getMenuState")
     public getMenuState(menuNodeKey: string = null, depth = 10, mapProviderName: string = null, customProperties: string = null): Promise<IMenuNodeCollection> {
 
-        return OLD_spPost(<any>NavigationService("MenuState"), body({
+        return spPost(<any>NavigationService("MenuState"), body({
             customProperties,
             depth,
             mapProviderName,
@@ -180,7 +180,7 @@ export class _NavigationService extends _OLD_SharePointQueryable {
     @tag("ns.getMenuNodeKey")
     public getMenuNodeKey(currentUrl: string, mapProviderName: string = null): Promise<string> {
 
-        return OLD_spPost(<any>NavigationService("MenuNodeKey"), body({
+        return spPost(<any>NavigationService("MenuNodeKey"), body({
             currentUrl,
             mapProviderName,
         }));

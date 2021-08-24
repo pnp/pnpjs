@@ -1,6 +1,7 @@
+import { TimelinePipe } from "@pnp/core";
 import { InjectHeaders, Queryable2 } from "@pnp/queryable";
 
-export function DefaultInit(): (instance: Queryable2) => Queryable2 {
+export function DefaultInit(): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 
@@ -16,7 +17,7 @@ export function DefaultInit(): (instance: Queryable2) => Queryable2 {
     };
 }
 
-export function DefaultHeaders(): (instance: Queryable2) => Queryable2 {
+export function DefaultHeaders(): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 

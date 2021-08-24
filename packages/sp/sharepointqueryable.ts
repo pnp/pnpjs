@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/core";
-import { IInvokable, invokableFactory, Queryable2, queryableFactory, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext } from "@pnp/queryable";
+import { IInvokable, invokableFactory, Queryable2, queryableFactory, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext, body, headers, FromQueryable } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
 import { metadata } from "./utils/metadata.js";
@@ -31,7 +31,7 @@ export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements 
      * @param base A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(base: string | ISPQueryable, path: string) {
+    constructor(base: string | ISPQueryable, path?: string) {
 
         if (typeof base === "string") {
 
@@ -141,7 +141,7 @@ export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements 
         batch?: SPBatch): T {
 
         // TODO:: this doesn't work anymore
-        let parent = factory(baseUrl, path).configureFrom(this);
+        let parent = factory(baseUrl, path).using(FromQueryable(this));
 
         const t = "@target";
         if (this.query.has(t)) {
@@ -151,22 +151,6 @@ export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements 
             parent = parent.inBatch(batch);
         }
         return parent;
-    }
-
-    public clone<T extends OLD_ISharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
-
-        const clone: T = factory(this, additionalPath);
-
-        // handle sp specific clone actions
-        if (!includeQuery) {
-            // we would have already copied this over if we got the entire query
-            const t = "@target";
-            if (this.query.has(t)) {
-                clone.query.set(t, this.query.get(t));
-            }
-        }
-
-        return clone;
     }
 }
 export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }
@@ -234,23 +218,7 @@ export const SPCollection = spInvokableFactory<ISPCollection>(_SPCollection);
  * Represents an instance that can be selected
  *
  */
-export class _SPInstance<GetType = any> extends _SPQueryable<GetType> {
-
-    /**
-     * Curries the update function into the common pieces
-     *
-     * @param type
-     * @param mapper
-     */
-    protected _update<Return, Props = any>(type: string, mapper: (data: any, props: Props) => Return): (props: Props) => Promise<Return> {
-        return (props: any) => spPost(tag.configure(this, `${type}.Update`), {
-            body: jsS(assign(metadata(type), props)),
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then((d: any) => mapper(d, props));
-    }
-}
+export class _SPInstance<GetType = any> extends _SPQueryable<GetType> {}
 export interface ISPInstance<GetType = any> extends _SPInstance<GetType> { }
 export const SPInstance = spInvokableFactory<ISPInstance>(_SPInstance);
 

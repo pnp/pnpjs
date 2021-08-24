@@ -1,5 +1,5 @@
 import { Configuration } from "@azure/msal-node";
-import { combine, isUrlAbsolute } from "@pnp/core";
+import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { DefaultParse, Queryable2 } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "@pnp/sp";
 import { NodeFetchWithRetry } from "./fetch.js";
@@ -13,7 +13,7 @@ export interface ISPDefaultProps {
     };
 }
 
-export function SPDefault(props: ISPDefaultProps): (instance: Queryable2) => Queryable2 {
+export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable2> {
 
     if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
         throw Error("SPDefault props.baseUrl must be absolute when supplied.");

@@ -69,6 +69,11 @@ type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTime
 type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
 
 /**
+ * Represents a function accepting and returning a timeline, possibly manipulating the observers present
+ */
+export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
+
+/**
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
@@ -88,6 +93,11 @@ export abstract class Timeline<T extends Moments> {
             this._inheritingObservers = false;
             this.observers = {};
         }
+    }
+
+    public using(behavior: TimelinePipe): this {
+        behavior(this);
+        return this;
     }
 
     /**
@@ -199,10 +209,18 @@ export abstract class Timeline<T extends Moments> {
                     // handle the case there are no observers registered to the target
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (p === "error" && (!isArray(observers) || observers.length < 1)) {
+                    if (!isArray(observers) || observers.length < 1) {
 
-                        // if we are emitting an error, and no error observers are defined, we throw
-                        throw Error(`Unhandled Exception: ${args[0]}`);
+                        if (p !== "log") {
+                            // TODO:: remove this post development of v3
+                            console.log(`No observers registered for moment ${p}.`);
+                        }
+
+                        if (p === "error") {
+
+                            // if we are emitting an error, and no error observers are defined, we throw
+                            throw Error(`Unhandled Exception: ${args[0]}`);
+                        }
                     }
 
                     try {

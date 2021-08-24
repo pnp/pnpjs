@@ -27,7 +27,7 @@ const DefaultMoments = {
 @invokable()
 export class Queryable2<R> extends Timeline<typeof DefaultMoments> implements IQueryable2<R> {
 
-    private _url: string;
+    protected _url: string;
     private _query: Map<string, string>;
 
     constructor(init: Queryable2<any> | string, path?: string) {
@@ -58,11 +58,6 @@ export class Queryable2<R> extends Timeline<typeof DefaultMoments> implements IQ
         this._url = url;
         this._query = new Map<string, string>();
         // process this one different
-    }
-
-    public using(behavior: (intance: Timeline<any>) => Timeline<any>): this {
-        behavior(this);
-        return this;
     }
 
     /**

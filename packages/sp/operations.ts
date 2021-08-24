@@ -59,9 +59,12 @@ export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promis
 
 export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
 
-export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
+export const spPostMerge = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
 
-export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
+    init.headers = { ...init.headers, "X-HTTP-Method": "MERGE" };
+
+    return spPost<T>(o, init);
+};
 
 export const spPostDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
 
@@ -76,6 +79,22 @@ export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestIn
 
     return spPostDelete<T>(o, init);
 };
+
+export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
+
+export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
     httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;

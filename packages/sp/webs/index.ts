@@ -23,7 +23,7 @@ declare module "../rest-2" {
         readonly web: ReturnType<typeof Web>;
 
         /**
-         * Creates a new batch object for use with the SharePointQueryable.addToBatch method
+         * Creates a batch behavior and associated execute function
          *
          */
         createBatch(): [(instance: Queryable2) => Queryable2, () => Promise<void>];

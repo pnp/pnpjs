@@ -1,22 +1,20 @@
 import {
-    OLD_SharePointQueryable,
-    _OLD_SharePointQueryableInstance,
-    OLD_ISharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_ISharePointQueryable,
-    OLD_SharePointQueryableInstance,
-    OLD_spInvokableFactory,
-    OLD_deleteableWithETag,
-    OLD_IDeleteableWithETag,
+    _SPCollection,
+    spInvokableFactory,
+    IDeleteableWithETag,
+    _SPInstance,
+    deleteableWithETag,
+    SPQueryable,
+    ISPQueryable,
+    SPInstance,
+    ISPInstance,
 } from "../sharepointqueryable.js";
-import { assign, ITypedHash, hOP } from "@pnp/core";
+import { ITypedHash, hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { ODataParser, body, headers } from "@pnp/queryable";
+import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable, InjectHeaders } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
-import { Logger, LogLevel } from "@pnp/logging";
-import { metadata } from "../utils/metadata.js";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 
@@ -25,7 +23,7 @@ import { IResourcePath } from "../utils/toResourcePath.js";
  *
  */
 @defaultPath("items")
-export class _Items extends _OLD_SharePointQueryableCollection {
+export class _Items extends _SPCollection {
 
     /**
     * Gets an Item by id
@@ -67,61 +65,7 @@ export class _Items extends _OLD_SharePointQueryableCollection {
      */
     @tag("is.getPaged")
     public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
-        return this.usingParser(new PagedItemCollectionParser<T>(this))();
-    }
-
-    /**
-     * Gets all the items in a list, regardless of count. Does not support batching or caching
-     *
-     *  @param requestSize Number of items to return in each request (Default: 2000)
-     *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
-     */
-    @tag("is.getAll")
-    public getAll(requestSize = 2000, acceptHeader = "application/json;odata=nometadata"): Promise<any[]> {
-
-        Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", LogLevel.Warning);
-
-        // this will be used for the actual query
-        // and we set no metadata here to try and reduce traffic
-        const items = <IItems>Items(this, "").top(requestSize).configure({
-            headers: {
-                "Accept": acceptHeader,
-            },
-        });
-
-        // let's copy over the odata query params that can be applied
-        // $top - allow setting the page size this way (override what we did above)
-        // $select - allow picking the return fields (good behavior)
-        // $filter - allow setting a filter, though this may fail due for large lists
-        this.query.forEach((v: string, k: string) => {
-            if (/^\$select|filter|top|expand$/i.test(k)) {
-                items.query.set(k, v);
-            }
-        });
-
-        // give back the promise
-        return new Promise((resolve, reject) => {
-
-            // this will eventually hold the items we return
-            const itemsCollector: any[] = [];
-
-            // action that will gather up our results recursively
-            const gatherer = (last: PagedItemCollection<any>) => {
-
-                // collect that set of results
-                [].push.apply(itemsCollector, last.results);
-
-                // if we have more, repeat - otherwise resolve with the collected items
-                if (last.hasNext) {
-                    last.getNext().then(gatherer).catch(reject);
-                } else {
-                    resolve(itemsCollector);
-                }
-            };
-
-            // start the cycle
-            items.getPaged().then(gatherer).catch(reject);
-        });
+        return this.using(PagedItemParser(this))();
     }
 
     /**
@@ -131,87 +75,63 @@ export class _Items extends _OLD_SharePointQueryableCollection {
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
     @tag("is.add")
-    public async add(properties: ITypedHash<any> = {}, listItemEntityTypeFullName: string = null): Promise<IItemAddResult> {
+    public async add(properties: ITypedHash<any> = {}): Promise<IItemAddResult> {
 
-        const removeDependency = this.addBatchDependency();
-
-        const listItemEntityType = await this.ensureListItemEntityTypeName(listItemEntityTypeFullName);
-
-        const postBody = body(assign(metadata(listItemEntityType), properties));
-
-        const promise = OLD_spPost<{ Id: number }>(this.clone(Items, ""), postBody).then((data) => {
-            return {
-                data: data,
-                item: this.getById(data.Id),
-            };
-        });
-
-        removeDependency();
-
-        return promise;
-    }
-
-    /**
-     * Ensures we have the proper list item entity type name, either from the value provided or from the list
-     *
-     * @param candidatelistItemEntityTypeFullName The potential type name
-     */
-    private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
-
-        return candidatelistItemEntityTypeFullName ?
-            candidatelistItemEntityTypeFullName :
-            this.getParent<IList>(List).getListItemEntityTypeFullName();
+        return spPost<{ Id: number }>(Items(this, ""), body(properties)).then((data) => ({
+            data: data,
+            item: this.getById(data.Id),
+        }));
     }
 }
 export interface IItems extends _Items { }
-export const Items = OLD_spInvokableFactory<IItems>(_Items);
+export const Items = spInvokableFactory<IItems>(_Items);
 
 /**
  * Descrines a single Item instance
  *
  */
-export class _Item extends _OLD_SharePointQueryableInstance {
+export class _Item extends _SPInstance {
 
-    public delete = OLD_deleteableWithETag("i");
+    public delete = deleteableWithETag("i");
 
     /**
      * Gets the effective base permissions for the item
      *
      */
-    public get effectiveBasePermissions(): OLD_ISharePointQueryable {
-        return tag.configure(OLD_SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
+    public get effectiveBasePermissions(): ISPQueryable {
+        return tag.configure(SPQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
     }
 
     /**
      * Gets the effective base permissions for the item in a UI context
      *
      */
-    public get effectiveBasePermissionsForUI(): OLD_ISharePointQueryable {
-        return tag.configure(OLD_SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
+    public get effectiveBasePermissionsForUI(): ISPQueryable {
+        return tag.configure(SPQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
     }
 
     /**
      * Gets the field values for this list item in their HTML representation
      *
      */
-    public get fieldValuesAsHTML(): OLD_ISharePointQueryableInstance {
-        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
+    public get fieldValuesAsHTML(): ISPInstance {
+        return tag.configure(SPInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
     }
 
     /**
      * Gets the field values for this list item in their text representation
      *
      */
-    public get fieldValuesAsText(): OLD_ISharePointQueryableInstance {
-        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
+    public get fieldValuesAsText(): ISPInstance {
+        return tag.configure(SPInstance(this, "FieldValuesAsText"), "i.fvText");
     }
 
     /**
      * Gets the field values for this list item for use in editing controls
      *
      */
-    public get fieldValuesForEdit(): OLD_ISharePointQueryableInstance {
-        return tag.configure(OLD_SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
+    public get fieldValuesForEdit(): ISPInstance {
+        return tag.configure(SPInstance(this, "FieldValuesForEdit"), "i.fvEdit");
     }
 
     /**
@@ -221,6 +141,9 @@ export class _Item extends _OLD_SharePointQueryableInstance {
         return tag.configure(ItemVersions(this), "i.versions");
     }
 
+    /**
+     * this item's list
+     */
     public get list(): IList {
         return this.getParent<IList>(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
     }
@@ -230,23 +153,16 @@ export class _Item extends _OLD_SharePointQueryableInstance {
      *
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
-     * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async update(properties: ITypedHash<any>, eTag = "*", listItemEntityTypeFullName: string = null): Promise<IItemUpdateResult> {
+    public async update(properties: ITypedHash<any>, eTag = "*"): Promise<IItemUpdateResult> {
 
-        const removeDependency = this.addBatchDependency();
-
-        const listItemEntityType = await this.ensureListItemEntityTypeName(listItemEntityTypeFullName);
-
-        const postBody = body(assign(metadata(listItemEntityType), properties), headers({
+        const postBody = body(properties, headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
 
-        removeDependency();
-
-        const poster = tag.configure(this.clone(Item).usingParser(new ItemUpdatedParser()), "i.update");
-        const data = await OLD_spPost(poster, postBody);
+        const poster = tag.configure(Item(this).using(ItemUpdatedParser()), "i.update");
+        const data = await spPost(poster, postBody);
 
         return {
             data,
@@ -259,7 +175,7 @@ export class _Item extends _OLD_SharePointQueryableInstance {
      */
     @tag("i.recycle")
     public recycle(): Promise<string> {
-        return OLD_spPost<string>(this.clone(Item, "recycle"));
+        return spPost<string>(Item(this, "recycle"));
     }
 
     /**
@@ -269,7 +185,7 @@ export class _Item extends _OLD_SharePointQueryableInstance {
      */
     @tag("i.del-params")
     public async deleteWithParams(parameters: Partial<IItemDeleteParams>): Promise<void> {
-        return OLD_spPost(this.clone(Item, "DeleteWithParameters"), body({ parameters }));
+        return spPost(Item(this, "DeleteWithParameters"), body({ parameters }));
     }
 
     /**
@@ -280,17 +196,10 @@ export class _Item extends _OLD_SharePointQueryableInstance {
      */
     @tag("i.getWopiFrameUrl")
     public async getWopiFrameUrl(action = 0): Promise<string> {
-        const i = this.clone(Item, "getWOPIFrameUrl(@action)");
+        const i = Item(this, "getWOPIFrameUrl(@action)");
         i.query.set("@action", <any>action);
 
-        const data = await OLD_spPost(i);
-
-        // handle verbose mode
-        if (hOP(data, "GetWOPIFrameUrl")) {
-            return data.GetWOPIFrameUrl;
-        }
-
-        return data;
+        return spPost(i);
     }
 
     /**
@@ -301,7 +210,7 @@ export class _Item extends _OLD_SharePointQueryableInstance {
      */
     @tag("i.validateUpdateListItem")
     public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
-        return OLD_spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
+        return spPost(Item(this, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
     }
 
     /**
@@ -344,27 +253,27 @@ export class _Item extends _OLD_SharePointQueryableInstance {
         };
     }
 
-    /**
-     * Ensures we have the proper list item entity type name, either from the value provided or from the list
-     *
-     * @param candidatelistItemEntityTypeFullName The potential type name
-     */
-    private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
+    // /**
+    //  * Ensures we have the proper list item entity type name, either from the value provided or from the list
+    //  *
+    //  * @param candidatelistItemEntityTypeFullName The potential type name
+    //  */
+    // private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
 
-        return candidatelistItemEntityTypeFullName ?
-            candidatelistItemEntityTypeFullName :
-            this.list.getListItemEntityTypeFullName();
-    }
+    //     return candidatelistItemEntityTypeFullName ?
+    //         candidatelistItemEntityTypeFullName :
+    //         this.list.getListItemEntityTypeFullName();
+    // }
 }
-export interface IItem extends _Item, OLD_IDeleteableWithETag { }
-export const Item = OLD_spInvokableFactory<IItem>(_Item);
+export interface IItem extends _Item, IDeleteableWithETag { }
+export const Item = spInvokableFactory<IItem>(_Item);
 
 /**
  * Describes a collection of Version objects
  *
  */
 @defaultPath("versions")
-export class _ItemVersions extends _OLD_SharePointQueryableCollection {
+export class _ItemVersions extends _SPCollection {
     /**
      * Gets a version by id
      *
@@ -375,17 +284,17 @@ export class _ItemVersions extends _OLD_SharePointQueryableCollection {
     }
 }
 export interface IItemVersions extends _ItemVersions { }
-export const ItemVersions = OLD_spInvokableFactory<IItemVersions>(_ItemVersions);
+export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
 
 /**
  * Describes a single Version instance
  *
  */
-export class _ItemVersion extends _OLD_SharePointQueryableInstance {
-    public delete = OLD_deleteableWithETag("iv");
+export class _ItemVersion extends _SPInstance {
+    public delete = deleteableWithETag("iv");
 }
-export interface IItemVersion extends _ItemVersion, OLD_IDeleteableWithETag { }
-export const ItemVersion = OLD_spInvokableFactory<IItemVersion>(_ItemVersion);
+export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
+export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
 
 /**
  * Provides paging functionality for list items
@@ -407,46 +316,27 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = tag.configure(<IItems>Items(this.nextUrl, null).configureFrom(this.parent), "ip.getNext");
+            const items = tag.configure(<IItems>Items(this.nextUrl, null).using(FromQueryable(this.parent)), "ip.getNext");
             return items.getPaged<T>();
         }
 
-        return new Promise<any>(r => r(null));
+        return null;
     }
 }
 
-class PagedItemCollectionParser<T = any[]> extends ODataParser<PagedItemCollection<T>> {
+function PagedItemParser(parent: _Items) {
 
-    constructor(private _parent: _Items) {
-        super();
-    }
-
-    public parse(r: Response): Promise<PagedItemCollection<T>> {
-
-        return new Promise((resolve, reject) => {
-
-            if (this.handleError(r, reject)) {
-                r.json().then(json => {
-                    const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection<T>(this._parent, nextUrl, this.parseODataJSON(json)));
-                });
-            }
-        });
-    }
+    return parseBinderWithErrorCheck(async (r) => {
+        const json = await r.json();
+        const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+        return new PagedItemCollection(parent, nextUrl, parseODataJSON(json));
+    });
 }
 
-class ItemUpdatedParser extends ODataParser<IItemUpdateResultData> {
-    public parse(r: Response): Promise<IItemUpdateResultData> {
-
-        return new Promise<IItemUpdateResultData>((resolve, reject) => {
-
-            if (this.handleError(r, reject)) {
-                resolve({
-                    "odata.etag": r.headers.get("etag"),
-                });
-            }
-        });
-    }
+function ItemUpdatedParser() {
+    return parseBinderWithErrorCheck(async (r) => ({
+        "odata.etag": r.headers.get("etag"),
+    }));
 }
 
 export interface IItemAddResult {

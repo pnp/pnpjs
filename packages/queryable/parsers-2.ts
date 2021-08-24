@@ -1,6 +1,6 @@
 import { Queryable2 } from "./queryable-2";
 import { HttpRequestError } from "./parsers";
-import { hOP } from "@pnp/core";
+import { hOP, TimelinePipe } from "@pnp/core";
 import { isFunc } from "@pnp/core";
 
 export function DefaultParse(): (instance: Queryable2) => Queryable2 {
@@ -78,7 +78,7 @@ export function parseODataJSON(json: any): any {
  * @param impl Method used to parse the response
  * @returns Queryable behavior binding function
  */
-export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): (instance: Queryable2) => Queryable2 {
+export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 

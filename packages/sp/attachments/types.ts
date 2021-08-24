@@ -1,17 +1,18 @@
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
-    OLD_deleteableWithETag,
-    OLD_IDeleteableWithETag,
+    IDeleteableWithETag,
+    _SPCollection,
+    spInvokableFactory,
+    _SPInstance,
+    deleteableWithETag,
 } from "../sharepointqueryable.js";
-import { TextParser, BlobParser, JSONParser, BufferParser, ODataParser, headers } from "@pnp/queryable";
+import { headers, BlobParse, TextParse, JSONParse, BufferParse } from "@pnp/queryable";
 import { tag } from "../telemetry.js";
+import { TimelinePipe } from "@pnp/core/index.js";
 
 @defaultPath("AttachmentFiles")
-export class _Attachments extends _OLD_SharePointQueryableCollection<IAttachmentInfo[]> {
+export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
 
     /**
     * Gets a Attachment File by filename
@@ -32,7 +33,7 @@ export class _Attachments extends _OLD_SharePointQueryableCollection<IAttachment
      */
     @tag("ats.add")
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
-        const response = await OLD_spPost(this.clone(Attachments, `add(FileName='${name}')`, false), { body: content });
+        const response = await spPost(Attachments(this, `add(FileName='${name}')`), { body: content });
         return {
             data: response,
             file: this.getByName(name),
@@ -77,12 +78,12 @@ export class _Attachments extends _OLD_SharePointQueryableCollection<IAttachment
         }
     }
 }
-export interface IAttachments extends _Attachments {}
-export const Attachments = OLD_spInvokableFactory<IAttachments>(_Attachments);
+export interface IAttachments extends _Attachments { }
+export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
-export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInfo> {
+export class _Attachment extends _SPInstance<IAttachmentInfo> {
 
-    public delete = OLD_deleteableWithETag("at");
+    public delete = deleteableWithETag("at");
 
     /**
      * Gets the contents of the file as text
@@ -91,7 +92,7 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.getText")
     public getText(): Promise<string> {
 
-        return this.getParsed(new TextParser());
+        return this.getParsed(TextParse());
     }
 
     /**
@@ -101,7 +102,7 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.getBlob")
     public getBlob(): Promise<Blob> {
 
-        return this.getParsed(new BlobParser());
+        return this.getParsed(BlobParse());
     }
 
     /**
@@ -110,7 +111,7 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.getBuffer")
     public getBuffer(): Promise<ArrayBuffer> {
 
-        return this.getParsed(new BufferParser());
+        return this.getParsed(BufferParse());
     }
 
     /**
@@ -119,7 +120,7 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.getJSON")
     public getJSON(): Promise<any> {
 
-        return this.getParsed(new JSONParser());
+        return this.getParsed(JSONParse());
     }
 
     /**
@@ -130,7 +131,7 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
-        await OLD_spPost(this.clone(Attachment, "$value", false), headers({ "X-HTTP-Method": "PUT" }, {
+        await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, {
             body: content,
         }));
 
@@ -145,19 +146,18 @@ export class _Attachment extends _OLD_SharePointQueryableInstance<IAttachmentInf
     @tag("at.recycle")
     public recycle(eTag = "*"): Promise<void> {
 
-        return OLD_spPost(this.clone(Attachment, "recycleObject"), headers({
+        return spPost(Attachment(this, "recycleObject"), headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "DELETE",
         }));
     }
 
-    private getParsed<T>(parser: ODataParser<T>): Promise<T> {
-
-        return this.clone(Attachment, "$value", false).usingParser(parser)();
+    private getParsed<T>(parser: TimelinePipe): Promise<T> {
+        return Attachment(this, "$value").using(parser)();
     }
 }
-export interface IAttachment extends _Attachment, OLD_IDeleteableWithETag { }
-export const Attachment = OLD_spInvokableFactory<IAttachment>(_Attachment);
+export interface IAttachment extends _Attachment, IDeleteableWithETag { }
+export const Attachment = spInvokableFactory<IAttachment>(_Attachment);
 
 export interface IAttachmentAddResult {
     file: IAttachment;

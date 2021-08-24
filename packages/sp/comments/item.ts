@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
-import { OLD_spPost } from "../operations.js";
+import { OLD_spPost, spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { combine } from "@pnp/core/util";
 import { OLD_SharePointQueryable } from "../sharepointqueryable.js";
@@ -38,7 +38,7 @@ declare module "../items/types" {
 addProp(_Item, "comments", Comments);
 
 _Item.prototype.getLikedBy = function (this: _Item): Promise<ILikeData[]> {
-    return OLD_spPost<ILikeData[]>(this.clone(Item, "likedBy"));
+    return spPost<ILikeData[]>(Item(this, "likedBy"));
 };
 
 _Item.prototype.like = async function (this: _Item) {
@@ -58,5 +58,5 @@ _Item.prototype.unlike = async function (this: _Item) {
 };
 
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {
-    return this.clone(Item, "likedByInformation").expand("likedby")<ILikedByInformation>();
+    return Item(this, "likedByInformation").expand("likedby")<ILikedByInformation>();
 };

@@ -1,15 +1,15 @@
-// import { invokableFactory, body, headers, OLD_IQueryable } from "@pnp/queryable";
+// import { invokableFactory, body, headers, OLD_IQueryable, FromQueryable, IQueryable2, Queryable2 } from "@pnp/queryable";
 // import { ITypedHash, assign, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 // import { IFile, IFileInfo } from "../files/types.js";
 // import { Item, IItem } from "../items/types.js";
-// import { OLD_SharePointQueryable, _OLD_SharePointQueryable, OLD_ISharePointQueryable, OLD_SharePointQueryableCollection } from "../sharepointqueryable.js";
+// import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../sharepointqueryable.js";
 // import { metadata } from "../utils/metadata.js";
 // import { List } from "../lists/types.js";
 // import { odataUrlFrom } from "../odata.js";
 // import { Web, IWeb } from "../webs/types.js";
 // import { extractWebUrl } from "../utils/extractweburl.js";
 // import { Site } from "../sites/types.js";
-// import { OLD_spPost } from "../operations.js";
+// import { OLD_spPost, spPost } from "../operations.js";
 // import { getNextOrder, reindex } from "./funcs.js";
 // import "../files/web.js";
 // import "../comments/item.js";
@@ -43,14 +43,14 @@
 //  */
 // export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
-// function initFrom(o: OLD_ISharePointQueryable, url: string): IClientsidePage {
-//     return ClientsidePage(extractWebUrl(o.toUrl()), url).configureFrom(o);
+// function initFrom(o: ISPQueryable, url: string): IClientsidePage {
+//     return ClientsidePage(extractWebUrl(o.toUrl()), url).using(FromQueryable(o));
 // }
 
 // /**
 //  * Represents the data and methods associated with client side "modern" pages
 //  */
-// export class _ClientsidePage extends _OLD_SharePointQueryable {
+// export class _ClientsidePage extends _SPQueryable {
 
 //     private _pageSettings: IClientsidePageSettingsSlice;
 //     private _layoutPart: ILayoutPartsContent;
@@ -61,7 +61,7 @@
 //      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
 //      */
 //     constructor(
-//         baseUrl: string | OLD_ISharePointQueryable,
+//         baseUrl: string | ISPQueryable,
 //         path?: string,
 //         protected json?: Partial<IPageData>,
 //         noInit = false,
@@ -75,8 +75,8 @@
 
 //         // ensure we have a good url to build on for the pages api
 //         if (typeof baseUrl === "string") {
-//             this.data.parentUrl = "";
-//             this.data.url = combine(extractWebUrl(baseUrl), path);
+//             this.parentUrl = "";
+//             this._url = combine(extractWebUrl(baseUrl), path);
 //         } else {
 //             this.assign(initFrom(baseUrl, null), path);
 //         }
@@ -293,7 +293,7 @@
 //     public async load(): Promise<IClientsidePage> {
 
 //         const item = await this.getItem<{ Id: number; CommentsDisabled: boolean }>("Id", "CommentsDisabled");
-//         const pageData = await OLD_SharePointQueryable(this, `_api/sitepages/pages(${item.Id})`)<IPageData>();
+//         const pageData = await SPQueryable(this, `_api/sitepages/pages(${item.Id})`)<IPageData>();
 //         this.commentsDisabled = item.CommentsDisabled;
 //         return this.fromJSON(pageData);
 //     }
@@ -318,19 +318,19 @@
 //             let webUrl: string;
 
 //             const web = Web(extractWebUrl(this.toUrl()));
-//             const batch = web.createBatch();
+//             const [batch, execute] = web.createBatch();
 //             web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
-//                 .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(r1 => imgInfo = r1);
-//             web.select("Url").inBatch(batch)().then(r2 => webUrl = r2.Url);
+//                 .select("ListId", "WebId", "UniqueId", "Name", "SiteId").using(batch)().then(r1 => imgInfo = r1);
+//             web.select("Url").using(batch)().then(r2 => webUrl = r2.Url);
 
 //             // we know the .then calls above will run before execute resolves, ensuring the vars are set
-//             await batch.execute();
+//             await execute();
 
-//             const f = OLD_SharePointQueryable(webUrl, "_layouts/15/getpreview.ashx");
+//             const f = SPQueryable(webUrl, "_layouts/15/getpreview.ashx");
 //             f.query.set("guidSite", `${imgInfo.SiteId}`);
 //             f.query.set("guidWeb", `${imgInfo.WebId}`);
 //             f.query.set("guidFile", `${imgInfo.UniqueId}`);
-//             this.bannerImageUrl = f.toUrlAndQuery();
+//             this.bannerImageUrl = f.toRequestUrl();
 
 //             if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent)) {
 //                 this._layoutPart.serverProcessedContent = <any>{};
@@ -356,7 +356,7 @@
 
 //         // we try and check out the page for the user
 //         if (!this.json.IsPageCheckedOutToCurrentUser) {
-//             await OLD_spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
+//             await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
 //         }
 
 //         // create the body for the save request
@@ -379,12 +379,12 @@
 //         }
 
 //         const updater = initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
-//         await OLD_spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
+//         await spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
 
 //         let r = true;
 
 //         if (publish) {
-//             r = await OLD_spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`));
+//             r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`));
 //             if (r) {
 //                 this.json.IsPageCheckedOutToCurrentUser = false;
 //             }
@@ -406,7 +406,7 @@
 //             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
 //         }
 
-//         const d = await OLD_spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), body(metadata("SP.Publishing.SitePage")));
+//         const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), body(metadata("SP.Publishing.SitePage")));
 
 //         this.fromJSON(d);
 //     }
@@ -611,7 +611,7 @@
 //         request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
 //         request.select("ServerRelativeUrl");
 
-//         const result = await OLD_spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
+//         const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
 //         // set with the newly created relative url
 //         this.setBannerImage(result.ServerRelativeUrl, props);
 //     }
@@ -623,8 +623,8 @@
 //      */
 //     public async setAuthorById(authorId: number): Promise<void> {
 
-//         const userLoginData = await OLD_SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-//             .configureFrom(this)
+//         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+//             .using(FromQueryable(this))
 //             .filter(`Id eq ${authorId}`)
 //             .select("LoginName")<{ LoginName: string }[]>();
 
@@ -642,8 +642,8 @@
 //      */
 //     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
 
-//         const userLoginData = await OLD_SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-//             .configureFrom(this)
+//         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+//             .using(FromQueryable(this))
 //             .filter(`LoginName eq '${authorLoginName}'`)
 //             .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
@@ -670,10 +670,10 @@
 //     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
 //         const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
-//         const listData = await OLD_spPost<{ Id: string; "odata.id": string }>(initer);
-//         const item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
+//         const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
+//         const item = List(listData["odata.id"]).using(FromQueryable(this)).items.getById(this.json.Id);
 //         const itemData: T = await item.select(...selects)();
-//         return assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData);
+//         return assign((Item(odataUrlFrom(itemData))).using(FromQueryable(this)), itemData);
 //     }
 
 //     /**
@@ -682,10 +682,10 @@
 //      * @param parent Parent queryable from which we will derive a base url
 //      * @param path Additional path
 //      */
-//     protected assign(parent: OLD_IQueryable<any>, path?: string) {
-//         this.data.parentUrl = parent.data.url;
-//         this.data.url = combine(this.data.parentUrl, path || "");
-//         this.configureFrom(parent);
+//     protected assign(parent: _ClientsidePage, path?: string) {
+//         this.parentUrl = parent.parentUrl;
+//         this._url = combine(parent.parentUrl, path || "");
+//         this.using(FromQueryable(parent));
 //     }
 
 //     protected getCanvasContent1(): string {
@@ -797,7 +797,7 @@
 //             }
 //         }
 
-//         return await OLD_spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));
+//         return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));
 //     }
 
 //     /**
@@ -887,7 +887,7 @@
 //  * Invokable factory for IClientSidePage instances
 //  */
 // const ClientsidePage = (
-//     baseUrl: string | OLD_ISharePointQueryable,
+//     baseUrl: string | ISPQueryable,
 //     path?: string,
 //     json?: Partial<IPageData>,
 //     noInit = false,
@@ -906,7 +906,7 @@
 
 //     const item = await file.getItem<{ Id: number }>();
 //     const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true);
-//     return page.configureFrom(file).load();
+//     return page.using(FromQueryable(file)).load();
 // };
 
 // /**
@@ -925,7 +925,7 @@
 //         pageName = pageName.replace(/\.aspx$/i, "");
 
 //         // initialize the page, at this point a checked-out page with a junk filename will be created.
-//         const pageInitData: IPageData = await OLD_spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
+//         const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
 //             PageLayoutType,
 //             PromotedState: promotedState,
 //         })));

@@ -1,9 +1,9 @@
-import { Timeline, ObserverCollection } from "../timeline/timeline.js";
+import { Timeline, ObserverCollection, TimelinePipe } from "../timeline/timeline.js";
 import { objectDefinedNotNull } from "../util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
 
-export function From_JulieHatesThisName(source: Timeline<any>, behavior: "replace" | "append" = "append"): (instance: Timeline<any>) => Timeline<any> {
+export function From_JulieHatesThisName(source: Timeline<any>, behavior: "replace" | "append" = "append"): TimelinePipe {
 
     return (instance: Timeline<any>) => {
 

@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 import { NavigationService, INavigationService } from "./types.js";
 
 import "./web.js";
@@ -26,12 +26,10 @@ declare module "../rest" {
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "navigation", {
+Reflect.defineProperty(SPRest2.prototype, "navigation", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return NavigationService(baseUrl).configure(options).setRuntime(runtime);
-        });
+    get: function (this: SPRest2) {
+        this.create(<any>NavigationService);
     },
 });

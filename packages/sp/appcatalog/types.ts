@@ -1,20 +1,23 @@
 import {
-    OLD_ISharePointQueryable,
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
+    _SPCollection,
+    spInvokableFactory,
+    _SPInstance,
+    ISPQueryable,
+    SPCollection,
 } from "../sharepointqueryable";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../odata.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { File, IFile } from "../files/types.js";
 import { tag } from "../telemetry.js";
-import { Web } from "../webs/index.js";
+import { Web } from "../webs";
 import "../items/index.js";
+import { FromQueryable } from "@pnp/queryable";
 
-export class _AppCatalog extends _OLD_SharePointQueryableCollection {
 
-    constructor(baseUrl: string | OLD_ISharePointQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+export class _AppCatalog extends _SPCollection {
+
+    constructor(baseUrl: string | ISPQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
         super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
     }
 
@@ -26,41 +29,41 @@ export class _AppCatalog extends _OLD_SharePointQueryableCollection {
         return tag.configure(App(this, `getById('${id}')`), "ac.getAppById");
     }
 
-    // TODO::
-    // /**
-    //  * Synchronize a solution to the Microsoft Teams App Catalog
-    //  * @param id - Specify the guid of the app
-    //  * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id.
-    //  *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter
-    //  */
-    // public async syncSolutionToTeams(id: string | number, useSharePointItemId = false): Promise<void> {
+    /**
+     * Synchronize a solution to the Microsoft Teams App Catalog
+     * @param id - Specify the guid of the app
+     * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id.
+     *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter
+     */
+    public async syncSolutionToTeams(id: string | number, useSharePointItemId = false): Promise<void> {
 
-    //     // This REST call requires that you refer the list item id of the solution in the app catalog site.
-    //     let appId = null;
-    //     const webUrl = extractWebUrl(this.toUrl());
+        // This REST call requires that you refer the list item id of the solution in the app catalog site.
+        let appId = null;
+        const webUrl = extractWebUrl(this.toUrl()) + "_api/web";
 
-    //     if (useSharePointItemId) {
+        if (useSharePointItemId) {
 
-    //         appId = id;
-    //     } else {
+            appId = id;
 
-    //         const web = Web(webUrl);
-    //         const listId = (await web.lists.select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
-    //         const listItems = await web.lists.getById(listId).items.filter(`AppProductID eq '${id}'`).top(1)();
+        } else {
 
-    //         if (listItems && listItems.length > 0) {
+            const listId = (await SPCollection(webUrl, "lists").using(FromQueryable(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
+            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(FromQueryable(this))();
 
-    //             appId = listItems[0].Id;
-    //         } else {
+            if (listItems && listItems.length > 0) {
 
-    //             throw Error(`Did not find the app with id ${id} in the appcatalog.`);
-    //         }
-    //     }
+                appId = listItems[0].Id;
 
-    //     const poster = tag.configure(AppCatalog(webUrl, `_api/web/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
+            } else {
 
-    //     return await OLD_spPost(poster, {});
-    // }
+                throw Error(`Did not find the app with id ${id} in the appcatalog.`);
+            }
+        }
+
+        const poster = tag.configure(AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
+
+        return await spPost(poster, {});
+    }
 
     /**
      * Uploads an app package. Not supported for batching
@@ -75,7 +78,7 @@ export class _AppCatalog extends _OLD_SharePointQueryableCollection {
         // you don't add to the availableapps collection
         const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
 
-        const r = await OLD_spPost(adder, {
+        const r = await spPost(adder, {
             body: content, headers: {
                 "binaryStringRequestBody": "true",
             },
@@ -87,10 +90,10 @@ export class _AppCatalog extends _OLD_SharePointQueryableCollection {
         };
     }
 }
-export interface IAppCatalog extends _AppCatalog {}
-export const AppCatalog = OLD_spInvokableFactory<IAppCatalog>(_AppCatalog);
+export interface IAppCatalog extends _AppCatalog { }
+export const AppCatalog = spInvokableFactory<IAppCatalog>(_AppCatalog);
 
-export class _App extends _OLD_SharePointQueryableInstance {
+export class _App extends _SPInstance {
 
     /**
      * This method deploys an app on the app catalog. It must be called in the context
@@ -147,11 +150,11 @@ export class _App extends _OLD_SharePointQueryableInstance {
     }
 
     private do(path: string): Promise<void> {
-        return OLD_spPost(this.clone(App, path));
+        return spPost(App(this, path));
     }
 }
-export interface IApp extends _App {}
-export const App = OLD_spInvokableFactory<IApp>(_App);
+export interface IApp extends _App { }
+export const App = spInvokableFactory<IApp>(_App);
 
 /**
  * Result object after adding an app

@@ -18,10 +18,11 @@ declare module "../lists/types" {
     }
 }
 
-_List.prototype.getSiteScript = async function (this: _List): Promise<string> {
+// TODO::
+// _List.prototype.getSiteScript = async function (this: _List): Promise<string> {
 
-    const rootFolder = await this.clone(List).rootFolder.get<{ Name: string }>();
-    const web = await Web(extractWebUrl(this.toUrl())).select("Url")();
-    const absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
-    return SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
-};
+//     const rootFolder = await List(this).rootFolder.get<{ Name: string }>();
+//     const web = await Web(extractWebUrl(this.toUrl())).select("Url")();
+//     const absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
+//     return SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
+// };

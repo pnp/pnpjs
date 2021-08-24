@@ -1,9 +1,10 @@
 import { Queryable2 } from "../queryable-2.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd } from "@pnp/core";
+import { isFunc, getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 
-// TODO:: (PR?)Allow for null expiration date
-// eslint-disable-next-line max-len
-export function Caching(store: "local" | "session" = "session", lazy = false, keyFactory?: (url: string) => string, expireFunc?: (url: string) => Date): (instance: Queryable2) => Queryable2 {
+export type CacheKeyFactory = (url: string) => string;
+export type CacheExpireFunc = (url: string) => Date;
+
+export function Caching(store: "local" | "session" = "session", keyFactory?: CacheKeyFactory, expireFunc?: CacheExpireFunc): TimelinePipe<Queryable2> {
 
     const storage = new PnPClientStorage();
     const s = store === "session" ? storage.session : storage.local;

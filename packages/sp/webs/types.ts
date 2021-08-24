@@ -1,7 +1,7 @@
-import { body, FromQueryable, headers, Queryable2 } from "@pnp/queryable";
+import { TimelinePipe } from "@pnp/core";
+import { body, FromQueryable } from "@pnp/queryable";
 import {
     _SPCollection,
-    OLD_deleteable,
     spInvokableFactory,
     _SPInstance,
     SPCollection,
@@ -9,11 +9,12 @@ import {
     SPInstance,
     ISPInstance,
     IDeleteable,
+    deleteable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../odata.js";
-import { spGet, spPost } from "../operations.js";
+import { spGet, spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { tag } from "../telemetry-2.js";
 import { createBatch } from "./batching.js";
@@ -63,7 +64,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
 @defaultPath("_api/web")
 export class _Web extends _SPInstance<IWebInfo> {
 
-    public delete = OLD_deleteable("w");
+    public delete = deleteable("w");
 
     /**
      * Gets this web's subwebs
@@ -108,7 +109,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      */
     @tag("w.update")
     public async update(properties: Record<string, any>): Promise<void> {
-        return spPost(this, body(properties, headers({ "X-HTTP-Method": "MERGE" })));
+        return spPostMerge(this, body(properties));
     }
 
     /**
@@ -219,7 +220,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * Creates a new batch for requests within the context of this web
      *
      */
-    public createBatch(): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+    public createBatch(): [TimelinePipe, () => Promise<void>] {
         return createBatch(this);
     }
 

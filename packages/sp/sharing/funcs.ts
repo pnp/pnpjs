@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable";
 import { jsS, assign } from "@pnp/core";
-import { OLD_SharePointQueryableCollection, OLD_SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { SPCollection, SPInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Web } from "../webs/types.js";
 import {
@@ -18,7 +18,7 @@ import {
     ISharingEmailData,
     RoleType,
 } from "./types.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 import { RoleDefinitions } from "../security/types.js";
 import { emptyGuid } from "../splibconfig.js";
@@ -83,8 +83,8 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
     const expString = expiration !== null ? expiration.toISOString() : null;
 
     // clone using the factory and send the request
-    const o = tag.configure(this.clone(OLD_SharePointQueryableInstance, "shareLink"), "sh.getShareLink");
-    return OLD_spPost<IShareLinkResponse>(o, body({
+    const o = tag.configure(SPInstance(this, "shareLink"), "sh.getShareLink");
+    return spPost<IShareLinkResponse>(o, body({
         request: {
             createLink: true,
             emailData: null,
@@ -103,8 +103,8 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
  */
 export function checkPermissions(this: ShareableQueryable, recipients: ISharingRecipient[]): Promise<ISharingEntityPermission[]> {
 
-    const o = tag.configure(this.clone(OLD_SharePointQueryableInstance, "checkPermissions"), "sh.checkPermissions");
-    return OLD_spPost<ISharingEntityPermission[]>(o, body({ recipients }));
+    const o = tag.configure(SPInstance(this, "checkPermissions"), "sh.checkPermissions");
+    return spPost<ISharingEntityPermission[]>(o, body({ recipients }));
 }
 
 /**
@@ -116,8 +116,8 @@ export function checkPermissions(this: ShareableQueryable, recipients: ISharingR
  */
 export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
 
-    const o = tag.configure(this.clone(OLD_SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
-    return OLD_spPost(o.expand(...expands), body({ request }));
+    const o = tag.configure(SPInstance(this, "getSharingInformation"), "sh.getSharingInformation");
+    return spPost(o.expand(...expands), body({ request }));
 }
 
 /**
@@ -127,8 +127,8 @@ export function getSharingInformation(this: ShareableQueryable, request: ISharin
  */
 export function getObjectSharingSettings(this: ShareableQueryable, useSimplifiedRoles = true): Promise<IObjectSharingSettings> {
 
-    const o = tag.configure(this.clone(OLD_SharePointQueryableInstance, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
-    return OLD_spPost<IObjectSharingSettings>(o, body({ useSimplifiedRoles }));
+    const o = tag.configure(SPInstance(this, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
+    return spPost<IObjectSharingSettings>(o, body({ useSimplifiedRoles }));
 }
 
 /**
@@ -136,7 +136,7 @@ export function getObjectSharingSettings(this: ShareableQueryable, useSimplified
  */
 export function unshareObject(this: ShareableQueryable): Promise<ISharingResult> {
 
-    return OLD_spPost(tag.configure(this.clone(OLD_SharePointQueryableInstance, "unshareObject"), "sh.unshareObject"));
+    return spPost(tag.configure(SPInstance(this, "unshareObject"), "sh.unshareObject"));
 }
 
 /**
@@ -146,7 +146,7 @@ export function unshareObject(this: ShareableQueryable): Promise<ISharingResult>
  */
 export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLinkKind): Promise<void> {
 
-    return OLD_spPost(tag.configure(this.clone(OLD_SharePointQueryableInstance, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind }));
+    return spPost(tag.configure(SPInstance(this, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind }));
 }
 
 /**
@@ -157,7 +157,7 @@ export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLink
  */
 export function unshareLink(this: ShareableQueryable, linkKind: SharingLinkKind, shareId = emptyGuid): Promise<void> {
 
-    return OLD_spPost(tag.configure(this.clone(OLD_SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
+    return spPost(tag.configure(SPInstance(this, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
 }
 
 /**
@@ -189,8 +189,7 @@ export async function shareWith(
 
     // start by looking up the role definition id we need to set the roleValue
     // remove need to reference Web here, which created a circular build issue
-    const w = OLD_SharePointQueryableCollection("_api/web", "roledefinitions");
-    const def = await w.select("Id").filter(`RoleTypeKind eq ${roleFilter}`).get();
+    const def = await SPCollection("_api/web", "roledefinitions").select("Id").filter(`RoleTypeKind eq ${roleFilter}`)();
     if (!Array.isArray(def) || def.length < 1) {
         throw Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
     }
@@ -209,15 +208,13 @@ export async function shareWith(
         });
     }
 
-    return OLD_spPost<ISharingResult>(tag.configure(o.clone(OLD_SharePointQueryableInstance, "shareObject"), "sh.shareWith"), body(postBody));
+    return spPost<ISharingResult>(tag.configure(SPInstance(o, "shareObject"), "sh.shareWith"), body(postBody));
 }
 
-// TODO::
 async function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<Partial<ISharingResult>> {
 
-    // const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
-    // return OLD_spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
-    return {};
+    const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
+    return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 
 /**

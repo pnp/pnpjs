@@ -32,11 +32,8 @@ export class SPRest2 {
      * @param factory The factory for the type of object to create
      * @returns A configured instance of that object
      */
-    protected create<T>(factory: (q: ISPQueryable) => T): T {
-
-        // TODO:: any other configuration we have to perform to pass on the settings.
-        // shouldn't be anything as it is all in the _root's observers
-        return factory(this._root);
+    protected create<T>(factory: (q: ISPQueryable, path?: string) => T, path?: string): T {
+        return factory(this._root, path);
     }
 }
 

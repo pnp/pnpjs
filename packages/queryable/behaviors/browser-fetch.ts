@@ -1,7 +1,8 @@
 import { Queryable2 } from "../queryable-2.js";
 import { LogLevel } from "@pnp/logging";
+import { TimelinePipe } from "@pnp/core";
 
-export function BrowserFetch(): (instance: Queryable2) => Queryable2 {
+export function BrowserFetch(): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 

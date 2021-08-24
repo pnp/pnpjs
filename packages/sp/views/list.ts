@@ -28,6 +28,8 @@ declare module "../lists/types" {
 addProp(_List, "views", Views);
 addProp(_List, "defaultView", View, "DefaultView");
 
+// TODO:: 
 _List.prototype.getView = function (this: _List, viewId: string): IView {
-    return View(this, `getView('${viewId}')`);
+    // return View(this, `getView('${viewId}')`);
+    return null;
 };
