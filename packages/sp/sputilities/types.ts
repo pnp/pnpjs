@@ -1,12 +1,9 @@
-import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../sharepointqueryable.js";
 import { body } from "@pnp/queryable";
-import { odataUrlFrom } from "../odata.js";
+import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../sharepointqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
-import { File, IFile } from "../files/types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
-import { objectToSPKeyValueCollection } from "../utils/objectToSPKeyValueCollection.js";
 
 export class _Utilities extends _SPQueryable implements IUtilities {
 
@@ -44,7 +41,13 @@ export class _Utilities extends _SPQueryable implements IUtilities {
 
         if (props.AdditionalHeaders) {
 
-            properties = { ...properties, AdditionalHeaders: objectToSPKeyValueCollection(props.AdditionalHeaders) };
+            const headers = Reflect.ownKeys(props.AdditionalHeaders).map(k => ({
+                Key: k,
+                Value: Reflect.get(props.AdditionalHeaders, k),
+                ValueType: "Edm.String",
+            }));
+
+            properties = { ...properties, AdditionalHeaders: headers };
         }
 
         return tag.configure(UtilitiesCloneFactory(this, "SendEmail"), "u.sendEmail").excute<void>({ properties });
@@ -104,17 +107,6 @@ export class _Utilities extends _SPQueryable implements IUtilities {
         const clone = UtilitiesCloneFactory(this, "ExpandGroupsToPrincipals");
         return tag.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
     }
-
-    public async createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult> {
-
-        const clone = UtilitiesCloneFactory(this, "CreateWikiPageInContextWeb");
-        const newPage = await tag.configure(clone, "u.CreateWikiPageInContextWeb").excute<ICreateWikiPageResult>({ parameters: info });
-
-        return {
-            data: newPage,
-            file: File(odataUrlFrom(newPage)),
-        } as ICreateWikiPageResult;
-    }
 }
 
 /**
@@ -171,29 +163,11 @@ export interface IUtilities {
      * @param maxCount Specifies the maximum number of principals to be returned.
      */
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
-
-    /**
-     * Creates a new Wiki page.
-     * @param info Instance of IWikiPageCreationInfo.
-     */
-    createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 
 export const Utilities: (baseUrl: string | ISPQueryable, path?: string) => IUtilities = <any>spInvokableFactory(_Utilities);
 type UtilitiesCloneType = IUtilities & ISPQueryable & { excute<T>(props: any): Promise<T> };
 const UtilitiesCloneFactory = (baseUrl: string | ISPQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
-
-export interface ICreateWikiPageResult {
-    /**
-     * The returned Wiki page represented by raw data.
-     */
-    data: any;
-
-    /**
-     * The returned Wiki page represented as a file which can be further updated.
-     */
-    file: IFile;
-}
 
 export interface IEmailProperties {
     /**

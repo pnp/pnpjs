@@ -192,6 +192,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
         const pathDefault = `<a href="${href}">${tags.join("")}</a>`;
         pathDefaults.push(pathDefault);
     }
+
     // builds update to defaults
     const xml = `<MetadataDefaults>${pathDefaults.join("")}</MetadataDefaults>`;
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();

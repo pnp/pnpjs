@@ -2,17 +2,20 @@ import {
     _OLD_SharePointQueryableInstance,
     _OLD_SharePointQueryableCollection,
     OLD_spInvokableFactory,
+    _SPCollection,
+    spInvokableFactory,
+    _SPInstance,
 } from "../sharepointqueryable.js";
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
-import { assign, ITypedHash, hOP } from "@pnp/core";
+import { assign, ITypedHash } from "@pnp/core";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost, spPostMerge } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("sitegroups")
-export class _SiteGroups extends _OLD_SharePointQueryableCollection<ISiteGroupInfo[]> {
+export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
 
     /**
      * Gets a group from the collection by id
@@ -32,7 +35,8 @@ export class _SiteGroups extends _OLD_SharePointQueryableCollection<ISiteGroupIn
 
         const postBody = body(assign(metadata("SP.Group"), properties));
 
-        const data = await OLD_spPost(tag.configure(this, "sgs.add"), postBody);
+        const data = await spPost(tag.configure(this, "sgs.add"), postBody);
+
         return {
             data,
             group: this.getById(data.Id),
@@ -55,7 +59,7 @@ export class _SiteGroups extends _OLD_SharePointQueryableCollection<ISiteGroupIn
      */
     @tag("sgs.removeById")
     public removeById(id: number): Promise<void> {
-        return OLD_spPost(this.clone(SiteGroups, `removeById('${id}')`));
+        return spPost(SiteGroups(this, `removeById('${id}')`));
     }
 
     /**
@@ -65,13 +69,13 @@ export class _SiteGroups extends _OLD_SharePointQueryableCollection<ISiteGroupIn
      */
     @tag("sgs.removeByLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
-        return OLD_spPost(this.clone(SiteGroups, `removeByLoginName('${loginName}')`));
+        return spPost(SiteGroups(this, `removeByLoginName('${loginName}')`));
     }
 }
-export interface ISiteGroups extends _SiteGroups {}
-export const SiteGroups = OLD_spInvokableFactory<ISiteGroups>(_SiteGroups);
+export interface ISiteGroups extends _SiteGroups { }
+export const SiteGroups = spInvokableFactory<ISiteGroups>(_SiteGroups);
 
-export class _SiteGroup extends _OLD_SharePointQueryableInstance<ISiteGroupInfo> {
+export class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
 
     /**
      * Gets the users for this group
@@ -82,19 +86,18 @@ export class _SiteGroup extends _OLD_SharePointQueryableInstance<ISiteGroupInfo>
     }
 
     /**
-     * Updates the group with the given property values
-     *
-     * @param props The group properties object of property names and values to be set for the group
-     */
-    public update = this._update<IGroupUpdateResult, ITypedHash<any>>("SP.Group", (d, p) => {
+    * @param props Group properties to update
+    */
+    @tag("f.update")
+    public async update(props: Partial<ISiteGroupInfo>): Promise<IGroupUpdateResult> {
 
-        const retGroup: ISiteGroup = hOP(p, "Title") ? this.getParent(SiteGroup, this.parentUrl, `getByName('${p.Title}')`) : SiteGroup(this);
+        const data = await spPostMerge(this, body(props));
 
         return {
-            data: d,
-            group: retGroup,
+            data,
+            group: this,
         };
-    });
+    }
 
     /**
      * Set the owner of a group using a user id
@@ -102,11 +105,11 @@ export class _SiteGroup extends _OLD_SharePointQueryableInstance<ISiteGroupInfo>
      */
     @tag("sg.setUserAsOwner")
     public setUserAsOwner(userId: number): Promise<any> {
-        return OLD_spPost(this.clone(SiteGroup, `SetUserAsOwner(${userId})`));
+        return spPost(SiteGroup(this, `SetUserAsOwner(${userId})`));
     }
 }
-export interface ISiteGroup extends _SiteGroup {}
-export const SiteGroup = OLD_spInvokableFactory<ISiteGroup>(_SiteGroup);
+export interface ISiteGroup extends _SiteGroup { }
+export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
 
 /**
  * Result from updating a group

@@ -28,7 +28,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - moved items.getAll to seperate import @pnp/sp/items/get-all
   - files.getByName => files.getByUrl
   - folders.getByName => folders.getByUrl
-
+  - fields.add* methods now take title and a single props object with the additional properties for each field
+  - TimeZones.getById no merges the object & data
+  
 ### Removed
 
 - queryable:
@@ -68,3 +70,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed folder.copyTo => folder.copyByPath
   - removed folder.moveTo => folder.moveByPath
   - removed _SPInstance._update => refactored and unused
+  - removed objectToSPKeyValueCollection
+  - removed toAbsoluteUrl => use behaviors
+  - removed IUtilities.createWikiPage
+  

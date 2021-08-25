@@ -38,11 +38,6 @@ export {
 } from "./utils/extractweburl.js";
 
 export {
-    ISPKeyValueCollection,
-    objectToSPKeyValueCollection,
-} from "./utils/objectToSPKeyValueCollection.js";
-
-export {
     stripInvalidFileFolderChars,
     containsInvalidFileFolderChars,
 } from "./utils/file-names.js";

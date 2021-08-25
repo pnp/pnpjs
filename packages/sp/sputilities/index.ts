@@ -2,7 +2,6 @@ import { SPRest2 } from "../rest-2.js";
 import { IUtilities, Utilities } from "./types.js";
 
 export {
-    ICreateWikiPageResult,
     IEmailProperties,
     IUtilities,
     IWikiPageCreationInfo,
