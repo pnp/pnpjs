@@ -13,7 +13,7 @@ export {
     IHubSites,
 } from "./types.js";
 
-declare module "../rest" {
+declare module "../rest-2" {
     interface SPRest {
         /**
          * Lists all of the subsites

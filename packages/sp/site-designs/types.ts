@@ -1,19 +1,19 @@
-import { _OLD_SharePointQueryable, OLD_ISharePointQueryable } from "../sharepointqueryable.js";
+import { ISPQueryable, _SPQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/queryable";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { hOP } from "@pnp/core";
 import { tag } from "../telemetry.js";
 
-export class _SiteDesigns extends _OLD_SharePointQueryable {
+export class _SiteDesigns extends _SPQueryable {
 
-    constructor(baseUrl: string | OLD_ISharePointQueryable, methodName = "") {
+    constructor(baseUrl: string | ISPQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
 
-    public execute<T>(props: any): Promise<T> {
-        return OLD_spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
+    public run<T>(props: any): Promise<T> {
+        return spPost<T>(this, body(props, headers({ "Content-Type": "application/json;charset=utf-8" })));
     }
 
     /**
@@ -23,7 +23,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.createSiteDesign")
     public createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, "CreateSiteDesign").execute<ISiteDesignInfo>({ info: creationInfo });
+        return SiteDesignsCloneFactory(this, "CreateSiteDesign").run<ISiteDesignInfo>({ info: creationInfo });
     }
 
     /**
@@ -34,7 +34,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.applySiteDesign")
     public applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, "ApplySiteDesign").execute<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
+        return SiteDesignsCloneFactory(this, "ApplySiteDesign").run<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
     }
 
     /**
@@ -42,7 +42,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesigns")
     public getSiteDesigns(): Promise<ISiteDesignInfo[]> {
-        return this.clone(SiteDesignsCloneFactory, "GetSiteDesigns").execute<ISiteDesignInfo[]>({});
+        return SiteDesignsCloneFactory(this, "GetSiteDesigns").run<ISiteDesignInfo[]>({});
     }
 
     /**
@@ -51,7 +51,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesignMetadata")
     public getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignMetadata").execute<ISiteDesignInfo>({ id: id });
+        return SiteDesignsCloneFactory(this, "GetSiteDesignMetadata").run<ISiteDesignInfo>({ id: id });
     }
 
     /**
@@ -61,7 +61,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.updateSiteDesign")
     public updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
-        return this.clone(SiteDesignsCloneFactory, "UpdateSiteDesign").execute<ISiteDesignInfo>({ updateInfo: updateInfo });
+        return SiteDesignsCloneFactory(this, "UpdateSiteDesign").run<ISiteDesignInfo>({ updateInfo: updateInfo });
     }
 
     /**
@@ -70,7 +70,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.deleteSiteDesign")
     public deleteSiteDesign(id: string): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, "DeleteSiteDesign").execute<void>({ id: id });
+        return SiteDesignsCloneFactory(this, "DeleteSiteDesign").run<void>({ id: id });
     }
 
     /**
@@ -79,7 +79,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesignRights")
     public getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
-        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRights").execute<ISiteDesignPrincipals[]>({ id: id });
+        return SiteDesignsCloneFactory(this, "GetSiteDesignRights").run<ISiteDesignPrincipals[]>({ id: id });
     }
 
     /**
@@ -91,11 +91,10 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.grantSiteDesignRights")
     public grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, "GrantSiteDesignRights")
-            .execute<void>({
+        return SiteDesignsCloneFactory(this, "GrantSiteDesignRights").run<void>({
             "grantedRights": grantedRights.toString(),
-            "id": id,
-            "principalNames": principalNames,
+            id,
+            principalNames,
         });
     }
 
@@ -107,10 +106,9 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.revokeSiteDesignRights")
     public revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
-        return this.clone(SiteDesignsCloneFactory, "RevokeSiteDesignRights")
-            .execute<void>({
-            "id": id,
-            "principalNames": principalNames,
+        return SiteDesignsCloneFactory(this, "RevokeSiteDesignRights").run<void>({
+            id,
+            principalNames,
         });
     }
 
@@ -121,8 +119,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.addSiteDesignTask")
     public addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
-        return this.clone(SiteDesignsCloneFactory, "AddSiteDesignTask")
-            .execute<ISiteDesignTask>({ "webUrl": webUrl, "siteDesignId": siteDesignId });
+        return SiteDesignsCloneFactory(this, "AddSiteDesignTask").run<ISiteDesignTask>({ webUrl, siteDesignId });
     }
 
     /**
@@ -131,8 +128,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.addSiteDesignTaskToCurrentWeb")
     public addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
-        return this.clone(SiteDesignsCloneFactory, "AddSiteDesignTaskToCurrentWeb")
-            .execute<ISiteDesignTask>({ "siteDesignId": siteDesignId });
+        return SiteDesignsCloneFactory(this, "AddSiteDesignTaskToCurrentWeb").run<ISiteDesignTask>({ siteDesignId });
     }
 
     /**
@@ -141,9 +137,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesignTask")
     public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
-        const task = await this.clone(SiteDesignsCloneFactory, "GetSiteDesignTask")
-            .execute<ISiteDesignTask>({ "taskId": id });
-
+        const task = await SiteDesignsCloneFactory(this, "GetSiteDesignTask").run<ISiteDesignTask>({ "taskId": id });
         return hOP(task, "ID") ? task : null;
     }
 
@@ -154,8 +148,7 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesignRun")
     public getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
-        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRun")
-            .execute<ISiteDesignRun[]>({ "webUrl": webUrl, siteDesignId: siteDesignId });
+        return SiteDesignsCloneFactory(this, "GetSiteDesignRun").run<ISiteDesignRun[]>({ webUrl, siteDesignId });
     }
 
     /**
@@ -165,15 +158,14 @@ export class _SiteDesigns extends _OLD_SharePointQueryable {
      */
     @tag("sd.getSiteDesignRunStatus")
     public getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
-        return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRunStatus")
-            .execute<ISiteScriptActionStatus[]>({ "webUrl": webUrl, runId: runId });
+        return SiteDesignsCloneFactory(this, "GetSiteDesignRunStatus").run<ISiteScriptActionStatus[]>({ webUrl, runId });
     }
 }
-export interface ISiteDesigns extends _SiteDesigns {}
-export const SiteDesigns = (baseUrl: string | OLD_ISharePointQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
+export interface ISiteDesigns extends _SiteDesigns { }
+export const SiteDesigns = (baseUrl: string | ISPQueryable, methodName?: string): ISiteDesigns => new _SiteDesigns(baseUrl, methodName);
 
-type SiteDesignsCloneType = ISiteDesigns & OLD_ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteDesignsCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, methodName = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
+type SiteDesignsCloneType = ISiteDesigns & ISPQueryable & { run<T>(props: any): Promise<T> };
+const SiteDesignsCloneFactory = (baseUrl: string | ISPQueryable, methodName = ""): SiteDesignsCloneType => <any>SiteDesigns(baseUrl, methodName);
 
 /**
  * Result from creating or retrieving a site design

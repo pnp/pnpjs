@@ -15,7 +15,7 @@ export {
     UrlZone,
 } from "./types.js";
 
-declare module "../rest" {
+declare module "../rest-2" {
     interface SPRest {
         readonly profiles: IProfiles;
     }

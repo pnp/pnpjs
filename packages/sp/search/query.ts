@@ -1,9 +1,8 @@
-import { _OLD_SharePointQueryableInstance, OLD_ISharePointQueryable } from "../sharepointqueryable.js";
-import { assign, hOP, getHashCode, objectDefinedNotNull, isArray, IConfigOptions, DefaultRuntime } from "@pnp/core";
-import { metadata } from "../utils/metadata.js";
-import { CachingOptions, body } from "@pnp/queryable";
+import { _SPInstance, ISPQueryable } from "../sharepointqueryable.js";
+import { assign, hOP, isArray } from "@pnp/core";
+import { body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
-import { OLD_spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 import { tag } from "../telemetry.js";
 
@@ -59,27 +58,27 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
             Querytext: queryText,
         }, _query),
     },
-    {
-        get(self, propertyKey, proxy) {
+        {
+            get(self, propertyKey, proxy) {
 
-            const pk = propertyKey.toString();
+                const pk = propertyKey.toString();
 
-            if (pk === "toSearchQuery") {
-                return () => self.query;
-            }
+                if (pk === "toSearchQuery") {
+                    return () => self.query;
+                }
 
-            if (funcs.has(pk)) {
-                return (...value: any[]) => {
-                    const mappedPk = funcs.get(pk);
-                    self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
-                    return proxy;
-                };
-            }
-            const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
-            self.query[propKey] = true;
-            return proxy;
-        },
-    });
+                if (funcs.has(pk)) {
+                    return (...value: any[]) => {
+                        const mappedPk = funcs.get(pk);
+                        self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
+                        return proxy;
+                    };
+                }
+                const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
+                self.query[propKey] = true;
+                return proxy;
+            },
+        });
 }
 
 const queryRegex = /_api\/search\/postquery$/i;
@@ -89,52 +88,27 @@ const queryRegex = /_api\/search\/postquery$/i;
  *
  */
 @defaultPath("_api/search/postquery")
-export class _Search extends _OLD_SharePointQueryableInstance {
+export class _Search extends _SPInstance {
 
     /**
      * @returns Promise
      */
     @tag("se.execute")
-    public async execute(queryInit: SearchQueryInit): Promise<SearchResults> {
+    public async run(queryInit: SearchQueryInit): Promise<SearchResults> {
 
         const query = this.parseQuery(queryInit);
 
         const postBody = body({
-            request: assign(
-                metadata("Microsoft.Office.Server.Search.REST.SearchRequest"),
-                Object.assign(
-                    {},
-                    query,
-                    {
-                        HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
-                        Properties: this.fixArrProp(query.Properties),
-                        RefinementFilters: this.fixArrProp(query.RefinementFilters),
-                        ReorderingRules: this.fixArrProp(query.ReorderingRules),
-                        SelectProperties: this.fixArrProp(query.SelectProperties),
-                        SortList: this.fixArrProp(query.SortList),
-                    })),
+            query,
+            HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
+            Properties: this.fixArrProp(query.Properties),
+            RefinementFilters: this.fixArrProp(query.RefinementFilters),
+            ReorderingRules: this.fixArrProp(query.ReorderingRules),
+            SelectProperties: this.fixArrProp(query.SelectProperties),
+            SortList: this.fixArrProp(query.SortList),
         });
 
-        // if we are using caching with this search request, then we need to handle some work upfront to enable that
-        if (this.data.useCaching) {
-
-            // force use of the cache for this request if .usingCaching was called
-            this._forceCaching = true;
-
-            // because all the requests use the same url they would collide in the cache we use a special key
-            const cacheKey = `PnPjs.SearchWithCaching(${getHashCode(postBody.body)})`;
-
-            if (objectDefinedNotNull(this.data.cachingOptions)) {
-                // if our key ends in the postquery url we overwrite it
-                if (queryRegex.test(this.data.cachingOptions.key)) {
-                    this.data.cachingOptions.key = cacheKey;
-                }
-            } else {
-                this.data.cachingOptions = new CachingOptions(cacheKey);
-            }
-        }
-
-        const data = await OLD_spPost(this, postBody);
+        const data = await spPost(this, postBody);
         return new SearchResults(data, this.toUrl(), query);
     }
 
@@ -176,8 +150,8 @@ export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
 
-export const Search = (baseUrl: string | OLD_ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).configure(options).setRuntime(runtime).execute(queryInit);
+export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: SearchQueryInit) => {
+    return (new _Search(baseUrl)).run(queryInit);
 };
 
 export class SearchResults {
@@ -270,13 +244,7 @@ export class SearchResults {
 
             results.push(cells.reduce((res, cell) => {
 
-                Reflect.defineProperty(res, cell.Key,
-                    {
-                        configurable: false,
-                        enumerable: true,
-                        value: cell.Value,
-                        writable: false,
-                    });
+                res[cell.Key] = cell.Value;
 
                 return res;
 

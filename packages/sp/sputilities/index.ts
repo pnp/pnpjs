@@ -8,7 +8,7 @@ export {
     Utilities,
 } from "./types.js";
 
-declare module "../rest" {
+declare module "../rest-2" {
     interface SPRest {
         readonly utility: IUtilities;
     }

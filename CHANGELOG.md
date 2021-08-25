@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - folders.getByName => folders.getByUrl
   - fields.add* methods now take title and a single props object with the additional properties for each field
   - TimeZones.getById no merges the object & data
+  - renamed search.execute => search.run due to naming conflict in new base classes
+  - renamed suggest.execute => suggest.run due to naming conflict in new base classes
+  - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
   
 ### Removed
 
@@ -73,4 +76,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed objectToSPKeyValueCollection
   - removed toAbsoluteUrl => use behaviors
   - removed IUtilities.createWikiPage
+  - removed searchWithCaching, use caching behavior
   

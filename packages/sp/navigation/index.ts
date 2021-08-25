@@ -20,7 +20,7 @@ export {
     INavNodeInfo,
 } from "./types.js";
 
-declare module "../rest" {
+declare module "../rest-2" {
     interface SPRest {
         readonly navigation: INavigationService;
     }
