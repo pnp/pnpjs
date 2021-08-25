@@ -1,9 +1,9 @@
 import { combine, isUrlAbsolute, assign, jsS, IFetchOptions } from "@pnp/core";
-import { IInvokable, invokableFactory, Queryable2, queryableFactory, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext, body, headers, FromQueryable } from "@pnp/queryable";
+import { IInvokable, invokableFactory, Queryable2, queryableFactory, IQueryable2, OLD_Queryable as OLD_Queryable, IRequestContext, FromQueryable } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { SPBatch } from "./batch.js";
 import { metadata } from "./utils/metadata.js";
-import { OLD_spGet, OLD_spPost, OLD_spPostDelete, OLD_spPostDeleteETag, spPost, spPostDelete, spPostDeleteETag } from "./operations.js";
+import { OLD_spGet, OLD_spPost, OLD_spPostDelete, OLD_spPostDeleteETag, spPostDelete, spPostDeleteETag } from "./operations.js";
 import { tag } from "./telemetry.js";
 
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {

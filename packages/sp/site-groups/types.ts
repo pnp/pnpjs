@@ -1,14 +1,9 @@
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
     _SPCollection,
     spInvokableFactory,
     _SPInstance,
 } from "../sharepointqueryable.js";
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
-import { assign, ITypedHash } from "@pnp/core";
-import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
@@ -31,11 +26,9 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      *
      * @param properties The group properties object of property names and values to be set for the group
      */
-    public async add(properties: ITypedHash<any>): Promise<IGroupAddResult> {
+    public async add(properties: Partial<ISiteGroupInfo>): Promise<IGroupAddResult> {
 
-        const postBody = body(assign(metadata("SP.Group"), properties));
-
-        const data = await spPost(tag.configure(this, "sgs.add"), postBody);
+        const data = await spPost(tag.configure(this, "sgs.add"), body(properties));
 
         return {
             data,

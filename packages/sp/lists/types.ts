@@ -1,5 +1,5 @@
-import { assign, dateAdd, hOP, isArray, objectDefinedNotNull } from "@pnp/core";
-import { body, Caching, headers, TextParse } from "@pnp/queryable";
+import { assign, hOP, isArray, objectDefinedNotNull } from "@pnp/core";
+import { body, headers, TextParse } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,

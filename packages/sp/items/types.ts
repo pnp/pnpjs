@@ -11,7 +11,7 @@ import {
 } from "../sharepointqueryable.js";
 import { ITypedHash, hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable, InjectHeaders } from "@pnp/queryable";
+import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";

@@ -1,5 +1,5 @@
 import { isUrlAbsolute, combine } from "@pnp/core";
-import { body, headers } from "@pnp/queryable";
+import { body } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,

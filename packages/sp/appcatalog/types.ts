@@ -10,8 +10,6 @@ import { odataUrlFrom } from "../odata.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { File, IFile } from "../files/types.js";
 import { tag } from "../telemetry.js";
-import { Web } from "../webs";
-import "../items/index.js";
 import { FromQueryable } from "@pnp/queryable";
 
 

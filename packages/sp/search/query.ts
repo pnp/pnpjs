@@ -57,28 +57,27 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
         query: Object.assign({
             Querytext: queryText,
         }, _query),
-    },
-        {
-            get(self, propertyKey, proxy) {
+    }, {
+        get(self, propertyKey, proxy) {
 
-                const pk = propertyKey.toString();
+            const pk = propertyKey.toString();
 
-                if (pk === "toSearchQuery") {
-                    return () => self.query;
-                }
+            if (pk === "toSearchQuery") {
+                return () => self.query;
+            }
 
-                if (funcs.has(pk)) {
-                    return (...value: any[]) => {
-                        const mappedPk = funcs.get(pk);
-                        self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
-                        return proxy;
-                    };
-                }
-                const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
-                self.query[propKey] = true;
-                return proxy;
-            },
-        });
+            if (funcs.has(pk)) {
+                return (...value: any[]) => {
+                    const mappedPk = funcs.get(pk);
+                    self.query[mappedPk.length > 0 ? mappedPk : toPropCase(pk)] = value.length > 1 ? value : value[0];
+                    return proxy;
+                };
+            }
+            const propKey = props.has(pk) ? props.get(pk) : toPropCase(pk);
+            self.query[propKey] = true;
+            return proxy;
+        },
+    });
 }
 
 const queryRegex = /_api\/search\/postquery$/i;

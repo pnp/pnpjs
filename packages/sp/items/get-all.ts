@@ -56,4 +56,4 @@ _Items.prototype.getAll = async function (this: _Items, requestSize = 2000, acce
     } catch (e) {
         this.error(e);
     }
-}
+};

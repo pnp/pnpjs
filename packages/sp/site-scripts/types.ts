@@ -1,19 +1,19 @@
 import { body } from "@pnp/queryable";
-import { OLD_spPost } from "../operations.js";
-import { OLD_ISharePointQueryable, _OLD_SharePointQueryable } from "../sharepointqueryable.js";
+import { spPost } from "../operations.js";
+import { ISPQueryable, _SPQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { tag } from "../telemetry.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
-export class _SiteScripts extends _OLD_SharePointQueryable {
+export class _SiteScripts extends _SPQueryable {
 
-    constructor(baseUrl: string | OLD_ISharePointQueryable, methodName = "") {
+    constructor(baseUrl: string | ISPQueryable, methodName = "") {
         const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
         super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
 
-    public execute<T>(props: any): Promise<T> {
-        return OLD_spPost<T>(this, body(props));
+    public run<T>(props: any): Promise<T> {
+        return spPost<T>(this, body(props));
     }
 
     /**
@@ -21,7 +21,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.getSiteScripts")
     public getSiteScripts(): Promise<ISiteScriptInfo[]> {
-        return this.clone(SiteScriptsCloneFactory, "GetSiteScripts", true).execute<ISiteScriptInfo[]>({});
+        return SiteScriptsCloneFactory(this, "GetSiteScripts").run<ISiteScriptInfo[]>({});
     }
 
     /**
@@ -32,9 +32,9 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.createSiteScript")
     public createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
-        return this.clone(SiteScriptsCloneFactory,
+        return SiteScriptsCloneFactory(this,
             `CreateSiteScript(Title=@title,Description=@desc)?@title='${escapeQueryStrValue(title)}'&@desc='${escapeQueryStrValue(description)}'`)
-            .execute<ISiteScriptInfo>(content);
+            .run<ISiteScriptInfo>(content);
     }
 
     /**
@@ -44,7 +44,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.getSiteScriptMetadata")
     public getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo> {
-        return this.clone(SiteScriptsCloneFactory, "GetSiteScriptMetadata").execute<ISiteScriptInfo>({ id });
+        return SiteScriptsCloneFactory(this, "GetSiteScriptMetadata").run<ISiteScriptInfo>({ id });
     }
 
     /**
@@ -54,7 +54,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.deleteSiteScript")
     public deleteSiteScript(id: string): Promise<void> {
-        return this.clone(SiteScriptsCloneFactory, "DeleteSiteScript").execute<void>({ id });
+        return SiteScriptsCloneFactory(this, "DeleteSiteScript").run<void>({ id });
     }
 
     /**
@@ -71,7 +71,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
             updateInfo.Content = JSON.stringify(content);
         }
 
-        return this.clone(SiteScriptsCloneFactory, "UpdateSiteScript").execute<ISiteScriptInfo>({ updateInfo });
+        return SiteScriptsCloneFactory(this, "UpdateSiteScript").run<ISiteScriptInfo>({ updateInfo });
     }
 
     /**
@@ -80,7 +80,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.getSiteScriptFromList")
     public getSiteScriptFromList(listUrl: string): Promise<string> {
-        return this.clone(SiteScriptsCloneFactory, "GetSiteScriptFromList").execute<string>({ listUrl });
+        return SiteScriptsCloneFactory(this, "GetSiteScriptFromList").run<string>({ listUrl });
     }
 
     /**
@@ -90,7 +90,7 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.getSiteScriptFromWeb")
     public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
-        return this.clone(SiteScriptsCloneFactory, "getSiteScriptFromWeb").execute<ISiteScriptSerializationResult>({ webUrl, info });
+        return SiteScriptsCloneFactory(this, "getSiteScriptFromWeb").run<ISiteScriptSerializationResult>({ webUrl, info });
     }
 
     /**
@@ -101,14 +101,14 @@ export class _SiteScripts extends _OLD_SharePointQueryable {
      */
     @tag("ss.executeSiteScriptAction")
     public executeSiteScriptAction(actionDefinition: string): Promise<ISiteScriptActionResult> {
-        return this.clone(SiteScriptsCloneFactory, "executeSiteScriptAction").execute<ISiteScriptActionResult>({ actionDefinition });
+        return SiteScriptsCloneFactory(this, "executeSiteScriptAction").run<ISiteScriptActionResult>({ actionDefinition });
     }
 }
-export interface ISiteScripts extends _SiteScripts {}
-export const SiteScripts = (baseUrl: string | OLD_ISharePointQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
+export interface ISiteScripts extends _SiteScripts { }
+export const SiteScripts = (baseUrl: string | ISPQueryable, methodName?: string): ISiteScripts => new _SiteScripts(baseUrl, methodName);
 
-type SiteScriptsCloneType = ISiteScripts & OLD_ISharePointQueryable & { execute<T>(props: any): Promise<T> };
-const SiteScriptsCloneFactory = (baseUrl: string | OLD_ISharePointQueryable, methodName = ""): SiteScriptsCloneType => <any>SiteScripts(baseUrl, methodName);
+type SiteScriptsCloneType = ISiteScripts & ISPQueryable & { execute<T>(props: any): Promise<T> };
+const SiteScriptsCloneFactory = (baseUrl: string | ISPQueryable, methodName = ""): SiteScriptsCloneType => <any>SiteScripts(baseUrl, methodName);
 
 /**
  * Result from creating or retrieving a site script

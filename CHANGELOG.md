@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - renamed search.execute => search.run due to naming conflict in new base classes
   - renamed suggest.execute => suggest.run due to naming conflict in new base classes
   - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
+  - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
   
 ### Removed
 
