@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 import { IUtilities, Utilities } from "./types.js";
 
 export {
@@ -15,12 +15,10 @@ declare module "../rest" {
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "utility", {
+Reflect.defineProperty(SPRest2.prototype, "utility", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Utilities(baseUrl, "").configure(options).setRuntime(runtime);
-        });
+    get: function (this: SPRest2) {
+        this.create(Utilities, "");
     },
 });
