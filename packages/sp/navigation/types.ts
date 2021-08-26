@@ -6,11 +6,9 @@ import {
     _SPQueryable,
     IDeleteable,
 } from "../sharepointqueryable.js";
-import { assign } from "@pnp/core";
-import { metadata } from "../utils/metadata.js";
-import { body, headers } from "@pnp/queryable";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost, spPostMerge } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 /**
@@ -38,11 +36,11 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
     @tag("nns.add")
     public async add(title: string, url: string, visible = true): Promise<INavigationNodeAddResult> {
 
-        const postBody = body(assign(metadata("SP.NavigationNode"), {
+        const postBody = body({
             IsVisible: visible,
             Title: title,
             Url: url,
-        }));
+        });
 
         const data = await spPost(NavigationNodes(this, null), postBody);
 
@@ -96,9 +94,7 @@ export class _NavigationNode extends _SPInstance<INavNodeInfo> {
     @tag("nn.update")
     public async update(properties: Partial<INavNodeInfo>): Promise<INavNodeUpdateResult> {
 
-        const postBody = body(assign(metadata("SP.NavigationNode"), properties), headers({ "X-HTTP-Method": "MERGE" }));
-
-        const data = await spPost(this, postBody);
+        const data = await spPostMerge(this, body(properties));
 
         return {
             data,

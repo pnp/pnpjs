@@ -1,5 +1,4 @@
-// import { DefaultRuntime, IConfigOptions, ISPFXContext, Runtime, ITypedHash } from "@pnp/core";
-import { Queryable2 } from "@pnp/queryable";
+import { TimelinePipe } from "@pnp/core";
 import { ISPQueryable, SPQueryable } from "./sharepointqueryable";
 
 /**
@@ -19,10 +18,9 @@ export class SPRest2 {
         this._root = typeof root === "string" ? SPQueryable(root) : root;
     }
 
-    public using(behavior: (intance: Queryable2) => Queryable2): this {
+    public using(behavior: TimelinePipe): this {
 
-        // TODO:: some typing issues here
-        this._root.using(<any>behavior);
+        this._root.using(behavior);
         return this;
     }
 
@@ -36,8 +34,6 @@ export class SPRest2 {
         return factory(this._root, path);
     }
 }
-
-// export const sp2 = new SPRest2();
 
 export function sp(root: string | ISPQueryable = ""): SPRest2 {
     return new SPRest2(root);

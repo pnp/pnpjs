@@ -3,7 +3,6 @@ import { ITypedHash, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, co
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../sharepointqueryable.js";
-import { metadata } from "../utils/metadata.js";
 import { List } from "../lists/types.js";
 import { odataUrlFrom } from "../odata.js";
 import { Web, IWeb } from "../webs/types.js";
@@ -407,7 +406,7 @@ export class _ClientsidePage extends _SPQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`), body(metadata("SP.Publishing.SitePage")));
+        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`));
 
         this.fromJSON(d);
     }
@@ -798,7 +797,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`), body(metadata("SP.Publishing.SitePage")));
+        return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**
@@ -926,10 +925,10 @@ export const CreateClientsidePage =
         pageName = pageName.replace(/\.aspx$/i, "");
 
         // initialize the page, at this point a checked-out page with a junk filename will be created.
-        const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
+        const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body({
             PageLayoutType,
             PromotedState: promotedState,
-        })));
+        }));
 
         // now we can init our page with the save data
         const newPage = ClientsidePage(web, "", pageInitData);
