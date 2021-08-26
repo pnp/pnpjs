@@ -3,7 +3,7 @@ import { HttpRequestError } from "./parsers";
 import { hOP, TimelinePipe } from "@pnp/core";
 import { isFunc } from "@pnp/core";
 
-export function DefaultParse(): (instance: Queryable2) => Queryable2 {
+export function DefaultParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response) => {
 
@@ -19,22 +19,22 @@ export function DefaultParse(): (instance: Queryable2) => Queryable2 {
     });
 }
 
-export function TextParse(): (instance: Queryable2) => Queryable2 {
+export function TextParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(r => r.text());
 }
 
-export function BlobParse(): (instance: Queryable2) => Queryable2 {
+export function BlobParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(r => r.blob());
 }
 
-export function JSONParse(): (instance: Queryable2) => Queryable2 {
+export function JSONParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(r => r.json());
 }
 
-export function BufferParse(): (instance: Queryable2) => Queryable2 {
+export function BufferParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(r => isFunc(r.arrayBuffer) ? r.arrayBuffer() : (<any>r).buffer());
 }

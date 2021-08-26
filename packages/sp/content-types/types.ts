@@ -10,7 +10,6 @@ import {
     IDeleteable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { metadata } from "../utils/metadata.js";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
@@ -58,19 +57,20 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
         group = "Custom Content Types",
         additionalSettings: ITypedHash<string | number | boolean> = {}): Promise<IContentTypeAddResult> {
 
-        const postBody = body(Object.assign(metadata("SP.ContentType"), {
+        const postBody = body({
             "Description": description,
             "Group": group,
             "Id": { "StringValue": id },
             "Name": name,
-        }, additionalSettings));
+            ...additionalSettings,
+        });
 
         const data = await spPost(this, postBody);
 
         return { contentType: this.getById(data.id), data };
     }
 }
-export interface IContentTypes extends _ContentTypes {}
+export interface IContentTypes extends _ContentTypes { }
 export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 export class _ContentType extends _SPInstance<IContentTypeInfo> {
@@ -128,11 +128,11 @@ export class _FieldLinks extends _SPCollection<IFieldLinkInfo[]> {
         return tag.configure(FieldLink(this).concat(`(guid'${id}')`), "fls.getById");
     }
 }
-export interface IFieldLinks extends _FieldLinks {}
+export interface IFieldLinks extends _FieldLinks { }
 export const FieldLinks = spInvokableFactory<IFieldLinks>(_FieldLinks);
 
 export class _FieldLink extends _SPInstance<IFieldLinkInfo> { }
-export interface IFieldLink extends _FieldLink {}
+export interface IFieldLink extends _FieldLink { }
 export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
 
 export interface IContentTypeInfo {

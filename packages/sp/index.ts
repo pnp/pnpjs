@@ -42,4 +42,8 @@ export {
     containsInvalidFileFolderChars,
 } from "./utils/file-names.js";
 
+export {
+    odataUrlFrom,
+} from "./odata.js";
+
 export * from "./behaviors/index.js";

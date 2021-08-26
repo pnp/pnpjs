@@ -1,14 +1,13 @@
 import { _SPInstance, spInvokableFactory, SPQueryable } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP, assign } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { body, FromQueryable } from "@pnp/queryable";
 import { odataUrlFrom } from "../odata.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { IChangeQuery } from "../types.js";
 import { tag } from "../telemetry.js";
-import { metadata } from "../utils/metadata.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { emptyGuid } from "../splibconfig.js";
 
@@ -31,7 +30,7 @@ export class _Site extends _SPInstance {
     @tag("si.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
+        const postBody = body({ query });
         return spPost(Web(this, "getchanges"), postBody);
     }
 
@@ -158,7 +157,7 @@ export class _Site extends _SPInstance {
     public async createCommunicationSiteFromProps(props: ICreateCommSiteProps): Promise<ISiteCreationResponse> {
 
         // handle defaults
-        const p = Object.assign({}, {
+        const request = {
             Classification: "",
             Description: "",
             HubSiteId: emptyGuid,
@@ -167,13 +166,10 @@ export class _Site extends _SPInstance {
             SiteDesignId: emptyGuid,
             WebTemplate: "SITEPAGEPUBLISHING#0",
             WebTemplateExtensionId: emptyGuid,
-        }, props);
+            ...props,
+        };
 
-        const postBody = body({
-            "request": assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
-        });
-
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody);
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), body({ request }));
     }
 
     /**
@@ -181,11 +177,8 @@ export class _Site extends _SPInstance {
      * @param url Site Url that you want to check if exists
      */
     public async exists(url: string): Promise<boolean> {
-        const postBody = body({ url });
 
-        const value = await spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody);
-
-        return value;
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), body({ url }));
     }
 
     /**
