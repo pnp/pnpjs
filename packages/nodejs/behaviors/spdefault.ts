@@ -1,7 +1,7 @@
 import { Configuration } from "@azure/msal-node";
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { DefaultParse, Queryable2 } from "@pnp/queryable";
-import { DefaultHeaders, DefaultInit } from "@pnp/sp";
+import { DefaultHeaders, DefaultInit, SPTagging } from "@pnp/sp";
 import { NodeFetchWithRetry } from "./fetch.js";
 import { MSAL } from "./msal.js";
 
@@ -21,12 +21,13 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 
-        instance
-            .using(MSAL(props.msal.config, props.msal.scopes))
-            .using(DefaultHeaders())
-            .using(DefaultInit())
-            .using(NodeFetchWithRetry())
-            .using(DefaultParse());
+        instance.using(
+            MSAL(props.msal.config, props.msal.scopes),
+            DefaultHeaders(),
+            DefaultInit(),
+            NodeFetchWithRetry(),
+            SPTagging(),
+            DefaultParse());
 
         instance.on.pre(async (url, init, result) => {
 

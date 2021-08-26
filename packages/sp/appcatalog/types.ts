@@ -6,7 +6,7 @@ import {
     SPCollection,
 } from "../sharepointqueryable";
 import { spPost } from "../operations.js";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { File, IFile } from "../files/types.js";
 import { tag } from "../telemetry.js";

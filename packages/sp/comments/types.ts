@@ -4,7 +4,7 @@ import {
     spInvokableFactory,
     _SPInstance,
 } from "../sharepointqueryable.js";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { tag } from "../telemetry.js";

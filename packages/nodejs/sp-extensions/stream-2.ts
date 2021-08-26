@@ -1,8 +1,7 @@
 import { getGUID, isFunc } from "@pnp/core/util";
 import { extendFactory, headers } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
-import { odataUrlFrom } from "@pnp/sp/odata";
-import { spPost } from "@pnp/sp/operations";
+import { odataUrlFrom, spPost } from "@pnp/sp";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";

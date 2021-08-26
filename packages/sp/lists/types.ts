@@ -12,7 +12,7 @@ import {
     IDeleteableWithETag,
 } from "../sharepointqueryable.js";
 import { IChangeQuery } from "../types.js";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";

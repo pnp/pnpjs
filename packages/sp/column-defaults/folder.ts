@@ -1,4 +1,4 @@
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 import { Web } from "../webs/types.js";

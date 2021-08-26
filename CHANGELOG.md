@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - renamed suggest.execute => suggest.run due to naming conflict in new base classes
   - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
   - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
+  - odataUrlFrom moved until utils folder
   
 ### Removed
 
@@ -78,4 +79,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed toAbsoluteUrl => use behaviors
   - removed IUtilities.createWikiPage
   - removed searchWithCaching, use caching behavior
+  - removed spODataEntity and spODataEntityArray
   

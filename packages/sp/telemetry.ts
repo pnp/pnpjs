@@ -1,4 +1,4 @@
-import { OLD_ISharePointQueryable } from "./sharepointqueryable.js";
+import { ISPQueryable } from "./sharepointqueryable.js";
 import { stringIsNullOrEmpty } from "@pnp/core";
 
 // TODO:: rethink all this.
@@ -9,14 +9,16 @@ import { stringIsNullOrEmpty } from "@pnp/core";
  * @param name Method name, displayed in the
  */
 export function tag(name: string) {
+
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
+
 
         if (descriptor === undefined) {
             descriptor = Object.getOwnPropertyDescriptor(target, key);
         }
         const originalMethod = descriptor.value;
 
-        descriptor.value = async function (this: OLD_ISharePointQueryable, ...args: any[]) {
+        descriptor.value = async function (this: ISPQueryable, ...args: any[]) {
 
             // TODO:: reimagine this
             // this.configure(headers({ "X-PnPjs-Tracking": name }));

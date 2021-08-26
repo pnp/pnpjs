@@ -26,7 +26,6 @@ export function DefaultHeaders(): TimelinePipe<Queryable2> {
                 "Accept": "application/json",
                 "Content-Type": "application/json;charset=utf-8",
                 "User-Agent": "NONISV|SharePointPnP|PnPjs",
-                "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
             }));
 
         return instance;

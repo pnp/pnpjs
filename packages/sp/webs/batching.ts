@@ -1,14 +1,13 @@
-import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName } from "@pnp/core";
+import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
-import { InjectHeaders, parseBinderWithErrorCheck, Queryable2 } from "@pnp/queryable";
+import { body, InjectHeaders, parseBinderWithErrorCheck, Queryable2 } from "@pnp/queryable";
 import { spPost } from "../operations";
 import { _SPQueryable } from "../sharepointqueryable";
 import { IWeb } from "./types.js";
 
-function BatchParse(): (instance: Queryable2) => Queryable2 {
+function BatchParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response): Promise<Response[]> => {
-
         const text = await response.text();
         return parseResponse(text);
     });
@@ -29,7 +28,7 @@ class BatchQueryable extends _SPQueryable {
 }
 
 // eslint-disable-next-line max-len
-export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
 
     /**
      * The request record defines a tuple that is
@@ -149,9 +148,7 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
             "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
         }));
 
-        const responses: Response[] = await spPost(batchQuery, {
-            "body": batchBody.join(""),
-        });
+        const responses: Response[] = await spPost(batchQuery.tag("batch"), body(batchBody.join("")));
 
         if (responses.length !== requests.length) {
             throw Error("Could not properly parse responses to match requests in batch.");
@@ -184,13 +181,6 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
             registrationResolver = resolve;
         }));
 
-        // we setup this batch to "send" each of the requests, while saving the contextual "this" reference with each
-        // TODO:: need not replace, but like a way to retain the previous send so we can unbatch
-        // maybe we have something like using(unbatch()), ugly but works?
-        // need to tie this into a dependency resolve
-        // <T>x.using(batchDependency((copyOf(x) with send reset) => {
-
-        // })))
         instance.on.send.replace(async function (this: Queryable2, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
@@ -205,8 +195,6 @@ export function createBatch(base: IWeb): [(instance: Queryable2) => Queryable2, 
 
             return promise;
         });
-        // }, "replace");
-
 
         return instance;
     };

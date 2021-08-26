@@ -4,7 +4,7 @@ import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../sharepointqueryable.js";
 import { List } from "../lists/types.js";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { Web, IWeb } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Site } from "../sites/types.js";

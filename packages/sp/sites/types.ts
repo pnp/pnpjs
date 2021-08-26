@@ -3,13 +3,13 @@ import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { hOP } from "@pnp/core";
 import { body, FromQueryable } from "@pnp/queryable";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { IChangeQuery } from "../types.js";
 import { tag } from "../telemetry.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { emptyGuid } from "../splibconfig.js";
+import { emptyGuid } from "../types.js";
 
 @defaultPath("_api/site")
 export class _Site extends _SPInstance {

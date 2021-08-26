@@ -95,8 +95,12 @@ export abstract class Timeline<T extends Moments> {
         }
     }
 
-    public using(behavior: TimelinePipe): this {
-        behavior(this);
+    public using(...behaviors: TimelinePipe[]): this {
+
+        for (let i = 0; i < behaviors.length; i++) {
+            behaviors[i](this);
+        }
+
         return this;
     }
 

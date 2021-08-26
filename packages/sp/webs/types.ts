@@ -13,10 +13,9 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
-import { odataUrlFrom } from "../odata.js";
-import { spGet, spPost, spPostMerge } from "../operations.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { tag } from "../telemetry-2.js";
 import { createBatch } from "./batching.js";
 
 @defaultPath("webs")
@@ -32,7 +31,6 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
      * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
      * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
      */
-    @tag("ws.add")
     public async add(Title: string, Url: string, Description = "", WebTemplate = "STS", Language = 1033, UseSamePermissionsAsParentSite = true): Promise<IWebAddResult> {
 
         const postBody = body({
@@ -46,7 +44,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
             },
         });
 
-        const data = await spPost(Webs(this, "add"), postBody);
+        const data = await spPost(Webs(this, "add").tag("ws.add"), postBody);
 
         return {
             data,
@@ -78,7 +76,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * Allows access to the web's all properties collection
      */
     public get allProperties(): ISPInstance {
-        return tag.configure(SPInstance(this, "allproperties"), "w.allprops");
+        return SPInstance(this, "allproperties").tag("w.allprops");
     }
 
     /**
@@ -86,18 +84,19 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      */
     public get webinfos(): ISPCollection<IWebInfosData[]> {
-        return tag.configure(SPCollection(this, "webinfos"), "w.webinfos");
+        return SPCollection(this, "webinfos").tag("w.webinfos");
     }
 
     /**
      * Gets this web's parent web and data
      *
      */
-    @tag("w.getParentWeb")
     public async getParentWeb(): Promise<IWeb> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
-            return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length)).using(FromQueryable(this));
+            return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length))
+                .using(FromQueryable(this))
+                .tag("w.getPar");
         }
         return null;
     }
@@ -107,9 +106,8 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      * @param properties A plain object hash of values to update for the web
      */
-    @tag("w.update")
     public async update(properties: Record<string, any>): Promise<void> {
-        return spPostMerge(this, body(properties));
+        return spPostMerge(this.tag("w.update"), body(properties));
     }
 
     /**
@@ -120,7 +118,6 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param backgroundImageUrl The server-relative URL of the background image
      * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
      */
-    @tag("w.applyTheme")
     public applyTheme(colorPaletteUrl: string, fontSchemeUrl: string, backgroundImageUrl: string, shareGenerated: boolean): Promise<void> {
 
         const postBody = body({
@@ -130,7 +127,7 @@ export class _Web extends _SPInstance<IWebInfo> {
             shareGenerated,
         });
 
-        return spPost(Web(this, "applytheme"), postBody);
+        return spPost(Web(this, "applytheme").tag("w.applyTheme"), postBody);
     }
 
     /**
@@ -138,20 +135,18 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      * @param template Name of the site definition or the name of the site template
      */
-    @tag("w.applyWebTemplate")
     public applyWebTemplate(template: string): Promise<void> {
 
-        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`));
+        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`).tag("w.applyWT"));
     }
 
     /**
-         * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-         *
-         * @param query The change query
-         */
-    @tag("w.getChanges")
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
+     */
     public getChanges(query: IChangeQuery): Promise<any> {
-        return spPost(Web(this, "getchanges"), body({ query }));
+        return spPost(Web(this, "getchanges").tag("w.getChanges"), body({ query }));
     }
 
     /**
@@ -161,9 +156,8 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1 (default = 0)
      * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
      */
-    @tag("w.mapToIcon")
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
-        return spGet(Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`));
+        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`).tag("w.mapToIcon")();
     }
 
     /**
@@ -171,9 +165,8 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      * @param key Id of storage entity to be set
      */
-    @tag("w.getStorageEntity")
     public getStorageEntity(key: string): Promise<IStorageEntity> {
-        return spGet(Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`));
+        return Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`).tag("w.getStorageEntity")();
     }
 
     /**
@@ -184,9 +177,8 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param description Description of storage entity to be set
      * @param comments Comments of storage entity to be set
      */
-    @tag("w.setStorageEntity")
     public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
-        return spPost(Web(this, "setStorageEntity"), body({
+        return spPost(Web(this, "setStorageEntity").tag("w.setStorageEntity"), body({
             comments,
             description,
             key,
@@ -199,9 +191,8 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      * @param key Id of storage entity to be removed
      */
-    @tag("w.removeStorageEntity")
     public removeStorageEntity(key: string): Promise<void> {
-        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
+        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`).tag("w.rSE"));
     }
 
     /**
@@ -211,9 +202,8 @@ export class _Web extends _SPInstance<IWebInfo> {
     * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
     */
     public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISPCollection<IWebInfosData[]> {
-        const o = SPCollection(this,
-            `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
-        return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
+        const o = SPCollection(this, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
+        return o.tag("w.getSFFCU");
     }
 
     /**
@@ -231,8 +221,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
      */
     public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISPCollection {
-        const path = `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`;
-        return tag.configure(SPCollection(this, path), "w.availableWebTemplates");
+        return SPCollection(this, `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`).tag("w.availWT");
     }
 }
 export interface IWeb extends _Web, IDeleteable { }
