@@ -23,9 +23,7 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(DebugLogger());
 
-        // 
-
-        const w = await sp.web.getFolderByServerRelativePath("/sites/dev/shared Documents/test-folder99").select("uniqueContentTypeOrder")();
+        const w = await sp.web.getFolderByServerRelativePath("/sites/dev/shared Documents/test-folder99")();
         
         // const q = await w.syncSolutionToTeams("asd");
 
