@@ -2,6 +2,11 @@ import { op, get, post, patch, del } from "@pnp/queryable";
 import { ISPQueryable } from "./sharepointqueryable.js";
 
 // TODO:: do we need any of this??
+// leave it here until we are done testing as we might need to review this logic to fix issues, etc. specific issues are sited below
+
+
+
+
 // export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
 //     httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
 // }
