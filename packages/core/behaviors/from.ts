@@ -1,4 +1,4 @@
-import { Timeline, ObserverCollection, TimelinePipe } from "../timeline/timeline.js";
+import { Timeline, ObserverCollection, TimelinePipe } from "../timeline.js";
 import { objectDefinedNotNull } from "../util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");

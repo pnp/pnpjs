@@ -53,9 +53,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - common/core:
   - Removed global extensions in favor of instance or factory. Global no longer aligned to our scoped model
-  - Removed util method assign use Object.assign or { ...a, ...b}
-  - Removed util method getCtxCallback
+  - Removed `assign` util method use Object.assign or { ...a, ...b}
+  - Removed `getCtxCallback` util method
   - Removed ITypedHash => built in type Record
+  - removed `sanitizeGuid` util method
 
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch

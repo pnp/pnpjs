@@ -8,6 +8,8 @@ export * from "./safe-global.js";
 
 
 
-export * from "./timeline/index.js";
-export * from "./behaviors/index.js";
+export * from "./moments.js";
+export * from "./timeline.js";
+export * from "./behaviors/debuglogger.js";
+export * from "./behaviors/from";
 export * from "./extendable.js";

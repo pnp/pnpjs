@@ -5,7 +5,7 @@ import { DefaultHeaders, DefaultInit } from "@pnp/graph";
 import { NodeFetchWithRetry } from "./fetch.js";
 import { MSAL } from "./msal.js";
 
-export interface ISPDefaultProps {
+export interface IGraphDefaultProps {
     baseUrl?: string;
     msal: {
         config: Configuration;
@@ -13,7 +13,7 @@ export interface ISPDefaultProps {
     };
 }
 
-export function GraphDefault(props: ISPDefaultProps): TimelinePipe<Queryable2> {
+export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable2> {
 
     if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
         throw Error("GraphDefault props.baseUrl must be absolute when supplied.");

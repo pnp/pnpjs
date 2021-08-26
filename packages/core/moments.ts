@@ -1,5 +1,5 @@
 import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
-import { isArray } from "../util.js";
+import { isArray } from "./util.js";
 
 // TODO:: docs
 // - you don't need error handling here because that is handled in emit within the timeline

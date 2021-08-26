@@ -12,7 +12,12 @@ export * from "./queryable-2.js";
 export * from "./operations.js";
 export * from "./parsers-2.js";
 export * from "./queryable-factory.js";
-export * from "./behaviors/index.js";
+export * from "./behaviors/browser-fetch.js";
+export * from "./behaviors/caching.js";
+export * from "./behaviors/cachingPessimistic.js";
+export * from "./behaviors/inject-headers.js";
+export * from "./behaviors/pnp-logging.js";
+export * from "./behaviors/queryable-from.js";
 export * from "./invokable.js";
 
 export {

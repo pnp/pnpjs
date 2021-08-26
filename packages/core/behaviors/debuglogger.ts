@@ -1,4 +1,4 @@
-import { Timeline, TimelinePipe } from "../timeline";
+import { Timeline, TimelinePipe } from "../timeline.js";
 
 export function DebugLogger<T extends Timeline<any>>(handler?: (message: string) => void, filter = -1): TimelinePipe<T> {
 
