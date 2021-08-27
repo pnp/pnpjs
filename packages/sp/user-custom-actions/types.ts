@@ -1,20 +1,17 @@
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
-    OLD_deleteable,
-    OLD_IDeleteable,
+    _SPCollection,
+    spInvokableFactory,
+    deleteable,
+    _SPInstance,
+    IDeleteable,
 } from "../sharepointqueryable.js";
-import { assign, ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
+import { spPost, spPostMerge } from "../operations.js";
 import { IBasePermissions } from "../security/index.js";
-import { metadata } from "../utils/metadata.js";
 
 @defaultPath("usercustomactions")
-export class _UserCustomActions extends _OLD_SharePointQueryableCollection<IUserCustomActionInfo[]> {
+export class _UserCustomActions extends _SPCollection<IUserCustomActionInfo[]> {
 
     /**
      * Returns the user custom action with the specified id
@@ -22,7 +19,7 @@ export class _UserCustomActions extends _OLD_SharePointQueryableCollection<IUser
      * @param id The GUID id of the user custom action to retrieve
      */
     public getById(id: string): IUserCustomAction {
-        return tag.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
+        return UserCustomAction(this).concat(`('${id}')`);
     }
 
     /**
@@ -30,9 +27,8 @@ export class _UserCustomActions extends _OLD_SharePointQueryableCollection<IUser
      *
      * @param properties The information object of property names and values which define the new user custom action
      */
-    @tag("ucas.add")
-    public async add(properties: ITypedHash<any>): Promise<IUserCustomActionAddResult> {
-        const data = await OLD_spPost(this, body(assign(metadata("SP.UserCustomAction"), properties)));
+    public async add(properties: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionAddResult> {
+        const data = await spPost(this, body(properties));
         return {
             action: this.getById(data.Id),
             data,
@@ -42,27 +38,34 @@ export class _UserCustomActions extends _OLD_SharePointQueryableCollection<IUser
     /**
      * Deletes all user custom actions in the collection
      */
-    @tag("ucas.clear")
     public clear(): Promise<void> {
-        return OLD_spPost(this.clone(UserCustomActions, "clear"));
+        return spPost(UserCustomActions(this, "clear"));
     }
 }
-export interface IUserCustomActions extends _UserCustomActions {}
-export const UserCustomActions = OLD_spInvokableFactory<IUserCustomActions>(_UserCustomActions);
+export interface IUserCustomActions extends _UserCustomActions { }
+export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCustomActions);
 
-export class _UserCustomAction extends _OLD_SharePointQueryableInstance<IUserCustomActionInfo> {
+export class _UserCustomAction extends _SPInstance<IUserCustomActionInfo> {
 
-    public delete = OLD_deleteable("uca");
+    public delete = deleteable();
 
     /**
     * Updates this user custom action with the supplied properties
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    public update: any = this._update<IUserCustomActionUpdateResult, ITypedHash<any>>("SP.UserCustomAction", (data) => ({ data, action: <any>this }));
+    public async update(props: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionUpdateResult> {
+
+        const data = await spPostMerge(this, body(props));
+
+        return {
+            data,
+            action: this,
+        };
+    }
 }
-export interface IUserCustomAction extends _UserCustomAction, OLD_IDeleteable { }
-export const UserCustomAction = OLD_spInvokableFactory<IUserCustomAction>(_UserCustomAction);
+export interface IUserCustomAction extends _UserCustomAction, IDeleteable { }
+export const UserCustomAction = spInvokableFactory<IUserCustomAction>(_UserCustomAction);
 
 /**
  * Result from adding a user custom action

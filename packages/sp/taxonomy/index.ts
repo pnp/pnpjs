@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 import { ITermStore, TermStore } from "./types.js";
 
 export {
@@ -33,18 +33,16 @@ export {
     Terms,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../rest-2" {
+    interface SPRest2 {
         readonly termStore: ITermStore;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "termStore", {
+Reflect.defineProperty(SPRest2.prototype, "termStore", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return TermStore(baseUrl).configure(options).setRuntime(runtime);
-        });
+    get: function (this: SPRest2) {
+        return this.create(TermStore);
     },
 });

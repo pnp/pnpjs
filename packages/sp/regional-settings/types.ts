@@ -1,62 +1,59 @@
 import { dateAdd, hOP } from "@pnp/core";
 import {
-    _OLD_SharePointQueryableInstance,
-    OLD_SharePointQueryableCollection,
-    OLD_ISharePointQueryableCollection,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
+    _SPInstance,
+    SPCollection,
+    spInvokableFactory,
+    _SPCollection,
+    ISPCollection,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spODataEntity } from "../odata.js";
-import { OLD_spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
+import { spPost } from "../operations.js";
 
 @defaultPath("regionalsettings")
-export class _RegionalSettings extends _OLD_SharePointQueryableInstance<IRegionalSettingsInfo> {
+export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
 
     /**
      * Gets the collection of languages used in a server farm.
      * ** Please use getInstalledLanguages instead of this method **
      */
-    public get installedLanguages(): OLD_ISharePointQueryableCollection<{ Items: IInstalledLanguageInfo[] }> {
+    public get installedLanguages(): ISPCollection<{ Items: IInstalledLanguageInfo[] }> {
         console.warn("Deprecated: RegionalSettings.installedLanguages is deprecated, please use RegionalSettings.getInstalledLanguages");
-        return <any>tag.configure(OLD_SharePointQueryableCollection(this, "installedlanguages"), "rs.installedLanguages");
+        return <any>SPCollection(this, "installedlanguages")
     }
 
     /**
      * Gets time zone
      */
     public get timeZone(): ITimeZone {
-        return tag.configure(TimeZone(this), "rs.tz");
+        return TimeZone(this);
     }
 
     /**
-     * Gets time zones
+     * Gets time zoneshttp://www.apache.org/licenses/LICENSE-2.0
      */
     public get timeZones(): ITimeZones {
-        return tag.configure(TimeZones(this), "rs.tzs");
+        return TimeZones(this);
     }
 
     /**
      * Gets the collection of languages used in a server farm.
      */
     public async getInstalledLanguages(): Promise<IInstalledLanguageInfo[]> {
-        const results: { Items: IInstalledLanguageInfo[] } = await tag.configure(OLD_SharePointQueryableCollection(this, "installedlanguages"), "rs.getInstalledLanguages")();
+        const results: { Items: IInstalledLanguageInfo[] } = await SPCollection(this, "installedlanguages")();
         return results.Items;
     }
 }
 export interface IRegionalSettings extends _RegionalSettings {}
-export const RegionalSettings = OLD_spInvokableFactory<IRegionalSettings>(_RegionalSettings);
+export const RegionalSettings = spInvokableFactory<IRegionalSettings>(_RegionalSettings);
 
 @defaultPath("timezone")
-export class _TimeZone extends _OLD_SharePointQueryableInstance<ITimeZoneInfo> {
+export class _TimeZone extends _SPInstance<ITimeZoneInfo> {
 
     /**
      * Gets an Local Time by UTC Time
      *
      * @param utcTime UTC Time as Date or ISO String
      */
-    @tag("tz.utcToLocalTime")
     public async utcToLocalTime(utcTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -67,7 +64,7 @@ export class _TimeZone extends _OLD_SharePointQueryableInstance<ITimeZoneInfo> {
             dateIsoString = utcTime.toISOString();
         }
 
-        const res = await OLD_spPost(this.clone(TimeZone, `utctolocaltime('${dateIsoString}')`));
+        const res = await spPost(TimeZone(this, `utctolocaltime('${dateIsoString}')`));
         return hOP(res, "UTCToLocalTime") ? res.UTCToLocalTime : res;
     }
 
@@ -76,7 +73,6 @@ export class _TimeZone extends _OLD_SharePointQueryableInstance<ITimeZoneInfo> {
      *
      * @param localTime Local Time as Date or ISO String
      */
-    @tag("tz.localTimeToUTC")
     public async localTimeToUTC(localTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -87,30 +83,28 @@ export class _TimeZone extends _OLD_SharePointQueryableInstance<ITimeZoneInfo> {
             dateIsoString = dateAdd(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
         }
 
-        const res = await OLD_spPost(this.clone(TimeZone, `localtimetoutc('${dateIsoString}')`));
+        const res = await spPost(TimeZone(this, `localtimetoutc('${dateIsoString}')`));
 
         return hOP(res, "LocalTimeToUTC") ? res.LocalTimeToUTC : res;
     }
 }
 export interface ITimeZone extends _TimeZone {}
-export const TimeZone = OLD_spInvokableFactory<ITimeZone>(_TimeZone);
+export const TimeZone = spInvokableFactory<ITimeZone>(_TimeZone);
 
 @defaultPath("timezones")
-export class _TimeZones extends _OLD_SharePointQueryableCollection<ITimeZoneInfo[]> {
+export class _TimeZones extends _SPCollection<ITimeZoneInfo[]> {
 
     /**
      * Gets an TimeZone by id (see: https://msdn.microsoft.com/en-us/library/office/jj247008.aspx)
      *
      * @param id The integer id of the timezone to retrieve
      */
-    @tag("tzs.getById")
-    public getById(id: number): Promise<ITimeZone & ITimeZoneInfo> {
-        // do the post and merge the result into a TimeZone instance so the data and methods are available
-        return OLD_spPost(this.clone(TimeZones, `GetById(${id})`).usingParser(spODataEntity(TimeZone)));
+    public getById(id: number): Promise<ITimeZoneInfo> {
+        return spPost(TimeZones(this, `GetById(${id})`));
     }
 }
 export interface ITimeZones extends _TimeZones {}
-export const TimeZones = OLD_spInvokableFactory<ITimeZones>(_TimeZones);
+export const TimeZones = spInvokableFactory<ITimeZones>(_TimeZones);
 
 /**
  * This is the data for Regional Settings

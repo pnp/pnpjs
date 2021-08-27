@@ -1,7 +1,5 @@
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 import { SearchQueryInit } from "./types.js";
-import { _Search } from "./query.js";
-import { ICachingOptions } from "@pnp/queryable";
 import { SearchResults, Search } from "./query.js";
 import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest.js";
 
@@ -22,21 +20,14 @@ export {
     Suggest,
 } from "./suggest.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../rest-2" {
+    interface SPRest2 {
         /**
          * Conduct a search
          *
          * @param query Parameters for the search
          */
         search(query: SearchQueryInit): Promise<SearchResults>;
-        /**
-         * Conduct a search with caching enabled
-         *
-         * @param query Parameters for the search
-         * @param options Optional, caching options
-         */
-        searchWithCaching(query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults>;
         /**
          * Conduct a suggest search query
          *
@@ -46,23 +37,12 @@ declare module "../rest" {
     }
 }
 
-SPRest.prototype.search = function (this: SPRest, query: SearchQueryInit): Promise<SearchResults> {
+SPRest2.prototype.search = function (this: SPRest2, query: SearchQueryInit): Promise<SearchResults> {
 
-    return this.childConfigHook(({ options, baseUrl, runtime }) => {
-        return Search(baseUrl, options, runtime)(query);
-    });
+    return this.create(Search)(query);
 };
 
-SPRest.prototype.searchWithCaching = function (this: SPRest, query: SearchQueryInit, cacheOptions?: ICachingOptions): Promise<SearchResults> {
+SPRest2.prototype.searchSuggest = function (this: SPRest2, query: string | ISuggestQuery): Promise<ISuggestResult> {
 
-    return this.childConfigHook(({ options, baseUrl, runtime }) => {
-        return (new _Search(baseUrl)).configure(options).setRuntime(runtime).usingCaching(cacheOptions).execute(query);
-    });
-};
-
-SPRest.prototype.searchSuggest = function (this: SPRest, query: string | ISuggestQuery): Promise<ISuggestResult> {
-
-    return this.childConfigHook(({ options, baseUrl, runtime }) => {
-        return Suggest(baseUrl, options, runtime)(typeof query === "string" ? { querytext: query } : query);
-    });
+    return this.create(Suggest)(typeof query === "string" ? { querytext: query } : query);
 };

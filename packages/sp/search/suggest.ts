@@ -1,17 +1,15 @@
-import { _OLD_SharePointQueryableInstance, OLD_ISharePointQueryable } from "../sharepointqueryable.js";
-import { hOP, IConfigOptions, DefaultRuntime } from "@pnp/core";
+import { _SPInstance, ISPQueryable } from "../sharepointqueryable.js";
+import { hOP } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("_api/search/suggest")
-export class _Suggest extends _OLD_SharePointQueryableInstance {
+export class _Suggest extends _SPInstance {
 
-    @tag("su.execute")
-    public async execute(query: ISuggestQuery): Promise<ISuggestResult> {
+    public async run(query: ISuggestQuery): Promise<ISuggestResult> {
 
         this.mapQueryToQueryString(query);
 
-        const response = await this.get();
+        const response = await this();
         const mapper = hOP(response, "suggest") ? (s_1: string) => response.suggest[s_1].results : (s_2: string) => response[s_2];
 
         return {
@@ -50,8 +48,8 @@ export interface ISuggest {
     (query: ISuggestQuery): Promise<ISuggestResult>;
 }
 
-export const Suggest = (baseUrl: string | OLD_ISharePointQueryable, options: IConfigOptions = {}, runtime = DefaultRuntime): ISuggest => (query: ISuggestQuery) => {
-    return (new _Suggest(baseUrl)).configure(options).setRuntime(runtime).execute(query);
+export const Suggest = (baseUrl: string | ISPQueryable): ISuggest => (query: ISuggestQuery) => {
+    return (new _Suggest(baseUrl)).run(query);
 };
 
 /**

@@ -1,6 +1,7 @@
+import { TimelinePipe } from "@pnp/core";
 import { Queryable2 } from "@pnp/queryable";
 
-export function Agent(agent: any): (instance: Queryable2) => Queryable2 {
+export function Agent(agent: any): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 

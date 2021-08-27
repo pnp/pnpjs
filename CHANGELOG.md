@@ -22,14 +22,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed package "odata" -> "queryable"
 - Renamed package "common" -> "core"
 
+- sp:
+  - web.update return changed to Promise<void>
+  - web.getParentWeb return changed to Promise<IWeb>
+  - moved items.getAll to seperate import @pnp/sp/items/get-all
+  - files.getByName => files.getByUrl
+  - folders.getByName => folders.getByUrl
+  - fields.add* methods now take title and a single props object with the additional properties for each field
+  - TimeZones.getById no merges the object & data
+  - renamed search.execute => search.run due to naming conflict in new base classes
+  - renamed suggest.execute => suggest.run due to naming conflict in new base classes
+  - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
+  - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
+  - odataUrlFrom moved until utils folder
+  
 ### Removed
 
 - queryable:
-  - LambdaParser -> just write a handler
+  - LambdaParser -> write an observer
   - TextParser, BlobParser, JSONParser, BufferParser -> TextParse, BlobParse, JSONParse, BufferParse behaviors
-  - Removed .get method in favor of invokable pattern. foo.get() becomes foo()
+  - Removed .get method in favor of invokable pattern. foo.get() => foo()
   - Removed .clone, .cloneTo in favor of using factories directly, i.e. this.clone(Web, "path") => Web(this, "path")
   - Invokable Extensions is split, with core object extension functionality moved to core
+  - ensureHeaders => headers = { ...headers, ...newValues }
 
 - nodejs: 
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
@@ -38,7 +53,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - common/core:
   - Removed global extensions in favor of instance or factory. Global no longer aligned to our scoped model
+  - Removed `assign` util method use Object.assign or { ...a, ...b}
+  - Removed `getCtxCallback` util method
+  - Removed ITypedHash => built in type Record
+  - removed `sanitizeGuid` util method
 
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch
-
+  - feature.deactivate => use features.remove
+  - getTenantAppCatalogWeb moved from root object to IWeb when imported
+  - removed use of ListItemEntityTypeFullName in item add/update and removed associated methods to get the value\
+  - removed folders.add => folders.addUsingPath
+  - removed folder.serverRelativeUrl property => use select
+  - removed web.getFolderByServerRelativeUrl => web.getFolderByServerRelativePath
+  - removed files.add => files.addUsingPath
+  - removed file.copyTo => file.copyByPath
+  - removed file.moveTo => file.moveByPath
+  - removed version.delete => versions.deleteById
+  - removed web.getFileByServerRelativeUrl => web.getFileByServerRelativePath
+  - removed folder.contentTypeOrder => use .select("contentTypeOrder")
+  - removed folder.uniqueContentTypeOrder => use .select("uniqueContentTypeOrder")
+  - removed folder.copyTo => folder.copyByPath
+  - removed folder.moveTo => folder.moveByPath
+  - removed _SPInstance._update => refactored and unused
+  - removed objectToSPKeyValueCollection
+  - removed toAbsoluteUrl => use behaviors
+  - removed IUtilities.createWikiPage
+  - removed searchWithCaching, use caching behavior
+  - removed spODataEntity and spODataEntityArray
+  - removed attachments addMultiple, deleteMultiple, and recycleMultiple => write a for loop in calling code
+  

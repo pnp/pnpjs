@@ -1,6 +1,5 @@
 import { broadcast, init } from "./moments.js";
-import { addObserver } from "./utils.js";
-import { objectDefinedNotNull, isArray } from "../util.js";
+import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
 
@@ -69,6 +68,11 @@ type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTime
 type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
 
 /**
+ * Represents a function accepting and returning a timeline, possibly manipulating the observers present
+ */
+export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
+
+/**
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
@@ -88,6 +92,15 @@ export abstract class Timeline<T extends Moments> {
             this._inheritingObservers = false;
             this.observers = {};
         }
+    }
+
+    public using(...behaviors: TimelinePipe[]): this {
+
+        for (let i = 0; i < behaviors.length; i++) {
+            behaviors[i](this);
+        }
+
+        return this;
     }
 
     /**
@@ -199,10 +212,18 @@ export abstract class Timeline<T extends Moments> {
                     // handle the case there are no observers registered to the target
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (p === "error" && (!isArray(observers) || observers.length < 1)) {
+                    if (!isArray(observers) || observers.length < 1) {
 
-                        // if we are emitting an error, and no error observers are defined, we throw
-                        throw Error(`Unhandled Exception: ${args[0]}`);
+                        if (p !== "log") {
+                            // TODO:: remove this post development of v3
+                            console.log(`No observers registered for moment ${p}.`);
+                        }
+
+                        if (p === "error") {
+
+                            // if we are emitting an error, and no error observers are defined, we throw
+                            throw Error(`Unhandled Exception: ${args[0]}`);
+                        }
                     }
 
                     try {
@@ -279,4 +300,43 @@ export abstract class Timeline<T extends Moments> {
      * @param init A value passed into start from the initiator of the timeline
      */
     protected abstract execute(init?: any): Promise<any>;
+}
+
+/**
+ * Adds an observer to a given target
+ *
+ * @param target The object to which events are registered
+ * @param moment The name of the moment to which the observer is registered
+ * @param prepend If true the observer is prepended to the collection (default: false)
+ *
+ */
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: "add" | "replace" | "prepend"): any[] {
+
+    if (!isFunc(observer)) {
+        throw Error("Observers must be functions.");
+    }
+
+    if (!Reflect.has(target, moment)) {
+
+        // if we don't have a registration for this moment, then we just add a new prop
+        target[moment] = [observer];
+
+    } else {
+
+        // if we have an existing property then we follow the specified behavior
+        switch (addBehavior) {
+            case "add":
+                target[moment].push(observer);
+                break;
+            case "prepend":
+                target[moment].unshift(observer);
+                break;
+            case "replace":
+                target[moment].length = 0;
+                target[moment].push(observer);
+                break;
+        }
+    }
+
+    return target[moment];
 }

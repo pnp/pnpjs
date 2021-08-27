@@ -1,15 +1,14 @@
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
+    _SPCollection,
+    spInvokableFactory,
+    _SPInstance,
 } from "../sharepointqueryable.js";
-import { body, headers } from "@pnp/queryable";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { OLD_spPost, OLD_spDelete, OLD_spPatch } from "../operations.js";
-import { tag } from "../telemetry.js";
+import { spPost, spPatch, spDelete } from "../operations.js";
 
 @defaultPath("subscriptions")
-export class _Subscriptions extends _OLD_SharePointQueryableCollection {
+export class _Subscriptions extends _SPCollection {
 
     /**
     * Returns all the webhook subscriptions or the specified webhook subscription
@@ -18,7 +17,7 @@ export class _Subscriptions extends _OLD_SharePointQueryableCollection {
     */
     public getById(subscriptionId: string): ISubscription {
 
-        return tag.configure(Subscription(this).concat(`('${subscriptionId}')`), "subs.getById");
+        return Subscription(this).concat(`('${subscriptionId}')`);
     }
 
     /**
@@ -28,7 +27,6 @@ export class _Subscriptions extends _OLD_SharePointQueryableCollection {
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
      * @param clientState A client specific string (optional)
      */
-    @tag("subs.add")
     public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult> {
 
         const postBody: any = {
@@ -41,15 +39,15 @@ export class _Subscriptions extends _OLD_SharePointQueryableCollection {
             postBody.clientState = clientState;
         }
 
-        const data = await OLD_spPost(this, body(postBody, headers({ "Content-Type": "application/json" })));
+        const data = await spPost(this, body(postBody));
 
         return { data, subscription: this.getById(data.id) };
     }
 }
-export interface ISubscriptions extends _Subscriptions {}
-export const Subscriptions = OLD_spInvokableFactory<ISubscriptions>(_Subscriptions);
+export interface ISubscriptions extends _Subscriptions { }
+export const Subscriptions = spInvokableFactory<ISubscriptions>(_Subscriptions);
 
-export class _Subscription extends _OLD_SharePointQueryableInstance {
+export class _Subscription extends _SPInstance {
 
     /**
      * Renews this webhook subscription
@@ -58,7 +56,6 @@ export class _Subscription extends _OLD_SharePointQueryableInstance {
      * @param notificationUrl The url to receive the notifications (optional)
      * @param clientState A client specific string (optional)
      */
-    @tag("sub.update")
     public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult> {
 
         const postBody: any = {};
@@ -75,7 +72,7 @@ export class _Subscription extends _OLD_SharePointQueryableInstance {
             postBody.clientState = clientState;
         }
 
-        const data = await OLD_spPatch(this, body(postBody, headers({ "Content-Type": "application/json" })));
+        const data = await spPatch(this, body(postBody));
 
         return { data, subscription: this };
     }
@@ -84,13 +81,12 @@ export class _Subscription extends _OLD_SharePointQueryableInstance {
      * Removes this webhook subscription
      *
      */
-    @tag("sub.delete")
     public delete(): Promise<void> {
-        return OLD_spDelete(this);
+        return spDelete(this);
     }
 }
-export interface ISubscription extends _Subscription {}
-export const Subscription = OLD_spInvokableFactory<ISubscription>(_Subscription);
+export interface ISubscription extends _Subscription { }
+export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
 
 /**
  * Result from adding a new subscription

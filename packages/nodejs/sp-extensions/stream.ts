@@ -1,28 +1,27 @@
 import { getGUID, isFunc } from "@pnp/core/util";
-import { ODataParser, extendFactory, headers } from "@pnp/queryable";
+import { extendFactory, headers, parseBinderWithErrorCheck } from "@pnp/queryable";
 import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData } from "@pnp/sp/files";
-import { odataUrlFrom } from "@pnp/sp/odata";
-import { OLD_spPost } from "@pnp/sp/operations";
+import { spPost } from "@pnp/sp/operations";
 import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
+import { TimelinePipe } from "@pnp/core";
+import { odataUrlFrom } from "@pnp/sp";
 
 export interface IResponseBodyStream {
     body: PassThrough;
     knownLength: number;
 }
 
-export class StreamParser extends ODataParser<IResponseBodyStream> {
+export function StreamParse(): TimelinePipe {
 
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-        resolve({ body: r.body, knownLength: parseInt(r.headers.get("content-length"), 10) });
-    }
+    return parseBinderWithErrorCheck(async r => ({ body: r.body, knownLength: parseInt(r.headers.get("content-length"), 10) }));
 }
 
 extendFactory(File, {
 
     getStream(): Promise<IResponseBodyStream> {
-        return this.clone(File, "$value", false).usingParser(new StreamParser())(headers({ "binaryStringResponseBody": "true" }));
+        return File(this, "$value").using(StreamParse())(headers({ "binaryStringResponseBody": "true" }));
     },
 
     /**
@@ -75,7 +74,7 @@ extendFactory(Files, {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      * @returns The new File and the raw response.
      */
-    // @tag("fis.addChunked")
+    // 
     async addChunked(
         url: string,
         content: Blob | ReadStream,
@@ -84,7 +83,7 @@ extendFactory(Files, {
         chunkSize = 10485760
     ): Promise<IFileAddResult> {
 
-        const response: IFileInfo = await OLD_spPost(this.clone(Files, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`, false));
+        const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
         const file = File(odataUrlFrom(response));
 
         if ("function" === typeof (content as ReadStream).read) {

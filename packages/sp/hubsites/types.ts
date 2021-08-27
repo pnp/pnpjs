@@ -1,15 +1,14 @@
 import {
-    _OLD_SharePointQueryableInstance,
-    _OLD_SharePointQueryableCollection,
-    OLD_spInvokableFactory,
+    _SPCollection,
+    spInvokableFactory,
+    _SPInstance,
 } from "../sharepointqueryable.js";
 import { ISerializableNavigationNode } from "../navigation/types.js";
 import { defaultPath } from "../decorators.js";
 import { Site, ISite } from "../sites/types.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("_api/hubsites")
-export class _HubSites extends _OLD_SharePointQueryableCollection<IHubSiteInfo[]> {
+export class _HubSites extends _SPCollection<IHubSiteInfo[]> {
 
     /**
      * Gets a Hub Site from the collection by id
@@ -17,26 +16,25 @@ export class _HubSites extends _OLD_SharePointQueryableCollection<IHubSiteInfo[]
      * @param id The Id of the Hub Site
      */
     public getById(id: string): IHubSite {
-        return tag.configure(HubSite(this, `GetById?hubSiteId='${id}'`), "hss.getById");
+        return HubSite(this, `GetById?hubSiteId='${id}'`);
 
     }
 }
 export interface IHubSites extends _HubSites {}
-export const HubSites = OLD_spInvokableFactory<IHubSites>(_HubSites);
+export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
-export class _HubSite extends _OLD_SharePointQueryableInstance<IHubSiteInfo> {
+export class _HubSite extends _SPInstance<IHubSiteInfo> {
 
     /**
      * Gets the ISite instance associated with this hubsite
      */
-    @tag("hs.getSite")
     public async getSite(): Promise<ISite> {
         const d = await this.select("SiteUrl")();
         return Site(d.SiteUrl);
     }
 }
 export interface IHubSite extends _HubSite {}
-export const HubSite = OLD_spInvokableFactory<IHubSite>(_HubSite);
+export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
 export interface IHubSiteInfo {
     ID: string;

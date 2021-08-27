@@ -1,56 +1,56 @@
-// import { addProp, body } from "@pnp/queryable";
-// import { _Web, Web } from "../webs/types.js";
-// import { ISiteUsers, SiteUsers, ISiteUser, SiteUser, IWebEnsureUserResult } from "./types.js";
-// import { odataUrlFrom } from "../odata.js";
-// import { OLD_spPost } from "../operations.js";
+import { addProp, body } from "@pnp/queryable";
+import { _Web, Web } from "../webs/types.js";
+import { ISiteUsers, SiteUsers, ISiteUser, SiteUser, IWebEnsureUserResult } from "./types.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { spPost } from "../operations.js";
 
-// declare module "../webs/types" {
-//     interface _Web {
-//         readonly siteUsers: ISiteUsers;
-//         readonly currentUser: ISiteUser;
-//         ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
-//         getUserById(id: number): ISiteUser;
-//     }
-//     interface IWeb {
+declare module "../webs/types" {
+    interface _Web {
+        readonly siteUsers: ISiteUsers;
+        readonly currentUser: ISiteUser;
+        ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
+        getUserById(id: number): ISiteUser;
+    }
+    interface IWeb {
 
-//         /**
-//          * The site users
-//          */
-//         readonly siteUsers: ISiteUsers;
+        /**
+         * The site users
+         */
+        readonly siteUsers: ISiteUsers;
 
-//         /**
-//          * Information on the current user
-//          */
-//         readonly currentUser: ISiteUser;
+        /**
+         * Information on the current user
+         */
+        readonly currentUser: ISiteUser;
 
-//         /**
-//         * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
-//         *
-//         * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
-//         */
-//         ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
+        /**
+        * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
+        *
+        * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
+        */
+        ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
 
-//         /**
-//          * Returns the user corresponding to the specified member identifier for the current site
-//          *
-//          * @param id The id of the user
-//          */
-//         getUserById(id: number): ISiteUser;
-//     }
-// }
+        /**
+         * Returns the user corresponding to the specified member identifier for the current site
+         *
+         * @param id The id of the user
+         */
+        getUserById(id: number): ISiteUser;
+    }
+}
 
-// addProp(_Web, "siteUsers", SiteUsers);
-// addProp(_Web, "currentUser", SiteUser, "currentuser");
+addProp(_Web, "siteUsers", SiteUsers);
+addProp(_Web, "currentUser", SiteUser, "currentuser");
 
-// _Web.prototype.ensureUser = async function (this: _Web, logonName: string): Promise<IWebEnsureUserResult> {
+_Web.prototype.ensureUser = async function (this: _Web, logonName: string): Promise<IWebEnsureUserResult> {
 
-//     const data = await OLD_spPost(this.clone(Web, "ensureuser"), body({ logonName }));
-//     return {
-//         data,
-//         user: SiteUser(odataUrlFrom(data)),
-//     };
-// };
+    const data = await spPost(Web(this, "ensureuser"), body({ logonName }));
+    return {
+        data,
+        user: SiteUser(odataUrlFrom(data)),
+    };
+};
 
-// _Web.prototype.getUserById = function (id: number): ISiteUser {
-//     return SiteUser(this, `getUserById(${id})`);
-// };
+_Web.prototype.getUserById = function (id: number): ISiteUser {
+    return SiteUser(this, `getUserById(${id})`);
+};
