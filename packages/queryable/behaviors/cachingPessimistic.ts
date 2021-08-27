@@ -4,51 +4,63 @@ import { LogLevel } from "@pnp/logging";
 
 /**
  * Pessimistic Caching Behavior
- * Always returns the cached value if one exists but asyncronously executes the call and updates the cache.
+ * Always returns the cached value if one exists but asynchronously executes the call and updates the cache.
  * If a expireFunc is included then the cache update only happens if the cache has expired.
  *
  * @param store Use local or session storage
  * @param keyFactory: a function that returns the key for the cache value, if not provided a default hash of the url will be used
- * @param expireFunc: a function taht returns a date of expiration for the cache value, if not provided the cache never expires but is always udpated.
+ * @param expireFunc: a function that returns a date of expiration for the cache value, if not provided the cache never expires but is always updated.
  */
-export function CachingPessimisticRefresh(store: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
+export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
+
+    let store: Storage;
+    if (type === "session") {
+        store = (typeof sessionStorage === "undefined") ? new MemoryStorage() : sessionStorage;
+    } else {
+        store = (typeof localStorage === "undefined") ? new MemoryStorage() : localStorage;
+    }
+
 
     if (!isFunc(keyFactory)) {
         keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
     }
 
     const putStorage = (key: string, o: string) => {
-        if (isFunc(expireFunc)) {
-            const storage = new PnPClientStorage();
-            const s = store === "session" ? storage.session : storage.local;
-            s.put(key, o, expireFunc());
-        } else {
-            const cache = JSON.stringify({ pnp: 1, expiration: undefined, value: o });
-            if (store === "session") {
-                sessionStorage.setItem(key, cache);
+        try {
+            if (isFunc(expireFunc)) {
+                //TODO:: Think about making PnPClientStorage handle no expiration date.
+                const storage = new PnPClientStorage();
+                const s = type === "session" ? storage.session : storage.local;
+                s.put(key, o, expireFunc());
             } else {
-                localStorage.setItem(key, cache);
+                const cache = JSON.stringify({ pnp: 1, expiration: undefined, value: o });
+                store.setItem(key, cache);
             }
+        } catch (err) {
+            console.log(`CachingPessimistic(putStorage): ${err}.`);
         }
     }
 
     const getStorage = (key: string): any => {
         let retVal: any = undefined;
-        if (isFunc(expireFunc)) {
-            const storage = new PnPClientStorage();
-            const s = store === "session" ? storage.session : storage.local;
-            retVal = s.get(key);
-        } else {
-            let cache = undefined;
-            if (store === "session") {
-                cache = sessionStorage.getItem(key);
+        try {
+            if (isFunc(expireFunc)) {
+                const storage = new PnPClientStorage();
+                const s = type === "session" ? storage.session : storage.local;
+                retVal = s.get(key);
             } else {
-                cache = localStorage.getItem(key);
+                let cache = undefined;
+                cache = store.getItem(key);
+                if (cache != undefined)
+                    retVal = JSON.parse(cache);
             }
-            retVal = JSON.parse(cache);
+        } catch (err) {
+            console.log(`CachingPessimistic(getStorage): ${err}.`);
         }
         return retVal;
     }
+
+    let refreshCache: boolean = true;
 
     return (instance: Queryable2) => {
 
@@ -71,6 +83,7 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
                             let retVal: any = undefined;
 
                             const emitSend = async (): Promise<any> => {
+
                                 this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
                                 this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
@@ -98,9 +111,9 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
 
                             this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
 
-                            let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+                            let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                            this.emit.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, LogLevel.Info);
 
                             if (typeof result !== "undefined") {
                                 retVal = result;
@@ -108,14 +121,17 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
 
                             // Waiting is false by default, result is undefined by default, unless cached value is returned
                             if (retVal !== undefined) {
-                                // Return value exists -> assume lazy cache update pipeline execution.
-                                setTimeout(async () => {
-                                    try {
-                                        await emitSend();
-                                    } catch (e) {
-                                        emitError(e);
-                                    }
-                                }, 0);
+
+                                if (refreshCache) {
+                                    // Return value exists -> assume lazy cache update pipeline execution.
+                                    setTimeout(async () => {
+                                        try {
+                                            await emitSend();
+                                        } catch (e) {
+                                            emitError(e);
+                                        }
+                                    }, 0);
+                                }
 
                                 this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, LogLevel.Info);
 
@@ -152,24 +168,27 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
 
         instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
+            //Reset refreshCache
+            refreshCache = true;
+
             const key = keyFactory(url.toString());
 
             const cached = getStorage(key);
-            let expired: boolean = false;
+
             if (cached !== undefined) {
 
                 //Return value
                 result = cached.value;
 
                 if (cached.expiration !== undefined) {
-                    if (new Date(cached.expiration) <= new Date()) {
-                        expired = true;
+                    if (new Date(cached.expiration) > new Date()) {
+                        refreshCache = false;
                     }
                 }
             }
 
             // in these instances make sure we update cache after retrieving result
-            if (cached === undefined || expired || (!isFunc(expireFunc))) {
+            if (refreshCache) {
 
                 // if we don't have a cached result we need to get it after the request is sent and parsed
                 this.on.post(async function (url: URL, result: any) {
@@ -186,4 +205,36 @@ export function CachingPessimisticRefresh(store: "local" | "session" = "session"
 
         return instance;
     };
+}
+
+class MemoryStorage {
+
+    constructor(private _store = new Map<string, any>()) { }
+
+    [key: string]: any;
+    [index: number]: string;
+
+    public get length(): number {
+        return this._store.size;
+    }
+
+    public clear(): void {
+        this._store.clear();
+    }
+
+    public getItem(key: string): any {
+        return this._store.get(key);
+    }
+
+    public key(index: number): string {
+        return Array.from(this._store)[index][0];
+    }
+
+    public removeItem(key: string): void {
+        this._store.delete(key);
+    }
+
+    public setItem(key: string, data: string): void {
+        this._store.set(key, data);
+    }
 }

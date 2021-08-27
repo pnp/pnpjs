@@ -34,7 +34,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [],
-      "args": [],
+      "args": ["-g core"],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

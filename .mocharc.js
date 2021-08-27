@@ -14,7 +14,7 @@ function getAllPackageFolderNames() {
 }
 
 const basePath = "./build/testing/test/";
-let paths = [`${basePath}main.js`];
+let paths = [`${basePath}main-2.js`];
 
 // handle package specific config
 if (yargs.packages || yargs.p) {
@@ -60,7 +60,9 @@ const config = {
 
 console.info(`*****************************`);
 console.info("pnp generated mocha config:");
-console.info(prettyjson.render(config, null, 4, { noColor: true }));
+console.info(prettyjson.render(config, null, 4, {
+    noColor: true
+}));
 console.info(`*****************************`);
 
 module.exports = config;
