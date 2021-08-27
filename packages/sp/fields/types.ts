@@ -8,7 +8,6 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("fields")
 export class _Fields extends _SPCollection<IFieldInfo[]> {
@@ -18,7 +17,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      *
      * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
      */
-    @tag("fs.createFieldAsXml")
     public async createFieldAsXml(xml: string | IXmlSchemaFieldCreationInformation): Promise<IFieldAddResult> {
 
         if (typeof xml === "string") {
@@ -39,7 +37,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param id The Id of the list
      */
     public getById(id: string): IField {
-        return tag.configure(Field(this).concat(`('${id}')`), "fs.getById");
+        return Field(this).concat(`('${id}')`);
     }
 
     /**
@@ -48,7 +46,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The case-sensitive title of the field
      */
     public getByTitle(title: string): IField {
-        return tag.configure(Field(this, `getByTitle('${title}')`), "fs.getByTitle");
+        return Field(this, `getByTitle('${title}')`);
     }
 
     /**
@@ -57,7 +55,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param name The case-sensitive internal name or title of the field
      */
     public getByInternalNameOrTitle(name: string): IField {
-        return tag.configure(Field(this, `getByInternalNameOrTitle('${name}')`), "fs.getByInternalNameOrTitle");
+        return Field(this, `getByInternalNameOrTitle('${name}')`);
     }
 
     /**
@@ -67,10 +65,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     public async add(title: string, fieldTypeKind: number, properties: IFieldCreationProperties): Promise<IFieldAddResult> {
-
-        if (!tag.isTagged(this)) {
-            tag.configure(this, "fs.add");
-        }
 
         const data = await spPost<{ Id: string }>(Fields(this, null), body({
             Title: title,
@@ -90,7 +84,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addText")
     public addText(title: string, properties?: IFieldCreationProperties & AddTextProps): Promise<IFieldAddResult> {
 
         return this.add(title, 2, {
@@ -105,7 +98,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addCalculated")
     public addCalculated(title: string, properties?: IFieldCreationProperties & AddCalculatedProps): Promise<IFieldAddResult> {
 
         return this.add(title, 17, {
@@ -120,7 +112,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addDateTime")
     public addDateTime(title: string, properties?: IFieldCreationProperties & AddDateTimeProps): Promise<IFieldAddResult> {
 
         return this.add(title, 4, {
@@ -137,7 +128,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addNumber")
     public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
 
         return this.add(title, 9, properties);
@@ -149,7 +139,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addCurrency")
     public addCurrency(title: string, properties?: IFieldCreationProperties & AddCurrencyProps): Promise<IFieldAddResult> {
 
         return this.add(title, 10, {
@@ -165,7 +154,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      *
      */
-    @tag("fs.addMultilineText")
     public addMultilineText(title: string, properties?: IFieldCreationProperties & AddMultilineTextProps): Promise<IFieldAddResult> {
 
         return this.add(title, 3, {
@@ -183,7 +171,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      *
      * @param title The field title
      */
-    @tag("fs.addUrl")
     public addUrl(title: string, properties?: IFieldCreationProperties & AddUrlProps): Promise<IFieldAddResult> {
 
         return this.add(title, 11, {
@@ -197,7 +184,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties
      */
-    @tag("fs.addUser")
     public addUser(title: string, properties?: IFieldCreationProperties & AddUserProps): Promise<IFieldAddResult> {
 
         return this.add(title, 20, {
@@ -212,7 +198,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Set of additional properties to set on the new field
      */
-    @tag("fs.addLookup")
     public async addLookup(title: string, properties?: IFieldCreationProperties & AddLookupProps): Promise<IFieldAddResult> {
 
         return this.add(title, 7, properties);
@@ -224,7 +209,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addChoice")
     public addChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
 
         return this.add(title, 6, {
@@ -240,7 +224,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addMultiChoice")
     public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
 
         return this.add(title, 15, {
@@ -256,7 +239,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
    * @param title The field title.
    * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
    */
-    @tag("fs.addBoolean")
     public addBoolean(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
         return this.add(title, 8, properties);
@@ -269,7 +251,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
   * @param primaryLookupFieldId The guid of the primary Lookup Field.
   * @param showField Which field to show from the lookup list.
   */
-    @tag("fs.addDependentLookupField")
     public async addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<IFieldAddResult> {
 
         const path = `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`;
@@ -288,7 +269,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
    * @param title The field title.
    * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
    */
-    @tag("fs.addLocation")
     public addLocation(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
         return this.add(title, 33, properties);
@@ -300,7 +280,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    @tag("fs.addImage")
     public addImageField(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
         return this.add(title, 34, properties);
@@ -311,7 +290,7 @@ export const Fields = spInvokableFactory<IFields>(_Fields);
 
 export class _Field extends _SPInstance<IFieldInfo> {
 
-    public delete = deleteable("f");
+    public delete = deleteable();
 
     /**
    * Updates this field instance with the supplied properties
@@ -319,7 +298,6 @@ export class _Field extends _SPInstance<IFieldInfo> {
    * @param properties A plain object hash of values to update for the list
    * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
    */
-    @tag("f.update")
     public async update(properties: any, fieldType?: string): Promise<IFieldUpdateResult> {
 
         if (typeof fieldType === "undefined" || fieldType === null) {
@@ -338,7 +316,6 @@ export class _Field extends _SPInstance<IFieldInfo> {
     /**
    * Sets the value of the ShowInDisplayForm property for this field.
    */
-    @tag("f.setShowInDisplayForm")
     public setShowInDisplayForm(show: boolean): Promise<void> {
         return spPost(Field(this, `setshowindisplayform(${show})`));
     }
@@ -346,7 +323,6 @@ export class _Field extends _SPInstance<IFieldInfo> {
     /**
    * Sets the value of the ShowInEditForm property for this field.
    */
-    @tag("f.setShowInEditForm")
     public setShowInEditForm(show: boolean): Promise<void> {
         return spPost(Field(this, `setshowineditform(${show})`));
     }
@@ -354,7 +330,6 @@ export class _Field extends _SPInstance<IFieldInfo> {
     /**
    * Sets the value of the ShowInNewForm property for this field.
    */
-    @tag("f.setShowInNewForm")
     public setShowInNewForm(show: boolean): Promise<void> {
         return spPost(Field(this, `setshowinnewform(${show})`));
     }

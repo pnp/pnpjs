@@ -8,7 +8,6 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
@@ -19,28 +18,28 @@ export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
      */
     public get installedLanguages(): ISPCollection<{ Items: IInstalledLanguageInfo[] }> {
         console.warn("Deprecated: RegionalSettings.installedLanguages is deprecated, please use RegionalSettings.getInstalledLanguages");
-        return <any>tag.configure(SPCollection(this, "installedlanguages"), "rs.installedLanguages");
+        return <any>SPCollection(this, "installedlanguages")
     }
 
     /**
      * Gets time zone
      */
     public get timeZone(): ITimeZone {
-        return tag.configure(TimeZone(this), "rs.tz");
+        return TimeZone(this);
     }
 
     /**
-     * Gets time zones
+     * Gets time zoneshttp://www.apache.org/licenses/LICENSE-2.0
      */
     public get timeZones(): ITimeZones {
-        return tag.configure(TimeZones(this), "rs.tzs");
+        return TimeZones(this);
     }
 
     /**
      * Gets the collection of languages used in a server farm.
      */
     public async getInstalledLanguages(): Promise<IInstalledLanguageInfo[]> {
-        const results: { Items: IInstalledLanguageInfo[] } = await tag.configure(SPCollection(this, "installedlanguages"), "rs.getInstalledLanguages")();
+        const results: { Items: IInstalledLanguageInfo[] } = await SPCollection(this, "installedlanguages")();
         return results.Items;
     }
 }
@@ -55,7 +54,6 @@ export class _TimeZone extends _SPInstance<ITimeZoneInfo> {
      *
      * @param utcTime UTC Time as Date or ISO String
      */
-    @tag("tz.utcToLocalTime")
     public async utcToLocalTime(utcTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -75,7 +73,6 @@ export class _TimeZone extends _SPInstance<ITimeZoneInfo> {
      *
      * @param localTime Local Time as Date or ISO String
      */
-    @tag("tz.localTimeToUTC")
     public async localTimeToUTC(localTime: string | Date): Promise<string> {
 
         let dateIsoString: string;
@@ -102,7 +99,6 @@ export class _TimeZones extends _SPCollection<ITimeZoneInfo[]> {
      *
      * @param id The integer id of the timezone to retrieve
      */
-    @tag("tzs.getById")
     public getById(id: number): Promise<ITimeZoneInfo> {
         return spPost(TimeZones(this, `GetById(${id})`));
     }

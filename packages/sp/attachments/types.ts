@@ -1,3 +1,5 @@
+import { TimelinePipe } from "@pnp/core";
+import { headers, BlobParse, TextParse, JSONParse, BufferParse } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import {
@@ -7,9 +9,6 @@ import {
     _SPInstance,
     deleteableWithETag,
 } from "../sharepointqueryable.js";
-import { headers, BlobParse, TextParse, JSONParse, BufferParse } from "@pnp/queryable";
-import { tag } from "../telemetry.js";
-import { TimelinePipe } from "@pnp/core/index.js";
 
 @defaultPath("AttachmentFiles")
 export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
@@ -20,7 +19,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
     * @param name The name of the file, including extension.
     */
     public getByName(name: string): IAttachment {
-        const f = tag.configure(Attachment(this), "ats.getByName");
+        const f = Attachment(this);
         f.concat(`('${name}')`);
         return f;
     }
@@ -31,7 +30,6 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
      * @param name The name of the file, including extension.
      * @param content The Base64 file content.
      */
-    @tag("ats.add")
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
         const response = await spPost(Attachments(this, `add(FileName='${name}')`), { body: content });
         return {
@@ -39,57 +37,18 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
             file: this.getByName(name),
         };
     }
-
-    /**
-     * Adds multiple new attachment to the collection. Not supported for batching.
-     *
-     * @param files The collection of files to add
-     */
-    @tag("ats.addMultiple")
-    public async addMultiple(files: IAttachmentFileInfo[]): Promise<void> {
-
-        for (let i = 0; i < files.length; i++) {
-            await this.add(files[i].name, files[i].content);
-        }
-    }
-
-    /**
-     * Delete multiple attachments from the collection. Not supported for batching.
-     *
-     * @param files The collection of files to delete
-     */
-    @tag("ats.deleteMultiple")
-    public async deleteMultiple(...files: string[]): Promise<void> {
-
-        for (let i = 0; i < files.length; i++) {
-            await this.getByName(files[i]).delete();
-        }
-    }
-
-    /**
-     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
-     *
-     * @param files The collection of files to be deleted and sent to recycle bin
-     */
-    @tag("ats.recycleMultiple")
-    public async recycleMultiple(...files: string[]): Promise<void> {
-        for (let i = 0; i < files.length; i++) {
-            await this.getByName(files[i]).recycle();
-        }
-    }
 }
 export interface IAttachments extends _Attachments { }
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
 export class _Attachment extends _SPInstance<IAttachmentInfo> {
 
-    public delete = deleteableWithETag("at");
+    public delete = deleteableWithETag();
 
     /**
      * Gets the contents of the file as text
      *
      */
-    @tag("at.getText")
     public getText(): Promise<string> {
 
         return this.getParsed(TextParse());
@@ -99,7 +58,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
      * Gets the contents of the file as a blob, does not work in Node.js
      *
      */
-    @tag("at.getBlob")
     public getBlob(): Promise<Blob> {
 
         return this.getParsed(BlobParse());
@@ -108,7 +66,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
-    @tag("at.getBuffer")
     public getBuffer(): Promise<ArrayBuffer> {
 
         return this.getParsed(BufferParse());
@@ -117,7 +74,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
-    @tag("at.getJSON")
     public getJSON(): Promise<any> {
 
         return this.getParsed(JSONParse());
@@ -128,14 +84,13 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
      *
      * @param content The value to set for the file contents
      */
-    @tag("at.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
         await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, {
             body: content,
         }));
 
-        return Attachment(this);
+        return this;
     }
 
     /**
@@ -143,7 +98,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
      *
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    @tag("at.recycle")
     public recycle(eTag = "*"): Promise<void> {
 
         return spPost(Attachment(this, "recycleObject"), headers({

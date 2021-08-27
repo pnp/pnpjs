@@ -3,7 +3,7 @@ import { extractWebUrl } from "../utils/extractweburl.js";
 import { headers, body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { hOP } from "@pnp/core";
-import { tag } from "../telemetry.js";
+
 
 export class _SiteDesigns extends _SPQueryable {
 
@@ -21,7 +21,6 @@ export class _SiteDesigns extends _SPQueryable {
      *
      * @param creationInfo A sitedesign creation information object
      */
-    @tag("sd.createSiteDesign")
     public createSiteDesign(creationInfo: ISiteDesignCreationInfo): Promise<ISiteDesignInfo> {
         return SiteDesignsCloneFactory(this, "CreateSiteDesign").run<ISiteDesignInfo>({ info: creationInfo });
     }
@@ -32,7 +31,6 @@ export class _SiteDesigns extends _SPQueryable {
      * @param siteDesignId The ID of the site design to apply.
      * @param webUrl The URL of the site collection where you want to apply the site design.
      */
-    @tag("sd.applySiteDesign")
     public applySiteDesign(siteDesignId: string, webUrl: string): Promise<void> {
         return SiteDesignsCloneFactory(this, "ApplySiteDesign").run<void>({ siteDesignId: siteDesignId, "webUrl": webUrl });
     }
@@ -40,7 +38,6 @@ export class _SiteDesigns extends _SPQueryable {
     /**
      * Gets the list of available site designs
      */
-    @tag("sd.getSiteDesigns")
     public getSiteDesigns(): Promise<ISiteDesignInfo[]> {
         return SiteDesignsCloneFactory(this, "GetSiteDesigns").run<ISiteDesignInfo[]>({});
     }
@@ -49,7 +46,6 @@ export class _SiteDesigns extends _SPQueryable {
      * Gets information about a specific site design.
      * @param id The ID of the site design to get information about.
      */
-    @tag("sd.getSiteDesignMetadata")
     public getSiteDesignMetadata(id: string): Promise<ISiteDesignInfo> {
         return SiteDesignsCloneFactory(this, "GetSiteDesignMetadata").run<ISiteDesignInfo>({ id: id });
     }
@@ -59,7 +55,6 @@ export class _SiteDesigns extends _SPQueryable {
      * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE).
      * @param updateInfo A sitedesign update information object
      */
-    @tag("sd.updateSiteDesign")
     public updateSiteDesign(updateInfo: ISiteDesignUpdateInfo): Promise<ISiteDesignInfo> {
         return SiteDesignsCloneFactory(this, "UpdateSiteDesign").run<ISiteDesignInfo>({ updateInfo: updateInfo });
     }
@@ -68,7 +63,6 @@ export class _SiteDesigns extends _SPQueryable {
      * Deletes a site design.
      * @param id The ID of the site design to delete.
      */
-    @tag("sd.deleteSiteDesign")
     public deleteSiteDesign(id: string): Promise<void> {
         return SiteDesignsCloneFactory(this, "DeleteSiteDesign").run<void>({ id: id });
     }
@@ -77,7 +71,6 @@ export class _SiteDesigns extends _SPQueryable {
      * Gets a list of principals that have access to a site design.
      * @param id The ID of the site design to get rights information from.
      */
-    @tag("sd.getSiteDesignRights")
     public getSiteDesignRights(id: string): Promise<ISiteDesignPrincipals[]> {
         return SiteDesignsCloneFactory(this, "GetSiteDesignRights").run<ISiteDesignPrincipals[]>({ id: id });
     }
@@ -89,7 +82,6 @@ export class _SiteDesigns extends _SPQueryable {
      *                       Principals can be users or mail-enabled security groups in the form of "alias" or "alias@<domain name>.com"
      * @param grantedRights Always set to 1. This represents the View right.
      */
-    @tag("sd.grantSiteDesignRights")
     public grantSiteDesignRights(id: string, principalNames: string[], grantedRights = 1): Promise<void> {
         return SiteDesignsCloneFactory(this, "GrantSiteDesignRights").run<void>({
             "grantedRights": grantedRights.toString(),
@@ -104,7 +96,6 @@ export class _SiteDesigns extends _SPQueryable {
      * @param principalNames An array of one or more principals to revoke view rights from.
      *                       If all principals have rights revoked on the site design, the site design becomes viewable to everyone.
      */
-    @tag("sd.revokeSiteDesignRights")
     public revokeSiteDesignRights(id: string, principalNames: string[]): Promise<void> {
         return SiteDesignsCloneFactory(this, "RevokeSiteDesignRights").run<void>({
             id,
@@ -117,7 +108,6 @@ export class _SiteDesigns extends _SPQueryable {
      * @param webUrl The absolute url of the web on where to create the task
      * @param siteDesignId The ID of the site design to create a task for
      */
-    @tag("sd.addSiteDesignTask")
     public addSiteDesignTask(webUrl: string, siteDesignId: string): Promise<ISiteDesignTask> {
         return SiteDesignsCloneFactory(this, "AddSiteDesignTask").run<ISiteDesignTask>({ webUrl, siteDesignId });
     }
@@ -126,7 +116,6 @@ export class _SiteDesigns extends _SPQueryable {
      * Adds a site design task on the current web to be invoked asynchronously.
      * @param siteDesignId The ID of the site design to create a task for
      */
-    @tag("sd.addSiteDesignTaskToCurrentWeb")
     public addSiteDesignTaskToCurrentWeb(siteDesignId: string): Promise<ISiteDesignTask> {
         return SiteDesignsCloneFactory(this, "AddSiteDesignTaskToCurrentWeb").run<ISiteDesignTask>({ siteDesignId });
     }
@@ -135,7 +124,6 @@ export class _SiteDesigns extends _SPQueryable {
      * Retrieves the site design task, if the task has finished running null will be returned
      * @param id The ID of the site design task
      */
-    @tag("sd.getSiteDesignTask")
     public async getSiteDesignTask(id: string): Promise<ISiteDesignTask> {
         const task = await SiteDesignsCloneFactory(this, "GetSiteDesignTask").run<ISiteDesignTask>({ "taskId": id });
         return hOP(task, "ID") ? task : null;
@@ -146,7 +134,6 @@ export class _SiteDesigns extends _SPQueryable {
      * @param webUrl The url of the web where the site design was applied
      * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
      */
-    @tag("sd.getSiteDesignRun")
     public getSiteDesignRun(webUrl: string, siteDesignId?: string): Promise<ISiteDesignRun[]> {
         return SiteDesignsCloneFactory(this, "GetSiteDesignRun").run<ISiteDesignRun[]>({ webUrl, siteDesignId });
     }
@@ -156,7 +143,6 @@ export class _SiteDesigns extends _SPQueryable {
      * @param webUrl The url of the web where the site design was applied
      * @param runId the run ID
      */
-    @tag("sd.getSiteDesignRunStatus")
     public getSiteDesignRunStatus(webUrl: string, runId: string): Promise<ISiteScriptActionStatus[]> {
         return SiteDesignsCloneFactory(this, "GetSiteDesignRunStatus").run<ISiteScriptActionStatus[]>({ webUrl, runId });
     }

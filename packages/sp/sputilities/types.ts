@@ -3,7 +3,6 @@ import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../sharepointque
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 export class _Utilities extends _SPQueryable implements IUtilities {
 
@@ -50,11 +49,11 @@ export class _Utilities extends _SPQueryable implements IUtilities {
             properties = { ...properties, AdditionalHeaders: headers };
         }
 
-        return tag.configure(UtilitiesCloneFactory(this, "SendEmail"), "u.sendEmail").excute<void>({ properties });
+        return UtilitiesCloneFactory(this, "SendEmail").excute<void>({ properties });
     }
 
     public getCurrentUserEmailAddresses(): Promise<string> {
-        return tag.configure(UtilitiesCloneFactory(this, "GetCurrentUserEmailAddresses"), "u.getCurrentUserEmailAddresses").excute<string>({});
+        return UtilitiesCloneFactory(this, "GetCurrentUserEmailAddresses").excute<string>({});
     }
 
     public resolvePrincipal(input: string,
@@ -72,8 +71,7 @@ export class _Utilities extends _SPQueryable implements IUtilities {
             sources,
         };
 
-        const clone = UtilitiesCloneFactory(this, "ResolvePrincipalInCurrentContext");
-        return tag.configure(clone, "u.ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
+        return UtilitiesCloneFactory(this, "ResolvePrincipalInCurrentContext").excute<IPrincipalInfo>(params);
     }
 
     public searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]> {
@@ -85,8 +83,7 @@ export class _Utilities extends _SPQueryable implements IUtilities {
             sources: sources,
         };
 
-        const clone = UtilitiesCloneFactory(this, "SearchPrincipalsUsingContextWeb");
-        return tag.configure(clone, "u.SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
+        return UtilitiesCloneFactory(this, "SearchPrincipalsUsingContextWeb").excute<IPrincipalInfo[]>(params);
     }
 
     public createEmailBodyForInvitation(pageAddress: string): Promise<string> {
@@ -94,8 +91,7 @@ export class _Utilities extends _SPQueryable implements IUtilities {
             pageAddress: pageAddress,
         };
 
-        const clone = UtilitiesCloneFactory(this, "CreateEmailBodyForInvitation");
-        return tag.configure(clone, "u.CreateEmailBodyForInvitation").excute<string>(params);
+        return UtilitiesCloneFactory(this, "CreateEmailBodyForInvitation").excute<string>(params);
     }
 
     public expandGroupsToPrincipals(inputs: string[], maxCount = 30): Promise<IPrincipalInfo[]> {
@@ -105,7 +101,7 @@ export class _Utilities extends _SPQueryable implements IUtilities {
         };
 
         const clone = UtilitiesCloneFactory(this, "ExpandGroupsToPrincipals");
-        return tag.configure(clone, "u.ExpandGroupsToPrincipals").excute<IPrincipalInfo[]>(params);
+        return clone.excute<IPrincipalInfo[]>(params);
     }
 }
 

@@ -12,7 +12,6 @@ import {
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 export type SecurableQueryable = _SPInstance & ISecurableMethods;
 
@@ -63,14 +62,14 @@ export const RoleAssignments = spInvokableFactory<IRoleAssignments>(_RoleAssignm
  */
 export class _RoleAssignment extends _SPInstance<IRoleAssignmentInfo> {
 
-    public delete = deleteable("ra");
+    public delete = deleteable();
 
     /**
      * Gets the groups that directly belong to the access control list (ACL) for this securable object
      *
      */
     public get groups(): ISiteGroups {
-        return tag.configure(SiteGroups(this, "groups"), "ra.groups");
+        return SiteGroups(this, "groups");
     }
 
     /**
@@ -156,7 +155,7 @@ export const RoleDefinitions = spInvokableFactory<IRoleDefinitions>(_RoleDefinit
  */
 export class _RoleDefinition extends _SPInstance<IRoleDefinitionInfo> {
 
-    public delete = deleteable("rd");
+    public delete = deleteable();
 
     /**
      * Updates this role definition with the supplied properties

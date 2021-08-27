@@ -7,7 +7,6 @@ import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { IChangeQuery } from "../types.js";
-import { tag } from "../telemetry.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { emptyGuid } from "../types.js";
 
@@ -19,7 +18,7 @@ export class _Site extends _SPInstance {
      *
      */
     public get rootWeb(): IWeb {
-        return tag.configure(Web(this, "rootweb"), "si.rootWeb");
+        return Web(this, "rootweb");
     }
 
     /**
@@ -27,7 +26,6 @@ export class _Site extends _SPInstance {
      *
      * @param query The change query
      */
-    @tag("si.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
         const postBody = body({ query });
@@ -39,7 +37,6 @@ export class _Site extends _SPInstance {
      *
      * @param webId The GUID id of the web to open
      */
-    @tag("si.openWebById")
     public async openWebById(webId: string): Promise<IOpenWebByIdResult> {
 
         const data = await spPost(Site(this, `openWebById('${webId}')`));
@@ -55,7 +52,7 @@ export class _Site extends _SPInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return tag.configure(Web(web.Url).using(FromQueryable(this)), "si.getRootWeb");
+        return Web(web.Url).using(FromQueryable(this));
     }
 
     /**
@@ -63,7 +60,7 @@ export class _Site extends _SPInstance {
      */
     public async getContextInfo(): Promise<IContextInfo> {
 
-        const q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
+        const q = Site(this.parentUrl, "_api/contextinfo");
         const data = await spPost(q);
 
         if (hOP(data, "GetContextWebInformation")) {
@@ -82,7 +79,7 @@ export class _Site extends _SPInstance {
     public async delete(): Promise<void> {
 
         const site = await Site(this, "").select("Id")<{ Id: string }>();
-        const q = tag.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
+        const q = Site(this.parentUrl, "_api/SPSiteManager/Delete");
         await spPost(q, body({ siteId: site.Id }));
     }
 
@@ -93,7 +90,7 @@ export class _Site extends _SPInstance {
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
 
-        const q = tag.configure(SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
+        const q = SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
@@ -106,7 +103,7 @@ export class _Site extends _SPInstance {
      */
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
-        const q = tag.configure(SPQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
+        const q = SPQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;

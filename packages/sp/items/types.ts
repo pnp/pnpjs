@@ -15,7 +15,6 @@ import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 
 /**
@@ -31,7 +30,7 @@ export class _Items extends _SPCollection {
     * @param id The integer id of the item to retrieve
     */
     public getById(id: number): IItem {
-        return tag.configure(Item(this).concat(`(${id})`), "is.getById");
+        return Item(this).concat(`(${id})`);
     }
 
     /**
@@ -41,7 +40,7 @@ export class _Items extends _SPCollection {
      */
     public getItemByStringId(stringId: string): IItem {
         // creates an item with the parent list path and append out method call
-        return tag.configure(Item(this.parentUrl, `getItemByStringId('${stringId}')`), "is.getItemByStringId");
+        return Item(this.parentUrl, `getItemByStringId('${stringId}')`);
     }
 
     /**
@@ -63,7 +62,6 @@ export class _Items extends _SPCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
-    @tag("is.getPaged")
     public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
         return this.using(PagedItemParser(this))();
     }
@@ -74,7 +72,6 @@ export class _Items extends _SPCollection {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    @tag("is.add")
     public async add(properties: ITypedHash<any> = {}): Promise<IItemAddResult> {
 
         return spPost<{ Id: number }>(Items(this, ""), body(properties)).then((data) => ({
@@ -92,14 +89,14 @@ export const Items = spInvokableFactory<IItems>(_Items);
  */
 export class _Item extends _SPInstance {
 
-    public delete = deleteableWithETag("i");
+    public delete = deleteableWithETag();
 
     /**
      * Gets the effective base permissions for the item
      *
      */
     public get effectiveBasePermissions(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
+        return SPQueryable(this, "EffectiveBasePermissions");
     }
 
     /**
@@ -107,7 +104,7 @@ export class _Item extends _SPInstance {
      *
      */
     public get effectiveBasePermissionsForUI(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
+        return SPQueryable(this, "EffectiveBasePermissionsForUI");
     }
 
     /**
@@ -115,7 +112,7 @@ export class _Item extends _SPInstance {
      *
      */
     public get fieldValuesAsHTML(): ISPInstance {
-        return tag.configure(SPInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
+        return SPInstance(this, "FieldValuesAsHTML");
     }
 
     /**
@@ -123,7 +120,7 @@ export class _Item extends _SPInstance {
      *
      */
     public get fieldValuesAsText(): ISPInstance {
-        return tag.configure(SPInstance(this, "FieldValuesAsText"), "i.fvText");
+        return SPInstance(this, "FieldValuesAsText");
     }
 
     /**
@@ -131,14 +128,14 @@ export class _Item extends _SPInstance {
      *
      */
     public get fieldValuesForEdit(): ISPInstance {
-        return tag.configure(SPInstance(this, "FieldValuesForEdit"), "i.fvEdit");
+        return SPInstance(this, "FieldValuesForEdit");
     }
 
     /**
      * Gets the collection of versions associated with this item
      */
     public get versions(): IItemVersions {
-        return tag.configure(ItemVersions(this), "i.versions");
+        return ItemVersions(this);
     }
 
     /**
@@ -161,7 +158,7 @@ export class _Item extends _SPInstance {
             "X-HTTP-Method": "MERGE",
         }));
 
-        const poster = tag.configure(Item(this).using(ItemUpdatedParser()), "i.update");
+        const poster = Item(this).using(ItemUpdatedParser());
         const data = await spPost(poster, postBody);
 
         return {
@@ -173,7 +170,6 @@ export class _Item extends _SPInstance {
     /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
-    @tag("i.recycle")
     public recycle(): Promise<string> {
         return spPost<string>(Item(this, "recycle"));
     }
@@ -183,7 +179,6 @@ export class _Item extends _SPInstance {
      *
      * @param parameters Specifies the options to use when deleting a item.
      */
-    @tag("i.del-params")
     public async deleteWithParams(parameters: Partial<IItemDeleteParams>): Promise<void> {
         return spPost(Item(this, "DeleteWithParameters"), body({ parameters }));
     }
@@ -194,7 +189,6 @@ export class _Item extends _SPInstance {
      *
      * @param action Display mode: 0: view, 1: edit, 2: mobileView, 3: interactivePreview
      */
-    @tag("i.getWopiFrameUrl")
     public async getWopiFrameUrl(action = 0): Promise<string> {
         const i = Item(this, "getWOPIFrameUrl(@action)");
         i.query.set("@action", <any>action);
@@ -208,7 +202,6 @@ export class _Item extends _SPInstance {
      * @param formValues The fields to change and their new values.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      */
-    @tag("i.validateUpdateListItem")
     public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
         return spPost(Item(this, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
     }
@@ -280,7 +273,7 @@ export class _ItemVersions extends _SPCollection {
      * @param versionId The id of the version to retrieve
      */
     public getById(versionId: number): IItemVersion {
-        return tag.configure(ItemVersion(this).concat(`(${versionId})`), "iv.getById");
+        return ItemVersion(this).concat(`(${versionId})`);
     }
 }
 export interface IItemVersions extends _ItemVersions { }
@@ -291,7 +284,7 @@ export const ItemVersions = spInvokableFactory<IItemVersions>(_ItemVersions);
  *
  */
 export class _ItemVersion extends _SPInstance {
-    public delete = deleteableWithETag("iv");
+    public delete = deleteableWithETag();
 }
 export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
 export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
@@ -316,7 +309,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = tag.configure(<IItems>Items(this.nextUrl, null).using(FromQueryable(this.parent)), "ip.getNext");
+            const items = <IItems>Items(this.nextUrl, null).using(FromQueryable(this.parent));
             return items.getPaged<T>();
         }
 

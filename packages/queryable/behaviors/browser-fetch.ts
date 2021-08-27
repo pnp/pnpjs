@@ -1,6 +1,6 @@
 import { Queryable2 } from "../queryable-2.js";
 import { LogLevel } from "@pnp/logging";
-import { TimelinePipe } from "@pnp/core";
+import { delay, TimelinePipe } from "@pnp/core";
 import { HttpRequestError } from "../parsers.js";
 
 export function BrowserFetch(): TimelinePipe<Queryable2> {

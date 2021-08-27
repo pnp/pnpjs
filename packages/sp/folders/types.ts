@@ -15,7 +15,6 @@ import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { tag } from "../telemetry.js";
 import { toResourcePath, IResourcePath } from "../utils/toResourcePath.js";
 
 @defaultPath("folders")
@@ -27,7 +26,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      * @param name Folder's name
      */
     public getByUrl(name: string): IFolder {
-        return tag.configure(Folder(this).concat(`('${escapeQueryStrValue(name)}')`), "fs.getByUrl");
+        return Folder(this).concat(`('${escapeQueryStrValue(name)}')`);
     }
 
     /**
@@ -36,7 +35,6 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      * @param serverRelativeUrl The server relative url of the new folder to create
      * @param overwrite True to overwrite an existing folder, default false
      */
-    @tag("fs.addUsingPath")
     public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
 
         const data = await spPost(Folders(this, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
@@ -53,7 +51,7 @@ export const Folders = spInvokableFactory<IFolders>(_Folders);
 
 export class _Folder extends _SPInstance<IFolderInfo> {
 
-    public delete = deleteableWithETag("f");
+    public delete = deleteableWithETag();
 
     /**
      * Gets this folder's sub folders
@@ -68,7 +66,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      *
      */
     public get listItemAllFields(): ISPInstance {
-        return tag.configure(SPInstance(this, "listItemAllFields"), "f.listItemAllFields");
+        return SPInstance(this, "listItemAllFields");
     }
 
     /**
@@ -76,7 +74,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      *
      */
     public get parentFolder(): IFolder {
-        return tag.configure(Folder(this, "parentFolder"), "f.parentFolder");
+        return Folder(this, "parentFolder");
     }
 
     /**
@@ -84,14 +82,13 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      *
      */
     public get properties(): ISPInstance {
-        return tag.configure(SPInstance(this, "properties"), "f.properties");
+        return SPInstance(this, "properties");
     }
 
     /**
      * Updates folder's properties
      * @param props Folder's properties to update
      */
-    @tag("f.update")
     public async update(props: Partial<IFolderInfo>): Promise<IFolderUpdateResult> {
 
         const data = await spPostMerge(this, body(props));
@@ -105,7 +102,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
     /**
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
-    @tag("f.recycle")
     public recycle(): Promise<string> {
         return spPost(Folder(this, "recycle"));
     }
@@ -113,7 +109,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
     /**
      * Gets the associated list item for this folder, loading the default properties
      */
-    @tag("f.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
         const q = await this.listItemAllFields.select(...selects)();
         if (q["odata.null"]) {
@@ -129,7 +124,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
-    @tag("f.moveByPath")
     public async moveByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
         const urlInfo = await this.getParentInfos();
@@ -158,7 +152,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
-    @tag("f.copyByPath")
     public async copyByPath(destUrl: string, KeepBoth = false): Promise<void> {
 
         const urlInfo = await this.getParentInfos();
@@ -185,7 +178,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      *
      * @param parameters Specifies the options to use when deleting a folder.
      */
-    @tag("f.del-params")
     public async deleteWithParams(parameters: Partial<IFolderDeleteParams>): Promise<void> {
         return spPost(Folder(this, "DeleteWithParameters"), body({ parameters }));
     }
@@ -243,7 +235,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
     /**
      * Gets the shareable item associated with this folder
      */
-    @tag("f.getShareable")
     protected async getShareable(): Promise<IItem> {
 
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally

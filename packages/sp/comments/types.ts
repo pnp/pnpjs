@@ -7,7 +7,6 @@ import {
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("comments")
 export class _Comments extends _SPCollection<ICommentInfo[]> {
@@ -17,7 +16,6 @@ export class _Comments extends _SPCollection<ICommentInfo[]> {
      *
      * @param info Comment information to add
      */
-    @tag("coms.add")
     public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {
@@ -35,14 +33,14 @@ export class _Comments extends _SPCollection<ICommentInfo[]> {
      * @param id Id of the comment to load
      */
     public getById(id: string | number): IComment {
-        return tag.configure(Comment(this).concat(`(${id})`), "coms.getById");
+        return Comment(this).concat(`(${id})`);
     }
 
     /**
      * Deletes all the comments in this collection
      */
     public clear(): Promise<boolean> {
-        return spPost<boolean>(tag.configure(Comments(this, "DeleteAll"), "coms.clear"));
+        return spPost<boolean>(Comments(this, "DeleteAll"));
     }
 }
 export interface IComments extends _Comments {}
@@ -54,13 +52,12 @@ export class _Comment extends _SPInstance<ICommentInfo> {
      * A comment's replies
      */
     public get replies(): IReplies {
-        return tag.configure(Replies(this), "com.replies");
+        return Replies(this);
     }
 
     /**
      * Likes the comment as the current user
      */
-    @tag("com.like")
     public like(): Promise<void> {
         return spPost(Comment(this, "Like"));
     }
@@ -68,7 +65,6 @@ export class _Comment extends _SPInstance<ICommentInfo> {
     /**
      * Unlikes the comment as the current user
      */
-    @tag("com.unlike")
     public unlike(): Promise<void> {
         return spPost(Comment(this, "Unlike"));
     }
@@ -76,7 +72,6 @@ export class _Comment extends _SPInstance<ICommentInfo> {
     /**
      * Deletes this comment
      */
-    @tag("com.delete")
     public delete(): Promise<void> {
         return spPost(Comment(this, "DeleteComment"));
     }
@@ -92,7 +87,6 @@ export class _Replies extends _SPCollection<ICommentInfo[]> {
      *
      * @param info Comment information to add
      */
-    @tag("reps.add")
     public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {

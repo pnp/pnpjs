@@ -10,12 +10,11 @@ import {
 } from "../sharepointqueryable.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 export class _LimitedWebPartManager extends _SPQueryable implements ILimitedWebPartManager {
 
     public get scope(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "Scope"), "f.scope");
+        return SPQueryable(this, "Scope");
     }
 
     public get webparts(): IWebPartDefinitions {

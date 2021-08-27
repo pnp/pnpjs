@@ -81,4 +81,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed IUtilities.createWikiPage
   - removed searchWithCaching, use caching behavior
   - removed spODataEntity and spODataEntityArray
+  - removed attachments addMultiple, deleteMultiple, and recycleMultiple => write a for loop in calling code
   

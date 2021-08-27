@@ -6,7 +6,6 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("features")
 export class _Features extends _SPCollection<IFeatureInfo[]> {
@@ -17,7 +16,6 @@ export class _Features extends _SPCollection<IFeatureInfo[]> {
      * @param id The Id of the feature (GUID)
      * @param force If true the feature activation will be forced
      */
-    @tag("fes.add")
     public async add(featureId: string, force = false): Promise<IFeatureAddResult> {
 
         const data = await spPost(Features(this, "add"), body({
@@ -38,8 +36,7 @@ export class _Features extends _SPCollection<IFeatureInfo[]> {
      * @param id The Id of the feature (GUID)
      */
     public getById(id: string): IFeature {
-        const feature = Feature(this).concat(`('${id}')`);
-        return tag.configure(feature, "fes.getById");
+        return Feature(this).concat(`('${id}')`);
     }
 
     /**
@@ -48,7 +45,6 @@ export class _Features extends _SPCollection<IFeatureInfo[]> {
      * @param id The Id of the feature (GUID)
      * @param force If true the feature deactivation will be forced
      */
-    @tag("fes.remove")
     public remove(featureId: string, force = false): Promise<any> {
 
         return spPost(Features(this, "remove"), body({
@@ -60,7 +56,7 @@ export class _Features extends _SPCollection<IFeatureInfo[]> {
 export interface IFeatures extends _Features { }
 export const Features = spInvokableFactory<IFeatures>(_Features);
 
-export class _Feature extends _SPInstance<IFeatureInfo> {}
+export class _Feature extends _SPInstance<IFeatureInfo> { }
 export interface IFeature extends _Feature { }
 export const Feature = spInvokableFactory<IFeature>(_Feature);
 

@@ -2,7 +2,7 @@ import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { ISPQueryable, _SPQueryable } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { tag } from "../telemetry.js";
+
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 export class _SiteScripts extends _SPQueryable {
@@ -19,7 +19,6 @@ export class _SiteScripts extends _SPQueryable {
     /**
      * Gets a list of information on all existing site scripts.
      */
-    @tag("ss.getSiteScripts")
     public getSiteScripts(): Promise<ISiteScriptInfo[]> {
         return SiteScriptsCloneFactory(this, "GetSiteScripts").run<ISiteScriptInfo[]>({});
     }
@@ -30,7 +29,6 @@ export class _SiteScripts extends _SPQueryable {
      * @param title The display name of the site script.
      * @param content JSON value that describes the script. For more information, see JSON reference.
      */
-    @tag("ss.createSiteScript")
     public createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
         return SiteScriptsCloneFactory(this,
             `CreateSiteScript(Title=@title,Description=@desc)?@title='${escapeQueryStrValue(title)}'&@desc='${escapeQueryStrValue(description)}'`)
@@ -42,7 +40,6 @@ export class _SiteScripts extends _SPQueryable {
      *
      * @param id The ID of the site script to get information about.
      */
-    @tag("ss.getSiteScriptMetadata")
     public getSiteScriptMetadata(id: string): Promise<ISiteScriptInfo> {
         return SiteScriptsCloneFactory(this, "GetSiteScriptMetadata").run<ISiteScriptInfo>({ id });
     }
@@ -52,7 +49,6 @@ export class _SiteScripts extends _SPQueryable {
      *
      * @param id The ID of the site script to delete.
      */
-    @tag("ss.deleteSiteScript")
     public deleteSiteScript(id: string): Promise<void> {
         return SiteScriptsCloneFactory(this, "DeleteSiteScript").run<void>({ id });
     }
@@ -64,7 +60,6 @@ export class _SiteScripts extends _SPQueryable {
      *                             Make sure you stringify the content object or pass it in the second 'content' parameter
      * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
      */
-    @tag("ss.updateSiteScript")
     public updateSiteScript(updateInfo: ISiteScriptUpdateInfo, content?: any): Promise<ISiteScriptInfo> {
 
         if (content) {
@@ -78,7 +73,6 @@ export class _SiteScripts extends _SPQueryable {
      * Gets the site script syntax (JSON) for a specific list
      * @param listUrl The absolute url of the list to retrieve site script
      */
-    @tag("ss.getSiteScriptFromList")
     public getSiteScriptFromList(listUrl: string): Promise<string> {
         return SiteScriptsCloneFactory(this, "GetSiteScriptFromList").run<string>({ listUrl });
     }
@@ -88,7 +82,6 @@ export class _SiteScripts extends _SPQueryable {
      * @param webUrl The absolute url of the web to retrieve site script
      * @param extractInfo configuration object to specify what to extract
      */
-    @tag("ss.getSiteScriptFromWeb")
     public getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
         return SiteScriptsCloneFactory(this, "getSiteScriptFromWeb").run<ISiteScriptSerializationResult>({ webUrl, info });
     }
@@ -99,7 +92,6 @@ export class _SiteScripts extends _SPQueryable {
      * @param webUrl The absolute url of the web to retrieve site script
      * @param extractInfo configuration object to specify what to extract
      */
-    @tag("ss.executeSiteScriptAction")
     public executeSiteScriptAction(actionDefinition: string): Promise<ISiteScriptActionResult> {
         return SiteScriptsCloneFactory(this, "executeSiteScriptAction").run<ISiteScriptActionResult>({ actionDefinition });
     }

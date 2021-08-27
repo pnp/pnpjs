@@ -9,7 +9,6 @@ import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { File, IFile } from "../files/types.js";
-import { tag } from "../telemetry.js";
 import { FromQueryable } from "@pnp/queryable";
 
 
@@ -24,7 +23,7 @@ export class _AppCatalog extends _SPCollection {
      * @param id - Specify the guid of the app
      */
     public getAppById(id: string): IApp {
-        return tag.configure(App(this, `getById('${id}')`), "ac.getAppById");
+        return App(this, `getById('${id}')`);
     }
 
     /**
@@ -58,7 +57,7 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        const poster = tag.configure(AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`), "ac.syncSolutionToTeams");
+        const poster = AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
 
         return await spPost(poster, {});
     }
@@ -74,7 +73,7 @@ export class _AppCatalog extends _SPCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`), "ac.add");
+        const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
 
         const r = await spPost(adder, {
             body: content, headers: {
@@ -99,7 +98,6 @@ export class _App extends _SPInstance {
      *
      * @param skipFeatureDeployment Deploy the app to the entire tenant
      */
-    @tag("app.deploy")
     public deploy(skipFeatureDeployment = false): Promise<void> {
         return this.do(`Deploy(${skipFeatureDeployment})`);
     }
@@ -108,7 +106,6 @@ export class _App extends _SPInstance {
      * This method retracts a deployed app on the app catalog. It must be called in the context
      * of the tenant app catalog web or it will fail.
      */
-    @tag("app.retract")
     public retract(): Promise<void> {
         return this.do("Retract");
     }
@@ -116,7 +113,6 @@ export class _App extends _SPInstance {
     /**
      * This method allows an app which is already deployed to be installed on a web
      */
-    @tag("app.install")
     public install(): Promise<void> {
         return this.do("Install");
     }
@@ -125,7 +121,6 @@ export class _App extends _SPInstance {
      * This method allows an app which is already installed to be uninstalled on a web
      * Note: when you use the REST API to uninstall a solution package from the site, it is not relocated to the recycle bin
      */
-    @tag("app.uninstall")
     public uninstall(): Promise<void> {
         return this.do("Uninstall");
     }
@@ -133,7 +128,6 @@ export class _App extends _SPInstance {
     /**
      * This method allows an app which is already installed to be upgraded on a web
      */
-    @tag("app.upgrade")
     public upgrade(): Promise<void> {
         return this.do("Upgrade");
     }
@@ -142,7 +136,6 @@ export class _App extends _SPInstance {
      * This method removes an app from the app catalog. It must be called in the context
      * of the tenant app catalog web or it will fail.
      */
-    @tag("app.remove")
     public remove(): Promise<void> {
         return this.do("Remove");
     }

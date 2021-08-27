@@ -2,7 +2,6 @@ import { combine, isUrlAbsolute } from "@pnp/core";
 import { IInvokable, Queryable2, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
-import "./behaviors/telemetry-2.js";
 
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
     new(baseUrl: string | ISPQueryable, path?: string): T;
@@ -218,10 +217,10 @@ export const SPInstance = spInvokableFactory<ISPInstance>(_SPInstance);
 /**
  * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
-export function deleteable(t: string) {
+export function deleteable() {
 
     return function (this: ISPQueryable): Promise<void> {
-        return spPostDelete<void>(this.tag(`${t}.delete`));
+        return spPostDelete<void>(this);
     };
 }
 
@@ -232,10 +231,10 @@ export interface IDeleteable {
     delete(): Promise<void>;
 }
 
-export function deleteableWithETag(t: string) {
+export function deleteableWithETag() {
 
     return function (this: ISPQueryable, eTag = "*"): Promise<void> {
-        return spPostDeleteETag<void>(this.tag(`${t}.delete`), {}, eTag);
+        return spPostDeleteETag<void>(this, {}, eTag);
     };
 }
 

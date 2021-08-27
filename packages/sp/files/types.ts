@@ -15,7 +15,6 @@ import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { tag } from "../telemetry.js";
 import { toResourcePath } from "../utils/toResourcePath.js";
 
 /**
@@ -34,7 +33,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
         if (/%#/.test(name)) {
             throw Error("For file names containing % or # please use web.getFileByServerRelativePath");
         }
-        return tag.configure(File(this).concat(`('${escapeQueryStrValue(name)}')`), "fis.getByUrl");
+        return File(this).concat(`('${escapeQueryStrValue(name)}')`);
     }
 
     /**
@@ -44,7 +43,6 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
      */
-    @tag("fis.addUsingPath")
     public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
 
         const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
@@ -81,7 +79,6 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      * @returns The new File and the raw response.
      */
-    @tag("fis.addChunked")
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
@@ -96,7 +93,6 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param templateFileType The type of use to create the file.
      * @returns The template file that was added and the raw response.
      */
-    @tag("fis.addTemplateFile")
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
         const response = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
@@ -114,14 +110,14 @@ export const Files = spInvokableFactory<IFiles>(_Files);
  */
 export class _File extends _SPInstance<IFileInfo> {
 
-    public delete = deleteableWithETag("fi");
+    public delete = deleteableWithETag();
 
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
      */
     public get listItemAllFields(): ISPInstance {
-        return tag.configure(SPInstance(this, "listItemAllFields"), "fi.listItemAllFields");
+        return SPInstance(this, "listItemAllFields");
     }
 
     /**
@@ -129,7 +125,7 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      */
     public get versions(): IVersions {
-        return tag.configure(Versions(this), "fi.versions");
+        return Versions(this);
     }
 
     /**
@@ -138,7 +134,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param comment The comment for the approval.
      */
-    @tag("fi.approve")
     public approve(comment = ""): Promise<void> {
         return spPost(File(this, `approve(comment='${escapeQueryStrValue(comment)}')`));
     }
@@ -152,7 +147,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param uploadId The unique identifier of the upload session.
      */
-    @tag("fi.cancelUpload")
     public cancelUpload(uploadId: string): Promise<void> {
         return spPost(File(this, `cancelUpload(uploadId=guid'${uploadId}')`));
     }
@@ -163,7 +157,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param comment A comment for the check-in. Its length must be <= 1023.
      * @param checkinType The check-in type for the file.
      */
-    @tag("fi.checkin")
     public checkin(comment = "", checkinType = CheckinType.Major): Promise<void> {
 
         if (comment.length > 1023) {
@@ -176,7 +169,6 @@ export class _File extends _SPInstance<IFileInfo> {
     /**
      * Checks out the file from a document library.
      */
-    @tag("fi.checkout")
     public checkout(): Promise<void> {
         return spPost(File(this, "checkout"));
     }
@@ -187,7 +179,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param url The absolute url or server relative url of the destination file path to copy to.
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      */
-    @tag("fi.copyTo")
     public copyTo(url: string, shouldOverWrite = true): Promise<void> {
         return spPost(File(this, `copyTo(strnewurl='${escapeQueryStrValue(url)}',boverwrite=${shouldOverWrite})`));
     }
@@ -200,7 +191,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
-    @tag("fi.copyByPath")
     public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
@@ -223,7 +213,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param comment The comment for the denial.
      */
-    @tag("fi.deny")
     public deny(comment = ""): Promise<void> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
@@ -239,7 +228,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
-    @tag("fi.moveByPath")
     public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
@@ -264,7 +252,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param comment The comment for the published file. Its length must be <= 1023.
      */
-    @tag("fi.publish")
     public publish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
@@ -277,7 +264,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @returns The GUID of the recycled file.
      */
-    @tag("fi.recycle")
     public recycle(): Promise<string> {
         return spPost(File(this, "recycle"));
     }
@@ -287,7 +273,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param parameters Specifies the options to use when deleting a file.
      */
-    @tag("fi.del-params")
     public async deleteWithParams(parameters: Partial<IFileDeleteParams>): Promise<void> {
         return spPost(File(this, "DeleteWithParameters"), body({ parameters }));
     }
@@ -296,7 +281,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * Reverts an existing checkout for the file.
      *
      */
-    @tag("fi.undoCheckout")
     public undoCheckout(): Promise<void> {
         return spPost(File(this, "undoCheckout"));
     }
@@ -306,7 +290,6 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param comment The comment for the unpublish operation. Its length must be <= 1023.
      */
-    @tag("fi.unpublish")
     public unpublish(comment = ""): Promise<void> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
@@ -318,7 +301,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * Checks to see if the file represented by this object exists
      *
      */
-    @tag("fi.exists")
     public async exists(): Promise<boolean> {
         try {
             const r = await File(this).select("Exists")();
@@ -334,7 +316,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * Gets the contents of the file as text. Not supported in batching.
      *
      */
-    @tag("fi.getText")
     public getText(): Promise<string> {
 
         return File(this, "$value").using(TextParse())();
@@ -344,7 +325,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
      *
      */
-    @tag("fi.getBlob")
     public getBlob(): Promise<Blob> {
 
         return File(this, "$value").using(BlobParse())();
@@ -353,7 +333,6 @@ export class _File extends _SPInstance<IFileInfo> {
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */
-    @tag("fi.getBuffer")
     public getBuffer(): Promise<ArrayBuffer> {
 
         return File(this, "$value").using(BufferParse())();
@@ -364,7 +343,6 @@ export class _File extends _SPInstance<IFileInfo> {
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */
-    @tag("fi.getJSON")
     public getJSON(): Promise<any> {
 
         return File(this, "$value").using(JSONParse())();
@@ -376,7 +354,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param content The file content
      *
      */
-    @tag("fi.setContent")
     public async setContent(content: string | ArrayBuffer | Blob): Promise<IFile> {
 
         await spPost(File(this, "$value"), {
@@ -391,7 +368,6 @@ export class _File extends _SPInstance<IFileInfo> {
     /**
      * Gets the associated list item for this folder, loading the default properties
      */
-    @tag("fi.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const q = this.listItemAllFields;
@@ -444,7 +420,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param fragment The file contents.
      * @returns The size of the total uploaded data in bytes.
      */
-    @tag("fi.startUpload")
     protected async startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
         let n = await spPost(File(this, `startUpload(uploadId=guid'${uploadId}')`), { body: fragment });
         if (typeof n === "object") {
@@ -466,7 +441,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param fragment The file contents.
      * @returns The size of the total uploaded data in bytes.
      */
-    @tag("fi.continueUpload")
     protected async continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
         let n = await spPost(File(this, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
         if (typeof n === "object") {
@@ -487,7 +461,6 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param fragment The file contents.
      * @returns The newly uploaded file.
      */
-    @tag("fi.finishUpload")
     protected async finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<IFileAddResult> {
         const response = await spPost(File(this, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
         return {
@@ -513,14 +486,13 @@ export class _Versions extends _SPCollection {
      * @param versionId The id of the version to retrieve
      */
     public getById(versionId: number): IVersion {
-        return tag.configure(Version(this).concat(`(${versionId})`), "vers.getById");
+        return Version(this).concat(`(${versionId})`);
     }
 
     /**
      * Deletes all the file version objects in the collection.
      *
      */
-    @tag("vers.deleteAll")
     public deleteAll(): Promise<void> {
         return spPost(Versions(this, "deleteAll"));
     }
@@ -530,7 +502,6 @@ export class _Versions extends _SPCollection {
      *
      * @param versionId The ID of the file version to delete.
      */
-    @tag("vers.deleteById")
     public deleteById(versionId: number): Promise<void> {
         return spPost(Versions(this, `deleteById(vid=${versionId})`));
     }
@@ -540,7 +511,6 @@ export class _Versions extends _SPCollection {
      *
      * @param versionId The ID of the file version to delete.
      */
-    @tag("vers.recycleByID")
     public recycleByID(versionId: number): Promise<void> {
         return spPost(Versions(this, `recycleByID(vid=${versionId})`));
     }
@@ -550,7 +520,6 @@ export class _Versions extends _SPCollection {
      *
      * @param label The version label of the file version to delete, for example: 1.2
      */
-    @tag("vers.deleteByLabel")
     public deleteByLabel(label: string): Promise<void> {
         return spPost(Versions(this, `deleteByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
@@ -560,7 +529,6 @@ export class _Versions extends _SPCollection {
      *
      * @param label The version label of the file version to delete, for example: 1.2
      */
-    @tag("vers.recycleByLabel")
     public recycleByLabel(label: string): Promise<void> {
         return spPost(Versions(this, `recycleByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
@@ -570,7 +538,6 @@ export class _Versions extends _SPCollection {
      *
      * @param label The version label of the file version to restore, for example: 1.2
      */
-    @tag("vers.restoreByLabel")
     public restoreByLabel(label: string): Promise<void> {
         return spPost(Versions(this, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
     }
@@ -582,7 +549,7 @@ export const Versions = spInvokableFactory<IVersions>(_Versions);
  * Describes a single Version instance
  *
  */
-export class _Version extends _SPInstance {}
+export class _Version extends _SPInstance { }
 export interface IVersion extends _Version, IDeleteableWithETag { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 

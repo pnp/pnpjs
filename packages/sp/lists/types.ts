@@ -16,7 +16,6 @@ import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { tag } from "../telemetry.js";
 import { IBasePermissions } from "../security/types.js";
 import { IFieldInfo } from "../fields/types.js";
 import { IFormInfo } from "../forms/types.js";
@@ -34,7 +33,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param id The Id of the list (GUID)
      */
     public getById(id: string): IList {
-        return tag.configure(List(this).concat(`('${id}')`), "ls.getById");
+        return List(this).concat(`('${id}')`);
     }
 
     /**
@@ -43,7 +42,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return tag.configure(List(this, `getByTitle('${escapeQueryStrValue(title)}')`), "ls.getByTitle");
+        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
     }
 
     /**
@@ -55,7 +54,6 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
      * @param additionalSettings Will be passed as part of the list creation body
      */
-    @tag("ls.add")
     public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: Partial<IListInfo> = {}): Promise<IListAddResult> {
 
         const addSettings = {
@@ -81,7 +79,6 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
      * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
      */
-    @tag("ls.ensure")
     public async ensure(
         title: string,
         desc = "",
@@ -110,7 +107,6 @@ export class _Lists extends _SPCollection<IListInfo[]> {
     /**
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
-    @tag("ls.ensureSiteAssetsLibrary")
     public async ensureSiteAssetsLibrary(): Promise<IList> {
         const json = await spPost(Lists(this, "ensuresiteassetslibrary"));
         return List(odataUrlFrom(json));
@@ -119,7 +115,6 @@ export class _Lists extends _SPCollection<IListInfo[]> {
     /**
      * Gets a list that is the default location for wiki pages.
      */
-    @tag("ls.ensureSitePagesLibrary")
     public async ensureSitePagesLibrary(): Promise<IList> {
         const json = await spPost(Lists(this, "ensuresitepageslibrary"));
         return List(odataUrlFrom(json));
@@ -130,14 +125,14 @@ export const Lists = spInvokableFactory<ILists>(_Lists);
 
 export class _List extends _SPInstance<IListInfo> {
 
-    public delete = deleteableWithETag("l");
+    public delete = deleteableWithETag();
 
     /**
      * Gets the effective base permissions of this list
      *
      */
     public get effectiveBasePermissions(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
+        return SPQueryable(this, "EffectiveBasePermissions");
     }
 
     /**
@@ -145,7 +140,7 @@ export class _List extends _SPInstance<IListInfo> {
      *
      */
     public get eventReceivers(): ISPCollection {
-        return tag.configure(SPCollection(this, "EventReceivers"), "l.eventReceivers");
+        return SPCollection(this, "EventReceivers");
     }
 
     /**
@@ -153,7 +148,7 @@ export class _List extends _SPInstance<IListInfo> {
      *
      */
     public get relatedFields(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "getRelatedFields"), "l.relatedFields");
+        return SPQueryable(this, "getRelatedFields");
     }
 
     /**
@@ -161,7 +156,7 @@ export class _List extends _SPInstance<IListInfo> {
      *
      */
     public get informationRightsManagementSettings(): ISPQueryable {
-        return tag.configure(SPQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
+        return SPQueryable(this, "InformationRightsManagementSettings");
     }
 
     /**
@@ -170,7 +165,6 @@ export class _List extends _SPInstance<IListInfo> {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    @tag("l.update")
     public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListUpdateResult> {
 
         const data = await spPostMerge(this, body(properties, headers({ "IF-Match": eTag })));
@@ -187,7 +181,6 @@ export class _List extends _SPInstance<IListInfo> {
      * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
      * @param query A query that is performed against the change log.
      */
-    @tag("l.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
         return spPost(List(this, "getchanges"), body({ query }));
     }
@@ -197,7 +190,6 @@ export class _List extends _SPInstance<IListInfo> {
      * @param query A query that is performed against the list
      * @param expands An expanded array of n items that contains fields to expand in the CamlQuery
      */
-    @tag("l.CAMLQuery")
     public getItemsByCAMLQuery(query: ICamlQuery, ...expands: string[]): Promise<any> {
 
         return spPost(List(this, "getitems").expand(...expands), body({ query }));
@@ -207,7 +199,6 @@ export class _List extends _SPInstance<IListInfo> {
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
      * @param query An object that defines the change log item query
      */
-    @tag("l.ChangesSinceToken")
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
         return spPost(List(this, "getlistitemchangessincetoken").using(TextParse), body({ "query": query }));
@@ -216,7 +207,6 @@ export class _List extends _SPInstance<IListInfo> {
     /**
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
-    @tag("l.recycle")
     public async recycle(): Promise<string> {
         return spPost(List(this, "recycle"));
     }
@@ -225,7 +215,6 @@ export class _List extends _SPInstance<IListInfo> {
      * Renders list data based on the view xml provided
      * @param viewXml A string object representing a view xml
      */
-    @tag("l.renderListData")
     public async renderListData(viewXml: string): Promise<IRenderListData> {
 
         const q = List(this, "renderlistdata(@viewXml)");
@@ -241,7 +230,6 @@ export class _List extends _SPInstance<IListInfo> {
      * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
      * @param query Allows setting of query parameters
      */
-    @tag("l.AsStream")
     // eslint-disable-next-line max-len
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, query = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
@@ -270,7 +258,6 @@ export class _List extends _SPInstance<IListInfo> {
      * @param formId The id of the form
      * @param mode Enum representing the control mode of the form (Display, Edit, New)
      */
-    @tag("l.renderListFormData")
     public async renderListFormData(itemId: number, formId: string, mode: ControlMode): Promise<IListFormData> {
         const data = await spPost(List(this, `renderlistformdata(itemid=${itemId}, formid='${formId}', mode='${mode}')`));
         // data will be a string, so we parse it again
@@ -280,7 +267,6 @@ export class _List extends _SPInstance<IListInfo> {
     /**
      * Reserves a list item ID for idempotent list item creation.
      */
-    @tag("l.reserveListItemId")
     public async reserveListItemId(): Promise<number> {
         return spPost(List(this, "reservelistitemid"));
     }
@@ -294,7 +280,6 @@ export class _List extends _SPInstance<IListInfo> {
      * @param checkInComment Optional check in comment.
      * @param additionalProps Optional set of additional properties LeafName new document file name,
      */
-    @tag("l.addValidateUpdateItemUsingPath")
     public async addValidateUpdateItemUsingPath(
         formValues: IListItemFormUpdateValue[],
         decodedUrl: string,

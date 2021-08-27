@@ -19,7 +19,6 @@ import {
     RoleType,
 } from "./types.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 import { RoleDefinitions } from "../security/types.js";
 import { emptyGuid } from "../types.js";
 
@@ -83,7 +82,7 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
     const expString = expiration !== null ? expiration.toISOString() : null;
 
     // clone using the factory and send the request
-    const o = tag.configure(SPInstance(this, "shareLink"), "sh.getShareLink");
+    const o = SPInstance(this, "shareLink");
     return spPost<IShareLinkResponse>(o, body({
         request: {
             createLink: true,
@@ -103,7 +102,7 @@ export function getShareLink(this: ShareableQueryable, kind: SharingLinkKind, ex
  */
 export function checkPermissions(this: ShareableQueryable, recipients: ISharingRecipient[]): Promise<ISharingEntityPermission[]> {
 
-    const o = tag.configure(SPInstance(this, "checkPermissions"), "sh.checkPermissions");
+    const o = SPInstance(this, "checkPermissions");
     return spPost<ISharingEntityPermission[]>(o, body({ recipients }));
 }
 
@@ -116,7 +115,7 @@ export function checkPermissions(this: ShareableQueryable, recipients: ISharingR
  */
 export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
 
-    const o = tag.configure(SPInstance(this, "getSharingInformation"), "sh.getSharingInformation");
+    const o = SPInstance(this, "getSharingInformation");
     return spPost(o.expand(...expands), body({ request }));
 }
 
@@ -127,7 +126,7 @@ export function getSharingInformation(this: ShareableQueryable, request: ISharin
  */
 export function getObjectSharingSettings(this: ShareableQueryable, useSimplifiedRoles = true): Promise<IObjectSharingSettings> {
 
-    const o = tag.configure(SPInstance(this, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
+    const o = SPInstance(this, "getObjectSharingSettings");
     return spPost<IObjectSharingSettings>(o, body({ useSimplifiedRoles }));
 }
 
@@ -136,7 +135,7 @@ export function getObjectSharingSettings(this: ShareableQueryable, useSimplified
  */
 export function unshareObject(this: ShareableQueryable): Promise<ISharingResult> {
 
-    return spPost(tag.configure(SPInstance(this, "unshareObject"), "sh.unshareObject"));
+    return spPost(SPInstance(this, "unshareObject"));
 }
 
 /**
@@ -146,7 +145,7 @@ export function unshareObject(this: ShareableQueryable): Promise<ISharingResult>
  */
 export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLinkKind): Promise<void> {
 
-    return spPost(tag.configure(SPInstance(this, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind }));
+    return spPost(SPInstance(this, "deleteLinkByKind"), body({ linkKind }));
 }
 
 /**
@@ -157,7 +156,7 @@ export function deleteLinkByKind(this: ShareableQueryable, linkKind: SharingLink
  */
 export function unshareLink(this: ShareableQueryable, linkKind: SharingLinkKind, shareId = emptyGuid): Promise<void> {
 
-    return spPost(tag.configure(SPInstance(this, "unshareLink"), "sh.unshareLink"), body({ linkKind, shareId }));
+    return spPost(SPInstance(this, "unshareLink"), body({ linkKind, shareId }));
 }
 
 /**
@@ -193,6 +192,7 @@ export async function shareWith(
     if (!Array.isArray(def) || def.length < 1) {
         throw Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
     }
+
     let postBody = {
         includeAnonymousLinkInEmail: requireSignin,
         peoplePickerInput: userStr,
@@ -200,20 +200,23 @@ export async function shareWith(
         roleValue: `role:${def[0].Id}`,
         useSimplifiedRoles: true,
     };
+
     if (emailData !== undefined) {
-        postBody = assign(postBody, {
+
+        postBody = <any>{
+            ...postBody,
             emailBody: emailData.body,
             emailSubject: emailData.subject !== undefined ? emailData.subject : "",
             sendEmail: true,
-        });
+        };
     }
 
-    return spPost<ISharingResult>(tag.configure(SPInstance(o, "shareObject"), "sh.shareWith"), body(postBody));
+    return spPost<ISharingResult>(SPInstance(o, "shareObject"), body(postBody));
 }
 
 async function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<Partial<ISharingResult>> {
 
-    const w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
+    const w = Web(extractWebUrl(o.toUrl()));
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 

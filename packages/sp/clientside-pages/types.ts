@@ -12,7 +12,6 @@ import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";
-import { tag } from "../telemetry.js";
 
 /**
  * Page promotion state
@@ -288,7 +287,6 @@ export class _ClientsidePage extends _SPQueryable {
     /**
      * Loads this page's content from the server
      */
-    @tag("csp.load")
     public async load(): Promise<IClientsidePage> {
 
         const item = await this.getItem<{ Id: number; CommentsDisabled: boolean }>("Id", "CommentsDisabled");
@@ -302,7 +300,6 @@ export class _ClientsidePage extends _SPQueryable {
      *
      * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published [Default: true]
      */
-    @tag("csp.save")
     public async save(publish = true): Promise<boolean> {
 
         if (this.json.Id === null) {
@@ -399,7 +396,6 @@ export class _ClientsidePage extends _SPQueryable {
     /**
      * Discards the checkout of this page
      */
-    @tag("csp.discardPageCheckout")
     public async discardPageCheckout(): Promise<void> {
 
         if (this.json.Id === null) {
@@ -414,7 +410,6 @@ export class _ClientsidePage extends _SPQueryable {
     /**
      * Promotes this page as a news item
      */
-    @tag("csp.promoteToNews")
     public async promoteToNews(): Promise<boolean> {
         return this.promoteNewsImpl("promoteToNews");
     }
@@ -465,7 +460,6 @@ export class _ClientsidePage extends _SPQueryable {
      * @param title The title of the new page
      * @param publish If true the page will be published (Default: true)
      */
-    @tag("csp.copy")
     public async copy(web: IWeb, pageName: string, title: string, publish = true, promotedState?: PromotedState): Promise<IClientsidePage> {
 
         const page = await CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState);
@@ -478,7 +472,6 @@ export class _ClientsidePage extends _SPQueryable {
      * @param page Page whose content we replace with this page's content
      * @param publish If true the page will be published after the copy, if false it will be saved but left unpublished (Default: true)
      */
-    @tag("csp.copyTo")
     public async copyTo(page: IClientsidePage, publish = true): Promise<IClientsidePage> {
 
 
@@ -666,7 +659,6 @@ export class _ClientsidePage extends _SPQueryable {
      *
      * @param selects Specific set of fields to include when getting the item
      */
-    @tag("csp.getItem")
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
 
         const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");

@@ -7,7 +7,6 @@ import { SiteUsers, ISiteUsers } from "../site-users/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
@@ -18,7 +17,7 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      * @param id The id of the group to retrieve
      */
     public getById(id: number): ISiteGroup {
-        return tag.configure(SiteGroup(this).concat(`(${id})`), "sgs.getById");
+        return SiteGroup(this).concat(`(${id})`);
     }
 
     /**
@@ -28,7 +27,7 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      */
     public async add(properties: Partial<ISiteGroupInfo>): Promise<IGroupAddResult> {
 
-        const data = await spPost(tag.configure(this, "sgs.add"), body(properties));
+        const data = await spPost(this, body(properties));
 
         return {
             data,
@@ -42,7 +41,7 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      * @param groupName The name of the group to retrieve
      */
     public getByName(groupName: string): ISiteGroup {
-        return tag.configure(SiteGroup(this, `getByName('${groupName}')`), "sgs.getByName");
+        return SiteGroup(this, `getByName('${groupName}')`);
     }
 
     /**
@@ -50,7 +49,6 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      *
      * @param id The id of the group to remove
      */
-    @tag("sgs.removeById")
     public removeById(id: number): Promise<void> {
         return spPost(SiteGroups(this, `removeById('${id}')`));
     }
@@ -60,7 +58,6 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      *
      * @param loginName The name of the group to remove
      */
-    @tag("sgs.removeByLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
         return spPost(SiteGroups(this, `removeByLoginName('${loginName}')`));
     }
@@ -75,13 +72,12 @@ export class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
      *
      */
     public get users(): ISiteUsers {
-        return tag.configure(SiteUsers(this, "users"), "sg.users");
+        return SiteUsers(this, "users");
     }
 
     /**
     * @param props Group properties to update
     */
-    @tag("f.update")
     public async update(props: Partial<ISiteGroupInfo>): Promise<IGroupUpdateResult> {
 
         const data = await spPostMerge(this, body(props));
@@ -96,7 +92,6 @@ export class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
      * Set the owner of a group using a user id
      * @param userId the id of the user that will be set as the owner of the current group
      */
-    @tag("sg.setUserAsOwner")
     public setUserAsOwner(userId: number): Promise<any> {
         return spPost(SiteGroup(this, `SetUserAsOwner(${userId})`));
     }

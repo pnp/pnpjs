@@ -44,7 +44,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
             },
         });
 
-        const data = await spPost(Webs(this, "add").tag("ws.add"), postBody);
+        const data = await spPost(Webs(this, "add"), postBody);
 
         return {
             data,
@@ -62,7 +62,7 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
 @defaultPath("_api/web")
 export class _Web extends _SPInstance<IWebInfo> {
 
-    public delete = deleteable("w");
+    public delete = deleteable();
 
     /**
      * Gets this web's subwebs
@@ -76,7 +76,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * Allows access to the web's all properties collection
      */
     public get allProperties(): ISPInstance {
-        return SPInstance(this, "allproperties").tag("w.allprops");
+        return SPInstance(this, "allproperties");
     }
 
     /**
@@ -84,7 +84,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      *
      */
     public get webinfos(): ISPCollection<IWebInfosData[]> {
-        return SPCollection(this, "webinfos").tag("w.webinfos");
+        return SPCollection(this, "webinfos");
     }
 
     /**
@@ -95,8 +95,7 @@ export class _Web extends _SPInstance<IWebInfo> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
             return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length))
-                .using(FromQueryable(this))
-                .tag("w.getPar");
+                .using(FromQueryable(this));
         }
         return null;
     }
@@ -107,7 +106,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param properties A plain object hash of values to update for the web
      */
     public async update(properties: Record<string, any>): Promise<void> {
-        return spPostMerge(this.tag("w.update"), body(properties));
+        return spPostMerge(this, body(properties));
     }
 
     /**
@@ -127,7 +126,7 @@ export class _Web extends _SPInstance<IWebInfo> {
             shareGenerated,
         });
 
-        return spPost(Web(this, "applytheme").tag("w.applyTheme"), postBody);
+        return spPost(Web(this, "applytheme"), postBody);
     }
 
     /**
@@ -137,7 +136,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      */
     public applyWebTemplate(template: string): Promise<void> {
 
-        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`).tag("w.applyWT"));
+        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`));
     }
 
     /**
@@ -146,7 +145,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param query The change query
      */
     public getChanges(query: IChangeQuery): Promise<any> {
-        return spPost(Web(this, "getchanges").tag("w.getChanges"), body({ query }));
+        return spPost(Web(this, "getchanges"), body({ query }));
     }
 
     /**
@@ -157,7 +156,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
      */
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
-        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`).tag("w.mapToIcon")();
+        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`)();
     }
 
     /**
@@ -166,7 +165,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param key Id of storage entity to be set
      */
     public getStorageEntity(key: string): Promise<IStorageEntity> {
-        return Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`).tag("w.getStorageEntity")();
+        return Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`)();
     }
 
     /**
@@ -178,7 +177,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param comments Comments of storage entity to be set
      */
     public setStorageEntity(key: string, value: string, description = "", comments = ""): Promise<void> {
-        return spPost(Web(this, "setStorageEntity").tag("w.setStorageEntity"), body({
+        return spPost(Web(this, "setStorageEntity"), body({
             comments,
             description,
             key,
@@ -192,7 +191,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param key Id of storage entity to be removed
      */
     public removeStorageEntity(key: string): Promise<void> {
-        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`).tag("w.rSE"));
+        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
     }
 
     /**
@@ -202,8 +201,7 @@ export class _Web extends _SPInstance<IWebInfo> {
     * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
     */
     public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISPCollection<IWebInfosData[]> {
-        const o = SPCollection(this, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
-        return o.tag("w.getSFFCU");
+        return SPCollection(this, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
     }
 
     /**
@@ -221,7 +219,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
      */
     public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISPCollection {
-        return SPCollection(this, `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`).tag("w.availWT");
+        return SPCollection(this, `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`);
     }
 }
 export interface IWeb extends _Web, IDeleteable { }

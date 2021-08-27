@@ -23,7 +23,7 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(DebugLogger());
 
-        const w = await sp.web.getFolderByServerRelativePath("/sites/dev/shared Documents/test-folder99")();
+        const w = await sp.web.lists.getByTitle("CommentList").items.getById(1).versions();
         
         // const q = await w.syncSolutionToTeams("asd");
 

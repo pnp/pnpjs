@@ -4,7 +4,6 @@ import { body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
-import { tag } from "../telemetry.js";
 
 const funcs = new Map<string, string>([
     ["text", "Querytext"],
@@ -92,7 +91,6 @@ export class _Search extends _SPInstance {
     /**
      * @returns Promise
      */
-    @tag("se.execute")
     public async run(queryInit: SearchQueryInit): Promise<SearchResults> {
 
         const query = this.parseQuery(queryInit);

@@ -1,6 +1,5 @@
 import { _ClientsidePage } from "../clientside-pages/types.js";
 import { ICommentInfo, IComment, ILikedByInformation } from "./types.js";
-import { tag } from "../telemetry.js";
 import { IItemUpdateResult, Item } from "../items/index.js";
 import { spPost } from "../operations.js";
 import { SPQueryable } from "../sharepointqueryable.js";
@@ -83,7 +82,7 @@ _ClientsidePage.prototype.clearComments = async function (this: _ClientsidePage)
 _ClientsidePage.prototype.getComments = async function (this: _ClientsidePage): Promise<ICommentInfo[]> {
 
     const item = await this.getItem();
-    return tag.configure(item, "").comments();
+    return item.comments();
 };
 
 _ClientsidePage.prototype.like = async function (this: _ClientsidePage): Promise<void> {
@@ -102,7 +101,6 @@ _ClientsidePage.prototype.getLikedByInformation = async function (this: _Clients
 };
 
 _ClientsidePage.prototype.enableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
-    tag.configure(this, "csp.enableComments");
     return this.setCommentsOn(true).then(r => {
         this.commentsDisabled = false;
         return r;
@@ -110,7 +108,6 @@ _ClientsidePage.prototype.enableComments = async function (this: _ClientsidePage
 };
 
 _ClientsidePage.prototype.disableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
-    tag.configure(this, "csp.disableComments");
     return this.setCommentsOn(false).then(r => {
         this.commentsDisabled = true;
         return r;

@@ -3,12 +3,12 @@ import { extractWebUrl } from "../utils/extractweburl.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { body } from "@pnp/queryable";
-import { tag } from "../telemetry.js";
+
 
 @defaultPath("_api/SP.RelatedItemManager")
 export class _RelatedItemManager extends _SPQueryable implements IRelatedItemManager {
 
-    @tag("rim.getRelatedItems")
+    
     public getRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]> {
 
         const query = <any>RelatedItemManager(this);
@@ -20,7 +20,7 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    @tag("rim.getPageOneRelatedItems")
+    
     public getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]> {
 
         const query = <any>RelatedItemManager(this);
@@ -32,7 +32,7 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    @tag("rim.addSingleLink")
+    
     public addSingleLink(sourceListName: string,
         sourceItemId: number,
         sourceWebUrl: string,
@@ -55,7 +55,7 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    @tag("rim.ToUrl")
+    
     public addSingleLinkToUrl(sourceListName: string, sourceItemId: number, targetItemUrl: string, tryAddReverseLink = false): Promise<void> {
 
         const query = <any>RelatedItemManager(this);
@@ -69,7 +69,7 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    @tag("rim.FromUrl")
+    
     public addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink = false): Promise<void> {
 
         const query = <any>RelatedItemManager(this);
@@ -83,7 +83,7 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    @tag("rim.deleteSingleLink")
+    
     public deleteSingleLink(sourceListName: string,
         sourceItemId: number,
         sourceWebUrl: string,

@@ -1,4 +1,4 @@
-import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, SPFxAdalClient, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime, objectDefinedNotNull } from "@pnp/core";
+import { ILibraryConfiguration, ITypedHash, IHttpClientImpl, DefaultRuntime, ISPFXContext, onRuntimeCreate, Runtime, objectDefinedNotNull } from "@pnp/core";
 
 export interface IGraphConfigurationPart {
     graph?: IGraphConfigurationProps;
@@ -32,7 +32,8 @@ onRuntimeCreate((runtime: Runtime) => {
             // we keep a ref to the runtime within which we are assigned
             const context = runtime.get<ILibraryConfiguration, ISPFXContext>("spfxContext");
             if (objectDefinedNotNull(context)) {
-                return new SPFxAdalClient(context);
+                // return new SPFxAdalClient(context);
+                return null;
             }
             throw Error("There is no Graph Client available, either set one using configuration or provide a valid SPFx Context.");
         },

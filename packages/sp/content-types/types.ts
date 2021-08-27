@@ -11,7 +11,6 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
@@ -21,7 +20,6 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
      *
      * @param contentTypeId in the following format, for example: 0x010102
      */
-    @tag("cts.addAvailableContentType")
     public async addAvailableContentType(contentTypeId: string): Promise<IContentTypeAddResult> {
 
         const data = await spPost(ContentTypes(this, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }));
@@ -36,7 +34,7 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
      * @param id The id of the content type to get, in the following format, for example: 0x010102
      */
     public getById(id: string): IContentType {
-        return tag.configure(ContentType(this).concat(`('${id}')`), "cts.getById");
+        return ContentType(this).concat(`('${id}')`);
     }
 
     /**
@@ -49,7 +47,6 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
      * @param additionalSettings Any additional settings to provide when creating the content type
      *
      */
-    @tag("cts.add")
     public async add(
         id: string,
         name: string,
@@ -58,10 +55,10 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
         additionalSettings: ITypedHash<string | number | boolean> = {}): Promise<IContentTypeAddResult> {
 
         const postBody = body({
-            "Description": description,
-            "Group": group,
-            "Id": { "StringValue": id },
-            "Name": name,
+            Description: description,
+            Group: group,
+            Id: { StringValue: id },
+            Name: name,
             ...additionalSettings,
         });
 
@@ -75,34 +72,34 @@ export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 
 export class _ContentType extends _SPInstance<IContentTypeInfo> {
 
-    public delete = deleteable("ct");
+    public delete = deleteable();
 
     /**
      * Gets the column (also known as field) references in the content type.
      */
     public get fieldLinks(): IFieldLinks {
-        return tag.configure(FieldLinks(this), "ct.fieldLinks");
+        return FieldLinks(this);
     }
 
     /**
      * Gets a value that specifies the collection of fields for the content type.
      */
     public get fields(): ISPCollection {
-        return tag.configure(SPCollection(this, "fields"), "ct.fields");
+        return SPCollection(this, "fields");
     }
 
     /**
      * Gets the parent content type of the content type.
      */
     public get parent(): IContentType {
-        return tag.configure(ContentType(this, "parent"), "ct.parent");
+        return ContentType(this, "parent");
     }
 
     /**
      * Gets a value that specifies the collection of workflow associations for the content type.
      */
     public get workflowAssociations(): ISPCollection {
-        return tag.configure(SPCollection(this, "workflowAssociations"), "ct.workflowAssociations");
+        return SPCollection(this, "workflowAssociations");
     }
 }
 export interface IContentType extends _ContentType, IDeleteable { }
@@ -125,7 +122,7 @@ export class _FieldLinks extends _SPCollection<IFieldLinkInfo[]> {
     * @param id The GUID id of the field link
     */
     public getById(id: string): IFieldLink {
-        return tag.configure(FieldLink(this).concat(`(guid'${id}')`), "fls.getById");
+        return FieldLink(this).concat(`(guid'${id}')`);
     }
 }
 export interface IFieldLinks extends _FieldLinks { }

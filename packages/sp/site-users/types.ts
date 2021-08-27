@@ -10,7 +10,6 @@ import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { PrincipalType } from "../types.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("siteusers")
 export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
@@ -21,7 +20,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * @param id The id of the user to retrieve
      */
     public getById(id: number): ISiteUser {
-        return tag.configure(SiteUser(this, `getById(${id})`), "sus.getById");
+        return SiteUser(this, `getById(${id})`);
     }
 
     /**
@@ -30,7 +29,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * @param email The email address of the user to retrieve
      */
     public getByEmail(email: string): ISiteUser {
-        return tag.configure(SiteUser(this, `getByEmail('${email}')`), "sus.getByEmail");
+        return SiteUser(this, `getByEmail('${email}')`);
     }
 
     /**
@@ -39,7 +38,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * @param loginName The login name of the user to retrieve
      */
     public getByLoginName(loginName: string): ISiteUser {
-        return tag.configure(SiteUser(this).concat(`('!@v::${encodeURIComponent(loginName)}')`), "sus.getByLoginName");
+        return SiteUser(this).concat(`('!@v::${encodeURIComponent(loginName)}')`);
     }
 
     /**
@@ -47,7 +46,6 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      *
      * @param id The id of the user to remove
      */
-    @tag("sus.remId")
     public removeById(id: number): Promise<any> {
         return spPost(SiteUsers(this, `removeById(${id})`));
     }
@@ -57,7 +55,6 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      *
      * @param loginName The login name of the user to remove
      */
-    @tag("sus.remLoginName")
     public removeByLoginName(loginName: string): Promise<any> {
         const o = SiteUsers(this, "removeByLoginName(@v)");
         o.query.set("@v", `'${encodeURIComponent(loginName)}'`);
@@ -70,7 +67,6 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * @param loginName The login name of the user to add  to a site collection
      *
      */
-    @tag("sus.add")
     public async add(loginName: string): Promise<ISiteUser> {
         await spPost(this, body({ LoginName: loginName }));
         return this.getByLoginName(loginName);
@@ -85,14 +81,14 @@ export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);
  */
 export class _SiteUser extends _SPInstance<ISiteUserInfo> {
 
-    public delete = deleteable("su");
+    public delete = deleteable();
 
     /**
      * Gets the groups for this user
      *
      */
     public get groups(): ISiteGroups {
-        return tag.configure(SiteGroups(this, "groups"), "su.groups");
+        return SiteGroups(this, "groups");
     }
 
     /**
@@ -100,7 +96,6 @@ export class _SiteUser extends _SPInstance<ISiteUserInfo> {
      *
      * @param props Group properties to update
      */
-    @tag("f.update")
     public async update(props: Partial<ISiteUserInfo>): Promise<IUserUpdateResult> {
 
         const data = await spPostMerge(this, body(props));

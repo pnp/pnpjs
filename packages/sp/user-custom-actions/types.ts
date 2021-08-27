@@ -8,7 +8,6 @@ import {
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 import { IBasePermissions } from "../security/index.js";
 
 @defaultPath("usercustomactions")
@@ -20,7 +19,7 @@ export class _UserCustomActions extends _SPCollection<IUserCustomActionInfo[]> {
      * @param id The GUID id of the user custom action to retrieve
      */
     public getById(id: string): IUserCustomAction {
-        return tag.configure(UserCustomAction(this).concat(`('${id}')`), "ucas.getById");
+        return UserCustomAction(this).concat(`('${id}')`);
     }
 
     /**
@@ -28,7 +27,6 @@ export class _UserCustomActions extends _SPCollection<IUserCustomActionInfo[]> {
      *
      * @param properties The information object of property names and values which define the new user custom action
      */
-    @tag("ucas.add")
     public async add(properties: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionAddResult> {
         const data = await spPost(this, body(properties));
         return {
@@ -40,7 +38,6 @@ export class _UserCustomActions extends _SPCollection<IUserCustomActionInfo[]> {
     /**
      * Deletes all user custom actions in the collection
      */
-    @tag("ucas.clear")
     public clear(): Promise<void> {
         return spPost(UserCustomActions(this, "clear"));
     }
@@ -50,14 +47,13 @@ export const UserCustomActions = spInvokableFactory<IUserCustomActions>(_UserCus
 
 export class _UserCustomAction extends _SPInstance<IUserCustomActionInfo> {
 
-    public delete = deleteable("uca");
+    public delete = deleteable();
 
     /**
     * Updates this user custom action with the supplied properties
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    @tag("uca.update")
     public async update(props: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionUpdateResult> {
 
         const data = await spPostMerge(this, body(props));

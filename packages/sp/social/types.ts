@@ -6,7 +6,6 @@ import { defaultPath } from "../decorators.js";
 import { hOP, IFetchOptions } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("_api/social.following")
 export class _Social extends _SPInstance implements ISocial {
@@ -15,29 +14,24 @@ export class _Social extends _SPInstance implements ISocial {
         return MySocial(this);
     }
 
-    @tag("soc.getFollowedSitesUri")
     public async getFollowedSitesUri(): Promise<string> {
         const r = await SocialCloneFactory(this, "FollowedSitesUri")();
         return r.FollowedSitesUri || r;
     }
 
-    @tag("soc.getFollowedDocumentsUri")
     public async getFollowedDocumentsUri(): Promise<string> {
         const r = await SocialCloneFactory(this, "FollowedDocumentsUri")();
         return r.FollowedDocumentsUri || r;
     }
 
-    @tag("soc.follow")
     public async follow(actorInfo: ISocialActorInfo): Promise<SocialFollowResult> {
         return await spPost(SocialCloneFactory(this, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
-    @tag("soc.isFollowed")
     public async isFollowed(actorInfo: ISocialActorInfo): Promise<boolean> {
         return await spPost(SocialCloneFactory(this, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
-    @tag("soc.stopFollowing")
     public async stopFollowing(actorInfo: ISocialActorInfo): Promise<void> {
         return await spPost(SocialCloneFactory(this, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
     }
@@ -64,25 +58,25 @@ const SocialCloneFactory = (baseUrl: string | ISPQueryable, paths?: string): ISo
 @defaultPath("my")
 export class _MySocial extends _SPInstance {
 
-    @tag("msoc.followed")
+
     public async followed(types: SocialActorTypes): Promise<ISocialActor[]> {
         const r = await MySocialCloneFactory(this, `followed(types=${types})`)();
         return hOP(r, "Followed") ? r.Followed.results : r;
     }
 
-    @tag("msoc.followedCount")
+
     public async followedCount(types: SocialActorTypes): Promise<number> {
         const r = await MySocialCloneFactory(this, `followedcount(types=${types})`)();
         return r.FollowedCount || r;
     }
 
-    @tag("msoc.followers")
+
     public async followers(): Promise<ISocialActor[]> {
         const r = await MySocialCloneFactory(this, "followers")();
         return hOP(r, "Followers") ? r.Followers.results : r;
     }
 
-    @tag("msoc.suggestions")
+
     public async suggestions(): Promise<ISocialActor[]> {
         const r = await MySocialCloneFactory(this, "suggestions")();
         return hOP(r, "Suggestions") ? r.Suggestions.results : r;

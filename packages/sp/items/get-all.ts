@@ -1,5 +1,5 @@
 import { InjectHeaders } from "@pnp/queryable";
-// import { tag } from "../telemetry.js";
+// 
 import { _Items, Items, PagedItemCollection } from "./types.js";
 
 declare module "./types" {

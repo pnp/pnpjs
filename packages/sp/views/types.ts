@@ -9,7 +9,6 @@ import {
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("views")
 export class _Views extends _SPCollection<IViewInfo[]> {
@@ -21,7 +20,6 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param personalView True if this is a personal view, otherwise false, default = false
      * @param additionalSettings Will be passed as part of the view creation body
      */
-    @tag("vs.add")
     public async add(Title: string, PersonalView = false, additionalSettings: ITypedHash<any> = {}): Promise<IViewAddResult> {
 
         const data = await spPost(Views(this, null), body({
@@ -59,7 +57,7 @@ export const Views = spInvokableFactory<IViews>(_Views);
 
 export class _View extends _SPInstance<IViewInfo> {
 
-    public delete = deleteable("vw");
+    public delete = deleteable();
 
     public get fields(): IViewFields {
         return ViewFields(this);
@@ -70,7 +68,6 @@ export class _View extends _SPInstance<IViewInfo> {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    @tag("vw.update")
     public async update(props: Partial<IViewInfo>): Promise<IViewUpdateResult> {
 
         const data = await spPostMerge(this, body(props));
@@ -87,7 +84,6 @@ export class _View extends _SPInstance<IViewInfo> {
      * Returns the list view as HTML.
      *
      */
-    @tag("v.renderAsHtml")
     public renderAsHtml(): Promise<string> {
         return View(this, "renderashtml")();
     }
@@ -97,7 +93,6 @@ export class _View extends _SPInstance<IViewInfo> {
      *
      * @param viewXml The view XML to set
      */
-    @tag("v.setViewXml")
     public setViewXml(viewXml: string): Promise<void> {
         return spPost(View(this, "SetViewXml"), body({ viewXml }));
     }
@@ -111,7 +106,6 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
     /**
      * Gets a value that specifies the XML schema that represents the collection.
      */
-    @tag("vfs.getSchemaXml")
     public getSchemaXml(): Promise<string> {
         return ViewFields(this, "schemaxml")();
     }
@@ -121,7 +115,6 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
      *
      * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
      */
-    @tag("vfs.add")
     public add(fieldTitleOrInternalName: string): Promise<void> {
         return spPost(ViewFields(this, `addviewfield('${fieldTitleOrInternalName}')`));
     }
@@ -132,7 +125,6 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
      * @param field The case-sensitive internal name of the field to move.
      * @param index The zero-based index of the new position for the field.
      */
-    @tag("vfs.move")
     public move(field: string, index: number): Promise<void> {
         return spPost(ViewFields(this, "moveviewfieldto"), body({ field, index }));
     }
@@ -140,7 +132,6 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
     /**
      * Removes all the fields from the collection.
      */
-    @tag("vfs.removeAll")
     public removeAll(): Promise<void> {
         return spPost(ViewFields(this, "removeallviewfields"));
     }
@@ -150,7 +141,6 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
      *
      * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
      */
-    @tag("vfs.remove")
     public remove(fieldInternalName: string): Promise<void> {
         return spPost(ViewFields(this, `removeviewfield('${fieldInternalName}')`));
     }

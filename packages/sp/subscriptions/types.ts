@@ -6,7 +6,6 @@ import {
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPatch, spDelete } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 @defaultPath("subscriptions")
 export class _Subscriptions extends _SPCollection {
@@ -18,7 +17,7 @@ export class _Subscriptions extends _SPCollection {
     */
     public getById(subscriptionId: string): ISubscription {
 
-        return tag.configure(Subscription(this).concat(`('${subscriptionId}')`), "subs.getById");
+        return Subscription(this).concat(`('${subscriptionId}')`);
     }
 
     /**
@@ -28,7 +27,6 @@ export class _Subscriptions extends _SPCollection {
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
      * @param clientState A client specific string (optional)
      */
-    @tag("subs.add")
     public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult> {
 
         const postBody: any = {
@@ -58,7 +56,6 @@ export class _Subscription extends _SPInstance {
      * @param notificationUrl The url to receive the notifications (optional)
      * @param clientState A client specific string (optional)
      */
-    @tag("sub.update")
     public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult> {
 
         const postBody: any = {};
@@ -84,7 +81,6 @@ export class _Subscription extends _SPInstance {
      * Removes this webhook subscription
      *
      */
-    @tag("sub.delete")
     public delete(): Promise<void> {
         return spDelete(this);
     }

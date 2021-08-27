@@ -9,7 +9,6 @@ import {
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { tag } from "../telemetry.js";
 
 /**
  * Represents a collection of navigation nodes
@@ -23,7 +22,7 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
      * @param id The id of the node
      */
     public getById(id: number): INavigationNode {
-        return tag.configure(NavigationNode(this).concat(`(${id})`), "nns.getById");
+        return NavigationNode(this).concat(`(${id})`);
     }
 
     /**
@@ -33,7 +32,6 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
      * @param url The url of the node
      * @param visible If true the node is visible, otherwise it is hidden (default: true)
      */
-    @tag("nns.add")
     public async add(title: string, url: string, visible = true): Promise<INavigationNodeAddResult> {
 
         const postBody = body({
@@ -56,7 +54,6 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
      * @param nodeId Id of the node to move
      * @param previousNodeId Id of the node after which we move the node specified by nodeId
      */
-    @tag("nns.moveAfter")
     public moveAfter(nodeId: number, previousNodeId: number): Promise<void> {
 
         const postBody = body({
@@ -77,13 +74,13 @@ export const NavigationNodes = spInvokableFactory<INavigationNodes>(_NavigationN
  */
 export class _NavigationNode extends _SPInstance<INavNodeInfo> {
 
-    public delete = deleteable("nn");
+    public delete = deleteable();
 
     /**
      * Represents the child nodes of this node
      */
     public get children(): INavigationNodes {
-        return tag.configure(NavigationNodes(this, "children"), "nn.children");
+        return NavigationNodes(this, "children");
     }
 
     /**
@@ -91,7 +88,6 @@ export class _NavigationNode extends _SPInstance<INavNodeInfo> {
      *
      * @param properties Properties used to update this node
      */
-    @tag("nn.update")
     public async update(properties: Partial<INavNodeInfo>): Promise<INavNodeUpdateResult> {
 
         const data = await spPostMerge(this, body(properties));
@@ -122,7 +118,7 @@ export class _Navigation extends _SPQueryable {
      *
      */
     public get quicklaunch(): INavigationNodes {
-        return tag.configure(NavigationNodes(this, "quicklaunch"), "n.quicklaunch");
+        return NavigationNodes(this, "quicklaunch");
     }
 
     /**
@@ -130,7 +126,7 @@ export class _Navigation extends _SPQueryable {
      *
      */
     public get topNavigationBar(): INavigationNodes {
-        return tag.configure(NavigationNodes(this, "topnavigationbar"), "n.topnavigationbar");
+        return NavigationNodes(this, "topnavigationbar");
     }
 }
 export interface INavigation {
@@ -156,7 +152,6 @@ export class _NavigationService extends _SPQueryable {
      * @param mapProviderName The name identifying the SiteMapProvider to be used
      * @param customProperties comma seperated list of custom properties to be returned.
      */
-    @tag("ns.getMenuState")
     public getMenuState(menuNodeKey: string = null, depth = 10, mapProviderName: string = null, customProperties: string = null): Promise<IMenuNodeCollection> {
 
         return spPost(<any>NavigationService("MenuState"), body({
@@ -173,7 +168,6 @@ export class _NavigationService extends _SPQueryable {
      * @param currentUrl A url representing the SiteMapNode
      * @param mapProviderName The name identifying the SiteMapProvider to be used
      */
-    @tag("ns.getMenuNodeKey")
     public getMenuNodeKey(currentUrl: string, mapProviderName: string = null): Promise<string> {
 
         return spPost(<any>NavigationService("MenuNodeKey"), body({

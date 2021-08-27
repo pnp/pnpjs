@@ -148,7 +148,7 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
             "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
         }));
 
-        const responses: Response[] = await spPost(batchQuery.tag("batch"), body(batchBody.join("")));
+        const responses: Response[] = await spPost(batchQuery, body(batchBody.join("")));
 
         if (responses.length !== requests.length) {
             throw Error("Could not properly parse responses to match requests in batch.");

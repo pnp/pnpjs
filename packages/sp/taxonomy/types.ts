@@ -1,7 +1,6 @@
 import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 import { _SPInstance, spInvokableFactory, _SPCollection } from "../sharepointqueryable.js";
-import { tag } from "../telemetry.js";
 
 /**
  * Describes a collection of Form objects
@@ -14,14 +13,14 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
      * Gets the term groups associated with this tenant
      */
     public get groups(): ITermGroups {
-        return tag.configure(TermGroups(this), "txts.groups");
+        return TermGroups(this);
     }
 
     /**
      * Gets the term groups associated with this tenant
      */
     public get sets(): ITermSets {
-        return tag.configure(TermSets(this), "txts.sets");
+        return TermSets(this);
     }
 }
 export interface ITermStore extends _TermStore { }
@@ -37,7 +36,7 @@ export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermGroup {
-        return tag.configure(TermGroup(this, id), "txtgs.getById");
+        return TermGroup(this, id);
     }
 }
 export interface ITermGroups extends _TermGroups { }
@@ -49,7 +48,7 @@ export class _TermGroup extends _SPInstance<ITermGroupInfo> {
      * Gets the term sets associated with this tenant
      */
     public get sets(): ITermSets {
-        return tag.configure(TermSets(this, "sets"), "txtg.sets");
+        return TermSets(this, "sets");
     }
 }
 export interface ITermGroup extends _TermGroup { }
@@ -65,7 +64,7 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
      * @param id Id of the term group to access
      */
     public getById(id: string): ITermSet {
-        return tag.configure(TermSet(this, id), "txts.getById");
+        return TermSet(this, id);
     }
 }
 export interface ITermSets extends _TermSets { }
@@ -81,19 +80,19 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
     }
 
     public get parentGroup(): ITermGroup {
-        return tag.configure(TermGroup(this, "parentGroup"), "txts.parentGroup");
+        return TermGroup(this, "parentGroup");
     }
 
     public get children(): IChildren {
-        return tag.configure(Children(this), "txts.children");
+        return Children(this);
     }
 
     public get relations(): IRelations {
-        return tag.configure(Relations(this), "txts.relations");
+        return Relations(this);
     }
 
     public getTermById(id: string): ITerm {
-        return tag.configure(Term(this, `terms/${id}`), "txts.getTermById");
+        return Term(this, `terms/${id}`);
     }
 
     /**
@@ -194,15 +193,15 @@ export const Terms = spInvokableFactory<ITerms>(_Terms);
 export class _Term extends _SPInstance<ITermInfo> {
 
     public get children(): IChildren {
-        return tag.configure(Children(this), "txt.children");
+        return Children(this);
     }
 
     public get relations(): IRelations {
-        return tag.configure(Relations(this), "txt.relations");
+        return Relations(this);
     }
 
     public get set(): ITermSet {
-        return tag.configure(TermSet(this, "set"), "txt.set");
+        return TermSet(this, "set");
     }
 }
 export interface ITerm extends _Term { }
@@ -217,7 +216,7 @@ export class _Relations extends _SPCollection<IRelationInfo[]> {
      * @param id Id of the term group to access
      */
     public getById(id: string): IRelation {
-        return tag.configure(Relation(this, id), "txrs.getById");
+        return Relation(this, id);
     }
 }
 export interface IRelations extends _Relations { }
@@ -226,15 +225,15 @@ export const Relations = spInvokableFactory<IRelations>(_Relations);
 export class _Relation extends _SPInstance<IRelationInfo> {
 
     public get fromTerm(): ITerm {
-        return tag.configure(Term(this, "fromTerm"), "txr.fromTerm");
+        return Term(this, "fromTerm");
     }
 
     public get toTerm(): ITerm {
-        return tag.configure(Term(this, "toTerm"), "txr.toTerm");
+        return Term(this, "toTerm");
     }
 
     public get set(): ITermSet {
-        return tag.configure(TermSet(this, "set"), "txr.set");
+        return TermSet(this, "set");
     }
 }
 export interface IRelation extends _Relation { }
