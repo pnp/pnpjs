@@ -12,7 +12,7 @@ import { getRandomString } from "@pnp/core";
 import { SharingLinkKind } from "@pnp/sp/sharing";
 import { sp } from "@pnp/sp";
 
-describe("Folders", () => {
+describe.skip("Folders", () => {
 
     if (testSettings.enableWebTests) {
 
@@ -33,7 +33,7 @@ describe("Folders", () => {
 
 });
 
-describe("Folder", () => {
+describe.skip("Folder", () => {
 
     if (testSettings.enableWebTests) {
 
