@@ -1,7 +1,7 @@
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable2 } from "@pnp/queryable";
-import { DefaultHeaders, DefaultInit } from "./defaults";
-import { SPTagging } from "./telemetry-2";
+import { DefaultHeaders, DefaultInit } from "./defaults.js";
+import { SPTagging } from "./telemetry.js";
 
 interface ISPFXContext {
 

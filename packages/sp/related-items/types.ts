@@ -4,11 +4,9 @@ import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 
-
 @defaultPath("_api/SP.RelatedItemManager")
 export class _RelatedItemManager extends _SPQueryable implements IRelatedItemManager {
 
-    
     public getRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]> {
 
         const query = <any>RelatedItemManager(this);
@@ -20,7 +18,6 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    
     public getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]> {
 
         const query = <any>RelatedItemManager(this);
@@ -32,7 +29,6 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    
     public addSingleLink(sourceListName: string,
         sourceItemId: number,
         sourceWebUrl: string,
@@ -55,7 +51,6 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    
     public addSingleLinkToUrl(sourceListName: string, sourceItemId: number, targetItemUrl: string, tryAddReverseLink = false): Promise<void> {
 
         const query = <any>RelatedItemManager(this);
@@ -69,7 +64,6 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    
     public addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink = false): Promise<void> {
 
         const query = <any>RelatedItemManager(this);
@@ -83,7 +77,6 @@ export class _RelatedItemManager extends _SPQueryable implements IRelatedItemMan
         }));
     }
 
-    
     public deleteSingleLink(sourceListName: string,
         sourceItemId: number,
         sourceWebUrl: string,

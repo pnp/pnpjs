@@ -13,7 +13,7 @@ export * from "./types.js";
 
 export {
     SPTagging,
-} from "./behaviors/telemetry-2.js";
+} from "./behaviors/telemetry.js";
 
 export {
     extractWebUrl,
@@ -29,4 +29,4 @@ export {
 } from "./utils/odataUrlFrom.js";
 
 export * from "./behaviors/defaults.js";
-export * from "./behaviors/telemetry-2.js";
+export * from "./behaviors/telemetry.js";

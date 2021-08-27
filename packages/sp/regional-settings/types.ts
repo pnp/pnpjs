@@ -4,22 +4,12 @@ import {
     SPCollection,
     spInvokableFactory,
     _SPCollection,
-    ISPCollection,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
-
-    /**
-     * Gets the collection of languages used in a server farm.
-     * ** Please use getInstalledLanguages instead of this method **
-     */
-    public get installedLanguages(): ISPCollection<{ Items: IInstalledLanguageInfo[] }> {
-        console.warn("Deprecated: RegionalSettings.installedLanguages is deprecated, please use RegionalSettings.getInstalledLanguages");
-        return <any>SPCollection(this, "installedlanguages")
-    }
 
     /**
      * Gets time zone
@@ -29,7 +19,7 @@ export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
     }
 
     /**
-     * Gets time zoneshttp://www.apache.org/licenses/LICENSE-2.0
+     * Gets time zones
      */
     public get timeZones(): ITimeZones {
         return TimeZones(this);

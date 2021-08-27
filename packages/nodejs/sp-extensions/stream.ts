@@ -74,7 +74,6 @@ extendFactory(Files, {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      * @returns The new File and the raw response.
      */
-    // 
     async addChunked(
         url: string,
         content: Blob | ReadStream,

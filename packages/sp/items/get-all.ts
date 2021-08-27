@@ -1,5 +1,4 @@
 import { InjectHeaders } from "@pnp/queryable";
-// 
 import { _Items, Items, PagedItemCollection } from "./types.js";
 
 declare module "./types" {
