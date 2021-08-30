@@ -5,8 +5,7 @@
         "../common/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
-        "../sp/**/*.ts",
-        "../graph/**/*.ts"
+        "../sp/**/*.ts"
     ],
     "references": [
         {
@@ -20,9 +19,6 @@
         },
         {
             "path": "../sp/tsconfig.cjs.json"
-        },
-        {
-            "path": "../graph/tsconfig.cjs.json"
         }
     ]
 }

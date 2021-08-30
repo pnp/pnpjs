@@ -1,4 +1,4 @@
-import { invokableFactory, body, headers, FromQueryable } from "@pnp/queryable";
+import { body, headers, FromQueryable } from "@pnp/queryable";
 import { ITypedHash, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
@@ -886,7 +886,8 @@ const ClientsidePage = (
     sections: CanvasSection[] = [],
     commentsDisabled = false): IClientsidePage => {
 
-    return invokableFactory<IClientsidePage>(_ClientsidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
+    // TODO:: does this work
+    return new _ClientsidePage(baseUrl, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
