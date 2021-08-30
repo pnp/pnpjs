@@ -12,6 +12,7 @@ export interface IConfigOptions {
 export interface IFetchOptions extends IConfigOptions {
     method?: string;
     body?: any;
+    signal?: AbortSignal;
 }
 
 export interface IHttpClientImpl {

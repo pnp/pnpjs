@@ -21,11 +21,19 @@ import { IODataParser, ODataParser } from "./parsers.js";
 export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData> {
 
     let body: any;
-    // this handles bodies that cannot be JSON encoded (Blob, etc)
-    // Note however, even bodies that can be serialized will not be cloned.
-    if (source.options && source.options.body) {
-        body = source.options.body;
-        source.options.body = "-";
+    let signal: any;
+    if (source.options) {
+        // this handles bodies that cannot be JSON encoded (Blob, etc)
+        // Note however, even bodies that can be serialized will not be cloned.
+        if(source.options.body) {
+            body = source.options.body;
+            source.options.body = "-";
+        }
+        // this handles signal objects that cannot be JSON encoded.
+        if(source.options.signal) {
+            signal = source.options.signal;
+            source.options.signal = null;
+        }
     }
 
     const s = JSON.stringify(source, (key: keyof IQueryableData, value: any) => {
@@ -62,6 +70,11 @@ export function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQu
     if (body) {
         parsed.options.body = body;
         source.options.body = body;
+    }
+
+    if(signal) {
+        parsed.options.signal = signal;
+        source.options.signal = signal;
     }
 
     return parsed;
