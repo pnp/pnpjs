@@ -20,10 +20,7 @@ import { Example } from "./v3-patrick.js";
 import(findup("settings.js")).then((settings: ITestingSettings) => {
 
     // // setup console logger
-    Logger.subscribe(new ConsoleListener());
-
-    // change this to LogLevel.Verbose for more details about the request
-    Logger.activeLogLevel = LogLevel.Info;
+    Logger.subscribe(ConsoleListener());
 
     Example(settings);
 

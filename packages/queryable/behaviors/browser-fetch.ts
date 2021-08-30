@@ -61,9 +61,11 @@ export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe
 
                     try {
 
-                        this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+                        const u = url.toString();
 
-                        response = await fetch(url.toString(), init);
+                        this.emit.log(`Fetch: ${init.method} ${u}`, LogLevel.Verbose);
+
+                        response = await fetch(u, init);
 
                         // if we got a good response, return it, otherwise see if we can retry
                         return response.ok ? response : retry();

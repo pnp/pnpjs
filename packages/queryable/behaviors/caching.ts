@@ -14,13 +14,11 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: Cac
     }
 
     if (!isFunc(expireFunc)) {
-        // TODO:: tie this default timeline to config? or the config is having to create the function
         expireFunc = () => dateAdd(new Date(), "minute", 5);
     }
 
     return (instance: Queryable) => {
-        // Regardless of cached result, update cache async
-        // instance.AsyncOverride = lazy;
+
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             const key = keyFactory(url.toString());

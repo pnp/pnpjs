@@ -13,5 +13,4 @@ export * from "./behaviors/browser-fetch.js";
 export * from "./behaviors/caching.js";
 export * from "./behaviors/cachingPessimistic.js";
 export * from "./behaviors/inject-headers.js";
-export * from "./behaviors/pnp-logging.js";
 export * from "./behaviors/queryable-from.js";

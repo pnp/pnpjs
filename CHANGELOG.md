@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed package "odata" -> "queryable"
 - Renamed package "common" -> "core"
 
+- logging:
+  - listeners are now factory functions (new ConsoleListener() => ConsoleListener()), drop the 'new'
+
 - sp:
   - web.update return changed to Promise<void>
   - web.getParentWeb return changed to Promise<IWeb>

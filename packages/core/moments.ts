@@ -24,7 +24,7 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
 
 /**
  * Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer.
- * This is very much like the redux pattern taking the arguments as the state which each observer may modify, returning a new state
+ * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
  *
  * @returns The final set of arguments
  */

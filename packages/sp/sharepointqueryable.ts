@@ -1,6 +1,5 @@
 import { combine, isUrlAbsolute } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
-import { Logger, LogLevel } from "@pnp/logging";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 import { SPTagging } from "./behaviors/telemetry.js";
 
@@ -90,7 +89,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> implements I
         const aliasedParams = new Map<string, string>(this.query);
 
         let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
-            Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
+            this.emit.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
             aliasedParams.set(labelName, `'${value}'`);
             return labelName;
         });

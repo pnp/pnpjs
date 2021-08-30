@@ -1,10 +1,14 @@
 import { ILogEntry, LogLevel, ILogListener } from "./logger.js";
 
+export function ConsoleListener(): ILogListener {
+    return new _ConsoleListener();
+}
+
 /**
  * Implementation of LogListener which logs to the console
  *
  */
-export class ConsoleListener implements ILogListener {
+export class _ConsoleListener implements ILogListener {
 
     /**
      * Any associated data that a given logging listener may choose to log or ignore
@@ -49,11 +53,15 @@ export class ConsoleListener implements ILogListener {
     }
 }
 
+export function FunctionListener(impl: (entry: ILogEntry) => void): ILogListener {
+    return new _FunctionListener(impl);
+}
+
 /**
  * Implementation of LogListener which logs to the supplied function
  *
  */
-export class FunctionListener implements ILogListener {
+export class _FunctionListener implements ILogListener {
 
     /**
      * Creates a new instance of the FunctionListener class
