@@ -1,9 +1,9 @@
 import { TimelinePipe } from "@pnp/core";
-import { InjectHeaders, Queryable2 } from "@pnp/queryable";
+import { InjectHeaders, Queryable } from "@pnp/queryable";
 
-export function DefaultInit(): TimelinePipe<Queryable2> {
+export function DefaultInit(): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance.on.pre(async (url, init, result) => {
 
@@ -17,9 +17,9 @@ export function DefaultInit(): TimelinePipe<Queryable2> {
     };
 }
 
-export function DefaultHeaders(): TimelinePipe<Queryable2> {
+export function DefaultHeaders(): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance
             .using(InjectHeaders({

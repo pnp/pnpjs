@@ -1,5 +1,5 @@
-import { Queryable2 } from "../queryable-2.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, extend } from "@pnp/core";
+import { Queryable } from "../queryable.js";
+import { isFunc, getHashCode, PnPClientStorage, getGUID, extend, TimelinePipe } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
 
 /**
@@ -11,7 +11,8 @@ import { LogLevel } from "@pnp/logging";
  * @param keyFactory: a function that returns the key for the cache value, if not provided a default hash of the url will be used
  * @param expireFunc: a function that returns a date of expiration for the cache value, if not provided the cache never expires but is always updated.
  */
-export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
+// eslint-disable-next-line max-len
+export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): TimelinePipe<Queryable> {
 
     let store: Storage;
     if (type === "session") {
@@ -28,7 +29,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
     const putStorage = (key: string, o: string) => {
         try {
             if (isFunc(expireFunc)) {
-                //TODO:: Think about making PnPClientStorage handle no expiration date.
+                // TODO:: Think about making PnPClientStorage handle no expiration date.
                 const storage = new PnPClientStorage();
                 const s = type === "session" ? storage.session : storage.local;
                 s.put(key, o, expireFunc());
@@ -39,7 +40,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
         } catch (err) {
             console.log(`CachingPessimistic(putStorage): ${err}.`);
         }
-    }
+    };
 
     const getStorage = (key: string): any => {
         let retVal: any = undefined;
@@ -51,27 +52,28 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
             } else {
                 let cache = undefined;
                 cache = store.getItem(key);
-                if (cache != undefined)
+                if (cache !== undefined) {
                     retVal = JSON.parse(cache);
+                }
             }
         } catch (err) {
             console.log(`CachingPessimistic(getStorage): ${err}.`);
         }
         return retVal;
-    }
+    };
 
-    let refreshCache: boolean = true;
+    let refreshCache = true;
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.init(function (this: Queryable2) {
+        instance.on.init(function (this: Queryable) {
 
             const newExecute = extend(this, {
 
                 async execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
                     setTimeout(async () => {
                         const requestId = getGUID();
-                        let requestUrl: URL;
+                        // let requestUrl: URL;
 
                         const emitError = (e) => {
                             this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
@@ -98,7 +100,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
                                 this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose)
+                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
 
                                 return result;
                             };
@@ -166,9 +168,9 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
             return newExecute;
         });
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
-            //Reset refreshCache
+            // Reset refreshCache
             refreshCache = true;
 
             const key = keyFactory(url.toString());
@@ -177,7 +179,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
             if (cached !== undefined) {
 
-                //Return value
+                // Return value
                 result = cached.value;
 
                 if (cached.expiration !== undefined) {

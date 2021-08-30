@@ -1,4 +1,4 @@
-import { IQueryable2 } from "./queryable-2.js";
+import { IQueryable2 } from "./queryable.js";
 
 export function queryableFactory<InstanceType extends IQueryable2>(
 

@@ -1,5 +1,5 @@
 import { combine, IFetchOptions } from "@pnp/core";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 import { GraphEndpoints } from "./types.js";
 import { graphGet } from "./operations.js";
 
@@ -15,7 +15,7 @@ export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQuery
  * Queryable Base Class
  *
  */
-export class _GraphQueryable<GetType = any> extends Queryable2<GetType> {
+export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
     /**
      * Creates a new instance of the Queryable class

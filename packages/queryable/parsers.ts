@@ -1,128 +1,101 @@
-import { isFunc, hOP } from "@pnp/core";
+import { Queryable } from "./queryable";
+import { hOP, TimelinePipe } from "@pnp/core";
+import { isFunc } from "@pnp/core";
 
-export interface IODataParser<T> {
-    hydrate?: (d: any) => T;
-    parse(r: Response): Promise<T>;
+export function DefaultParse(): TimelinePipe {
+
+    return parseBinderWithErrorCheck(async (response) => {
+
+        if ((response.headers.has("Content-Length") && parseFloat(response.headers.get("Content-Length")) === 0) || response.status === 204) {
+
+            return {};
+        }
+
+        // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+        const txt = await response.text();
+        const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
+        return parseODataJSON(json);
+    });
 }
 
-export class ODataParser<T = any> implements IODataParser<T> {
+export function TextParse(): TimelinePipe {
 
-    public parse(r: Response): Promise<T> {
+    return parseBinderWithErrorCheck(r => r.text());
+}
 
-        return new Promise<T>((resolve, reject) => {
+export function BlobParse(): TimelinePipe {
 
-            if (this.handleError(r, reject)) {
+    return parseBinderWithErrorCheck(r => r.blob());
+}
 
-                this.parseImpl(r, resolve, reject);
+export function JSONParse(): TimelinePipe {
+
+    return parseBinderWithErrorCheck(r => r.json());
+}
+
+export function BufferParse(): TimelinePipe {
+
+    return parseBinderWithErrorCheck(r => isFunc(r.arrayBuffer) ? r.arrayBuffer() : (<any>r).buffer());
+}
+
+export async function errorCheck(url: URL, response: Response, result: any): Promise<[URL, Response, any]> {
+
+    if (!response.ok) {
+        // within these observers we just throw to indicate an unrecoverable error within the pipeline
+        throw await HttpRequestError.init(response);
+    }
+
+    return [url, response, result];
+}
+
+export function parseODataJSON(json: any): any {
+
+    let result = json;
+
+    if (hOP(json, "d")) {
+
+        if (hOP(json.d, "results")) {
+
+            result = json.d.results;
+
+        } else {
+
+            result = json.d;
+        }
+    } else if (hOP(json, "value")) {
+
+        result = json.value;
+    }
+
+    return result;
+}
+
+/**
+ * Provides a clean way to create new parse bindings without having to duplicate a lot of boilerplate
+ * Includes errorCheck ahead of the supplied impl
+ *
+ * @param impl Method used to parse the response
+ * @returns Queryable behavior binding function
+ */
+export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): TimelinePipe<Queryable> {
+
+    return (instance: Queryable) => {
+
+        // we clear anything else registered for parse
+        // add error check
+        // add the impl function we are supplied
+        instance.on.parse.replace(errorCheck);
+        instance.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
+
+            if (typeof result === "undefined") {
+                result = await impl(response);
             }
+
+            return [url, response, result];
         });
-    }
 
-    protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: Error) => void): void {
-
-        if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
-
-            resolve(<T>{});
-        } else {
-
-            // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
-            r.text()
-                .then(txt => txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {})
-                .then(json => resolve(this.parseODataJSON<T>(json)))
-                .catch(e => reject(e));
-        }
-    }
-
-    /**
-     * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
-     * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
-     *
-     * @param r Current response object
-     * @param reject reject delegate for the surrounding promise
-     */
-    protected handleError(r: Response, reject: (err?: Error) => void): boolean {
-
-        if (!r.ok) {
-            HttpRequestError.init(r).then(reject);
-        }
-
-        return r.ok;
-    }
-
-    /**
-     * Normalizes the json response by removing the various nested levels
-     *
-     * @param json json object to parse
-     */
-    protected parseODataJSON<U>(json: any): U {
-
-        let result = json;
-
-        if (hOP(json, "d")) {
-
-            if (hOP(json.d, "results")) {
-
-                result = json.d.results;
-            } else {
-
-                result = json.d;
-            }
-        } else if (hOP(json, "value")) {
-
-            result = json.value;
-        }
-
-        return result;
-    }
-}
-
-export class TextParser extends ODataParser<string> {
-
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-
-        r.text().then(resolve);
-    }
-}
-
-export class BlobParser extends ODataParser<Blob> {
-
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-        r.blob().then(resolve);
-    }
-}
-
-export class JSONParser extends ODataParser<any> {
-
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-
-        r.json().then(resolve);
-    }
-}
-
-export class BufferParser extends ODataParser<ArrayBuffer> {
-
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-
-        if (isFunc(r.arrayBuffer)) {
-
-            r.arrayBuffer().then(resolve);
-        } else {
-
-            (<any>r).buffer().then(resolve);
-        }
-    }
-}
-
-export class LambdaParser<T = any> extends ODataParser<T> {
-
-    constructor(private parser: (r: Response) => Promise<T>) {
-        super();
-    }
-
-    protected parseImpl(r: Response, resolve: (value: any) => void): void {
-
-        this.parser(r).then(resolve);
-    }
+        return instance;
+    };
 }
 
 export class HttpRequestError extends Error {

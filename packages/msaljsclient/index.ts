@@ -1,11 +1,11 @@
 import { AuthenticationParameters, Configuration, UserAgentApplication } from "msal";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 
-export function MSAL(config: Configuration, authParams: AuthenticationParameters = { scopes: ["https://graph.microsoft.com/.default"] }): (instance: Queryable2) => Queryable2 {
+export function MSAL(config: Configuration, authParams: AuthenticationParameters = { scopes: ["https://graph.microsoft.com/.default"] }): (instance: Queryable) => Queryable {
 
     const app = new UserAgentApplication(config);
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance.on.auth(async (url: URL, init: RequestInit) => {
 

@@ -1,13 +1,13 @@
-import { Queryable2 } from "../queryable-2.js";
+import { Queryable } from "../queryable.js";
 import { LogLevel } from "@pnp/logging";
 import { delay, TimelinePipe } from "@pnp/core";
 import { HttpRequestError } from "../parsers.js";
 
-export function BrowserFetch(): TimelinePipe<Queryable2> {
+export function BrowserFetch(): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit): Promise<any> {
+        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<any> {
 
             this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
@@ -19,11 +19,11 @@ export function BrowserFetch(): TimelinePipe<Queryable2> {
     };
 }
 
-export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable2> {
+export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit): Promise<Response> {
+        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
 
             let response: Response;
             let wait = interval;

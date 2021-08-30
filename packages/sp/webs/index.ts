@@ -1,6 +1,6 @@
 import { Web } from "./types.js";
 import { SPRest } from "../rest.js";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 
 export {
     IWeb,
@@ -26,7 +26,7 @@ declare module "../rest" {
          * Creates a batch behavior and associated execute function
          *
          */
-        createBatch(): [(instance: Queryable2) => Queryable2, () => Promise<void>];
+        createBatch(): [(instance: Queryable) => Queryable, () => Promise<void>];
     }
 }
 
@@ -38,6 +38,6 @@ Reflect.defineProperty(SPRest.prototype, "web", {
     },
 });
 
-SPRest.prototype.createBatch = function (this: SPRest): [(instance: Queryable2) => Queryable2, () => Promise<void>] {
+SPRest.prototype.createBatch = function (this: SPRest): [(instance: Queryable) => Queryable, () => Promise<void>] {
     return this.web.createBatch();
 };

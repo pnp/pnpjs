@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute } from "@pnp/core";
-import { IInvokable, Queryable2, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
 import { Logger, LogLevel } from "@pnp/logging";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 import { SPTagging } from "./behaviors/telemetry.js";
@@ -18,7 +18,7 @@ export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableF
  * SharePointQueryable Base Class
  *
  */
-export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements IQueryable2<GetType> {
+export class _SPQueryable<GetType = any> extends Queryable<GetType> implements IQueryable2<GetType> {
 
     protected parentUrl: string;
 

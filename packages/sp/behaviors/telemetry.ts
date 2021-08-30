@@ -1,11 +1,11 @@
 import { TimelinePipe } from "@pnp/core";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 
-export function SPTagging(): TimelinePipe<Queryable2> {
+export function SPTagging(): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.pre(async function (this: Queryable2, url, init, result) {
+        instance.on.pre(async function (this: Queryable, url, init, result) {
 
             let clientTag = "PnPCoreJS:$$Version$$:";
 

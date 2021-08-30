@@ -1,6 +1,6 @@
 import { Configuration } from "@azure/msal-node";
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
-import { DefaultParse, Queryable2 } from "@pnp/queryable";
+import { DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "@pnp/graph";
 import { NodeFetchWithRetry } from "./fetch.js";
 import { MSAL } from "./msal.js";
@@ -13,13 +13,13 @@ export interface IGraphDefaultProps {
     };
 }
 
-export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable2> {
+export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable> {
 
     if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
         throw Error("GraphDefault props.baseUrl must be absolute when supplied.");
     }
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance
             .using(MSAL(props.msal.config, props?.msal?.scopes || ["https://graph.microsoft.com/.default"]))

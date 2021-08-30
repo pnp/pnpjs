@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
-import { BrowserFetchWithRetry, DefaultParse, Queryable2 } from "@pnp/queryable";
+import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
 import { SPTagging } from "./telemetry.js";
 
@@ -23,9 +23,9 @@ interface ISPFXContext {
 }
 
 // TODO:: untested
-export function SPFx(context: ISPFXContext): TimelinePipe<Queryable2> {
+export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance.using(
             DefaultHeaders(),
