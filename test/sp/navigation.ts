@@ -1,8 +1,8 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import { INavigationNodes } from "@pnp/sp/navigation";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
 

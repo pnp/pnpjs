@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { combine, dateAdd } from "@pnp/core";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { IFolder } from "@pnp/sp/folders";

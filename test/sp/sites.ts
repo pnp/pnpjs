@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine } from "@pnp/core";

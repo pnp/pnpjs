@@ -1,4 +1,4 @@
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { ISiteUserProps } from "@pnp/sp/site-users";

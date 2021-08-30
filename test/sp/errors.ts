@@ -1,7 +1,7 @@
 // this file tests that we are actually producing errors where we should be producing errors
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { testSettings } from "../main-2.js";
+import { sp2 } from "@pnp/sp";
 
 describe("Errors", () => {
     if (testSettings.enableWebTests) {

@@ -1,9 +1,9 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine } from "@pnp/core";
+import { getGUID, combine, TimelinePipe } from "@pnp/core";
 import { graph, IGraphConfigurationPart } from "@pnp/graph";
 import { Queryable2, InjectHeaders, CachingPessimisticRefresh, DefaultParse } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL } from "@pnp/nodejs";
-import { sp2 } from "@pnp/sp";
+import { DefaultHeaders, DefaultInit, sp2, SPTagging } from "@pnp/sp";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
@@ -136,42 +136,35 @@ switch (mode) {
         break;
 }
 
+export function TestDefault(props: ISettings): TimelinePipe<Queryable2> {
+    return (instance: Queryable2) => {
 
-export function spTestBehavior(ts: ISettings): (instance: Queryable2) => Queryable2 {
-    return (instance) => {
-        instance
-            .using(MSAL(ts.sp.msal.init, ts.sp.msal.scopes))
-            .using(InjectHeaders({
-                "Accept": "application/json",
-                "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                "User-Agent": "NONISV|SharePointPnP|PnPjs",
-                "X-ClientService-ClientTag": "PnPCoreJS:3.0.0-exp",
-            }))
-            .using(NodeFetchWithRetry())
-            .using(DefaultParse())
-            .on.error((err) => {
-                console.error("caught it");
-                console.error(`🛑 PnPjs Test Error Behaviors/Queryable - ${err.toString()}`);
-            })
-            .on.log(function (message, level) {
+        instance.using(
+            MSAL(props.sp.msal.init, props.sp.msal.scopes),
+            DefaultHeaders(),
+            DefaultInit(),
+            NodeFetchWithRetry(),
+            DefaultParse());
 
-                if (level >= LogLevel.Warning) {
+        instance.on.error((err) => {
+            console.error(`🛑 PnPjs Testing Error - ${err.toString()}`);
+        });
 
-                    console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
-                }
-
-            }).on.post(async (_url: URL, result: any) => {
-                return [_url, result];
-            });
+        instance.on.log(function (message, level) {
+            if (level >= LogLevel.Warning) {
+                console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
+            }
+        })
 
         return instance;
     };
 }
 
+
 async function spTestSetup(ts: ISettings): Promise<void> {
     let siteUsed = false;
 
-    const tc = spTestBehavior(ts);
+    const tc = TestDefault(ts);
     ts.sp.webUrl = ts.sp.url;
 
     if (site && site.length > 0) {

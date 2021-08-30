@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { testSettings } from "../main-2.js";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security";
@@ -23,7 +23,7 @@ if (testSettings.enableWebTests) {
             list = ler.list;
         });
 
-        before(async function() {
+        before(async function () {
             // Capture the parent web for use in role definition tests.
             parentWeb = (await sp.web.getParentWeb()).web;
 
@@ -78,7 +78,7 @@ if (testSettings.enableWebTests) {
             return expect(list.breakRoleInheritance(true, true)).to.eventually.be.fulfilled;
         });
 
-        it("updateRoleDef", async function() {
+        it("updateRoleDef", async function () {
             // We cannot alter Role Definitions on a subsite, we therefore test updating Role Definitions agains the parent site.
             return expect(parentWeb.roleDefinitions.getByName(testRoleDefName).update({ BasePermissions: { Low: 3, High: 0 } })).to.eventually.be.fulfilled;
         });

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/search";
 import { SearchQueryBuilder } from "@pnp/sp/search";
 

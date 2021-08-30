@@ -2,7 +2,7 @@ import { User as IUser } from "@microsoft/microsoft-graph-types";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import { Logger, LogLevel } from "@pnp/logging";
-import { testSettings } from "../../main.js";
+import { testSettings } from "../../main-2.js";
 
 let cachedValidUser = null;
 const usersToCheck = 20;

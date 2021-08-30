@@ -5,8 +5,8 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-designs";
 import "@pnp/sp/site-users/web";
 import { ISiteDesignRun } from "@pnp/sp/site-designs";
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { sp2 } from "@pnp/sp";
+import { testSettings } from "../main-2.js";
 
 const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();

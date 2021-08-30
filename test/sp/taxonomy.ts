@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 
 /**
  * Skipping for now as the API is not fully deployed or stable yet. These tests passed within my tenant.

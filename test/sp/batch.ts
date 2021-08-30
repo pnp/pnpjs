@@ -5,7 +5,7 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { CheckinType } from "@pnp/sp/files";
 
 describe("Batching", () => {

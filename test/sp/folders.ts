@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -10,7 +10,7 @@ import { IInvokableTest } from "../types.js";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
 import { SharingLinkKind } from "@pnp/sp/sharing";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 
 describe.skip("Folders", () => {
 

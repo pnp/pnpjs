@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { getRandomString } from "@pnp/core";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { IList } from "@pnp/sp/lists";
 
 describe("Views", () => {

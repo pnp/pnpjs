@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/folders/list";
@@ -7,7 +7,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
 import { Web, IWeb } from "@pnp/sp/webs";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { combine } from "@pnp/core";
 
 describe("Alias Parameters", () => {

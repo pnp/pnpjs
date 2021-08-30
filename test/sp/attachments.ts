@@ -1,7 +1,7 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { testSettings } from "../main-2.js";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";

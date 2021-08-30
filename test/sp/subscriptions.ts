@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions";

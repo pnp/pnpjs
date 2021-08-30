@@ -1,5 +1,5 @@
 import { sp, SPBatch, SPRest } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";

@@ -1,6 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { graph } from "@pnp/graph";
 import { GroupType } from "@pnp/graph/groups";
 import "@pnp/graph/planner";

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import "@pnp/sp/webs";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { Web } from "@pnp/sp/webs";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "@pnp/sp/presets/all";
 import { getRandomString, combine } from "@pnp/core";
 

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { sp2, _SharePointQueryable } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import { Caching, CachingPessimisticRefresh } from "@pnp/queryable";
 
-import { spTestBehavior, testSettings } from "../main-2.js";
+import { TestDefault, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 
 describe.only("Behaviors", () => {
@@ -11,7 +11,7 @@ describe.only("Behaviors", () => {
         it("CachingPessimistic", async () => {
             try {
                 //Testing a behavior, creating new instance of sp
-                const tc = spTestBehavior(testSettings);
+                const tc = TestDefault(testSettings);
                 const sp = sp2(testSettings.sp.webUrl).using(tc).using(CachingPessimisticRefresh("session"));
 
                 //Test caching behavior
@@ -37,7 +37,7 @@ describe.only("Behaviors", () => {
         it("Caching", async () => {
             try {
                 //Testing a behavior, creating new instance of sp
-                const tc = spTestBehavior(testSettings);
+                const tc = TestDefault(testSettings);
                 const sp = sp2(testSettings.sp.webUrl).using(tc).using(Caching("session"));
 
                 //Test caching behavior

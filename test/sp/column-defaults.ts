@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";

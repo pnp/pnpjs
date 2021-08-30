@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";

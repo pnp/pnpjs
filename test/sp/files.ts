@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -7,7 +7,7 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { getRandomString, combine } from "@pnp/core";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";

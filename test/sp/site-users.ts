@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { sp2 } from "@pnp/sp";
+import { testSettings } from "../main-2.js";
 import "@pnp/sp/site-users";
 import { IInvokableTest } from "../types.js";
 import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";

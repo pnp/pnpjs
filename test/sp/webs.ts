@@ -1,6 +1,6 @@
 import { combine, getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
+import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 import "@pnp/sp/content-types/web";
@@ -18,7 +18,7 @@ import "@pnp/sp/hubsites/web";
 import "@pnp/sp/appcatalog/web";
 import "@pnp/sp/regional-settings/web";
 import "@pnp/sp/clientside-pages";
-import { testSettings } from "../main.js";
+import { testSettings } from "../main-2.js";
 import { IInvokableTest } from "../types.js";
 
 describe("Webs", function () {
