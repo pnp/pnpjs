@@ -1,6 +1,6 @@
 import "./web.js";
 import "./list.js";
-import { SPRest2 } from "../rest-2.js";
+import { SPRest } from "../rest.js";
 import { ISiteScripts, SiteScripts } from "./types.js";
 
 export {
@@ -12,16 +12,16 @@ export {
     ISiteScriptSerializationResult,
 } from "./types.js";
 
-declare module "../rest-2" {
+declare module "../rest" {
     interface SPRest2 {
         readonly siteScripts: ISiteScripts;
     }
 }
 
-Reflect.defineProperty(SPRest2.prototype, "siteScripts", {
+Reflect.defineProperty(SPRest.prototype, "siteScripts", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest2) {
+    get: function (this: SPRest) {
         return this.create(SiteScripts);
     },
 });

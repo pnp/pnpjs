@@ -1,5 +1,5 @@
 import { IWeb, Web, _Web } from "../webs/types.js";
-import { FromQueryable } from "@pnp/queryable/index.js";
+import { FromQueryable } from "@pnp/queryable";
 
 import "./web.js";
 import { AppCatalog, IAppCatalog } from "./types.js";

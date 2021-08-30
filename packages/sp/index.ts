@@ -5,15 +5,11 @@ export * from "./decorators.js";
 export * from "./operations.js";
 
 export {
-    SPRest2,
-    sp as sp2,
-} from "./rest-2.js";
+    SPRest,
+    sp,
+} from "./rest.js";
 
 export * from "./types.js";
-
-export {
-    SPTagging,
-} from "./behaviors/telemetry.js";
 
 export {
     extractWebUrl,
@@ -30,3 +26,4 @@ export {
 
 export * from "./behaviors/defaults.js";
 export * from "./behaviors/telemetry.js";
+export * from "./behaviors/spfx.js";

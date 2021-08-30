@@ -31,7 +31,6 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable2> {
             DefaultHeaders(),
             DefaultInit(),
             BrowserFetchWithRetry(),
-            SPTagging(),
             DefaultParse());
 
         instance.on.pre(async (url, init, result) => {

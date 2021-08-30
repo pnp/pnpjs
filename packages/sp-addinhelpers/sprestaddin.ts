@@ -1,5 +1,5 @@
 import {
-    SPRest2,
+    SPRest,
 } from "@pnp/sp";
 
 import { Web, IWeb } from "@pnp/sp/webs";
@@ -12,7 +12,7 @@ import {
 
 import { ISPQueryable } from "@pnp/sp";
 
-export class SPRestAddIn extends SPRest2 {
+export class SPRestAddIn extends SPRest {
 
     /**
      * Begins a cross-domain, host site scoped REST request, for use in add-in webs

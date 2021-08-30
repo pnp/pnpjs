@@ -26,7 +26,6 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable2> {
             DefaultHeaders(),
             DefaultInit(),
             NodeFetchWithRetry(),
-            SPTagging(),
             DefaultParse());
 
         instance.on.pre(async (url, init, result) => {
