@@ -1,5 +1,5 @@
 import { ISocial, Social } from "./types.js";
-import { SPRest } from "../rest.js";
+import { SPRest2 } from "../rest-2.js";
 
 export {
     IMySocial,
@@ -15,8 +15,8 @@ export {
     SocialStatusCode,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../rest-2" {
+    interface SPRest2 {
     /**
      * Access to the social instance which allows you to track followed sites, people and docs.
      */
@@ -24,12 +24,10 @@ declare module "../rest" {
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "social", {
+Reflect.defineProperty(SPRest2.prototype, "social", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Social(baseUrl).configure(options).setRuntime(runtime);
-        });
+    get: function (this: SPRest2) {
+        this.create(Social);
     },
 });

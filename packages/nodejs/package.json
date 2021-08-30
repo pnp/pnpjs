@@ -10,7 +10,7 @@
         "@pnp/logging": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@pnp/sp": "0.0.0-PLACEHOLDER",
-        "adal-node": "0.2.2",
+        "@pnp/graph": "0.0.0-PLACEHOLDER",
         "https-proxy-agent": "^5.0.0",
         "jsonwebtoken": "8.5.1",
         "node-fetch": "2.6.1",

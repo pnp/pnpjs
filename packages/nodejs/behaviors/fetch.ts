@@ -1,9 +1,9 @@
 import { LogLevel } from "@pnp/logging";
 import { HttpRequestError, Queryable2 } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
-import { delay } from "@pnp/core";
+import { delay, TimelinePipe } from "@pnp/core";
 
-export function NodeFetch(): (instance: Queryable2) => Queryable2 {
+export function NodeFetch(): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 
@@ -18,7 +18,7 @@ export function NodeFetch(): (instance: Queryable2) => Queryable2 {
     };
 }
 
-export function NodeFetchWithRetry(retries = 3, interval = 200): (instance: Queryable2) => Queryable2 {
+export function NodeFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable2> {
 
     return (instance: Queryable2) => {
 

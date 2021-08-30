@@ -1,26 +1,24 @@
-import { _SharePointQueryableInstance, spInvokableFactory, SharePointQueryable } from "../sharepointqueryable.js";
+import { _SPInstance, spInvokableFactory, SPQueryable } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP, assign } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { body, FromQueryable } from "@pnp/queryable";
-import { odataUrlFrom } from "../odata.js";
+import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { IChangeQuery } from "../types.js";
-import { tag } from "../telemetry.js";
-import { metadata } from "../utils/metadata.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
-import { emptyGuid } from "../splibconfig.js";
+import { emptyGuid } from "../types.js";
 
 @defaultPath("_api/site")
-export class _Site extends _SharePointQueryableInstance {
+export class _Site extends _SPInstance {
 
     /**
      * Gets the root web of the site collection
      *
      */
     public get rootWeb(): IWeb {
-        return tag.configure(Web(this, "rootweb"), "si.rootWeb");
+        return Web(this, "rootweb");
     }
 
     /**
@@ -28,10 +26,9 @@ export class _Site extends _SharePointQueryableInstance {
      *
      * @param query The change query
      */
-    @tag("si.getChanges")
     public getChanges(query: IChangeQuery): Promise<any> {
 
-        const postBody = body({ "query": assign(metadata("SP.ChangeQuery"), query) });
+        const postBody = body({ query });
         return spPost(Web(this, "getchanges"), postBody);
     }
 
@@ -40,7 +37,6 @@ export class _Site extends _SharePointQueryableInstance {
      *
      * @param webId The GUID id of the web to open
      */
-    @tag("si.openWebById")
     public async openWebById(webId: string): Promise<IOpenWebByIdResult> {
 
         const data = await spPost(Site(this, `openWebById('${webId}')`));
@@ -56,7 +52,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return tag.configure(Web(web.Url).using(FromQueryable(this)), "si.getRootWeb");
+        return Web(web.Url).using(FromQueryable(this));
     }
 
     /**
@@ -64,7 +60,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getContextInfo(): Promise<IContextInfo> {
 
-        const q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
+        const q = Site(this.parentUrl, "_api/contextinfo");
         const data = await spPost(q);
 
         if (hOP(data, "GetContextWebInformation")) {
@@ -83,7 +79,7 @@ export class _Site extends _SharePointQueryableInstance {
     public async delete(): Promise<void> {
 
         const site = await Site(this, "").select("Id")<{ Id: string }>();
-        const q = tag.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
+        const q = Site(this.parentUrl, "_api/SPSiteManager/Delete");
         await spPost(q, body({ siteId: site.Id }));
     }
 
@@ -94,7 +90,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
 
-        const q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
+        const q = SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
@@ -107,7 +103,7 @@ export class _Site extends _SharePointQueryableInstance {
      */
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
-        const q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
+        const q = SPQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
@@ -158,7 +154,7 @@ export class _Site extends _SharePointQueryableInstance {
     public async createCommunicationSiteFromProps(props: ICreateCommSiteProps): Promise<ISiteCreationResponse> {
 
         // handle defaults
-        const p = Object.assign({}, {
+        const request = {
             Classification: "",
             Description: "",
             HubSiteId: emptyGuid,
@@ -167,13 +163,10 @@ export class _Site extends _SharePointQueryableInstance {
             SiteDesignId: emptyGuid,
             WebTemplate: "SITEPAGEPUBLISHING#0",
             WebTemplateExtensionId: emptyGuid,
-        }, props);
+            ...props,
+        };
 
-        const postBody = body({
-            "request": assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
-        });
-
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody);
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), body({ request }));
     }
 
     /**
@@ -181,11 +174,8 @@ export class _Site extends _SharePointQueryableInstance {
      * @param url Site Url that you want to check if exists
      */
     public async exists(url: string): Promise<boolean> {
-        const postBody = body({ url });
 
-        const value = await spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody);
-
-        return value;
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), body({ url }));
     }
 
     /**

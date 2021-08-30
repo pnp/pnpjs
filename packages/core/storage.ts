@@ -1,4 +1,4 @@
-import { dateAdd, getCtxCallback, jsS, objectDefinedNotNull } from "./util.js";
+import { dateAdd, jsS, objectDefinedNotNull } from "./util.js";
 import { ILibraryConfiguration, DefaultRuntime } from "./libconfig.js";
 
 /**
@@ -172,7 +172,7 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
         this.deleteExpired().then(() => {
 
             // call ourself in the future
-            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
+            setTimeout(() => this.cacheExpirationHandler, DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
         }).catch(console.error);
     }
 }

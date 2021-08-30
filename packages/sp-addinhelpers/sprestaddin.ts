@@ -1,5 +1,5 @@
 import {
-    SPRest,
+    SPRest2,
 } from "@pnp/sp";
 
 import { Web, IWeb } from "@pnp/sp/webs";
@@ -10,9 +10,9 @@ import {
     combine,
 } from "@pnp/core";
 
-import { ISharePointQueryable } from "@pnp/sp";
+import { ISPQueryable } from "@pnp/sp";
 
-export class SPRestAddIn extends SPRest {
+export class SPRestAddIn extends SPRest2 {
 
     /**
      * Begins a cross-domain, host site scoped REST request, for use in add-in webs
@@ -42,7 +42,7 @@ export class SPRestAddIn extends SPRest {
      * @param hostWebUrl The absolute url of the host web
      * @param urlPart String part to append to the url "site" | "web"
      */
-    private _cdImpl<T extends ISharePointQueryable>(
+    private _cdImpl<T extends ISPQueryable>(
         factory: (...args: any[]) => T,
         addInWebUrl: string,
         hostWebUrl: string,

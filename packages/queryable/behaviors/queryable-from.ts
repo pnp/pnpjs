@@ -1,7 +1,7 @@
-import { From_JulieHatesThisName } from "@pnp/core";
+import { From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
 import { Queryable2 } from "../queryable-2.js";
 
-export function FromQueryable(source: Queryable2, behavior: "replace" | "append" = "append", keepData = false): (instance: Queryable2) => Queryable2 {
+export function FromQueryable(source: Queryable2, behavior: "replace" | "append" = "append", keepData = false): TimelinePipe<Queryable2> {
 
     const coreFrom = From_JulieHatesThisName(source, behavior);
 

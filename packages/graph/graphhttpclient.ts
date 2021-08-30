@@ -1,15 +1,13 @@
 import {
     assign,
     IRequestClient,
-    mergeHeaders,
     IFetchOptions,
     IHttpClientImpl,
-    getCtxCallback,
     DefaultRuntime,
     Runtime,
     objectDefinedNotNull,
 } from "@pnp/core";
-import { IGraphConfiguration, IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
+import { IGraphConfigurationPart, IGraphConfigurationProps } from "./graphlibconfig.js";
 
 export class GraphHttpClient implements IRequestClient {
 
@@ -23,7 +21,7 @@ export class GraphHttpClient implements IRequestClient {
 
         this._runtime = args.length > 0 && args[0] instanceof Runtime ? args[0] : DefaultRuntime;
         this._impl = args.length > 1 && objectDefinedNotNull(args[1]) ?
-            args[1] : this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory()|| null;
+            args[1] : this._runtime.get<IGraphConfigurationPart, IGraphConfigurationProps>("graph").fetchClientFactory() || null;
 
         if (this._impl === null) {
             throw Error("Could not generate fetchClientFactory in SPHttpClient.");
@@ -35,10 +33,10 @@ export class GraphHttpClient implements IRequestClient {
         const headers = new Headers();
 
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, this._runtime.get<IGraphConfiguration, IGraphConfigurationProps>("graph")?.headers);
+        // mergeHeaders(headers, this._runtime.get<IGraphConfiguration, IGraphConfigurationProps>("graph")?.headers);
 
-        // second we add the local options so we can overwrite the globals
-        mergeHeaders(headers, options.headers);
+        // // second we add the local options so we can overwrite the globals
+        // mergeHeaders(headers, options.headers);
 
         if (!headers.has("Content-Type")) {
             headers.append("Content-Type", "application/json");
@@ -58,7 +56,7 @@ export class GraphHttpClient implements IRequestClient {
 
         // here we need to normalize the headers
         const rawHeaders = new Headers();
-        mergeHeaders(rawHeaders, options.headers);
+        // mergeHeaders(rawHeaders, options.headers);
         options = assign(options, { headers: rawHeaders });
 
         const retry = (ctx: RetryContext): void => {
@@ -85,7 +83,7 @@ export class GraphHttpClient implements IRequestClient {
                 }
 
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(getCtxCallback(this, retry, ctx), delay);
+                setTimeout(() => retry, delay);
             });
         };
 

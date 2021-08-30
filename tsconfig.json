@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2018",
+        "target": "esnext",
         "module": "commonjs",
         "composite": true,
         "declaration": true,
@@ -10,7 +10,7 @@
         "lib": [
             "ES2015",
             "dom",
-            "ES2017.Object"
+            "ES2017.Object",
         ],
         "baseUrl": ".",
         "rootDir": ".",

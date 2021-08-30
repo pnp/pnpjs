@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/queryable";
 import { _Item } from "../items/types.js";
 import { RoleAssignments, ISecurableMethods } from "./types.js";
-import { OLD_SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { SPInstance } from "../sharepointqueryable.js";
 import {
     getUserEffectivePermissions,
     getCurrentUserEffectivePermissions,
@@ -18,7 +18,7 @@ declare module "../items/types" {
 }
 
 addProp(_Item, "roleAssignments", RoleAssignments);
-addProp(_Item, "firstUniqueAncestorSecurableObject", OLD_SharePointQueryableInstance);
+addProp(_Item, "firstUniqueAncestorSecurableObject", SPInstance);
 
 _Item.prototype.getUserEffectivePermissions = getUserEffectivePermissions;
 _Item.prototype.getCurrentUserEffectivePermissions = getCurrentUserEffectivePermissions;

@@ -1,18 +1,3 @@
-/**
- * Gets a callback function which will maintain context across async calls.
- * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
- *
- * @param context The object that will be the 'this' value in the callback
- * @param method The method to which we will apply the context and parameters
- * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
- */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function getCtxCallback(context: any, method: Function, ...params: any[]): Function {
-    return function () {
-        method.apply(context, params);
-    };
-}
-
 export type DateAddInterval = "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second";
 
 /**
@@ -106,8 +91,7 @@ export function objectDefinedNotNull(obj: any): boolean {
  * @returns whether the provided parameter is a JavaScript Array or not.
 */
 export function isArray(array: any): boolean {
-
-    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
+    return Array.isArray(array);
 }
 
 /**
@@ -156,22 +140,6 @@ export function isUrlAbsolute(url: string): boolean {
  */
 export function stringIsNullOrEmpty(s: string): boolean {
     return s === undefined || s === null || s.length < 1;
-}
-
-/**
- * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
- *
- * @param guid The candidate guid
- */
-export function sanitizeGuid(guid: string): string {
-
-    if (stringIsNullOrEmpty(guid)) {
-        return guid;
-    }
-
-    const matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
-
-    return matches === null ? guid : matches[1];
 }
 
 /**
@@ -224,23 +192,4 @@ export async function delay(ms: number): Promise<void> {
     return new Promise((resolve: () => void) => {
         setTimeout(resolve, ms);
     });
-}
-
-export function ensureHeaders(init: RequestInit, headers: Record<string, string>): RequestInit {
-
-    if (!objectDefinedNotNull(init)) {
-        init = {};
-    }
-
-    if (!objectDefinedNotNull(init.headers)) {
-        init.headers = {};
-    }
-
-    const keys = Object.getOwnPropertyNames(headers);
-
-    for (let i = 0; i < keys.length; i++) {
-        init.headers[keys[i]] = headers[keys[i]];
-    }
-
-    return init;
 }

@@ -1,8 +1,8 @@
-import { SPRest } from "../rest.js";
-import { IWeb, Web } from "../webs/types.js";
+import { IWeb, Web, _Web } from "../webs/types.js";
+import { FromQueryable } from "@pnp/queryable/index.js";
 
 import "./web.js";
-import { OLD_SharePointQueryable } from "../sharepointqueryable.js";
+import { AppCatalog, IAppCatalog } from "./types.js";
 
 export {
     IAppAddResult,
@@ -12,16 +12,16 @@ export {
     AppCatalog,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
-        getTenantAppCatalogWeb(): Promise<IWeb>;
+declare module "../webs/types" {
+    interface IWeb {
+        getTenantAppCatalog(): Promise<IAppCatalog>;
+    }
+    interface _Web {
+        getTenantAppCatalog(): Promise<IAppCatalog>;
     }
 }
 
-// SPRest.prototype.getTenantAppCatalogWeb = async function (this: SPRest): Promise<IWeb> {
-
-//     return this.childConfigHook(async ({ options, runtime }) => {
-//         const data: { CorporateCatalogUrl: string } = await OLD_SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)();
-//         return Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime);
-//     });
-// };
+_Web.prototype.getTenantAppCatalog = async function (this: IWeb): Promise<IAppCatalog> {
+    const data: { CorporateCatalogUrl: string } = await Web(this.toUrl().replace(/\/_api\/.*$/i, ""), "/_api/SP_TenantSettings_Current").using(FromQueryable(this))();
+    return AppCatalog(data.CorporateCatalogUrl).using(FromQueryable(this));
+};

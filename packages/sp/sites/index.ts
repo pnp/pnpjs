@@ -9,7 +9,7 @@ export {
     IDocumentLibraryInformation,
 } from "./types.js";
 
-declare module "../rest" {
+declare module "../rest-2" {
     interface SPRest2 {
         readonly site: ISite;
     }

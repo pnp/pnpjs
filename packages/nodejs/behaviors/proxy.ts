@@ -1,11 +1,12 @@
+import { TimelinePipe } from "@pnp/core";
 import { Queryable2 } from "@pnp/queryable";
 import { HttpsProxyAgent } from "https-proxy-agent";
 
-export function Proxy(proxyInit: string): (instance: Queryable2) => Queryable2;
+export function Proxy(proxyInit: string): TimelinePipe<Queryable2>;
 // eslint-disable-next-line no-redeclare
-export function Proxy(proxyInit: any): (instance: Queryable2) => Queryable2;
+export function Proxy(proxyInit: any): TimelinePipe<Queryable2>;
 // eslint-disable-next-line no-redeclare
-export function Proxy(proxyInit: any): (instance: Queryable2) => Queryable2 {
+export function Proxy(proxyInit: any): TimelinePipe<Queryable2> {
 
     const proxy = typeof proxyInit === "string" ? new HttpsProxyAgent(proxyInit) : proxyInit;
 

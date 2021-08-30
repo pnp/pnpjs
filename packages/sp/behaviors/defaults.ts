@@ -1,0 +1,33 @@
+import { TimelinePipe } from "@pnp/core";
+import { InjectHeaders, Queryable2 } from "@pnp/queryable";
+
+export function DefaultInit(): TimelinePipe<Queryable2> {
+
+    return (instance: Queryable2) => {
+
+        instance.on.pre(async (url, init, result) => {
+
+            init.cache = "no-cache";
+            init.credentials = "same-origin";
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
+export function DefaultHeaders(): TimelinePipe<Queryable2> {
+
+    return (instance: Queryable2) => {
+
+        instance
+            .using(InjectHeaders({
+                "Accept": "application/json",
+                "Content-Type": "application/json;charset=utf-8",
+                "User-Agent": "NONISV|SharePointPnP|PnPjs",
+            }));
+
+        return instance;
+    };
+}
