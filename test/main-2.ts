@@ -1,9 +1,9 @@
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine, TimelinePipe } from "@pnp/core";
-import { graph, IGraphConfigurationPart } from "@pnp/graph";
-import { Queryable2, InjectHeaders, CachingPessimisticRefresh, DefaultParse } from "@pnp/queryable";
+import { getGUID, TimelinePipe } from "@pnp/core";
+//import { graph, IGraphConfigurationPart } from "@pnp/graph";
+import { Queryable2, DefaultParse } from "@pnp/queryable";
 import { NodeFetchWithRetry, MSAL } from "@pnp/nodejs";
-import { DefaultHeaders, DefaultInit, sp2, SPTagging } from "@pnp/sp";
+import { DefaultHeaders, DefaultInit, sp2 } from "@pnp/sp";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
@@ -154,7 +154,7 @@ export function TestDefault(props: ISettings): TimelinePipe<Queryable2> {
             if (level >= LogLevel.Warning) {
                 console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
             }
-        })
+        });
 
         return instance;
     };
@@ -175,7 +175,9 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     const mySP = sp2(ts.sp.webUrl).using(tc);
     _sp = mySP;
 
-    if (siteUsed) { return; }
+    if (siteUsed) {
+        return;
+    }
 
     const d = new Date();
     const g = getGUID();
@@ -185,7 +187,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     // set the testing web url so our tests have access if needed
     ts.sp.webUrl = testWebResult.data.Url;
 
-    //TODO: Deal with verbose headers
+    // TODO: Deal with verbose headers
     // if (spVerbose) {
     //     settingsPart.sp.headers = {
     //         "Accept": "application/json;odata=verbose",
@@ -199,7 +201,7 @@ export const testSettings: ISettings = settings.testing;
 
 export const getSP = () => {
     return _sp;
-}
+};
 
 before(async function (): Promise<void> {
 
@@ -217,7 +219,7 @@ before(async function (): Promise<void> {
             console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
         }
 
-        //TODO: Fix graph
+        // TODO: Fix graph
         // if (testSettings.graph) {
         //     console.log("Setting up Graph tests...");
         //     const s = Date.now();
@@ -229,15 +231,8 @@ before(async function (): Promise<void> {
 });
 
 after(async () => {
-
-    console.log();
-    console.log();
-    console.log();
-    console.log();
-    console.log("Ending...");
     const testEnd = Date.now();
-    console.log(`Testing completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds.`);
-    console.log();
+    console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
     if (deleteAllWebs) {
 
@@ -245,7 +240,7 @@ after(async () => {
 
     } else if (deleteWeb && testSettings.enableWebTests) {
 
-        //TODO: Clean up Delete function
+        // TODO: Clean up Delete function
         // console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
         // const w = Web(testSettings.sp.webUrl);
 
@@ -269,7 +264,7 @@ after(async () => {
 });
 
 // Function deletes all test subsites
-//TODO: Clean up subsites function
+// TODO: Clean up subsites function
 async function cleanUpAllSubsites(): Promise<void> {
 
     const w = await _sp.web.webs.select("Title")();

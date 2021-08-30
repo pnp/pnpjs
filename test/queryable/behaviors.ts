@@ -10,21 +10,21 @@ describe.only("Behaviors", () => {
 
         it("CachingPessimistic", async () => {
             try {
-                //Testing a behavior, creating new instance of sp
+                // Testing a behavior, creating new instance of sp
                 const tc = TestDefault(testSettings);
                 const sp = sp2(testSettings.sp.webUrl).using(tc).using(CachingPessimisticRefresh("session"));
 
-                //Test caching behavior
+                // Test caching behavior
                 const startCheckpoint = new Date();
                 const u = await sp.web();
                 const midCheckpoint = new Date();
                 const u2 = await sp.web();
                 const endCheckpoint = new Date();
 
-                //Results should be the same
+                // Results should be the same
                 const test1 = JSON.stringify(u) === JSON.stringify(u2);
 
-                //Assume first call should take longer as it's not cached
+                // Assume first call should take longer as it's not cached
                 const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
                 const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
                 const test2 = call1Time > call2Time;
@@ -36,21 +36,21 @@ describe.only("Behaviors", () => {
 
         it("Caching", async () => {
             try {
-                //Testing a behavior, creating new instance of sp
+                // Testing a behavior, creating new instance of sp
                 const tc = TestDefault(testSettings);
                 const sp = sp2(testSettings.sp.webUrl).using(tc).using(Caching("session"));
 
-                //Test caching behavior
+                // Test caching behavior
                 const startCheckpoint = new Date();
                 const u = await sp.web();
                 const midCheckpoint = new Date();
                 const u2 = await sp.web();
                 const endCheckpoint = new Date();
 
-                //Results should be the same
+                // Results should be the same
                 const test1 = JSON.stringify(u) === JSON.stringify(u2);
 
-                //Assume first call should take longer as it's not cached
+                // Assume first call should take longer as it's not cached
                 const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
                 const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
                 const test2 = call1Time > call2Time;
