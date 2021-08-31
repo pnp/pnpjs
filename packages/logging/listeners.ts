@@ -1,10 +1,51 @@
 import { ILogEntry, LogLevel, ILogListener } from "./logger.js";
 
 /**
+ * Text color options for use in the ConsoleListener
+ * All values can be specified as known names, hex values, rgb, or rgba values
+ */
+export interface IConsoleListenerColors {
+    /** Default text color for all logging levels unless they're specified */
+    color?: string;
+
+    /** Text color to use for messages with LogLevel.Verbose */
+    verboseColor?: string;
+
+    /** Text color to use for messages with LogLevel.Info */
+    infoColor?: string;
+
+    /** Text color to use for messages with LogLevel.Warning */
+    warningColor?: string;
+
+    /** Text color to use for messages with LogLevel.Error */
+    errorColor?: string;
+}
+
+/**
  * Implementation of LogListener which logs to the console
  *
  */
 export class ConsoleListener implements ILogListener {
+
+    private _prefix: string;
+    private _colors: IConsoleListenerColors;
+
+    /**
+     * Makes a new one
+     *
+     * @param prefix Optional text to include at the start of all messages (useful for filtering)
+     * @param colors Optional text color settings
+     */
+    constructor(prefix: string = "", colors: IConsoleListenerColors = {}) {
+        this._prefix = prefix;
+        this._colors = {
+            verboseColor: colors.color,
+            infoColor: colors.color,
+            warningColor: colors.color,
+            errorColor: colors.color,
+            ...colors
+        };
+    }
 
     /**
      * Any associated data that a given logging listener may choose to log or ignore
@@ -17,14 +58,32 @@ export class ConsoleListener implements ILogListener {
 
         switch (entry.level) {
             case LogLevel.Verbose:
+                if (typeof this._colors.verboseColor !== "undefined") {
+                    console.log(`%c${msg}`, `color:${this._colors.verboseColor}`);
+                } else {
+                    console.log(msg);
+                }
+                break;
             case LogLevel.Info:
-                console.log(msg);
+                if (typeof this._colors.infoColor !== "undefined") {
+                    console.log(`%c${msg}`, `color:${this._colors.infoColor}`);
+                } else {
+                    console.log(msg);
+                }
                 break;
             case LogLevel.Warning:
-                console.warn(msg);
+                if (typeof this._colors.warningColor !== "undefined") {
+                    console.warn(`%c${msg}`, `color:${this._colors.warningColor}`);
+                } else {
+                    console.warn(msg);
+                }
                 break;
             case LogLevel.Error:
-                console.error(msg);
+                if (typeof this._colors.errorColor !== "undefined") {
+                    console.error(`%c${msg}`, `color:${this._colors.errorColor}`);
+                } else {
+                    console.error(msg);
+                }
                 break;
         }
     }
@@ -36,13 +95,20 @@ export class ConsoleListener implements ILogListener {
      */
     private format(entry: ILogEntry): string {
         const msg = [];
-        msg.push("Message: " + entry.message);
+
+        if (this._prefix.length > 0) {
+            msg.push(`${this._prefix} - `);
+        }
+
         if (entry.data !== undefined) {
+            msg.push("Message: " + entry.message);
             try {
                 msg.push(" Data: " + JSON.stringify(entry.data));
             } catch (e) {
                 msg.push(` Data: Error in stringify of supplied data ${e}`);
             }
+        } else {
+            msg.push(entry.message);
         }
 
         return msg.join("");
