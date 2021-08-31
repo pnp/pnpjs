@@ -125,7 +125,75 @@ There are two listeners included in the library, ConsoleListener and FunctionLis
 
 ### ConsoleListener
 
-This listener outputs information to the console and works in Node as well as within browsers. It takes no settings and writes to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.
+This listener outputs information to the console and works in Node as well as within browsers. It can be used without settings and writes to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Basic usage is shown in the example above.
+
+#### Configuration Options
+
+Although ConsoleListener can be used without configuration, there are some additional options available to you. ConsoleListener supports adding a prefix to every output (helpful for filtering console messages) and specifying text color for messages (including by LogLevel).
+
+##### Using a Prefix
+
+To add a prefix to all output, supply a string in the constructor:
+
+```TypeScript
+import {
+    Logger,
+    ConsoleListener,
+    LogLevel
+} from "@pnp/logging";
+
+const LOG_SOURCE: string = 'MyAwesomeWebPart';
+Logger.subscribe(new ConsoleListener(LOG_SOURCE));
+Logger.activeLogLevel = LogLevel.Info;
+```
+
+With the above configuration, `Logger.write("My special message");` will be output to the console as:
+```
+MyAwesomeWebPart - My special message
+```
+
+##### Customizing Text Color
+
+You can also specify text color for your messages by supplying an `IConsoleListenerColors` object. You can simply specify `color` to set the default color for all logging levels or you can set one or more logging level specific text colors (if you only want to set color for a specific logging level(s), leave `color` out and all other log levels will use the default color).
+
+Colors can be specified the same way [color values are specified in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value) (named colors, hex values, rgb, rgba, hsl, hsla, etc.):
+
+```TypeScript
+import {
+    Logger,
+    ConsoleListener,
+    LogLevel
+} from "@pnp/logging";
+
+const LOG_SOURCE: string = 'MyAwesomeWebPart';
+Logger.subscribe(new ConsoleListener(LOG_SOURCE, {color:'#0b6a0b',warningColor:'magenta'}));
+Logger.activeLogLevel = LogLevel.Info;
+```
+
+With the above configuration:
+
+```TypeScript
+Logger.write("My special message");
+Logger.write("A warning!", LogLevel.Warning);
+```
+
+Will result in messages that look like this:
+
+![ConsoleListener with Colors](../img/ConsoleListenerColors.png)
+
+Color options:
+
+- `color`: Default text color for all logging levels unless they're specified
+- `verboseColor`: Text color to use for messages with LogLevel.Verbose
+- `infoColor`: Text color to use for messages with LogLevel.Info
+- `warningColor`: Text color to use for messages with LogLevel.Warning
+- `errorColor`: Text color to use for messages with LogLevel.Error
+
+To set colors without a prefix, specify either `undefined` or an empty string for the first parameter:
+
+```TypeScript
+Logger.subscribe(new ConsoleListener(undefined, {color:'purple'}));
+```
 
 ### FunctionListener
 
