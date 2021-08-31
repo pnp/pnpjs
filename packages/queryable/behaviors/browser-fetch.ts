@@ -1,5 +1,4 @@
 import { Queryable } from "../queryable.js";
-import { LogLevel } from "@pnp/logging";
 import { delay, TimelinePipe } from "@pnp/core";
 import { HttpRequestError } from "../parsers.js";
 
@@ -9,7 +8,7 @@ export function BrowserFetch(): TimelinePipe<Queryable> {
 
         instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<any> {
 
-            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, 0);
 
             return fetch(url.toString(), init);
 
@@ -53,7 +52,7 @@ export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe
                             wait *= 2;
                         }
 
-                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
+                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, 0);
                         count++;
 
                         await delay(wait);
@@ -63,7 +62,7 @@ export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe
 
                         const u = url.toString();
 
-                        this.emit.log(`Fetch: ${init.method} ${u}`, LogLevel.Verbose);
+                        this.emit.log(`Fetch: ${init.method} ${u}`, 0);
 
                         response = await fetch(u, init);
 

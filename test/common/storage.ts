@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { PnPClientStorageWrapper} from "@pnp/core";
-import { MockStorage }  from "../types.js";
+import { PnPClientStorageWrapper } from "@pnp/core";
 
 describe("Storage", () => {
 
@@ -9,8 +8,7 @@ describe("Storage", () => {
         let wrapper: PnPClientStorageWrapper;
 
         beforeEach(() => {
-            const store: Storage = (typeof localStorage === "undefined") ? new MockStorage() : localStorage;
-            wrapper = new PnPClientStorageWrapper(store);
+            wrapper = new PnPClientStorageWrapper(localStorage);
         });
 
         it("Add and Get a value", () => {

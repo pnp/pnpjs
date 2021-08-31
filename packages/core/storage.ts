@@ -249,7 +249,8 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
-            this._local = new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
+            this._local = PnPClientStorageWrapper.bind(localStorage);
+            // new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
         }
 
         return this._local;
@@ -261,7 +262,8 @@ export class PnPClientStorage {
     public get session(): IPnPClientStore {
 
         if (this._session === null) {
-            this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
+            this._session = PnPClientStorageWrapper.bind(sessionStorage);
+            // new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
         }
 
         return this._session;

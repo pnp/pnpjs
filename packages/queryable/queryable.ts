@@ -1,5 +1,4 @@
 import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable } from "@pnp/core";
-import { LogLevel } from "@pnp/logging";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -50,21 +49,17 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
             observers = init.observers;
         }
 
-        // TODO:: need to maybe filter out some handlers, like on data??
-        // need to trace through multiple objects inheriting and not
-        // TODO:: do we want state to be inherited?
-        super(DefaultMoments, observers, {});
+        super(DefaultMoments, observers);
 
         this._url = url;
         this._query = new Map<string, string>();
-        // process this one different
     }
 
     /**
-    * Directly concatenates the supplied string to the current url, not normalizing "/" chars
-    *
-    * @param pathPart The string to concatenate to the url
-    */
+     * Directly concatenates the supplied string to the current url, not normalizing "/" chars
+     *
+     * @param pathPart The string to concatenate to the url
+     */
     public concat(pathPart: string): this {
         this._url += pathPart;
         return this;
@@ -85,6 +80,9 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         return u;
     }
 
+    /**
+     * Querystring key, value pairs which will be included in the request
+     */
     public get query(): Map<string, string> {
         return this._query;
     }
@@ -106,58 +104,58 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             try {
 
-                this.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+                this.log(`[id:${requestId}] Beginning request`, 1);
 
                 // eslint-disable-next-line prefer-const
                 let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                this.log(`[id:${requestId}] Url: ${url}`, LogLevel.Info);
+                this.log(`[id:${requestId}] Url: ${url}`, 1);
 
                 if (typeof result !== "undefined") {
 
-                    this.log(`[id:${requestId}] Result returned from pre`, LogLevel.Info);
-                    this.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                    this.log(`[id:${requestId}] Result returned from pre`, 1);
+                    this.log(`[id:${requestId}] Emitting data`, 0);
                     this.emit.data(result);
-                    this.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                    this.log(`[id:${requestId}] Emitted data`, 0);
 
                     return;
                 }
 
-                this.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitting auth`, 0);
                 [requestUrl, init] = await this.emit.auth(new URL(url), init);
-                this.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitted auth`, 0);
 
-                this.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitting send`, 0);
                 let response = await this.emit.send(requestUrl, init);
-                this.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitted send`, 0);
 
-                this.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitting parse`, 0);
                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                this.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitted parse`, 0);
 
-                this.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitting post`, 0);
                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                this.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
+                this.log(`[id:${requestId}] Emitted post`, 0);
 
                 // TODO:: how do we handle the case where the request pipeline has worked as expected, however
                 // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
                 // completed event to signal the request is completed?
                 if (typeof result !== "undefined") {
-                    this.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                    this.log(`[id:${requestId}] Emitting data`, 0);
                     this.emit.data(result);
-                    this.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                    this.log(`[id:${requestId}] Emitted data`, 0);
                 }
 
             } catch (e) {
 
-                this.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+                this.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
                 // anything that throws we emit and continue
                 this.error(e);
-                this.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+                this.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
 
             } finally {
 
-                this.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+                this.log(`[id:${requestId}] Finished request`, 1);
             }
 
         }, 0);
@@ -169,10 +167,12 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     }
 }
 
+/**
+ * This interface adds the invokable method to Queryable allowing obj() to be called correctly
+ * The code is contained in invokable decorator
+ */
 // eslint-disable-next-line no-redeclare
-export interface Queryable<R = any> {
-    <T = R>(init?: RequestInit): Promise<T>;
-}
+export interface Queryable<R = any> extends IInvokable<R> {}
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryable2<R = any> extends Timeline<any>, IInvokable {

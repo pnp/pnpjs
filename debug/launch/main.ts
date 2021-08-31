@@ -20,7 +20,12 @@ import { Example } from "./v3-patrick.js";
 import(findup("settings.js")).then((settings: ITestingSettings) => {
 
     // // setup console logger
-    Logger.subscribe(ConsoleListener());
+    Logger.subscribe(ConsoleListener("Debug - ", {
+        color: "skyblue",
+        errorColor: "red",
+        verboseColor: "lightslategray",
+        warningColor: "yellow",
+    }));
 
     Example(settings);
 

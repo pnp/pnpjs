@@ -1,7 +1,7 @@
 import { ILogEntry, LogLevel, ILogListener } from "./logger.js";
 
-export function ConsoleListener(): ILogListener {
-    return new _ConsoleListener();
+export function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener {
+    return new _ConsoleListener(prefix, colors);
 }
 
 /**
@@ -31,25 +31,13 @@ export interface IConsoleListenerColors {
  */
 export class _ConsoleListener implements ILogListener {
 
-    private _prefix: string;
-    private _colors: IConsoleListenerColors;
-
     /**
      * Makes a new one
      *
      * @param prefix Optional text to include at the start of all messages (useful for filtering)
      * @param colors Optional text color settings
      */
-    constructor(prefix: string = "", colors: IConsoleListenerColors = {}) {
-        this._prefix = prefix;
-        this._colors = {
-            verboseColor: colors.color,
-            infoColor: colors.color,
-            warningColor: colors.color,
-            errorColor: colors.color,
-            ...colors
-        };
-    }
+    constructor(private _prefix = "", private _colors: IConsoleListenerColors = {}) {}
 
     /**
      * Any associated data that a given logging listener may choose to log or ignore

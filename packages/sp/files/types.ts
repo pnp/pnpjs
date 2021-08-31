@@ -1,5 +1,5 @@
 import { body, TextParse, BlobParse, BufferParse, JSONParse } from "@pnp/queryable";
-import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
+import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -372,7 +372,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const q = this.listItemAllFields;
         const d = await q.select(...selects)();
-        return assign(Item(odataUrlFrom(d)), d);
+        return Object.assign(Item(odataUrlFrom(d)), d);
     }
 
     /**

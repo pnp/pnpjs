@@ -1,6 +1,5 @@
 import { Queryable } from "../queryable.js";
 import { isFunc, getHashCode, PnPClientStorage, getGUID, extend, TimelinePipe } from "@pnp/core";
-import { LogLevel } from "@pnp/logging";
 
 /**
  * Pessimistic Caching Behavior
@@ -76,9 +75,9 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                         // let requestUrl: URL;
 
                         const emitError = (e) => {
-                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
                             this.emit.error(e);
-                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
 
                         try {
@@ -86,36 +85,36 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
                             const emitSend = async (): Promise<any> => {
 
-                                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting auth`, 0);
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted auth`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting send`, 0);
                                 let response = await this.emit.send(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted send`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting parse`, 0);
                                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted parse`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted post`, 0);
 
                                 return result;
                             };
 
                             const emitData = () => {
-                                this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting data`, 0);
                                 this.emit.data(retVal);
-                                this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted data`, 0);
                             };
 
-                            this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Beginning request`, 1);
 
                             let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
 
                             if (typeof result !== "undefined") {
                                 retVal = result;
@@ -135,7 +134,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                                     }, 0);
                                 }
 
-                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, LogLevel.Info);
+                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, 1);
 
                                 emitData();
                             } else {
@@ -146,7 +145,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                                 // completed event to signal the request is completed?
                                 if (typeof retVal !== "undefined") {
 
-                                    this.emit.log(`[id:${requestId}] Returning results`, LogLevel.Info);
+                                    this.emit.log(`[id:${requestId}] Returning results`, 1);
 
                                     emitData();
                                 }
@@ -154,7 +153,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                         } catch (e) {
                             emitError(e);
                         } finally {
-                            this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Finished request`, 1);
                         }
                     }, 0);
 

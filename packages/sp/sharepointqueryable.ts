@@ -71,14 +71,8 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> implements I
             }
         }
 
+        // always include our tagging
         this.using(SPTagging());
-
-        // post init actions
-        // TODO:: I think we can remove this based on the new architecture
-        // if (typeof baseUrl !== "string") {
-        //     this.configureFrom(baseUrl);
-        // }
-        // this._forceCaching = false;
     }
 
     /**

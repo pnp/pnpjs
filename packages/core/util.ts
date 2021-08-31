@@ -95,36 +95,6 @@ export function isArray(array: any): boolean {
 }
 
 /**
- * Provides functionality to extend the given object by doing a shallow copy
- *
- * @param target The object to which properties will be copied
- * @param source The source object from which properties will be copied
- * @param noOverwrite If true existing properties on the target are not overwritten from the source
- * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
- *
- */
-export function assign<T extends Record<string, any> = any, S extends Record<string, any> = any>(target: T, source: S, noOverwrite = false,
-    filter: (propName: string) => boolean = () => true): T & S {
-
-    if (!objectDefinedNotNull(source)) {
-        return <T & S>target;
-    }
-
-    // ensure we don't overwrite things we don't want overwritten
-    const check: (o: any, i: string) => boolean = noOverwrite ? (o, i) => !(i in o) : () => true;
-
-    // final filter we will use
-    const f = (v: string) => check(target, v) && filter(v);
-
-    return Object.getOwnPropertyNames(source)
-        .filter(f)
-        .reduce((t: any, v: string) => {
-            t[v] = source[v];
-            return t;
-        }, target);
-}
-
-/**
  * Determines if a given url is absolute
  *
  * @param url The url to check to see if it is absolute
@@ -187,7 +157,7 @@ export function getHashCode(s: string): number {
  *
  * @param ms Number of ms to wait
  */
-export async function delay(ms: number): Promise<void> {
+export function delay(ms: number): Promise<void> {
 
     return new Promise((resolve: () => void) => {
         setTimeout(resolve, ms);

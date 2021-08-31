@@ -7,6 +7,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/folders";
 import "@pnp/sp/appcatalog";
+import { Queryable } from "@pnp/queryable/queryable.js";
 
 declare var process: { exit(code?: number): void };
 
@@ -27,16 +28,39 @@ export async function Example(settings: ITestingSettings) {
         })).using(PnPLogging(LogLevel.Verbose));
 
 
-        const w = await sp2.web.lists.getByTitle("CommentList").items.getById(1).versions();
-        
+        const w = sp2.web;
+        w.on.init(function (this: Queryable) {
+
+            this.on.post(async function (this: Queryable, url: URL, result: any) {
+
+                console.log("I am being called!");
+
+                return [url, result];
+            });
+
+            return this;
+
+        });
+
+        const w2 = await w();
+
         // const q = await w.syncSolutionToTeams("asd");
 
-        console.log(`here: ${JSON.stringify(w)}`);
+        console.log(`here: ${JSON.stringify(w2)}`);
 
     } catch (e) {
 
         console.error(e);
     }
+
+
+    // extendFactory(Web, {
+
+    //     execute: () => {
+
+    //         console.log("maybe?");
+    //     },
+    // });
 
 
     // TODO:: can this replace extend factory?? sorta
