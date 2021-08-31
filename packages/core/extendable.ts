@@ -1,4 +1,4 @@
-import { isFunc } from "./util";
+import { getGUID, isFunc } from "./util";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
@@ -9,7 +9,9 @@ export type ExtensionType<T extends Record<string, unknown> = {}> = Pick<ProxyHa
 
 let _enableExtensions = false;
 
-const ObjExtensionsSym = Symbol.for("PnPObjectExtensions");
+const ObjExtensionsSym = Symbol.for("PnPExt");
+
+const factoryExtensions: Map<string, ExtensionType[]> = new Map<string, ExtensionType[]>();
 
 /**
  * Decorator factory wrapping any tagged class in the extension proxy, enabling the use of object extensions
@@ -26,7 +28,18 @@ export function extendable() {
 
             construct(clz, args, newTarget: any) {
 
-                const r = Reflect.construct(clz, args, newTarget);
+                let r = Reflect.construct(clz, args, newTarget);
+
+                // this block handles the factory function extensions by picking
+                // them off the factory and applying them to the created object
+                const proto: any = Reflect.getPrototypeOf(target);
+
+                if (Reflect.has(proto, ObjExtensionsSym)) {
+
+                    const extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+
+                    r = extend(r, extensions);
+                }
 
                 const proxied = new Proxy(r, {
                     apply: (target: any, _thisArg: any, argArray?: any) => {
@@ -71,6 +84,35 @@ export function extend<T extends object>(target: T, extensions: ExtensionType | 
     extendCol(<ExtensionType[]>Reflect.get(target, ObjExtensionsSym), extensions);
 
     return target;
+}
+
+/**
+ * Allows applying extensions to all instances created from the supplied factory
+ *
+ * @param factory The Invokable Factory method to extend
+ * @param extensions Extensions to apply
+ */
+export function extendFactory<T extends (...args: any[]) => any>(factory: T, extensions: ExtensionType | ExtensionType[]): void {
+
+    _enableExtensions = true;
+
+    // factoryExtensions
+    const proto = Reflect.getPrototypeOf(factory);
+
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: getGUID(),
+        });
+    }
+
+    const key = proto[ObjExtensionsSym];
+
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+
+    extendCol(factoryExtensions.get(key), extensions);
 }
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {

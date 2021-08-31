@@ -35,3 +35,7 @@ export function invokable(invokeableAction?: (this: any, init?: RequestInit) => 
         });
     };
 }
+
+export interface IInvokable<R = any> {
+    <T = R>(...args: any[]): Promise<T>;
+}

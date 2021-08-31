@@ -3,7 +3,7 @@ import {
     ISPQueryable,
 } from "../sharepointqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { hOP, IFetchOptions } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 
@@ -36,7 +36,7 @@ export class _Social extends _SPInstance implements ISocial {
         return await spPost(SocialCloneFactory(this, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
-    private createSocialActorInfoRequestBody(actorInfo: ISocialActorInfo): IFetchOptions {
+    private createSocialActorInfoRequestBody(actorInfo: ISocialActorInfo) {
         return body({
             "actor": {
                 Id: null,

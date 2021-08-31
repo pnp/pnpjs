@@ -5,8 +5,7 @@
         "../core/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
-        "../sp/**/*.ts",
-        "../graph/**/*.ts"
+        "../sp/**/*.ts"
     ],
     "references": [
         {
@@ -20,9 +19,6 @@
         },
         {
             "path": "../sp/tsconfig.esm.json"
-        },
-        {
-            "path": "../graph/tsconfig.esm.json"
         }
     ]
 }

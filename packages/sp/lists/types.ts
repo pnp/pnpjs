@@ -1,4 +1,4 @@
-import { assign, hOP, isArray, objectDefinedNotNull } from "@pnp/core";
+import { hOP, isArray, objectDefinedNotNull } from "@pnp/core";
 import { body, headers, TextParse } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -86,7 +86,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
         enableContentTypes = false,
         additionalSettings: Partial<IListInfo> = {}): Promise<IListEnsureResult> {
 
-        const addOrUpdateSettings = assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+        const addOrUpdateSettings = { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes, ...additionalSettings };
 
         const list: IList = this.getByTitle(addOrUpdateSettings.Title);
 
@@ -237,19 +237,13 @@ export class _List extends _SPInstance<IListInfo> {
             parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
         }
 
-        let bodyOptions = { parameters };
-
-        if (objectDefinedNotNull(overrideParameters)) {
-            bodyOptions = assign(bodyOptions, { overrideParameters });
-        }
-
         const clone = List(this, "RenderListDataAsStream");
 
         if (query && query.size > 0) {
             query.forEach((v, k) => clone.query.set(k, v));
         }
 
-        return spPost(clone, body(bodyOptions));
+        return spPost(clone, body({ parameters, ...overrideParameters }));
     }
 
     /**

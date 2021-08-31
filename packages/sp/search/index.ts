@@ -1,4 +1,4 @@
-import { SPRest2 } from "../rest-2.js";
+import { SPRest } from "../rest.js";
 import { SearchQueryInit } from "./types.js";
 import { SearchResults, Search } from "./query.js";
 import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest.js";
@@ -20,8 +20,8 @@ export {
     Suggest,
 } from "./suggest.js";
 
-declare module "../rest-2" {
-    interface SPRest2 {
+declare module "../rest" {
+    interface SPRest {
         /**
          * Conduct a search
          *
@@ -37,12 +37,12 @@ declare module "../rest-2" {
     }
 }
 
-SPRest2.prototype.search = function (this: SPRest2, query: SearchQueryInit): Promise<SearchResults> {
+SPRest.prototype.search = function (this: SPRest, query: SearchQueryInit): Promise<SearchResults> {
 
     return this.create(Search)(query);
 };
 
-SPRest2.prototype.searchSuggest = function (this: SPRest2, query: string | ISuggestQuery): Promise<ISuggestResult> {
+SPRest.prototype.searchSuggest = function (this: SPRest, query: string | ISuggestQuery): Promise<ISuggestResult> {
 
     return this.create(Suggest)(typeof query === "string" ? { querytext: query } : query);
 };

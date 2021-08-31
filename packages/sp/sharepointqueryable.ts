@@ -1,7 +1,7 @@
 import { combine, isUrlAbsolute } from "@pnp/core";
-import { IInvokable, Queryable2, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
-import { Logger, LogLevel } from "@pnp/logging";
+import { IInvokable, Queryable, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
+import { SPTagging } from "./behaviors/telemetry.js";
 
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
     new(baseUrl: string | ISPQueryable, path?: string): T;
@@ -17,7 +17,7 @@ export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableF
  * SharePointQueryable Base Class
  *
  */
-export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements IQueryable2<GetType> {
+export class _SPQueryable<GetType = any> extends Queryable<GetType> implements IQueryable2<GetType> {
 
     protected parentUrl: string;
 
@@ -71,14 +71,8 @@ export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements 
             }
         }
 
-
-
-        // post init actions
-        // TODO:: I think we can remove this based on the new architecture
-        // if (typeof baseUrl !== "string") {
-        //     this.configureFrom(baseUrl);
-        // }
-        // this._forceCaching = false;
+        // always include our tagging
+        this.using(SPTagging());
     }
 
     /**
@@ -89,7 +83,7 @@ export class _SPQueryable<GetType = any> extends Queryable2<GetType> implements 
         const aliasedParams = new Map<string, string>(this.query);
 
         let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
-            Logger.write(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, LogLevel.Verbose);
+            this.emit.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
             aliasedParams.set(labelName, `'${value}'`);
             return labelName;
         });

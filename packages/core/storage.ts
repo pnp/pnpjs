@@ -1,5 +1,4 @@
 import { dateAdd, jsS, objectDefinedNotNull } from "./util.js";
-import { ILibraryConfiguration, DefaultRuntime } from "./libconfig.js";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage
@@ -17,15 +16,9 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
      *
      * @constructor
      */
-    constructor(private store: Storage, public defaultTimeoutMinutes = -1) {
+    constructor(private store: Storage) {
 
         this.enabled = this.test();
-
-        // if the cache timeout is enabled call the handler
-        // this will clear any expired items and set the timeout function
-        if (DefaultRuntime.get<ILibraryConfiguration, boolean>("enableCacheExpiration")) {
-            this.cacheExpirationHandler();
-        }
     }
 
     public static bind(store: Storage): IPnPClientStore {
@@ -149,31 +142,10 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
     private createPersistable(o: any, expire?: Date): string {
         if (expire === undefined) {
 
-            // ensure we are by default inline with the global library setting
-            let defaultTimeout = DefaultRuntime.get<ILibraryConfiguration, number>("defaultCachingTimeoutSeconds");
-            if (this.defaultTimeoutMinutes > 0) {
-                defaultTimeout = this.defaultTimeoutMinutes * 60;
-            }
-            expire = dateAdd(new Date(), "second", defaultTimeout);
+            expire = dateAdd(new Date(), "minute", 5);
         }
 
         return jsS({ pnp: 1, expiration: expire, value: o });
-    }
-
-    /**
-     * Deletes expired items added by this library in this.store and sets a timeout to call itself
-     */
-    private cacheExpirationHandler(): void {
-
-        if (!this.enabled) {
-            return;
-        }
-
-        this.deleteExpired().then(() => {
-
-            // call ourself in the future
-            setTimeout(() => this.cacheExpirationHandler, DefaultRuntime.get<ILibraryConfiguration, number>("cacheExpirationIntervalMilliseconds"));
-        }).catch(console.error);
     }
 }
 
@@ -277,7 +249,8 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
-            this._local = new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
+            this._local = PnPClientStorageWrapper.bind(localStorage);
+            // new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
         }
 
         return this._local;
@@ -289,7 +262,8 @@ export class PnPClientStorage {
     public get session(): IPnPClientStore {
 
         if (this._session === null) {
-            this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
+            this._session = PnPClientStorageWrapper.bind(sessionStorage);
+            // new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
         }
 
         return this._session;

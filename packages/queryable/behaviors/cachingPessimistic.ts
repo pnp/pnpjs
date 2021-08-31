@@ -1,6 +1,5 @@
-import { Queryable2 } from "../queryable-2.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, getGUID, extend } from "@pnp/core";
-import { LogLevel } from "@pnp/logging";
+import { Queryable } from "../queryable.js";
+import { isFunc, getHashCode, PnPClientStorage, getGUID, extend, TimelinePipe } from "@pnp/core";
 
 /**
  * Pessimistic Caching Behavior
@@ -11,7 +10,8 @@ import { LogLevel } from "@pnp/logging";
  * @param keyFactory: a function that returns the key for the cache value, if not provided a default hash of the url will be used
  * @param expireFunc: a function that returns a date of expiration for the cache value, if not provided the cache never expires but is always updated.
  */
-export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
+// eslint-disable-next-line max-len
+export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): TimelinePipe<Queryable> {
 
     let store: Storage;
     if (type === "session") {
@@ -28,7 +28,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
     const putStorage = (key: string, o: string) => {
         try {
             if (isFunc(expireFunc)) {
-                //TODO:: Think about making PnPClientStorage handle no expiration date.
+                // TODO:: Think about making PnPClientStorage handle no expiration date.
                 const storage = new PnPClientStorage();
                 const s = type === "session" ? storage.session : storage.local;
                 s.put(key, o, expireFunc());
@@ -39,7 +39,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
         } catch (err) {
             console.log(`CachingPessimistic(putStorage): ${err}.`);
         }
-    }
+    };
 
     const getStorage = (key: string): any => {
         let retVal: any = undefined;
@@ -51,32 +51,33 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
             } else {
                 let cache = undefined;
                 cache = store.getItem(key);
-                if (cache != undefined)
+                if (cache !== undefined) {
                     retVal = JSON.parse(cache);
+                }
             }
         } catch (err) {
             console.log(`CachingPessimistic(getStorage): ${err}.`);
         }
         return retVal;
-    }
+    };
 
-    let refreshCache: boolean = true;
+    let refreshCache = true;
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.init(function (this: Queryable2) {
+        instance.on.init(function (this: Queryable) {
 
             const newExecute = extend(this, {
 
                 async execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
                     setTimeout(async () => {
                         const requestId = getGUID();
-                        let requestUrl: URL;
+                        // let requestUrl: URL;
 
                         const emitError = (e) => {
-                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
                             this.emit.error(e);
-                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
 
                         try {
@@ -84,36 +85,36 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
                             const emitSend = async (): Promise<any> => {
 
-                                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting auth`, 0);
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted auth`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting send`, 0);
                                 let response = await this.emit.send(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted send`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting parse`, 0);
                                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted parse`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose)
+                                this.emit.log(`[id:${requestId}] Emitted post`, 0);
 
                                 return result;
                             };
 
                             const emitData = () => {
-                                this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting data`, 0);
                                 this.emit.data(retVal);
-                                this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted data`, 0);
                             };
 
-                            this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Beginning request`, 1);
 
                             let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
 
                             if (typeof result !== "undefined") {
                                 retVal = result;
@@ -133,7 +134,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                                     }, 0);
                                 }
 
-                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, LogLevel.Info);
+                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, 1);
 
                                 emitData();
                             } else {
@@ -144,7 +145,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                                 // completed event to signal the request is completed?
                                 if (typeof retVal !== "undefined") {
 
-                                    this.emit.log(`[id:${requestId}] Returning results`, LogLevel.Info);
+                                    this.emit.log(`[id:${requestId}] Returning results`, 1);
 
                                     emitData();
                                 }
@@ -152,7 +153,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                         } catch (e) {
                             emitError(e);
                         } finally {
-                            this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Finished request`, 1);
                         }
                     }, 0);
 
@@ -166,9 +167,9 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
             return newExecute;
         });
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
-            //Reset refreshCache
+            // Reset refreshCache
             refreshCache = true;
 
             const key = keyFactory(url.toString());
@@ -177,7 +178,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
             if (cached !== undefined) {
 
-                //Return value
+                // Return value
                 result = cached.value;
 
                 if (cached.expiration !== undefined) {

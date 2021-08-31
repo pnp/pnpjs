@@ -1,9 +1,9 @@
 import { TimelinePipe } from "@pnp/core";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 
-export function Agent(agent: any): TimelinePipe<Queryable2> {
+export function Agent(agent: any): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance.on.pre(async (url, init, result) => {
 

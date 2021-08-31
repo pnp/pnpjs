@@ -26,5 +26,8 @@
     },
     "files": [
         "./main.ts"
+    ],
+    "exclude": [
+        "../../packages/graph/*"
     ]
 }

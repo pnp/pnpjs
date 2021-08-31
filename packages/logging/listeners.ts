@@ -1,5 +1,9 @@
 import { ILogEntry, LogLevel, ILogListener } from "./logger.js";
 
+export function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener {
+    return new _ConsoleListener(prefix, colors);
+}
+
 /**
  * Text color options for use in the ConsoleListener
  * All values can be specified as known names, hex values, rgb, or rgba values
@@ -25,10 +29,7 @@ export interface IConsoleListenerColors {
  * Implementation of LogListener which logs to the console
  *
  */
-export class ConsoleListener implements ILogListener {
-
-    private _prefix: string;
-    private _colors: IConsoleListenerColors;
+export class _ConsoleListener implements ILogListener {
 
     /**
      * Makes a new one
@@ -36,16 +37,7 @@ export class ConsoleListener implements ILogListener {
      * @param prefix Optional text to include at the start of all messages (useful for filtering)
      * @param colors Optional text color settings
      */
-    constructor(prefix: string = "", colors: IConsoleListenerColors = {}) {
-        this._prefix = prefix;
-        this._colors = {
-            verboseColor: colors.color,
-            infoColor: colors.color,
-            warningColor: colors.color,
-            errorColor: colors.color,
-            ...colors
-        };
-    }
+    constructor(private _prefix = "", private _colors: IConsoleListenerColors = {}) {}
 
     /**
      * Any associated data that a given logging listener may choose to log or ignore
@@ -115,11 +107,15 @@ export class ConsoleListener implements ILogListener {
     }
 }
 
+export function FunctionListener(impl: (entry: ILogEntry) => void): ILogListener {
+    return new _FunctionListener(impl);
+}
+
 /**
  * Implementation of LogListener which logs to the supplied function
  *
  */
-export class FunctionListener implements ILogListener {
+export class _FunctionListener implements ILogListener {
 
     /**
      * Creates a new instance of the FunctionListener class
