@@ -916,6 +916,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    Group Membership
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-the-team-site-for-a-group" class="md-nav__link">
     Get the Team Site for a Group
   </a>
@@ -2218,6 +2225,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    Group Membership
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-the-team-site-for-a-group" class="md-nav__link">
     Get the Team Site for a Group
   </a>
@@ -2339,6 +2353,15 @@ const events = graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&q
 </code></pre>
 <h2 id="group-photo-operations">Group Photo Operations<a class="headerlink" href="#group-photo-operations" title="Permanent link">&para;</a></h2>
 <p>See <a href="../photos/">Photos</a></p>
+<h2 id="group-membership">Group Membership<a class="headerlink" href="#group-membership" title="Permanent link">&para;</a></h2>
+<p>Get the members and/or owners of a group.</p>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/groups&quot;;
+import &quot;@pnp/graph/members&quot;;
+
+const members = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).members();
+const owners = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).owners();
+</code></pre>
 <h2 id="get-the-team-site-for-a-group">Get the Team Site for a Group<a class="headerlink" href="#get-the-team-site-for-a-group" title="Permanent link">&para;</a></h2>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
