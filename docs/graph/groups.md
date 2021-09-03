@@ -124,6 +124,19 @@ const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getC
 
 See [Photos](./photos.md)
 
+## Group Membership
+
+Get the members and/or owners of a group.
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/members";
+
+const members = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").members();
+const owners = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").owners();
+```
+
 ## Get the Team Site for a Group
 
 ```TypeScript
