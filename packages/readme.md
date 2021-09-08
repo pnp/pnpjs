@@ -8,7 +8,7 @@ Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates aro
 
 ## Source & Docs
 
-This code is managed within the [main pnp repo](https://github.com/pnp/pnp), please report issues and submit pull requests there.
+This code is managed within the [main pnp repo](https://github.com/pnp/pnpjs), please report issues and submit pull requests there.
 
 Please see the public site for [package documentation](https://pnp.github.io/pnpjs/).
 
