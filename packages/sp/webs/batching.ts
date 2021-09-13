@@ -1,6 +1,6 @@
 import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
-import { body, InjectHeaders, parseBinderWithErrorCheck, Queryable2 } from "@pnp/queryable";
+import { body, InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "../operations";
 import { _SPQueryable } from "../sharepointqueryable";
 import { IWeb } from "./types.js";
@@ -39,7 +39,7 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
      * [3]: The resolve function back to the promise for the original operation
      * [4]: The reject function back to the promise for the original operation
      */
-    type RequestRecord = [Queryable2, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
+    type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
     const registrationPromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
@@ -172,7 +172,7 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
         }), Promise.resolve(void (0)));
     };
 
-    const register = (instance: Queryable2) => {
+    const register = (instance: Queryable) => {
 
         let registrationResolver: (value: void | PromiseLike<void>) => void;
 
@@ -181,7 +181,7 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
             registrationResolver = resolve;
         }));
 
-        instance.on.send.replace(async function (this: Queryable2, url: URL, init: RequestInit) {
+        instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
 

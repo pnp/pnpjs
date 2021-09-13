@@ -1,4 +1,3 @@
-import { ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -20,7 +19,7 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param personalView True if this is a personal view, otherwise false, default = false
      * @param additionalSettings Will be passed as part of the view creation body
      */
-    public async add(Title: string, PersonalView = false, additionalSettings: ITypedHash<any> = {}): Promise<IViewAddResult> {
+    public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewAddResult> {
 
         const data = await spPost(Views(this, null), body({
             PersonalView,

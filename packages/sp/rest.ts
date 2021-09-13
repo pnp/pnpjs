@@ -4,7 +4,7 @@ import { ISPQueryable, SPQueryable } from "./sharepointqueryable";
 /**
  * Root of the SharePoint REST module
  */
-export class SPRest2 {
+export class SPRest {
 
     private _root: ISPQueryable;
 
@@ -35,6 +35,6 @@ export class SPRest2 {
     }
 }
 
-export function sp(root: string | ISPQueryable = ""): SPRest2 {
-    return new SPRest2(root);
+export function sp(root: string | ISPQueryable = ""): SPRest {
+    return new SPRest(root);
 }

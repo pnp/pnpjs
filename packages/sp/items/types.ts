@@ -9,7 +9,7 @@ import {
     SPInstance,
     ISPInstance,
 } from "../sharepointqueryable.js";
-import { ITypedHash, hOP } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
@@ -72,7 +72,7 @@ export class _Items extends _SPCollection {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async add(properties: ITypedHash<any> = {}): Promise<IItemAddResult> {
+    public async add(properties: Record<string, any> = {}): Promise<IItemAddResult> {
 
         return spPost<{ Id: number }>(Items(this, ""), body(properties)).then((data) => ({
             data: data,
@@ -151,7 +151,7 @@ export class _Item extends _SPInstance {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    public async update(properties: ITypedHash<any>, eTag = "*"): Promise<IItemUpdateResult> {
+    public async update(properties: Record<string, any>, eTag = "*"): Promise<IItemUpdateResult> {
 
         const postBody = body(properties, headers({
             "IF-Match": eTag,

@@ -19,8 +19,8 @@ export default <ConfigCollection>[
         ],
 
         postBuildTasks: [
-            // this task is scoped to the files within the task
-            Tasks.Build.replaceVersion,
+            // this task replaces the $$Version$$ with the version from the root package.json at build time
+            Tasks.Build.createReplaceVersion(["sp/behaviors/telemetry.js"]),
         ],
     },
     <PackageSchema>{
@@ -141,7 +141,8 @@ export default <ConfigCollection>[
         ],
 
         postBuildTasks: [
-            Tasks.Build.replaceDebug,
+            // the folder structure for debug is slightly different so we account for the "packages" needed for the output path
+            Tasks.Build.createDebugReplace(["packages/sp/behaviors/telemetry.js"]),
         ],
     },
     <PublishSchema>{

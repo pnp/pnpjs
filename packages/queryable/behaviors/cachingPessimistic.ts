@@ -66,9 +66,9 @@ export function CachingPessimisticRefresh(
 
     let refreshCache = true;
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.init(function (this: Queryable2) {
+        instance.on.init(function (this: Queryable) {
 
             const newExecute = extend(this, {
 
@@ -77,9 +77,9 @@ export function CachingPessimisticRefresh(
                         const requestId = getGUID();
 
                         const emitError = (e) => {
-                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
                             this.emit.error(e);
-                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, LogLevel.Error);
+                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
 
                         try {
@@ -87,19 +87,19 @@ export function CachingPessimisticRefresh(
 
                             const emitSend = async (): Promise<any> => {
 
-                                this.emit.log(`[id:${requestId}] Emitting auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting auth`, 0);
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted auth`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted auth`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting send`, 0);
                                 let response = await this.emit.send(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted send`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted send`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting parse`, 0);
                                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                                this.emit.log(`[id:${requestId}] Emitted parse`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted parse`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting post`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
                                 this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
 
@@ -107,16 +107,16 @@ export function CachingPessimisticRefresh(
                             };
 
                             const emitData = () => {
-                                this.emit.log(`[id:${requestId}] Emitting data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitting data`, 0);
                                 this.emit.data(retVal);
-                                this.emit.log(`[id:${requestId}] Emitted data`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted data`, 0);
                             };
 
-                            this.emit.log(`[id:${requestId}] Beginning request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Beginning request`, 1);
 
                             let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
 
                             if (typeof result !== "undefined") {
                                 retVal = result;
@@ -136,7 +136,7 @@ export function CachingPessimisticRefresh(
                                     }, 0);
                                 }
 
-                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, LogLevel.Info);
+                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, 1);
 
                                 emitData();
                             } else {
@@ -147,7 +147,7 @@ export function CachingPessimisticRefresh(
                                 // completed event to signal the request is completed?
                                 if (typeof retVal !== "undefined") {
 
-                                    this.emit.log(`[id:${requestId}] Returning results`, LogLevel.Info);
+                                    this.emit.log(`[id:${requestId}] Returning results`, 1);
 
                                     emitData();
                                 }
@@ -155,7 +155,7 @@ export function CachingPessimisticRefresh(
                         } catch (e) {
                             emitError(e);
                         } finally {
-                            this.emit.log(`[id:${requestId}] Finished request`, LogLevel.Info);
+                            this.emit.log(`[id:${requestId}] Finished request`, 1);
                         }
                     }, 0);
 
@@ -169,7 +169,7 @@ export function CachingPessimisticRefresh(
             return newExecute;
         });
 
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             // Reset refreshCache
             refreshCache = true;

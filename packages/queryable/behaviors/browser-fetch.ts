@@ -1,15 +1,14 @@
-import { Queryable2 } from "../queryable-2.js";
-import { LogLevel } from "@pnp/logging";
+import { Queryable } from "../queryable.js";
 import { delay, TimelinePipe } from "@pnp/core";
 import { HttpRequestError } from "../parsers.js";
 
-export function BrowserFetch(): TimelinePipe<Queryable2> {
+export function BrowserFetch(): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit): Promise<any> {
+        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<any> {
 
-            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, 0);
 
             return fetch(url.toString(), init);
 
@@ -19,11 +18,11 @@ export function BrowserFetch(): TimelinePipe<Queryable2> {
     };
 }
 
-export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable2> {
+export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable> {
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable2, url: URL, init: RequestInit): Promise<Response> {
+        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
 
             let response: Response;
             let wait = interval;
@@ -53,7 +52,7 @@ export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe
                             wait *= 2;
                         }
 
-                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
+                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, 0);
                         count++;
 
                         await delay(wait);
@@ -61,9 +60,11 @@ export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe
 
                     try {
 
-                        this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+                        const u = url.toString();
 
-                        response = await fetch(url.toString(), init);
+                        this.emit.log(`Fetch: ${init.method} ${u}`, 0);
+
+                        response = await fetch(u, init);
 
                         // if we got a good response, return it, otherwise see if we can retry
                         return response.ok ? response : retry();

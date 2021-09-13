@@ -1,4 +1,4 @@
-import { broadcast, init } from "./moments.js";
+import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
@@ -51,8 +51,8 @@ type DistributeEmit<T extends Moments> =
  * Virtual events that are present on all Timelines
  */
 type DefaultTimelineEvents<T extends Moments> = {
-    init: (observers: ((this: Timeline<T>) => Timeline<T>)[], ...args: any[]) => void;
-    dispose: (observers: ((this: Timeline<T>) => Timeline<T>)[], ...args: any[]) => void;
+    init: (observers: ((this: Timeline<T>) => void)[], ...args: any[]) => void;
+    dispose: (observers: ((this: Timeline<T>) => void)[], ...args: any[]) => void;
     log: (observers: ((this: Timeline<T>, message: string, level: number) => void)[], ...args: any[]) => void;
     error: (observers: ((this: Timeline<T>, err: string | Error) => void)[], ...args: any[]) => void;
 };
@@ -83,16 +83,7 @@ export abstract class Timeline<T extends Moments> {
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
 
-    constructor(protected readonly moments: T, protected observers?: ObserverCollection, protected state: Record<symbol, any> = {}) {
-
-        // TODO:: this work isn't correct
-        if (objectDefinedNotNull(this.observers)) {
-            this._inheritingObservers = true;
-        } else {
-            this._inheritingObservers = false;
-            this.observers = {};
-        }
-    }
+    constructor(protected readonly moments: T, protected observers: ObserverCollection = {}) { }
 
     public using(...behaviors: TimelinePipe[]): this {
 
@@ -112,15 +103,6 @@ export abstract class Timeline<T extends Moments> {
 
             this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
-
-                    // TODO:: we need better logic here depending on how objects are constructed
-                    if (this._inheritingObservers) {
-                        // ONLY clone the observers the first time this instance of timeline sets an observer
-                        // this should work all up and down the tree.
-                        this._parentObservers = target.observers;
-                        target.observers = cloneDeep(target.observers);
-                        this._inheritingObservers = false;
-                    }
 
                     addObserver(target.observers, p, handler, "add");
                     return target;
@@ -164,15 +146,6 @@ export abstract class Timeline<T extends Moments> {
         this.emit.log(message, level);
     }
 
-    // TODO:: WIP to correctly enable this capability
-    public resetObservers(): void {
-        if (!this._inheritingObservers && objectDefinedNotNull(this._parentObservers)) {
-            this.observers = this._parentObservers;
-            this._inheritingObservers = true;
-            this._parentObservers = null;
-        }
-    }
-
     /**
      * Shorthand method to emit a dispose event tied to this timeline
      *
@@ -206,7 +179,9 @@ export abstract class Timeline<T extends Moments> {
     protected get emit(): EmitProxyType<T> {
 
         if (this._emitProxy === null) {
+
             this._emitProxy = new Proxy(this, {
+
                 get: (target: any, p: string) => (...args: any[]) => {
 
                     // handle the case there are no observers registered to the target
@@ -228,8 +203,8 @@ export abstract class Timeline<T extends Moments> {
 
                     try {
 
-                        // default to broadcasting any events without specific impl (will apply to log and error as well)
-                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : p === "init" ? init() : broadcast();
+                        // default to broadcasting any events without specific impl (will apply to log and error)
+                        const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : p === "init" || p === "dispose" ? lifecycle() : broadcast();
 
                         return Reflect.apply(moment, target, [observers, ...args]);
 
@@ -241,7 +216,7 @@ export abstract class Timeline<T extends Moments> {
 
                         } else {
 
-                            // if all else fails, re-throw as we are getting errors out of error observers meaning someting is sideways
+                            // if all else fails, re-throw as we are getting errors from error observers meaning something is sideways
                             throw e;
                         }
                     }
@@ -260,18 +235,15 @@ export abstract class Timeline<T extends Moments> {
      * @param init A value passed into the execute logic from the initiator of the timeline
      * @returns The result of this.execute
      */
-    protected start(init?: any): Promise<any> {
+    protected async start(init?: any): Promise<any> {
 
         try {
-
-            // TODO:: should we somehow create a copy of "this" so that any modifications (extensions, whatever)
-            // are left only to each execution of start vs. running it twice init is called twice and things could be double extended etc.
 
             // initialize our timeline
             this.init();
 
             // execute the timeline
-            return this.execute(init);
+            return await this.execute(init);
 
         } catch (e) {
 

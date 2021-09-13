@@ -1,5 +1,5 @@
 import { _SPInstance, ISPQueryable } from "../sharepointqueryable.js";
-import { assign, hOP, isArray } from "@pnp/core";
+import { hOP, isArray } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
@@ -207,10 +207,11 @@ export class SearchResults {
         // otherwise get the previous RowLimit or default to 10
         const rows = pageSize !== undefined ? pageSize : hOP(this._query, "RowLimit") ? this._query.RowLimit : 10;
 
-        const query: ISearchQuery = assign(this._query, {
+        const query: ISearchQuery = {
+            ...this._query,
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
-        });
+        };
 
         // we have reached the end
         if (query.StartRow > this.TotalRows) {

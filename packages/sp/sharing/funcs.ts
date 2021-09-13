@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { jsS, assign } from "@pnp/core";
+import { jsS } from "@pnp/core";
 import { SPCollection, SPInstance } from "../sharepointqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Web } from "../webs/types.js";
@@ -37,12 +37,13 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
     }
 
     // extend our options with some defaults
-    options = assign(options, {
+    options = {
         group: null,
         includeAnonymousLinkInEmail: false,
         propagateAcl: false,
         useSimplifiedRoles: true,
-    }, true);
+        ...options,
+    };
 
     const roleValue = await getRoleValue(options.role, options.group);
 
@@ -60,11 +61,12 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
     };
 
     if (options.emailData !== undefined && options.emailData !== null) {
-        postBody = assign(postBody, {
+        postBody = <any>{
             emailBody: options.emailData.body,
             emailSubject: options.emailData.subject !== undefined ? options.emailData.subject : "Shared with you.",
             sendEmail: true,
-        });
+            ...postBody,
+        };
     }
 
     return sendShareObjectRequest(o, postBody);

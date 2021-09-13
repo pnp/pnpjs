@@ -1,12 +1,12 @@
 import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
 import { TimelinePipe } from "@pnp/core";
-import { Queryable2 } from "@pnp/queryable";
+import { Queryable } from "@pnp/queryable";
 
-export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): TimelinePipe<Queryable2> {
+export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): TimelinePipe<Queryable> {
 
     const confidentialClient = new ConfidentialClientApplication(config);
 
-    return (instance: Queryable2) => {
+    return (instance: Queryable) => {
 
         instance.on.auth(async (url: URL, init: RequestInit) => {
 

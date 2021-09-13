@@ -3,6 +3,8 @@ import { isArray } from "./util.js";
 
 // TODO:: docs
 // - you don't need error handling here because that is handled in emit within the timeline
+// - implement first as an example Promise.all(...obs)
+// - explain why we have just these - it is what we needed.
 
 
 /**
@@ -24,7 +26,7 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
 
 /**
  * Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer.
- * This is very much like the redux pattern taking the arguments as the state which each observer may modify, returning a new state
+ * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
  *
  * @returns The final set of arguments
  */
@@ -55,9 +57,9 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
  *
  * @returns The result returned by the first registered observer
  */
-export function request<T extends ObserverFunction>(): (observers: T[], ...args: [...Parameters<T>]) => ReturnType<T> {
+export function request<T extends ObserverFunction>(): (observers: T[], ...args: [...Parameters<T>]) => Promise<ReturnType<T>> {
 
-    return <any>function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<any> {
+    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
 
         if (!isArray(observers) || observers.length < 1) {
             return undefined;
@@ -74,48 +76,18 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
  * possibly modifying the "this" instance, with the final product returned
  *
  */
-export function init<T extends ObserverFunction>(): (observers: T[]) => ReturnType<T> {
+export function lifecycle<T extends ObserverFunction>(): (observers: T[]) => Timeline<any> {
 
-    return <any>function (this: Timeline<any>, observers: T[]): Timeline<any> {
-
-        // get our initial values
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        let r = this;
+    return function (this: Timeline<any>, observers: T[]): Timeline<any> {
 
         const obs = [...observers];
 
         // process each handler which updates our instance in order
         // very similar to asyncReduce but the state is the object itself
         for (let i = 0; i < obs.length; i++) {
-            r = Reflect.apply(obs[i], r, []);
+            Reflect.apply(obs[i], this, []);
         }
 
-        return r;
-    };
-}
-
-/**
- * Defines a special moment used to dispose of the timeline itself after running. Each observer is executed in order,
- * possibly modifying the "this" instance, with the final product returned. This allows for cleaning up any resources
- * associated with the timeline run or removing any changes done during init.
- *
- */
-export function dispose<T extends ObserverFunction>(): (observers: T[]) => ReturnType<T> {
-
-    return <any>function (this: Timeline<any>, observers: T[]): Timeline<any> {
-
-        // get our initial values
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        let r = this;
-
-        const obs = [...observers];
-
-        // process each handler which updates our instance in order
-        // very similar to asyncReduce but the state is the object itself
-        for (let i = 0; i < obs.length; i++) {
-            r = Reflect.apply(obs[i], r, []);
-        }
-
-        return r;
+        return this;
     };
 }
