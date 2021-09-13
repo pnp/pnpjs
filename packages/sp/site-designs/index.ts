@@ -1,5 +1,5 @@
 import "./web.js";
-import { SPRest2 } from "../rest-2.js";
+import { SPRest } from "../rest.js";
 import { ISiteDesigns, SiteDesigns } from "./types.js";
 
 export {
@@ -14,16 +14,16 @@ export {
     ISiteScriptActionStatus,
 } from "./types.js";
 
-declare module "../rest-2" {
+declare module "../rest" {
     interface SPRest2 {
         readonly siteDesigns: ISiteDesigns;
     }
 }
 
-Reflect.defineProperty(SPRest2.prototype, "siteDesigns", {
+Reflect.defineProperty(SPRest.prototype, "siteDesigns", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest2) {
+    get: function (this: SPRest) {
         return this.create(SiteDesigns);
     },
 });

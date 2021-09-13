@@ -6,7 +6,6 @@
   "typings": "./index",
   "dependencies": {
     "tslib": "2.1.0",
-    "@pnp/logging": "0.0.0-PLACEHOLDER",
     "@pnp/core": "0.0.0-PLACEHOLDER"
   },
   "author": {

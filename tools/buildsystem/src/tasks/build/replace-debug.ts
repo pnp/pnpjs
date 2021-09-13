@@ -10,50 +10,52 @@ interface TSConfig {
     };
 }
 
-/**
- * Repalces the $$Version$$ and rewrites the local require statements for debugging
- * 
- * @param ctx The build context
- */
-export async function replaceDebug(version: string, config: BuildSchema): Promise<void> {
+export function createDebugReplace(versionReplacePaths: string[]): (version: string, config: BuildSchema) => Promise<void> {
 
-    const optionsVersion = {
-        files: [],
-        from: /\$\$Version\$\$/ig,
-        to: version,
-    };
+    /**
+     * Repalces the $$Version$$ and rewrites the local require statements for debugging
+     * 
+     * @param ctx The build context
+     */
+    return async function (version: string, config: BuildSchema): Promise<void> {
 
-    const optionsRequireTemplate = {
-        from: /require\(['|"]@pnp\/[\w-\/]*?['|"]/ig,
-    };
+        const optionsVersion = {
+            files: [],
+            from: /\$\$Version\$\$/ig,
+            to: version,
+        };
 
-    const requireOptionsCollection = [];
+        const optionsRequireTemplate = {
+            from: /require\(['|"]@pnp\/[\w-\/]*?['|"]/ig,
+        };
 
-    for (let i = 0; i < config.buildTargets.length; i++) {
+        const requireOptionsCollection = [];
 
-        // read our outDir from the build target (which will be a tsconfig file)
-        const buildConfig: TSConfig = require(config.buildTargets[i]);
-        const sourceRoot = path.resolve(path.dirname(config.buildTargets[i]));
-        const outDir = buildConfig.compilerOptions.outDir;
+        for (let i = 0; i < config.buildTargets.length; i++) {
 
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/sphttpclient.js"));
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "graph/graphhttpclient.js"));
-        optionsVersion.files.push(path.resolve(sourceRoot, outDir, "sp/batch.js"));
+            // read our outDir from the build target (which will be a tsconfig file)
+            const buildConfig: TSConfig = require(config.buildTargets[i]);
+            const sourceRoot = path.resolve(path.dirname(config.buildTargets[i]));
+            const outDir = buildConfig.compilerOptions.outDir;
 
-        requireOptionsCollection.push(Object.assign({}, optionsRequireTemplate, {
-            files: [
-                path.resolve(sourceRoot, outDir, "**/*.js"),
-                path.resolve(sourceRoot, outDir, "**/*.d.ts"),
-            ],
-            to: (match: string) => {
-                const m = /require\(['|"]@pnp\/([\w-\/]*?)['|"]/ig.exec(match);
-                return `require("${path.resolve(sourceRoot, outDir, `packages/${m[1]}`).replace(/\\/g, "/")}"`;
-            },
-        }));
+            optionsVersion.files.push(...versionReplacePaths.map(p => path.resolve(sourceRoot, outDir, p)));
+
+            requireOptionsCollection.push(Object.assign({}, optionsRequireTemplate, {
+                files: [
+                    path.resolve(sourceRoot, outDir, "**/*.js"),
+                    path.resolve(sourceRoot, outDir, "**/*.d.ts"),
+                ],
+                to: (match: string) => {
+                    const m = /require\(['|"]@pnp\/([\w-\/]*?)['|"]/ig.exec(match);
+                    return `require("${path.resolve(sourceRoot, outDir, `packages/${m[1]}`).replace(/\\/g, "/")}"`;
+                },
+            }));
+        }
+
+        await Promise.all([
+            replace(optionsVersion),
+            ...requireOptionsCollection.map(c => replace(c)),
+        ]).catch(e => console.error);
     }
 
-    await Promise.all([
-        replace(optionsVersion),
-        ...requireOptionsCollection.map(c => replace(c)),
-    ]).catch(e => console.error);
 }

@@ -1,4 +1,4 @@
-import { SPRest2 } from "../rest-2.js";
+import { SPRest } from "../rest.js";
 import { Profiles, IProfiles } from "./types.js";
 
 export {
@@ -15,16 +15,16 @@ export {
     UrlZone,
 } from "./types.js";
 
-declare module "../rest-2" {
+declare module "../rest" {
     interface SPRest {
         readonly profiles: IProfiles;
     }
 }
 
-Reflect.defineProperty(SPRest2.prototype, "profiles", {
+Reflect.defineProperty(SPRest.prototype, "profiles", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest2) {
+    get: function (this: SPRest) {
         this.create(Profiles);
     },
 });

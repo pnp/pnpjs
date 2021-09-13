@@ -1,4 +1,4 @@
-import { SPRest2 } from "../rest-2.js";
+import { SPRest } from "../rest.js";
 import { HubSites, IHubSites } from "./types.js";
 
 import "./site.js";
@@ -13,7 +13,7 @@ export {
     IHubSites,
 } from "./types.js";
 
-declare module "../rest-2" {
+declare module "../rest" {
     interface SPRest {
         /**
          * Lists all of the subsites
@@ -22,10 +22,10 @@ declare module "../rest-2" {
     }
 }
 
-Reflect.defineProperty(SPRest2.prototype, "hubSites", {
+Reflect.defineProperty(SPRest.prototype, "hubSites", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest2) {
+    get: function (this: SPRest) {
         return this.create(HubSites);
     },
 });

@@ -12,9 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Introduced "Timeline" concept and supporting code with moments
-
-- common:
+- common/core:
+  - Introduced "Timeline" concept with Timline, moments, and observers
   - delay utility function
 
 ### Changed
@@ -22,7 +21,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed package "odata" -> "queryable"
 - Renamed package "common" -> "core"
 
+- logging:
+  - listeners are now factory functions (new ConsoleListener() => ConsoleListener()), drop the 'new'
+  - Console listener now supports pretty printing options with colors and improved formatting (@thechriskent)
+
 - sp:
+  - Changed to using minimal metadata for all requests
   - web.update return changed to Promise<void>
   - web.getParentWeb return changed to Promise<IWeb>
   - moved items.getAll to seperate import @pnp/sp/items/get-all
@@ -34,9 +38,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - renamed suggest.execute => suggest.run due to naming conflict in new base classes
   - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
   - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
-  - odataUrlFrom moved until utils folder
+  - odataUrlFrom moved to utils folder
   
 ### Removed
+
+- logging
+  - None of the other packages reference logging anymore, removing a dependency, logging still exists and can be used in your project as before and easily with the new model
 
 - queryable:
   - LambdaParser -> write an observer
@@ -44,7 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Removed .get method in favor of invokable pattern. foo.get() => foo()
   - Removed .clone, .cloneTo in favor of using factories directly, i.e. this.clone(Web, "path") => Web(this, "path")
   - Invokable Extensions is split, with core object extension functionality moved to core
-  - ensureHeaders => headers = { ...headers, ...newValues }
+  - ensureHeaders => headers = { ...headers, ...moreHeaders }
 
 - nodejs: 
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
@@ -55,14 +62,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Removed global extensions in favor of instance or factory. Global no longer aligned to our scoped model
   - Removed `assign` util method use Object.assign or { ...a, ...b}
   - Removed `getCtxCallback` util method
-  - Removed ITypedHash => built in type Record
+  - Removed ITypedHash => built in type Record<string, *>
   - removed `sanitizeGuid` util method
 
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch
   - feature.deactivate => use features.remove
   - getTenantAppCatalogWeb moved from root object to IWeb when imported
-  - removed use of ListItemEntityTypeFullName in item add/update and removed associated methods to get the value\
+  - removed use of ListItemEntityTypeFullName in item add/update and removed associated methods to get the value
   - removed folders.add => folders.addUsingPath
   - removed folder.serverRelativeUrl property => use select
   - removed web.getFolderByServerRelativeUrl => web.getFolderByServerRelativePath
@@ -83,4 +90,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed spODataEntity and spODataEntityArray
   - removed attachments addMultiple, deleteMultiple, and recycleMultiple => write a for loop in calling code
   - removed regional settings.installedLanguages => use getInstalledLanguages
+  - removed metadata method
   

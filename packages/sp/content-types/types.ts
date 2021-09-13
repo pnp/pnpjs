@@ -1,4 +1,3 @@
-import { ITypedHash } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -52,7 +51,7 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
         name: string,
         description = "",
         group = "Custom Content Types",
-        additionalSettings: ITypedHash<string | number | boolean> = {}): Promise<IContentTypeAddResult> {
+        additionalSettings: Record<string, string | number | boolean> = {}): Promise<IContentTypeAddResult> {
 
         const postBody = body({
             Description: description,

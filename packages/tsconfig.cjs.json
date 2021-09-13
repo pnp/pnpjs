@@ -11,9 +11,6 @@
             "path": "./core/tsconfig.cjs.json"
         },
         {
-            "path": "./graph/tsconfig.cjs.json"
-        },
-        {
             "path": "./logging/tsconfig.cjs.json"
         },
         {

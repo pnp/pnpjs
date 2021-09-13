@@ -1,5 +1,4 @@
 import { combine, hOP, isUrlAbsolute } from "@pnp/core";
-import { Logger, LogLevel } from "@pnp/logging";
 import { extractWebUrl } from "./extractweburl.js";
 
 export function odataUrlFrom(candidate: any): string {
@@ -36,7 +35,6 @@ export function odataUrlFrom(candidate: any): string {
     }
 
     if (parts.length < 1) {
-        Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", LogLevel.Warning);
         return "";
     }
 

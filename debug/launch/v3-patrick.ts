@@ -1,38 +1,66 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { SPDefault } from "@pnp/nodejs";
-import { sp2 } from "@pnp/sp";
+import { LogLevel, PnPLogging, Logger, ConsoleListener } from "@pnp/logging";
+import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/folders";
 import "@pnp/sp/appcatalog";
-import { DebugLogger } from "@pnp/core";
+import { Queryable } from "@pnp/queryable/queryable.js";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
+    // global logging subscribe for messages, included in usings per instance with different levels available per instance
+    // already done in ./main.ts ::> Logger.subscribe(ConsoleListener());
+
     try {
 
         // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
 
-        const sp = sp2("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+        const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        })).using(DebugLogger());
+        })).using(PnPLogging(LogLevel.Verbose));
 
-        const w = await sp.web.lists.getByTitle("CommentList").items.getById(1).versions();
-        
+
+        const w = sp2.web;
+        w.on.init(function (this: Queryable) {
+
+            this.on.post(async function (this: Queryable, url: URL, result: any) {
+
+                console.log("I am being called!");
+
+                return [url, result];
+            });
+
+            return this;
+
+        });
+
+        const w2 = await w();
+
         // const q = await w.syncSolutionToTeams("asd");
 
-        console.log(`here: ${JSON.stringify(w)}`);
+        console.log(`here: ${JSON.stringify(w2)}`);
 
     } catch (e) {
 
         console.error(e);
     }
+
+
+    // extendFactory(Web, {
+
+    //     execute: () => {
+
+    //         console.log("maybe?");
+    //     },
+    // });
 
 
     // TODO:: can this replace extend factory?? sorta

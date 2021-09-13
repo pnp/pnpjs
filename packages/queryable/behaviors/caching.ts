@@ -1,10 +1,10 @@
-import { Queryable2 } from "../queryable-2.js";
+import { Queryable } from "../queryable.js";
 import { isFunc, getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 
 export type CacheKeyFactory = (url: string) => string;
 export type CacheExpireFunc = (url: string) => Date;
 
-export function Caching(store: "local" | "session" = "session", keyFactory?: CacheKeyFactory, expireFunc?: CacheExpireFunc): TimelinePipe<Queryable2> {
+export function Caching(store: "local" | "session" = "session", keyFactory?: CacheKeyFactory, expireFunc?: CacheExpireFunc): TimelinePipe<Queryable> {
 
     const storage = new PnPClientStorage();
     const s = store === "session" ? storage.session : storage.local;
@@ -14,14 +14,12 @@ export function Caching(store: "local" | "session" = "session", keyFactory?: Cac
     }
 
     if (!isFunc(expireFunc)) {
-        // TODO:: tie this default timeline to config? or the config is having to create the function
         expireFunc = () => dateAdd(new Date(), "minute", 5);
     }
 
-    return (instance: Queryable2) => {
-        // Regardless of cached result, update cache async
-        // instance.AsyncOverride = lazy;
-        instance.on.pre(async function (this: Queryable2, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+    return (instance: Queryable) => {
+
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
             const key = keyFactory(url.toString());
 

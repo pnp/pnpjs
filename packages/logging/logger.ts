@@ -105,7 +105,7 @@ class LoggerImpl {
     }
 
     public write(message: string, level: LogLevel = LogLevel.Info) {
-        this.log({ level: level, message: message });
+        this.log({ level, message });
     }
 
     public log(entry: ILogEntry) {

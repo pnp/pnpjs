@@ -3,7 +3,6 @@
 // TODO:: do we want to move to .env files, seems to be a sorta "norm" folks are using?
 // TODO:: maintain an experimental release
 // TODO:: need to update our /samples and maybe more? remove rollup sample
-// TODO:: need to make sure extend factory works. I think right now with the new model only extend object works? Anyway, need to check
 
 ## experiments:
 

@@ -1,5 +1,5 @@
-import { invokableFactory, body, headers, FromQueryable } from "@pnp/queryable";
-import { ITypedHash, getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
+import { body, headers, FromQueryable } from "@pnp/queryable";
+import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../sharepointqueryable.js";
@@ -886,7 +886,8 @@ const ClientsidePage = (
     sections: CanvasSection[] = [],
     commentsDisabled = false): IClientsidePage => {
 
-    return invokableFactory<IClientsidePage>(_ClientsidePage)(baseUrl, path, json, noInit, sections, commentsDisabled);
+    // TODO:: does this work
+    return new _ClientsidePage(baseUrl, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
@@ -1390,7 +1391,7 @@ interface IClientSidePageComponentManifest {
         groupId: string;
         iconImageUrl: string;
         officeFabricIconFontName: string;
-        properties: ITypedHash<any>;
+        properties: Record<string, any>;
         title: { default: string };
 
     }[];
@@ -1456,10 +1457,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            "htmlStrings": ITypedHash<string>;
-            "searchablePlainTexts": ITypedHash<string>;
-            "imageSources": ITypedHash<string>;
-            "links": ITypedHash<string>;
+            "htmlStrings": Record<string, string>;
+            "searchablePlainTexts": Record<string, string>;
+            "imageSources": Record<string, string>;
+            "links": Record<string, string>;
         };
         dataVersion: string;
         properties: PropertiesType;
@@ -1479,10 +1480,10 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        htmlStrings: ITypedHash<string>;
-        searchablePlainTexts: ITypedHash<string>;
-        imageSources: ITypedHash<string>;
-        links: ITypedHash<string>;
+        htmlStrings: Record<string, string>;
+        searchablePlainTexts: Record<string, string>;
+        imageSources: Record<string, string>;
+        links: Record<string, string>;
         customMetadata?: {
             imageSource?: {
                 siteId: string;
