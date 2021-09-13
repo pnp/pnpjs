@@ -19,6 +19,8 @@ declare let process: any;
 const testStart = Date.now();
 
 let _sp: SPRest2 = null;
+let _testTimeline = null;
+let _rootWeb: string = null;
 
 // we need to load up the appropriate settings based on where we are running
 let settings: ITestingSettings = null;
@@ -163,8 +165,7 @@ export function TestDefault(props: ISettings): TimelinePipe<Queryable2> {
 
 async function spTestSetup(ts: ISettings): Promise<void> {
     let siteUsed = false;
-
-    const tc = TestDefault(ts);
+    _rootWeb = ts.sp.url;
     ts.sp.webUrl = ts.sp.url;
 
     if (site && site.length > 0) {
@@ -172,7 +173,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         siteUsed = true;
     }
 
-    const mySP = sp2(ts.sp.webUrl).using(tc);
+    const mySP = sp2(ts.sp.webUrl).using(_testTimeline);
     _sp = mySP;
 
     if (siteUsed) {
@@ -194,13 +195,17 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     //     };
     // }
 
-    _sp = sp2(ts.sp.webUrl).using(tc);
+    _sp = sp2(ts.sp.webUrl).using(_testTimeline);
 }
 
 export const testSettings: ISettings = settings.testing;
 
 export const getSP = () => {
     return _sp;
+};
+
+export const getTestTimeline = () => {
+    return _testTimeline;
 };
 
 before(async function (): Promise<void> {
@@ -212,6 +217,7 @@ before(async function (): Promise<void> {
     if (testSettings.enableWebTests) {
 
         if (testSettings.sp) {
+            _testTimeline = TestDefault(testSettings);
             console.log("Setting up SharePoint tests...");
             const s = Date.now();
             await spTestSetup(testSettings);
@@ -236,24 +242,19 @@ after(async () => {
 
     if (deleteAllWebs) {
 
-        await cleanUpAllSubsites();
+        const root = sp2(_rootWeb).using(_testTimeline);
+        await cleanUpAllSubsites(root);
 
     } else if (deleteWeb && testSettings.enableWebTests) {
 
         // TODO: Clean up Delete function
-        // console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
-        // const w = Web(testSettings.sp.webUrl);
+        console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
+        const spObj = sp2(testSettings.sp.webUrl).using(_testTimeline);
 
-        // const children = await w.webs.select("Title")();
+        await cleanUpAllSubsites(spObj.web)
 
-        // await Promise.all(children.map((value) => {
-        //     const web2 = Web(value["odata.id"], "");
-        //     console.log(`Deleting: ${value["odata.id"]}`);
-        //     return web2.delete();
-        // }));
-
-        // await w.delete();
-        // console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
+        await spObj.web.delete();
+        console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
 
     } else if (testSettings.enableWebTests) {
 
@@ -265,26 +266,20 @@ after(async () => {
 
 // Function deletes all test subsites
 // TODO: Clean up subsites function
-async function cleanUpAllSubsites(): Promise<void> {
+async function cleanUpAllSubsites(spObj): Promise<void> {
 
-    const w = await _sp.web.webs.select("Title")();
+    const w = await spObj.webs.select("Title")();
 
     w.forEach(async (e: IWebInfo) => {
 
-        // const web = Web(e["odata.id"], "");
+        const spObjSub = sp2(e["odata.id"]).using(_testTimeline);
 
-        // console.log(`Deleting: ${e["odata.id"]}`);
+        console.log(`Deleting: ${e["odata.id"]}`);
 
-        // const children = await web.webs.select("Title")();
+        await cleanUpAllSubsites(spObjSub.web);
 
-        // await Promise.all(children.map(async (value) => {
-        //     const web2 = Web(value["odata.id"], "");
-        //     console.log(`Deleting: ${value["odata.id"]}`);
-        //     return web2.delete();
-        // }));
+        await spObjSub.web.delete();
 
-        // await web.delete();
-
-        // console.log(`Deleted: ${e["odata.id"]}`);
+        console.log(`Deleted: ${e["odata.id"]}`);
     });
 }

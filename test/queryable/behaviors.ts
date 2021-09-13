@@ -1,8 +1,8 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { sp2 } from "@pnp/sp";
 import { Caching, CachingPessimisticRefresh } from "@pnp/queryable";
 
-import { TestDefault, testSettings } from "../main-2.js";
+import { getTestTimeline, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 
 describe.only("Behaviors", () => {
@@ -11,8 +11,7 @@ describe.only("Behaviors", () => {
         it("CachingPessimistic", async () => {
             try {
                 // Testing a behavior, creating new instance of sp
-                const tc = TestDefault(testSettings);
-                const sp = sp2(testSettings.sp.webUrl).using(tc).using(CachingPessimisticRefresh("session"));
+                const sp = sp2(testSettings.sp.webUrl).using(getTestTimeline()).using(CachingPessimisticRefresh("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
@@ -30,15 +29,14 @@ describe.only("Behaviors", () => {
                 const test2 = call1Time > call2Time;
                 expect(test1 && test2).to.be.true;
             } catch (err) {
-                console.log(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
+                assert.fail(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
             }
         });
 
         it("Caching", async () => {
             try {
                 // Testing a behavior, creating new instance of sp
-                const tc = TestDefault(testSettings);
-                const sp = sp2(testSettings.sp.webUrl).using(tc).using(Caching("session"));
+                const sp = sp2(testSettings.sp.webUrl).using(getTestTimeline()).using(Caching("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
@@ -56,7 +54,7 @@ describe.only("Behaviors", () => {
                 const test2 = call1Time > call2Time;
                 expect(test1 && test2).to.be.true;
             } catch (err) {
-                console.log(`Behaviors/Queryable/Caching - ${err.message}`);
+                assert.fail(`Behaviors/Queryable/Caching - ${err.message}`);
             }
         });
     });
