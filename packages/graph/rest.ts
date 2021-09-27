@@ -15,8 +15,8 @@ export class GraphRest {
      */
     constructor(private _options: IConfigOptions = {}, private _baseUrl: "v1.0" | "beta" = "v1.0", private _runtime = DefaultRuntime) {    }
 
-    public createBatch(): GraphBatch {
-        return new GraphBatch().setRuntime(this._runtime);
+    public createBatch(maxRequests?: number): GraphBatch {
+        return new GraphBatch(undefined, maxRequests).setRuntime(this._runtime);
     }
 
     public setup(config: IGraphConfiguration | ISPFXContext) {
