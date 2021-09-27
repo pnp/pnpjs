@@ -1,8 +1,7 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { sp2 } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import { IList } from "@pnp/sp/lists";
 
 describe("SiteScripts", function () {
@@ -20,7 +19,7 @@ describe("SiteScripts", function () {
     };
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         const createdSiteScriptIds: string[] = [];
         const createdLists: IList[] = [];
 

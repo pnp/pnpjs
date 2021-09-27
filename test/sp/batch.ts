@@ -5,22 +5,21 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import { CheckinType } from "@pnp/sp/files";
 
 describe("Batching", () => {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it("Should execute batches in the expected order for a single request", async function () {
 
-            const web = Web(testSettings.sp.webUrl);
-
             const order: number[] = [];
 
-            const batch = web.createBatch();
+            const batch = sp.web.createBatch();
 
-            web.inBatch(batch).get().then(() => {
+            sp.web.inBatch(batch).get().then(() => {
                 order.push(1);
             });
 
@@ -32,25 +31,23 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an even number of requests", async function () {
 
-            const web = Web(testSettings.sp.webUrl);
-
             const order: number[] = [];
 
-            const batch = web.createBatch();
+            const batch = sp.web.createBatch();
 
-            web.inBatch(batch)().then(() => {
+            sp.web.inBatch(batch)().then(() => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch)().then(() => {
+            sp.web.lists.inBatch(batch)().then(() => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch)().then(() => {
+            sp.web.lists.top(2).inBatch(batch)().then(() => {
                 order.push(3);
             });
 
-            web.lists.select("Title").inBatch(batch)().then(() => {
+            sp.web.lists.select("Title").inBatch(batch)().then(() => {
                 order.push(4);
             });
 
@@ -63,21 +60,19 @@ describe("Batching", () => {
 
         it("Should execute batches in the expected order for an odd number of requests", async function () {
 
-            const web = Web(testSettings.sp.webUrl);
-
             const order: number[] = [];
 
-            const batch = web.createBatch();
+            const batch = sp.web.createBatch();
 
-            web.inBatch(batch)().then(() => {
+            sp.web.inBatch(batch)().then(() => {
                 order.push(1);
             });
 
-            web.lists.inBatch(batch)().then(() => {
+            sp.web.lists.inBatch(batch)().then(() => {
                 order.push(2);
             });
 
-            web.lists.top(2).inBatch(batch)().then(() => {
+            sp.web.lists.top(2).inBatch(batch)().then(() => {
                 order.push(3);
             });
 
@@ -114,23 +109,21 @@ describe("Batching", () => {
 
         if (testSettings.testUser?.length > 0) {
             it("Should execute batches that have internally cloned requests but aren't items.add", async function () {
-                const web = Web(testSettings.sp.webUrl);
-
                 const order = [];
 
-                const batch = web.createBatch();
+                const batch = sp.web.createBatch();
 
-                const groupId = await web.associatedVisitorGroup.select("id")().then(r => r.Id);
+                const groupId = await sp.web.associatedVisitorGroup.select("id")().then(r => r.Id);
 
-                web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
+                sp.web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
                     order.push(1);
                 });
 
-                web.siteGroups.getById(groupId).users.inBatch(batch).add(testSettings.testUser).then(() => {
+                sp.web.siteGroups.getById(groupId).users.inBatch(batch).add(testSettings.testUser).then(() => {
                     order.push(2);
                 });
 
-                web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
+                sp.web.siteGroups.getById(groupId).users.inBatch(batch)().then(() => {
                     order.push(3);
                 });
 
@@ -141,13 +134,11 @@ describe("Batching", () => {
         }
         it("Should handle complex operation ordering", async function () {
 
-            const web = Web(testSettings.sp.webUrl);
-
             const order = [];
 
-            const ler = await web.lists.ensure("BatchOrderingTest", "", 101);
+            const ler = await sp.web.lists.ensure("BatchOrderingTest", "", 101);
 
-            const batch = web.createBatch();
+            const batch = sp.web.createBatch();
 
             // ensure we have a file
             const far = await ler.list.rootFolder.files.add("MyFile.txt", "Some content");

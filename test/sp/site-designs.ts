@@ -5,8 +5,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-designs";
 import "@pnp/sp/site-users/web";
 import { ISiteDesignRun } from "@pnp/sp/site-designs";
-import { sp2 } from "@pnp/sp";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 
 const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
@@ -17,6 +16,7 @@ describe("SiteDesigns", function () {
     const testuser = testSettings.testUser;
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         const createdSiteDesignIds: string[] = [];
 

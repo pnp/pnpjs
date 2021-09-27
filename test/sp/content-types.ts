@@ -1,5 +1,4 @@
-import { sp2 } from "@pnp/sp";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import { expect } from "chai";
 import "@pnp/sp/content-types";
 import "@pnp/sp/lists/web";
@@ -8,6 +7,7 @@ import { getRandomString } from "@pnp/core";
 describe("Content Types", function () {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it(".addAvailableContentType", async function () {
             const listTitle = `PnPJSTEST${getRandomString(8)}`;
@@ -28,6 +28,8 @@ describe("Content Types", function () {
 
 describe("Content Type", function () {
     let contentTypeId: string;
+    let sp = getSP();
+
     before(async function () {
         const contentTypeResponse = await sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "PnPJSTEST-" + getRandomString(8));
         contentTypeId = contentTypeResponse.data.Id.StringValue;

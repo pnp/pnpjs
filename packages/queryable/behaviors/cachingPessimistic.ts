@@ -1,4 +1,4 @@
-import { Queryable2 } from "../queryable-2.js";
+import { Queryable } from "../queryable.js";
 import { isFunc, getHashCode, PnPClientStorage, getGUID, extend } from "@pnp/core";
 import { LogLevel } from "@pnp/logging";
 
@@ -14,7 +14,7 @@ import { LogLevel } from "@pnp/logging";
 export function CachingPessimisticRefresh(
     type: "local" | "session" = "session",
     keyFactory?: (url: string) => string,
-    expireFunc?: () => Date): (instance: Queryable2) => Queryable2 {
+    expireFunc?: () => Date): (instance: Queryable) => Queryable {
 
     let store: Storage;
     if (type === "session") {

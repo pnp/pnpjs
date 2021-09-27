@@ -1,10 +1,8 @@
-
 import { expect } from "chai";
-import { sp2 } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/fields";
 import {
     DateTimeFieldFormatType,
@@ -25,6 +23,7 @@ describe("Fields", function () {
     const listName = "Documents";
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
         // Web Tests
         it("Web: gets field by id", async function () {
             return expect(sp.site.rootWeb.fields.getById(titleFieldId).select("Title")<{ Title: string }>()).to.eventually.be.fulfilled;

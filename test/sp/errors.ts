@@ -1,11 +1,10 @@
 // this file tests that we are actually producing errors where we should be producing errors
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
-import { sp2 } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 
 describe("Errors", () => {
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         before(async function () {
             await sp.web.lists.ensure("ErrorTestingList");
         });

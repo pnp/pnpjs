@@ -17,8 +17,9 @@
         "removeComments": true,
     },
     "include": [
-        "./queryable/*.ts",
-        "../packages/**/*.ts",
+        "./queryable/**/*.ts",
+        "./sp/webs.ts",
+        "../packages/sp/**/*.ts",
         "../tools/local-module-resolver/**/*.ts"
     ]
 }

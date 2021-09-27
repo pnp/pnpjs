@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
-import { sp2 } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security";
@@ -16,9 +15,9 @@ if (testSettings.enableWebTests) {
         const testRoleDefName = "PNPJS Test Role Def 38274947";
         let list: IList = null;
         let parentWeb: IWeb = null;
+        let sp = getSP();
 
         before(async function () {
-
             const ler = await sp.web.lists.ensure("SecurityTestingList");
             list = ler.list;
         });

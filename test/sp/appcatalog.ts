@@ -1,10 +1,9 @@
 
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import { IWeb, Web } from "@pnp/sp/webs";
-import { sp2 } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
@@ -23,6 +22,7 @@ const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 describe.skip("AppCatalog", function () {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
         let appCatalog: IAppCatalog;
         let appCatWeb: IWeb;
         const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
@@ -63,14 +63,14 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it installs an app on a web", async function () {
-            const myApp = Web(testSettings.sp.webUrl).getAppCatalog().getAppById(appId);
+            const myApp = sp.web.getAppCatalog().getAppById(appId);
             return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
-            const myApp = Web(testSettings.sp.webUrl).getAppCatalog().getAppById(appId);
+            const myApp = sp.web.getAppCatalog().getAppById(appId);
             let app = { InstalledVersion: "" };
             let retryCount = 0;
 
@@ -87,7 +87,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it upgrades an app", async function () {
-            const myApp = Web(testSettings.sp.webUrl).getAppCatalog().getAppById(appId);
+            const myApp = sp.web.getAppCatalog().getAppById(appId);
             return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 

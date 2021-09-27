@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -7,7 +7,6 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { getRandomString, combine } from "@pnp/core";
-import { sp2 } from "@pnp/sp";
 import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
@@ -19,7 +18,7 @@ const projectRoot = resolve(dirname(findupSync("package.json")));
 describe("files", () => {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         const testFileName = `testing - ${getRandomString(4)}.txt`;
         const testFileNamePercentPound = `testing %# - ${getRandomString(4)}.txt`;
         let testFileNamePercentPoundServerRelPath = "";
@@ -155,7 +154,7 @@ describe("file", () => {
 
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         const testFileName = `testing - ${getRandomString(4)}.txt`;
         let files: IFiles = null;
 

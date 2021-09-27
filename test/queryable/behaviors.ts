@@ -1,23 +1,23 @@
 import { assert, expect } from "chai";
-import { sp2 } from "@pnp/sp";
 import { Caching, CachingPessimisticRefresh } from "@pnp/queryable";
+import { sp } from "@pnp/sp";
 
 import { getTestTimeline, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 
-describe.only("Behaviors", () => {
-    describe.only("Queryable", () => {
+describe("Behaviors", () => {
+    describe("Queryable", () => {
 
         it("CachingPessimistic", async () => {
             try {
                 // Testing a behavior, creating new instance of sp
-                const sp = sp2(testSettings.sp.webUrl).using(getTestTimeline()).using(CachingPessimisticRefresh("session"));
+                const spInstance = sp(testSettings.sp.webUrl).using(getTestTimeline()).using(CachingPessimisticRefresh("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
-                const u = await sp.web();
+                const u = await spInstance.web();
                 const midCheckpoint = new Date();
-                const u2 = await sp.web();
+                const u2 = await spInstance.web();
                 const endCheckpoint = new Date();
 
                 // Results should be the same
@@ -36,13 +36,13 @@ describe.only("Behaviors", () => {
         it("Caching", async () => {
             try {
                 // Testing a behavior, creating new instance of sp
-                const sp = sp2(testSettings.sp.webUrl).using(getTestTimeline()).using(Caching("session"));
+                const spInstance = sp(testSettings.sp.webUrl).using(getTestTimeline()).using(Caching("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
-                const u = await sp.web();
+                const u = await spInstance.web();
                 const midCheckpoint = new Date();
-                const u2 = await sp.web();
+                const u2 = await spInstance.web();
                 const endCheckpoint = new Date();
 
                 // Results should be the same

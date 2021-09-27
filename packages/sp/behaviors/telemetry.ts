@@ -19,8 +19,11 @@ export function SPTagging(): TimelinePipe<Queryable> {
                 clientTag = clientTag.substr(0, 32);
             }
 
-            init.headers["X-ClientService-ClientTag"] = clientTag;
-
+            if (!init.headers) {
+                init.headers = { "X-ClientService-ClientTag": clientTag };
+            } else {
+                init.headers["X-ClientService-ClientTag"] = clientTag;
+            }
             return [url, init, result];
         });
 

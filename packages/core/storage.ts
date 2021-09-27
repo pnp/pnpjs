@@ -249,6 +249,7 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
+            // BUG: localStorage is undefined
             this._local = PnPClientStorageWrapper.bind(localStorage);
             // new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
         }
@@ -261,6 +262,7 @@ export class PnPClientStorage {
      */
     public get session(): IPnPClientStore {
 
+        // BUG: sessionStorage is undefined
         if (this._session === null) {
             this._session = PnPClientStorageWrapper.bind(sessionStorage);
             // new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);

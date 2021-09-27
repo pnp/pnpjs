@@ -1,74 +1,74 @@
-// import { addProp } from "@pnp/queryable";
-// import { _Web, Web } from "../webs/types.js";
-// import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
+import { addProp } from "@pnp/queryable";
+import { _Web } from "../webs/types.js";
+import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
 // import { OLD_spPost } from "../operations.js";
 // import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 // import "../security/web.js";
 
-// declare module "../webs/types" {
+declare module "../webs/types" {
 
-//     interface _Web {
-//         readonly siteGroups: ISiteGroups;
-//         readonly associatedOwnerGroup: ISiteGroup;
-//         readonly associatedMemberGroup: ISiteGroup;
-//         readonly associatedVisitorGroup: ISiteGroup;
-//         createDefaultAssociatedGroups(groupNameSeed: string, siteOwner: string, copyRoleAssignments?: boolean, clearSubscopes?: boolean, siteOwner2?: string): Promise<void>;
-//     }
-//     interface IWeb {
+    interface _Web {
+        readonly siteGroups: ISiteGroups;
+        readonly associatedOwnerGroup: ISiteGroup;
+        readonly associatedMemberGroup: ISiteGroup;
+        readonly associatedVisitorGroup: ISiteGroup;
+        createDefaultAssociatedGroups(groupNameSeed: string, siteOwner: string, copyRoleAssignments?: boolean, clearSubscopes?: boolean, siteOwner2?: string): Promise<void>;
+    }
+    interface IWeb {
 
-//         /**
-//          * Returns the site groups of this web
-//          */
-//         readonly siteGroups: ISiteGroups;
+        /**
+         * Returns the site groups of this web
+         */
+        readonly siteGroups: ISiteGroups;
 
-//         /**
-//          * The web's owner group
-//          */
-//         readonly associatedOwnerGroup: ISiteGroup;
+        /**
+         * The web's owner group
+         */
+        readonly associatedOwnerGroup: ISiteGroup;
 
-//         /**
-//          * The web's member group
-//          */
-//         readonly associatedMemberGroup: ISiteGroup;
+        /**
+         * The web's member group
+         */
+        readonly associatedMemberGroup: ISiteGroup;
 
-//         /**
-//          * The web's visitor group
-//          */
-//         readonly associatedVisitorGroup: ISiteGroup;
+        /**
+         * The web's visitor group
+         */
+        readonly associatedVisitorGroup: ISiteGroup;
 
-//         /**
-//          * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
-//          * The target site must have unique permissions and no associated members / owners / visitors groups
-//          *
-//          * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
-//          * @param siteOwner The user login name to be added to the site Owners group. Default is the current user
-//          * @param copyRoleAssignments Optional. If true the permissions are copied from the current parent scope
-//          * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
-//          * @param siteOwner2 Optional. The second user login name to be added to the site Owners group. Default is empty
-//          */
-//         createDefaultAssociatedGroups(groupNameSeed: string, siteOwner: string, copyRoleAssignments?: boolean, clearSubscopes?: boolean, siteOwner2?: string): Promise<void>;
-//     }
-// }
+        /**
+         * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
+         * The target site must have unique permissions and no associated members / owners / visitors groups
+         *
+         * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
+         * @param siteOwner The user login name to be added to the site Owners group. Default is the current user
+         * @param copyRoleAssignments Optional. If true the permissions are copied from the current parent scope
+         * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
+         * @param siteOwner2 Optional. The second user login name to be added to the site Owners group. Default is empty
+         */
+        createDefaultAssociatedGroups(groupNameSeed: string, siteOwner: string, copyRoleAssignments?: boolean, clearSubscopes?: boolean, siteOwner2?: string): Promise<void>;
+    }
+}
 
-// addProp(_Web, "siteGroups", SiteGroups);
-// addProp(_Web, "associatedOwnerGroup", SiteGroup, "associatedownergroup");
-// addProp(_Web, "associatedMemberGroup", SiteGroup, "associatedmembergroup");
-// addProp(_Web, "associatedVisitorGroup", SiteGroup, "associatedvisitorgroup");
+addProp(_Web, "siteGroups", SiteGroups);
+addProp(_Web, "associatedOwnerGroup", SiteGroup, "associatedownergroup");
+addProp(_Web, "associatedMemberGroup", SiteGroup, "associatedmembergroup");
+addProp(_Web, "associatedVisitorGroup", SiteGroup, "associatedvisitorgroup");
 
-// _Web.prototype.createDefaultAssociatedGroups = async function (
-//     this: _Web,
-//     groupNameSeed: string,
-//     siteOwner: string,
-//     copyRoleAssignments = false,
-//     clearSubscopes = true,
-//     siteOwner2?: string): Promise<void> {
+_Web.prototype.createDefaultAssociatedGroups = async function (
+    this: _Web,
+    groupNameSeed: string,
+    siteOwner: string,
+    copyRoleAssignments = false,
+    clearSubscopes = true,
+    siteOwner2?: string): Promise<void> {
 
-//     await this.breakRoleInheritance(copyRoleAssignments, clearSubscopes);
+    await this.breakRoleInheritance(copyRoleAssignments, clearSubscopes);
 
-//     const q = this.clone(Web, "createDefaultAssociatedGroups(userLogin=@u,userLogin2=@v,groupNameSeed=@s)");
-//     q.query.set("@u", `'${escapeQueryStrValue(siteOwner || "")}'`);
-//     q.query.set("@v", `'${escapeQueryStrValue(siteOwner2 || "")}'`);
-//     q.query.set("@s", `'${escapeQueryStrValue(groupNameSeed || "")}'`);
-//     return OLD_spPost(q);
-// };
+    // const q = this.clone(Web, "createDefaultAssociatedGroups(userLogin=@u,userLogin2=@v,groupNameSeed=@s)");
+    // q.query.set("@u", `'${escapeQueryStrValue(siteOwner || "")}'`);
+    // q.query.set("@v", `'${escapeQueryStrValue(siteOwner2 || "")}'`);
+    // q.query.set("@s", `'${escapeQueryStrValue(groupNameSeed || "")}'`);
+    // return OLD_spPost(q);
+};
 

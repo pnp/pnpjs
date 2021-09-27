@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { sp2 } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/lists";
 import "@pnp/sp/forms";
-import { testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main-2.js";
 
 describe("Forms", function () {
+    let sp = getSP();
     const listName = "Documents";
     if (testSettings.enableWebTests) {
 

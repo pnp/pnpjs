@@ -189,11 +189,6 @@ export abstract class Timeline<T extends Moments> {
 
                     if (!isArray(observers) || observers.length < 1) {
 
-                        if (p !== "log") {
-                            // TODO:: remove this post development of v3
-                            console.log(`No observers registered for moment ${p}.`);
-                        }
-
                         if (p === "error") {
 
                             // if we are emitting an error, and no error observers are defined, we throw
