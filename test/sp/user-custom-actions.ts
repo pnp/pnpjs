@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/user-custom-actions";
 
 describe("user-custom-actions", function () {
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it("should invoke", function () {
             return expect(sp.web.userCustomActions()).to.eventually.be.fulfilled;

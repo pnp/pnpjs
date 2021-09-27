@@ -32,9 +32,11 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "cwd": "${workspaceRoot}",
+      "preLaunchTask": "test-build",
+      "runtimeArgs": [],
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["-g core"],
+      "args": ["--cleanup"],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

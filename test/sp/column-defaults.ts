@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -15,18 +15,17 @@ import "@pnp/sp/column-defaults";
 describe("DefaultColumnValues", function () {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         const listName = "DefaultColumnValuesTests";
         let web: IWeb = null;
         let list: IList = null;
 
         before(async function () {
-            web = Web(testSettings.sp.webUrl);
-            const ler = await web.lists.ensure(listName, "", 101);
+            const ler = await sp.web.lists.ensure(listName, "", 101);
             list = ler.list;
 
             if (ler.created) {
-                const batch = web.createBatch();
+                const batch = sp.web.createBatch();
                 list.fields.inBatch(batch).addText("TextField");
                 list.fields.inBatch(batch).addNumber("NumberField");
                 list.fields.inBatch(batch).addMultiChoice("MultiChoiceField", ["Item 1", "Item 2", "Item 3"]);

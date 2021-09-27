@@ -1,14 +1,14 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
 import { INavigationNodes } from "@pnp/sp/navigation";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
 
 describe("Navigation Service", () => {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it("getMenuState1", function () {
 

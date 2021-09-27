@@ -1,7 +1,7 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "CommonJS",
         "outDir": "../build/testing",
         "declaration": true,
         "declarationMap": false,
@@ -17,8 +17,9 @@
         "removeComments": true,
     },
     "include": [
-        "./queryable/*.ts",
-        "../packages/**/*.ts",
+        "./queryable/**/*.ts",
+        "./sp/webs.ts",
+        "../packages/sp/**/*.ts",
         "../tools/local-module-resolver/**/*.ts"
     ]
 }

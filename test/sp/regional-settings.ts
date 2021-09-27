@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings";
 
 describe("Regional Settings", () => {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it("regionalsettings()", function () {
             return expect(sp.web.regionalSettings()).to.eventually.be.fulfilled;

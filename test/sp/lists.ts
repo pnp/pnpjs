@@ -1,5 +1,5 @@
-import { sp, SPBatch, SPRest } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { SPBatch, SPRest } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";
@@ -17,6 +17,7 @@ import { IConfigOptions, getRandomString } from "@pnp/core";
 describe("Lists", function () {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it(".getById", function () {
             return expect(sp.web.lists.getByTitle("Documents").select("ID").get<{ Id: string }>().then((list) => {
@@ -93,7 +94,7 @@ describe("Lists", function () {
 });
 
 describe("List", function () {
-
+    let sp = getSP();
     let list: IList;
 
     beforeEach(async () => {

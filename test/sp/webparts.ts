@@ -1,29 +1,30 @@
 import { expect } from "chai";
 import "@pnp/sp/webs";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { Web } from "@pnp/sp/webs";
-import { sp } from "@pnp/sp";
 import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "@pnp/sp/presets/all";
 import { getRandomString, combine } from "@pnp/core";
 
 describe("webparts", function () {
     if (testSettings.enableWebTests) {
+        let sp = getSP();
+
         it("ensureLimitedWebPartManager-ScopeShared", async function () {
-            const lwm = Web(testSettings.sp.webUrl).folders.getByName("SitePages").files.getByName("Home.aspx").getLimitedWebPartManager(WebPartsPersonalizationScope.Shared);
+            const lwm = sp.web.folders.getByName("SitePages").files.getByName("Home.aspx").getLimitedWebPartManager(WebPartsPersonalizationScope.Shared);
             const scope = await lwm.scope();
 
             return expect(scope).to.be.equal(1);
         });
 
         it("ensureLimitedWebPartManager-ScopeUser", async function () {
-            const lwm = Web(testSettings.sp.webUrl).folders.getByName("SitePages").files.getByName("Home.aspx").getLimitedWebPartManager(WebPartsPersonalizationScope.User);
+            const lwm = sp.web.folders.getByName("SitePages").files.getByName("Home.aspx").getLimitedWebPartManager(WebPartsPersonalizationScope.User);
             const scope = await lwm.scope();
 
             return expect(scope).to.be.equal(0);
         });
 
         it("webpartDefinitions", async function () {
-            const currentWeb = await Web(testSettings.sp.webUrl).select("ServerRelativeUrl").get();
+            const currentWeb = await sp.web.select("ServerRelativeUrl").get();
             const wikiPageName = `Test_WikiPage_${getRandomString(5)}.aspx`;
             const newWikiPageAddress = combine("/", currentWeb.ServerRelativeUrl, "/SitePages/", wikiPageName);
 

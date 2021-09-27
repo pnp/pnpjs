@@ -1,7 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
@@ -11,7 +10,7 @@ import { IList } from "@pnp/sp/lists";
 describe("Attachments", function () {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         let list: IList = null;
 
         before(async function () {

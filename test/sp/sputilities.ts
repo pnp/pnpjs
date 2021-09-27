@@ -3,15 +3,14 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 // import { IEmailProperties } from "@pnp/sp/sputilities";
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, getRandomString } from "@pnp/core";
 import { Web } from "@pnp/sp/webs";
 
 describe("SPUtilities", function () {
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         // commenting out as not every test account has an email associated with it.
         // this method is unchanged for years, so likely OK to no test
         // it("sendEmail", async function () {
@@ -63,7 +62,7 @@ describe("SPUtilities", function () {
         });
 
         it("createWikiPage", async function () {
-            const currentWeb = await Web(testSettings.sp.webUrl).select("ServerRelativeUrl").get();
+            const currentWeb = await sp.web.select("ServerRelativeUrl").get();
             const wikiPageName = `Test_WikiPage_${getRandomString(5)}.aspx`;
             const newWikiPageAddress = combine("/", currentWeb.ServerRelativeUrl, "/SitePages/", wikiPageName);
 

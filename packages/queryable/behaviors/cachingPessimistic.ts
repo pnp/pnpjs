@@ -1,5 +1,6 @@
 import { Queryable } from "../queryable.js";
-import { isFunc, getHashCode, PnPClientStorage, getGUID, extend, TimelinePipe } from "@pnp/core";
+import { isFunc, getHashCode, PnPClientStorage, getGUID, extend } from "@pnp/core";
+import { LogLevel } from "@pnp/logging";
 
 /**
  * Pessimistic Caching Behavior
@@ -10,8 +11,10 @@ import { isFunc, getHashCode, PnPClientStorage, getGUID, extend, TimelinePipe } 
  * @param keyFactory: a function that returns the key for the cache value, if not provided a default hash of the url will be used
  * @param expireFunc: a function that returns a date of expiration for the cache value, if not provided the cache never expires but is always updated.
  */
-// eslint-disable-next-line max-len
-export function CachingPessimisticRefresh(type: "local" | "session" = "session", keyFactory?: (url: string) => string, expireFunc?: () => Date): TimelinePipe<Queryable> {
+export function CachingPessimisticRefresh(
+    type: "local" | "session" = "session",
+    keyFactory?: (url: string) => string,
+    expireFunc?: () => Date): (instance: Queryable) => Queryable {
 
     let store: Storage;
     if (type === "session") {
@@ -72,7 +75,6 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
                 async execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
                     setTimeout(async () => {
                         const requestId = getGUID();
-                        // let requestUrl: URL;
 
                         const emitError = (e) => {
                             this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
@@ -99,7 +101,7 @@ export function CachingPessimisticRefresh(type: "local" | "session" = "session",
 
                                 this.emit.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, 0);
+                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
 
                                 return result;
                             };

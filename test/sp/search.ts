@@ -1,10 +1,11 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
 import "@pnp/sp/search";
 import { SearchQueryBuilder } from "@pnp/sp/search";
+import { getSP } from "test/main-2";
 
 // we skip these tests due to permissions difficulties across environments
 describe.skip("Search", () => {
+    let sp = getSP();
 
     it(".search - 1", function () {
 

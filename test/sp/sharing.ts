@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { combine, dateAdd } from "@pnp/core";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { IFolder } from "@pnp/sp/folders";
@@ -11,31 +11,33 @@ import "@pnp/sp/files";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users";
 import { SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
+import { SPRest } from "@pnp/sp/rest.js";
 
 describe("Sharing", () => {
 
     let webAbsUrl = "";
     let webRelativeUrl = "";
     let web: IWeb;
+    let sp: SPRest;
 
     before(async function () {
-
+        sp = getSP();
         // we need to take some steps to ensure we are operating on the correct web here
         // due to the url manipulation in the library for sharing
-        web = Web(testSettings.sp.webUrl);
+        //web = Web(testSettings.sp.webUrl);
 
-        const urls = await web.select("ServerRelativeUrl", "Url")();
+        const urls = await sp.web.select("ServerRelativeUrl", "Url")();
 
         // make sure we have the correct server relative url
         webRelativeUrl = urls.ServerRelativeUrl;
         webAbsUrl = urls.Url;
 
         // we need a doc lib with a file and folder in it
-        const ler = await web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
+        const ler = await sp.web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
 
         // we need a user to share to
         if (testSettings.testUser?.length > 0) {
-            await web.ensureUser(testSettings.testUser);
+            await sp.web.ensureUser(testSettings.testUser);
         }
 
         // add a file and folder
@@ -53,7 +55,7 @@ describe("Sharing", () => {
 
             before(() => {
 
-                folder = web.getFolderByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/MyTestFolder"));
+                folder = sp.web.getFolderByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/MyTestFolder"));
             });
 
             // // these tests cover share link
@@ -143,7 +145,7 @@ describe("Sharing", () => {
 
             before(() => {
 
-                file = web.getFileByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
+                file = sp.web.getFileByServerRelativeUrl("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
             });
 
             it("Should get a sharing link with default settings.", () => {
@@ -231,7 +233,7 @@ describe("Sharing", () => {
 
             before(() => {
 
-                item = web.lists.getByTitle("SharingTestLib").items.getById(1);
+                item = sp.web.lists.getByTitle("SharingTestLib").items.getById(1);
             });
 
             it("Should get a sharing link with default settings.", () => {

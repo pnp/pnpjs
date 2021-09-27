@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
 import "@pnp/sp/site-users/web";
@@ -10,7 +9,7 @@ import { IGroupAddResult } from "@pnp/sp/site-groups";
 describe("Web.SiteGroups", () => {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         let newGroup: IGroupAddResult;
         let testuserId: number;
 

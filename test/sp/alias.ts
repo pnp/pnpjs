@@ -1,32 +1,28 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
-import { Web, IWeb } from "@pnp/sp/webs";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { combine } from "@pnp/core";
 
 describe("Alias Parameters", () => {
 
     let webRelativeUrl = "";
-    let web: IWeb;
 
     if (testSettings.enableWebTests) {
 
         before(async function () {
+            let sp = getSP();
 
-            web = Web(testSettings.sp.webUrl);
-
-            const webInfo: { ServerRelativeUrl: string; Url: string } = await web.select("ServerRelativeUrl", "Url")();
+            const webInfo: { ServerRelativeUrl: string; Url: string } = await sp.web.select("ServerRelativeUrl", "Url")();
 
             // make sure we have the correct server relative url
             webRelativeUrl = webInfo.ServerRelativeUrl;
 
-            const ler = await web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101);
+            const ler = await sp.web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101);
 
             await ler.list.rootFolder.folders.add("MyTestFolder");
             await ler.list.rootFolder.files.add("text.txt", "Some file content!");

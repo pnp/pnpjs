@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/site-users";
 import { IInvokableTest } from "../types.js";
 import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";
@@ -9,6 +8,7 @@ import { stringIsNullOrEmpty } from "@pnp/core";
 
 describe("Web", () => {
     if (testSettings.enableWebTests) {
+        let sp = getSP();
         describe("Invokable Properties", () => {
             const tests: IInvokableTest[] = [
                 { desc: ".siteUsers", test: sp.web.siteUsers },

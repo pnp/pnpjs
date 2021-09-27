@@ -1,5 +1,4 @@
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { expect } from "chai";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/comments/item";
@@ -11,7 +10,7 @@ import { getRandomString } from "@pnp/core";
 describe("Comments", function () {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         it(".add - clientside page", async function () {
 
             const pageName = `CommentPage_${getRandomString(4)}`;

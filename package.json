@@ -59,7 +59,7 @@
         "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
         "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js",
         "start": "npm run serve",
-        "test": "tsc -p ./test/tsconfig.json && mocha",
+        "test": "tsc -p ./test/tsconfig.json && mocha --cleanup",
         "test-build": "tsc -p ./test/tsconfig.json"
     },
     "repository": {

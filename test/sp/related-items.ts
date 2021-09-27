@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/related-items/web";
 import "@pnp/sp/lists/web";
@@ -13,7 +12,7 @@ import { getRandomString } from "@pnp/core";
 describe("Related Items", () => {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         let sourceList: IList = null;
         let targetList: IList = null;
         let sourceListName = "";

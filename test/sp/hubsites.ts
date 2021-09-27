@@ -1,12 +1,11 @@
-import { sp } from "@pnp/sp";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { expect } from "chai";
 import "@pnp/sp/hubsites";
 
 describe("Hubsites", function () {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         let hubSiteId: string;
 
         before(async function () {

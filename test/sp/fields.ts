@@ -1,10 +1,8 @@
-
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/fields";
 import {
     DateTimeFieldFormatType,
@@ -25,7 +23,8 @@ describe("Fields", function () {
     const listName = "Documents";
 
     if (testSettings.enableWebTests) {
-    // Web Tests
+        let sp = getSP();
+        // Web Tests
         it("Web: gets field by id", async function () {
             return expect(sp.site.rootWeb.fields.getById(titleFieldId).select("Title")<{ Title: string }>()).to.eventually.be.fulfilled;
         });
@@ -322,12 +321,12 @@ describe("Fields", function () {
                 return expect(false).to.be.true;
             }
         });
-    // Unknown issue where f.field.delete() successfully executes but does not actually delete the field.
-    // However, this is happening only inside the testing framework, tests performed outside have proven successful, therefore disabling this test.
-    // it("List: delete field", async function () {
-    //   const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-    //   const f = await sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, "SP.FieldText", { FieldTypeKind: 3, Group: testFieldGroup });
-    //   return expect(f.field.delete()).to.eventually.be.fulfilled;
-    // });
+        // Unknown issue where f.field.delete() successfully executes but does not actually delete the field.
+        // However, this is happening only inside the testing framework, tests performed outside have proven successful, therefore disabling this test.
+        // it("List: delete field", async function () {
+        //   const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+        //   const f = await sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, "SP.FieldText", { FieldTypeKind: 3, Group: testFieldGroup });
+        //   return expect(f.field.delete()).to.eventually.be.fulfilled;
+        // });
     }
 });

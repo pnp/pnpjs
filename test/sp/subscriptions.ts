@@ -1,7 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions";
@@ -9,7 +7,7 @@ import { dateAdd } from "@pnp/core";
 
 describe("Subscriptions", function () {
     if (testSettings.enableWebTests && testSettings.sp.notificationUrl?.length > 0) {
-
+        let sp = getSP();
         const listTitle = "Documents";
         const notificationUrl = testSettings.sp.notificationUrl;
         const after120Days = (dateAdd(new Date(), "day", 120).toISOString());

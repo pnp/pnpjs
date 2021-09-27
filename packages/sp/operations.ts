@@ -8,22 +8,22 @@ export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promis
 export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
 
 export const spPostMerge = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
-
-    init.headers = { ...init.headers, "X-HTTP-Method": "MERGE" };
+    init = init || {};
+    init.headers = { ...init.headers || {}, "X-HTTP-Method": "MERGE" };
 
     return spPost<T>(o, init);
 };
 
 export const spPostDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
-
-    init.headers = { ...init.headers, "X-HTTP-Method": "DELETE" };
+    init = init || {};
+    init.headers = { ...init.headers || {}, "X-HTTP-Method": "DELETE" };
 
     return spPost<T>(o, init);
 };
 
 export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestInit, eTag = "*"): Promise<T> => {
-
-    init.headers = { ...init.headers, "IF-Match": eTag };
+    init = init || {};
+    init.headers = { ...init.headers || {}, "IF-Match": eTag };
 
     return spPostDelete<T>(o, init);
 };

@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import { sp } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main-2.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine } from "@pnp/core";
@@ -11,6 +10,7 @@ import { combine } from "@pnp/core";
 describe("Sites", () => {
 
     if (testSettings.enableWebTests) {
+        let sp = getSP();
 
         it(".rootWeb", async function () {
             return expect(sp.site.rootWeb()).to.eventually.be.fulfilled;

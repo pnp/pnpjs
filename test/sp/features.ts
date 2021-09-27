@@ -1,14 +1,12 @@
 import { expect } from "chai";
-import { testSettings } from "../main.js";
-
-import { sp } from "@pnp/sp";
+import { getSP, testSettings } from "../main-2.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
 
 describe("Features", () => {
 
     if (testSettings.enableWebTests) {
-
+        let sp = getSP();
         // Web feature - Following Content
         const webFeatureId = "a7a2793e-67cd-4dc1-9fd0-43f61581207a";
 
