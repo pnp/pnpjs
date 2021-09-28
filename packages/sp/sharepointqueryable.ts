@@ -7,9 +7,9 @@ export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
     new(baseUrl: string | ISPQueryable, path?: string): T;
 }
 
-export type ISPInvokableFactory<R extends IQueryable2> = (baseUrl: string | ISPQueryable, path?: string) => R & IInvokable;
+export type ISPInvokableFactory<R extends ISPQueryable> = (baseUrl: string | ISPQueryable, path?: string) => R & IInvokable;
 
-export const spInvokableFactory = <R extends IQueryable2>(f: any): ISPInvokableFactory<R> => {
+export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
 };
 

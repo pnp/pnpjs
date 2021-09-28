@@ -27,7 +27,6 @@ class BatchQueryable extends _SPQueryable {
     }
 }
 
-// eslint-disable-next-line max-len
 export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
 
     /**

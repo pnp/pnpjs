@@ -1,14 +1,15 @@
-import { combine, IFetchOptions } from "@pnp/core";
-import { Queryable } from "@pnp/queryable";
-import { GraphEndpoints } from "./types.js";
-import { graphGet } from "./operations.js";
+import { combine } from "@pnp/core";
+import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
+import { GraphTagging } from "./behaviors/telemetry.js";
 
 export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
 }
 
-export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R & IInvokable => {
-    return invokableFactory<R>(f);
+export type IGraphInvokableFactory<R extends IGraphQueryable> = (baseUrl: string | IGraphQueryable, path?: string) => R & IInvokable;
+
+export const graphInvokableFactory = <R extends IGraphQueryable>(f: any): IGraphInvokableFactory<R> => {
+    return queryableFactory<R>(f);
 };
 
 /**
@@ -16,6 +17,8 @@ export const graphInvokableFactory = <R>(f: any): (baseUrl: string | IGraphQuery
  *
  */
 export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
+
+    protected parentUrl: string;
 
     /**
      * Creates a new instance of the Queryable class
@@ -28,7 +31,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
         let url = "";
         let parentUrl = "";
-        const query = new Map<string, string>();
 
         if (typeof baseUrl === "string") {
             parentUrl = baseUrl;
@@ -38,16 +40,12 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
             url = combine(parentUrl, path);
         }
 
-        super({
-            parentUrl,
-            query,
-            url,
-        });
+        // init base with corrected string value
+        super(url);
 
-        // post init actions
-        if (typeof baseUrl !== "string") {
-            this.configureFrom(baseUrl);
-        }
+        this.parentUrl = parentUrl;
+
+        this.using(GraphTagging());
     }
 
     /**
@@ -74,14 +72,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
         return this;
     }
 
-    public defaultAction(options?: IFetchOptions): Promise<GetType> {
-        return graphGet(this, options);
-    }
-
-    public get<T = GetType>(options?: IFetchOptions): Promise<T> {
-        return graphGet<T>(<any>this, options);
-    }
-
     /**
      * Gets the full url with query information
      *
@@ -96,23 +86,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
         }
 
         return url;
-    }
-
-    public setEndpoint(endpoint: "beta" | "v1.0"): this {
-        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
-        return this;
-    }
-
-    /**
-     * Clones this queryable into a new queryable instance of T
-     * @param factory Constructor used to create the new instance
-     * @param additionalPath Any additional path to include in the clone
-     * @param includeBatch If true this instance's batch will be added to the cloned instance
-     * @param includeQuery If true all of the query values will be copied to the cloned instance
-     */
-    public clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch = true, includeQuery = false): T {
-
-        return super.cloneTo<T>(factory(this, additionalPath), { includeBatch, includeQuery });
     }
 
     /**
@@ -146,11 +119,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 }
 
 export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> { }
-// this interface is to fix build issues when moving to typescript 4. _SharePointQueryable is itself not invokable but we need to match signatures
-// eslint-disable-next-line no-redeclare
-export interface _GraphQueryable<GetType = any> {
-    <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
-}
 export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQueryable);
 
 /**

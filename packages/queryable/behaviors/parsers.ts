@@ -1,4 +1,4 @@
-import { Queryable } from "./queryable";
+import { Queryable } from "../queryable";
 import { hOP, TimelinePipe } from "@pnp/core";
 import { isFunc } from "@pnp/core";
 
@@ -35,6 +35,11 @@ export function JSONParse(): TimelinePipe {
 export function BufferParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(r => isFunc(r.arrayBuffer) ? r.arrayBuffer() : (<any>r).buffer());
+}
+
+export function HeaderParse(): TimelinePipe {
+
+    return parseBinderWithErrorCheck(async r => r.headers);
 }
 
 export async function errorCheck(url: URL, response: Response, result: any): Promise<[URL, Response, any]> {

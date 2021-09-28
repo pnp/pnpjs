@@ -1,64 +1,37 @@
-import {
-    setup as _setup,
-    IGraphConfiguration,
-} from "./graphlibconfig.js";
-import { GraphBatch } from "./batch.js";
-import { Runtime, IConfigOptions, ISPFXContext, ITypedHash, DefaultRuntime } from "@pnp/core";
+import { TimelinePipe } from "@pnp/core";
+import { GraphQueryable, IGraphQueryable } from "./graphqueryable.js";
 
 export class GraphRest {
+
+    private _root: IGraphQueryable;
 
     /**
      * Creates a new instance of the SPRest class
      *
-     * @param options Additional options
-     * @param baseUrl A string that should form the base part of the url
+     * @param root Establishes a root url/configuration for
      */
-    constructor(private _options: IConfigOptions = {}, private _baseUrl: "v1.0" | "beta" = "v1.0", private _runtime = DefaultRuntime) {    }
+    constructor(root: string | IGraphQueryable = "") {
 
-    public createBatch(): GraphBatch {
-        return new GraphBatch().setRuntime(this._runtime);
+        this._root = typeof root === "string" ? GraphQueryable(root) : root;
     }
 
-    public setup(config: IGraphConfiguration | ISPFXContext) {
+    public using(behavior: TimelinePipe): this {
 
-        if ((<ISPFXContext>config).pageContext) {
-            _setup({
-                spfxContext: <ISPFXContext>config,
-            }, this._runtime);
-        } else {
-            _setup(<IGraphConfiguration>config, this._runtime);
-        }
+        this._root.using(behavior);
+        return this;
     }
 
-    public async createIsolated<T = ITypedHash<any>>(init?: Partial<IGraphIsolatedInit<T>>): Promise<GraphRest> {
-
-        // merge our defaults
-        init = Object.assign<IGraphIsolatedInit<T>, Partial<IGraphIsolatedInit<T>>>({
-            baseUrl: "v1.0",
-            cloneGlobal: true,
-            config: <T>{},
-            options: {},
-        }, init || {});
-
-        const { baseUrl, cloneGlobal, options, config } = init;
-
-        const runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
-
-        runtime.assign(config);
-
-        return new GraphRest(options, baseUrl, runtime);
-    }
-
-    protected childConfigHook<T>(callback: ({ options: IConfigOptions, baseUrl: string, runtime: Runtime }) => T): T {
-        return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime });
+    /**
+     * Used by extending classes to create new objects directly from the root
+     *
+     * @param factory The factory for the type of object to create
+     * @returns A configured instance of that object
+     */
+    protected create<T>(factory: (q: IGraphQueryable, path?: string) => T, path?: string): T {
+        return factory(this._root, path);
     }
 }
 
-export interface IGraphIsolatedInit<T> {
-    cloneGlobal: boolean;
-    config: T;
-    options: IConfigOptions;
-    baseUrl: "v1.0" | "beta";
+export function graph(root: string | IGraphQueryable = ""): GraphRest {
+    return new GraphRest(root);
 }
-
-export const graph = new GraphRest();

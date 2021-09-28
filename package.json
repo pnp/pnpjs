@@ -47,8 +47,8 @@
         "yargs": "^16.2.0"
     },
     "scripts": {
-        "build": "npm run pnp-buildsystem-init && pnpbuild -n build",
-        "buildDebug": "npm run clean && npm run pnp-buildsystem-init && pnpbuild -n build-debug",
+        "build": "pnpbuild -n build",
+        "buildDebug": "npm run clean && pnpbuild -n build-debug",
         "clean": "del-cli \"./?(dist|site|build|buildsystem-config.js)\"",
         "clean-build": "npm run clean && npm run build",
         "just-publish": "npm run pnp-buildsystem-init && pnpbuild -n publish",

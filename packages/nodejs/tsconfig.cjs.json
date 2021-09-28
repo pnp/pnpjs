@@ -12,13 +12,16 @@
             "path": "../core/tsconfig.cjs.json"
         },
         {
-            "path": "../queryable/tsconfig.cjs.json"
+            "path": "../graph/tsconfig.cjs.json"
         },
         {
             "path": "../logging/tsconfig.cjs.json"
         },
         {
             "path": "../sp/tsconfig.cjs.json"
+        },
+        {
+            "path": "../queryable/tsconfig.cjs.json"
         }
     ]
 }

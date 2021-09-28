@@ -42,7 +42,7 @@ export async function Example(settings: ITestingSettings) {
 
         });
 
-        const w2 = await w();
+        const w2 = await w.select("Title")<{ Title: string }>();
 
         // const q = await w.syncSolutionToTeams("asd");
 
