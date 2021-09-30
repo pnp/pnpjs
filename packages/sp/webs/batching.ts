@@ -1,9 +1,22 @@
 import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
-import { LogLevel } from "@pnp/logging";
-import { body, InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
+import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "../operations";
 import { _SPQueryable } from "../sharepointqueryable";
 import { IWeb } from "./types.js";
+
+/**
+ * The request record defines a tuple that is
+ *
+ * [0]: The queryable object representing the request
+ * [1]: The request url
+ * [2]: Any request init values (headers, etc)
+ * [3]: The resolve function back to the promise for the original operation
+ * [4]: The reject function back to the promise for the original operation
+ */
+type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
+
+const RegistrationCompleteSym = Symbol.for("batch_reg_done");
+const RequestCompleteSym = Symbol.for("batch_req_done");
 
 function BatchParse(): TimelinePipe {
 
@@ -29,18 +42,8 @@ class BatchQueryable extends _SPQueryable {
 
 export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
 
-    /**
-     * The request record defines a tuple that is
-     *
-     * [0]: The queryable object representing the request
-     * [1]: The request url
-     * [2]: Any request init values (headers, etc)
-     * [3]: The resolve function back to the promise for the original operation
-     * [4]: The reject function back to the promise for the original operation
-     */
-    type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
-
     const registrationPromises: Promise<void>[] = [];
+    const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
@@ -58,7 +61,7 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
 
         for (let i = 0; i < requests.length; i++) {
 
-            const [queryable, url, init] = requests[i];
+            const [, url, init] = requests[i];
 
             if (init.method === "GET") {
 
@@ -92,8 +95,6 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
             // this is the url of the individual request within the batch
             const reqUrl = isUrlAbsolute(url) ? url : combine(batchQuery.requestBaseUrl, url);
 
-            queryable.log(`[${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${reqUrl} to batch.`, LogLevel.Verbose);
-
             if (init.method !== "GET") {
 
                 let method = init.method;
@@ -115,16 +116,14 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
             }
 
             if (!headers.has("Content-Type")) {
-                headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-            }
-
-            if (!headers.has("X-ClientService-ClientTag")) {
-                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-$$Version$$:batch");
+                headers.append("Content-Type", "application/json;charset=utf-8");
             }
 
             // write headers into batch body
             headers.forEach((value: string, name: string) => {
-                batchBody.push(`${name}: ${value}\n`);
+                if (/Accept|Content-Type/i.test(name)) {
+                    batchBody.push(`${name}: ${value}\n`);
+                }
             });
 
             batchBody.push("\n");
@@ -140,23 +139,22 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
             currentChangeSetId = "";
         }
 
-        batchBody.push(`--batch_${this.batchId}--\n`);
+        batchBody.push(`--batch_${batchId}--\n`);
 
         // we need to set our own headers here
         batchQuery.using(InjectHeaders({
             "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
         }));
 
-        const responses: Response[] = await spPost(batchQuery, body(batchBody.join("")));
+        const responses: Response[] = await spPost(batchQuery, { body: batchBody.join("") });
 
         if (responses.length !== requests.length) {
             throw Error("Could not properly parse responses to match requests in batch.");
         }
 
         // this structure ensures that we resolve the batched requests in the order we expect
-        return responses.reduce((p, response, index) => p.then(() => {
+        return responses.reduce((p, response, index) => p.then(async () => {
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const [, , , resolve, reject] = requests[index];
 
             try {
@@ -168,18 +166,25 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
                 reject(e);
             }
 
-        }), Promise.resolve(void (0)));
+        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
     };
 
     const register = (instance: Queryable) => {
 
-        let registrationResolver: (value: void | PromiseLike<void>) => void;
+        instance.on.init(function (this: Queryable) {
 
-        // we need to ensure we wait to execute until all our batch children hit the .send method to be fully registered
-        registrationPromises.push(new Promise((resolve) => {
-            registrationResolver = resolve;
-        }));
+            // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
+            registrationPromises.push(new Promise((resolve) => {
+                (<any>this)[RegistrationCompleteSym] = resolve;
+            }));
 
+            return this;
+        });
+
+        // the entire request will be auth'd - we don't need to run this for each batch request
+        instance.on.auth.clear();
+
+        // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
@@ -188,11 +193,29 @@ export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
                 requestTuple = [this, url.toString(), init, resolve, reject];
             });
 
+            this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
+
             requests.push(requestTuple);
 
-            registrationResolver();
+            // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
+            completePromises.push(new Promise((resolve) => {
+                (<any>this)[RequestCompleteSym] = resolve;
+            }));
+
+            (<any>this)[RegistrationCompleteSym]();
 
             return promise;
+        });
+
+        // we need to know when each request in the batch's timeline has completed
+        instance.on.dispose(function () {
+
+            // let things know we are done with this request
+            (<any>this)[RequestCompleteSym]();
+
+            // remove the symbol props we added for good hygene
+            delete this[RegistrationCompleteSym];
+            delete this[RequestCompleteSym];
         });
 
         return instance;

@@ -1,13 +1,13 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { SPDefault } from "@pnp/nodejs";
-import { LogLevel, PnPLogging, Logger, ConsoleListener } from "@pnp/logging";
+import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { LogLevel, PnPLogging } from "@pnp/logging";
 import { sp } from "@pnp/sp";
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/groups";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import "@pnp/sp/folders";
-import "@pnp/sp/appcatalog";
-import { Queryable } from "@pnp/queryable/queryable.js";
+import "@pnp/sp/site-users";
 
 declare var process: { exit(code?: number): void };
 
@@ -16,9 +16,33 @@ export async function Example(settings: ITestingSettings) {
     // global logging subscribe for messages, included in usings per instance with different levels available per instance
     // already done in ./main.ts ::> Logger.subscribe(ConsoleListener());
 
-    try {
+    // try {
 
-        // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
+    //     const graph2 = graph().using(GraphDefault({
+    //         msal: {
+    //             config: settings.testing.graph.msal.init,
+    //             scopes: settings.testing.graph.msal.scopes,
+    //         },
+    //     })).using(PnPLogging(LogLevel.Verbose));
+
+    //     const [batch, execute] = graph2.createBatch();
+
+    //     let res = [];
+
+    //     graph2.users.using(batch)().then(r => res.push(r));
+
+    //     graph2.groups.using(batch)().then(r => res.push(r));
+
+    //     await execute();
+
+    //     console.log(res);
+
+    // } catch (e) {
+
+    //     console.error(e);
+    // }
+
+    try {
 
         const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
@@ -27,31 +51,63 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
+        const [batch, execute] = sp2.createBatch();
 
-        const w = sp2.web;
-        w.on.init(function (this: Queryable) {
+        sp2.using(batch);
 
-            this.on.post(async function (this: Queryable, url: URL, result: any) {
+        let res = [];
 
-                console.log("I am being called!");
+        sp2.web().then(r => res.push(r));
 
-                return [url, result];
-            });
+        sp2.web.lists().then(r => res.push(r));
 
-            return this;
+        await execute();
 
-        });
-
-        const w2 = await w.select("Title")<{ Title: string }>();
-
-        // const q = await w.syncSolutionToTeams("asd");
-
-        console.log(`here: ${JSON.stringify(w2)}`);
+        console.log(res);
 
     } catch (e) {
 
         console.error(e);
     }
+
+    console.log("here");
+
+    // try {
+
+    //     // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
+
+    //     const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+    //         msal: {
+    //             config: settings.testing.sp.msal.init,
+    //             scopes: settings.testing.sp.msal.scopes,
+    //         },
+    //     })).using(PnPLogging(LogLevel.Verbose));
+
+
+    //     const w = sp2.web;
+    //     w.on.init(function (this: Queryable) {
+
+    //         this.on.post(async function (this: Queryable, url: URL, result: any) {
+
+    //             console.log("I am being called!");
+
+    //             return [url, result];
+    //         });
+
+    //         return this;
+
+    //     });
+
+    //     const w2 = await w.select("Title")<{ Title: string }>();
+
+    //     // const q = await w.syncSolutionToTeams("asd");
+
+    //     console.log(`here: ${JSON.stringify(w2)}`);
+
+    // } catch (e) {
+
+    //     console.error(e);
+    // }
 
 
     // extendFactory(Web, {

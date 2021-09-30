@@ -2,7 +2,8 @@
     "extends": "../tsconfig.cjs.json",
     "include": [
         "./**/*.ts",
-        "../common/**/*.ts",
+        "../core/**/*.ts",
+        "../graph/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"

@@ -5,7 +5,6 @@ import { IFieldDefault } from "./types.js";
 import { IResourcePath } from "../utils/toResourcePath.js";
 import { combine, isArray } from "@pnp/core";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { LogLevel } from "@pnp/logging";
 import { spPost } from "../operations.js";
 import { SPCollection } from "../presets/all.js";
 
@@ -73,7 +72,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
         if (m.length < 1) {
             // this indicates an error somewhere, but we have no way to meaningfully recover
             // perhaps the way the tags are stored has changed on the server? Check that first.
-            this.log(`Could not parse default column value from '${t}'`, LogLevel.Warning);
+            this.log(`Could not parse default column value from '${t}'`, 2);
             return null;
         }
 
@@ -89,7 +88,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
             // 2: Default value as string
 
             if (sm.length < 1) {
-                this.log(`Could not parse default column value from '${st}'`, LogLevel.Warning);
+                this.log(`Could not parse default column value from '${st}'`, 2);
             } else {
                 defVals.push({
                     name: sm[1],

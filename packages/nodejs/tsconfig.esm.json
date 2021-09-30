@@ -3,6 +3,7 @@
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",
+        "../graph/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"

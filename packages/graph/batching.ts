@@ -54,6 +54,7 @@ type RequestRecord = [Queryable, string, RequestInit, (value: Response | Promise
 function BatchParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response): Promise<ParsedGraphResponse> => {
+
         const graphResponse: IGraphBatchResponse = await response.json();
 
         // we need to see if we have an error and report that
@@ -71,7 +72,7 @@ class BatchQueryable extends _GraphQueryable {
 
         super(requestBaseUrl, "v1.0/$batch");
 
-        // this will copy over the current observables from the web associated with this batch
+        // this will copy over the current observables from the base associated with this batch
         this.using(From_JulieHatesThisName(base, "replace"));
 
         // this will replace any other parsing present
@@ -115,9 +116,8 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
             // this structure ensures that we resolve the batched requests in the order we expect
-            response.responses.reduce((p, response, index) => p.then(() => {
+            await response.responses.reduce((p, response, index) => p.then(() => {
 
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const [, , , resolve, reject] = requestsChunk[index];
 
                 try {

@@ -20,6 +20,6 @@ Reflect.defineProperty(GraphRest.prototype, "groups", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        this.create(Groups);
+        return this.create(Groups);
     },
 });

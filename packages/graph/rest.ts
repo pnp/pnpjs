@@ -1,4 +1,5 @@
 import { TimelinePipe } from "@pnp/core";
+import { createBatch } from "./batching.js";
 import { GraphQueryable, IGraphQueryable } from "./graphqueryable.js";
 
 export class GraphRest {
@@ -19,6 +20,10 @@ export class GraphRest {
 
         this._root.using(behavior);
         return this;
+    }
+
+    public createBatch(maxRequests = 20): [TimelinePipe, () => Promise<void>] {
+        return createBatch(this._root, maxRequests);
     }
 
     /**

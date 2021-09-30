@@ -1,6 +1,6 @@
 import { combine } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
-import { GraphTagging } from "./behaviors/telemetry.js";
+import { GraphTelemetry } from "./behaviors/telemetry.js";
 
 export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
@@ -24,28 +24,36 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      * Creates a new instance of the Queryable class
      *
      * @constructor
-     * @param baseUrl A string or Queryable that should form the base part of the url
+     * @param base A string or Queryable that should form the base part of the url
      *
      */
-    constructor(baseUrl: string | IGraphQueryable, path?: string) {
+    constructor(base: string | IGraphQueryable, path?: string) {
 
         let url = "";
         let parentUrl = "";
 
-        if (typeof baseUrl === "string") {
-            parentUrl = baseUrl;
+        if (typeof base === "string") {
+            parentUrl = base;
             url = combine(parentUrl, path);
+
+            // init base with corrected string value
+            super(url);
+
+            this.parentUrl = parentUrl;
+
         } else {
-            parentUrl = baseUrl.toUrl();
+
+            parentUrl = base.toUrl();
             url = combine(parentUrl, path);
+
+            // init base with corrected string value
+            super(base, path);
+
+            this.parentUrl = base.toUrl();
         }
 
-        // init base with corrected string value
-        super(url);
-
-        this.parentUrl = parentUrl;
-
-        this.using(GraphTagging());
+        // always include our tagging
+        this.using(GraphTelemetry());
     }
 
     /**

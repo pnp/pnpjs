@@ -78,12 +78,13 @@ export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
  */
 export abstract class Timeline<T extends Moments> {
 
-    private _inheritingObservers: boolean;
-    private _parentObservers: ObserverCollection;
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
+    private _inheritingObservers: boolean;
 
-    constructor(protected readonly moments: T, protected observers: ObserverCollection = {}) { }
+    constructor(protected readonly moments: T, protected observers: ObserverCollection = {}) {
+        this._inheritingObservers = true;
+    }
 
     public using(...behaviors: TimelinePipe[]): this {
 
@@ -104,6 +105,7 @@ export abstract class Timeline<T extends Moments> {
             this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
+                    target.cloneObserversOnFirstWrite();
                     addObserver(target.observers, p, handler, "add");
                     return target;
 
@@ -112,10 +114,14 @@ export abstract class Timeline<T extends Moments> {
                         return Reflect.has(target.observers, p) ? cloneDeep(Reflect.get(target.observers, p)) : [];
                     },
                     replace: (handler: ValidObserver) => {
+
+                        target.cloneObserversOnFirstWrite();
                         addObserver(target.observers, p, handler, "replace");
                         return target;
                     },
                     prepend: (handler: ValidObserver) => {
+
+                        target.cloneObserversOnFirstWrite();
                         addObserver(target.observers, p, handler, "prepend");
                         return target;
                     },
@@ -272,6 +278,13 @@ export abstract class Timeline<T extends Moments> {
      * @param init A value passed into start from the initiator of the timeline
      */
     protected abstract execute(init?: any): Promise<any>;
+
+    private cloneObserversOnFirstWrite() {
+        if (this._inheritingObservers) {
+            this._inheritingObservers = false;
+            this.observers = cloneDeep(this.observers);
+        }
+    }
 }
 
 /**

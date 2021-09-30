@@ -1,5 +1,6 @@
 import { TimelinePipe } from "@pnp/core";
 import { InjectHeaders, Queryable } from "@pnp/queryable";
+import { SPTelemetry } from "..";
 
 export function DefaultInit(): TimelinePipe<Queryable> {
 
@@ -12,6 +13,8 @@ export function DefaultInit(): TimelinePipe<Queryable> {
 
             return [url, init, result];
         });
+
+        SPTelemetry()(instance);
 
         return instance;
     };

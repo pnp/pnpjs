@@ -1,7 +1,6 @@
 import { combine, isUrlAbsolute } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory, IQueryable2, FromQueryable } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, FromQueryable } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
-import { SPTagging } from "./behaviors/telemetry.js";
 
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
     new(baseUrl: string | ISPQueryable, path?: string): T;
@@ -17,7 +16,7 @@ export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokable
  * SharePointQueryable Base Class
  *
  */
-export class _SPQueryable<GetType = any> extends Queryable<GetType> implements IQueryable2<GetType> {
+export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
     protected parentUrl: string;
 
@@ -70,9 +69,6 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> implements I
                 this.query.set("@target", target);
             }
         }
-
-        // always include our tagging
-        this.using(SPTagging());
     }
 
     /**
