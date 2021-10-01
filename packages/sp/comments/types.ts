@@ -3,7 +3,7 @@ import {
     _SPCollection,
     spInvokableFactory,
     _SPInstance,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";

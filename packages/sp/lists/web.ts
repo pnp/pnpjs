@@ -2,7 +2,7 @@ import { addProp } from "@pnp/queryable";
 import { _Web, Web } from "../webs/types.js";
 import { Lists, ILists, IList, List } from "./types.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
-import { ISPCollection, SPCollection } from "../sharepointqueryable.js";
+import { ISPCollection, SPCollection } from "../spqueryable.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 
 declare module "../webs/types" {

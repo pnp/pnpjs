@@ -4,7 +4,7 @@ import {
     _SPInstance,
     IDeleteable,
     deleteable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";

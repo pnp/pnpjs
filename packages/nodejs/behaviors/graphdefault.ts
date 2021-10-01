@@ -30,8 +30,13 @@ export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable>
 
         instance.on.pre(async (url, init, result) => {
 
-            if (!isUrlAbsolute(url) && isUrlAbsolute(props.baseUrl)) {
-                url = combine(props.baseUrl, url);
+            if (!isUrlAbsolute(url)) {
+
+                if (isUrlAbsolute(props.baseUrl)) {
+                    url = combine(props.baseUrl, url);
+                } else {
+                    url = combine("https://graph.microsoft.com/", url);
+                }
             }
 
             return [url, init, result];

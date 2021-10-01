@@ -1,8 +1,30 @@
 import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
-import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
-import { spPost } from "../operations";
-import { _SPQueryable } from "../sharepointqueryable";
-import { IWeb } from "./types.js";
+import { InjectHeaders, IQueryable2, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
+import { spPost } from "./operations";
+import { _SPQueryable } from "./spqueryable";
+import { SPRest } from "./rest.js";
+
+declare module "./rest" {
+    interface SPRest {
+
+        /**
+         * Creates a batch behavior and associated execute function
+         *
+         */
+        batched(): [SPRest, () => Promise<void>];
+    }
+}
+
+SPRest.prototype.batched = function (this: SPRest): [SPRest, () => Promise<void>] {
+
+    const batchedRest = new SPRest(this._root);
+
+    const [behavior, execute] = createBatch(batchedRest._root);
+
+    batchedRest._root.using(behavior);
+
+    return [batchedRest, execute];
+};
 
 /**
  * The request record defines a tuple that is
@@ -28,19 +50,19 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _SPQueryable {
 
-    constructor(web: IWeb, public requestBaseUrl = web.toUrl().replace(/_api\/.*$/i, "")) {
+    constructor(base: IQueryable2, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "_api/$batch");
 
         // this will copy over the current observables from the web associated with this batch
-        this.using(From_JulieHatesThisName(web, "replace"));
+        this.using(From_JulieHatesThisName(base, "replace"));
 
         // this will replace any other parsing present
         this.using(BatchParse());
     }
 }
 
-export function createBatch(base: IWeb): [TimelinePipe, () => Promise<void>] {
+export function createBatch(base: IQueryable2): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
     const completePromises: Promise<void>[] = [];

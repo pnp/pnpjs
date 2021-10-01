@@ -10,7 +10,7 @@ import {
     ISPCollection,
     SPCollection,
     IDeleteableWithETag,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { defaultPath } from "../decorators.js";

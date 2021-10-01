@@ -1,4 +1,4 @@
-import { _SPQueryable, SPQueryable } from "../sharepointqueryable.js";
+import { _SPQueryable, SPQueryable } from "../spqueryable.js";
 import { spPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 

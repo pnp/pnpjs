@@ -3,7 +3,7 @@ import {
     _SPInstance,
     _SPCollection,
     spInvokableFactory,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 

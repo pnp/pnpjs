@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../sharepointqueryable.js";
+import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../spqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { spPost } from "../operations.js";

@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
-import { ISPQueryable, _SPQueryable } from "../sharepointqueryable.js";
+import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";

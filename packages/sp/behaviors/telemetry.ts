@@ -1,7 +1,7 @@
 import { TimelinePipe } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 
-export function SPTelemetry(): TimelinePipe<Queryable> {
+export function Telemetry(): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
 

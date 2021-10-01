@@ -1,10 +1,9 @@
 import { TimelinePipe } from "@pnp/core";
-import { createBatch } from "./batching.js";
 import { GraphQueryable, IGraphQueryable } from "./graphqueryable.js";
 
 export class GraphRest {
 
-    private _root: IGraphQueryable;
+    protected _root: IGraphQueryable;
 
     /**
      * Creates a new instance of the SPRest class
@@ -20,10 +19,6 @@ export class GraphRest {
 
         this._root.using(behavior);
         return this;
-    }
-
-    public createBatch(maxRequests = 20): [TimelinePipe, () => Promise<void>] {
-        return createBatch(this._root, maxRequests);
     }
 
     /**

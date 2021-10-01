@@ -2,6 +2,29 @@ import { isUrlAbsolute, hOP, TimelinePipe, getGUID, From_JulieHatesThisName, obj
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
 import { graphPost } from "./operations.js";
+import { GraphRest } from "./rest.js";
+
+declare module "./rest" {
+    interface GraphRest {
+
+        /**
+         * Creates a batch behavior and associated execute function
+         *
+         */
+        batched(): [GraphRest, () => Promise<void>];
+    }
+}
+
+GraphRest.prototype.batched = function (this: GraphRest): [GraphRest, () => Promise<void>] {
+
+    const batchedRest = new GraphRest(this._root);
+
+    const [behavior, execute] = createBatch(batchedRest._root);
+
+    batchedRest._root.using(behavior);
+
+    return [batchedRest, execute];
+};
 
 interface IGraphBatchRequestFragment {
     id: string;
@@ -51,6 +74,9 @@ type ParsedGraphResponse = { nextLink: string; responses: Response[] };
  */
 type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
+const RegistrationCompleteSym = Symbol.for("batch_reg_done");
+const RequestCompleteSym = Symbol.for("batch_req_done");
+
 function BatchParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response): Promise<ParsedGraphResponse> => {
@@ -68,9 +94,9 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _GraphQueryable {
 
-    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/v1\.0|beta\/.*$/i, "")) {
+    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i, "")) {
 
-        super(requestBaseUrl, "v1.0/$batch");
+        super(requestBaseUrl, "$batch");
 
         // this will copy over the current observables from the base associated with this batch
         this.using(From_JulieHatesThisName(base, "replace"));
@@ -83,8 +109,15 @@ class BatchQueryable extends _GraphQueryable {
 export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
+    const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
+    const batchQuery = new BatchQueryable(base);
+
+    batchQuery.using(InjectHeaders({
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }));
 
     const execute = async () => {
 
@@ -106,13 +139,6 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
                 requests: formatRequests(requestsChunk, batchId),
             };
 
-            const batchQuery = new BatchQueryable(base);
-
-            batchQuery.using(InjectHeaders({
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }));
-
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
             // this structure ensures that we resolve the batched requests in the order we expect
@@ -129,19 +155,26 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
                     reject(e);
                 }
 
-            }), Promise.resolve(void (0)));
+            }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
         }
     };
 
     const register = (instance: Queryable) => {
 
-        let registrationResolver: (value: void | PromiseLike<void>) => void;
+        instance.on.init(function (this: Queryable) {
 
-        // we need to ensure we wait to execute until all our batch children hit the .send method to be fully registered
-        registrationPromises.push(new Promise((resolve) => {
-            registrationResolver = resolve;
-        }));
+            // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
+            registrationPromises.push(new Promise((resolve) => {
+                (<any>this)[RegistrationCompleteSym] = resolve;
+            }));
 
+            return this;
+        });
+
+        // the entire request will be auth'd - we don't need to run this for each batch request
+        instance.on.auth.clear();
+
+        // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
             let requestTuple: RequestRecord;
@@ -150,11 +183,29 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
                 requestTuple = [this, url.toString(), init, resolve, reject];
             });
 
+            this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
+
             requests.push(requestTuple);
 
-            registrationResolver();
+            // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
+            completePromises.push(new Promise((resolve) => {
+                (<any>this)[RequestCompleteSym] = resolve;
+            }));
+
+            (<any>this)[RegistrationCompleteSym]();
 
             return promise;
+        });
+
+        // we need to know when each request in the batch's timeline has completed
+        instance.on.dispose(function () {
+
+            // let things know we are done with this request
+            (<any>this)[RequestCompleteSym]();
+
+            // remove the symbol props we added for good hygene
+            delete this[RegistrationCompleteSym];
+            delete this[RequestCompleteSym];
         });
 
         return instance;

@@ -4,7 +4,7 @@ import {
     _SPInstance,
     ISPQueryable,
     SPCollection,
-} from "../sharepointqueryable";
+} from "../spqueryable";
 import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
