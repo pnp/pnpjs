@@ -19,8 +19,6 @@ Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Subscriptions(baseUrl).configure(options).setRuntime(runtime);
-        });
+        return this.create(Subscriptions);
     },
 });

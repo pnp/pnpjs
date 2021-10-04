@@ -4,7 +4,7 @@ import {
     SPCollection,
     spInvokableFactory,
     _SPCollection,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 

@@ -1,4 +1,3 @@
-import { ITypedHash, assign } from "@pnp/core";
 import {
     PlannerPlan as IPlannerPlanType,
     PlannerPlanDetails as IPlannerPlanDetailsType,
@@ -34,7 +33,7 @@ export class _Planner extends _GraphQueryableInstance<IPlannerType> {
         return Buckets(this);
     }
 }
-export interface IPlanner extends _Planner {}
+export interface IPlanner extends _Planner { }
 export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 
 /**
@@ -126,17 +125,19 @@ export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> {
      * @param assignments Assign the task
      * @param bucketId Id of Bucket
      */
-    public async add(planId: string, title: string, assignments?: ITypedHash<any>, bucketId?: string): Promise<ITaskAddResult> {
+    public async add(planId: string, title: string, assignments?: Record<string, any>, bucketId?: string): Promise<ITaskAddResult> {
 
-        let postBody = assign({
+        let postBody = {
             planId,
             title,
-        }, assignments);
+            ...assignments,
+        };
 
         if (bucketId) {
-            postBody = assign(postBody, {
-                bucketId: bucketId,
-            });
+            postBody = <any>{
+                ...postBody,
+                bucketId,
+            };
         }
 
         const data = await graphPost(this, body(postBody));

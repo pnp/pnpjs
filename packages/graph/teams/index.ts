@@ -45,7 +45,7 @@ addProp(_Group, "team", Team);
 
 _Group.prototype.createTeam = async function (this: _Group, props: ITeamType): Promise<ITeamCreateResult> {
 
-    const data = await graphPut(this.clone(Group, "team"), body(props));
+    const data = await graphPut(Group(this, "team"), body(props));
 
     return {
         data,
@@ -63,8 +63,6 @@ Reflect.defineProperty(GraphRest.prototype, "teams", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Teams(baseUrl).configure(options).setRuntime(runtime);
-        });
+        return this.create(Teams);
     },
 });

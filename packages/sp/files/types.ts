@@ -8,7 +8,7 @@ import {
     ISPInstance,
     IDeleteableWithETag,
     deleteableWithETag,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { defaultPath } from "../decorators.js";

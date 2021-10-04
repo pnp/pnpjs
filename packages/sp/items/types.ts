@@ -8,7 +8,7 @@ import {
     ISPQueryable,
     SPInstance,
     ISPInstance,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable } from "@pnp/queryable";

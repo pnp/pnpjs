@@ -7,7 +7,7 @@ import {
     spInvokableFactory,
     SPInstance,
     ISPInstance,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 

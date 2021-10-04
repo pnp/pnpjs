@@ -1,13 +1,15 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { SPDefault } from "@pnp/nodejs";
-import { LogLevel, PnPLogging, Logger, ConsoleListener } from "@pnp/logging";
+import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { LogLevel, PnPLogging } from "@pnp/logging";
 import { sp } from "@pnp/sp";
+import { graph } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/groups";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import "@pnp/sp/folders";
-import "@pnp/sp/appcatalog";
-import { Queryable } from "@pnp/queryable/queryable.js";
+import "@pnp/sp/site-users";
+import "@pnp/sp/batching";
+import "@pnp/graph/batching";
 
 declare var process: { exit(code?: number): void };
 
@@ -18,40 +20,94 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
-
-        const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+        const graph2 = graph().using(GraphDefault({
             msal: {
-                config: settings.testing.sp.msal.init,
-                scopes: settings.testing.sp.msal.scopes,
+                config: settings.testing.graph.msal.init,
+                scopes: settings.testing.graph.msal.scopes,
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
+        const [batchedGraph, execute] = graph2.batched();
 
-        const w = sp2.web;
-        w.on.init(function (this: Queryable) {
+        let res = [];
 
-            this.on.post(async function (this: Queryable, url: URL, result: any) {
+        batchedGraph.users().then(r => res.push(r));
 
-                console.log("I am being called!");
+        batchedGraph.groups().then(r => res.push(r));
 
-                return [url, result];
-            });
+        await execute();
 
-            return this;
-
-        });
-
-        const w2 = await w();
-
-        // const q = await w.syncSolutionToTeams("asd");
-
-        console.log(`here: ${JSON.stringify(w2)}`);
+        console.log(res);
 
     } catch (e) {
 
         console.error(e);
     }
+
+    // try {
+
+    //     const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+    //         msal: {
+    //             config: settings.testing.sp.msal.init,
+    //             scopes: settings.testing.sp.msal.scopes,
+    //         },
+    //     })).using(PnPLogging(LogLevel.Verbose));
+
+    //     const [batchedSP, execute] = sp2.batched();
+
+    //     let res = [];
+
+    //     batchedSP.web().then(r => res.push(r));
+
+    //     batchedSP.web.lists().then(r => res.push(r));
+
+    //     await execute();
+
+    //     console.log(res);
+
+    // } catch (e) {
+
+    //     console.error(e);
+    // }
+
+    console.log("here");
+
+    // try {
+
+    //     // https://318studios.sharepoint.com/sites/dev/1844b17e-9287-4b63-afa8-08b02f283b1f
+
+    //     const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+    //         msal: {
+    //             config: settings.testing.sp.msal.init,
+    //             scopes: settings.testing.sp.msal.scopes,
+    //         },
+    //     })).using(PnPLogging(LogLevel.Verbose));
+
+
+    //     const w = sp2.web;
+    //     w.on.init(function (this: Queryable) {
+
+    //         this.on.post(async function (this: Queryable, url: URL, result: any) {
+
+    //             console.log("I am being called!");
+
+    //             return [url, result];
+    //         });
+
+    //         return this;
+
+    //     });
+
+    //     const w2 = await w.select("Title")<{ Title: string }>();
+
+    //     // const q = await w.syncSolutionToTeams("asd");
+
+    //     console.log(`here: ${JSON.stringify(w2)}`);
+
+    // } catch (e) {
+
+    //     console.error(e);
+    // }
 
 
     // extendFactory(Web, {

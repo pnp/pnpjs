@@ -1,7 +1,8 @@
-import { TimelinePipe } from "@pnp/core";
+import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { InjectHeaders, Queryable } from "@pnp/queryable";
+import { Telemetry } from "./telemetry.js";
 
-export function DefaultInit(): TimelinePipe<Queryable> {
+export function DefaultInit(graphUrl = "https://graph.microsoft.com/v1.0"): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
 
@@ -10,8 +11,14 @@ export function DefaultInit(): TimelinePipe<Queryable> {
             init.cache = "default";
             init.credentials = "same-origin";
 
+            if (!isUrlAbsolute(url)) {
+                url = combine(graphUrl, url);
+            }
+
             return [url, init, result];
         });
+
+        Telemetry()(instance);
 
         return instance;
     };
@@ -23,10 +30,7 @@ export function DefaultHeaders(): TimelinePipe<Queryable> {
 
         instance
             .using(InjectHeaders({
-                "Accept": "application/json",
                 "Content-Type": "application/json",
-                "User-Agent": "NONISV|SharePointPnP|PnPjs",
-                "SdkVersion": "PnPCoreJS/3.0.0-exp",
             }));
 
         return instance;

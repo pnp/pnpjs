@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable";
 import { jsS } from "@pnp/core";
-import { SPCollection, SPInstance } from "../sharepointqueryable.js";
+import { SPCollection, SPInstance } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { Web } from "../webs/types.js";
 import {

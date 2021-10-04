@@ -1,7 +1,7 @@
 import {
     _SPInstance,
     ISPQueryable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { hOP } from "@pnp/core";
 import { body } from "@pnp/queryable";

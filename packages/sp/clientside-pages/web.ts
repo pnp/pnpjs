@@ -1,6 +1,6 @@
 import { _Web, IWeb } from "../webs/types.js";
 import { IClientsidePageComponent, CreateClientsidePage, IClientsidePage, ClientsidePageLayoutType, ClientsidePageFromFile, PromotedState } from "./types.js";
-import { SPCollection } from "../sharepointqueryable.js";
+import { SPCollection } from "../spqueryable.js";
 
 declare module "../webs/types" {
     interface _Web {

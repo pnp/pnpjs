@@ -21,9 +21,7 @@ Reflect.defineProperty(GraphRest.prototype, "me", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return User(baseUrl, "me").configure(options).setRuntime(runtime);
-        });
+        return this.create(User, "me");
     },
 });
 
@@ -31,8 +29,6 @@ Reflect.defineProperty(GraphRest.prototype, "users", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Users(baseUrl).configure(options).setRuntime(runtime);
-        });
+        return this.create(Users);
     },
 });
