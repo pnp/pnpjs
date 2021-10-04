@@ -42,7 +42,7 @@ jobs:
       - name: Run a one-line script
         run: |
           npm run clean
-          npm version prerelease --preid=v3nightly
+          node .github/workflows/nightly-package-version.js
           npm run package
           npm publish --tag v3nightly --access public
         env:
