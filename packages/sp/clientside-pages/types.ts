@@ -2,7 +2,7 @@ import { body, headers, FromQueryable } from "@pnp/queryable";
 import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
-import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../sharepointqueryable.js";
+import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../spqueryable.js";
 import { List } from "../lists/types.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { Web, IWeb } from "../webs/types.js";
@@ -12,6 +12,7 @@ import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";
+import { createBatch } from "../batching.js";
 
 /**
  * Page promotion state
@@ -314,10 +315,13 @@ export class _ClientsidePage extends _SPQueryable {
             let webUrl: string;
 
             const web = Web(extractWebUrl(this.toUrl()));
-            const [batch, execute] = web.createBatch();
+
+            const [batch, execute] = createBatch(web);
+            web.using(batch);
+
             web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
-                .select("ListId", "WebId", "UniqueId", "Name", "SiteId").using(batch)().then(r1 => imgInfo = r1);
-            web.select("Url").using(batch)().then(r2 => webUrl = r2.Url);
+                .select("ListId", "WebId", "UniqueId", "Name", "SiteId")().then(r1 => imgInfo = r1);
+            web.select("Url")().then(r2 => webUrl = r2.Url);
 
             // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await execute();

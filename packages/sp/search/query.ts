@@ -1,4 +1,4 @@
-import { _SPInstance, ISPQueryable } from "../sharepointqueryable.js";
+import { _SPInstance, ISPQueryable } from "../spqueryable.js";
 import { hOP, isArray } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";

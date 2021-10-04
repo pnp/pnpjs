@@ -3,6 +3,7 @@
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",
+        "../graph/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"
@@ -10,6 +11,9 @@
     "references": [
         {
             "path": "../core/tsconfig.esm.json"
+        },
+        {
+            "path": "../graph/tsconfig.esm.json"
         },
         {
             "path": "../logging/tsconfig.esm.json"

@@ -5,7 +5,7 @@ import {
     _SPInstance,
     deleteable,
     IDeleteable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 

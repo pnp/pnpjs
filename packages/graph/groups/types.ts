@@ -1,4 +1,3 @@
-import { assign, ITypedHash } from "@pnp/core";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
@@ -31,33 +30,33 @@ export class _Group extends _DirectoryObject<IGroupType> {
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
     public addFavorite(): Promise<void> {
-        return graphPost(this.clone(Group, "addFavorite"));
+        return graphPost(Group(this, "addFavorite"));
     }
     /**
      * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
      */
     public removeFavorite(): Promise<void> {
-        return graphPost(this.clone(Group, "removeFavorite"));
+        return graphPost(Group(this, "removeFavorite"));
     }
     /**
      * Reset the unseenCount of all the posts that the current user has not seen since their last visit
      */
     public resetUnseenCount(): Promise<void> {
-        return graphPost(this.clone(Group, "resetUnseenCount"));
+        return graphPost(Group(this, "resetUnseenCount"));
     }
     /**
      * Calling this method will enable the current user to receive email notifications for this group,
      * about new posts, events, and files in that group. Supported for only Office 365 groups
      */
     public subscribeByMail(): Promise<void> {
-        return graphPost(this.clone(Group, "subscribeByMail"));
+        return graphPost(Group(this, "subscribeByMail"));
     }
     /**
      * Calling this method will prevent the current user from receiving email notifications for this group
      * about new posts, events, and files in that group. Supported for only Office 365 groups
      */
     public unsubscribeByMail(): Promise<void> {
-        return graphPost(this.clone(Group, "unsubscribeByMail"));
+        return graphPost(Group(this, "unsubscribeByMail"));
     }
     /**
      * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
@@ -67,7 +66,7 @@ export class _Group extends _DirectoryObject<IGroupType> {
      */
     public getCalendarView(start: Date, end: Date): Promise<IEventType[]> {
 
-        const view = this.clone(Group, "calendarView");
+        const view = Group(this, "calendarView");
         view.query.set("startDateTime", start.toISOString());
         view.query.set("endDateTime", end.toISOString());
         return view();
@@ -92,21 +91,23 @@ export class _Groups extends _GraphQueryableCollection<IGroupType[]> {
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: ITypedHash<any> = {}): Promise<IGroupAddResult> {
+    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: Record<string, any> = {}): Promise<IGroupAddResult> {
 
-        let postBody = assign({
+        let postBody = {
             displayName: name,
             mailEnabled: groupType === GroupType.Office365,
             mailNickname: mailNickname,
             securityEnabled: groupType !== GroupType.Office365,
-        }, additionalProperties);
+            ...additionalProperties,
+        };
 
         // include a group type if required
         if (groupType !== GroupType.Security) {
 
-            postBody = assign(postBody, {
+            postBody = <any>{
+                ...postBody,
                 groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
-            });
+            };
         }
 
         const data = await graphPost(this, body(postBody));

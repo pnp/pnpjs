@@ -8,7 +8,7 @@ import {
     SPCollection,
     ISPCollection,
     IDeleteable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";

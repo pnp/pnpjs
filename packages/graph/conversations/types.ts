@@ -60,7 +60,7 @@ export class _Thread extends _GraphQueryableInstance {
      * @param post Contents of the post
      */
     public reply(post: IPostType): Promise<void> {
-        return graphPost(this.clone(Thread, "reply"), body(post));
+        return graphPost(Thread(this, "reply"), body(post));
     }
 }
 export interface IThread extends _Thread, IDeleteable { }
@@ -86,7 +86,7 @@ export class _Post extends _GraphQueryableInstance<IPostType> {
      * Forward a post to a recipient
      */
     public forward(info: IPostForwardInfo): Promise<void> {
-        return graphPost(this.clone(Post, "forward"), body(info));
+        return graphPost(Post(this, "forward"), body(info));
     }
 
     /**
@@ -95,7 +95,7 @@ export class _Post extends _GraphQueryableInstance<IPostType> {
      * @param post Contents of the post
      */
     public reply(post: IPostType): Promise<void> {
-        return graphPost(this.clone(Post, "reply"), body(post));
+        return graphPost(Post(this, "reply"), body(post));
     }
 }
 export interface IPost extends _Post, IDeleteable { }
@@ -121,7 +121,7 @@ export class _Senders extends _GraphQueryableCollection<IUserType[]> {
      * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
     public add(id: string): Promise<any> {
-        return graphPost(this.clone(Senders, "$ref"), body({ "@odata.id": id }));
+        return graphPost(Senders(this, "$ref"), body({ "@odata.id": id }));
     }
 
     /**
@@ -130,7 +130,7 @@ export class _Senders extends _GraphQueryableCollection<IUserType[]> {
      * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
     public remove(id: string): Promise<void> {
-        const remover = this.clone(Senders, "$ref");
+        const remover = Senders(this, "$ref");
         remover.query.set("$id", id);
         return graphDelete(remover);
     }

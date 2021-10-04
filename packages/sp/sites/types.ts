@@ -1,4 +1,4 @@
-import { _SPInstance, spInvokableFactory, SPQueryable } from "../sharepointqueryable.js";
+import { _SPInstance, spInvokableFactory, SPQueryable } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { hOP } from "@pnp/core";

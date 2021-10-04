@@ -1,5 +1,5 @@
 import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
-import { SPInstance, SPQueryable } from "../sharepointqueryable.js";
+import { SPInstance, SPQueryable } from "../spqueryable.js";
 import { spPost } from "../operations.js";
 
 /**

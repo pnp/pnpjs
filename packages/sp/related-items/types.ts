@@ -1,4 +1,4 @@
-import { _SPQueryable, ISPQueryable } from "../sharepointqueryable.js";
+import { _SPQueryable, ISPQueryable } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";

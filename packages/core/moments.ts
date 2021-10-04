@@ -59,7 +59,7 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
  */
 export function request<T extends ObserverFunction>(): (observers: T[], ...args: [...Parameters<T>]) => Promise<ReturnType<T>> {
 
-    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
+    return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
 
         if (!isArray(observers) || observers.length < 1) {
             return undefined;
@@ -67,7 +67,9 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
 
         const handler = observers[0];
 
-        return Reflect.apply(handler, this, args);
+        const result = await Reflect.apply(handler, this, args);
+
+        return result;
     };
 }
 

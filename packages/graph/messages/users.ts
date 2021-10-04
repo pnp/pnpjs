@@ -23,5 +23,5 @@ addProp(_User, "mailboxSettings", MailboxSettings);
 addProp(_User, "mailFolders", MailFolders);
 
 _User.prototype.sendMail = function (this: _User, message: IMessage): Promise<void> {
-    return graphPost(this.clone(User, "sendMail"), body(message));
+    return graphPost(User(this, "sendMail"), body(message));
 };

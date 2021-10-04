@@ -11,6 +11,9 @@
             "path": "./core/tsconfig.esm.json"
         },
         {
+            "path": "./graph/tsconfig.esm.json"
+        },
+        {
             "path": "./logging/tsconfig.esm.json"
         },
         {

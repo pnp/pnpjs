@@ -6,11 +6,12 @@ import {
     IGraphQueryableCollection,
     _GraphQueryableCollection,
     graphInvokableFactory,
+    GraphQueryable,
 } from "../graphqueryable.js";
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
-import { assign, combine, safeGlobal } from "@pnp/core";
+import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
-import { body, BlobParser } from "@pnp/queryable";
+import { body, FromQueryable, BlobParse } from "@pnp/queryable";
 import { graphPatch, graphPut } from "../operations.js";
 
 /**
@@ -25,7 +26,7 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
     }
 
     public get list(): IGraphQueryableInstance {
-        return this.clone(GraphQueryableInstance, "list");
+        return GraphQueryableInstance(this, "list");
     }
 
     public get recent(): IDriveItems {
@@ -68,13 +69,13 @@ export class _Root extends _GraphQueryableInstance<IDrive> {
     }
 
     public search(query: string): Promise<any> {
-        const searcher = this.clone(Root);
+        const searcher = Root(this);
         searcher.query.set("search", `'${query}'`);
         return searcher();
     }
 
     public get thumbnails(): IGraphQueryableCollection {
-        return this.clone(GraphQueryableCollection, "thumbnails");
+        return GraphQueryableCollection(this, "thumbnails");
     }
 }
 export interface IRoot extends _Root { }
@@ -93,33 +94,34 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
     }
 
     public get thumbnails(): IGraphQueryableCollection {
-        return this.clone(GraphQueryableCollection, "thumbnails");
+        return GraphQueryableCollection(this, "thumbnails");
     }
 
     public get versions(): IGraphQueryableCollection<IDriveItemVersionInfo> {
-        return <any>this.clone(GraphQueryableCollection, "versions");
+        return <any>GraphQueryableCollection(this, "versions");
     }
 
     public move(parentReference: { id: "string" }, name: string): Promise<void> {
-        return graphPatch(this, body(assign(parentReference, { name })));
+        return graphPatch(this, body({ name, ...parentReference }));
     }
 
+    // TODO:: make sure this works
     public async getContent(): Promise<Blob> {
-        const info = await this.get();
-        const r = await safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
-            headers: {
-                "accept": "application/json",
-            },
-            method: "GET",
-            responseType: "arraybuffer",
+        const info = await this();
+        const query = GraphQueryable(info["@microsoft.graph.downloadUrl"], null).using(BlobParse).using(FromQueryable(this));
+
+        query.on.pre(async (url, init, result) => {
+
+            (<any>init).responseType = "arraybuffer";
+
+            return [url, init, result];
         });
 
-        const p = new BlobParser();
-        return p.parse(r);
+        return query();
     }
 
     public setContent(content: any): Promise<{ id: string; name: string; size: number }> {
-        return graphPut(this.clone(DriveItem, "content"), {
+        return graphPut(DriveItem(this, "content"), {
             body: content,
         });
     }

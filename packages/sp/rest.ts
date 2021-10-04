@@ -1,12 +1,12 @@
 import { TimelinePipe } from "@pnp/core";
-import { ISPQueryable, SPQueryable } from "./sharepointqueryable";
+import { ISPQueryable, SPQueryable } from "./spqueryable";
 
 /**
  * Root of the SharePoint REST module
  */
 export class SPRest {
 
-    private _root: ISPQueryable;
+    protected _root: ISPQueryable;
 
     /**
      * Creates a new instance of the SPRest class

@@ -8,7 +8,7 @@ import {
     spInvokableFactory,
     _SPInstance,
     deleteableWithETag,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 
 @defaultPath("AttachmentFiles")
 export class _Attachments extends _SPCollection<IAttachmentInfo[]> {

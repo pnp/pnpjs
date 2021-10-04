@@ -17,8 +17,6 @@ Reflect.defineProperty(GraphRest.prototype, "invitations", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Invitations(baseUrl).configure(options).setRuntime(runtime);
-        });
+        this.create(Invitations);
     },
 });

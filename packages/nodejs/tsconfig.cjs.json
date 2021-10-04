@@ -2,7 +2,8 @@
     "extends": "../tsconfig.cjs.json",
     "include": [
         "./**/*.ts",
-        "../common/**/*.ts",
+        "../core/**/*.ts",
+        "../graph/**/*.ts",
         "../queryable/**/*.ts",
         "../logging/**/*.ts",
         "../sp/**/*.ts"
@@ -12,13 +13,16 @@
             "path": "../core/tsconfig.cjs.json"
         },
         {
-            "path": "../queryable/tsconfig.cjs.json"
+            "path": "../graph/tsconfig.cjs.json"
         },
         {
             "path": "../logging/tsconfig.cjs.json"
         },
         {
             "path": "../sp/tsconfig.cjs.json"
+        },
+        {
+            "path": "../queryable/tsconfig.cjs.json"
         }
     ]
 }

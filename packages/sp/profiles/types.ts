@@ -6,7 +6,7 @@ import {
     ISPInstance,
     spInvokableFactory,
     _SPQueryable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { body, FromQueryable } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
