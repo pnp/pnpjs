@@ -1,7 +1,7 @@
 import { TimelinePipe } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 
-export function SPTagging(): TimelinePipe<Queryable> {
+export function Telemetry(): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
 
@@ -19,11 +19,8 @@ export function SPTagging(): TimelinePipe<Queryable> {
                 clientTag = clientTag.substr(0, 32);
             }
 
-            if (!init.headers) {
-                init.headers = { "X-ClientService-ClientTag": clientTag };
-            } else {
-                init.headers["X-ClientService-ClientTag"] = clientTag;
-            }
+            init.headers = { ...init.headers, ["X-ClientService-ClientTag"]: clientTag };
+
             return [url, init, result];
         });
 

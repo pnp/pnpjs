@@ -5,7 +5,6 @@ docs_dir: 'docs'
 nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
-  - '2020 Year In Review': 'news/2020-year-in-review.md'
   - General:
     - 'Getting Started': 'getting-started.md'
     - 'Transition Guide': 'transition-guide.md'
@@ -33,18 +32,13 @@ nav:
       - 'Lambda Token Client': 'authentication/lambdaclient.md'
   - Packages:
     - Packages: 'packages.md'
-    - common:
-      - common: 'common/index.md'
-      - collections: 'common/collections.md'
-      - 'Custom HttpClientImpl': 'common/custom-httpclientimpl.md'
-      - libconfig: 'common/libconfig.md'
-      - netutil: 'common/netutil.md'
-      - storage: 'common/storage.md'
-      - util: 'common/util.md'
-    - config-store:
-      - config-store: 'config-store/index.md'
-      - configuration: 'config-store/configuration.md'
-      - providers: 'config-store/providers.md'
+    - core:
+      - core: 'core/index.md'
+      - behaviors: 'core/behaviors.md'
+      - moments: 'core/moments.md'
+      - storage: 'core/storage.md'
+      - timeline: 'core/timeline.md'
+      - util: 'core/util.md'
     - graph: 
       - graph: 'graph/index.md'
       - groups: 'graph/groups.md'
@@ -70,18 +64,16 @@ nav:
       - ProviderHostedRequestContext: 'nodejs/provider-hosted-app.md'
       - 'sp Extensions': 'nodejs\sp-extensions.md'
       - proxy: 'nodejs\proxy.md'
-    - odata:
-      - odata: 'odata/index.md'
-      - caching: 'odata/caching.md'
-      - core: 'odata/core.md'
-      - 'OData Batching': 'odata/odata-batch.md'
-      - 'Extending an OData library': 'odata/extensions.md'
-      - 'Debugging Proxy Objects': 'odata/debug.md'
-      - Parsers: 'odata/parsers.md'
-      - Pipeline: 'odata/pipeline.md'
-      - Queryable: 'odata/queryable.md'
-    - pnpjs:
-      - pnpjs: 'pnpjs/index.md'
+    - queryable:
+      - queryable: 'queryable/index.md'
+      - caching: 'queryable/caching.md'
+      - core: 'queryable/core.md'
+      - 'OData Batching': 'queryable/odata-batch.md'
+      - 'Extending an OData library': 'queryable/extensions.md'
+      - 'Debugging Proxy Objects': 'queryable/debug.md'
+      - Parsers: 'queryable/parsers.md'
+      - Pipeline: 'queryable/pipeline.md'
+      - Queryable: 'queryable/queryable.md'
     - sp:
       - sp: 'sp/index.md'
       - 'Alias Parameters': 'sp/alias-parameters.md'
@@ -137,6 +129,8 @@ nav:
     - 'Submit a Pull Request': 'contributing/pull-requests.md'
   - Version 1 Docs:
     - Home: 'v1/index.html'
+  - Version 2 Docs:
+    - Home: 'v2/index.html'
 
 theme:
   name: 'material'
@@ -190,6 +184,6 @@ extra:
 
 repo_url: https://github.com/pnp/pnpjs
 
-edit_uri: tree/version-2/docs
+edit_uri: tree/version-3/docs
 
 site_url: https://pnp.github.io/pnpjs/

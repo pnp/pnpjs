@@ -2,7 +2,7 @@ import {
     spInvokableFactory,
     _SPCollection,
     _SPInstance,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { PageType } from "../types.js";
 

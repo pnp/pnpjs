@@ -16,7 +16,7 @@ export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphQuer
    * @param securityEnabledOnly
    */
     public getMemberObjects(securityEnabledOnly = false): Promise<string[]> {
-        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly }));
+        return graphPost(DirectoryObject(this, "getMemberObjects"), body({ securityEnabledOnly }));
     }
 
     /**
@@ -25,7 +25,7 @@ export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphQuer
    * @param securityEnabledOnly
    */
     public getMemberGroups(securityEnabledOnly = false): Promise<string[]> {
-        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly }));
+        return graphPost(DirectoryObject(this, "getMemberGroups"), body({ securityEnabledOnly }));
     }
 
     /**
@@ -34,7 +34,7 @@ export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphQuer
    * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
    */
     public checkMemberGroups(groupIds: string[]): Promise<string[]> {
-        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds }));
+        return graphPost(DirectoryObject(this, "checkMemberGroups"), body({ groupIds }));
     }
 }
 
@@ -56,7 +56,7 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQ
   * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
   */
     public getByIds(ids: string[], type: DirectoryObjectTypes = DirectoryObjectTypes.directoryObject): Promise<IDirectoryObjectType[]> {
-        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids, type }));
+        return graphPost(DirectoryObjects(this, "getByIds"), body({ ids, type }));
     }
 }
 export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> { }

@@ -2,7 +2,7 @@ import {
     _SPCollection,
     spInvokableFactory,
     _SPInstance,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { ISerializableNavigationNode } from "../navigation/types.js";
 import { defaultPath } from "../decorators.js";
 import { Site, ISite } from "../sites/types.js";

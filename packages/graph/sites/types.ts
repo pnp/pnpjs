@@ -11,7 +11,7 @@ export class _Sites extends _GraphQueryableCollection<ISiteType[]> {
      * Gets the team site for the group
      */
     public get root(): ISite {
-        return this.clone(Site, "root");
+        return Site(this, "root");
     }
 }
 export interface ISites extends _Sites { }
@@ -23,7 +23,7 @@ export const Sites = graphInvokableFactory<ISites>(_Sites);
 export class _Site extends _GraphQueryableInstance<ISiteType> {
 
     public get sites(): ISites {
-        return this.clone(Sites);
+        return Sites(this);
     }
 }
 export interface ISite extends _Site { }

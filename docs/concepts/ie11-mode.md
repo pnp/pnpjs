@@ -6,8 +6,8 @@ Starting with v2 we have made the decision to no longer support IE11. Because we
 
 When required to use IE11 mode there is certain functionality which may not work correctly or at all.
 
-- Unavailable: [Extension Methods](./../queryable/extensions.md)
-- Unavailable: [OData Debugging](./../queryable/debug.md)
+- Unavailable: [Extension Methods](./../odata/extensions.md)
+- Unavailable: [OData Debugging](./../odata/debug.md)
 
 ## Configure IE11 Mode
 

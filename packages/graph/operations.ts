@@ -1,46 +1,22 @@
-import { Runtime, IFetchOptions, IRequestClient, isFunc, mergeOptions, objectDefinedNotNull } from "@pnp/core";
-import { defaultPipelineBinder, cloneQueryableData, IOperation } from "@pnp/queryable";
-import { GraphHttpClient } from "./graphhttpclient.js";
+import { op, get, post, patch, del, put } from "@pnp/queryable";
 import { IGraphQueryable } from "./graphqueryable.js";
-import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
-export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
-    httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
-}
-
-const defaultFactory = (runtime: Runtime) => () => new GraphHttpClient(runtime);
-let httpClientFactory: (runtime: Runtime) => () => IRequestClient = defaultFactory;
-
-const send = (method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT"): <T = any>(o: IGraphQueryable<T>, options?: IFetchOptions) => Promise<T> => {
-
-    return async function <T = any>(o: IGraphQueryable, options?: IFetchOptions): Promise<T> {
-
-        // use the current runtime
-        const runtime = o.getRuntime();
-
-        const operation: IOperation = defaultPipelineBinder(httpClientFactory(runtime))(method);
-
-        const data = cloneQueryableData(o.data);
-        const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => {
-            return;
-        };
-        const url = await toAbsoluteUrl(o.toUrlAndQuery(), runtime);
-
-        mergeOptions(data.options, options);
-
-        return operation(Object.assign({}, data, {
-            batchDependency,
-            url,
-        }));
-    };
+export const graphGet = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
 };
 
-export const graphGet = <T = any>(o: IGraphQueryable<any>, options?: IFetchOptions): Promise<T> => send("GET")(o, options);
+export const graphPost = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, post, init);
+};
 
-export const graphPost = <T = any>(o: IGraphQueryable<any>, options?: IFetchOptions): Promise<T> => send("POST")(o, options);
+export const graphDelete = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, del, init);
+};
 
-export const graphDelete = <T = any>(o: IGraphQueryable<any>, options?: IFetchOptions): Promise<T> => send("DELETE")(o, options);
+export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, patch, init);
+};
 
-export const graphPatch = <T = any>(o: IGraphQueryable<any>, options?: IFetchOptions): Promise<T> => send("PATCH")(o, options);
-
-export const graphPut = <T = any>(o: IGraphQueryable<any>, options?: IFetchOptions): Promise<T> => send("PUT")(o, options);
+export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, put, init);
+};

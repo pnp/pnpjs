@@ -1,6 +1,6 @@
 import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
-import { _SPInstance, spInvokableFactory, _SPCollection } from "../sharepointqueryable.js";
+import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
 
 /**
  * Describes a collection of Form objects

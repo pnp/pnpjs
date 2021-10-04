@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/queryable";
 import { _List } from "../lists/types.js";
 import { RoleAssignments, ISecurableMethods } from "./types.js";
-import { SPInstance } from "../sharepointqueryable.js";
+import { SPInstance } from "../spqueryable.js";
 import {
     getUserEffectivePermissions,
     getCurrentUserEffectivePermissions,

@@ -1,4 +1,4 @@
-export * from "./sharepointqueryable.js";
+export * from "./spqueryable.js";
 
 export * from "./decorators.js";
 

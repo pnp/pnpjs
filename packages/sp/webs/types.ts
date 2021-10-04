@@ -1,4 +1,3 @@
-import { TimelinePipe } from "@pnp/core";
 import { body, FromQueryable } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -10,13 +9,12 @@ import {
     ISPInstance,
     IDeleteable,
     deleteable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { createBatch } from "./batching.js";
 
 @defaultPath("webs")
 export class _Webs extends _SPCollection<IWebInfo[]> {
@@ -202,14 +200,6 @@ export class _Web extends _SPInstance<IWebInfo> {
     */
     public getSubwebsFilteredForCurrentUser(nWebTemplateFilter = -1, nConfigurationFilter = -1): ISPCollection<IWebInfosData[]> {
         return SPCollection(this, `getSubwebsFilteredForCurrentUser(nWebTemplateFilter=${nWebTemplateFilter},nConfigurationFilter=${nConfigurationFilter})`);
-    }
-
-    /**
-     * Creates a new batch for requests within the context of this web
-     *
-     */
-    public createBatch(): [TimelinePipe, () => Promise<void>] {
-        return createBatch(this);
     }
 
     /**

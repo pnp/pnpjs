@@ -4,7 +4,7 @@ import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js"
 import { spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { combine } from "@pnp/core";
-import { SPQueryable } from "../sharepointqueryable.js";
+import { SPQueryable } from "../spqueryable.js";
 
 declare module "../items/types" {
     interface _Item {

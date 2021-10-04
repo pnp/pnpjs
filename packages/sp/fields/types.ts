@@ -5,7 +5,7 @@ import {
     deleteable,
     spInvokableFactory,
     IDeleteable,
-} from "../sharepointqueryable.js";
+} from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
 

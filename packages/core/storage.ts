@@ -21,10 +21,6 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
         this.enabled = this.test();
     }
 
-    public static bind(store: Storage): IPnPClientStore {
-        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
-    }
-
     /**
      * Get a value from storage, or null if that value does not exist
      *
@@ -232,7 +228,7 @@ class MemoryStorage {
 }
 
 /**
- * A class that will establish wrappers for both local and session storage
+ * A class that will establish wrappers for both local and session storage, substituting basic memory storage for nodejs
  */
 export class PnPClientStorage {
 
@@ -249,9 +245,7 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
-            // BUG: localStorage is undefined
-            this._local = PnPClientStorageWrapper.bind(localStorage);
-            // new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
+            this._local = new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
         }
 
         return this._local;
@@ -264,8 +258,7 @@ export class PnPClientStorage {
 
         // BUG: sessionStorage is undefined
         if (this._session === null) {
-            this._session = PnPClientStorageWrapper.bind(sessionStorage);
-            // new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
+            this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
         }
 
         return this._session;

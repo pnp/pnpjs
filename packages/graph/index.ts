@@ -1,10 +1,6 @@
 export { graph, GraphRest } from "./rest.js";
 
 export {
-    GraphBatch,
-} from "./batch.js";
-
-export {
     IGraphQueryableCollection,
     IGraphQueryableInstance,
     IGraphQueryableSearchableCollection,
@@ -16,19 +12,8 @@ export {
     GraphQueryableSearchableCollection,
 } from "./graphqueryable.js";
 
-export {
-    IGraphConfiguration,
-    IGraphConfigurationPart,
-} from "./graphlibconfig";
-
-export * from "./graphhttpclient.js";
-
-export * from "./types.js";
-
 export * from "./operations.js";
 
-export {
-    toAbsoluteUrl,
-} from "./utils/toabsoluteurl.js";
-
-export * from "./behaviors/index.js";
+export * from "./behaviors/defaults.js";
+export * from "./behaviors/endpoint.js";
+export * from "./behaviors/telemetry.js";

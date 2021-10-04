@@ -14,8 +14,5 @@ declare module "../rest" {
 }
 
 GraphRest.prototype.query = async function (this: GraphRest, ...requests: ISearchRequestType[]): Promise<ISearchResponseType[]> {
-
-    return this.childConfigHook(({ options, baseUrl, runtime }) => {
-        return (<any>Search(baseUrl)).configure(options).setRuntime(runtime).executeQuery({ requests });
-    });
+    return this.create(Search).executeQuery({ requests });
 };

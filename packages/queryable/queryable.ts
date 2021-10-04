@@ -104,58 +104,58 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             try {
 
-                this.log(`[id:${requestId}] Beginning request`, 1);
+                this.log(`[request:${requestId}] Beginning request`, 1);
 
                 // eslint-disable-next-line prefer-const
                 let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
 
-                this.log(`[id:${requestId}] Url: ${url}`, 1);
+                this.log(`[request:${requestId}] Url: ${url}`, 1);
 
                 if (typeof result !== "undefined") {
 
-                    this.log(`[id:${requestId}] Result returned from pre`, 1);
-                    this.log(`[id:${requestId}] Emitting data`, 0);
+                    this.log(`[request:${requestId}] Result returned from pre`, 1);
+                    this.log(`[request:${requestId}] Emitting data`, 0);
                     this.emit.data(result);
-                    this.log(`[id:${requestId}] Emitted data`, 0);
+                    this.log(`[request:${requestId}] Emitted data`, 0);
 
                     return;
                 }
 
-                this.log(`[id:${requestId}] Emitting auth`, 0);
+                this.log(`[request:${requestId}] Emitting auth`, 0);
                 [requestUrl, init] = await this.emit.auth(new URL(url), init);
-                this.log(`[id:${requestId}] Emitted auth`, 0);
+                this.log(`[request:${requestId}] Emitted auth`, 0);
 
-                this.log(`[id:${requestId}] Emitting send`, 0);
+                this.log(`[request:${requestId}] Emitting send`, 0);
                 let response = await this.emit.send(requestUrl, init);
-                this.log(`[id:${requestId}] Emitted send`, 0);
+                this.log(`[request:${requestId}] Emitted send`, 0);
 
-                this.log(`[id:${requestId}] Emitting parse`, 0);
+                this.log(`[request:${requestId}] Emitting parse`, 0);
                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                this.log(`[id:${requestId}] Emitted parse`, 0);
+                this.log(`[request:${requestId}] Emitted parse`, 0);
 
-                this.log(`[id:${requestId}] Emitting post`, 0);
+                this.log(`[request:${requestId}] Emitting post`, 0);
                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                this.log(`[id:${requestId}] Emitted post`, 0);
+                this.log(`[request:${requestId}] Emitted post`, 0);
 
                 // TODO:: how do we handle the case where the request pipeline has worked as expected, however
                 // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
                 // completed event to signal the request is completed?
                 if (typeof result !== "undefined") {
-                    this.log(`[id:${requestId}] Emitting data`, 0);
+                    this.log(`[request:${requestId}] Emitting data`, 0);
                     this.emit.data(result);
-                    this.log(`[id:${requestId}] Emitted data`, 0);
+                    this.log(`[request:${requestId}] Emitted data`, 0);
                 }
 
             } catch (e) {
 
-                this.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
+                this.log(`[request:${requestId}] Emitting error: "${e.message || e}"`, 3);
                 // anything that throws we emit and continue
                 this.error(e);
-                this.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
+                this.log(`[request:${requestId}] Emitted error: "${e.message || e}"`, 3);
 
             } finally {
 
-                this.log(`[id:${requestId}] Finished request`, 1);
+                this.log(`[request:${requestId}] Finished request`, 1);
             }
 
         }, 0);

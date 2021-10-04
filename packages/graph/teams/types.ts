@@ -1,6 +1,5 @@
 import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
-import { body, LambdaParser } from "@pnp/queryable";
-import { assign } from "@pnp/core";
+import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
 import { graphPost } from "../operations";
 import { defaultPath } from "../decorators";
@@ -23,14 +22,14 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
      * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
      */
     public archive(shouldSetSpoSiteReadOnlyForMembers = false): Promise<void> {
-        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers }));
+        return graphPost(Team(this, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers }));
     }
 
     /**
     * Unarchives this Team
     */
     public unarchive(): Promise<void> {
-        return graphPost(this.clone(Team, "unarchive"));
+        return graphPost(Team(this, "unarchive"));
     }
 
     /**
@@ -54,13 +53,19 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
             visibility,
         };
 
-        const parser = new LambdaParser((r: Response) => Promise.resolve(r.headers));
-        const creator = Teams(this, "clone").usingParser(parser);
-        // const creator = Team(this, "clone").usingParser({
-        //     parse(r: Response) {
-        //         return (r.headers.has("location")) ? Promise.resolve(r.headers) : Promise.resolve(r);
-        //     },
-        // });
+        // TODO:: make sure this works
+        const creator = Teams(this, "clone").using((instance: ITeams) => {
+
+            instance.on.parse(async (url, response, result) => {
+
+                result = response.headers.has("location") ? response.headers : response;
+
+                return [url, response, result];
+            });
+
+            return instance;
+        });
+
         const data: Headers = await graphPost(creator, body(postBody));
         const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
         if (data.has("location")) {
@@ -89,8 +94,8 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
 @getById(Team)
 export class _Teams extends _GraphQueryableCollection<ITeamType[]> {
     public async create(team: ITeamType): Promise<ITeamCreateResultAsync> {
-        const parser = new LambdaParser((r: Response) => Promise.resolve(r.headers));
-        const creator = Teams(this, null).usingParser(parser);
+
+        const creator = Teams(this, null).using(HeaderParse());
         const data: Headers = await graphPost(creator, body(team));
         const result: ITeamCreateResultAsync = { teamId: "", operationId: "" };
         if (data.has("location")) {
@@ -175,10 +180,11 @@ export class _Tabs extends _GraphQueryableCollection {
      */
     public async add(name: string, appUrl: string, properties: ITeamsTabType): Promise<ITabCreateResult> {
 
-        const postBody = assign({
+        const postBody = {
             displayName: name,
             "teamsApp@odata.bind": appUrl,
-        }, properties);
+            ...properties,
+        };
 
         const data = await graphPost(this, body(postBody));
 

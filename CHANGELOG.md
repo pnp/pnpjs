@@ -65,6 +65,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Removed ITypedHash => built in type Record<string, *>
   - removed `sanitizeGuid` util method
 
+- graph:
+  - setEndpoint removed => .using(EndPoint("v1.0")) | .using(EndPoint("beta"))
+
 - sp:
   - Removed createBatch from Site, use web.createBatch or sp.createBatch
   - feature.deactivate => use features.remove

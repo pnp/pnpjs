@@ -37,8 +37,6 @@ Reflect.defineProperty(GraphRest.prototype, "planner", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphRest) {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Planner(baseUrl).configure(options).setRuntime(runtime);
-        });
+        this.create(Planner);
     },
 });

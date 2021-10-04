@@ -1,5 +1,5 @@
 import { _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
-import { BlobParser, BufferParser } from "@pnp/queryable";
+import { BlobParse, BufferParse } from "@pnp/queryable";
 import { Photo as IPhotoType } from "@microsoft/microsoft-graph-types";
 import { defaultPath } from "../decorators.js";
 import { graphPatch } from "../operations.js";
@@ -10,14 +10,14 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
      * Gets the image bytes as a blob (browser)
      */
     public getBlob(): Promise<Blob> {
-        return this.clone(Photo, "$value", false).usingParser(new BlobParser())<Blob>();
+        return Photo(this, "$value").using(BlobParse())<Blob>();
     }
 
     /**
      * Gets the image file bytes as a Buffer (node.js)
      */
     public getBuffer(): Promise<ArrayBuffer> {
-        return this.clone(Photo, "$value", false).usingParser(new BufferParser())<ArrayBuffer>();
+        return Photo(this, "$value").using(BufferParse())<ArrayBuffer>();
     }
 
     /**
@@ -26,7 +26,7 @@ export class _Photo extends _GraphQueryableInstance<IPhotoType> {
      * @param content Image file contents, max 4 MB
      */
     public setContent(content: ArrayBuffer | Blob): Promise<void> {
-        return graphPatch(this.clone(Photo, "$value", false), { body: content });
+        return graphPatch(Photo(this, "$value"), { body: content });
     }
 }
 export interface IPhoto extends _Photo { }
