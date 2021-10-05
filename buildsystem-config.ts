@@ -168,4 +168,22 @@ export default <ConfigCollection>[
 
         postPublishTasks: [],
     },
+    ,
+    <PublishSchema>{
+
+        name: "publish-v3nightly",
+
+        role: "publish",
+
+        packageRoots: [
+            resolve("./dist/packages/esm"),
+            resolve("./dist/packages/commonjs"),
+        ],
+
+        prePublishTasks: [Tasks.Publish.updateV3NightlyVersion],
+
+        publishTasks: [Tasks.Publish.publishV3Nightly],
+
+        postPublishTasks: [],
+    },
 ];
