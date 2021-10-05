@@ -1,31 +1,34 @@
 import { getRandomString } from "@pnp/core";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
+import "@pnp/sp/batching";
 import { IList } from "@pnp/sp/lists";
+import { SPRest } from "@pnp/sp";
 
-describe("Items", () => {
+describe("Items", function () {
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
         let list: IList = null;
+        const listTitle: string = "ItemTestList";
 
         before(async function () {
-
-            const ler = await sp.web.lists.ensure("ItemTestList", "Used to test item operations");
+            _spRest = getSP();
+            const ler = await _spRest.web.lists.ensure(listTitle, "Used to test item operations");
             list = ler.list;
 
             if (ler.created) {
 
                 // add a few items to get started
-                const batch = sp.web.createBatch();
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                await batch.execute();
+                const [batch, execute] = _spRest.batched();
+                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                await execute();
             }
         });
 

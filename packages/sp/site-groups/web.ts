@@ -1,9 +1,6 @@
 import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
-// import { OLD_spPost } from "../operations.js";
-// import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-// import "../security/web.js";
 
 declare module "../webs/types" {
 

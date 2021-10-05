@@ -1,20 +1,26 @@
-import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-import { getGUID, combine } from "@pnp/core";
-import { graph, IGraphConfigurationPart } from "@pnp/graph";
-import { MsalFetchClient } from "@pnp/nodejs";
-import { ISPConfigurationPart, sp } from "@pnp/sp";
-import "@pnp/sp/webs";
+import { delay, getGUID, TimelinePipe } from "@pnp/core";
+import { IInvokable, Queryable } from "@pnp/queryable";
+import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { sp } from "@pnp/sp";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
-import { Web } from "@pnp/sp/webs";
 import { ISettings, ITestingSettings } from "./settings.js";
+import { SPRest } from "@pnp/sp/rest.js";
+import "@pnp/sp/webs";
+import { IWeb, IWebInfo } from "@pnp/sp/webs";
+import { graph, GraphRest } from "@pnp/graph/rest.js";
+import { LogLevel } from "@pnp/logging";
 
 chai.use(chaiAsPromised);
 
 declare let process: any;
 const testStart = Date.now();
+
+let _sp: SPRest = null;
+let _spRoot: SPRest = null;
+let _graph: GraphRest = null;
 
 // we need to load up the appropriate settings based on where we are running
 let settings: ITestingSettings = null;
@@ -51,8 +57,6 @@ for (let i = 0; i < process.argv.length; i++) {
     }
     if (/^--logging/i.test(arg)) {
         logging = true;
-        Logger.activeLogLevel = LogLevel.Info;
-        Logger.subscribe(new ConsoleListener());
     }
     if (/^--spverbose/i.test(arg)) {
         spVerbose = true;
@@ -132,91 +136,91 @@ switch (mode) {
         break;
 }
 
+export function TestLogging(): TimelinePipe<Queryable> {
+    return (instance: Queryable) => {
+
+        instance.on.error((err) => {
+            if (logging) {
+                console.error(`🛑 PnPjs Testing Error - ${err.toString()}`);
+            }
+        });
+
+        instance.on.log(function (message, level) {
+            if (level === LogLevel.Warning && logging) {
+                console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
+            }
+        });
+
+        return instance;
+    };
+}
+
+
 async function spTestSetup(ts: ISettings): Promise<void> {
-
-    // create skeleton settings
-    const settingsPart: Partial<ISPConfigurationPart> = {
-        sp: {
-            baseUrl: ts.sp.url,
-            fetchClientFactory: null,
-            headers: {},
-        },
-    };
-
     let siteUsed = false;
-
-    if (typeof ts.sp.msal === "undefined") {
-        throw Error("No MSAL settings defined for sp but useMSAL flag set to true.");
-    }
-
-    settingsPart.sp.fetchClientFactory = () => {
-        return new MsalFetchClient(ts.sp.msal.init, ts.sp.msal.scopes);
-    };
+    ts.sp.webUrl = ts.sp.url;
 
     if (site && site.length > 0) {
-
-        settingsPart.sp.baseUrl = site;
-
-        // and we will just use this as the url
         ts.sp.webUrl = site;
         siteUsed = true;
     }
 
-    // do initial setup
-    sp.setup(settingsPart);
+    const rootSP = sp(ts.sp.webUrl).using(SPDefault({
+        msal: {
+            config: settings.testing.sp.msal.init,
+            scopes: settings.testing.sp.msal.scopes,
+        },
+    })).using(TestLogging());
+    _spRoot = rootSP;
 
-    // if we had a site specified we don't need to create one for testing
     if (siteUsed) {
+        _sp = _spRoot;
         return;
     }
 
-    // create the web in which we will test
     const d = new Date();
     const g = getGUID();
 
-    await sp.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
-
-    const url = combine(ts.sp.url, g);
+    const testWebResult = await _spRoot.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
 
     // set the testing web url so our tests have access if needed
-    ts.sp.webUrl = url;
-    settingsPart.sp.baseUrl = url;
+    ts.sp.webUrl = testWebResult.data.Url;
 
-    if (spVerbose) {
-        settingsPart.sp.headers = {
-            "Accept": "application/json;odata=verbose",
-        };
-    }
+    // TODO: Deal with verbose headers
+    // if (spVerbose) {
+    //     settingsPart.sp.headers = {
+    //         "Accept": "application/json;odata=verbose",
+    //     };
+    // }
 
-    // re-setup the node client to use the new web
-    sp.setup(settingsPart);
+    _sp = sp(ts.sp.webUrl).using(SPDefault({
+        msal: {
+            config: settings.testing.sp.msal.init,
+            scopes: settings.testing.sp.msal.scopes,
+        },
+    })).using(TestLogging());
 }
 
 async function graphTestSetup(ts: ISettings): Promise<void> {
-
-    const settingsPart: IGraphConfigurationPart = {
-        graph: {
-            fetchClientFactory: null,
+    _graph = graph().using(GraphDefault({
+        msal: {
+            config: settings.testing.graph.msal.init,
+            scopes: settings.testing.graph.msal.scopes,
         },
-    };
-
-    if (typeof ts.graph.msal === "undefined") {
-        throw Error("No MSAL settings defined for graph but useMSAL flag set to true.");
-    }
-
-    settingsPart.graph.fetchClientFactory = () => {
-        return new MsalFetchClient(ts.graph.msal.init, ts.graph.msal.scopes);
-    };
-
-    graph.setup(settingsPart);
+    })).using(TestLogging());
 }
 
 export const testSettings: ISettings = settings.testing;
-// if (testSettings.enableWebTests) {
-//     testSettings.sp.webUrl = "";
-// }
 
-before(async function (): Promise<void> {
+export const getSP = function (): SPRest {
+    return _sp;
+};
+
+export const getGraph = function (): GraphRest {
+    return _graph;
+};
+
+before("Setup Testing", async function () {
 
     // this may take some time, don't timeout early
     this.timeout(90000);
@@ -225,6 +229,7 @@ before(async function (): Promise<void> {
     if (testSettings.enableWebTests) {
 
         if (testSettings.sp) {
+            //_testTimeline = TestDefault(testSettings);
             console.log("Setting up SharePoint tests...");
             const s = Date.now();
             await spTestSetup(testSettings);
@@ -242,35 +247,32 @@ before(async function (): Promise<void> {
     }
 });
 
-after(async () => {
+after("Finalize Testing", async function () {
+    // this may take some time, don't timeout early
+    this.timeout(0);
 
-    console.log();
-    console.log();
-    console.log();
-    console.log();
-    console.log("Ending...");
     const testEnd = Date.now();
-    console.log(`Testing completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds.`);
-    console.log();
+    console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
     if (deleteAllWebs) {
 
-        await cleanUpAllSubsites();
+        await cleanUpAllSubsites(_spRoot.web);
 
     } else if (deleteWeb && testSettings.enableWebTests) {
 
-        console.log(`Deleting web ${testSettings.sp.webUrl} created during testing.`);
-        const w = Web(testSettings.sp.webUrl);
+        // TODO: Clean up Delete function
+        console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
 
-        const children = await w.webs.select("Title")();
+        const web = await _sp.web;
+        await cleanUpAllSubsites(web);
 
-        await Promise.all(children.map((value) => {
-            const web2 = Web(value["odata.id"], "");
-            console.log(`Deleting: ${value["odata.id"]}`);
-            return web2.delete();
-        }));
+        console.log(`All subsites have been removed.`);
 
-        await w.delete();
+        //Delay so that web can be deleted
+        await delay(500);
+
+        await _sp.web.delete();
+
         console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
 
     } else if (testSettings.enableWebTests) {
@@ -282,26 +284,36 @@ after(async () => {
 });
 
 // Function deletes all test subsites
-async function cleanUpAllSubsites(): Promise<void> {
+async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> {
+    try {
+        const w = await spObj.webs();
+        if (w != null && w.length > 0) {
+            console.log(`${w.length} subwebs were found.`);
+            w.forEach(async (e: IWebInfo) => {
 
-    const w = await sp.site.rootWeb.webs.select("Title")();
+                const spObjSub = sp(e["odata.id"]).using(SPDefault({
+                    msal: {
+                        config: settings.testing.sp.msal.init,
+                        scopes: settings.testing.sp.msal.scopes,
+                    },
+                }));
 
-    w.forEach(async (e: any) => {
+                console.log(`Deleting: ${e["odata.id"]}`);
 
-        const web = Web(e["odata.id"], "");
+                await cleanUpAllSubsites(spObjSub.web);
 
-        console.log(`Deleting: ${e["odata.id"]}`);
+                //Delay so that web can be deleted
+                await delay(500);
 
-        const children = await web.webs.select("Title")();
+                await spObjSub.web.delete();
 
-        await Promise.all(children.map(async (value) => {
-            const web2 = Web(value["odata.id"], "");
-            console.log(`Deleting: ${value["odata.id"]}`);
-            return web2.delete();
-        }));
-
-        await web.delete();
-
-        console.log(`Deleted: ${e["odata.id"]}`);
-    });
+                console.log(`Deleted: ${e["odata.id"]}`);
+            });
+        } else {
+            console.log(`No subwebs found for site ${spObj.toUrl()}`);
+        }
+    } catch (err) {
+        console.log(`Error cleaning up sub sites for ${spObj.toUrl()} - ${err.message}`);
+    }
+    return;
 }

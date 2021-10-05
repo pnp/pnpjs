@@ -1,7 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
-import { graph } from "@pnp/graph";
+import { getGraph, testSettings } from "../main.js";
 import { GroupType } from "@pnp/graph/groups";
 import "@pnp/graph/planner";
 
@@ -10,9 +9,14 @@ import "@pnp/graph/planner";
 describe.skip("Planner", function () {
 
     if (testSettings.enableWebTests) {
+        let _graphRest = null;
         let groupID = "";
         let planID = "";
         let taskID = "";
+
+        before(function () {
+            _graphRest = getGraph();
+        });
 
         beforeEach(async function () {
             // Clear out variables
@@ -23,86 +27,86 @@ describe.skip("Planner", function () {
 
         it("addPlan", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const plan = await graph.planner.plans.add(groupID, planName);
+            const plan = await _graphRest.planner.plans.add(groupID, planName);
             planID = plan.data.id;
             return expect(plan.data.title).is.equal(planName);
         });
 
         it("getPlan", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
-            const plan = await graph.planner.plans.getById(planID)();
+            const plan = await _graphRest.planner.plans.getById(planID)();
             return expect(plan.title).is.equal(planName);
         });
 
         it("updatePlan", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
             const newPlanName = `TestPlan_${getRandomString(4)}`;
-            await graph.planner.plans.getById(planID).update({ title: newPlanName }, planAddResult.data["@odata.etag"]);
-            const planUpdate = await graph.planner.plans.getById(planID)();
+            await _graphRest.planner.plans.getById(planID).update({ title: newPlanName }, planAddResult.data["@odata.etag"]);
+            const planUpdate = await _graphRest.planner.plans.getById(planID)();
             return expect(planUpdate.title).is.equal(newPlanName);
         });
 
         it("deletePlan", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
-            await graph.planner.plans.getById(planID).delete();
-            const plan = await graph.planner.plans.getById(planID)();
+            await _graphRest.planner.plans.getById(planID).delete();
+            const plan = await _graphRest.planner.plans.getById(planID)();
             planID = "";
             return expect(plan).is.undefined;
         });
 
         it("getPlanDetails", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
-            const planDetails = await graph.planner.plans.getById(planID).details();
+            const planDetails = await _graphRest.planner.plans.getById(planID).details();
             return expect(planDetails.id).is.equal(planID);
         });
 
         it("addPlanTasks", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
             const taskName = `TestTask_${getRandomString(4)}`;
-            const planTaskResult = await graph.planner.plans.getById(planID).tasks.add(planID, taskName);
+            const planTaskResult = await _graphRest.planner.plans.getById(planID).tasks.add(planID, taskName);
             taskID = planTaskResult.data.id;
             return expect(planTaskResult.data.id).is.not.undefined;
         });
 
         it("getPlanTasks", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
             const taskName = `TestTask_${getRandomString(4)}`;
-            const planTaskResult = await graph.planner.plans.getById(planID).tasks.add(planID, taskName);
+            const planTaskResult = await _graphRest.planner.plans.getById(planID).tasks.add(planID, taskName);
             taskID = planTaskResult.data.id;
-            const tasks = await graph.planner.plans.getById(planID).tasks();
+            const tasks = await _graphRest.planner.plans.getById(planID).tasks();
             let taskExists = false;
             tasks.forEach(element => {
                 if (element.id === taskID) {
@@ -115,41 +119,41 @@ describe.skip("Planner", function () {
 
         it("getTasksById", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
             const taskName = `TestTask_${getRandomString(4)}`;
-            const planTaskResult = await graph.planner.plans.getById(planID).tasks.add(planID, taskName);
+            const planTaskResult = await _graphRest.planner.plans.getById(planID).tasks.add(planID, taskName);
             taskID = planTaskResult.data.id;
-            const task = await graph.planner.tasks.getById(taskID)();
+            const task = await _graphRest.planner.tasks.getById(taskID)();
             return expect(task.id).is.equal(taskID);
         });
 
         it("updateTask", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
-            const groupAddResult = await graph.groups.add(groupName, groupName, GroupType.Office365);
+            const groupAddResult = await _graphRest.groups.add(groupName, groupName, GroupType.Office365);
             groupID = groupAddResult.data.id;
             const planName = `TestPlan_${getRandomString(4)}`;
-            const planAddResult = await graph.planner.plans.add(groupID, planName);
+            const planAddResult = await _graphRest.planner.plans.add(groupID, planName);
             planID = planAddResult.data.id;
             const taskName = `TestTask_${getRandomString(4)}`;
-            const planTaskResult = await graph.planner.plans.getById(planID).tasks.add(planID, taskName);
+            const planTaskResult = await _graphRest.planner.plans.getById(planID).tasks.add(planID, taskName);
             taskID = planTaskResult.data.id;
-            const task = await graph.planner.tasks.getById(taskID)();
+            const task = await _graphRest.planner.tasks.getById(taskID)();
             return expect(task.id).is.equal(taskID);
         });
 
         afterEach(async function () {
             if (taskID !== "") {
-                await graph.planner.plans.getById(planID).tasks.getById(taskID).delete();
+                await _graphRest.planner.plans.getById(planID).tasks.getById(taskID).delete();
             }
             if (planID !== "") {
-                await graph.planner.plans.getById(planID).delete();
+                await _graphRest.planner.plans.getById(planID).delete();
             }
             if (groupID !== "") {
-                await graph.groups.getById(groupID).delete();
+                await _graphRest.groups.getById(groupID).delete();
             }
         });
     }

@@ -4,9 +4,9 @@
 
 import { expect } from "chai";
 
-describe("Assumptions", () => {
+describe("Assumptions", function () {
 
-    it("JS should merge objects how we expect", () => {
+    it("JS should merge objects how we expect", function () {
 
         const o = {};
 

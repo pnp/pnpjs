@@ -3,21 +3,24 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import { IList } from "@pnp/sp/lists";
+import { SPRest } from "@pnp/sp";
 
-describe("Views", () => {
+describe("Views", function () {
 
     let list: IList;
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
 
         before(async function () {
+            _spRest = getSP();
+
             this.timeout(0);
 
             // we need to create a list for manipulating views
-            const result = await sp.web.lists.ensure(`ViewTestList_${getRandomString(4)}`, "Testing Views");
+            const result = await _spRest.web.lists.ensure(`ViewTestList_${getRandomString(4)}`, "Testing Views");
 
             list = result.list;
         });

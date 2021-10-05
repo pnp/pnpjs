@@ -1,15 +1,15 @@
 
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
-import { IWeb, Web } from "@pnp/sp/webs";
 import "@pnp/sp/webs";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
 import findupSync = require("findup-sync");
+import { SPRest } from "@pnp/sp";
 
 const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
@@ -22,21 +22,22 @@ const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 describe.skip("AppCatalog", function () {
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
         let appCatalog: IAppCatalog;
-        let appCatWeb: IWeb;
+        // let appCatWeb: IWeb;
         const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
         const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
-        before(async function () {
-            appCatWeb = await sp.getTenantAppCatalogWeb();
-            appCatalog = appCatWeb.getAppCatalog();
+        before(function () {
+            _spRest = getSP();
+            // appCatWeb = await sp.getTenantAppCatalogWeb();
+            appCatalog = _spRest.web.getAppCatalog();
             // return Promise.resolve();
         });
 
         it("it gets all the apps", function () {
-            return expect(appCatalog.get(), "all apps should've been fetched").to.eventually.be.fulfilled;
+            return expect(appCatalog(), "all apps should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("it adds an app", function () {
@@ -45,7 +46,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it gets an app by id", async function () {
-            return expect(appCatalog.getAppById(appId).get(), `app '${appId}' should've been fetched`).to.eventually.be.fulfilled;
+            return expect(appCatalog.getAppById(appId)(), `app '${appId}' should've been fetched`).to.eventually.be.fulfilled;
         });
 
         it("it deploys an app", async function () {
@@ -63,14 +64,14 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it installs an app on a web", async function () {
-            const myApp = sp.web.getAppCatalog().getAppById(appId);
+            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
             return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
-            const myApp = sp.web.getAppCatalog().getAppById(appId);
+            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
             let app = { InstalledVersion: "" };
             let retryCount = 0;
 
@@ -79,7 +80,7 @@ describe.skip("AppCatalog", function () {
                     break;
                 }
                 await sleep(10000); // Sleep for 10 seconds
-                app = await myApp.get();
+                app = await myApp();
                 retryCount++;
             } while (app.InstalledVersion === "");
 
@@ -87,7 +88,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it upgrades an app", async function () {
-            const myApp = sp.web.getAppCatalog().getAppById(appId);
+            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
             return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 

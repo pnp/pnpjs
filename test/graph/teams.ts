@@ -1,7 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { testSettings } from "../main";
-import { graph } from "@pnp/graph";
+import { getGraph, testSettings } from "../main";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 
@@ -9,8 +8,13 @@ import "@pnp/graph/groups";
 describe.skip("Teams", function () {
 
     if (testSettings.enableWebTests) {
+        let _graphRest = null;
         let teamID = "";
         let operationID = "";
+
+        before(function () {
+            _graphRest = getGraph();
+        });
 
         const sleep = (ms): Promise<void> => {
             return new Promise((resolve) => {
@@ -41,7 +45,7 @@ describe.skip("Teams", function () {
         it("createTeam()", async function () {
             const teamName = `TestTeam_${getRandomString(4)}`;
             teamBody.displayName = teamName;
-            const teamCreateResult = await graph.teams.create(teamBody);
+            const teamCreateResult = await _graphRest.teams.create(teamBody);
             teamID = teamCreateResult.teamId;
             operationID = teamCreateResult.operationId;
             return expect(teamID.length > 0).is.true;
@@ -51,13 +55,13 @@ describe.skip("Teams", function () {
             if (teamID !== "") {
                 let isPending = true;
                 while (isPending) {
-                    const status = await graph.teams.getById(teamID).getOperationById(operationID);
+                    const status = await _graphRest.teams.getById(teamID).getOperationById(operationID);
                     isPending = (status.status === "inProgress");
                     if (isPending) {
                         await sleep(3000);
                     }
                 }
-                await graph.groups.getById(teamID).delete();
+                await _graphRest.groups.getById(teamID).delete();
             }
         });
     }

@@ -16,10 +16,10 @@ export {
 } from "./types.js";
 
 declare module "../rest" {
-    interface SPRest2 {
-    /**
-     * Access to the social instance which allows you to track followed sites, people and docs.
-     */
+    interface SPRest {
+        /**
+         * Access to the social instance which allows you to track followed sites, people and docs.
+         */
         readonly social: ISocial;
     }
 }

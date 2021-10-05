@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security";
@@ -7,6 +7,7 @@ import "@pnp/sp/site-users/web";
 import { IWeb } from "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
+import { SPRest } from "@pnp/sp";
 
 if (testSettings.enableWebTests) {
 
@@ -15,16 +16,17 @@ if (testSettings.enableWebTests) {
         const testRoleDefName = "PNPJS Test Role Def 38274947";
         let list: IList = null;
         let parentWeb: IWeb = null;
-        let sp = getSP();
+        let _spRest: SPRest = null;
 
         before(async function () {
-            const ler = await sp.web.lists.ensure("SecurityTestingList");
+            _spRest = getSP();
+            const ler = await _spRest.web.lists.ensure("SecurityTestingList");
             list = ler.list;
         });
 
         before(async function () {
             // Capture the parent web for use in role definition tests.
-            parentWeb = (await sp.web.getParentWeb()).web;
+            parentWeb = await _spRest.web.getParentWeb();
 
             // Create the test role definition.
             try {
@@ -52,7 +54,7 @@ if (testSettings.enableWebTests) {
 
         it("getUserEffectivePermissions", async function () {
 
-            const users = await sp.web.siteUsers.top(1).select("LoginName")();
+            const users = await _spRest.web.siteUsers.top(1).select("LoginName")();
             return expect(list.getUserEffectivePermissions(users[0].LoginName)).to.eventually.be.fulfilled;
         });
 
@@ -63,7 +65,7 @@ if (testSettings.enableWebTests) {
 
         it("userHasPermissions", async function () {
 
-            const users = await sp.web.siteUsers.top(1).select("LoginName")();
+            const users = await _spRest.web.siteUsers.top(1).select("LoginName")();
             return expect(list.userHasPermissions(users[0].LoginName, PermissionKind.AddListItems)).to.eventually.be.fulfilled;
         });
 
