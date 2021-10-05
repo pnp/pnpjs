@@ -40,10 +40,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: |
-          npm run clean
-          node .github/workflows/nightly-package-version.js
-          npm run package
-          npm publish --tag v3nightly --access public
+        run: npm run pnp-publish-v3nightly
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
