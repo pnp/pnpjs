@@ -105,7 +105,7 @@ export abstract class Timeline<T extends Moments> {
             this._onProxy = new Proxy(this, {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
-                    target.cloneObserversOnModification();
+                    target.cloneObserversOnChange();
                     addObserver(target.observers, p, handler, "add");
                     return target;
 
@@ -115,20 +115,20 @@ export abstract class Timeline<T extends Moments> {
                     },
                     replace: (handler: ValidObserver) => {
 
-                        target.cloneObserversOnModification();
+                        target.cloneObserversOnChange();
                         addObserver(target.observers, p, handler, "replace");
                         return target;
                     },
                     prepend: (handler: ValidObserver) => {
 
-                        target.cloneObserversOnModification();
+                        target.cloneObserversOnChange();
                         addObserver(target.observers, p, handler, "prepend");
                         return target;
                     },
                     clear: (): boolean => {
 
                         if (Reflect.has(target.observers, p)) {
-                            target.cloneObserversOnModification();
+                            target.cloneObserversOnChange();
                             // we trust outselves that this will be an array
                             (<ObserverCollection>target.observers)[p].length = 0;
                             return true;
@@ -275,7 +275,7 @@ export abstract class Timeline<T extends Moments> {
      */
     protected abstract execute(init?: any): Promise<any>;
 
-    private cloneObserversOnModification() {
+    protected cloneObserversOnChange() {
         if (this._inheritingObservers) {
             this._inheritingObservers = false;
             this.observers = cloneDeep(this.observers);

@@ -18,48 +18,22 @@ export async function Example(settings: ITestingSettings) {
     // global logging subscribe for messages, included in usings per instance with different levels available per instance
     // already done in ./main.ts ::> Logger.subscribe(ConsoleListener());
 
-    try {
-
-        const graph2 = graph().using(GraphDefault({
-            msal: {
-                config: settings.testing.graph.msal.init,
-                scopes: settings.testing.graph.msal.scopes,
-            },
-        })).using(PnPLogging(LogLevel.Verbose));
-
-        const [batchedGraph, execute] = graph2.batched();
-
-        let res = [];
-
-        batchedGraph.users().then(r => res.push(r));
-
-        batchedGraph.groups().then(r => res.push(r));
-
-        await execute();
-
-        console.log(res);
-
-    } catch (e) {
-
-        console.error(e);
-    }
-
     // try {
 
-    //     const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+    //     const graph2 = graph().using(GraphDefault({
     //         msal: {
-    //             config: settings.testing.sp.msal.init,
-    //             scopes: settings.testing.sp.msal.scopes,
+    //             config: settings.testing.graph.msal.init,
+    //             scopes: settings.testing.graph.msal.scopes,
     //         },
     //     })).using(PnPLogging(LogLevel.Verbose));
 
-    //     const [batchedSP, execute] = sp2.batched();
+    //     const [batchedGraph, execute] = graph2.batched();
 
     //     let res = [];
 
-    //     batchedSP.web().then(r => res.push(r));
+    //     batchedGraph.users().then(r => res.push(r));
 
-    //     batchedSP.web.lists().then(r => res.push(r));
+    //     batchedGraph.groups().then(r => res.push(r));
 
     //     await execute();
 
@@ -69,6 +43,32 @@ export async function Example(settings: ITestingSettings) {
 
     //     console.error(e);
     // }
+
+    try {
+
+        const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+            msal: {
+                config: settings.testing.sp.msal.init,
+                scopes: settings.testing.sp.msal.scopes,
+            },
+        })).using(PnPLogging(LogLevel.Verbose));
+
+        const [batchedSP, execute] = sp2.batched();
+
+        let res = [];
+
+        batchedSP.web().then(r => res.push(r));
+
+        batchedSP.web.lists().then(r => res.push(r));
+
+        await execute();
+
+        console.log(res);
+
+    } catch (e) {
+
+        console.error(e);
+    }
 
     console.log("here");
 

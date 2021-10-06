@@ -1,5 +1,5 @@
 import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
-import { InjectHeaders, IQueryable2, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
+import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations";
 import { _SPQueryable } from "./spqueryable";
 import { SPRest } from "./rest.js";
@@ -50,7 +50,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _SPQueryable {
 
-    constructor(base: IQueryable2, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
+    constructor(base: IQueryableInternal, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "_api/$batch");
 
@@ -62,7 +62,7 @@ class BatchQueryable extends _SPQueryable {
     }
 }
 
-export function createBatch(base: IQueryable2): [TimelinePipe, () => Promise<void>] {
+export function createBatch(base: IQueryableInternal): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
     const completePromises: Promise<void>[] = [];

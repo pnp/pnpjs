@@ -21,7 +21,6 @@ interface ISPFXContext {
     };
 }
 
-// TODO:: untested
 export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
@@ -32,7 +31,8 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             BrowserFetchWithRetry(),
             DefaultParse());
 
-        instance.on.pre(async (url, init, result) => {
+        // we want to fix up the url first
+        instance.on.pre.prepend(async (url, init, result) => {
 
             if (!isUrlAbsolute(url)) {
                 url = combine(context.pageContext.web.absoluteUrl, url);
@@ -69,9 +69,6 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
         //            return provider.getToken(resource);
         //        }
         //    }
-
-
-
 
         return instance;
     };
