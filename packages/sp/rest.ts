@@ -15,7 +15,7 @@ export class SPRest {
      */
     constructor(root: string | ISPQueryable = "") {
 
-        this._root = typeof root === "string" ? SPQueryable(root) : root;
+        this._root = SPQueryable(root);
     }
 
     public using(behavior: TimelinePipe): this {

@@ -6,9 +6,9 @@
     "devDependencies": {
         "@azure/msal-node": "^1.0.1",
         "@microsoft/microsoft-graph-types": "^1.32.0",
+        "@pnp/buildsystem": "^2.3.9",
         "@types/chai": "^4.2.22",
         "@types/chai-as-promised": "^7.1.4",
-        "@pnp/buildsystem": "^2.3.7",
         "@types/core-js": "^2.5.4",
         "@types/es6-promise": "^3.3.0",
         "@types/findup-sync": "^2.0.2",
