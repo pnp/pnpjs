@@ -1,4 +1,4 @@
-import { getGUID, isUrlAbsolute, combine, From_JulieHatesThisName, TimelinePipe } from "@pnp/core";
+import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe } from "@pnp/core";
 import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations";
 import { _SPQueryable } from "./spqueryable";
@@ -55,7 +55,7 @@ class BatchQueryable extends _SPQueryable {
         super(requestBaseUrl, "_api/$batch");
 
         // this will copy over the current observables from the web associated with this batch
-        this.using(From_JulieHatesThisName(base, "replace"));
+        this.using(CopyFrom(base, "replace"));
 
         // this will replace any other parsing present
         this.using(BatchParse());

@@ -7,7 +7,7 @@ import {
     spInvokableFactory,
     _SPQueryable,
 } from "../spqueryable.js";
-import { body, FromQueryable } from "@pnp/queryable";
+import { body, CopyFromQueryable } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
@@ -25,8 +25,8 @@ export class _Profiles extends _SPInstance {
     constructor(baseUrl: string | ISPQueryable, path = "_api/sp.userprofiles.peoplemanager") {
         super(baseUrl, path);
 
-        this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).using(FromQueryable(this));
-        this.profileLoader = (new ProfileLoader(baseUrl)).using(FromQueryable(this));
+        this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).using(CopyFromQueryable(this));
+        this.profileLoader = (new ProfileLoader(baseUrl)).using(CopyFromQueryable(this));
     }
 
     /**
@@ -284,7 +284,7 @@ export class _Profiles extends _SPInstance {
         return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
     }
 }
-export interface IProfiles extends _Profiles {}
+export interface IProfiles extends _Profiles { }
 export const Profiles = spInvokableFactory<IProfiles>(_Profiles);
 
 @defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")

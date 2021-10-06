@@ -2,7 +2,7 @@ import { _SPInstance, spInvokableFactory, SPQueryable } from "../spqueryable.js"
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { hOP } from "@pnp/core";
-import { body, FromQueryable } from "@pnp/queryable";
+import { body, CopyFromQueryable } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
@@ -42,7 +42,7 @@ export class _Site extends _SPInstance {
         const data = await spPost(Site(this, `openWebById('${webId}')`));
         return {
             data,
-            web: Web(extractWebUrl(odataUrlFrom(data))).using(FromQueryable(this)),
+            web: Web(extractWebUrl(odataUrlFrom(data))).using(CopyFromQueryable(this)),
         };
     }
 
@@ -52,7 +52,7 @@ export class _Site extends _SPInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return Web(web.Url).using(FromQueryable(this));
+        return Web(web.Url).using(CopyFromQueryable(this));
     }
 
     /**

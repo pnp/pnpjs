@@ -1,4 +1,4 @@
-import { body, headers, FromQueryable } from "@pnp/queryable";
+import { body, headers, CopyFromQueryable } from "@pnp/queryable";
 import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
@@ -43,7 +43,7 @@ export type ClientsidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPag
 export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
 function initFrom(o: ISPQueryable, url: string): IClientsidePage {
-    return ClientsidePage(extractWebUrl(o.toUrl()), url).using(FromQueryable(o));
+    return ClientsidePage(extractWebUrl(o.toUrl()), url).using(CopyFromQueryable(o));
 }
 
 /**
@@ -621,7 +621,7 @@ export class _ClientsidePage extends _SPQueryable {
     public async setAuthorById(authorId: number): Promise<void> {
 
         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(FromQueryable(this))
+            .using(CopyFromQueryable(this))
             .filter(`Id eq ${authorId}`)
             .select("LoginName")<{ LoginName: string }[]>();
 
@@ -640,7 +640,7 @@ export class _ClientsidePage extends _SPQueryable {
     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
 
         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(FromQueryable(this))
+            .using(CopyFromQueryable(this))
             .filter(`LoginName eq '${authorLoginName}'`)
             .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
@@ -667,9 +667,9 @@ export class _ClientsidePage extends _SPQueryable {
 
         const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
-        const item = List(listData["odata.id"]).using(FromQueryable(this)).items.getById(this.json.Id);
+        const item = List(listData["odata.id"]).using(CopyFromQueryable(this)).items.getById(this.json.Id);
         const itemData: T = await item.select(...selects)();
-        return Object.assign(Item(odataUrlFrom(itemData))).using(FromQueryable(this), itemData);
+        return Object.assign(Item(odataUrlFrom(itemData))).using(CopyFromQueryable(this), itemData);
     }
 
     /**
@@ -681,7 +681,7 @@ export class _ClientsidePage extends _SPQueryable {
     protected assign(parent: _ClientsidePage, path?: string) {
         this.parentUrl = parent.parentUrl;
         this._url = combine(parent.parentUrl, path || "");
-        this.using(FromQueryable(parent));
+        this.using(CopyFromQueryable(parent));
     }
 
     protected getCanvasContent1(): string {
@@ -903,7 +903,7 @@ export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePa
 
     const item = await file.getItem<{ Id: number }>();
     const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true);
-    return page.using(FromQueryable(file)).load();
+    return page.using(CopyFromQueryable(file)).load();
 };
 
 /**

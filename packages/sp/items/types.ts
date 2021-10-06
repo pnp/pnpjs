@@ -11,7 +11,7 @@ import {
 } from "../spqueryable.js";
 import { hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { body, headers, parseBinderWithErrorCheck, parseODataJSON, FromQueryable } from "@pnp/queryable";
+import { body, headers, parseBinderWithErrorCheck, parseODataJSON, CopyFromQueryable } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
@@ -309,7 +309,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = <IItems>Items(this.nextUrl, null).using(FromQueryable(this.parent));
+            const items = <IItems>Items(this.nextUrl, null).using(CopyFromQueryable(this.parent));
             return items.getPaged<T>();
         }
 
