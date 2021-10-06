@@ -248,7 +248,7 @@ before("Setup Testing", async function () {
 
 after("Finalize Testing", async function () {
     // this may take some time, don't timeout early
-    this.timeout(0);
+    this.timeout(120000);
 
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
