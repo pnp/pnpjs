@@ -6,8 +6,6 @@ import {
     getGUID,
     isFunc,
     isArray,
-    assign,
-    getCtxCallback,
     objectDefinedNotNull,
     isUrlAbsolute,
     stringIsNullOrEmpty,

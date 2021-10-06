@@ -1,30 +1,30 @@
 import { expect } from "chai";
 import { Logger, LogLevel, FunctionListener } from "@pnp/logging";
 
-describe("Logging", () => {
+describe("Logging", function () {
 
-    describe("Logger", () => {
+    describe("Logger", function () {
 
         const logger = Logger;
 
-        beforeEach(() => {
+        beforeEach(function () {
             logger.clearSubscribers();
         });
 
-        it("Can create an Logger instance and subscribe an ILogListener", () => {
+        it("Can create an Logger instance and subscribe an ILogListener", function () {
             const message = "Test message";
             let message2 = "";
-            logger.subscribe(new FunctionListener((e) => {
+            logger.subscribe(FunctionListener((e) => {
                 message2 = e.message;
             }));
             logger.write(message, LogLevel.Warning);
             expect(message2).to.eq(message);
         });
 
-        it("Can create an Logger instance and log a simple object", () => {
+        it("Can create an Logger instance and log a simple object", function () {
             let message2 = "";
             let level2 = LogLevel.Verbose;
-            logger.subscribe(new FunctionListener((e) => {
+            logger.subscribe(FunctionListener((e) => {
                 level2 = e.level;
                 message2 = e.message;
             }));
@@ -33,46 +33,46 @@ describe("Logging", () => {
             expect(level2).to.eql(LogLevel.Error);
         });
 
-        it("Should return an accurate count of subscribers", () => {
-            logger.subscribe(new FunctionListener(() => {
+        it("Should return an accurate count of subscribers", function () {
+            logger.subscribe(FunctionListener(function () {
                 return;
             }));
-            logger.subscribe(new FunctionListener(() => {
+            logger.subscribe(FunctionListener(function () {
                 return;
             }));
-            logger.subscribe(new FunctionListener(() => {
+            logger.subscribe(FunctionListener(function () {
                 return;
             }));
             expect(logger.count).to.eq(3);
         });
 
-        it("Should allow multiple subscribes to be added in one call", () => {
+        it("Should allow multiple subscribes to be added in one call", function () {
             logger.subscribe(
-                new FunctionListener(() => {
+                FunctionListener(function () {
                     return;
                 }),
-                new FunctionListener(() => {
+                FunctionListener(function () {
                     return;
                 }),
-                new FunctionListener(() => {
+                FunctionListener(function () {
                     return;
                 }),
             );
             expect(logger.count).to.eq(3);
         });
 
-        it("Should correctly log to multiple listeners", () => {
+        it("Should correctly log to multiple listeners", function () {
             let message1 = "";
             let message2 = "";
             let message3 = "";
             logger.subscribe(
-                new FunctionListener((e) => {
+                FunctionListener((e) => {
                     message1 = e.message;
                 }),
-                new FunctionListener((e) => {
+                FunctionListener((e) => {
                     message2 = e.message;
                 }),
-                new FunctionListener((e) => {
+                FunctionListener((e) => {
                     message3 = e.message;
                 }),
             );

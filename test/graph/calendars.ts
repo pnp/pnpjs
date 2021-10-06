@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { testSettings } from "../main-2.js";
-import { graph } from "@pnp/graph";
+import { getGraph, testSettings } from "../main.js";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
 import { HttpRequestError } from "@pnp/queryable";
@@ -10,20 +9,22 @@ import getValidUser from "./utilities/getValidUser.js";
 describe("Calendar", function () {
 
 
-    // We can't test for graph.me calls in an application context
+    // We can't test for _graphRest.me calls in an application context
     if (testSettings.enableWebTests && testSettings.testUser?.length > 0) {
+        let _graphRest = null;
         let testUserName = "";
         let defaultCalID = "";
         let testEventID = "";
 
         // Ensure we have the data to test against
-        this.beforeAll(async function () {
+        before(async function (done) {
+            _graphRest = getGraph();
 
             const userInfo = await getValidUser();
             testUserName = userInfo.userPrincipalName;
 
             // Get default calendar
-            const defaultCal = await graph.users.getById(testUserName).calendar();
+            const defaultCal = await _graphRest.users.getById(testUserName).calendar();
             defaultCalID = defaultCal.id;
 
             // Add test event
@@ -31,7 +32,7 @@ describe("Calendar", function () {
             startDate.setDate(startDate.getDate() + 5);
             const endDate: Date = startDate;
             endDate.setHours(startDate.getHours() + 1);
-            const event = await graph.users.getById(testUserName).calendar.events.add(
+            const event = await _graphRest.users.getById(testUserName).calendar.events.add(
                 {
                     "end": {
                         "dateTime": startDate.toISOString(),
@@ -47,40 +48,41 @@ describe("Calendar", function () {
                     "subject": "Let's go for lunch",
                 });
             testEventID = event.data.id;
+            done;
         });
 
         it("Get Calendars", async function () {
-            const calendar = await graph.users.getById(testUserName).calendars();
+            const calendar = await _graphRest.users.getById(testUserName).calendars();
             return expect(calendar.length).is.greaterThan(0);
         });
 
         it("Get Calendar by ID", async function () {
-            const calendar = await graph.users.getById(testUserName).calendars.getById(defaultCalID)();
+            const calendar = await _graphRest.users.getById(testUserName).calendars.getById(defaultCalID)();
             return expect(calendar).is.not.null;
         });
 
         it("Get User's Default Calendar", async function () {
-            const calendar = await graph.users.getById(testUserName).calendar();
+            const calendar = await _graphRest.users.getById(testUserName).calendar();
             return expect(calendar).is.not.null;
         });
 
         it("Get Events From User's Default Calendar", async function () {
-            const events = await graph.users.getById(testUserName).calendar.events();
+            const events = await _graphRest.users.getById(testUserName).calendar.events();
             return expect(events.length).is.greaterThan(0);
         });
 
         it("Get All Events From User's Calendars", async function () {
-            const events = await graph.users.getById(testUserName).events();
+            const events = await _graphRest.users.getById(testUserName).events();
             return expect(events.length).is.greaterThan(0);
         });
 
         it("Get Event by ID From User's Calendars", async function () {
-            const event = await graph.users.getById(testUserName).events.getById(testEventID)();
+            const event = await _graphRest.users.getById(testUserName).events.getById(testEventID)();
             return expect(event).is.not.null;
         });
 
         it("Get Event by ID From User's Default Calendars", async function () {
-            const event = await graph.users.getById(testUserName).calendars.getById(defaultCalID).events.getById(testEventID)();
+            const event = await _graphRest.users.getById(testUserName).calendars.getById(defaultCalID).events.getById(testEventID)();
             return expect(event).is.not.null;
         });
 
@@ -89,7 +91,7 @@ describe("Calendar", function () {
             startDate.setDate(startDate.getDate() + 1);
             const endDate: Date = startDate;
             endDate.setHours(startDate.getHours() + 1);
-            const event = await graph.users.getById(testUserName).calendar.events.add(
+            const event = await _graphRest.users.getById(testUserName).calendar.events.add(
                 {
                     "end": {
                         "dateTime": startDate.toISOString(),
@@ -104,9 +106,9 @@ describe("Calendar", function () {
                     },
                     "subject": "Let's go for lunch",
                 });
-            const eventAfterAdd = await graph.users.getById(testUserName).events.getById(event.data.id)();
+            const eventAfterAdd = await _graphRest.users.getById(testUserName).events.getById(event.data.id)();
             // Clean up the added contact
-            await graph.users.getById(testUserName).events.getById(event.data.id).delete();
+            await _graphRest.users.getById(testUserName).events.getById(event.data.id).delete();
             return expect(eventAfterAdd).is.not.null;
         });
 
@@ -115,7 +117,7 @@ describe("Calendar", function () {
             startDate.setDate(startDate.getDate() + 1);
             const endDate: Date = startDate;
             endDate.setHours(startDate.getHours() + 1);
-            const event = await graph.users.getById(testUserName).calendar.events.add(
+            const event = await _graphRest.users.getById(testUserName).calendar.events.add(
                 {
                     "end": {
                         "dateTime": startDate.toISOString(),
@@ -131,12 +133,12 @@ describe("Calendar", function () {
                     "subject": "Let's go for lunch",
                 });
 
-            await graph.users.getById(testUserName).events.getById(event.data.id).update({
+            await _graphRest.users.getById(testUserName).events.getById(event.data.id).update({
                 reminderMinutesBeforeStart: 10, subject: "Updated Lunch",
             });
-            const eventAfterUpdate = await graph.users.getById(testUserName).events.getById(event.data.id)();
+            const eventAfterUpdate = await _graphRest.users.getById(testUserName).events.getById(event.data.id)();
             // Clean up the added contact
-            await graph.users.getById(testUserName).events.getById(event.data.id).delete();
+            await _graphRest.users.getById(testUserName).events.getById(event.data.id).delete();
             return expect(eventAfterUpdate.subject).equals("Updated Lunch");
         });
 
@@ -145,7 +147,7 @@ describe("Calendar", function () {
             startDate.setDate(startDate.getDate() + 1);
             const endDate: Date = startDate;
             endDate.setHours(startDate.getHours() + 1);
-            const event = await graph.users.getById(testUserName).calendar.events.add(
+            const event = await _graphRest.users.getById(testUserName).calendar.events.add(
                 {
                     "end": {
                         "dateTime": startDate.toISOString(),
@@ -162,13 +164,13 @@ describe("Calendar", function () {
                 });
 
             // Delete the item we just created
-            await graph.users.getById(testUserName).events.getById(event.data.id).delete();
+            await _graphRest.users.getById(testUserName).events.getById(event.data.id).delete();
             let deletedEventFound = false;
 
             try {
 
                 // If we try to find a user that doesn't exist this returns a 404
-                await graph.users.getById(testUserName).events.getById(event.data.id)();
+                await _graphRest.users.getById(testUserName).events.getById(event.data.id)();
                 deletedEventFound = true;
 
             } catch (e) {
@@ -186,7 +188,7 @@ describe("Calendar", function () {
 
         // This can't be tested in an application context
         // it("Get Group Calendar", async function () {
-        //    const group = await graph.groups.getById(groupID).calendar();
+        //    const group = await _graphRest.groups.getById(groupID).calendar();
         //    return expect(group.id).does.not.equal("");
         // });
 
@@ -194,7 +196,7 @@ describe("Calendar", function () {
             const startDate: Date = new Date();
             const endDate: Date = new Date();
             endDate.setDate(endDate.getDate() + 10);
-            const view = await graph.users.getById(testUserName).calendarView(startDate.toISOString(), endDate.toISOString())();
+            const view = await _graphRest.users.getById(testUserName).calendarView(startDate.toISOString(), endDate.toISOString())();
             return expect(view.length).is.greaterThan(0);
         });
 
@@ -202,7 +204,7 @@ describe("Calendar", function () {
         this.afterAll(async function () {
 
             if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
-                await graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
+                await _graphRest.users.getById(testUserName).calendar.events.getById(testEventID).delete();
             }
         });
     }

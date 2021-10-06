@@ -95,10 +95,14 @@ export class _Lists extends _SPCollection<IListInfo[]> {
             // this will throw if the list doesn't exist
             await list.select("Title")();
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
-            return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+            if (data == undefined) {
+                const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
+                return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+            } else {
+                return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+            }
 
         } catch (e) {
-
             const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
             return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
         }

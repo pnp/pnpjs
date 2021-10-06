@@ -1,8 +1,9 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/site-scripts";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import { IList } from "@pnp/sp/lists";
+import { SPRest } from "@pnp/sp";
 
 describe("SiteScripts", function () {
 
@@ -19,7 +20,11 @@ describe("SiteScripts", function () {
     };
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
+
+        before(function () {
+            _spRest = getSP();
+        });
         const createdSiteScriptIds: string[] = [];
         const createdLists: IList[] = [];
 
@@ -27,7 +32,7 @@ describe("SiteScripts", function () {
 
             const title = `Test_create_sitescript_${getRandomString(8)}`;
             const description = `${getRandomString(100)}`;
-            const p = sp.siteScripts.createSiteScript(title, description, defaultScriptSchema)
+            const p = _spRest.siteScripts.createSiteScript(title, description, defaultScriptSchema)
                 .then(ss => createdSiteScriptIds.push(ss.Id));
 
             return expect(p, `site script '${title}' should've been created`).to.eventually.be.fulfilled;
@@ -37,7 +42,7 @@ describe("SiteScripts", function () {
 
             const title = `Test_create_sitescript_${getRandomString(8)}'`;
             const description = `${getRandomString(100)}`;
-            const p = sp.siteScripts.createSiteScript(title, description, defaultScriptSchema)
+            const p = _spRest.siteScripts.createSiteScript(title, description, defaultScriptSchema)
                 .then(ss => createdSiteScriptIds.push(ss.Id));
 
             return expect(p, `site script '${title}' should not have been created`).to.eventually.be.fulfilled;
@@ -55,7 +60,7 @@ describe("SiteScripts", function () {
             const title = `Test_create_sitescript_no_actions_${getRandomString(8)}`;
             const description = `${getRandomString(100)}`;
 
-            return expect(sp.siteScripts.createSiteScript(title, description, schema),
+            return expect(_spRest.siteScripts.createSiteScript(title, description, schema),
                 `site script '${title}' should not have been created`).to.eventually.be.rejected;
         });
 
@@ -63,15 +68,15 @@ describe("SiteScripts", function () {
 
             const title = `Test_create_sitescript_to_be_deleted_${getRandomString(8)}`;
             const description = `${getRandomString(100)}`;
-            const ss = await sp.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+            const ss = await _spRest.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
-            return expect(sp.siteScripts.deleteSiteScript(ss.Id),
+            return expect(_spRest.siteScripts.deleteSiteScript(ss.Id),
                 `site script '${title}' should've been deleted`).to.eventually.be.fulfilled;
         });
 
         it("fails to delete a site script with non-existing id", function () {
 
-            return expect(sp.siteScripts.deleteSiteScript(null),
+            return expect(_spRest.siteScripts.deleteSiteScript(null),
                 "site script should NOT have been deleted").to.eventually.be.rejected;
         });
 
@@ -79,11 +84,11 @@ describe("SiteScripts", function () {
 
             const title = `Test_get_metadata_sitescript${getRandomString(8)}`;
             const description = `${getRandomString(100)}`;
-            const ss = await sp.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+            const ss = await _spRest.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
             createdSiteScriptIds.push(ss.Id);
 
-            return expect(sp.siteScripts.getSiteScriptMetadata(ss.Id),
+            return expect(_spRest.siteScripts.getSiteScriptMetadata(ss.Id),
                 `metadata of site script '${title}' should have been retrieved`).to.eventually.be.fulfilled;
         });
 
@@ -92,7 +97,7 @@ describe("SiteScripts", function () {
 
             const title = `Test_to_update_sitescript_${getRandomString(8)}`;
             const description = `${getRandomString(100)}`;
-            const ss = await sp.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+            const ss = await _spRest.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
             createdSiteScriptIds.push(ss.Id);
 
@@ -110,7 +115,7 @@ describe("SiteScripts", function () {
                 version: 2,
             };
 
-            return expect(sp.siteScripts.updateSiteScript({
+            return expect(_spRest.siteScripts.updateSiteScript({
                 Id: ss.Id,
                 Title: updatedTitle,
             }, updatedScriptSchema), `site script '${title}' should've been updated`).to.eventually.be.fulfilled;
@@ -118,13 +123,13 @@ describe("SiteScripts", function () {
 
         it("gets all the site scripts", async function () {
 
-            return expect(sp.siteScripts.getSiteScripts(),
+            return expect(_spRest.siteScripts.getSiteScripts(),
                 "all the site scripts should've been fetched").to.eventually.be.fulfilled;
         });
 
         it("gets a site script from a list", async function () {
             const listTitle = `sc_list_${getRandomString(8)}`;
-            const listResult = await sp.web.lists.add(listTitle);
+            const listResult = await _spRest.web.lists.add(listTitle);
             createdLists.push(listResult.list);
 
             return expect(listResult.list.getSiteScript(),
@@ -133,16 +138,16 @@ describe("SiteScripts", function () {
 
         // this is currently experimental so we skip it for testing, not enabled in all tenants
         it.skip("gets a site script from a web", async function () {
-            return expect(sp.web.getSiteScript(),
+            return expect(_spRest.web.getSiteScript(),
                 "the webs site script should've been fetched").to.eventually.be.fulfilled;
         });
 
-        after(() => {
+        after(function () {
 
             const promises: Promise<void>[] = [];
 
             createdSiteScriptIds.forEach((sdId) => {
-                promises.push(sp.siteScripts.deleteSiteScript(sdId));
+                promises.push(_spRest.siteScripts.deleteSiteScript(sdId));
             });
 
             createdLists.forEach((list: IList) => {

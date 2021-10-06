@@ -14,7 +14,7 @@ function getAllPackageFolderNames() {
 }
 
 const basePath = "./build/testing/test/";
-let paths = [`${basePath}main-2.js`];
+let paths = [`${basePath}main.js`];
 
 // handle package specific config
 if (yargs.packages || yargs.p) {
@@ -44,6 +44,7 @@ if (yargs.packages || yargs.p) {
 }
 
 const reporter = yargs.verbose ? "spec" : "dot";
+const retries = yargs.noretries ? "0" : "2";
 
 const config = {
     package: "./package.json",
@@ -51,7 +52,7 @@ const config = {
     slow: 3000,
     timeout: 40000,
     ui: "bdd",
-    retries: "2",
+    retries: retries,
     require: [
         resolve("./", "build/testing/tools/local-module-resolver/register.js"),
     ],

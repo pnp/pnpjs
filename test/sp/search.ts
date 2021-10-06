@@ -1,20 +1,25 @@
 import { expect } from "chai";
 import "@pnp/sp/search";
 import { SearchQueryBuilder } from "@pnp/sp/search";
-import { getSP } from "test/main-2";
+import { getSP } from "../main.js";
+import { SPRest } from "@pnp/sp";
 
 // we skip these tests due to permissions difficulties across environments
-describe.skip("Search", () => {
-    let sp = getSP();
+describe.skip("Search", function () {
+    let _spRest: SPRest = null;
+
+    before(function () {
+        _spRest = getSP();
+    });
 
     it(".search - 1", function () {
 
-        return expect(sp.search("test")).to.eventually.be.fulfilled;
+        return expect(_spRest.search("test")).to.eventually.be.fulfilled;
     });
 
     it(".search - 2", function () {
 
-        return expect(sp.search({
+        return expect(_spRest.search({
             ProcessBestBets: true,
             Querytext: "test",
             RowLimit: 10,
@@ -25,11 +30,11 @@ describe.skip("Search", () => {
 
         const builder = SearchQueryBuilder("test").processBestBets.rowLimit(10);
 
-        return expect(sp.search(builder)).to.eventually.be.fulfilled;
+        return expect(_spRest.search(builder)).to.eventually.be.fulfilled;
     });
 
     it(".suggest", function () {
 
-        return expect(sp.searchSuggest({ querytext: "test" })).to.eventually.be.fulfilled;
+        return expect(_spRest.searchSuggest({ querytext: "test" })).to.eventually.be.fulfilled;
     });
 });

@@ -13,7 +13,7 @@
 //         return cachedValidUser;
 //     }
 
-//     const allUsers = await sp.web.siteUsers.top(usersToCheck).select("Id")();
+//     const allUsers = await _spRest.web.siteUsers.top(usersToCheck).select("Id")();
 
 //     for (let i = 0; i < allUsers.length; i++) {
 
@@ -21,7 +21,7 @@
 
 //         try {
 
-//             const query = sp.web.siteUsers.getById(testUserId);
+//             const query = _spRest.web.siteUsers.getById(testUserId);
 //             if (selects && selects.length > 0) {
 //                 query.select(...selects);
 //             }

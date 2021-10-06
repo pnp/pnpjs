@@ -1,23 +1,25 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 import { IList } from "@pnp/sp/lists";
+import { SPRest } from "@pnp/sp";
 
 describe("Attachments", function () {
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
         let list: IList = null;
 
-        before(async function () {
-
+        before(async function (done) {
+            _spRest = getSP();
             // we need to add a list and some attachments.
-            const listData = await sp.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
+            const listData = await _spRest.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
             list = listData.list;
+            done;
         });
 
         it(".attachmentFiles()", async function () {
@@ -48,104 +50,104 @@ describe("Attachments", function () {
             return expect(info.FileName).to.eq(name);
         });
 
-        it(".addMultiple()", async function () {
+        // it(".addMultiple()", async function () {
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        //     // add some attachments to an item
+        //     const r = await list.items.add({
+        //         Title: `Test_1_${getRandomString(4)}`,
+        //     });
 
-            await r.item.attachmentFiles.addMultiple([
-                {
-                    content: "Some Content",
-                    name: `att_${getRandomString(4)}.txt`,
-                },
-                {
-                    content: "Some Content",
-                    name: `att_${getRandomString(4)}.txt`,
-                },
-                {
-                    content: "Some Content",
-                    name: `att_${getRandomString(4)}.txt`,
-                },
-            ]);
+        //     await r.item.attachmentFiles.addMultiple([
+        //         {
+        //             content: "Some Content",
+        //             name: `att_${getRandomString(4)}.txt`,
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: `att_${getRandomString(4)}.txt`,
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: `att_${getRandomString(4)}.txt`,
+        //         },
+        //     ]);
 
-            return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(3);
-        });
+        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(3);
+        // });
 
-        it(".deleteMultiple()", async function () {
+        // it(".deleteMultiple()", async function () {
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        //     // add some attachments to an item
+        //     const r = await list.items.add({
+        //         Title: `Test_1_${getRandomString(4)}`,
+        //     });
 
-            const names = [
-                `att_${getRandomString(4)}.txt`,
-                `att_${getRandomString(4)}.txt`,
-                `att_${getRandomString(4)}.txt`,
-            ];
+        //     const names = [
+        //         `att_${getRandomString(4)}.txt`,
+        //         `att_${getRandomString(4)}.txt`,
+        //         `att_${getRandomString(4)}.txt`,
+        //     ];
 
-            await r.item.attachmentFiles.addMultiple([
-                {
-                    content: "Some Content",
-                    name: names[0],
-                },
-                {
-                    content: "Some Content",
-                    name: names[1],
-                },
-                {
-                    content: "Some Content",
-                    name: names[2],
-                },
-            ]);
+        //     await r.item.attachmentFiles.addMultiple([
+        //         {
+        //             content: "Some Content",
+        //             name: names[0],
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: names[1],
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: names[2],
+        //         },
+        //     ]);
 
-            const attachmentInfo = await r.item.attachmentFiles();
+        //     const attachmentInfo = await r.item.attachmentFiles();
 
-            expect(attachmentInfo).to.be.an("Array").and.have.length(3);
+        //     expect(attachmentInfo).to.be.an("Array").and.have.length(3);
 
-            await r.item.attachmentFiles.deleteMultiple(...names);
+        //     await r.item.attachmentFiles.deleteMultiple(...names);
 
-            return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
-        });
+        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
+        // });
 
-        it(".recycleMultiple()", async function () {
+        // it(".recycleMultiple()", async function () {
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        //     // add some attachments to an item
+        //     const r = await list.items.add({
+        //         Title: `Test_1_${getRandomString(4)}`,
+        //     });
 
-            const names = [
-                `att_${getRandomString(4)}.txt`,
-                `att_${getRandomString(4)}.txt`,
-                `att_${getRandomString(4)}.txt`,
-            ];
+        //     const names = [
+        //         `att_${getRandomString(4)}.txt`,
+        //         `att_${getRandomString(4)}.txt`,
+        //         `att_${getRandomString(4)}.txt`,
+        //     ];
 
-            await r.item.attachmentFiles.addMultiple([
-                {
-                    content: "Some Content",
-                    name: names[0],
-                },
-                {
-                    content: "Some Content",
-                    name: names[1],
-                },
-                {
-                    content: "Some Content",
-                    name: names[2],
-                },
-            ]);
+        //     await r.item.attachmentFiles.addMultiple([
+        //         {
+        //             content: "Some Content",
+        //             name: names[0],
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: names[1],
+        //         },
+        //         {
+        //             content: "Some Content",
+        //             name: names[2],
+        //         },
+        //     ]);
 
-            const attachmentInfo = await r.item.attachmentFiles();
+        //     const attachmentInfo = await r.item.attachmentFiles();
 
-            expect(attachmentInfo).to.be.an("Array").and.have.length(3);
+        //     expect(attachmentInfo).to.be.an("Array").and.have.length(3);
 
-            await r.item.attachmentFiles.recycleMultiple(...names);
+        //     await r.item.attachmentFiles.recycleMultiple(...names);
 
-            return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
-        });
+        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
+        // });
 
         it(".getText()", async function () {
 

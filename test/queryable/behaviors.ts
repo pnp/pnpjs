@@ -1,17 +1,24 @@
 import { assert, expect } from "chai";
 import { Caching, CachingPessimisticRefresh } from "@pnp/queryable";
 import { sp } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
 
-import { getTestTimeline, testSettings } from "../main-2.js";
+import { testSettings } from "../main.js";
 import "@pnp/sp/webs";
 
-describe("Behaviors", () => {
-    describe("Queryable", () => {
 
-        it("CachingPessimistic", async () => {
+describe("Behaviors", function () {
+    describe("Queryable", function () {
+
+        it("CachingPessimistic", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = sp(testSettings.sp.webUrl).using(getTestTimeline()).using(CachingPessimisticRefresh("session"));
+                const spInstance = sp(testSettings.sp.webUrl).using(SPDefault({
+                    msal: {
+                        config: testSettings.sp.msal.init,
+                        scopes: testSettings.sp.msal.scopes,
+                    },
+                })).using(CachingPessimisticRefresh("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
@@ -27,16 +34,22 @@ describe("Behaviors", () => {
                 const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
                 const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
                 const test2 = call1Time > call2Time;
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(test1 && test2).to.be.true;
             } catch (err) {
                 assert.fail(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
             }
         });
 
-        it("Caching", async () => {
+        it("Caching", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = sp(testSettings.sp.webUrl).using(getTestTimeline()).using(Caching("session"));
+                const spInstance = sp(testSettings.sp.webUrl).using(SPDefault({
+                    msal: {
+                        config: testSettings.sp.msal.init,
+                        scopes: testSettings.sp.msal.scopes,
+                    },
+                })).using(Caching("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
@@ -52,6 +65,7 @@ describe("Behaviors", () => {
                 const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
                 const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
                 const test2 = call1Time > call2Time;
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(test1 && test2).to.be.true;
             } catch (err) {
                 assert.fail(`Behaviors/Queryable/Caching - ${err.message}`);

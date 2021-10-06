@@ -1,8 +1,7 @@
 import { User as IUser } from "@microsoft/microsoft-graph-types";
-import { graph } from "@pnp/graph";
 import "@pnp/graph/users";
 import { Logger, LogLevel } from "@pnp/logging";
-import { testSettings } from "../../main-2.js";
+import { getGraph, testSettings } from "../../main.js";
 
 let cachedValidUser = null;
 const usersToCheck = 20;
@@ -16,7 +15,8 @@ export default async function getValidUser(ignoreCache = false): Promise<IUser> 
     const testUserName = testSettings.testUser.substr(testSettings.testUser.lastIndexOf("|") + 1);
 
     try {
-        cachedValidUser = await graph.users.getById(testUserName)();
+        const _graphRest = getGraph();
+        cachedValidUser = await _graphRest.users.getById(testUserName)();
     } catch (e) {
         cachedValidUser = null;
         Logger.write(`getValidUser: Failed looking up user '${testUserName}'`, LogLevel.Verbose);

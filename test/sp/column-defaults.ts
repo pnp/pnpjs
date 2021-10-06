@@ -1,36 +1,39 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main-2.js";
+import { getSP, testSettings } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
-import { Web, IWeb } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
-import { IList } from "@pnp/sp/lists";
 import "@pnp/sp/fields/list";
 import "@pnp/sp/column-defaults";
+import "@pnp/sp/batching";
+import { SPRest } from "@pnp/sp/rest.js";
+import { IList } from "@pnp/sp/lists";
 
 describe("DefaultColumnValues", function () {
 
     if (testSettings.enableWebTests) {
-        let sp = getSP();
+        let _spRest: SPRest = null;
         const listName = "DefaultColumnValuesTests";
-        let web: IWeb = null;
         let list: IList = null;
 
-        before(async function () {
-            const ler = await sp.web.lists.ensure(listName, "", 101);
+        // TODO: Figure out typings of addMultiChoice
+        before(async function (done) {
+            _spRest = getSP();
+            const ler = await _spRest.web.lists.ensure(listName, "", 101);
             list = ler.list;
 
             if (ler.created) {
-                const batch = sp.web.createBatch();
-                list.fields.inBatch(batch).addText("TextField");
-                list.fields.inBatch(batch).addNumber("NumberField");
-                list.fields.inBatch(batch).addMultiChoice("MultiChoiceField", ["Item 1", "Item 2", "Item 3"]);
-                await batch.execute();
+                const [batchSP, execute] = _spRest.batched();
+                batchSP.web.lists.getByTitle(listName).fields.addText("TextField");
+                batchSP.web.lists.getByTitle(listName).fields.addNumber("NumberField");
+                batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: { results: ["Item 1", "Item 2", "Item 3"] } });
+                await execute();
             }
+            done;
         });
 
         it("set root folder default values", async function () {
@@ -66,7 +69,7 @@ describe("DefaultColumnValues", function () {
 
         it("set sub folder default values", async function () {
 
-            const far = await list.rootFolder.folders.add(`fld_${getRandomString(4)}`);
+            const far = await list.rootFolder.folders.addUsingPath(`fld_${getRandomString(4)}`);
 
             await far.folder.setDefaultColumnValues([{
                 name: "TextField",
@@ -102,7 +105,7 @@ describe("DefaultColumnValues", function () {
         it("set list values", async function () {
 
             const subFolderName = `fld_${getRandomString(4)}`;
-            await list.rootFolder.folders.add(subFolderName);
+            await list.rootFolder.folders.addUsingPath(subFolderName);
 
             list.setDefaultColumnValues([{
                 name: "TextField",
@@ -158,7 +161,7 @@ describe("DefaultColumnValues", function () {
         it("clear all defaults", async function () {
 
             const subFolderName = `fld_${getRandomString(4)}`;
-            await list.rootFolder.folders.add(subFolderName);
+            await list.rootFolder.folders.addUsingPath(subFolderName);
 
             list.setDefaultColumnValues([{
                 name: "TextField",
@@ -196,7 +199,7 @@ describe("DefaultColumnValues", function () {
         it("clear folder defaults", async function () {
 
             const subFolderName = `fld_${getRandomString(4)}`;
-            const far = await list.rootFolder.folders.add(subFolderName);
+            const far = await list.rootFolder.folders.addUsingPath(subFolderName);
 
             await far.folder.setDefaultColumnValues([{
                 name: "TextField",

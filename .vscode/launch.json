@@ -36,7 +36,7 @@
       "runtimeArgs": [],
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["--cleanup"],
+      "args": ["--noretries", "--verbose", "--cleanup","--logging"],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [
