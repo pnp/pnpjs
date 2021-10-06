@@ -6,13 +6,13 @@ export class GraphRest {
     protected _root: IGraphQueryable;
 
     /**
-     * Creates a new instance of the SPRest class
+     * Creates a new instance of the GraphRest class
      *
      * @param root Establishes a root url/configuration for
      */
     constructor(root: string | IGraphQueryable = "") {
 
-        this._root = typeof root === "string" ? GraphQueryable(root) : root;
+        this._root = GraphQueryable(root);
     }
 
     public using(behavior: TimelinePipe): this {
