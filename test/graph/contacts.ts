@@ -18,7 +18,7 @@ describe("Contacts", function () {
         let subFolderID = "";
 
         // Ensure we have the data to test against
-        before(async function (done) {
+        before(async function () {
             _graphRest = getGraph();
 
             // Get a sample user
@@ -46,7 +46,6 @@ describe("Contacts", function () {
                 name: `Pavel ${testContactName}}`,
             }], ["+1 732 555 0102"]);
             testContact2ID = contact2.data.id;
-            done;
         });
 
         it("Get Contacts", async function () {

@@ -95,7 +95,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
             // this will throw if the list doesn't exist
             await list.select("Title")();
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
-            if (data == undefined) {
+            if (data === undefined) {
                 const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
                 return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
             } else {

@@ -65,13 +65,26 @@ describe("Fields", function () {
         });
         it("Web: add calculated field", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const field = await _spRest.web.fields.addCalculated(testFieldNameRand, { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: testFieldGroup });
+            const field = await _spRest.web.fields
+                .addCalculated(testFieldNameRand, {
+                    Formula: "=Modified+1",
+                    DateFormat: DateTimeFieldFormatType.DateOnly,
+                    FieldTypeKind: FieldTypes.DateTime,
+                    Group: testFieldGroup,
+                });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("Web: add datetime field", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spRest.web.fields
-                .addDateTime(testFieldNameRand, { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled, Group: testFieldGroup });
+                .addDateTime(testFieldNameRand,
+                    {
+                        DisplayFormat: DateTimeFieldFormatType.DateOnly,
+                        DateTimeCalendarType: CalendarType.Gregorian,
+                        FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,
+                        Group: testFieldGroup,
+                    }
+                );
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("Web: add currency field", async function () {
@@ -225,13 +238,22 @@ describe("Fields", function () {
         it("List: add calculated field", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spRest.web.lists.getByTitle(listName).fields
-                .addCalculated(testFieldNameRand, { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: testFieldGroup });
+                .addCalculated(testFieldNameRand,
+                    { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: testFieldGroup }
+                );
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("List: add datetime field", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spRest.web.lists.getByTitle(listName).fields
-                .addDateTime(testFieldNameRand, { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled, Group: testFieldGroup });
+                .addDateTime(testFieldNameRand,
+                    {
+                        DisplayFormat: DateTimeFieldFormatType.DateOnly,
+                        DateTimeCalendarType: CalendarType.Gregorian,
+                        FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,
+                        Group: testFieldGroup,
+                    }
+                );
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("List: add currency field", async function () {

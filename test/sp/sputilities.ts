@@ -4,7 +4,7 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 import { getSP, testSettings } from "../main.js";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
-import { combine, getRandomString } from "@pnp/core";
+import { combine } from "@pnp/core";
 import { SPRest } from "@pnp/sp";
 
 describe("SPUtilities", function () {
@@ -64,7 +64,7 @@ describe("SPUtilities", function () {
             return expect(_spRest.utility.expandGroupsToPrincipals(["Everyone"], 10)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
         });
 
-        // Removed 
+        // Removed
         // it("createWikiPage", async function () {
         //     const currentWeb = await _spRest.web.select("ServerRelativeUrl")();
         //     const wikiPageName = `Test_WikiPage_${getRandomString(5)}.aspx`;

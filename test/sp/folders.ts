@@ -6,7 +6,6 @@ import "@pnp/sp/lists";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
-import { IInvokableTest } from "../types.js";
 import { getRandomString } from "@pnp/core";
 import { SharingLinkKind } from "@pnp/sp/sharing";
 import { SPRest } from "@pnp/sp";
@@ -189,7 +188,8 @@ describe.skip("Folder", function () {
 
         it("should unshare link", async function () {
             await _spRest.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test11");
-            return expect(_spRest.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test11").unshareLink(SharingLinkKind.OrganizationView)).to.eventually.be.fulfilled;
+            return expect(_spRest.web.rootFolder.folders.getByUrl("SiteAssets").folders
+                .getByUrl("test11").unshareLink(SharingLinkKind.OrganizationView)).to.eventually.be.fulfilled;
         });
 
         it("should share with login name", async function () {

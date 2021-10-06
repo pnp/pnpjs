@@ -47,7 +47,8 @@ describe("Related Items", function () {
 
         it("addSingleLinkToUrl", async function () {
 
-            const file = await _spRest.web.defaultDocumentLibrary.rootFolder.files.addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true }).then(r => r.data);
+            const file = await _spRest.web.defaultDocumentLibrary.rootFolder.files
+                .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
 
             await _spRest.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file.ServerRelativeUrl);

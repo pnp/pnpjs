@@ -201,7 +201,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     })).using(TestLogging());
 }
 
-async function graphTestSetup(ts: ISettings): Promise<void> {
+async function graphTestSetup(): Promise<void> {
     _graph = graph().using(GraphDefault({
         msal: {
             config: settings.testing.graph.msal.init,
@@ -229,7 +229,6 @@ before("Setup Testing", async function () {
     if (testSettings.enableWebTests) {
 
         if (testSettings.sp) {
-            //_testTimeline = TestDefault(testSettings);
             console.log("Setting up SharePoint tests...");
             const s = Date.now();
             await spTestSetup(testSettings);
@@ -240,7 +239,7 @@ before("Setup Testing", async function () {
         if (testSettings.graph) {
             console.log("Setting up Graph tests...");
             const s = Date.now();
-            await graphTestSetup(testSettings);
+            await graphTestSetup();
             const e = Date.now();
             console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
         }
@@ -249,7 +248,7 @@ before("Setup Testing", async function () {
 
 after("Finalize Testing", async function () {
     // this may take some time, don't timeout early
-    this.timeout(0);
+    this.timeout(120000);
 
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
@@ -266,9 +265,9 @@ after("Finalize Testing", async function () {
         const web = await _sp.web;
         await cleanUpAllSubsites(web);
 
-        console.log(`All subsites have been removed.`);
+        console.log("All subsites have been removed.");
 
-        //Delay so that web can be deleted
+        // Delay so that web can be deleted
         await delay(500);
 
         await _sp.web.delete();
@@ -302,7 +301,7 @@ async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> 
 
                 await cleanUpAllSubsites(spObjSub.web);
 
-                //Delay so that web can be deleted
+                // Delay so that web can be deleted
                 await delay(500);
 
                 await spObjSub.web.delete();

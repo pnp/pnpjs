@@ -8,13 +8,11 @@ import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/files";
 import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage, PromotedState } from "@pnp/sp/clientside-pages";
-import { join } from "path";
-
 
 describe("Clientside Pages", function () {
 
     if (testSettings.enableWebTests) {
-        let relUrl: string = '';
+        let relUrl = "";
         let _spRest: SPRest = null;
 
         before(function () {
@@ -69,11 +67,10 @@ describe("Clientside Pages", function () {
 
             const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
 
-            before(async function (done) {
+            before(async function () {
                 this.timeout(0);
                 page = await _spRest.web.addClientsidePage(pageName);
                 await page.save();
-                done;
             });
 
             it("can load a page", async function () {
@@ -92,11 +89,10 @@ describe("Clientside Pages", function () {
 
             const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
 
-            before(async function (done) {
+            before(async function () {
                 this.timeout(0);
                 page = await _spRest.web.addClientsidePage(pageName);
                 await page.save();
-                done;
             });
 
             it("can promote a page", async function () {
@@ -143,10 +139,9 @@ describe("Clientside Pages", function () {
 
             let page: IClientsidePage;
 
-            before(async function (done) {
+            before(async function () {
                 this.timeout(0);
                 page = await _spRest.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
-                done;
             });
 
             it("Should disable", function () {
@@ -253,10 +248,9 @@ describe("Clientside Pages", function () {
 
             let page: IClientsidePage;
 
-            before(async function (done) {
+            before(async function () {
                 this.timeout(0);
                 page = await _spRest.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
-                done;
             });
 
             it(".like()", function () {
@@ -279,7 +273,7 @@ describe("Clientside Pages", function () {
                 let userPrincipalName: string;
                 let pageUrl: string;
 
-                before(async function (done) {
+                before(async function () {
                     this.timeout(0);
                     page = await _spRest.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
                     await page.save();
@@ -292,7 +286,6 @@ describe("Clientside Pages", function () {
                     const ensureTestUser = await _spRest.web.ensureUser(testSettings.testUser);
                     userId = ensureTestUser.data.Id;
                     userPrincipalName = ensureTestUser.data.Email;
-                    done;
                 });
 
                 it(".setAuthorById()", async function () {
@@ -319,7 +312,7 @@ describe("Clientside Pages", function () {
             let page: IClientsidePage;
             let pageUrl: string;
 
-            before(async function (done) {
+            before(async function () {
                 this.timeout(0);
                 page = await _spRest.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
                 await page.save();
@@ -328,7 +321,6 @@ describe("Clientside Pages", function () {
 
                 const serverRelUrl = (await _spRest.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
                 pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
-                done;
             });
 
             it("set", async function () {

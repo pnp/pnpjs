@@ -14,12 +14,11 @@ describe("Attachments", function () {
         let _spRest: SPRest = null;
         let list: IList = null;
 
-        before(async function (done) {
+        before(async function () {
             _spRest = getSP();
             // we need to add a list and some attachments.
             const listData = await _spRest.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
             list = listData.list;
-            done;
         });
 
         it(".attachmentFiles()", async function () {

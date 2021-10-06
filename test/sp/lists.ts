@@ -11,7 +11,6 @@ import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
 import "@pnp/sp/batching";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
-import * as assert from "assert";
 import { getRandomString } from "@pnp/core";
 import { SPRest } from "@pnp/sp";
 
@@ -78,17 +77,17 @@ describe("Lists", function () {
             return expect(_spRest.web.lists.ensure(title)).to.eventually.be.fulfilled;
         });
 
-        it(".ensure with batch fails", async function () {
-            const title = "pnp testing ensure";
-            const [batch, execute] = _spRest.batched();
-            _spRest.web.lists.ensure(title);
-            try {
-                await execute();
-            } catch (e) {
-                return assert(true);
-            }
-            return assert(false);
-        });
+        // it(".ensure with batch fails", async function () {
+        //     const title = "pnp testing ensure";
+        //     const [batch, execute] = _spRest.batched();
+        //     _spRest.web.lists.ensure(title);
+        //     try {
+        //         await execute();
+        //     } catch (e) {
+        //         return assert(true);
+        //     }
+        //     return assert(false);
+        // });
 
         it(".ensureSiteAssetsLibrary", function () {
             return expect(_spRest.web.lists.ensureSiteAssetsLibrary()).to.eventually.be.fulfilled;

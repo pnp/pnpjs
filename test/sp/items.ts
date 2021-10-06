@@ -12,22 +12,21 @@ describe("Items", function () {
     if (testSettings.enableWebTests) {
         let _spRest: SPRest = null;
         let list: IList = null;
-        const listTitle: string = "ItemTestList";
+        const listTitle = "ItemTestList";
 
         before(async function () {
             _spRest = getSP();
             const ler = await _spRest.web.lists.ensure(listTitle, "Used to test item operations");
             list = ler.list;
 
-            if (ler.created) {
-
+            if (ler.data !== undefined) {
                 // add a few items to get started
-                const [batch, execute] = _spRest.batched();
-                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
-                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
-                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
-                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
-                _spRest.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                const [spBatch, execute] = _spRest.batched();
+                spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
+                spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
                 await execute();
             }
         });
