@@ -3,7 +3,14 @@ import { objectDefinedNotNull } from "../util.js";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cloneDeep = require("lodash.clonedeep");
 
-export function From_JulieHatesThisName(source: Timeline<any>, behavior: "replace" | "append" = "append"): TimelinePipe {
+/**
+ * Behavior that will copy all the observers in the source timeline and apply it to the incoming instance
+ *
+ * @param source The source instance from which we will copy the observers
+ * @param behavior replace = observers are cleared before adding, append preserves any observers already present
+ * @returns The mutated this
+ */
+export function CopyFrom(source: Timeline<any>, behavior: "replace" | "append" = "append"): TimelinePipe {
 
     return (instance: Timeline<any>) => {
 

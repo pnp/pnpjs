@@ -1,4 +1,4 @@
-import { body, FromQueryable } from "@pnp/queryable";
+import { body, CopyFromQueryable } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -46,7 +46,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
 
         return {
             data,
-            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(FromQueryable(this)),
+            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(CopyFromQueryable(this)),
         };
     }
 }
@@ -93,7 +93,7 @@ export class _Web extends _SPInstance<IWebInfo> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
             return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length))
-                .using(FromQueryable(this));
+                .using(CopyFromQueryable(this));
         }
         return null;
     }

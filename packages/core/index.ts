@@ -8,4 +8,4 @@ export * from "./extendable.js";
 /**
  * Behavior exports
  */
-export * from "./behaviors/from.js";
+export * from "./behaviors/copyfrom.js";

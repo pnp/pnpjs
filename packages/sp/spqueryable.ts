@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory, FromQueryable } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, CopyFromQuerable } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
@@ -129,7 +129,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         const parent = factory(baseUrl, path);
 
         if (typeof baseUrl === "string") {
-            parent.using(FromQueryable(this));
+            parent.using(CopyFromQuerable(this));
         }
 
         const t = "@target";

@@ -1,4 +1,4 @@
-import { isUrlAbsolute, hOP, TimelinePipe, getGUID, From_JulieHatesThisName, objectDefinedNotNull } from "@pnp/core";
+import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
 import { graphPost } from "./operations.js";
@@ -99,7 +99,7 @@ class BatchQueryable extends _GraphQueryable {
         super(requestBaseUrl, "$batch");
 
         // this will copy over the current observables from the base associated with this batch
-        this.using(From_JulieHatesThisName(base, "replace"));
+        this.using(CopyFrom(base, "replace"));
 
         // this will replace any other parsing present
         this.using(BatchParse());

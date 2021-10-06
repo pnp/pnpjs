@@ -9,7 +9,7 @@ import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../utils/odataUrlFrom.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
 import { File, IFile } from "../files/types.js";
-import { FromQueryable } from "@pnp/queryable";
+import { CopyFromQueryable } from "@pnp/queryable";
 
 
 export class _AppCatalog extends _SPCollection {
@@ -44,8 +44,8 @@ export class _AppCatalog extends _SPCollection {
 
         } else {
 
-            const listId = (await SPCollection(webUrl, "lists").using(FromQueryable(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
-            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(FromQueryable(this))();
+            const listId = (await SPCollection(webUrl, "lists").using(CopyFromQueryable(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
+            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(CopyFromQueryable(this))();
 
             if (listItems && listItems.length > 0) {
 
