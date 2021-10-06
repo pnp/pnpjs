@@ -168,7 +168,6 @@ export default <ConfigCollection>[
 
         postPublishTasks: [],
     },
-    ,
     <PublishSchema>{
 
         name: "publish-v3nightly",

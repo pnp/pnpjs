@@ -1,17 +1,17 @@
 import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
-export type QueryablePreObserver = (this: IQueryable2, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
+export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
-export type QueryableAuthObserver = (this: IQueryable2, url: URL, init: RequestInit) => Promise<[URL, RequestInit]>;
+export type QueryableAuthObserver = (this: IQueryableInternal, url: URL, init: RequestInit) => Promise<[URL, RequestInit]>;
 
-export type QueryableSendObserver = (this: IQueryable2, url: URL, init: RequestInit) => Promise<Response>;
+export type QueryableSendObserver = (this: IQueryableInternal, url: URL, init: RequestInit) => Promise<Response>;
 
-export type QueryableParseObserver = (this: IQueryable2, url: URL, response: Response, result: any | undefined) => Promise<[URL, Response, any]>;
+export type QueryableParseObserver = (this: IQueryableInternal, url: URL, response: Response, result: any | undefined) => Promise<[URL, Response, any]>;
 
-export type QueryablePostObserver = (this: IQueryable2, url: URL, result: any | undefined) => Promise<[URL, any]>;
+export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result: any | undefined) => Promise<[URL, any]>;
 
-export type QueryableDataObserver<T = any> = (this: IQueryable2, result: T) => void;
+export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
 const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
@@ -24,7 +24,7 @@ const DefaultMoments = {
 
 @extendable()
 @invokable()
-export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryable2<R> {
+export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     protected _url: string;
     private _query: Map<string, string>;
@@ -175,9 +175,9 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 export interface Queryable<R = any> extends IInvokable<R> {}
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
-export interface IQueryable2<R = any> extends Timeline<any>, IInvokable {
+export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
     readonly query: Map<string, string>;
-    <T = R>(this: IQueryable2, init?: RequestInit): Promise<T>;
+    <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(behavior: (intance: Timeline<any>) => Timeline<any>): this;
     toRequestUrl(): string;
     toUrl(): string;

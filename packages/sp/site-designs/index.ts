@@ -15,7 +15,7 @@ export {
 } from "./types.js";
 
 declare module "../rest" {
-    interface SPRest2 {
+    interface SPRest {
         readonly siteDesigns: ISiteDesigns;
     }
 }
