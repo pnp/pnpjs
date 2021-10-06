@@ -17,7 +17,7 @@ describe("Calendar", function () {
         let testEventID = "";
 
         // Ensure we have the data to test against
-        before(async function (done) {
+        before(async function () {
             _graphRest = getGraph();
 
             const userInfo = await getValidUser();
@@ -48,7 +48,6 @@ describe("Calendar", function () {
                     "subject": "Let's go for lunch",
                 });
             testEventID = event.data.id;
-            done;
         });
 
         it("Get Calendars", async function () {

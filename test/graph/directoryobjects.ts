@@ -17,7 +17,7 @@ describe("Directory Objects", function () {
         let testParentGroupID = "";
         const testGUID = getGUID();
 
-        before(async function (done) {
+        before(async function () {
             _graphRest = getGraph();
 
             // Get a sample user
@@ -47,7 +47,6 @@ describe("Directory Objects", function () {
                 ],
             });
             testParentGroupID = result.data.id;
-            done;
         });
 
         it("Get User Member Objects", async function () {

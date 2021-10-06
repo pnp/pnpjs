@@ -3,8 +3,6 @@ import { InjectHeaders, IQueryable2, parseBinderWithErrorCheck, Queryable } from
 import { spPost } from "./operations";
 import { _SPQueryable } from "./spqueryable";
 import { SPRest } from "./rest.js";
-import * as clone from "lodash";
-import { ISPQueryable } from ".";
 
 declare module "./rest" {
     interface SPRest {

@@ -21,7 +21,7 @@ describe("DefaultColumnValues", function () {
         let list: IList = null;
 
         // TODO: Figure out typings of addMultiChoice
-        before(async function (done) {
+        before(async function () {
             _spRest = getSP();
             const ler = await _spRest.web.lists.ensure(listName, "", 101);
             list = ler.list;
@@ -33,7 +33,6 @@ describe("DefaultColumnValues", function () {
                 batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: { results: ["Item 1", "Item 2", "Item 3"] } });
                 await execute();
             }
-            done;
         });
 
         it("set root folder default values", async function () {
