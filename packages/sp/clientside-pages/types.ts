@@ -42,10 +42,6 @@ export type ClientsidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPag
  */
 export type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 
-function initFrom(o: ISPQueryable, url: string): IClientsidePage {
-    return ClientsidePage(extractWebUrl(o.toUrl()), url).using(CopyFromQueryable(o));
-}
-
 /**
  * Represents the data and methods associated with client side "modern" pages
  */
@@ -71,14 +67,9 @@ export class _ClientsidePage extends _SPQueryable {
 
         this._bannerImageDirty = false;
         this._bannerImageThumbnailUrlDirty = false;
+        this.parentUrl = "";
 
-        // ensure we have a good url to build on for the pages api
-        if (typeof baseUrl === "string") {
-            this.parentUrl = "";
-            this._url = combine(extractWebUrl(baseUrl), path);
-        } else {
-            this.assign(initFrom(baseUrl, null), path);
-        }
+        this._url = combine(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
@@ -356,7 +347,7 @@ export class _ClientsidePage extends _SPQueryable {
 
         // we try and check out the page for the user
         if (!this.json.IsPageCheckedOutToCurrentUser) {
-            await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
+            await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/checkoutpage`));
         }
 
         // create the body for the save request
@@ -379,13 +370,13 @@ export class _ClientsidePage extends _SPQueryable {
             };
         }
 
-        const updater = initFrom(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
+        const updater = ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/savepage`);
         await spPost<boolean>(updater, headers({ "if-match": "*" }, body(saveBody)));
 
         let r = true;
 
         if (publish) {
-            r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/publish`));
+            r = await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/publish`));
             if (r) {
                 this.json.IsPageCheckedOutToCurrentUser = false;
             }
@@ -406,7 +397,7 @@ export class _ClientsidePage extends _SPQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        const d = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/discardPage`));
+        const d = await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/discardPage`));
 
         this.fromJSON(d);
     }
@@ -602,7 +593,7 @@ export class _ClientsidePage extends _SPQueryable {
         // get the filename we will use
         const filename = fileUrl.pathname.split(/[\\/]/i).pop();
 
-        const request = initFrom(this, "_api/sitepages/AddImageFromExternalUrl");
+        const request = ClientsidePage(this, "_api/sitepages/AddImageFromExternalUrl");
         request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
         request.query.set("pageName", `'${encodeURIComponent(pageName)}'`);
         request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
@@ -664,24 +655,11 @@ export class _ClientsidePage extends _SPQueryable {
      * @param selects Specific set of fields to include when getting the item
      */
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
-
-        const initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        const initer = ClientsidePage(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
         const item = List(listData["odata.id"]).using(CopyFromQueryable(this)).items.getById(this.json.Id);
         const itemData: T = await item.select(...selects)();
-        return Object.assign(Item(odataUrlFrom(itemData))).using(CopyFromQueryable(this), itemData);
-    }
-
-    /**
-     * Extends this queryable from the provided parent
-     *
-     * @param parent Parent queryable from which we will derive a base url
-     * @param path Additional path
-     */
-    protected assign(parent: _ClientsidePage, path?: string) {
-        this.parentUrl = parent.parentUrl;
-        this._url = combine(parent.parentUrl, path || "");
-        this.using(CopyFromQueryable(parent));
+        return Object.assign(Item(odataUrlFrom(itemData)).using(CopyFromQueryable(this)), itemData);
     }
 
     protected getCanvasContent1(): string {
@@ -793,7 +771,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
+        return await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**
@@ -902,8 +880,8 @@ const ClientsidePage = (
 export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePage> => {
 
     const item = await file.getItem<{ Id: number }>();
-    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true);
-    return page.using(CopyFromQueryable(file)).load();
+    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true).using(CopyFromQueryable(file));
+    return page.load();
 };
 
 /**
@@ -922,7 +900,7 @@ export const CreateClientsidePage =
         pageName = pageName.replace(/\.aspx$/i, "");
 
         // initialize the page, at this point a checked-out page with a junk filename will be created.
-        const pageInitData: IPageData = await spPost(initFrom(web, "_api/sitepages/pages"), body({
+        const pageInitData: IPageData = await spPost(ClientsidePage(web, "_api/sitepages/pages"), body({
             PageLayoutType,
             PromotedState: promotedState,
         }));

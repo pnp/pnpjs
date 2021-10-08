@@ -1,35 +1,35 @@
 import { expect } from "chai";
-import { PnPClientStorageWrapper } from "@pnp/core";
+import { PnPClientStorage } from "@pnp/core";
 
 describe("Storage", function () {
 
     describe("PnPClientStorageWrapper", function () {
 
-        let wrapper: PnPClientStorageWrapper;
+        let storage: PnPClientStorage;
 
         beforeEach(function () {
-            wrapper = new PnPClientStorageWrapper(localStorage);
+            storage = new PnPClientStorage();
         });
 
         it("Add and Get a value", function () {
-            wrapper.put("test", "value");
-            const ret = wrapper.get("test");
+            storage.local.put("test", "value");
+            const ret = storage.local.get("test");
             expect(ret).to.eq("value");
         });
 
         it("Add two values, remove one and still return the other", function () {
-            wrapper.put("test1", "value1");
-            wrapper.put("test2", "value2");
-            wrapper.delete("test1");
-            const ret = wrapper.get("test2");
+            storage.local.put("test1", "value1");
+            storage.local.put("test2", "value2");
+            storage.local.delete("test1");
+            const ret = storage.local.get("test2");
             expect(ret).to.eq("value2");
         });
 
         it("Use getOrPut to add a value using a getter function and return it", function () {
-            wrapper.getOrPut("test", function () {
+            storage.local.getOrPut("test", function () {
                 return new Promise(() => "value");
             }).then(function () {
-                const ret = wrapper.get("test");
+                const ret = storage.local.get("test");
                 expect(ret).to.eq("value");
             });
         });

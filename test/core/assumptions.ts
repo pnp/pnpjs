@@ -32,32 +32,31 @@ describe("Assumptions", function () {
 
         const test5 = { ...u };
 
-        expect(test1).to.eq({
+        expect(test1, "test 1").to.eql({
             dog: "cat",
             thing: "another",
             bob: 22,
         });
 
-        expect(test2).to.eq({
+        expect(test2, "test 2").to.eql({
             dog: "cat",
             thing: "another",
             bob: 22,
         });
 
-        expect(test3).to.eq({
+        expect(test3, "test 3").to.eql({
             dog: "not cat",
             thing: "another",
             bob: 22,
         });
 
-        expect(test4).to.eq({
+        expect(test4, "test 4").to.eql({
             dog: "cat",
             thing: "another",
             bob: 22,
         });
 
-        expect(test5).to.eq({});
+        expect(test5, "test 5").to.eql({});
 
     });
-
 });
