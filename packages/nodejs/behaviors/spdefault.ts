@@ -28,7 +28,7 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
             NodeFetchWithRetry(),
             DefaultParse());
 
-        instance.on.pre(async (url, init, result) => {
+        instance.on.pre.prepend(async (url, init, result) => {
 
             if (!isUrlAbsolute(url) && isUrlAbsolute(props.baseUrl)) {
                 url = combine(props.baseUrl, url);
