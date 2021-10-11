@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { Caching, CachingPessimisticRefresh } from "@pnp/queryable";
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { SPDefault } from "@pnp/nodejs";
 
 import { testSettings } from "../main.js";
@@ -13,7 +13,7 @@ describe("Behaviors", function () {
         it("CachingPessimistic", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = sp(testSettings.sp.webUrl).using(SPDefault({
+                const spInstance = spfi(testSettings.sp.webUrl).using(SPDefault({
                     msal: {
                         config: testSettings.sp.msal.init,
                         scopes: testSettings.sp.msal.scopes,
@@ -44,7 +44,7 @@ describe("Behaviors", function () {
         it("Caching", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = sp(testSettings.sp.webUrl).using(SPDefault({
+                const spInstance = spfi(testSettings.sp.webUrl).using(SPDefault({
                     msal: {
                         config: testSettings.sp.msal.init,
                         scopes: testSettings.sp.msal.scopes,

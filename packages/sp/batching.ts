@@ -2,22 +2,22 @@ import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe } from "@pnp/co
 import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations";
 import { _SPQueryable } from "./spqueryable";
-import { SPRest } from "./rest.js";
+import { SPFI } from "./fi.js";
 
-declare module "./rest" {
-    interface SPRest {
+declare module "./fi" {
+    interface SPFI {
 
         /**
          * Creates a batch behavior and associated execute function
          *
          */
-        batched(): [SPRest, () => Promise<void>];
+        batched(): [SPFI, () => Promise<void>];
     }
 }
 
-SPRest.prototype.batched = function (this: SPRest): [SPRest, () => Promise<void>] {
+SPFI.prototype.batched = function (this: SPFI): [SPFI, () => Promise<void>] {
 
-    const batchedRest = new SPRest(this._root);
+    const batchedRest = new SPFI(this._root);
 
     const [behavior, execute] = createBatch(batchedRest._root);
 

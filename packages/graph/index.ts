@@ -1,4 +1,4 @@
-export { graph, GraphRest } from "./rest.js";
+export { graphfi as graphfi, GraphFI as GraphFI } from "./fi.js";
 
 export {
     IGraphQueryableCollection,

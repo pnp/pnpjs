@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPFI } from "../fi.js";
 import { ITermStore, TermStore } from "./types.js";
 
 export {
@@ -33,16 +33,16 @@ export {
     Terms,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         readonly termStore: ITermStore;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "termStore", {
+Reflect.defineProperty(SPFI.prototype, "termStore", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         return this.create(TermStore);
     },
 });

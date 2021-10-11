@@ -9,7 +9,7 @@ import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
 import findupSync = require("findup-sync");
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
     r();
@@ -22,7 +22,7 @@ const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 describe.skip("AppCatalog", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         let appCatalog: IAppCatalog;
         // let appCatWeb: IWeb;
         const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
@@ -30,9 +30,9 @@ describe.skip("AppCatalog", function () {
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
             // appCatWeb = await sp.getTenantAppCatalogWeb();
-            appCatalog = _spRest.web.getAppCatalog();
+            appCatalog = _spfi.web.getAppCatalog();
             // return Promise.resolve();
         });
 
@@ -64,14 +64,14 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it installs an app on a web", async function () {
-            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
+            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
             return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
-            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
+            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
             let app = { InstalledVersion: "" };
             let retryCount = 0;
 
@@ -88,7 +88,7 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it upgrades an app", async function () {
-            const myApp = _spRest.web.getAppCatalog().getAppById(appId);
+            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
             return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 

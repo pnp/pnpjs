@@ -10,29 +10,29 @@ import "@pnp/sp/files";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users";
 import { SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
-import { SPRest } from "@pnp/sp/rest.js";
+import { SPFI } from "@pnp/sp";
 
 describe("Sharing", function () {
 
     let webAbsUrl = "";
     let webRelativeUrl = "";
-    let _spRest: SPRest;
+    let _spfi: SPFI;
 
     before(async function () {
-        _spRest = getSP();
+        _spfi = getSP();
 
-        const urls = await _spRest.web.select("ServerRelativeUrl", "Url")();
+        const urls = await _spfi.web.select("ServerRelativeUrl", "Url")();
 
         // make sure we have the correct server relative url
         webRelativeUrl = urls.ServerRelativeUrl;
         webAbsUrl = urls.Url;
 
         // we need a doc lib with a file and folder in it
-        const ler = await _spRest.web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
+        const ler = await _spfi.web.lists.ensure("SharingTestLib", "Used to test sharing", 101);
 
         // we need a user to share to
         if (testSettings.testUser?.length > 0) {
-            await _spRest.web.ensureUser(testSettings.testUser);
+            await _spfi.web.ensureUser(testSettings.testUser);
         }
 
         // add a file and folder
@@ -50,7 +50,7 @@ describe("Sharing", function () {
 
             before(function () {
 
-                folder = _spRest.web.getFolderByServerRelativePath("/" + combine(webRelativeUrl, "SharingTestLib/MyTestFolder"));
+                folder = _spfi.web.getFolderByServerRelativePath("/" + combine(webRelativeUrl, "SharingTestLib/MyTestFolder"));
             });
 
             // // these tests cover share link
@@ -140,7 +140,7 @@ describe("Sharing", function () {
 
             before(function () {
 
-                file = _spRest.web.getFileByServerRelativePath("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
+                file = _spfi.web.getFileByServerRelativePath("/" + combine(webRelativeUrl, "SharingTestLib/text.txt"));
             });
 
             it("Should get a sharing link with default settings.", function () {
@@ -228,7 +228,7 @@ describe("Sharing", function () {
 
             before(function () {
 
-                item = _spRest.web.lists.getByTitle("SharingTestLib").items.getById(1);
+                item = _spfi.web.lists.getByTitle("SharingTestLib").items.getById(1);
             });
 
             it("Should get a sharing link with default settings.", function () {
@@ -322,7 +322,7 @@ describe("Sharing", function () {
             if (testSettings.testUser?.length > 0) {
                 it("Should allow you to share an object by url", function () {
 
-                    return expect(_spRest.web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), testSettings.testUser, SharingRole.View))
+                    return expect(_spfi.web.shareObject(combine(webAbsUrl, "SharingTestLib/test.txt"), testSettings.testUser, SharingRole.View))
                         .to.eventually.be.fulfilled
                         .and.have.property("ErrorMessage").that.is.null;
                 });

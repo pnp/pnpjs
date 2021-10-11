@@ -1,4 +1,4 @@
-import { SPRest } from "../rest";
+import { SPFI } from "../fi";
 import { ISite, Site } from "./types.js";
 
 export {
@@ -9,16 +9,16 @@ export {
     IDocumentLibraryInformation,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         readonly site: ISite;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "site", {
+Reflect.defineProperty(SPFI.prototype, "site", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         return this.create(Site);
     },
 });

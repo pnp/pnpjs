@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { IUser, User, IUsers, Users } from "./types.js";
 
 export {
@@ -10,25 +10,25 @@ export {
     People,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly me: IUser;
         readonly users: IUsers;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "me", {
+Reflect.defineProperty(GraphFI.prototype, "me", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(User, "me");
     },
 });
 
-Reflect.defineProperty(GraphRest.prototype, "users", {
+Reflect.defineProperty(GraphFI.prototype, "users", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(Users);
     },
 });

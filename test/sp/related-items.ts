@@ -8,12 +8,12 @@ import "@pnp/sp/folders/list";
 import "@pnp/sp/files/folder";
 import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 describe("Related Items", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         let sourceList: IList = null;
         let targetList: IList = null;
         let sourceListName = "";
@@ -21,13 +21,13 @@ describe("Related Items", function () {
         let webUrl = "";
 
         before(async function (done) {
-            _spRest = getSP();
+            _spfi = getSP();
 
             // we need two lists to use for creating related items.
-            const ler1 = await _spRest.web.lists.ensure("RelatedItemsSourceList", "", 107);
-            const ler2 = await _spRest.web.lists.ensure("RelatedItemsTargetList", "", 107);
+            const ler1 = await _spfi.web.lists.ensure("RelatedItemsSourceList", "", 107);
+            const ler2 = await _spfi.web.lists.ensure("RelatedItemsTargetList", "", 107);
 
-            webUrl = await _spRest.web.select("ServerRelativeUrl")().then(r => r.ServerRelativeUrl);
+            webUrl = await _spfi.web.select("ServerRelativeUrl")().then(r => r.ServerRelativeUrl);
 
             sourceList = ler1.list;
             targetList = ler2.list;
@@ -42,16 +42,16 @@ describe("Related Items", function () {
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
 
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
         });
 
         it("addSingleLinkToUrl", async function () {
 
-            const file = await _spRest.web.defaultDocumentLibrary.rootFolder.files
+            const file = await _spfi.web.defaultDocumentLibrary.rootFolder.files
                 .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
 
-            await _spRest.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file.ServerRelativeUrl);
+            await _spfi.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file.ServerRelativeUrl);
         });
 
         // I can't figure out a reason for this method to exist or how to really test it.
@@ -61,21 +61,21 @@ describe("Related Items", function () {
 
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
-            await _spRest.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            await _spfi.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
         });
 
         it("getRelatedItems", async function () {
 
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
             const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
 
-            const items = await _spRest.web.relatedItems.getRelatedItems(sourceListName, sourceItem.Id);
+            const items = await _spfi.web.relatedItems.getRelatedItems(sourceListName, sourceItem.Id);
 
             return expect(items).to.be.an.instanceOf(Array).and.have.lengthOf(2);
         });
@@ -84,12 +84,12 @@ describe("Related Items", function () {
 
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
             const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spRest.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
 
-            const items = await _spRest.web.relatedItems.getPageOneRelatedItems(sourceListName, sourceItem.Id);
+            const items = await _spfi.web.relatedItems.getPageOneRelatedItems(sourceListName, sourceItem.Id);
 
             return expect(items).to.be.an.instanceOf(Array).and.have.lengthOf(2);
         });
