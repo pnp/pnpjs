@@ -3,13 +3,8 @@ import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
-import "@pnp/graph/users";
-import "@pnp/graph/groups";
 import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/site-users";
-import "@pnp/sp/batching";
-import "@pnp/graph/batching";
+import "@pnp/sp/clientside-pages";
 
 declare var process: { exit(code?: number): void };
 
@@ -53,17 +48,11 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
-        const [batchedSP, execute] = sp2.batched();
 
-        let res = [];
-
-        batchedSP.web().then(r => res.push(r));
-
-        batchedSP.web.lists().then(r => res.push(r));
-
-        await execute();
-
-        console.log(res);
+        const page = await sp2.web.loadClientsidePage("/sites/dev/sitepages/name333.aspx");
+        page.title = "Did it work?";
+        await page.save();
+        console.log("here");
 
     } catch (e) {
 
@@ -71,6 +60,16 @@ export async function Example(settings: ITestingSettings) {
     }
 
     console.log("here");
+
+    // const [batchedSP, execute] = sp2.batched();
+
+    // let res = [];
+
+    // batchedSP.web().then(r => res.push(r));
+
+    // batchedSP.web.lists().then(r => res.push(r));
+
+    // await execute();
 
     // try {
 
