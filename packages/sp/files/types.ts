@@ -394,16 +394,16 @@ export class _File extends _SPInstance<IFileInfo> {
 
         // report that we are starting
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });
-        let currentPointer = await this.startUpload(uploadId, file.slice(0, chunkSize));
+        let currentPointer = await File(this).startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
         for (let i = 2; i < totalBlocks; i++) {
             progress({ uploadId, blockNumber: i, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
-            currentPointer = await this.continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
+            currentPointer = await File(this).continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
         }
 
         progress({ uploadId, blockNumber: totalBlocks, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
-        return this.finishUpload(uploadId, currentPointer, file.slice(currentPointer));
+        return File(this).finishUpload(uploadId, currentPointer, file.slice(currentPointer));
     }
 
     /**

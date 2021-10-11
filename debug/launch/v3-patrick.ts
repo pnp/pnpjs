@@ -4,7 +4,9 @@ import { LogLevel, PnPLogging } from "@pnp/logging";
 import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 import "@pnp/sp/webs";
-import "@pnp/sp/clientside-pages";
+import "@pnp/sp/lists";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
 
 declare var process: { exit(code?: number): void };
 
@@ -48,11 +50,9 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
+        const y = await sp2.web();
 
-        const page = await sp2.web.loadClientsidePage("/sites/dev/sitepages/name333.aspx");
-        page.title = "Did it work?";
-        await page.save();
-        console.log("here");
+        console.log(JSON.stringify(y));
 
     } catch (e) {
 

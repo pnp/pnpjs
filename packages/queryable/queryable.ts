@@ -161,7 +161,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         }, 0);
 
         return new Promise((resolve, reject) => {
-            this.on.data(resolve);
+            this.on.data.replace(resolve);
             this.on.error(reject);
         });
     }
