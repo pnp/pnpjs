@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { Subscriptions, ISubscriptions } from "./types.js";
 
 export {
@@ -9,16 +9,16 @@ export {
     Subscriptions,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly subscriptions: ISubscriptions;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
+Reflect.defineProperty(GraphFI.prototype, "subscriptions", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(Subscriptions);
     },
 });

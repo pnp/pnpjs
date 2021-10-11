@@ -5,23 +5,23 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import "@pnp/sp/batching";
 import { IList } from "@pnp/sp/lists";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 describe("Items", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         let list: IList = null;
         const listTitle = "ItemTestList";
 
         before(async function () {
-            _spRest = getSP();
-            const ler = await _spRest.web.lists.ensure(listTitle, "Used to test item operations");
+            _spfi = getSP();
+            const ler = await _spfi.web.lists.ensure(listTitle, "Used to test item operations");
             list = ler.list;
 
             if (ler.data !== undefined) {
                 // add a few items to get started
-                const [spBatch, execute] = _spRest.batched();
+                const [spBatch, execute] = _spfi.batched();
                 spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
                 spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
                 spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });

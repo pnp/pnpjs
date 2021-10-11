@@ -6,18 +6,18 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 import { IList } from "@pnp/sp/lists";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 describe("Attachments", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         let list: IList = null;
 
         before(async function () {
-            _spRest = getSP();
+            _spfi = getSP();
             // we need to add a list and some attachments.
-            const listData = await _spRest.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
+            const listData = await _spfi.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
             list = listData.list;
         });
 

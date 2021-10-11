@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { IInvitations, Invitations } from "./types.js";
 
 export {
@@ -7,16 +7,16 @@ export {
     Invitations,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly invitations: IInvitations;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "invitations", {
+Reflect.defineProperty(GraphFI.prototype, "invitations", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         this.create(Invitations);
     },
 });

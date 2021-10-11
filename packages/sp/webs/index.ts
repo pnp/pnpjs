@@ -1,5 +1,5 @@
 import { Web } from "./types.js";
-import { SPRest } from "../rest.js";
+import { SPFI } from "../fi.js";
 
 export {
     IWeb,
@@ -13,8 +13,8 @@ export {
     IWebInfosData,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
 
         /**
          * Access to the current web instance
@@ -23,10 +23,10 @@ declare module "../rest" {
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "web", {
+Reflect.defineProperty(SPFI.prototype, "web", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         return this.create(Web);
     },
 });

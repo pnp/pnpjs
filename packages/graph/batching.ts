@@ -2,22 +2,22 @@ import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNu
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
 import { graphPost } from "./operations.js";
-import { GraphRest } from "./rest.js";
+import { GraphFI } from "./fi.js";
 
-declare module "./rest" {
-    interface GraphRest {
+declare module "./fi" {
+    interface GraphFI {
 
         /**
          * Creates a batch behavior and associated execute function
          *
          */
-        batched(): [GraphRest, () => Promise<void>];
+        batched(): [GraphFI, () => Promise<void>];
     }
 }
 
-GraphRest.prototype.batched = function (this: GraphRest): [GraphRest, () => Promise<void>] {
+GraphFI.prototype.batched = function (this: GraphFI): [GraphFI, () => Promise<void>] {
 
-    const batchedRest = new GraphRest(this._root);
+    const batchedRest = new GraphFI(this._root);
 
     const [behavior, execute] = createBatch(batchedRest._root);
 

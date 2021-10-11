@@ -10,24 +10,24 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/fields/list";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/batching";
-import { SPRest } from "@pnp/sp/rest.js";
+import { SPFI } from "@pnp/sp";
 import { IList } from "@pnp/sp/lists";
 
 describe("DefaultColumnValues", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         const listName = "DefaultColumnValuesTests";
         let list: IList = null;
 
         // TODO: Figure out typings of addMultiChoice
         before(async function () {
-            _spRest = getSP();
-            const ler = await _spRest.web.lists.ensure(listName, "", 101);
+            _spfi = getSP();
+            const ler = await _spfi.web.lists.ensure(listName, "", 101);
             list = ler.list;
 
             if (ler.created) {
-                const [batchSP, execute] = _spRest.batched();
+                const [batchSP, execute] = _spfi.batched();
                 batchSP.web.lists.getByTitle(listName).fields.addText("TextField");
                 batchSP.web.lists.getByTitle(listName).fields.addNumber("NumberField");
                 batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: { results: ["Item 1", "Item 2", "Item 3"] } });

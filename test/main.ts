@@ -1,16 +1,16 @@
 import { delay, getGUID, TimelinePipe } from "@pnp/core";
 import { IInvokable, Queryable } from "@pnp/queryable";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import * as findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
-import { SPRest } from "@pnp/sp/rest.js";
+import { SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IWeb, IWebInfo } from "@pnp/sp/webs";
-import { graph, GraphRest } from "@pnp/graph/rest.js";
+import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
 
 chai.use(chaiAsPromised);
@@ -18,9 +18,9 @@ chai.use(chaiAsPromised);
 declare let process: any;
 const testStart = Date.now();
 
-let _sp: SPRest = null;
-let _spRoot: SPRest = null;
-let _graph: GraphRest = null;
+let _sp: SPFI = null;
+let _spRoot: SPFI = null;
+let _graph: GraphFI = null;
 
 // we need to load up the appropriate settings based on where we are running
 let settings: ITestingSettings = null;
@@ -165,7 +165,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         siteUsed = true;
     }
 
-    const rootSP = sp(ts.sp.webUrl).using(SPDefault({
+    const rootSP = spfi(ts.sp.webUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
@@ -193,7 +193,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     //     };
     // }
 
-    _sp = sp(ts.sp.webUrl).using(SPDefault({
+    _sp = spfi(ts.sp.webUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
@@ -202,7 +202,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
 }
 
 async function graphTestSetup(): Promise<void> {
-    _graph = graph().using(GraphDefault({
+    _graph = graphfi().using(GraphDefault({
         msal: {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
@@ -212,11 +212,11 @@ async function graphTestSetup(): Promise<void> {
 
 export const testSettings: ISettings = settings.testing;
 
-export const getSP = function (): SPRest {
+export const getSP = function (): SPFI {
     return _sp;
 };
 
-export const getGraph = function (): GraphRest {
+export const getGraph = function (): GraphFI {
     return _graph;
 };
 
@@ -290,7 +290,7 @@ async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> 
             console.log(`${w.length} subwebs were found.`);
             w.forEach(async (e: IWebInfo) => {
 
-                const spObjSub = sp(e["odata.id"]).using(SPDefault({
+                const spObjSub = spfi(e["odata.id"]).using(SPDefault({
                     msal: {
                         config: settings.testing.sp.msal.init,
                         scopes: settings.testing.sp.msal.scopes,

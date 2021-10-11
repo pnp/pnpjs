@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { IGroups, Groups } from "./types.js";
 
 export {
@@ -10,16 +10,16 @@ export {
     IGroups,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly groups: IGroups;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "groups", {
+Reflect.defineProperty(GraphFI.prototype, "groups", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(Groups);
     },
 });

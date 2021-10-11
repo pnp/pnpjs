@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPFI } from "../fi.js";
 import { Profiles, IProfiles } from "./types.js";
 
 export {
@@ -15,16 +15,16 @@ export {
     UrlZone,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         readonly profiles: IProfiles;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "profiles", {
+Reflect.defineProperty(SPFI.prototype, "profiles", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         this.create(Profiles);
     },
 });

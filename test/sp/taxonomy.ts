@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/sp/taxonomy";
 import { getSP, testSettings } from "../main.js";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 /**
  * Skipping for now as the API is not fully deployed or stable yet. These tests passed within my tenant.
@@ -10,21 +10,21 @@ import { SPRest } from "@pnp/sp";
 describe("Taxonomy", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
 
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         it("Get Term Store Info", async function () {
 
-            const info = await _spRest.termStore();
+            const info = await _spfi.termStore();
             return expect(info).has.property("id");
         });
 
         it("Get Term Group Info (groups)", async function () {
 
-            const info = await _spRest.termStore.groups();
+            const info = await _spfi.termStore.groups();
 
             if (info.length < 1) {
                 return;
@@ -35,13 +35,13 @@ describe("Taxonomy", function () {
 
         it("Get Term Group By Id Info (groups)", async function () {
 
-            const info = await _spRest.termStore.groups();
+            const info = await _spfi.termStore.groups();
 
             if (info.length < 1) {
                 return;
             }
 
-            return expect(_spRest.termStore.groups.getById(info[0].id)()).to.eventually.have.property("id");
+            return expect(_spfi.termStore.groups.getById(info[0].id)()).to.eventually.have.property("id");
         });
 
 
@@ -50,13 +50,13 @@ describe("Taxonomy", function () {
          */
         it("Get Term Set Info (sets)", async function () {
 
-            const info = await _spRest.termStore.groups.top(1)();
+            const info = await _spfi.termStore.groups.top(1)();
 
             if (info.length < 1) {
                 return;
             }
 
-            const info2 = await _spRest.termStore.groups.getById(info[0].id).sets();
+            const info2 = await _spfi.termStore.groups.getById(info[0].id).sets();
 
             if (info2.length < 1) {
                 return;
@@ -67,13 +67,13 @@ describe("Taxonomy", function () {
 
         it("Get Term Set By Id Info (sets)", async function () {
 
-            const info = await _spRest.termStore.groups.top(1)();
+            const info = await _spfi.termStore.groups.top(1)();
 
             if (info.length < 1) {
                 return;
             }
 
-            const group = _spRest.termStore.groups.getById(info[0].id);
+            const group = _spfi.termStore.groups.getById(info[0].id);
             const info2 = await group.sets();
 
             if (info2.length < 1) {
@@ -89,13 +89,13 @@ describe("Taxonomy", function () {
          */
         it("Get Terms Info (sets)", async function () {
 
-            const info = await _spRest.termStore.groups.top(1)();
+            const info = await _spfi.termStore.groups.top(1)();
 
             if (info.length < 1) {
                 return;
             }
 
-            const group = _spRest.termStore.groups.getById(info[0].id);
+            const group = _spfi.termStore.groups.getById(info[0].id);
             const info2 = await group.sets();
 
             if (info2.length < 1) {
@@ -107,13 +107,13 @@ describe("Taxonomy", function () {
 
         it("Get Term Info (sets)", async function () {
 
-            const info = await _spRest.termStore.groups.top(1)();
+            const info = await _spfi.termStore.groups.top(1)();
 
             if (info.length < 1) {
                 return;
             }
 
-            const group = _spRest.termStore.groups.getById(info[0].id);
+            const group = _spfi.termStore.groups.getById(info[0].id);
             const info2 = await group.sets();
 
             if (info2.length < 1) {

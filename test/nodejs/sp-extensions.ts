@@ -10,23 +10,23 @@ import { getRandomString, isFunc } from "@pnp/core";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 // npm run test -- -g 'nodejs - sp-extensions'
 // TODO: Figured out what is wrong with these tests.
 describe.skip("nodejs - sp-extensions", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         it("Should allow reading of a stream", async function () {
 
             const content = "Some test text content.";
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
-            const files = _spRest.web.defaultDocumentLibrary.rootFolder.files;
+            const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
             await files.addUsingPath(name, content);
 
             const stream = await files.getByUrl(name).getStream();
@@ -57,7 +57,7 @@ describe.skip("nodejs - sp-extensions", function () {
             fs.writeFileSync(tmpFilePath, content);
 
             const stream = fs.createReadStream(tmpFilePath);
-            const files = _spRest.web.defaultDocumentLibrary.rootFolder.files;
+            const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
 
             await files.addChunked(name, stream, null, true, 10);
 
@@ -77,7 +77,7 @@ describe.skip("nodejs - sp-extensions", function () {
             const name = `Testing addChunked (with Nodejs buffer) - ${getRandomString(4)}.txt`;
             const content = "Some test text content.";
 
-            const files = _spRest.web.defaultDocumentLibrary.rootFolder.files;
+            const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
 
             await files.addChunked(name, content as any, null, true, 10);
 

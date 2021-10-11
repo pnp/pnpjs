@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-
 ### Added
 
 - common/core:
@@ -26,9 +25,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Console listener now supports pretty printing options with colors and improved formatting (@thechriskent)
 
 - sp:
+  - Renamed export "sp" -> "spfi" with type SPFI
   - Changed to using minimal metadata for all requests
-  - web.update return changed to Promise<void>
-  - web.getParentWeb return changed to Promise<IWeb>
+  - web.update return changed to `Promise<void>`
+  - web.getParentWeb return changed to `Promise<IWeb>`
   - moved items.getAll to seperate import @pnp/sp/items/get-all
   - files.getByName => files.getByUrl
   - folders.getByName => folders.getByUrl
@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
   - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
   - odataUrlFrom moved to utils folder
+
+- graph:
+  - Renamed export "graph" -> "graphfi" with type GraphFI
   
 ### Removed
 

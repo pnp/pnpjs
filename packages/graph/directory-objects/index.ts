@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { IDirectoryObjects, DirectoryObjects } from "./types.js";
 
 export {
@@ -9,16 +9,16 @@ export {
     IDirectoryObjects,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly directoryObjects: IDirectoryObjects;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
+Reflect.defineProperty(GraphFI.prototype, "directoryObjects", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(DirectoryObjects);
     },
 });
