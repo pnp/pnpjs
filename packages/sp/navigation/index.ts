@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPFI } from "../fi.js";
 import { NavigationService, INavigationService } from "./types.js";
 
 import "./web.js";
@@ -20,16 +20,16 @@ export {
     INavNodeInfo,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         readonly navigation: INavigationService;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "navigation", {
+Reflect.defineProperty(SPFI.prototype, "navigation", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         this.create(<any>NavigationService);
     },
 });

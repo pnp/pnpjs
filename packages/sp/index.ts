@@ -5,9 +5,9 @@ export * from "./decorators.js";
 export * from "./operations.js";
 
 export {
-    SPRest,
-    sp,
-} from "./rest.js";
+    SPFI as SPFI,
+    spfi as spfi,
+} from "./fi.js";
 
 export * from "./types.js";
 

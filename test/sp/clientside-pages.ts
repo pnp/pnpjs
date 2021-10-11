@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { getSP, testSettings } from "../main.js";
-import { SPRest } from "@pnp/sp/rest.js";
+import { SPFI } from "@pnp/sp";
 import { getRandomString, combine } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users";
@@ -13,39 +13,39 @@ describe("Clientside Pages", function () {
 
     if (testSettings.enableWebTests) {
         let relUrl = "";
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
 
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
             relUrl = "/" + testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
         });
 
         it("web.addClientSidePage", async function () {
             const pageName = `TestingAdd_${getRandomString(4)}.aspx`;
             const pageUrl = combine(relUrl, "SitePages", pageName);
-            await _spRest.web.addClientsidePage(pageName);
-            const page = await _spRest.web.getFileByServerRelativePath(pageUrl)();
+            await _spfi.web.addClientsidePage(pageName);
+            const page = await _spfi.web.getFileByServerRelativePath(pageUrl)();
             return expect(page.Name).to.equal(pageName);
         });
 
         it("CreateClientSidePage", function () {
 
-            return expect(CreateClientsidePage(_spRest.web, `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+            return expect(CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
         });
 
         it("web.addClientSidePage - promoted state 1", async function () {
-            const p = await _spRest.web.addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`, "A Title", "Article", PromotedState.PromoteOnPublish);
+            const p = await _spfi.web.addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`, "A Title", "Article", PromotedState.PromoteOnPublish);
             return expect(p.save(true)).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage - promoted state 1", async function () {
-            const p = await CreateClientsidePage(_spRest.web, `TestingAdd_${getRandomString(4)}.aspx`, "title", "Article", PromotedState.PromoteOnPublish);
+            const p = await CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title", "Article", PromotedState.PromoteOnPublish);
             return expect(p.save(true)).to.eventually.be.fulfilled;
         });
 
         it("CreateClientSidePage - SingleWebPartAppPage", function () {
 
-            const promise = CreateClientsidePage(_spRest.web, `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
+            const promise = CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
             return expect(promise).to.eventually.be.fulfilled;
         });
 
@@ -53,11 +53,11 @@ describe("Clientside Pages", function () {
 
             const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
 
-            await _spRest.web.addClientsidePage(pageFileName);
+            await _spfi.web.addClientsidePage(pageFileName);
 
             // need to make the path relative
             const rel = testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
-            const promise = ClientsidePageFromFile(_spRest.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
+            const promise = ClientsidePageFromFile(_spfi.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
             return expect(promise).to.eventually.be.fulfilled;
         });
 
@@ -69,7 +69,7 @@ describe("Clientside Pages", function () {
 
             before(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(pageName);
+                page = await _spfi.web.addClientsidePage(pageName);
                 await page.save();
             });
 
@@ -77,7 +77,7 @@ describe("Clientside Pages", function () {
 
                 const serverRelativePath = combine("/", testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/")), "SitePages", pageName);
 
-                page = await _spRest.web.loadClientsidePage(serverRelativePath);
+                page = await _spfi.web.loadClientsidePage(serverRelativePath);
 
                 return expect(page).to.not.be.null.and.not.undefined;
             });
@@ -91,7 +91,7 @@ describe("Clientside Pages", function () {
 
             before(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(pageName);
+                page = await _spfi.web.addClientsidePage(pageName);
                 await page.save();
             });
 
@@ -102,13 +102,13 @@ describe("Clientside Pages", function () {
         });
 
         it("web.getClientsideWebParts", function () {
-            return expect(_spRest.web.getClientsideWebParts()).to.eventually.be.fulfilled;
+            return expect(_spfi.web.getClientsideWebParts()).to.eventually.be.fulfilled;
         });
 
         describe("save", function () {
 
             it("Should update a pages content with a text control", function () {
-                return _spRest.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                return _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
                     page.addSection().addControl(new ClientsideText("This is test text!!!"));
 
@@ -117,9 +117,9 @@ describe("Clientside Pages", function () {
             });
 
             it("Should update a pages content with an embed control", function () {
-                return _spRest.web.getClientsideWebParts().then(parts => {
+                return _spfi.web.getClientsideWebParts().then(parts => {
 
-                    _spRest.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+                    _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
                         const part = ClientsideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
 
@@ -141,7 +141,7 @@ describe("Clientside Pages", function () {
 
             before(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
+                page = await _spfi.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
             });
 
             it("Should disable", function () {
@@ -159,7 +159,7 @@ describe("Clientside Pages", function () {
 
             this.beforeEach(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
+                page = await _spfi.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
             });
 
             it("Default section, 2 empty columns", async function () {
@@ -208,10 +208,10 @@ describe("Clientside Pages", function () {
                 // reload
                 await page.load();
 
-                const webData = await _spRest.web.select("ServerRelativeUrl")();
+                const webData = await _spfi.web.select("ServerRelativeUrl")();
 
                 // we need a full reload
-                page = await _spRest.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
+                page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(page.hasVerticalSection).to.be.true;
@@ -231,10 +231,10 @@ describe("Clientside Pages", function () {
                 // load to update the data with correct url
                 await page.load();
 
-                const webData = await _spRest.web.select("ServerRelativeUrl")();
+                const webData = await _spfi.web.select("ServerRelativeUrl")();
 
                 // we need a full reload
-                page = await _spRest.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
+                page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 expect(page.hasVerticalSection).to.be.true;
@@ -250,7 +250,7 @@ describe("Clientside Pages", function () {
 
             before(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
+                page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
             });
 
             it(".like()", function () {
@@ -275,15 +275,15 @@ describe("Clientside Pages", function () {
 
                 before(async function () {
                     this.timeout(0);
-                    page = await _spRest.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
+                    page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
                     await page.save();
                     // we need the updated url info from the published page so we re-load things.
                     await page.load();
 
-                    const serverRelUrl = (await _spRest.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+                    const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
                     pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
-                    const ensureTestUser = await _spRest.web.ensureUser(testSettings.testUser);
+                    const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
                     userId = ensureTestUser.data.Id;
                     userPrincipalName = ensureTestUser.data.Email;
                 });
@@ -293,7 +293,7 @@ describe("Clientside Pages", function () {
                     await page.setAuthorById(userId);
                     await page.save();
 
-                    const page2 = await _spRest.web.loadClientsidePage(pageUrl);
+                    const page2 = await _spfi.web.loadClientsidePage(pageUrl);
                     expect(page2.authorByLine).to.eq(userPrincipalName);
                 });
 
@@ -301,7 +301,7 @@ describe("Clientside Pages", function () {
                     await page.setAuthorByLoginName(testSettings.testUser);
                     await page.save();
 
-                    const page2 = await _spRest.web.loadClientsidePage(pageUrl);
+                    const page2 = await _spfi.web.loadClientsidePage(pageUrl);
 
                     expect(page2.authorByLine).to.eq(userPrincipalName);
                 });
@@ -314,12 +314,12 @@ describe("Clientside Pages", function () {
 
             before(async function () {
                 this.timeout(0);
-                page = await _spRest.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
+                page = await _spfi.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
                 await page.save();
                 // we need the updated url info from the published page so we re-load things.
                 await page.load();
 
-                const serverRelUrl = (await _spRest.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+                const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
                 pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
             });
 
@@ -329,7 +329,7 @@ describe("Clientside Pages", function () {
                 page.description = description;
                 await page.save();
 
-                const page2 = await _spRest.web.loadClientsidePage(pageUrl);
+                const page2 = await _spfi.web.loadClientsidePage(pageUrl);
 
                 expect(page2.description).to.eq(description);
             });

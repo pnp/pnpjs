@@ -8,14 +8,14 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
 import { getSP, testSettings } from "../main.js";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 describe("Batching", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         it("Should execute batches in the expected order for a single request", async function () {
@@ -23,7 +23,7 @@ describe("Batching", function () {
             const order: number[] = [];
             const expected: number[] = [1, 2];
 
-            const [batchedSP, execute] = _spRest.batched();
+            const [batchedSP, execute] = _spfi.batched();
 
             batchedSP.web().then(function () {
                 order.push(1);
@@ -40,7 +40,7 @@ describe("Batching", function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3];
 
-            const [batchedSP, execute] = _spRest.batched();
+            const [batchedSP, execute] = _spfi.batched();
 
             batchedSP.web().then(function () {
                 order.push(1);
@@ -62,7 +62,7 @@ describe("Batching", function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3, 4];
 
-            const [batchedSP, execute] = _spRest.batched();
+            const [batchedSP, execute] = _spfi.batched();
 
             batchedSP.web().then(function () {
                 order.push(1);
@@ -88,10 +88,10 @@ describe("Batching", function () {
             const expected: number[] = [1, 2, 3];
             const listTitle = "BatchItemAddTest";
 
-            const ler = await _spRest.web.lists.ensure(listTitle);
+            const ler = await _spfi.web.lists.ensure(listTitle);
 
             if (ler.data) {
-                const [batchedSP, execute] = _spRest.batched();
+                const [batchedSP, execute] = _spfi.batched();
 
                 batchedSP.web.lists.getByTitle(listTitle).items.add({ Title: "Hello 1" }).then(function () {
                     order.push(1);
@@ -116,10 +116,10 @@ describe("Batching", function () {
                 const order: number[] = [];
                 const expected: number[] = [1, 2, 3];
 
-                const { Id: groupId } = await _spRest.web.associatedVisitorGroup.select("Id")<{ Id: number }>();
+                const { Id: groupId } = await _spfi.web.associatedVisitorGroup.select("Id")<{ Id: number }>();
 
                 if (groupId !== undefined) {
-                    const [batchedSP, execute] = _spRest.batched();
+                    const [batchedSP, execute] = _spfi.batched();
 
                     batchedSP.web.siteGroups.getById(groupId).users().then(function () {
                         order.push(1);
@@ -146,10 +146,10 @@ describe("Batching", function () {
             const expected: number[] = [1, 2, 3, 4];
             const listTitle = "BatchOrderingTest";
 
-            const ler = await _spRest.web.lists.ensure(listTitle, "", 101);
+            const ler = await _spfi.web.lists.ensure(listTitle, "", 101);
 
             if (ler.data) {
-                const [batchedSP, execute] = _spRest.batched();
+                const [batchedSP, execute] = _spfi.batched();
 
                 // ensure we have a file
                 const far = await batchedSP.web.lists.getByTitle(listTitle).rootFolder.files.addUsingPath("MyFile.txt", "Some content");

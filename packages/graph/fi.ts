@@ -1,21 +1,18 @@
 import { TimelinePipe } from "@pnp/core";
-import { ISPQueryable, SPQueryable } from "./spqueryable";
+import { GraphQueryable, IGraphQueryable } from "./graphqueryable.js";
 
-/**
- * Root of the SharePoint REST module
- */
-export class SPRest {
+export class GraphFI {
 
-    protected _root: ISPQueryable;
+    protected _root: IGraphQueryable;
 
     /**
-     * Creates a new instance of the SPRest class
+     * Creates a new instance of the GraphFI class
      *
      * @param root Establishes a root url/configuration for
      */
-    constructor(root: string | ISPQueryable = "") {
+    constructor(root: string | IGraphQueryable = "") {
 
-        this._root = SPQueryable(root);
+        this._root = GraphQueryable(root);
     }
 
     public using(behavior: TimelinePipe): this {
@@ -30,11 +27,11 @@ export class SPRest {
      * @param factory The factory for the type of object to create
      * @returns A configured instance of that object
      */
-    protected create<T>(factory: (q: ISPQueryable, path?: string) => T, path?: string): T {
+    protected create<T>(factory: (q: IGraphQueryable, path?: string) => T, path?: string): T {
         return factory(this._root, path);
     }
 }
 
-export function sp(root: string | ISPQueryable = ""): SPRest {
-    return new SPRest(root);
+export function graphfi(root: string | IGraphQueryable = ""): GraphFI {
+    return new GraphFI(root);
 }

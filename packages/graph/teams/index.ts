@@ -1,5 +1,5 @@
 import { addProp, body } from "@pnp/queryable";
-import { GraphRest } from "../rest";
+import { GraphFI } from "../fi";
 import { _Group, Group } from "../groups/types";
 import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types";
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
@@ -53,16 +53,16 @@ _Group.prototype.createTeam = async function (this: _Group, props: ITeamType): P
     };
 };
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly teams: ITeams;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "teams", {
+Reflect.defineProperty(GraphFI.prototype, "teams", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         return this.create(Teams);
     },
 });

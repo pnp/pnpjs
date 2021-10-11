@@ -1,4 +1,4 @@
-import { GraphRest } from "../rest.js";
+import { GraphFI } from "../fi.js";
 import { IPlanner, Planner } from "./types.js";
 
 import "./groups.js";
@@ -27,16 +27,16 @@ export {
     PlanDetails,
 } from "./types.js";
 
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly planner: IPlanner;
     }
 }
 
-Reflect.defineProperty(GraphRest.prototype, "planner", {
+Reflect.defineProperty(GraphFI.prototype, "planner", {
     configurable: true,
     enumerable: true,
-    get: function (this: GraphRest) {
+    get: function (this: GraphFI) {
         this.create(Planner);
     },
 });

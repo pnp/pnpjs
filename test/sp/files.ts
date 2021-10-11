@@ -11,7 +11,7 @@ import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync = require("findup-sync");
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
@@ -19,15 +19,15 @@ const projectRoot = resolve(dirname(findupSync("package.json")));
 describe("files", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         const testFileName = `testing - ${getRandomString(4)}.txt`;
         const testFileNamePercentPound = `testing %# - ${getRandomString(4)}.txt`;
         let testFileNamePercentPoundServerRelPath = "";
         let files: IFiles = null;
 
         before(async function () {
-            _spRest = getSP();
-            files = _spRest.web.defaultDocumentLibrary.rootFolder.files;
+            _spfi = getSP();
+            files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
             // ensure we have at least one file to get
             await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
             const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });
@@ -41,14 +41,14 @@ describe("files", function () {
 
         it("getByName (percent pound)", async function () {
 
-            return expect(_spRest.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
+            return expect(_spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
         });
 
         it("getByUrl", async function () {
 
-            const item = await _spRest.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
+            const item = await _spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
             const urlData = await item.select("EncodedAbsUrl")();
-            return expect(_spRest.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
+            return expect(_spfi.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
         });
 
         it("add", async function () {
@@ -87,7 +87,7 @@ describe("files", function () {
 
             const name = `Testing Add %# - ${getRandomString(4)}.txt`;
             const res = await files.addUsingPath(name, "Some test text content.");
-            const file = await _spRest.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
+            const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
             expect(file.Name).to.eq(name);
         });
 
@@ -95,7 +95,7 @@ describe("files", function () {
 
             const name = `Testing Add & = + - ${getRandomString(4)}.txt`;
             const res = await files.addUsingPath(name, "Some test text content.");
-            const file = await _spRest.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
+            const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
             expect(file.Name).to.eq(name);
         });
 
@@ -104,7 +104,7 @@ describe("files", function () {
             const name = `Testing Add %# - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             const res = await files.addUsingPath(name, "Different Content.", { Overwrite: true });
-            const file = await _spRest.web.getFileByServerRelativePath(res.data.ServerRelativeUrl).getText();
+            const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl).getText();
             expect(file).to.eq("Different Content.");
         });
 
@@ -127,7 +127,7 @@ describe("files", function () {
 
         it("addTemplateFile", async function () {
 
-            const webData = await _spRest.web.select("ServerRelativeUrl")();
+            const webData = await _spfi.web.select("ServerRelativeUrl")();
             const path = combine("/", webData.ServerRelativeUrl, `/SitePages/Testing template file - ${getRandomString(4)}.aspx`);
             const far = await files.addTemplateFile(path, TemplateFileType.StandardPage);
             return expect(far.file()).to.eventually.be.fulfilled;
@@ -137,7 +137,7 @@ describe("files", function () {
 
             const name = `Testing getFileById - ${getRandomString(4)}.txt`;
             const far = await files.addUsingPath(name, "Some test text content.");
-            const fileById = await _spRest.web.getFileById(far.data.UniqueId).select("UniqueId")();
+            const fileById = await _spfi.web.getFileById(far.data.UniqueId).select("UniqueId")();
             return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
         });
 
@@ -155,13 +155,13 @@ describe("file", function () {
 
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
         const testFileName = `testing - ${getRandomString(4)}.txt`;
         let files: IFiles = null;
 
         before(async function () {
-            _spRest = getSP();
-            files = _spRest.web.defaultDocumentLibrary.rootFolder.files;
+            _spfi = getSP();
+            files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
             await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
         });
 
@@ -213,7 +213,7 @@ describe("file", function () {
             const rand = getRandomString(4);
             const name = `Testing copyTo - ${rand}.txt`;
             await files.addUsingPath(name, getRandomString(42));
-            const folderData = await _spRest.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
             const name2 = `I Copied - ${rand}.aspx`;
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
@@ -228,7 +228,7 @@ describe("file", function () {
             const rand = getRandomString(4);
             const name = `Testing copyTo - ${rand}.txt`;
             await files.addUsingPath(name, getRandomString(42));
-            const folderData = await _spRest.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
             const name2 = `I Moved - ${rand}.aspx`;
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
@@ -241,7 +241,7 @@ describe("file", function () {
             const rand = getRandomString(4);
             const name = `Testing copyByPath - ${rand}.txt`;
             await files.addUsingPath(name, getRandomString(42));
-            const folderData = await _spRest.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
             const name2 = `I Copied - ${rand}.aspx`;
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
@@ -254,7 +254,7 @@ describe("file", function () {
             const rand = getRandomString(4);
             const name = `Testing moveByPath - ${rand}.txt`;
             await files.addUsingPath(name, getRandomString(42));
-            const folderData = await _spRest.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+            const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
             const name2 = `I Copied - ${rand}.aspx`;
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 

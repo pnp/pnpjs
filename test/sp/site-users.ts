@@ -4,20 +4,20 @@ import "@pnp/sp/site-users";
 import { ISiteUserProps, IUserUpdateResult } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/core";
-import { SPRest } from "@pnp/sp";
+import { SPFI } from "@pnp/sp";
 
 describe("Web", function () {
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
 
         before(function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         // describe("Invokable Properties", function () {
         //     const tests: IInvokableTest[] = [
-        //         { desc: ".siteUsers", test: _spRest.web.siteUsers },
-        //         { desc: ".currentUser", test: _spRest.web.currentUser },
+        //         { desc: ".siteUsers", test: _spfi.web.siteUsers },
+        //         { desc: ".currentUser", test: _spfi.web.currentUser },
         //     ];
         //     tests.forEach((testObj) => {
         //         const { test, desc } = testObj;
@@ -26,40 +26,40 @@ describe("Web", function () {
         // });
 
         it(".ensureUser", async function () {
-            const e: ISiteUserProps = await _spRest.web.currentUser();
-            return expect(_spRest.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
+            const e: ISiteUserProps = await _spfi.web.currentUser();
+            return expect(_spfi.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
         });
 
         it(".getUserById", async function () {
-            const user: ISiteUserProps = await _spRest.web.currentUser();
-            return expect(_spRest.web.getUserById(user.Id)()).to.eventually.fulfilled;
+            const user: ISiteUserProps = await _spfi.web.currentUser();
+            return expect(_spfi.web.getUserById(user.Id)()).to.eventually.fulfilled;
         });
     }
 });
 
 describe("Site Users", function () {
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
 
         before(async function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         it(".getByID", async function () {
-            const e: ISiteUserProps = await _spRest.web.currentUser();
-            return expect(_spRest.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
+            const e: ISiteUserProps = await _spfi.web.currentUser();
+            return expect(_spfi.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
         });
 
         it(".getByEmail", async function () {
-            const e: ISiteUserProps = await _spRest.web.currentUser();
+            const e: ISiteUserProps = await _spfi.web.currentUser();
             if (!stringIsNullOrEmpty(e.Email)) {
-                return expect(_spRest.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
+                return expect(_spfi.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
             }
         });
 
         it(".getByLoginName", async function () {
-            const e: ISiteUserProps = await _spRest.web.currentUser();
-            return expect(_spRest.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
+            const e: ISiteUserProps = await _spfi.web.currentUser();
+            return expect(_spfi.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
         });
     }
 });
@@ -67,20 +67,20 @@ describe("Site Users", function () {
 describe("Site User", function () {
 
     if (testSettings.enableWebTests) {
-        let _spRest: SPRest = null;
+        let _spfi: SPFI = null;
 
         before(async function () {
-            _spRest = getSP();
+            _spfi = getSP();
         });
 
         it(".groups", async function () {
-            const e: ISiteGroups = await _spRest.web.currentUser.groups();
+            const e: ISiteGroups = await _spfi.web.currentUser.groups();
             return expect(e.length).to.be.gte(0);
         });
         it(".update", async function () {
-            const _props: ISiteUserProps = await _spRest.web.currentUser();
+            const _props: ISiteUserProps = await _spfi.web.currentUser();
             _props.Title = "Changed Title";
-            const e: IUserUpdateResult = await _spRest.web.currentUser.update(_props);
+            const e: IUserUpdateResult = await _spfi.web.currentUser.update(_props);
             const _newProps = await e.user();
             return expect(_newProps.Title).to.be.eq("Changed Title");
         });
@@ -92,14 +92,14 @@ describe("Site User", function () {
 // describe("Site User Properties", function () {
 //     if (testSettings.enableWebTests) {
 //         const tests: IInvokableTest[] = [
-//             { desc: ".Email", test: _spRest.web.currentUser },
-//             { desc: ".Id", test: _spRest.web.currentUser },
-//             { desc: ".IsHiddenInUI", test: _spRest.web.currentUser },
-//             { desc: ".IsShareByEmailGuestUser", test: _spRest.web.currentUser },
-//             { desc: ".IsSiteAdmin", test: _spRest.web.currentUser },
-//             { desc: ".LoginName", test: _spRest.web.currentUser },
-//             { desc: ".PrincipalType", test: _spRest.web.currentUser },
-//             { desc: ".Title", test: _spRest.web.currentUser },
+//             { desc: ".Email", test: _spfi.web.currentUser },
+//             { desc: ".Id", test: _spfi.web.currentUser },
+//             { desc: ".IsHiddenInUI", test: _spfi.web.currentUser },
+//             { desc: ".IsShareByEmailGuestUser", test: _spfi.web.currentUser },
+//             { desc: ".IsSiteAdmin", test: _spfi.web.currentUser },
+//             { desc: ".LoginName", test: _spfi.web.currentUser },
+//             { desc: ".PrincipalType", test: _spfi.web.currentUser },
+//             { desc: ".Title", test: _spfi.web.currentUser },
 //         ];
 //         tests.forEach((testObj) => {
 //             const { test, desc } = testObj;

@@ -1,4 +1,4 @@
-import { SPRest } from "../rest.js";
+import { SPFI } from "../fi.js";
 import { IUtilities, Utilities } from "./types.js";
 
 export {
@@ -8,16 +8,16 @@ export {
     Utilities,
 } from "./types.js";
 
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         readonly utility: IUtilities;
     }
 }
 
-Reflect.defineProperty(SPRest.prototype, "utility", {
+Reflect.defineProperty(SPFI.prototype, "utility", {
     configurable: true,
     enumerable: true,
-    get: function (this: SPRest) {
+    get: function (this: SPFI) {
         this.create(Utilities, "");
     },
 });
