@@ -191,17 +191,8 @@ describe("Web", function () {
         //     return expect(spRest.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
         // });
 
-        // TODO: Cannot test because once a template has been applied a new site must be created to apply a different template
-        // it(".applyWebTemplate", async function () {
-
-        //     this.timeout(60000);
-
-        //     const { web } = await _spfi.web.webs.add("ApplyWebTemplateTest", getRandomString(6), "Testing", "STS");
-        //     const templates = (await web.availableWebTemplates().select("Name")<{ Name: string }[]>()).filter(t => /ENTERWIKI#0/i.test(t.Name));
-
-        //     const template = templates.length > 0 ? templates[0].Name : "STS#0";
-        //     return expect(web.applyWebTemplate(template)).to.eventually.be.fulfilled;
-        // });
+        // Cannot test because once a template has been applied a new site must be created to apply a different template
+        it(".applyWebTemplate");
 
         it(".availableWebTemplates", async function () {
 
@@ -299,24 +290,23 @@ describe("Web", function () {
             });
         });
 
-        // BUG: Removed hubSiteData from web.
-        // describe("hub-sites", function () {
+        describe.only("hub-sites", function () {
 
-        //     it(".hubSiteData", async function () {
+            it(".hubSiteData", async function () {
 
-        //         return expect(_spfi.web.hubSiteData()).to.eventually.be.fulfilled;
-        //     });
+                return expect(_spfi.web.hubSiteData()).to.eventually.be.fulfilled;
+            });
 
-        //     it(".hubSiteData force refresh", async function () {
+            it(".hubSiteData force refresh", async function () {
 
-        //         return expect(_spfi.web.hubSiteData(true)).to.eventually.be.fulfilled;
-        //     });
+                return expect(_spfi.web.hubSiteData(true)).to.eventually.be.fulfilled;
+            });
 
-        //     it(".syncHubSiteTheme", async function () {
+            it(".syncHubSiteTheme", async function () {
 
-        //         return expect(_spfi.web.syncHubSiteTheme()).to.eventually.be.fulfilled;
-        //     });
-        // });
+                return expect(_spfi.web.syncHubSiteTheme()).to.eventually.be.fulfilled;
+            });
+        });
 
         describe("lists", function () {
 
