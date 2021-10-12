@@ -1,5 +1,5 @@
 import {
-    SPRest,
+    SPFI,
 } from "@pnp/sp";
 
 import { Web, IWeb } from "@pnp/sp/webs";
@@ -11,8 +11,9 @@ import {
 } from "@pnp/core";
 
 import { ISPQueryable } from "@pnp/sp";
+import { CopyFromQueryable } from "@pnp/queryable";
 
-export class SPRestAddIn extends SPRest {
+export class SPRestAddIn extends SPFI {
 
     /**
      * Begins a cross-domain, host site scoped REST request, for use in add-in webs
@@ -61,10 +62,7 @@ export class SPRestAddIn extends SPRest {
         const instance = factory(url, urlPart);
         instance.query.set("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
 
-        // TODO::
-        // return this.childConfigHook(({ options, runtime }) => {
-        //     return instance.configure(options).setRuntime(runtime);
-        // });
+        instance.using(CopyFromQueryable(this._root));
 
         return instance;
     }

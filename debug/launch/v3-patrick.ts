@@ -1,8 +1,7 @@
 import { ITestingSettings } from "../../test/settings.js";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
-import { sp } from "@pnp/sp";
-import { graph } from "@pnp/graph";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/files";
@@ -43,7 +42,7 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        const sp2 = sp("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+        const sp2 = spfi("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,

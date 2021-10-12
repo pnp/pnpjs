@@ -6,7 +6,7 @@ import { Queryable } from "../queryable.js";
  *
  * @param source The source instance from which we will copy the observers
  * @param behavior replace = observers are cleared before adding, append preserves any observers already present
- * @returns The mutated this
+ * @param keepData If true any subscribed data members are removed (Default: false)
  */
 export function CopyFromQueryable(source: Queryable, behavior: "replace" | "append" = "append", keepData = false): TimelinePipe<Queryable> {
 

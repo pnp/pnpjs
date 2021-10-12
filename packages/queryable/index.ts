@@ -15,3 +15,4 @@ export * from "./behaviors/cachingPessimistic.js";
 export * from "./behaviors/inject-headers.js";
 export * from "./behaviors/parsers.js";
 export * from "./behaviors/queryable-copyfrom.js";
+export * from "./behaviors/timeout.js";
