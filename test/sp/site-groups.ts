@@ -7,37 +7,28 @@ import { getRandomString } from "@pnp/core";
 import { IGroupAddResult } from "@pnp/sp/site-groups";
 import { SPFI } from "@pnp/sp";
 
-describe("Web.SiteGroups", function () {
+describe.only("Web", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
-        let newGroup: IGroupAddResult;
-        let testuserId: number;
 
         before(async function () {
             _spfi = getSP();
-            this.timeout(0);
-            const groupName = `test_new_sitegroup_${getRandomString(6)}`;
-            newGroup = await _spfi.web.siteGroups.add({ "Title": groupName });
-            if (testSettings.testUser?.length > 0) {
-                const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
-                testuserId = ensureTestUser.data.Id;
-            }
         });
 
-        it("siteGroups()", function () {
+        it(".siteGroups()", function () {
             return expect(_spfi.web.siteGroups()).to.eventually.be.fulfilled;
         });
 
-        it("associatedOwnerGroup()", function () {
+        it(".associatedOwnerGroup()", function () {
             return expect(_spfi.web.associatedOwnerGroup()).to.eventually.be.fulfilled;
         });
 
-        it("associatedMemberGroup()", function () {
+        it(".associatedMemberGroup()", function () {
             return expect(_spfi.web.associatedMemberGroup()).to.eventually.be.fulfilled;
         });
 
-        it("associatedVisitorGroup()", function () {
+        it(".associatedVisitorGroup()", function () {
             return expect(_spfi.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
@@ -51,51 +42,66 @@ describe("Web.SiteGroups", function () {
                     false)).to.be.eventually.fulfilled;
             });
         }
-
-        it(".getById()", async function () {
-            return expect(_spfi.web.siteGroups.getById(newGroup.data.Id)());
-        });
-
-        it(".add()", function () {
-            const newGroupTitle = `test_add_new_sitegroup_${getRandomString(8)}`;
-            return expect(_spfi.web.siteGroups.add({ "Title": newGroupTitle })).to.be.eventually.fulfilled;
-        });
-
-        it(".getByName()", function () {
-            return expect(_spfi.web.siteGroups.getByName(newGroup.data.Title)()).to.be.eventually.fulfilled;
-        });
-
-        it(".removeById()", async function () {
-            const newGroupTitle = `test_remove_group_by_id_${getRandomString(8)}`;
-            const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
-            return expect(_spfi.web.siteGroups.removeById(g.data.Id)).to.be.eventually.fulfilled;
-        });
-
-        it(".removeByLoginName()", async function () {
-            const newGroupTitle = `test_remove_group_by_name_${getRandomString(8)}`;
-            const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
-            return expect(_spfi.web.siteGroups.removeByLoginName(g.data.LoginName)).to.be.eventually.fulfilled;
-        });
-
-        it("SiteGroup.users()", async function () {
-            return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).users()).to.be.eventually.fulfilled;
-        });
-
-        // TODO: Bug with select and typings
-        it("SiteGroup.update()", async function () {
-            const newTitle = `Updated_${newGroup.data.Title}`;
-            await _spfi.web.siteGroups.getByName(newGroup.data.Title).update({ "Title": newTitle });
-            // const p = _spfi.web.siteGroups.getById(newGroup.data.Id).select("Title")<{ "Title": string }>().then(g2 => {
-            //     if (newTitle !== g2.Title) {
-            //         throw Error("Failed to update the group!");
-            //     }
-            // });
-            // return expect(p).to.be.eventually.fulfilled;
-            return true;
-        });
-
-        it("SiteGroup.setUserAsOwner()", async function () {
-            return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).setUserAsOwner(testuserId)).to.be.eventually.fulfilled;
-        });
     }
+});
+
+describe.only("SiteGroups", function () {
+    let _spfi: SPFI = null;
+    let newGroup: IGroupAddResult;
+    let testuserId: number;
+
+    before(async function () {
+        _spfi = getSP();
+        const groupName = `test_new_sitegroup_${getRandomString(6)}`;
+        newGroup = await _spfi.web.siteGroups.add({ "Title": groupName });
+        if (testSettings.testUser?.length > 0) {
+            const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+            testuserId = ensureTestUser.data.Id;
+        }
+    });
+
+    it(".getById()", async function () {
+        return expect(_spfi.web.siteGroups.getById(newGroup.data.Id)());
+    });
+
+    it(".add()", function () {
+        const newGroupTitle = `test_add_new_sitegroup_${getRandomString(8)}`;
+        return expect(_spfi.web.siteGroups.add({ "Title": newGroupTitle })).to.be.eventually.fulfilled;
+    });
+
+    it(".getByName()", function () {
+        return expect(_spfi.web.siteGroups.getByName(newGroup.data.Title)()).to.be.eventually.fulfilled;
+    });
+
+    it(".removeById()", async function () {
+        const newGroupTitle = `test_remove_group_by_id_${getRandomString(8)}`;
+        const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
+        return expect(_spfi.web.siteGroups.removeById(g.data.Id)).to.be.eventually.fulfilled;
+    });
+
+    it(".removeByLoginName()", async function () {
+        const newGroupTitle = `test_remove_group_by_name_${getRandomString(8)}`;
+        const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
+        return expect(_spfi.web.siteGroups.removeByLoginName(g.data.LoginName)).to.be.eventually.fulfilled;
+    });
+
+    it(".users()", async function () {
+        return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).users()).to.be.eventually.fulfilled;
+    });
+
+    it(".update()", async function () {
+        const newTitle = `Updated_${newGroup.data.Title}`;
+        await _spfi.web.siteGroups.getByName(newGroup.data.Title).update({ "Title": newTitle });
+        const p = _spfi.web.siteGroups.getById(newGroup.data.Id).select("Title")<{ "Title": string }>().then(g2 => {
+            if (newTitle !== g2.Title) {
+                throw Error("Failed to update the group!");
+            }
+        });
+        return expect(p).to.be.eventually.fulfilled;
+        return true;
+    });
+
+    it(".setUserAsOwner()", async function () {
+        return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).setUserAsOwner(testuserId)).to.be.eventually.fulfilled;
+    });
 });
