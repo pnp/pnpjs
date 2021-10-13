@@ -278,7 +278,7 @@ export class _GraphQueryableSearchableCollection<GetType = any[]> extends _Graph
                 ConsistencyLevel: "eventual",
             },
         });
-        this.query.set("$search", `"${query}"`);
+        this.query.set("$search", `${query}`);
         return this;
     }
 }

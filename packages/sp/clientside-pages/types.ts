@@ -564,6 +564,8 @@ export class _ClientsidePage extends _SharePointQueryable {
         }
 
         this.json.BannerImageUrl = url;
+        // update serverProcessedContent (page behavior change 2021-Oct-13)
+        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url }, };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
@@ -1379,8 +1381,17 @@ export class ClientsideWebpart extends ColumnControl<IClientsideWebPartData> {
         return this;
     }
 
+    public setServerProcessedContent<T = any>(properties: T): this {
+        this.data.webPartData.serverProcessedContent = assign(this.data.webPartData.serverProcessedContent || {}, properties);
+        return this;
+    }
+
     public getProperties<T = any>(): T {
         return <T>this.data.webPartData.properties;
+    }
+
+    public getServerProcessedContent<T = any>(): T {
+        return <T>this.data.webPartData.serverProcessedContent;
     }
 
     protected onColumnChange(col: CanvasColumn): void {
@@ -1563,10 +1574,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            "htmlStrings": ITypedHash<string>;
-            "searchablePlainTexts": ITypedHash<string>;
-            "imageSources": ITypedHash<string>;
-            "links": ITypedHash<string>;
+            htmlStrings?: ITypedHash<string>;
+            searchablePlainTexts?: ITypedHash<string>;
+            imageSources?: ITypedHash<string>;
+            links?: ITypedHash<string>;
         };
         dataVersion: string;
         properties: PropertiesType;
@@ -1586,10 +1597,10 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        htmlStrings: ITypedHash<string>;
-        searchablePlainTexts: ITypedHash<string>;
-        imageSources: ITypedHash<string>;
-        links: ITypedHash<string>;
+        htmlStrings?: ITypedHash<string>;
+        searchablePlainTexts?: ITypedHash<string>;
+        imageSources?: ITypedHash<string>;
+        links?: ITypedHash<string>;
         customMetadata?: {
             imageSource?: {
                 siteId: string;

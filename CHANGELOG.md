@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.10.0 - 2021-Oct-15
+
+### Fixed
+
+- docs: fixed incorrect example in role definition [@Abderahman88](https://github.com/Abderahman88) [[PR](https://github.com/pnp/pnpjs/pull/1910)]
+- graph: fixed bug with double quotes in search query [@juliemturner](https://github.com/juliemturner)
+- sp: fixed bugs #1847, #1871 issue with setting images in web part and banner [@juliemturner](https://github.com/juliemturner)
+
 ## 2.9.0 - 2021-Sept-20
 
 ### Fixed
