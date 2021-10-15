@@ -2272,8 +2272,8 @@ const def = await sp.web.roleDefinitions.getByName(&quot;Full Control&quot;)();
 const def = await sp.web.roleDefinitions.getByName(&quot;Full Control&quot;).select(&quot;Name&quot;, &quot;Order&quot;)();
 
 // get by type
-const def = await sp.web.roleDefinitions.getByName(5)();
-const def = await sp.web.roleDefinitions.getByName(5).select(&quot;Name&quot;, &quot;Order&quot;)();
+const def = await sp.web.roleDefinitions.getByType(5)();
+const def = await sp.web.roleDefinitions.getByType(5).select(&quot;Name&quot;, &quot;Order&quot;)();
 
 // add
 // name The new role definition's name
