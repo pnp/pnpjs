@@ -163,6 +163,10 @@ markdown_extensions:
       #     format: !!python/name:pymdownx.superfences.fence_div_format
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets      
 
 plugins:
   - search
