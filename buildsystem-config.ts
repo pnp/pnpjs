@@ -36,7 +36,11 @@ export default <ConfigCollection>[
 
         postBuildTasks: [
             // this task is scoped to the files within the task
-            Tasks.Build.replaceVersion,
+            Tasks.Build.createReplaceVersion([
+                "sp/sphttpclient.js",
+                "graph/graphhttpclient.js",
+                "sp/batch.js",
+            ]),
         ],
     },
     <PackageSchema>{
@@ -201,7 +205,11 @@ export default <ConfigCollection>[
         ],
 
         postBuildTasks: [
-            Tasks.Build.replaceDebug,
+            Tasks.Build.createDebugReplace([
+                "packages/sp/sphttpclient.js",
+                "packages/graph/graphhttpclient.js",
+                "packages/sp/batch.js",
+            ]),,
         ],
     },
     <PublishSchema>{
