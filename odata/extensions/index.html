@@ -2247,194 +2247,194 @@
 <p>There are three types of Extensions available as well as three methods for registration. You can register any type of extension with any of the registration options.</p>
 <h3 id="function-extensions">Function Extensions<a class="headerlink" href="#function-extensions" title="Permanent link">&para;</a></h3>
 <p>The first type is a simple function with a signature:</p>
-<pre><code class="language-TypeScript">(op: &quot;apply&quot; | &quot;get&quot; | &quot;has&quot; | &quot;set&quot;, target: T, ...rest: any[]): void
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="nx">op</span><span class="o">:</span> <span class="s2">&quot;apply&quot;</span> <span class="o">|</span> <span class="s2">&quot;get&quot;</span> <span class="o">|</span> <span class="s2">&quot;has&quot;</span> <span class="o">|</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span> <span class="nx">target</span>: <span class="kt">T</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span>: <span class="kt">any</span><span class="p">[])</span><span class="o">:</span> <span class="k">void</span>
+</code></pre></div>
 <p>This function is passed the current operation as the first argument, currently one of "apply", "get", "has", or "set". The second argument is the target instance upon which the operation is being invoked. The remaining parameters vary by the operation being performed, but will match their respective ProxyHandler method signatures.</p>
 <h3 id="named-extensions">Named Extensions<a class="headerlink" href="#named-extensions" title="Permanent link">&para;</a></h3>
 <p>Named extensions are designed to add or replace a single property or method, though you can register multiple using the same object. These extensions are defined by using an object which has the property/methods you want to override described. Registering named extensions globally will override that operation to all invokables.</p>
-<pre><code class="language-TypeScript">import { extendFactory } from &quot;@pnp/odata&quot;;
-import { sp, List, Lists, IWeb, ILists, List, IList, Web } from &quot;@pnp/sp/presets/all&quot;;
-import { escapeQueryStrValue } from &quot;@pnp/sp/utils/escapeQueryStrValue&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">IList</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">escapeQueryStrValue</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/utils/escapeQueryStrValue&quot;</span><span class="p">;</span>
 
-// create a plain object with the props and methods we want to add/change
-const myExtensions = {
-    // override the lists property
-    get lists(this: IWeb): ILists {
-        // we will always order our lists by title and select just the Title for ALL calls (just as an example)
-        return Lists(this).orderBy(&quot;Title&quot;).select(&quot;Title&quot;);
-    },
-    // override the getByTitle method
-    getByTitle: function (this: ILists, title: string): IList {
-        // in our example our list has moved, so we rewrite the request on the fly
-        if (title === &quot;List1&quot;) {
-            return List(this, `getByTitle('List2')`);
-        } else {
-            // you can't at this point call the &quot;base&quot; method as you will end up in loop within the proxy
-            // so you need to ensure you patch/include any original functionality you need
-            return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
-        }
-    },
-};
+<span class="c1">// create a plain object with the props and methods we want to add/change</span>
+<span class="kr">const</span> <span class="nx">myExtensions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">// override the lists property</span>
+    <span class="nx">get</span> <span class="nx">lists</span><span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">IWeb</span><span class="p">)</span><span class="o">:</span> <span class="nx">ILists</span> <span class="p">{</span>
+        <span class="c1">// we will always order our lists by title and select just the Title for ALL calls (just as an example)</span>
+        <span class="k">return</span> <span class="nx">Lists</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c1">// override the getByTitle method</span>
+    <span class="nx">getByTitle</span>: <span class="kt">function</span> <span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">title</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">IList</span> <span class="p">{</span>
+        <span class="c1">// in our example our list has moved, so we rewrite the request on the fly</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">title</span> <span class="o">===</span> <span class="s2">&quot;List1&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;List2&#39;)`</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// you can&#39;t at this point call the &quot;base&quot; method as you will end up in loop within the proxy</span>
+            <span class="c1">// so you need to ensure you patch/include any original functionality you need</span>
+            <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;</span><span class="si">${</span><span class="nx">escapeQueryStrValue</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span><span class="si">}</span><span class="sb">&#39;)`</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">};</span>
 
-// register all the named Extensions
-extendFactory(Web, myExtensions);
+<span class="c1">// register all the named Extensions</span>
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Web</span><span class="p">,</span> <span class="nx">myExtensions</span><span class="p">);</span>
 
-// this will use our extension to ensure the lists are ordered
-const lists = await sp.web.lists();
+<span class="c1">// this will use our extension to ensure the lists are ordered</span>
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 
-console.log(JSON.stringify(lists, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-// we will get the items from List1 but within the extension it is rewritten as List2
-const items = await sp.web.lists.getByTitle(&quot;List1&quot;).items();
+<span class="c1">// we will get the items from List1 but within the extension it is rewritten as List2</span>
+<span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;List1&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">();</span>
 
-console.log(JSON.stringify(items.length, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="proxyhandler-extensions">ProxyHandler Extensions<a class="headerlink" href="#proxyhandler-extensions" title="Permanent link">&para;</a></h3>
 <p>You can also register a partial ProxyHandler implementation as an extension. You can implement one or more of the ProxyHandler methods as needed. Here we implement the same override of getByTitle globally. This is the most complicated method of creating an extension and assumes an understanding of how ProxyHandlers work.</p>
-<pre><code class="language-TypeScript">import { extendFactory } from &quot;@pnp/odata&quot;;
-import { sp, Lists, IWeb, ILists, Web } from &quot;@pnp/sp/presets/all&quot;;
-import { escapeQueryStrValue } from &quot;@pnp/sp/utils/escapeSingleQuote&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Lists</span><span class="p">,</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">escapeQueryStrValue</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/utils/escapeSingleQuote&quot;</span><span class="p">;</span>
 
-const myExtensions = {
-    get: (target, p: string | number | symbol, _receiver: any) =&gt; {
-        switch (p) {
-            case &quot;getByTitle&quot;:
-                return (title: string) =&gt; {
+<span class="kr">const</span> <span class="nx">myExtensions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">p</span>: <span class="kt">string</span> <span class="o">|</span> <span class="kt">number</span> <span class="o">|</span> <span class="nx">symbol</span><span class="p">,</span> <span class="nx">_receiver</span>: <span class="kt">any</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s2">&quot;getByTitle&quot;</span><span class="o">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nx">title</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-                    // in our example our list has moved, so we rewrite the request on the fly
-                    if (title === &quot;LookupList&quot;) {
-                        return List(target, `getByTitle('OrderByList')`);
-                    } else {
-                        // you can't at this point call the &quot;base&quot; method as you will end up in loop within the proxy
-                        // so you need to ensure you patch/include any original functionality you need
-                        return List(target, `getByTitle('${escapeQueryStrValue(title)}')`);
-                    }
-                };
-        }
-    },
-};
+                    <span class="c1">// in our example our list has moved, so we rewrite the request on the fly</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">title</span> <span class="o">===</span> <span class="s2">&quot;LookupList&quot;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;OrderByList&#39;)`</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="c1">// you can&#39;t at this point call the &quot;base&quot; method as you will end up in loop within the proxy</span>
+                        <span class="c1">// so you need to ensure you patch/include any original functionality you need</span>
+                        <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;</span><span class="si">${</span><span class="nx">escapeQueryStrValue</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span><span class="si">}</span><span class="sb">&#39;)`</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">};</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">};</span>
 
-extendFactory(Web, myExtensions);
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Web</span><span class="p">,</span> <span class="nx">myExtensions</span><span class="p">);</span>
 
-const lists = sp.web.lists;
-const items = await lists.getByTitle(&quot;LookupList&quot;).items();
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">();</span>
 
-console.log(JSON.stringify(items.length, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="registering-extensions">Registering Extensions<a class="headerlink" href="#registering-extensions" title="Permanent link">&para;</a></h2>
 <p>You can register Extensions either globally, on an invocable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.</p>
 <h3 id="global-registration">Global Registration<a class="headerlink" href="#global-registration" title="Permanent link">&para;</a></h3>
 <p>Globally registering an extension allows you to inject functionality into every invocable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.</p>
-<pre><code class="language-TypeScript">import { extendGlobal } from &quot;@pnp/odata&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendGlobal</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 
-// we can add a logging method to very verbosely track what things are called in our application
-extendGlobal((op: string, _target: any, ...rest: any[]): void =&gt; {
-        switch (op) {
-            case &quot;apply&quot;:
-                Logger.write(`${op} ::&gt; ()`, LogLevel.Info);
-                break;
-                case &quot;has&quot;:
-            case &quot;get&quot;:
-            case &quot;set&quot;:
-                Logger.write(`${op} ::&gt; ${rest[0]}`, LogLevel.Info);
-                break;
-            default:
-                Logger.write(`unknown ${op}`, LogLevel.Info);
-        }
-});
-</code></pre>
+<span class="c1">// we can add a logging method to very verbosely track what things are called in our application</span>
+<span class="nx">extendGlobal</span><span class="p">((</span><span class="nx">op</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">_target</span>: <span class="kt">any</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span>: <span class="kt">any</span><span class="p">[])</span><span class="o">:</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">op</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s2">&quot;apply&quot;</span><span class="o">:</span>
+                <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">op</span><span class="si">}</span><span class="sb"> ::&gt; ()`</span><span class="p">,</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nx">Info</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="s2">&quot;has&quot;</span><span class="o">:</span>
+            <span class="k">case</span> <span class="s2">&quot;get&quot;</span><span class="o">:</span>
+            <span class="k">case</span> <span class="s2">&quot;set&quot;</span><span class="o">:</span>
+                <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">op</span><span class="si">}</span><span class="sb"> ::&gt; </span><span class="si">${</span><span class="nx">rest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nx">Info</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">default</span><span class="o">:</span>
+                <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`unknown </span><span class="si">${</span><span class="nx">op</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nx">Info</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="factory-registration">Factory Registration<a class="headerlink" href="#factory-registration" title="Permanent link">&para;</a></h3>
 <p>The pattern you will likely find most useful is the ability to extend an invocable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import { IWeb, Web } from &quot;@pnp/sp/webs&quot;;
-import { ILists, Lists } from &quot;@pnp/sp/lists&quot;;
-import { extendFactory } from &quot;@pnp/odata&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IWeb</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">Lists</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">extendFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-// sets up the types correctly when importing across your application
-declare module &quot;@pnp/sp/webs/types&quot; {
+<span class="c1">// sets up the types correctly when importing across your application</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/webs/types&quot;</span> <span class="p">{</span>
 
-    // we need to extend the interface
-    interface IWeb {
-        orderedLists: ILists;
-    }
-}
+    <span class="c1">// we need to extend the interface</span>
+    <span class="kr">interface</span> <span class="nx">IWeb</span> <span class="p">{</span>
+        <span class="nx">orderedLists</span>: <span class="kt">ILists</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-// sets up the types correctly when importing across your application
-declare module &quot;@pnp/sp/lists/types&quot; {
+<span class="c1">// sets up the types correctly when importing across your application</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;@pnp/sp/lists/types&quot;</span> <span class="p">{</span>
 
-    // we need to extend the interface
-    interface ILists {
-        getOrderedListsQuery: (this: ILists) =&gt; ILists;
-    }
-}
+    <span class="c1">// we need to extend the interface</span>
+    <span class="kr">interface</span> <span class="nx">ILists</span> <span class="p">{</span>
+        <span class="nx">getOrderedListsQuery</span><span class="o">:</span> <span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">ILists</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-extendFactory(Web, {
-    // add an ordered lists property
-    get orderedLists(this: IWeb): ILists {
-        return this.lists.getOrderedListsQuery();
-    },
-});
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Web</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// add an ordered lists property</span>
+    <span class="nx">get</span> <span class="nx">orderedLists</span><span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">IWeb</span><span class="p">)</span><span class="o">:</span> <span class="nx">ILists</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getOrderedListsQuery</span><span class="p">();</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-extendFactory(Lists, {
-    // add an ordered lists property
-    getOrderedListsQuery(this: ILists): ILists {
-        return this.top(10).orderBy(&quot;Title&quot;).select(&quot;Title&quot;);
-    },
-});
+<span class="nx">extendFactory</span><span class="p">(</span><span class="nx">Lists</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// add an ordered lists property</span>
+    <span class="nx">getOrderedListsQuery</span><span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">)</span><span class="o">:</span> <span class="nx">ILists</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">);</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// regardless of how we access the web and lists collections our extensions remain with all new instance based on
-const web = Web(&quot;https://tenant.sharepoint.com/sites/dev/&quot;);
-const lists1 = await web.orderedLists();
-console.log(JSON.stringify(lists1, null, 2));
+<span class="c1">// regardless of how we access the web and lists collections our extensions remain with all new instance based on</span>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">lists1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">orderedLists</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-const lists2 = await Web(&quot;https://tenant.sharepoint.com/sites/dev/&quot;).orderedLists();
-console.log(JSON.stringify(lists2, null, 2));
+<span class="kr">const</span> <span class="nx">lists2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/&quot;</span><span class="p">).</span><span class="nx">orderedLists</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-const lists3 = await sp.web.orderedLists();
-console.log(JSON.stringify(lists3, null, 2));
-</code></pre>
+<span class="kr">const</span> <span class="nx">lists3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">orderedLists</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">lists3</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="instance-registration">Instance Registration<a class="headerlink" href="#instance-registration" title="Permanent link">&para;</a></h3>
 <p>You can also register Extensions on a single object instance, which is often the preferred approach as it will have less of a performance impact across your whole application. This is useful for debugging, overriding methods/properties, or controlling the behavior of specific object instances.</p>
 <blockquote>
 <p>Extensions are not transferred to child objects in a fluent chain, be sure you are extending the instance you think you are.</p>
 </blockquote>
 <p>Here we show the same override operation of getByTitle on the lists collection, but safely only overriding the single instance.</p>
-<pre><code class="language-TypeScript">import { extendObj } from &quot;@pnp/odata&quot;;
-import { sp, List, ILists } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">extendObj</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">ILists</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-const myExtensions = {
-    getByTitle: function (this: ILists, title: string) {
-        // in our example our list has moved, so we rewrite the request on the fly
-        if (title === &quot;List1&quot;) {
-            return List(this, &quot;getByTitle('List2')&quot;);
-        } else {
-            // you can't at this point call the &quot;base&quot; method as you will end up in loop within the proxy
-            // so you need to ensure you patch/include any original functionality you need
-            return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
-        }
-    },
-};
+<span class="kr">const</span> <span class="nx">myExtensions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">getByTitle</span>: <span class="kt">function</span> <span class="p">(</span><span class="k">this</span><span class="o">:</span> <span class="nx">ILists</span><span class="p">,</span> <span class="nx">title</span>: <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// in our example our list has moved, so we rewrite the request on the fly</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">title</span> <span class="o">===</span> <span class="s2">&quot;List1&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;getByTitle(&#39;List2&#39;)&quot;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// you can&#39;t at this point call the &quot;base&quot; method as you will end up in loop within the proxy</span>
+            <span class="c1">// so you need to ensure you patch/include any original functionality you need</span>
+            <span class="k">return</span> <span class="nx">List</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="sb">`getByTitle(&#39;</span><span class="si">${</span><span class="nx">escapeQueryStrValue</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span><span class="si">}</span><span class="sb">&#39;)`</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">};</span>
 
-const lists =  extendObj(sp.web.lists, myExtensions);
-const items = await lists.getByTitle(&quot;LookupList&quot;).items();
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span>  <span class="nx">extendObj</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">,</span> <span class="nx">myExtensions</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;LookupList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">();</span>
 
-console.log(JSON.stringify(items.length, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="enable-disable-extensions-and-clear-global-extensions">Enable &amp; Disable Extensions and Clear Global Extensions<a class="headerlink" href="#enable-disable-extensions-and-clear-global-extensions" title="Permanent link">&para;</a></h2>
 <p>Extensions are automatically enabled when you set an extension through any of the above outlined methods. You can disable and enable extensions on demand if needed.</p>
-<pre><code class="language-TypeScript">import { enableExtensions, disableExtensions, clearGlobalExtensions } from &quot;@pnp/odata&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">enableExtensions</span><span class="p">,</span> <span class="nx">disableExtensions</span><span class="p">,</span> <span class="nx">clearGlobalExtensions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 
-// disable Extensions
-disableExtensions();
+<span class="c1">// disable Extensions</span>
+<span class="nx">disableExtensions</span><span class="p">();</span>
 
-// enable Extensions
-enableExtensions();
+<span class="c1">// enable Extensions</span>
+<span class="nx">enableExtensions</span><span class="p">();</span>
 
-// clear all the globally registered extensions
-clearGlobalExtensions();
-</code></pre>
+<span class="c1">// clear all the globally registered extensions</span>
+<span class="nx">clearGlobalExtensions</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="order-of-operations">Order of Operations<a class="headerlink" href="#order-of-operations" title="Permanent link">&para;</a></h2>
 <p>It is important to understand the order in which extensions are executed and when a value is returned. Instance extensions* are always called first, followed by global Extensions - in both cases they are called in the order they were registered. This allows you to perhaps have some global functionality while maintaining the ability to override it again at the instance level. IF an extension returns a value other than <code>undefined</code> that value is returned and no other extensions are processed.</p>
 <blockquote>

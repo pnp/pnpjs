@@ -2292,35 +2292,35 @@
 </tbody>
 </table>
 <h3 id="get-all-site-user">Get all site user<a class="headerlink" href="#get-all-site-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-const users = await sp.web.siteUsers();
-</code></pre>
+<span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="get-current-user">Get Current user<a class="headerlink" href="#get-current-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-let user = await sp.web.currentUser();
-</code></pre>
+<span class="kd">let</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="get-user-by-id">Get user by id<a class="headerlink" href="#get-user-by-id" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-const id = 6;
-user = await sp.web.getUserById(id);
-</code></pre>
+<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="ensure-user">Ensure user<a class="headerlink" href="#ensure-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-const username = &quot;usernames@microsoft.com&quot;;
-result = await sp.web.ensureUser(username);
-</code></pre>
+<span class="kr">const</span> <span class="nx">username</span> <span class="o">=</span> <span class="s2">&quot;usernames@microsoft.com&quot;</span><span class="p">;</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">ensureUser</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="isiteuser">ISiteUser<a class="headerlink" href="#isiteuser" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <table>
@@ -2346,56 +2346,56 @@ result = await sp.web.ensureUser(username);
 </tbody>
 </table>
 <h3 id="get-user-groups">Get user Groups<a class="headerlink" href="#get-user-groups" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-let groups = await sp.web.currentUser.groups();
-</code></pre>
+<span class="kd">let</span> <span class="nx">groups</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">.</span><span class="nx">groups</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add-user-to-site-collection">Add user to Site collection<a class="headerlink" href="#add-user-to-site-collection" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-const user = await sp.web.ensureUser(&quot;userLoginname&quot;)
-const users = await sp.web.siteUsers;
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">ensureUser</span><span class="p">(</span><span class="s2">&quot;userLoginname&quot;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">;</span>
 
-await users.add(user.data.LoginName);
-</code></pre>
+<span class="nx">await</span> <span class="nx">users</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">LoginName</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-user">Get user<a class="headerlink" href="#get-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-// get user object by id
-const user = await sp.web.siteUsers.getById(6);
+<span class="c1">// get user object by id</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
 
-//get user object by Email
-const user = await sp.web.siteUsers.getByEmail(&quot;user@mail.com&quot;);
+<span class="c1">//get user object by Email</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">getByEmail</span><span class="p">(</span><span class="s2">&quot;user@mail.com&quot;</span><span class="p">);</span>
 
-//get user object by LoginName
-const user = await sp.web.siteUsers.getByLoginName(&quot;userLoginName&quot;);
-</code></pre>
+<span class="c1">//get user object by LoginName</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">getByLoginName</span><span class="p">(</span><span class="s2">&quot;userLoginName&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="update-user">Update user<a class="headerlink" href="#update-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-let userProps = await sp.web.currentUser.get();
-userProps.Title = &quot;New title&quot;;
-await sp.web.currentUser.update(userProps);
-</code></pre>
+<span class="kd">let</span> <span class="nx">userProps</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">userProps</span><span class="p">.</span><span class="nx">Title</span> <span class="o">=</span> <span class="s2">&quot;New title&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">userProps</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="remove-user">Remove user<a class="headerlink" href="#remove-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
 
-// remove user by id
-await sp.web.siteUsers.removeById(6);
+<span class="c1">// remove user by id</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">removeById</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
 
-// remove user by LoginName
-await sp.web.siteUsers.removeByLoginName(6);
-</code></pre>
+<span class="c1">// remove user by LoginName</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">removeByLoginName</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="isiteuserprops">ISiteUserProps<a class="headerlink" href="#isiteuserprops" title="Permanent link">&para;</a></h2>
 <p>User properties:</p>
 <table>
@@ -2449,57 +2449,57 @@ await sp.web.siteUsers.removeByLoginName(6);
 </tr>
 </tbody>
 </table>
-<pre><code class="language-TypeScript">interface ISiteUserProps {
+<div class="highlight"><pre><span></span><code><span class="kr">interface</span> <span class="nx">ISiteUserProps</span> <span class="p">{</span>
 
-    /**
-     * Contains Site user email
-     *
-     */
-    Email: string;
+    <span class="cm">/**</span>
+<span class="cm">     * Contains Site user email</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">Email</span>: <span class="kt">string</span><span class="p">;</span>
 
-    /**
-     * Contains Site user Id
-     *
-     */
-    Id: number;
+    <span class="cm">/**</span>
+<span class="cm">     * Contains Site user Id</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">Id</span>: <span class="kt">number</span><span class="p">;</span>
 
-    /**
-     * Site user IsHiddenInUI
-     *
-     */
-    IsHiddenInUI: boolean;
+    <span class="cm">/**</span>
+<span class="cm">     * Site user IsHiddenInUI</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">IsHiddenInUI</span>: <span class="kt">boolean</span><span class="p">;</span>
 
-    /**
-     * Site user IsShareByEmailGuestUser
-     *
-     */
-    IsShareByEmailGuestUser: boolean;
+    <span class="cm">/**</span>
+<span class="cm">     * Site user IsShareByEmailGuestUser</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">IsShareByEmailGuestUser</span>: <span class="kt">boolean</span><span class="p">;</span>
 
-    /**
-     * Describes if Site user Is Site Admin
-     *
-     */
-    IsSiteAdmin: boolean;
+    <span class="cm">/**</span>
+<span class="cm">     * Describes if Site user Is Site Admin</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">IsSiteAdmin</span>: <span class="kt">boolean</span><span class="p">;</span>
 
-    /**
-     * Site user LoginName
-     *
-     */
-    LoginName: string;
+    <span class="cm">/**</span>
+<span class="cm">     * Site user LoginName</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">LoginName</span>: <span class="kt">string</span><span class="p">;</span>
 
-    /**
-     * Site user Principal type
-     *
-     */
-    PrincipalType: number | PrincipalType;
+    <span class="cm">/**</span>
+<span class="cm">     * Site user Principal type</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">PrincipalType</span>: <span class="kt">number</span> <span class="o">|</span> <span class="nx">PrincipalType</span><span class="p">;</span>
 
-    /**
-     * Site user Title
-     *
-     */
-    Title: string;
-}
-</code></pre>
+    <span class="cm">/**</span>
+<span class="cm">     * Site user Title</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span>
+    <span class="nx">Title</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               

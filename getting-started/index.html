@@ -2435,143 +2435,139 @@
 <p><code>npm install @pnp/sp @pnp/graph --save</code></p>
 <p>Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation
 for more details and examples.</p>
-<pre><code class="language-TypeScript">import { getRandomString } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-(function() {
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
-  // get and log a random string
-  console.log(getRandomString(20));
+  <span class="c1">// get and log a random string</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">20</span><span class="p">));</span>
 
-})()
-</code></pre>
+<span class="p">})()</span>
+</code></pre></div>
 <h2 id="getting-started-with-sharepoint-framework">Getting Started with SharePoint Framework<a class="headerlink" href="#getting-started-with-sharepoint-framework" title="Permanent link">&para;</a></h2>
 <p>The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises please <a href="../SPFx-on-premises/">read this note</a> on a workaround for the included TypeScript version. If you are targeting SharePoint online you do not need to take any additional steps.</p>
 <h3 id="establish-context">Establish Context<a class="headerlink" href="#establish-context" title="Permanent link">&para;</a></h3>
 <p>Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/common or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.</p>
 <p>The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.</p>
 <h4 id="using-pnpcommon-setup">Using @pnp/common setup<a class="headerlink" href="#using-pnpcommon-setup" title="Permanent link">&para;</a></h4>
-<pre><code class="language-TypeScript">import { setup as pnpSetup } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="kr">as</span> <span class="nx">pnpSetup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  return super.onInit().then(_ =&gt; {
+  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // other init code may be present
+    <span class="c1">// other init code may be present</span>
 
-    pnpSetup({
-      spfxContext: this.context
-    });
-  });
-}
+    <span class="nx">pnpSetup</span><span class="p">({</span>
+      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-// ...
-
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h4 id="using-pnpsp-setup">Using @pnp/sp setup<a class="headerlink" href="#using-pnpsp-setup" title="Permanent link">&para;</a></h4>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  return super.onInit().then(_ =&gt; {
+  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // other init code may be present
+    <span class="c1">// other init code may be present</span>
 
-    sp.setup({
-      spfxContext: this.context
-    });
-  });
-}
+    <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-// ...
-
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <p>Sp setup also supports passing just the SPFx context object directly as this is the most common case</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected async onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">async</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  await super.onInit();
+  <span class="nx">await</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">();</span>
 
-  // other init code may be present
+  <span class="c1">// other init code may be present</span>
 
-  sp.setup(this.context);
-}
+  <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ...
-
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h4 id="using-pnpgraph-setup">Using @pnp/graph setup<a class="headerlink" href="#using-pnpgraph-setup" title="Permanent link">&para;</a></h4>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  return super.onInit().then(_ =&gt; {
+  <span class="k">return</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // other init code may be present
+    <span class="c1">// other init code may be present</span>
 
-    graph.setup({
-      spfxContext: this.context
-    });
-  });
-}
+    <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-// ...
-
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h4 id="establish-context-within-an-spfx-service">Establish context within an SPFx service<a class="headerlink" href="#establish-context-within-an-spfx-service" title="Permanent link">&para;</a></h4>
 <p>Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out and specify just the pageContext.</p>
-<pre><code class="language-TypeScript">import { ServiceKey, ServiceScope } from &quot;@microsoft/sp-core-library&quot;;
-import { PageContext } from &quot;@microsoft/sp-page-context&quot;;
-import { AadTokenProviderFactory } from &quot;@microsoft/sp-http&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ServiceKey</span><span class="p">,</span> <span class="nx">ServiceScope</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/sp-core-library&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PageContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/sp-page-context&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AadTokenProviderFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/sp-http&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
 
-export interface ISampleService {
-  getLists(): Promise&lt;any[]&gt;;
-}
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ISampleService</span> <span class="p">{</span>
+  <span class="nx">getLists</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
 
-export class SampleService {
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">SampleService</span> <span class="p">{</span>
 
-  public static readonly serviceKey: ServiceKey&lt;ISampleService&gt; = ServiceKey.create&lt;ISampleService&gt;('SPFx:SampleService', SampleService);
+  <span class="kr">public</span> <span class="kr">static</span> <span class="nx">readonly</span> <span class="nx">serviceKey</span>: <span class="kt">ServiceKey</span><span class="o">&lt;</span><span class="nx">ISampleService</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">ServiceKey</span><span class="p">.</span><span class="nx">create</span><span class="o">&lt;</span><span class="nx">ISampleService</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">&#39;SPFx:SampleService&#39;</span><span class="p">,</span> <span class="nx">SampleService</span><span class="p">);</span>
 
-  constructor(serviceScope: ServiceScope) {
+  <span class="kr">constructor</span><span class="p">(</span><span class="nx">serviceScope</span>: <span class="kt">ServiceScope</span><span class="p">)</span> <span class="p">{</span>
 
-    serviceScope.whenFinished(() =&gt; {
+    <span class="nx">serviceScope</span><span class="p">.</span><span class="nx">whenFinished</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-      const pageContext = serviceScope.consume(PageContext.serviceKey);
-      const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
+      <span class="kr">const</span> <span class="nx">pageContext</span> <span class="o">=</span> <span class="nx">serviceScope</span><span class="p">.</span><span class="nx">consume</span><span class="p">(</span><span class="nx">PageContext</span><span class="p">.</span><span class="nx">serviceKey</span><span class="p">);</span>
+      <span class="kr">const</span> <span class="nx">tokenProviderFactory</span> <span class="o">=</span> <span class="nx">serviceScope</span><span class="p">.</span><span class="nx">consume</span><span class="p">(</span><span class="nx">AadTokenProviderFactory</span><span class="p">.</span><span class="nx">serviceKey</span><span class="p">);</span>
 
-      // we need to &quot;spoof&quot; the context object with the parts we need for PnPjs
-      sp.setup({
-        spfxContext: {
-          aadTokenProviderFactory: tokenProviderFactory,
-          pageContext: pageContext,
-        }
-      });
+      <span class="c1">// we need to &quot;spoof&quot; the context object with the parts we need for PnPjs</span>
+      <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+        <span class="nx">spfxContext</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">aadTokenProviderFactory</span>: <span class="kt">tokenProviderFactory</span><span class="p">,</span>
+          <span class="nx">pageContext</span>: <span class="kt">pageContext</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
 
-      // This approach also works if you do not require AAD tokens
-      // you don't need to do both
-      // sp.setup({
-      //   sp : {
-      //     baseUrl : pageContext.web.absoluteUrl
-      //   }
-      // });
-    });
-  }
-  public getLists(): Promise&lt;any[]&gt; {
-    return sp.web.lists();
-  }
-}
-</code></pre>
+      <span class="c1">// This approach also works if you do not require AAD tokens</span>
+      <span class="c1">// you don&#39;t need to do both</span>
+      <span class="c1">// sp.setup({</span>
+      <span class="c1">//   sp : {</span>
+      <span class="c1">//     baseUrl : pageContext.web.absoluteUrl</span>
+      <span class="c1">//   }</span>
+      <span class="c1">// });</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="kr">public</span> <span class="nx">getLists</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="connect-to-sharepoint-from-node">Connect to SharePoint from Node<a class="headerlink" href="#connect-to-sharepoint-from-node" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Please see the <a href="../nodejs">main article on how we support node versions</a> that require commonjs modules.</p>
@@ -2579,73 +2575,73 @@ export class SampleService {
 <p><code>npm i @pnp/sp-commonjs @pnp/nodejs-commonjs</code></p>
 <p>This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the <a href="../packages/">packages</a> page.
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp-commonjs&quot;;
-import { SPFetchClient } from &quot;@pnp/nodejs-commonjs&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.</p>
-<pre><code class="language-TypeScript">// configure your node options (only once in your application)
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{site url}&quot;, &quot;{client id}&quot;, &quot;{client secret}&quot;);
-        },
-    },
-});
+<div class="highlight"><pre><span></span><code><span class="c1">// configure your node options (only once in your application)</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// make a call to SharePoint and log it in the console
-sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get().then(w =&gt; {
-    console.log(JSON.stringify(w, null, 4));
-});
-</code></pre>
+<span class="c1">// make a call to SharePoint and log it in the console</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="connect-to-microsoft-graph-from-node">Connect to Microsoft Graph From Node<a class="headerlink" href="#connect-to-microsoft-graph-from-node" title="Permanent link">&para;</a></h2>
 <p>Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
 <a href="https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts">./debug/launch/graph.ts</a> for a live example.</p>
-<pre><code class="language-CMD">npm i @pnp/graph-commonjs @pnp/nodejs-commonjs
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm i @pnp/graph-commonjs @pnp/nodejs-commonjs
+</code></pre></div>
 <p>Now we need to import what we'll need to call graph</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph-commonjs&quot;;
-import { AdalFetchClient } from &quot;@pnp/nodejs-commonjs&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>Now we can make our graph calls after setting up the Adal client. Note you'll need to setup an AzureAD App registration with the necessary permissions.</p>
-<pre><code class="language-TypeScript">graph.setup({
-    graph: {
-        fetchClientFactory: () =&gt; {
-            return new AdalFetchClient(&quot;{mytenant}.onmicrosoft.com&quot;, &quot;{application id}&quot;, &quot;{application secret}&quot;);
-        },
-    },
-});
+<div class="highlight"><pre><span></span><code><span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">AdalFetchClient</span><span class="p">(</span><span class="s2">&quot;{mytenant}.onmicrosoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;{application id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{application secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// make a call to Graph and get all the groups
-graph.groups.get().then(g =&gt; {
-    console.log(JSON.stringify(g, null, 4));
-});
-</code></pre>
+<span class="c1">// make a call to Graph and get all the groups</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">g</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="getting-started-outside-sharepoint-framework">Getting Started outside SharePoint Framework<a class="headerlink" href="#getting-started-outside-sharepoint-framework" title="Permanent link">&para;</a></h2>
 <p>In some cases you may be working in a way such that we cannot determine the base url for the web. In this scenario you have two options.</p>
 <h3 id="set-baseurl-through-setup">Set baseUrl through setup<a class="headerlink" href="#set-baseurl-through-setup" title="Permanent link">&para;</a></h3>
 <p>Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use <code>verbose</code> mode, something you may have to do when
 working against unpatched versions of SharePoint 2013 as <a href="https://blogs.msdn.microsoft.com/patrickrodgers/2016/06/13/pnp-jscore-1-0-1/">discussed here</a>.
 This is optional for 2016 or SharePoint Online. The library does not support setting the headers to use <code>nometadata</code> as we rely on the metadata in the response to do some of the more complicated functions. Some of the pure data calls will probably work but it is not a supported configuration.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-sp.setup({
-  sp: {
-    headers: {
-      Accept: &quot;application/json;odata=verbose&quot;,
-    },
-    baseUrl: &quot;{Absolute SharePoint Web URL}&quot;
-  },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">Accept</span><span class="o">:</span> <span class="s2">&quot;application/json;odata=verbose&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;{Absolute SharePoint Web URL}&quot;</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-const w = await sp.web.get();
-</code></pre>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="create-web-instances-directly">Create Web instances directly<a class="headerlink" href="#create-web-instances-directly" title="Permanent link">&para;</a></h3>
 <p>Using this method you create the web directly with the url you want to use as the base.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-const web = Web(&quot;{Absolute SharePoint Web URL}&quot;);
-const w = await web.get();
-</code></pre>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;{Absolute SharePoint Web URL}&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <p>Be sure to <a href="../concepts/configuration/">review the article describing all of the available settings</a> across the libraries.</p>
                 

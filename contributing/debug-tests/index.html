@@ -2117,60 +2117,60 @@
 <p>With version 2 we have made a significant effort to improve out test coverage. To keep that up, all changes submitted will require one or more tests be included. For new functionality at least a basic test that the method executes is required. For bug fixes please include a test that would have caught the bug (i.e. fail before your fix) and passes with your fix in place.</p>
 <h2 id="how-to-write-tests">How to write Tests<a class="headerlink" href="#how-to-write-tests" title="Permanent link">&para;</a></h2>
 <p>We use <a href="https://mochajs.org/">Mocha</a> and <a href="https://www.chaijs.com/">Chai</a> for our testing framework. You can see many examples of writing tests within the ./test folder. Here is a sample with extra comments to help explain what's happening, taken from <a href="https://github.com/pnp/pnpjs/blob/main/test/sp/items.ts">./test/sp/items.ts</a>:</p>
-<pre><code class="language-ts">import { getRandomString } from &quot;@pnp/common&quot;;
-import { testSettings } from &quot;../main&quot;;
-import { expect } from &quot;chai&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items/list&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">testSettings</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;../main&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;chai&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-describe(&quot;Items&quot;, () =&gt; {
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;Items&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // any tests that make a web request should be within a block checking if web tests are enabled
-    if (testSettings.enableWebTests) {
+    <span class="c1">// any tests that make a web request should be within a block checking if web tests are enabled</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">testSettings</span><span class="p">.</span><span class="nx">enableWebTests</span><span class="p">)</span> <span class="p">{</span>
 
-        // a block scoped var we will use across our tests
-        let list: IList = null;
+        <span class="c1">// a block scoped var we will use across our tests</span>
+        <span class="kd">let</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-        // we use the before block to setup
-        // executed before all the tests in this block, see the mocha docs for more details
-        // mocha prefers using function vs arrow functions and this is recommended
-        before(async function () {
+        <span class="c1">// we use the before block to setup</span>
+        <span class="c1">// executed before all the tests in this block, see the mocha docs for more details</span>
+        <span class="c1">// mocha prefers using function vs arrow functions and this is recommended</span>
+        <span class="nx">before</span><span class="p">(</span><span class="nx">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
-            // execute a request to ensure we have a list
-            const ler = await sp.web.lists.ensure(&quot;ItemTestList&quot;, &quot;Used to test item operations&quot;);
-            list = ler.list;
+            <span class="c1">// execute a request to ensure we have a list</span>
+            <span class="kr">const</span> <span class="nx">ler</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;ItemTestList&quot;</span><span class="p">,</span> <span class="s2">&quot;Used to test item operations&quot;</span><span class="p">);</span>
+            <span class="nx">list</span> <span class="o">=</span> <span class="nx">ler</span><span class="p">.</span><span class="nx">list</span><span class="p">;</span>
 
-            // in this case we want to have some items in the list for testing so we add those
-            // only if the list was just created
-            if (ler.created) {
+            <span class="c1">// in this case we want to have some items in the list for testing so we add those</span>
+            <span class="c1">// only if the list was just created</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">ler</span><span class="p">.</span><span class="nx">created</span><span class="p">)</span> <span class="p">{</span>
 
-                // add a few items to get started
-                const batch = sp.web.createBatch();
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                list.items.inBatch(batch).add({ Title: `Item ${getRandomString(4)}` });
-                await batch.execute();
-            }
-        });
+                <span class="c1">// add a few items to get started</span>
+                <span class="kr">const</span> <span class="nx">batch</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">createBatch</span><span class="p">();</span>
+                <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">});</span>
+                <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">});</span>
+                <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">});</span>
+                <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">});</span>
+                <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span> <span class="nx">Title</span><span class="o">:</span> <span class="sb">`Item </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="p">});</span>
+                <span class="nx">await</span> <span class="nx">batch</span><span class="p">.</span><span class="nx">execute</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
 
-        // this test has a label &quot;get items&quot; and is run via an async function
-        it(&quot;get items&quot;, async function () {
+        <span class="c1">// this test has a label &quot;get items&quot; and is run via an async function</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;get items&quot;</span><span class="p">,</span> <span class="nx">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
-            // make a request for the list's items
-            const items = await list.items();
+            <span class="c1">// make a request for the list&#39;s items</span>
+            <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">();</span>
 
-            // report that we expect that result to be an array with more than 0 items
-            expect(items.length).to.be.gt(0);
-        });
+            <span class="c1">// report that we expect that result to be an array with more than 0 items</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">gt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">});</span>
 
-        // ... remainder of code removed
-    }
-}
-</code></pre>
+        <span class="c1">// ... remainder of code removed</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="general-guidelines-for-writing-tests">General Guidelines for Writing Tests<a class="headerlink" href="#general-guidelines-for-writing-tests" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Tests should operate within the site defined in testSettings</li>

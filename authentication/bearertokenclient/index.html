@@ -2093,23 +2093,23 @@
 <p>The disadvantage to this approach is not knowing to where the request will be sent, which in some cases is fine. An alternative is the <a href="../lambdaclient/">LambdaFetchClient</a></p>
 </blockquote>
 <h2 id="static">Static<a class="headerlink" href="#static" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import { BearerTokenFetchClient } from &quot;@pnp/common&quot;;
-import { myTokenFactory } from &quot;./my-auth.js&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">BearerTokenFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">myTokenFactory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./my-auth.js&quot;</span><span class="p">;</span>
 
-graph.setup({
-    graph: {
-        fetchClientFactory: () =&gt; {
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-            // note this method is not async, so your logic here cannot await.
-            // Please see the LambdaFetchClient if you have a need for async support.
-            const token = myTokenFactory();
-            return new BearerTokenFetchClient(token);
-        },
-    },
-});
-</code></pre>
+            <span class="c1">// note this method is not async, so your logic here cannot await.</span>
+            <span class="c1">// Please see the LambdaFetchClient if you have a need for async support.</span>
+            <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">myTokenFactory</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">BearerTokenFetchClient</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               

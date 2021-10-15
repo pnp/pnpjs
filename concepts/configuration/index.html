@@ -2057,94 +2057,94 @@
 </blockquote>
 <h2 id="isolated-runtimes">Isolated Runtimes<a class="headerlink" href="#isolated-runtimes" title="Permanent link">&para;</a></h2>
 <p>You can create an isolated runtime when using either the sp or graph libraries. What this does is create an isolated set of properties and behaviors specific to a given fluent chain. Have a look at this basic example below:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// create an isolated sp root instance
-const isolatedSP = await sp.createIsolated();
+<span class="c1">// create an isolated sp root instance</span>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="p">();</span>
 
-// this configuration applies to all objects created from &quot;sp&quot;
-sp.setup({
-  sp: {
-    baseUrl: &quot;https://mytenant.sharepoint.com/&quot;,
-  },
-});
+<span class="c1">// this configuration applies to all objects created from &quot;sp&quot;</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com/&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-// this configuration applies to all objects created from &quot;isolatedSP&quot;
-isolatedSP.setup({
-  sp: {
-    baseUrl: &quot;https://mytenant.sharepoint.com/sites/dev&quot;,
-  },
-});
+<span class="c1">// this configuration applies to all objects created from &quot;isolatedSP&quot;</span>
+<span class="nx">isolatedSP</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-// details for the web at https://mytenant.sharepoint.com/
-const web1 = await sp.web();
+<span class="c1">// details for the web at https://mytenant.sharepoint.com/</span>
+<span class="kr">const</span> <span class="nx">web1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
 
-// details for the web at https://mytenant.sharepoint.com/sites/dev
-const web2 = await isolatedSP.web();
-</code></pre>
+<span class="c1">// details for the web at https://mytenant.sharepoint.com/sites/dev</span>
+<span class="kr">const</span> <span class="nx">web2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">isolatedSP</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
+</code></pre></div>
 <p>This configuration is supplied to all objects down a given fluent chain:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// create an isolated sp root instance
-const isolatedSP = await sp.createIsolated();
+<span class="c1">// create an isolated sp root instance</span>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="p">();</span>
 
-// this configuraiton applies to all objects created from &quot;sp&quot;
-sp.setup({
-  sp: {
-    baseUrl: &quot;https://mytenant.sharepoint.com/&quot;,
-  },
-});
+<span class="c1">// this configuraiton applies to all objects created from &quot;sp&quot;</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com/&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-// this configuraiton applies to all objects created from &quot;isolatedSP&quot;
-isolatedSP.setup({
-  sp: {
-    baseUrl: &quot;https://mytenant.sharepoint.com/sites/dev&quot;,
-  },
-});
+<span class="c1">// this configuraiton applies to all objects created from &quot;isolatedSP&quot;</span>
+<span class="nx">isolatedSP</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-// details for the lists at https://mytenant.sharepoint.com/
-const lists1 = await sp.web.lists();
+<span class="c1">// details for the lists at https://mytenant.sharepoint.com/</span>
+<span class="kr">const</span> <span class="nx">lists1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 
-// details for the lists at https://mytenant.sharepoint.com/sites/dev
-const lists2 = await isolatedSP.web.lists();
-</code></pre>
+<span class="c1">// details for the lists at https://mytenant.sharepoint.com/sites/dev</span>
+<span class="kr">const</span> <span class="nx">lists2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">isolatedSP</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="createisolated">createIsolated<a class="headerlink" href="#createisolated" title="Permanent link">&para;</a></h2>
 <p>The createIsolated method is used to establish the isolated runtime for a given instance of either the sp or graph libraries. Once created it is no longer connected to the default instance and if you have common settings that must be updated you would need to update them across each isolated instance, this is by design. Currently sp and graph createIsolated methods accept the same init, but we have broken them out to make thing clear. All properties of the init object are optional. Any properties provided will overwrite those cloned from the default if cloneGlobal is true. If cloneGlobal is false you start with an empty config containing only the <a href="#common-configuration">core defaults</a>.</p>
 <h3 id="spcreateisolated">sp.createIsolated<a class="headerlink" href="#spcreateisolated" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp, ISPConfiguration } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ISPConfiguration</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-// accept all the defaults, will clone any settings from sp
-const isolatedSP = await sp.createIsolated();
+<span class="c1">// accept all the defaults, will clone any settings from sp</span>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="p">();</span>
 
-// - specify all the config options, using the ISPConfiguration interface to type the config
-// - setting baseUrl in the root is equivelent to setting it with sp: { baseUrl: }, it is provided as a shortcut as this seemed to be a common use case
-//   - if you set them both the baseUrl in the root will be used.
-// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values
-//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below
-const isolatedSP = await sp.createIsolated&lt;ISPConfiguration&gt;({
-  baseUrl: &quot;https://mytenant.sharepoint.com&quot;,
-  cloneGlobal: false,
-  config: {
-    cacheExpirationIntervalMilliseconds: 1000,
-    sp: {
-      baseUrl: &quot;https://mytenant.sharepoint.com&quot;,
-      fetchClientFactory: () =&gt; void(0),
-      headers: {
-        &quot;X-AnotherHeader&quot;: &quot;54321&quot;,
-      },
-    },
-    spfxContext: this.context, // only valid within SPFx
-  },
-  options: {
-    headers: {
-      &quot;X-SomeHeader&quot;: &quot;12345&quot;,
-    },
-  },
-});
-</code></pre>
+<span class="c1">// - specify all the config options, using the ISPConfiguration interface to type the config</span>
+<span class="c1">// - setting baseUrl in the root is equivelent to setting it with sp: { baseUrl: }, it is provided as a shortcut as this seemed to be a common use case</span>
+<span class="c1">//   - if you set them both the baseUrl in the root will be used.</span>
+<span class="c1">// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values</span>
+<span class="c1">//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below</span>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="o">&lt;</span><span class="nx">ISPConfiguration</span><span class="o">&gt;</span><span class="p">({</span>
+  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com&quot;</span><span class="p">,</span>
+  <span class="nx">cloneGlobal</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">cacheExpirationIntervalMilliseconds</span>: <span class="kt">1000</span><span class="p">,</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://mytenant.sharepoint.com&quot;</span><span class="p">,</span>
+      <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;X-AnotherHeader&quot;</span><span class="o">:</span> <span class="s2">&quot;54321&quot;</span><span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span> <span class="c1">// only valid within SPFx</span>
+  <span class="p">},</span>
+  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;X-SomeHeader&quot;</span><span class="o">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <p><em>Defaults</em></p>
 <table>
 <thead>
@@ -2173,34 +2173,34 @@ const isolatedSP = await sp.createIsolated&lt;ISPConfiguration&gt;({
 </tbody>
 </table>
 <h3 id="graphcreateisolated">graph.createIsolated<a class="headerlink" href="#graphcreateisolated" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { graph, IGraphConfiguration } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span><span class="p">,</span> <span class="nx">IGraphConfiguration</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-// - specify all the config options, using the IGraphConfiguration interface to type the config
-// - setting baseUrl in the root is restricted to &quot;v1.0&quot; or &quot;beta&quot;. If you need to specify a different absolute url should use config.graph.baseUrl
-//   - in practice you should use one or the other. You can always swap Graph api version using IGraphQueryable.setEndpoint
-// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values
-//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below
-const isolatedGraph = await graph.createIsolated&lt;IGraphConfiguration&gt;({
-  baseUrl: &quot;v1.0&quot;,
-  cloneGlobal: false,
-  config: {
-    cacheExpirationIntervalMilliseconds: 1000,
-    graph: {
-      baseUrl: &quot;https://graph.microsoft.com&quot;,
-      fetchClientFactory: () =&gt; void(0),
-      headers: {
-        &quot;X-AnotherHeader&quot;: &quot;54321&quot;,
-      },
-    },
-    spfxContext: this.context, // only valid within SPFx
-  },
-  options: {
-    headers: {
-      &quot;X-SomeHeader&quot;: &quot;12345&quot;,
-    },
-  },
-});
-</code></pre>
+<span class="c1">// - specify all the config options, using the IGraphConfiguration interface to type the config</span>
+<span class="c1">// - setting baseUrl in the root is restricted to &quot;v1.0&quot; or &quot;beta&quot;. If you need to specify a different absolute url should use config.graph.baseUrl</span>
+<span class="c1">//   - in practice you should use one or the other. You can always swap Graph api version using IGraphQueryable.setEndpoint</span>
+<span class="c1">// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values</span>
+<span class="c1">//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below</span>
+<span class="kr">const</span> <span class="nx">isolatedGraph</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">createIsolated</span><span class="o">&lt;</span><span class="nx">IGraphConfiguration</span><span class="o">&gt;</span><span class="p">({</span>
+  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;v1.0&quot;</span><span class="p">,</span>
+  <span class="nx">cloneGlobal</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">cacheExpirationIntervalMilliseconds</span>: <span class="kt">1000</span><span class="p">,</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://graph.microsoft.com&quot;</span><span class="p">,</span>
+      <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;X-AnotherHeader&quot;</span><span class="o">:</span> <span class="s2">&quot;54321&quot;</span><span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span> <span class="c1">// only valid within SPFx</span>
+  <span class="p">},</span>
+  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;X-SomeHeader&quot;</span><span class="o">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h4 id="defaults">Defaults<a class="headerlink" href="#defaults" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
@@ -2232,99 +2232,99 @@ const isolatedGraph = await graph.createIsolated&lt;IGraphConfiguration&gt;({
 <h3 id="msal-with-node-multiple-site-requests">MSAL with Node multiple site requests<a class="headerlink" href="#msal-with-node-multiple-site-requests" title="Permanent link">&para;</a></h3>
 <p><em>MSAL Support Added in 2.0.11</em></p>
 <p>In this example you can see how you can setup the MSAL client once and then set a different baseUrl for an isolated instance. <a href="../../authentication/server-nodejs/">More information specific to setting up the MSAL client is available</a>.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { readFileSync } from &quot;fs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">readFileSync</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
 
-// read in our private key
-const buffer = readFileSync(&quot;c:/temp/key.pem&quot;);
+<span class="c1">// read in our private key</span>
+<span class="kr">const</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">readFileSync</span><span class="p">(</span><span class="s2">&quot;c:/temp/key.pem&quot;</span><span class="p">);</span>
 
-// configure node options
-sp.setup({
-  sp: {
-    baseUrl: &quot;https://{my tenant}.sharepoint.com/sites/dev/&quot;,
-    fetchClientFactory: () =&gt; {
-      return new MsalFetchClient({
-        auth: {
-          authority: &quot;https://login.microsoftonline.com/{tenant id or common}&quot;,
-          clientCertificate: {
-            thumbprint: &quot;{certificate thumbprint, displayed in AAD}&quot;,
-            privateKey: buffer.toString(),
-          },
-          clientId: &quot;{client id}&quot;,
-        }
-      }, [&quot;https://{my tenant}.sharepoint.com/.default&quot;]); // you must set the scope for SharePoint access
-    },
-  },
-});
+<span class="c1">// configure node options</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://{my tenant}.sharepoint.com/sites/dev/&quot;</span><span class="p">,</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">MsalFetchClient</span><span class="p">({</span>
+        <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant id or common}&quot;</span><span class="p">,</span>
+          <span class="nx">clientCertificate</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">thumbprint</span><span class="o">:</span> <span class="s2">&quot;{certificate thumbprint, displayed in AAD}&quot;</span><span class="p">,</span>
+            <span class="nx">privateKey</span>: <span class="kt">buffer.toString</span><span class="p">(),</span>
+          <span class="p">},</span>
+          <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;https://{my tenant}.sharepoint.com/.default&quot;</span><span class="p">]);</span> <span class="c1">// you must set the scope for SharePoint access</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-const isolatedSP = await sp.createIsolated&lt;ISPConfigurationPart&gt;({
-  config: {
-    sp: {
-      baseUrl: &quot;https://{my tenant}.sharepoint.com/sites/dev2/&quot;,
-    },
-  },
-});
-</code></pre>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="o">&lt;</span><span class="nx">ISPConfigurationPart</span><span class="o">&gt;</span><span class="p">({</span>
+  <span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://{my tenant}.sharepoint.com/sites/dev2/&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="node-multiple-site-requests">Node multiple site requests<a class="headerlink" href="#node-multiple-site-requests" title="Permanent link">&para;</a></h3>
 <p>Isolated configuration was most requested for scenarios in node where you need to access information in multiple sites. This example shows setting up the global configuration and then creating an isolated config with only the baseUrl updated.</p>
-<pre><code class="language-TypeScript">import { SPFetchClient } from &quot;@pnp/nodejs&quot;;
-import { ISPConfigurationPart, sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISPConfigurationPart</span><span class="p">,</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-sp.setup({
-  cacheExpirationIntervalMilliseconds: 1000,
-  defaultCachingStore: &quot;local&quot;,
-  sp: {
-    fetchClientFactory: () =&gt; {
-      return new SPFetchClient(&quot;https://mytenant.sharepoint.com/&quot;, &quot;id&quot;, &quot;secret&quot;);
-    },
-    headers: {
-      &quot;X-MyRequiredHeader&quot;: &quot;SomeValue&quot;,
-      &quot;X-MyRequiredHeader2&quot;: &quot;SomeValue&quot;,
-    },
-  },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">cacheExpirationIntervalMilliseconds</span>: <span class="kt">1000</span><span class="p">,</span>
+  <span class="nx">defaultCachingStore</span><span class="o">:</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;X-MyRequiredHeader&quot;</span><span class="o">:</span> <span class="s2">&quot;SomeValue&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;X-MyRequiredHeader2&quot;</span><span class="o">:</span> <span class="s2">&quot;SomeValue&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-const isolatedSP = await sp.createIsolated&lt;ISPConfigurationPart&gt;({
-  config: {
-    sp: {
-      fetchClientFactory: () =&gt; {
-        return new SPFetchClient(&quot;https://mytenant.sharepoint.com/site/dev&quot;, &quot;id&quot;, &quot;secret&quot;);
-      },
-    },
-  },
-});
-</code></pre>
+<span class="kr">const</span> <span class="nx">isolatedSP</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="o">&lt;</span><span class="nx">ISPConfigurationPart</span><span class="o">&gt;</span><span class="p">({</span>
+  <span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/site/dev&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">);</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="batching">Batching<a class="headerlink" href="#batching" title="Permanent link">&para;</a></h2>
 <p>All batching functionality works as expected, but you must take care to only associate requests from the <em>same</em> isolated instance as you create the batch. Mixing requests across isolation boundaries is not supported. This applies to sp and graph batching.</p>
-<pre><code class="language-TypeScript">sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;url1&quot;, &quot;id&quot;, &quot;secret&quot;);
-        },
-    },
-});
+<div class="highlight"><pre><span></span><code><span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;url1&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const isolated = await sp.createIsolated&lt;ISPConfiguration&gt;({
-    config: {
-        sp: {
-            fetchClientFactory: () =&gt; {
-                return new SPFetchClient(&quot;url2&quot;, &quot;id&quot;, &quot;secret&quot;);
-            },
-        },
-    },
-});
+<span class="kr">const</span> <span class="nx">isolated</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createIsolated</span><span class="o">&lt;</span><span class="nx">ISPConfiguration</span><span class="o">&gt;</span><span class="p">({</span>
+    <span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;url2&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">);</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const batch1 = sp.createBatch();
-sp.web.lists.select(&quot;Title&quot;).top(3).inBatch(batch1)().then(r =&gt; console.log(`here 1: ${JSON.stringify(r, null, 2)}`));
-sp.web.select(&quot;Title&quot;).inBatch(batch1)().then(r =&gt; console.log(`here 2: ${JSON.stringify(r, null, 2)}`));
-await batch1.execute();
+<span class="kr">const</span> <span class="nx">batch1</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createBatch</span><span class="p">();</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch1</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`here 1: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch1</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`here 2: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+<span class="nx">await</span> <span class="nx">batch1</span><span class="p">.</span><span class="nx">execute</span><span class="p">();</span>
 
-const batch2 = isolated.createBatch();
-isolated.web.lists.select(&quot;Title&quot;).top(3).inBatch(batch2)().then(r =&gt; console.log(`here 3: ${JSON.stringify(r, null, 2)}`));
-isolated.web.select(&quot;Title&quot;).inBatch(batch2)().then(r =&gt; console.log(`here 4: ${JSON.stringify(r, null, 2)}`));
-await batch2.execute();
-</code></pre>
+<span class="kr">const</span> <span class="nx">batch2</span> <span class="o">=</span> <span class="nx">isolated</span><span class="p">.</span><span class="nx">createBatch</span><span class="p">();</span>
+<span class="nx">isolated</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch2</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`here 3: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+<span class="nx">isolated</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch2</span><span class="p">)().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`here 4: </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+<span class="nx">await</span> <span class="nx">batch2</span><span class="p">.</span><span class="nx">execute</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="ie11-mode">IE11 Mode<a class="headerlink" href="#ie11-mode" title="Permanent link">&para;</a></h2>
 <p>The IE11 mode setting is always global. There is no scenario we care to support where once instance needs to run in ie11 mode and another does not. Your code either does or does not run in ie11.</p>
 <h1 id="prior-to-v210">Prior to v2.1.0<a class="headerlink" href="#prior-to-v210" title="Permanent link">&para;</a></h1>
@@ -2383,19 +2383,19 @@ await batch2.execute();
 <p>For more information on setting up in SPFx please see the <a href="../../authentication/">authentication section</a></p>
 <p>For more details on ie11 mode please see the <a href="../ie11-mode/">topic article</a></p>
 </blockquote>
-<pre><code class="language-ts">import { setup } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// called before other code
-setup({
-  cacheExpirationIntervalMilliseconds: 15000,
-  defaultCachingStore: &quot;local&quot;,
-  defaultCachingTimeoutSeconds: 600,
-  enableCacheExpiration: true,
-  globalCacheDisable: false,
-  ie11: false,
-  spfxContext: this.context, // if in SPFx, otherwise leave it out
-});
-</code></pre>
+<span class="c1">// called before other code</span>
+<span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">cacheExpirationIntervalMilliseconds</span>: <span class="kt">15000</span><span class="p">,</span>
+  <span class="nx">defaultCachingStore</span><span class="o">:</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span>
+  <span class="nx">defaultCachingTimeoutSeconds</span>: <span class="kt">600</span><span class="p">,</span>
+  <span class="nx">enableCacheExpiration</span>: <span class="kt">true</span><span class="p">,</span>
+  <span class="nx">globalCacheDisable</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">ie11</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span> <span class="c1">// if in SPFx, otherwise leave it out</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="sp-configuration">SP Configuration<a class="headerlink" href="#sp-configuration" title="Permanent link">&para;</a></h2>
 <p>The sp library's configuration is defined by the ISPConfiguration interface which extends ILibraryConfiguration. All of the sp values are contained in a top level property named "sp". The following table describes the properties with a code sample following.</p>
 <p>All values are optional.</p>
@@ -2428,33 +2428,33 @@ setup({
 <blockquote>
 <p>There are many examples of using fetchClientFactory available in the <a href="../../authentication/">authentication section</a>.</p>
 </blockquote>
-<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
-import { SPFxAdalClient } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFxAdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// note you can still set the global configuration such as ie11 using the same object as 
-// the interface extends ILibraryConfiguration
-sp.setup({
-  ie11: false,
-  sp: {
-    baseUrl: &quot;https://tenant.sharepoint.com/sites/dev&quot;,
-    fetchClientFactory: () =&gt; {
-      return new SPFxAdalClient(this.context);
-    },
-    headers: {
-      &quot;Accept&quot;: &quot;application/json;odata=verbose&quot;,
-      &quot;X-Something&quot;: &quot;header-value&quot;,
-    },
-  },
-  spfxContext: this.context,
-});
-</code></pre>
+<span class="c1">// note you can still set the global configuration such as ie11 using the same object as </span>
+<span class="c1">// the interface extends ILibraryConfiguration</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">ie11</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev&quot;</span><span class="p">,</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFxAdalClient</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Accept&quot;</span><span class="o">:</span> <span class="s2">&quot;application/json;odata=verbose&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;X-Something&quot;</span><span class="o">:</span> <span class="s2">&quot;header-value&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+  <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="sharepoint-framework">SharePoint Framework<a class="headerlink" href="#sharepoint-framework" title="Permanent link">&para;</a></h3>
 <p>You can optionally supply only the SPFx context to the sp configure method.</p>
-<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-// in SPFx only
-sp.setup(this.context);
-</code></pre>
+<span class="c1">// in SPFx only</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="graph-configuration">Graph Configuration<a class="headerlink" href="#graph-configuration" title="Permanent link">&para;</a></h2>
 <p>The graph configuration works exactly the same as the sp configuration but is defined by the IGraphConfiguration interface which extends ILibraryConfiguration. All of the graph values are contained in a top level property named "graph". The following table describes the properties with a code sample following.</p>
 <p>All values are optional.</p>
@@ -2487,63 +2487,63 @@ sp.setup(this.context);
 <blockquote>
 <p>There are many examples of using fetchClientFactory available in the <a href="../../authentication/">authentication section</a>.</p>
 </blockquote>
-<pre><code class="language-ts">import { graph } from &quot;@pnp/graph&quot;;
-import { MsalClientSetup } from &quot;@pnp/msaljsclient&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
 
-// note you can still set the global configuration such as ie11 using the same object as 
-// the interface extends ILibraryConfiguration
-graph.setup({
-  ie11: false,
-  graph: {
-    // we set the GCC url
-    baseUrl: &quot;https://graph.microsoft.us&quot;,
-    fetchClientFactory: MsalClientSetup({
-        auth: {
-            authority: &quot;https://login.microsoftonline.com/tenant.onmicrosoft.com&quot;,
-            clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-            redirectUri: &quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;,
-        },
-    }, [&quot;Group.Read.All&quot;]),
-    headers: {
-      &quot;Accept&quot;: &quot;application/json;odata=verbose&quot;,
-      &quot;X-Something&quot;: &quot;header-value&quot;,
-    },
-  },
-  spfxContext: this.context,
-});
-</code></pre>
+<span class="c1">// note you can still set the global configuration such as ie11 using the same object as </span>
+<span class="c1">// the interface extends ILibraryConfiguration</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">ie11</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// we set the GCC url</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://graph.microsoft.us&quot;</span><span class="p">,</span>
+    <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+        <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/tenant.onmicrosoft.com&quot;</span><span class="p">,</span>
+            <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+            <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;Group.Read.All&quot;</span><span class="p">]),</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Accept&quot;</span><span class="o">:</span> <span class="s2">&quot;application/json;odata=verbose&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;X-Something&quot;</span><span class="o">:</span> <span class="s2">&quot;header-value&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+  <span class="nx">spfxContext</span>: <span class="kt">this.context</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="sharepoint-framework_1">SharePoint Framework<a class="headerlink" href="#sharepoint-framework_1" title="Permanent link">&para;</a></h3>
 <p>You can optionally supply only the SPFx context to the graph configure method. We will attempt to set the baseUrl property from the context - but if that is failing in your environment and you need to call a special cloud (i.e. graph.microsoft.us) please set the baseUrl property.</p>
-<pre><code class="language-ts">import { graph } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-// in SPFx only
-graph.setup(this.context);
-</code></pre>
+<span class="c1">// in SPFx only</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="configure-everything-at-once">Configure Everything At Once<a class="headerlink" href="#configure-everything-at-once" title="Permanent link">&para;</a></h2>
 <p>In some cases you might want to configure everything in one go. Because the configuration is stored in a single location you can use the common library's setup method and adjust the typings to ensure you are using the correct property names while only having to setup things with a single call.</p>
 <blockquote>
 <p>In versions before 2.0.8 ISPConfigurationPart, IGraphConfigurationPart, and ILibraryConfiguration incorrectly were missing the "I" prefix. That was fixed in 2.0.8 - but note if you are using an older version of the library you'll need to use the old names. Everything else in the below example works as expected.</p>
 </blockquote>
-<pre><code class="language-ts">import { ISPConfigurationPart } from &quot;@pnp/sp&quot;;
-import { IGraphConfigurationPart } from &quot;@pnp/graph&quot;;
-import { ILibraryConfiguration, setup } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ISPConfigurationPart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IGraphConfigurationPart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// you could also include your custom configuration parts
-export interface AllConfig extends ILibraryConfiguration, ISPConfigurationPart, IGraphConfigurationPart { }
+<span class="c1">// you could also include your custom configuration parts</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">AllConfig</span> <span class="kr">extends</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">ISPConfigurationPart</span><span class="p">,</span> <span class="nx">IGraphConfigurationPart</span> <span class="p">{</span> <span class="p">}</span>
 
-// create a single big configuration entry
-const config: AllConfig = {
-  graph: {
-    baseUrl: &quot;https://graph.microsoft.us&quot;,
-  },
-  ie11: false,
-  sp: {
-    baseUrl: &quot;https://tenant.sharepoint.com/sites/dev&quot;,
-  },
-};
+<span class="c1">// create a single big configuration entry</span>
+<span class="kr">const</span> <span class="nx">config</span>: <span class="kt">AllConfig</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://graph.microsoft.us&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="nx">ie11</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">};</span>
 
-setup(config);
-</code></pre>
+<span class="nx">setup</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

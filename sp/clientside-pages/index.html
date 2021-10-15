@@ -2791,257 +2791,257 @@
 <h2 id="create-a-new-page">Create a new Page<a class="headerlink" href="#create-a-new-page" title="Permanent link">&para;</a></h2>
 <p>You can create a new client-side page in several ways, all are equivalent.</p>
 <h3 id="create-using-iwebaddclientsidepage">Create using IWeb.addClientsidePage<a class="headerlink" href="#create-using-iwebaddclientsidepage" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/clientside-pages/web&quot;;
-import { PromotedState } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PromotedState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// Create a page providing a file name
-const page = await sp.web.addClientsidePage(&quot;mypage1&quot;);
+<span class="c1">// Create a page providing a file name</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage1&quot;</span><span class="p">);</span>
 
-// ... other operations on the page as outlined below
+<span class="c1">// ... other operations on the page as outlined below</span>
 
-// the page is initially not published, you must publish it so it appears for others users
-await page.save();
+<span class="c1">// the page is initially not published, you must publish it so it appears for others users</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// include title and page layout
-const page2 = await sp.web.addClientsidePage(&quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
+<span class="c1">// include title and page layout</span>
+<span class="kr">const</span> <span class="nx">page2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
 
-// you must publish the new page
-await page2.save();
+<span class="c1">// you must publish the new page</span>
+<span class="nx">await</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// include title, page layout, and specifying the publishing status (Added in 2.0.4)
-const page3 = await sp.web.addClientsidePage(&quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;, PromotedState.PromoteOnPublish);
+<span class="c1">// include title, page layout, and specifying the publishing status (Added in 2.0.4)</span>
+<span class="kr">const</span> <span class="nx">page3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">,</span> <span class="nx">PromotedState</span><span class="p">.</span><span class="nx">PromoteOnPublish</span><span class="p">);</span>
 
-// you must publish the new page, after which the page will immediately be promoted to a news article
-await page3.save();
-</code></pre>
+<span class="c1">// you must publish the new page, after which the page will immediately be promoted to a news article</span>
+<span class="nx">await</span> <span class="nx">page3</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="create-using-createclientsidepage-method">Create using CreateClientsidePage method<a class="headerlink" href="#create-using-createclientsidepage-method" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { Web } from &quot;@pnp/sp/webs&quot;;
-import { CreateClientsidePage, PromotedState } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span><span class="p">,</span> <span class="nx">PromotedState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-const page1 = await CreateClientsidePage(sp.web, &quot;mypage2&quot;, &quot;My Page Title&quot;);
+<span class="kr">const</span> <span class="nx">page1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage2&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">);</span>
 
-// you must publish the new page
-await page1.save(true);
+<span class="c1">// you must publish the new page</span>
+<span class="nx">await</span> <span class="nx">page1</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 
-// specify the page layout type parameter
-const page2 = await CreateClientsidePage(sp.web, &quot;mypage3&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
+<span class="c1">// specify the page layout type parameter</span>
+<span class="kr">const</span> <span class="nx">page2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage3&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
 
-// you must publish the new page
-await page2.save();
+<span class="c1">// you must publish the new page</span>
+<span class="nx">await</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)
-const page2half = await CreateClientsidePage(sp.web, &quot;mypage3&quot;, &quot;My Page Title&quot;, &quot;Article&quot;, PromotedState.PromoteOnPublish);
+<span class="c1">// specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)</span>
+<span class="kr">const</span> <span class="nx">page2half</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage3&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">,</span> <span class="nx">PromotedState</span><span class="p">.</span><span class="nx">PromoteOnPublish</span><span class="p">);</span>
 
-// you must publish the new page, after which the page will immediately be promoted to a news article
-await page2half.save();
+<span class="c1">// you must publish the new page, after which the page will immediately be promoted to a news article</span>
+<span class="nx">await</span> <span class="nx">page2half</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// use the web factory to create a page in a specific web
-const page3 = await CreateClientsidePage(Web(&quot;https://{absolute web url}&quot;), &quot;mypage4&quot;, &quot;My Page Title&quot;);
+<span class="c1">// use the web factory to create a page in a specific web</span>
+<span class="kr">const</span> <span class="nx">page3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://{absolute web url}&quot;</span><span class="p">),</span> <span class="s2">&quot;mypage4&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">);</span>
 
-// you must publish the new page
-await page3.save();
-</code></pre>
+<span class="c1">// you must publish the new page</span>
+<span class="nx">await</span> <span class="nx">page3</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="create-using-iwebaddfullpageapp">Create using IWeb.addFullPageApp<a class="headerlink" href="#create-using-iwebaddfullpageapp" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.6.0</em></p>
 <p>Using this method you can easily create a full page app page given the component id. Don't forget the page will not be published and you will need to call save.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { Web } from &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-const page = await web.addFullPageApp(&quot;name333&quot;, &quot;My Title&quot;, &quot;2CE4E250-B997-11EB-A9D2-C9D2FF95D000&quot;);
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">addFullPageApp</span><span class="p">(</span><span class="s2">&quot;name333&quot;</span><span class="p">,</span> <span class="s2">&quot;My Title&quot;</span><span class="p">,</span> <span class="s2">&quot;2CE4E250-B997-11EB-A9D2-C9D2FF95D000&quot;</span><span class="p">);</span>
 
-// ... other page actions
+<span class="c1">// ... other page actions</span>
 
-// you must save the page to publish it
-await page.save();
-</code></pre>
+<span class="c1">// you must save the page to publish it</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="load-pages">Load Pages<a class="headerlink" href="#load-pages" title="Permanent link">&para;</a></h2>
 <p>There are a few ways to load pages, each of which results in an IClientsidePage instance being returned.</p>
 <h3 id="load-using-iwebloadclientsidepage">Load using IWeb.loadClientsidePage<a class="headerlink" href="#load-using-iwebloadclientsidepage" title="Permanent link">&para;</a></h3>
 <p>This method takes a <em>server relative</em> path to the page to load.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { Web } from &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/clientside-pages/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
 
-// use from the sp.web fluent chain
-const page = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/mypage3.aspx&quot;);
+<span class="c1">// use from the sp.web fluent chain</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">loadClientsidePage</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">);</span>
 
-// use the web factory to target a specific web
-const page2 = await Web(&quot;https://{absolute web url}&quot;).loadClientsidePage(&quot;/sites/dev/sitepages/mypage3.aspx&quot;);
-</code></pre>
+<span class="c1">// use the web factory to target a specific web</span>
+<span class="kr">const</span> <span class="nx">page2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://{absolute web url}&quot;</span><span class="p">).</span><span class="nx">loadClientsidePage</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="load-using-clientsidepagefromfile">Load using ClientsidePageFromFile<a class="headerlink" href="#load-using-clientsidepagefromfile" title="Permanent link">&para;</a></h3>
 <p>This method takes an IFile instance and loads an IClientsidePage instance.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { ClientsidePageFromFile } from &quot;@pnp/sp/clientside-pages&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/files/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsidePageFromFile</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
 
-const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath(&quot;/sites/dev/sitepages/mypage3.aspx&quot;));
-</code></pre>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ClientsidePageFromFile</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/sitepages/mypage3.aspx&quot;</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="edit-sections-and-columns">Edit Sections and Columns<a class="headerlink" href="#edit-sections-and-columns" title="Permanent link">&para;</a></h2>
 <p>Client-side pages are made up of sections, columns, and controls. Sections contain columns which contain controls. There are methods to operate on these within the page, in addition to the standard array methods available in JavaScript. These samples use a variable <code>page</code> that is understood to be an IClientsidePage instance which is either created or loaded as outlined in previous sections.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// add two columns with factor 6 - this is a two column layout as the total factor in a section should add up to 12
-const section1 = page.addSection();
-section1.addColumn(6);
-section1.addColumn(6);
+<span class="c1">// add two columns with factor 6 - this is a two column layout as the total factor in a section should add up to 12</span>
+<span class="kr">const</span> <span class="nx">section1</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">();</span>
+<span class="nx">section1</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="nx">section1</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
 
-// create a three column layout in a new section
-const section2 = page.addSection();
-section2.addColumn(4);
-section2.addColumn(4);
-section2.addColumn(4);
+<span class="c1">// create a three column layout in a new section</span>
+<span class="kr">const</span> <span class="nx">section2</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">();</span>
+<span class="nx">section2</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">section2</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">section2</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
 
-// publish our changes
-await page.save();
-</code></pre>
+<span class="c1">// publish our changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="manipulate-sections-and-columns">Manipulate Sections and Columns<a class="headerlink" href="#manipulate-sections-and-columns" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// drop all the columns in this section
-// this will also DELETE all controls contained in the columns
-page.sections[1].columns.length = 0;
+<span class="c1">// drop all the columns in this section</span>
+<span class="c1">// this will also DELETE all controls contained in the columns</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">columns</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
-// create a new column layout
-page.sections[1].addColumn(4);
-page.sections[1].addColumn(8);
+<span class="c1">// create a new column layout</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
 
-// publish our changes
-await page.save();
-</code></pre>
+<span class="c1">// publish our changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="vertical-section">Vertical Section<a class="headerlink" href="#vertical-section" title="Permanent link">&para;</a></h3>
 <p>The vertical section, if on the page, is stored within the sections array. However, you access it slightly differently to make things easier.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// add or get a vertical section (handles case where section already exists)
-const vertSection = page.addVerticalSection();
+<span class="c1">// add or get a vertical section (handles case where section already exists)</span>
+<span class="kr">const</span> <span class="nx">vertSection</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addVerticalSection</span><span class="p">();</span>
 
-// ****************************************************************
+<span class="c1">// ****************************************************************</span>
 
-// if you know or want to test if a vertical section is present:
-if (page.hasVerticalSection) {
+<span class="c1">// if you know or want to test if a vertical section is present:</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">hasVerticalSection</span><span class="p">)</span> <span class="p">{</span>
 
-    // access the vertical section (this method will NOT create the section if it does not exist)
-    page.verticalSection.addControl(new ClientsideText(&quot;hello&quot;));
-} else {
+    <span class="c1">// access the vertical section (this method will NOT create the section if it does not exist)</span>
+    <span class="nx">page</span><span class="p">.</span><span class="nx">verticalSection</span><span class="p">.</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientsideText</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">));</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 
-    const vertSection = page.addVerticalSection();
-    vertSection.addControl(new ClientsideText(&quot;hello&quot;));
-}
-</code></pre>
+    <span class="kr">const</span> <span class="nx">vertSection</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addVerticalSection</span><span class="p">();</span>
+    <span class="nx">vertSection</span><span class="p">.</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientsideText</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="reorder-sections">Reorder Sections<a class="headerlink" href="#reorder-sections" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// swap the order of two sections
-// this will preserve the controls within the columns
-page.sections = [page.sections[1], page.sections[0]];
+<span class="c1">// swap the order of two sections</span>
+<span class="c1">// this will preserve the controls within the columns</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span> <span class="o">=</span> <span class="p">[</span><span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
 
-// publish our changes
-await page.save();
-</code></pre>
+<span class="c1">// publish our changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="reorder-columns">Reorder Columns<a class="headerlink" href="#reorder-columns" title="Permanent link">&para;</a></h3>
 <p>The sections and columns are arrays, so normal array operations work as expected</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// swap the order of two columns
-// this will preserve the controls within the columns
-page.sections[1].columns = [page.sections[1].columns[1], page.sections[1].columns[0]];
+<span class="c1">// swap the order of two columns</span>
+<span class="c1">// this will preserve the controls within the columns</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
 
-// publish our changes
-await page.save();
-</code></pre>
+<span class="c1">// publish our changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="clientside-controls">Clientside Controls<a class="headerlink" href="#clientside-controls" title="Permanent link">&para;</a></h2>
 <p>Once you have your sections and columns defined you will want to add/edit controls within those columns.</p>
 <h3 id="add-text-content">Add Text Content<a class="headerlink" href="#add-text-content" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { ClientsideText } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// our page instance
-const page: IClientsidePage;
+<span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-page.addSection().addControl(new ClientsideText(&quot;@pnp/sp is a great library!&quot;));
+<span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">().</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientsideText</span><span class="p">(</span><span class="s2">&quot;@pnp/sp is a great library!&quot;</span><span class="p">));</span>
 
-await page.save();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add-controls">Add Controls<a class="headerlink" href="#add-controls" title="Permanent link">&para;</a></h3>
 <p>Adding controls involves loading the available client-side part definitions from the server or creating a text part.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/clientside-pages/web&quot;;
-import { ClientsideWebpart } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideWebpart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// this will be a ClientsidePageComponent array
-// this can be cached on the client in production scenarios
-const partDefs = await sp.web.getClientsideWebParts();
+<span class="c1">// this will be a ClientsidePageComponent array</span>
+<span class="c1">// this can be cached on the client in production scenarios</span>
+<span class="kr">const</span> <span class="nx">partDefs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getClientsideWebParts</span><span class="p">();</span>
 
-// find the definition we want, here by id
-const partDef = partDefs.filter(c =&gt; c.Id === &quot;490d7c76-1824-45b2-9de3-676421c997fa&quot;);
+<span class="c1">// find the definition we want, here by id</span>
+<span class="kr">const</span> <span class="nx">partDef</span> <span class="o">=</span> <span class="nx">partDefs</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Id</span> <span class="o">===</span> <span class="s2">&quot;490d7c76-1824-45b2-9de3-676421c997fa&quot;</span><span class="p">);</span>
 
-// optionally ensure you found the def
-if (partDef.length &lt; 1) {
-    // we didn't find it so we throw an error
-    throw new Error(&quot;Could not find the web part&quot;);
-}
+<span class="c1">// optionally ensure you found the def</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">partDef</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// we didn&#39;t find it so we throw an error</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Could not find the web part&quot;</span><span class="p">);</span>
+<span class="p">}</span>
 
-// create a ClientWebPart instance from the definition
-const part = ClientsideWebpart.fromComponentDef(partDef[0]);
+<span class="c1">// create a ClientWebPart instance from the definition</span>
+<span class="kr">const</span> <span class="nx">part</span> <span class="o">=</span> <span class="nx">ClientsideWebpart</span><span class="p">.</span><span class="nx">fromComponentDef</span><span class="p">(</span><span class="nx">partDef</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 
-// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a YouTube video.
-// the structure of the properties varies for each web part and each version of a web part, so you will need to ensure you are setting
-// the properties correctly
-part.setProperties&lt;{ embedCode: string }&gt;({
-    embedCode: &quot;https://www.youtube.com/watch?v=IWQFZ7Lx-rg&quot;,
-});
+<span class="c1">// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a YouTube video.</span>
+<span class="c1">// the structure of the properties varies for each web part and each version of a web part, so you will need to ensure you are setting</span>
+<span class="c1">// the properties correctly</span>
+<span class="nx">part</span><span class="p">.</span><span class="nx">setProperties</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">embedCode</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">({</span>
+    <span class="nx">embedCode</span><span class="o">:</span> <span class="s2">&quot;https://www.youtube.com/watch?v=IWQFZ7Lx-rg&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// we add that part to a new section
-page.addSection().addControl(part);
+<span class="c1">// we add that part to a new section</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">().</span><span class="nx">addControl</span><span class="p">(</span><span class="nx">part</span><span class="p">);</span>
 
-await page.save();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="handle-different-webparts-settings">Handle Different Webpart's Settings<a class="headerlink" href="#handle-different-webparts-settings" title="Permanent link">&para;</a></h3>
 <p>There are many ways that client side web parts are implemented and we can't provide handling within the library for all possibilities. This example shows how to handle a property set within the serverProcessedContent, in this case a List part's display title.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { ClientsideWebpart } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideWebpart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// we create a class to wrap our functionality in a reusable way
-class ListWebpart extends ClientsideWebpart {
+<span class="c1">// we create a class to wrap our functionality in a reusable way</span>
+<span class="kr">class</span> <span class="nx">ListWebpart</span> <span class="kr">extends</span> <span class="nx">ClientsideWebpart</span> <span class="p">{</span>
 
-  constructor(control: ClientsideWebpart) {
-    super((&lt;any&gt;control).json);
-  }
+  <span class="kr">constructor</span><span class="p">(</span><span class="nx">control</span>: <span class="kt">ClientsideWebpart</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">super</span><span class="p">((</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="nx">control</span><span class="p">).</span><span class="nx">json</span><span class="p">);</span>
+  <span class="p">}</span>
 
-  // add property getter/setter for what we need, in this case &quot;listTitle&quot; within searchablePlainTexts
-  public get DisplayTitle(): string {
-    return this.json.webPartData?.serverProcessedContent?.searchablePlainTexts?.listTitle || &quot;&quot;;
-  }
+  <span class="c1">// add property getter/setter for what we need, in this case &quot;listTitle&quot; within searchablePlainTexts</span>
+  <span class="kr">public</span> <span class="nx">get</span> <span class="nx">DisplayTitle</span><span class="p">()</span><span class="o">:</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">json</span><span class="p">.</span><span class="nx">webPartData</span><span class="o">?</span><span class="p">.</span><span class="nx">serverProcessedContent</span><span class="o">?</span><span class="p">.</span><span class="nx">searchablePlainTexts</span><span class="o">?</span><span class="p">.</span><span class="nx">listTitle</span> <span class="o">||</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  public set DisplayTitle(value: string) {
-    this.json.webPartData.serverProcessedContent.searchablePlainTexts.listTitle = value;
-  }
-}
+  <span class="kr">public</span> <span class="nx">set</span> <span class="nx">DisplayTitle</span><span class="p">(</span><span class="nx">value</span>: <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">json</span><span class="p">.</span><span class="nx">webPartData</span><span class="p">.</span><span class="nx">serverProcessedContent</span><span class="p">.</span><span class="nx">searchablePlainTexts</span><span class="p">.</span><span class="nx">listTitle</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-// now we load our page
-const page = await sp.web.loadClientsidePage(&quot;/sites/dev/SitePages/List-Web-Part.aspx&quot;);
+<span class="c1">// now we load our page</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">loadClientsidePage</span><span class="p">(</span><span class="s2">&quot;/sites/dev/SitePages/List-Web-Part.aspx&quot;</span><span class="p">);</span>
 
-// get our part and pass it to the constructor of our wrapper class
-const part = new ListWebpart(page.sections[0].columns[0].getControl(0));
+<span class="c1">// get our part and pass it to the constructor of our wrapper class</span>
+<span class="kr">const</span> <span class="nx">part</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ListWebpart</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getControl</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 
-part.DisplayTitle = &quot;My New Title!&quot;;
+<span class="nx">part</span><span class="p">.</span><span class="nx">DisplayTitle</span> <span class="o">=</span> <span class="s2">&quot;My New Title!&quot;</span><span class="p">;</span>
 
-await page.save();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <blockquote>
 <p>Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart are stored without loading it and examining the properties.</p>
 </blockquote>
@@ -3049,27 +3049,27 @@ await page.save();
 <p>There are other operation you can perform on a page in addition to manipulating the content.</p>
 <h3 id="pagelayout">pageLayout<a class="headerlink" href="#pagelayout" title="Permanent link">&para;</a></h3>
 <p>You can get and set the page layout. Changing the layout after creating the page may have side effects and should be done cautiously.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.pageLayout;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">pageLayout</span><span class="p">;</span>
 
-// set the value
-page.pageLayout = &quot;Article&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">pageLayout</span> <span class="o">=</span> <span class="s2">&quot;Article&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="bannerimageurl">bannerImageUrl<a class="headerlink" href="#bannerimageurl" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.bannerImageUrl;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">bannerImageUrl</span><span class="p">;</span>
 
-// set the value
-page.bannerImageUrl = &quot;/server/relative/path/to/image.png&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">bannerImageUrl</span> <span class="o">=</span> <span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <blockquote>
 <p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
 </blockquote>
@@ -3078,413 +3078,413 @@ await page.save();
 <blockquote>
 <p>If you set the bannerImageUrl property and not thumbnailUrl the thumbnail will be reset to match the banner, mimicking the UI functionality.</p>
 </blockquote>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.thumbnailUrl;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">thumbnailUrl</span><span class="p">;</span>
 
-// set the value
-page.thumbnailUrl = &quot;/server/relative/path/to/image.png&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">thumbnailUrl</span> <span class="o">=</span> <span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="topicheader">topicHeader<a class="headerlink" href="#topicheader" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.topicHeader;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">topicHeader</span><span class="p">;</span>
 
-// set the value
-page.topicHeader = &quot;My cool header!&quot;;
-await page.save();
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">topicHeader</span> <span class="o">=</span> <span class="s2">&quot;My cool header!&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// clear the topic header and hide it
-page.topicHeader = &quot;&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// clear the topic header and hide it</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">topicHeader</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="title">title<a class="headerlink" href="#title" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.title;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
 
-// set the value
-page.title = &quot;My page title&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s2">&quot;My page title&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="description">description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Descriptions are limited to 255 chars</p>
 </blockquote>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.description;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">description</span><span class="p">;</span>
 
-// set the value
-page.description = &quot;A description&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">description</span> <span class="o">=</span> <span class="s2">&quot;A description&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="layouttype">layoutType<a class="headerlink" href="#layouttype" title="Permanent link">&para;</a></h3>
 <p>Sets the layout type of the page. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.layoutType;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">layoutType</span><span class="p">;</span>
 
-// set the value
-page.layoutType = &quot;ColorBlock&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">layoutType</span> <span class="o">=</span> <span class="s2">&quot;ColorBlock&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="headertextalignment">headerTextAlignment<a class="headerlink" href="#headertextalignment" title="Permanent link">&para;</a></h3>
 <p>Sets the header text alignment to one of "Left" or "Center"</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.headerTextAlignment;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">headerTextAlignment</span><span class="p">;</span>
 
-// set the value
-page.headerTextAlignment = &quot;Center&quot;;
-await page.save();
-</code></pre>
+<span class="c1">// set the value</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">headerTextAlignment</span> <span class="o">=</span> <span class="s2">&quot;Center&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="showtopicheader">showTopicHeader<a class="headerlink" href="#showtopicheader" title="Permanent link">&para;</a></h3>
 <p>Sets if the topic header is displayed on a page.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.showTopicHeader;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">showTopicHeader</span><span class="p">;</span>
 
-// show the header
-page.showTopicHeader = true;
-await page.save();
+<span class="c1">// show the header</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">showTopicHeader</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// hide the header
-page.showTopicHeader = false;
-await page.save();
-</code></pre>
+<span class="c1">// hide the header</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">showTopicHeader</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="showpublishdate">showPublishDate<a class="headerlink" href="#showpublishdate" title="Permanent link">&para;</a></h3>
 <p>Sets if the publish date is displayed on a page.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the current value
-const value = page.showPublishDate;
+<span class="c1">// get the current value</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">showPublishDate</span><span class="p">;</span>
 
-// show the date
-page.showPublishDate = true;
-await page.save();
+<span class="c1">// show the date</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">showPublishDate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// hide the date
-page.showPublishDate = false;
-await page.save();
-</code></pre>
+<span class="c1">// hide the date</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">showPublishDate</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="get-set-author-details">Get / Set author details<a class="headerlink" href="#get-set-author-details" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.4</em></p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// get the author details (string | null)
-const value = page.authorByLine;
+<span class="c1">// get the author details (string | null)</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">authorByLine</span><span class="p">;</span>
 
-// set the author by user id
-const user = await web.currentUser.select(&quot;Id&quot;, &quot;LoginName&quot;)();
-const userId = user.Id;
-const userLogin = user.LoginName;
+<span class="c1">// set the author by user id</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;LoginName&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">Id</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">userLogin</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">LoginName</span><span class="p">;</span>
 
-await page.setAuthorById(userId);
-await page.save();
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setAuthorById</span><span class="p">(</span><span class="nx">userId</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-await page.setAuthorByLoginName(userLogin);
-await page.save();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setAuthorByLoginName</span><span class="p">(</span><span class="nx">userLogin</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <blockquote>
 <p>you must still save the page after setting the author to persist your changes as shown in the example.</p>
 </blockquote>
 <h3 id="load">load<a class="headerlink" href="#load" title="Permanent link">&para;</a></h3>
 <p>Loads the page from the server. This will overwrite any local unsaved changes.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-await page.load();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">load</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="save">save<a class="headerlink" href="#save" title="Permanent link">&para;</a></h3>
 <p>Saves any changes to the page, optionally keeping them in draft state.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// changes are published
-await page.save();
+<span class="c1">// changes are published</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// changes remain in draft
-await page.save(false);
-</code></pre>
+<span class="c1">// changes remain in draft</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="discardpagecheckout">discardPageCheckout<a class="headerlink" href="#discardpagecheckout" title="Permanent link">&para;</a></h3>
 <p>Discards any current checkout of the page by the current user.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-await page.discardPageCheckout();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">discardPageCheckout</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="promotetonews">promoteToNews<a class="headerlink" href="#promotetonews" title="Permanent link">&para;</a></h3>
 <p>Promotes the page as a news article.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-await page.promoteToNews();
-</code></pre>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">promoteToNews</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="enablecomments-disablecomments">enableComments &amp; disableComments<a class="headerlink" href="#enablecomments-disablecomments" title="Permanent link">&para;</a></h3>
 <p>Used to control the availability of comments on a page.</p>
 <p><a href="https://github.com/pnp/pnpjs/issues/1383"><img alt="Known Issue Banner" src="https://img.shields.io/badge/Known%20Issue-important.svg" /></a></p>
-<pre><code class="language-TypeScript">// you need to import the comments sub-module or use the all preset
-import &quot;@pnp/sp/comments/clientside-page&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// you need to import the comments sub-module or use the all preset</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
-// our page instance
-const page: IClientsidePage;
+<span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// turn on comments
-await page.enableComments();
+<span class="c1">// turn on comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">enableComments</span><span class="p">();</span>
 
-// turn off comments
-await page.disableComments();
-</code></pre>
+<span class="c1">// turn off comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">disableComments</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="findcontrolbyid">findControlById<a class="headerlink" href="#findcontrolbyid" title="Permanent link">&para;</a></h3>
 <p>Finds a control within the page by id.</p>
-<pre><code class="language-TypeScript">import { ClientsideText } from &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientsideText</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// our page instance
-const page: IClientsidePage;
+<span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-const control = page.findControlById(&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;);
+<span class="kr">const</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControlById</span><span class="p">(</span><span class="s2">&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;</span><span class="p">);</span>
 
-// you can also type the control
-const control = page.findControlById&lt;ClientsideText&gt;(&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;);
-</code></pre>
+<span class="c1">// you can also type the control</span>
+<span class="kr">const</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControlById</span><span class="o">&lt;</span><span class="nx">ClientsideText</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="findcontrol">findControl<a class="headerlink" href="#findcontrol" title="Permanent link">&para;</a></h3>
 <p>Finds a control within the page using the supplied delegate. Can also be used to iterate through all controls in the page.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// find the first control whose order is 9
-const control = page.findControl((c) =&gt; c.order === 9);
+<span class="c1">// find the first control whose order is 9</span>
+<span class="kr">const</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControl</span><span class="p">((</span><span class="nx">c</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">order</span> <span class="o">===</span> <span class="mi">9</span><span class="p">);</span>
 
-// iterate all the controls and output the id to the console
-page.findControl((c) =&gt; {
-    console.log(c.id);
-    return false;
-});
-</code></pre>
+<span class="c1">// iterate all the controls and output the id to the console</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">findControl</span><span class="p">((</span><span class="nx">c</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="like-unlike">like &amp; unlike<a class="headerlink" href="#like-unlike" title="Permanent link">&para;</a></h3>
 <p>Updates the page's like value for the current user.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// like this page
-await page.like();
+<span class="c1">// like this page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
 
-// unlike this page
-await page.unlike();
-</code></pre>
+<span class="c1">// unlike this page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">unlike</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="getlikedbyinformation">getLikedByInformation<a class="headerlink" href="#getlikedbyinformation" title="Permanent link">&para;</a></h3>
 <p>Gets the likes information for this page.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-const info = await page.getLikedByInformation();
-</code></pre>
+<span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getLikedByInformation</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="copy">copy<a class="headerlink" href="#copy" title="Permanent link">&para;</a></h3>
 <p>Creates a copy of the page, including all controls.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// our page instance
-const page: IClientsidePage;
+<span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// creates a published copy of the page
-const pageCopy = await page.copy(sp.web, &quot;newpagename&quot;, &quot;New Page Title&quot;);
+<span class="c1">// creates a published copy of the page</span>
+<span class="kr">const</span> <span class="nx">pageCopy</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;newpagename&quot;</span><span class="p">,</span> <span class="s2">&quot;New Page Title&quot;</span><span class="p">);</span>
 
-// creates a draft (unpublished) copy of the page
-const pageCopy2 = await page.copy(sp.web, &quot;newpagename&quot;, &quot;New Page Title&quot;, false);
+<span class="c1">// creates a draft (unpublished) copy of the page</span>
+<span class="kr">const</span> <span class="nx">pageCopy2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;newpagename&quot;</span><span class="p">,</span> <span class="s2">&quot;New Page Title&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
-// edits to pageCopy2 ...
+<span class="c1">// edits to pageCopy2 ...</span>
 
-// publish the page
-pageCopy2.save();
-</code></pre>
+<span class="c1">// publish the page</span>
+<span class="nx">pageCopy2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="copyto">copyTo<a class="headerlink" href="#copyto" title="Permanent link">&para;</a></h3>
 <p>Copies the contents of a page to another existing page instance.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// our page instances, loaded in any of the ways shown above
-const source: IClientsidePage;
-const target: IClientsidePage;
-const target2: IClientsidePage;
+<span class="c1">// our page instances, loaded in any of the ways shown above</span>
+<span class="kr">const</span> <span class="nx">source</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">target</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">target2</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// creates a published copy of the page
-await source.copyTo(target);
+<span class="c1">// creates a published copy of the page</span>
+<span class="nx">await</span> <span class="nx">source</span><span class="p">.</span><span class="nx">copyTo</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
 
-// creates a draft (unpublished) copy of the page
-await source.copyTo(target2, false);
+<span class="c1">// creates a draft (unpublished) copy of the page</span>
+<span class="nx">await</span> <span class="nx">source</span><span class="p">.</span><span class="nx">copyTo</span><span class="p">(</span><span class="nx">target2</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
-// edits to target2...
+<span class="c1">// edits to target2...</span>
 
-// publish the page
-target2.save();
-</code></pre>
+<span class="c1">// publish the page</span>
+<span class="nx">target2</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="setbannerimage">setBannerImage<a class="headerlink" href="#setbannerimage" title="Permanent link">&para;</a></h3>
 <p>Sets the banner image url and optionally additional properties. Allows you to set additional properties if needed, if you do not need to set the additional properties they are equivalent.</p>
 <blockquote>
 <p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
 </blockquote>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-page.setBannerImage(&quot;/server/relative/path/to/image.png&quot;);
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">);</span>
 
-// save the changes
-await page.save();
+<span class="c1">// save the changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-// set additional props
-page.setBannerImage(&quot;/server/relative/path/to/image.png&quot;, {
-    altText: &quot;Image description&quot;,
-    imageSourceType: 2,
-    translateX: 30,
-    translateY: 1234,
-});
+<span class="c1">// set additional props</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="s2">&quot;/server/relative/path/to/image.png&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">altText</span><span class="o">:</span> <span class="s2">&quot;Image description&quot;</span><span class="p">,</span>
+    <span class="nx">imageSourceType</span>: <span class="kt">2</span><span class="p">,</span>
+    <span class="nx">translateX</span>: <span class="kt">30</span><span class="p">,</span>
+    <span class="nx">translateY</span>: <span class="kt">1234</span><span class="p">,</span>
+<span class="p">});</span>
 
-// save the changes
-await page.save();
-</code></pre>
+<span class="c1">// save the changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <p>This sample shows the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the <code>file</code> - likely from a file input or similar.</p>
-<pre><code class="language-TypeScript">import { SPFetchClient } from &quot;@pnp/nodejs&quot;;
-import { join } from &quot;path&quot;;
-import { readFileSync } from &quot;fs&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/files&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">join</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;path&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">readFileSync</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-// configure your node options
-sp.setup({
-  sp: {
-    fetchClientFactory: () =&gt; {
-      return new SPFetchClient(&quot;{Site Url}&quot;, &quot;{Client Id}&quot;, &quot;{Client Secret}&quot;);
-    },
-  },
-});
+<span class="c1">// configure your node options</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{Site Url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{Client Id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{Client Secret}&quot;</span><span class="p">);</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-// add the banner image
-const dirname = join(&quot;C:/path/to/file&quot;, &quot;img-file.jpg&quot;);
-const file: Uint8Array = new Uint8Array(readFileSync(dirname));
-const far = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents&quot;).files.add(&quot;banner.jpg&quot;, file, true);
+<span class="c1">// add the banner image</span>
+<span class="kr">const</span> <span class="nx">dirname</span> <span class="o">=</span> <span class="nx">join</span><span class="p">(</span><span class="s2">&quot;C:/path/to/file&quot;</span><span class="p">,</span> <span class="s2">&quot;img-file.jpg&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">file</span>: <span class="kt">Uint8Array</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">dirname</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;banner.jpg&quot;</span><span class="p">,</span> <span class="nx">file</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-// add the page
-const page = await sp.web.addClientsidePage(&quot;MyPage&quot;, &quot;Page Title&quot;);
+<span class="c1">// add the page</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientsidePage</span><span class="p">(</span><span class="s2">&quot;MyPage&quot;</span><span class="p">,</span> <span class="s2">&quot;Page Title&quot;</span><span class="p">);</span>
 
-// set the banner image
-page.setBannerImage(far.data.ServerRelativeUrl);
+<span class="c1">// set the banner image</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImage</span><span class="p">(</span><span class="nx">far</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">ServerRelativeUrl</span><span class="p">);</span>
 
-// publish the page
-await page.save();
-</code></pre>
+<span class="c1">// publish the page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="setbannerimagefromexternalurl">setBannerImageFromExternalUrl<a class="headerlink" href="#setbannerimagefromexternalurl" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.12</em></p>
 <p>Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;);
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImageFromExternalUrl</span><span class="p">(</span><span class="s2">&quot;https://absolute.url/to/my/image.jpg&quot;</span><span class="p">);</span>
 
-// save the changes
-await page.save();
-</code></pre>
+<span class="c1">// save the changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <p>You can optionally supply additional props for the banner image, these match the properties when calling <a href="#setbannerimage">setBannerImage</a></p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;, {
-    altText: &quot;Image description&quot;,
-    imageSourceType: 2,
-    translateX: 30,
-    translateY: 1234,
-});
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">setBannerImageFromExternalUrl</span><span class="p">(</span><span class="s2">&quot;https://absolute.url/to/my/image.jpg&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">altText</span><span class="o">:</span> <span class="s2">&quot;Image description&quot;</span><span class="p">,</span>
+    <span class="nx">imageSourceType</span>: <span class="kt">2</span><span class="p">,</span>
+    <span class="nx">translateX</span>: <span class="kt">30</span><span class="p">,</span>
+    <span class="nx">translateY</span>: <span class="kt">1234</span><span class="p">,</span>
+<span class="p">});</span>
 
-// save the changes
-await page.save();
-</code></pre>
+<span class="c1">// save the changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.6.0</em></p>
 <p>Allows you to recycle a page without first needing to use getItem</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.recycle();
-</code></pre>
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">recycle</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.6.0</em></p>
 <p>Allows you to delete a page without first needing to use getItem</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.delete();
-</code></pre>
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="saveastemplate">saveAsTemplate<a class="headerlink" href="#saveastemplate" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.6.0</em></p>
 <p>Save page as a template from which other pages can be created. If it doesn't exist a special folder "Templates" will be added to the doc lib</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.saveAsTemplate();
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">saveAsTemplate</span><span class="p">();</span>
 
 
-// save a template, but don't publish it allowing you to make changes before it is available to users
-// you 
-await page.saveAsTemplate(false);
+<span class="c1">// save a template, but don&#39;t publish it allowing you to make changes before it is available to users</span>
+<span class="c1">// you </span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">saveAsTemplate</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
 
-// ... changes to the page
+<span class="c1">// ... changes to the page</span>
 
-// you must publish the template so it is available
-await page.save();
-</code></pre>
+<span class="c1">// you must publish the template so it is available</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="share">share<a class="headerlink" href="#share" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.6.0</em></p>
 <p>Allows sharing a page with one or more email addresses, optionall including a message in the email</p>
-<pre><code class="language-TypeScript">// our page instance
-const page: IClientsidePage;
+<div class="highlight"><pre><span></span><code><span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// you must await this method
-await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;]);
+<span class="c1">// you must await this method</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">share</span><span class="p">([</span><span class="s2">&quot;email@place.com&quot;</span><span class="p">,</span> <span class="s2">&quot;email2@otherplace.com&quot;</span><span class="p">]);</span>
 
-// optionally include a message
-await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;], &quot;Please check out this cool page!&quot;);
-</code></pre>
+<span class="c1">// optionally include a message</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">share</span><span class="p">([</span><span class="s2">&quot;email@place.com&quot;</span><span class="p">,</span> <span class="s2">&quot;email2@otherplace.com&quot;</span><span class="p">],</span> <span class="s2">&quot;Please check out this cool page!&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h1 id="add-repost-page">Add Repost Page<a class="headerlink" href="#add-repost-page" title="Permanent link">&para;</a></h1>
 <p><em>Added in 2.5.0</em></p>
 <p>You can use the <code>addRepostPage</code> method to add a report page. The method returns the absolute url of the created page. All properties are optional but it is recommended to include as much as possible to improve the quality of the repost card's display.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/clientside-pages&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
 
-const w = await sp.web.addRepostPage({
-    BannerImageUrl: &quot;https://some.absolute/path/to/an/image.jpg&quot;,
-    IsBannerImageUrlExternal: true,
-    Description: &quot;My Description&quot;,
-    Title: &quot;This is my title!&quot;,
-    OriginalSourceUrl: &quot;https://absolute/path/to/article&quot;,
-});
-</code></pre>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addRepostPage</span><span class="p">({</span>
+    <span class="nx">BannerImageUrl</span><span class="o">:</span> <span class="s2">&quot;https://some.absolute/path/to/an/image.jpg&quot;</span><span class="p">,</span>
+    <span class="nx">IsBannerImageUrlExternal</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span><span class="p">,</span>
+    <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;This is my title!&quot;</span><span class="p">,</span>
+    <span class="nx">OriginalSourceUrl</span><span class="o">:</span> <span class="s2">&quot;https://absolute/path/to/article&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <blockquote>
 <p>To specify an existing item in another list all of the four properties OriginalSourceSiteId, OriginalSourceWebId, OriginalSourceListId, and OriginalSourceItemId are required.</p>
 </blockquote>

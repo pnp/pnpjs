@@ -2120,70 +2120,70 @@
 <h2 id="importing-spodataentity-and-spodataentityarray">Importing spODataEntity and spODataEntityArray<a class="headerlink" href="#importing-spodataentity-and-spodataentityarray" title="Permanent link">&para;</a></h2>
 <p>You can import spODataEntity and spODataEntityArray in two ways, depending on your use case. The simplest way is to use the presets/all import as shown in the examples. The downside of this approach is that you can't take advantage of selective imports.</p>
 <p>If you want to take advantage of selective imports while using either of the entity parsers you can use:</p>
-<pre><code class="language-TypeScript">import { spODataEntity, spODataEntityArray } from &quot;@pnp/sp/odata&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntity</span><span class="p">,</span> <span class="nx">spODataEntityArray</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>The full selective import for the first sample would be:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { spODataEntity } from &quot;@pnp/sp/odata&quot;;
-import { Item, IItem } from &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntity</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+</code></pre></div>
 <h2 id="request-a-single-entity">Request a single entity<a class="headerlink" href="#request-a-single-entity" title="Permanent link">&para;</a></h2>
 <p>If we are loading a single entity we use the <em>spODataEntity</em> method. Here we show loading a list item using the Item class and a simple get query.</p>
-<pre><code class="language-TypeScript">import { sp, spODataEntity, Item, IItem } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntity</span><span class="p">,</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// interface defining the returned properties
-interface MyProps {
-    Id: number;
-}
+<span class="c1">// interface defining the returned properties</span>
+<span class="kr">interface</span> <span class="nx">MyProps</span> <span class="p">{</span>
+    <span class="nx">Id</span>: <span class="kt">number</span><span class="p">;</span>
+<span class="p">}</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-    // get a list item loaded with data and merged into an instance of Item
-    const item = await sp.web.lists.getByTitle(&quot;ListTitle&quot;).items.getById(1).usingParser(spODataEntity&lt;IItem, MyProps&gt;(Item))();
+    <span class="c1">// get a list item loaded with data and merged into an instance of Item</span>
+    <span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;ListTitle&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">usingParser</span><span class="p">(</span><span class="nx">spODataEntity</span><span class="o">&lt;</span><span class="nx">IItem</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">))();</span>
 
-    // log the item id, all properties specified in MyProps will be type checked
-    Logger.write(`Item id: ${item.Id}`);
+    <span class="c1">// log the item id, all properties specified in MyProps will be type checked</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`Item id: </span><span class="si">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">Id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-    // now we can call update because we have an instance of the Item type to work with as well
-    await item.update({
-        Title: &quot;New title.&quot;,
-    });
+    <span class="c1">// now we can call update because we have an instance of the Item type to work with as well</span>
+    <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+        <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;New title.&quot;</span><span class="p">,</span>
+    <span class="p">});</span>
 
-} catch (e) {
-    Logger.error(e);
-}
-</code></pre>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="request-a-collection">Request a collection<a class="headerlink" href="#request-a-collection" title="Permanent link">&para;</a></h2>
 <p>The same pattern works when requesting a collection of objects with the exception of using the <em>spODataEntityArray</em> method.</p>
-<pre><code class="language-TypeScript">import { sp, spODataEntityArray, Item, IItem } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Item</span><span class="p">,</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// interface defining the returned properties
-interface MyProps {
-    Id: number;
-    Title: string;
-}
+<span class="c1">// interface defining the returned properties</span>
+<span class="kr">interface</span> <span class="nx">MyProps</span> <span class="p">{</span>
+    <span class="nx">Id</span>: <span class="kt">number</span><span class="p">;</span>
+    <span class="nx">Title</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-    // get a list item loaded with data and merged into an instance of Item
-    const items = await sp.web.lists.getByTitle(&quot;OrderByList&quot;).items.select(&quot;Id&quot;, &quot;Title&quot;).usingParser(spODataEntityArray&lt;IItem, MyProps&gt;(Item))();
+    <span class="c1">// get a list item loaded with data and merged into an instance of Item</span>
+    <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;OrderByList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">usingParser</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">IItem</span><span class="p">,</span> <span class="nx">MyProps</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Item</span><span class="p">))();</span>
 
-    Logger.write(`Item id: ${items.length}`);
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`Item id: </span><span class="si">${</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-    Logger.write(`Item id: ${items[0].Title}`);
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="sb">`Item id: </span><span class="si">${</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">Title</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-    // now we can call update because we have an instance of the Item type to work with as well
-    await items[0].update({
-        Title: &quot;New title.&quot;,
-    });
+    <span class="c1">// now we can call update because we have an instance of the Item type to work with as well</span>
+    <span class="nx">await</span> <span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">update</span><span class="p">({</span>
+        <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;New title.&quot;</span><span class="p">,</span>
+    <span class="p">});</span>
 
-} catch (e) {
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-    Logger.error(e);
-}
-</code></pre>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               

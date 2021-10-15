@@ -2119,36 +2119,36 @@
 <p>All of the odata requests processed by @pnp/odata pass through an extensible request pipeline. Each request is executed in a specific request context defined by the <code>RequestContext&lt;T&gt;</code> interface with the type parameter representing the type ultimately returned at the end a successful processing through the pipeline. Unless you are writing a pipeline method it is unlikely you will ever interact directly with the request pipeline.</p>
 <h2 id="interface-requestcontextt">interface <code>RequestContext&lt;T&gt;</code><a class="headerlink" href="#interface-requestcontextt" title="Permanent link">&para;</a></h2>
 <p>The interface that defines the context within which all requests are executed. Note that the pipeline methods to be executed are part of the context. This allows full control over the methods called during a request, and allows for the insertion of any custom methods required.</p>
-<pre><code class="language-TypeScript">interface RequestContext&lt;T&gt; {
-    batch: ODataBatch;
-    batchDependency: () =&gt; void;
-    cachingOptions: ICachingOptions;
-    hasResult?: boolean;
-    isBatched: boolean;
-    isCached: boolean;
-    options: FetchOptions;
-    parser: ODataParser&lt;T&gt;;
-    pipeline: Array&lt;(c: RequestContext&lt;T&gt;) =&gt; Promise&lt;RequestContext&lt;T&gt;&gt;&gt;;
-    requestAbsoluteUrl: string;
-    requestId: string;
-    result?: T;
-    verb: string;
-    clientFactory: () =&gt; RequestClient;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">interface</span> <span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nx">batch</span>: <span class="kt">ODataBatch</span><span class="p">;</span>
+    <span class="nx">batchDependency</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">;</span>
+    <span class="nx">cachingOptions</span>: <span class="kt">ICachingOptions</span><span class="p">;</span>
+    <span class="nx">hasResult?</span>: <span class="kt">boolean</span><span class="p">;</span>
+    <span class="nx">isBatched</span>: <span class="kt">boolean</span><span class="p">;</span>
+    <span class="nx">isCached</span>: <span class="kt">boolean</span><span class="p">;</span>
+    <span class="nx">options</span>: <span class="kt">FetchOptions</span><span class="p">;</span>
+    <span class="nx">parser</span>: <span class="kt">ODataParser</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="nx">pipeline</span>: <span class="kt">Array</span><span class="o">&lt;</span><span class="p">(</span><span class="nx">c</span>: <span class="kt">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;&gt;</span><span class="p">;</span>
+    <span class="nx">requestAbsoluteUrl</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">requestId</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">result?</span>: <span class="kt">T</span><span class="p">;</span>
+    <span class="nx">verb</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">clientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">RequestClient</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="requestpipelinemethod-decorator">requestPipelineMethod decorator<a class="headerlink" href="#requestpipelinemethod-decorator" title="Permanent link">&para;</a></h2>
 <p>The requestPipelineMethod decorator is used to tag a pipeline method and add functionality to bypass processing if a result is already present in the pipeline. If you would like your method to always run regardless of the existence of a result you can pass true to ensure it will always run. Each pipeline method takes a single argument of the current RequestContext and returns a promise resolving to the RequestContext updated as needed.</p>
-<pre><code class="language-TypeScript">@requestPipelineMethod(true)
-public static myPipelineMethod&lt;T&gt;(context: RequestContext&lt;T&gt;): Promise&lt;RequestContext&lt;T&gt;&gt; {
+<div class="highlight"><pre><span></span><code><span class="kd">@requestPipelineMethod</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">myPipelineMethod</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">context</span>: <span class="kt">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
 
-    return new Promise&lt;RequestContext&lt;T&gt;&gt;(resolve =&gt; {
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">RequestContext</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-        // do something
+        <span class="c1">// do something</span>
 
-        resolve(context);
-    });
-}
-</code></pre>
+        <span class="nx">resolve</span><span class="p">(</span><span class="nx">context</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="default-pipeline">Default Pipeline<a class="headerlink" href="#default-pipeline" title="Permanent link">&para;</a></h2>
 <ol>
 <li>logs the start of the request</li>

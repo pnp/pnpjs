@@ -2133,14 +2133,14 @@ For more information the settings file please see <a href="../../concepts/settin
 <h3 id="minimal-configuration">Minimal Configuration<a class="headerlink" href="#minimal-configuration" title="Permanent link">&para;</a></h3>
 <p>You can control which tests are run by including or omitting sp and graph sections. If sp is present and graph is not, only sp tests are run. Include both and all tests are run, respecting the enableWebTests flag.</p>
 <p>The following configuration file allows you to run all the tests that do not contact services.</p>
-<pre><code class="language-js"> var sets = {
-     testing: {
-         enableWebTests: false,
-     }
- }
+<div class="highlight"><pre><span></span><code> <span class="kd">var</span> <span class="nx">sets</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="nx">testing</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">enableWebTests</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
 
-module.exports = sets;
-</code></pre>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">sets</span><span class="p">;</span>
+</code></pre></div>
 <h2 id="test-your-setup">Test your setup<a class="headerlink" href="#test-your-setup" title="Permanent link">&para;</a></h2>
 <p>If you hit F5 in VSCode now you should be able to see the full response from getting the web's title in the internal console window. If not, ensure that you have properly updated the settings file and registered the add-in perms correctly.</p>
                 

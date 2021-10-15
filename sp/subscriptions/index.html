@@ -2191,31 +2191,31 @@
 </table>
 <h3 id="add-a-webhook">Add a webhook<a class="headerlink" href="#add-a-webhook" title="Permanent link">&para;</a></h3>
 <p>Using this library, you can add a webhook to a specified list within the SharePoint site.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-import { Subscriptions, ISubscriptions} from &quot;@pnp/sp/subscriptions&quot;;
-import &quot;@pnp/sp/subscriptions/list&quot;;
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Subscriptions</span><span class="p">,</span> <span class="nx">ISubscriptions</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions/list&quot;</span><span class="p">;</span>
 
-// This is the URL which will be called by SharePoint when there is a change in the list
-const notificationUrl = &quot;&lt;notification-url&gt;&quot;;
+<span class="c1">// This is the URL which will be called by SharePoint when there is a change in the list</span>
+<span class="kr">const</span> <span class="nx">notificationUrl</span> <span class="o">=</span> <span class="s2">&quot;&lt;notification-url&gt;&quot;</span><span class="p">;</span>
 
-// Set the expiry date to 180 days from now, which is the maximum allowed for the webhook expiry date.
-const expiryDate = dateAdd(new Date(), &quot;day&quot; , 180).toISOString();
+<span class="c1">// Set the expiry date to 180 days from now, which is the maximum allowed for the webhook expiry date.</span>
+<span class="kr">const</span> <span class="nx">expiryDate</span> <span class="o">=</span> <span class="nx">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;day&quot;</span> <span class="p">,</span> <span class="mi">180</span><span class="p">).</span><span class="nx">toISOString</span><span class="p">();</span>
 
-// Adds a webhook to the Documents library
-var res = await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions.add(notificationUrl,expiryDate);
-</code></pre>
+<span class="c1">// Adds a webhook to the Documents library</span>
+<span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">notificationUrl</span><span class="p">,</span><span class="nx">expiryDate</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-all-webhooks-added-to-a-list">Get all webhooks added to a list<a class="headerlink" href="#get-all-webhooks-added-to-a-list" title="Permanent link">&para;</a></h3>
 <p>Read all the webhooks' details which are associated to the list</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/subscriptions&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
 
-const res = await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions();
-</code></pre>
+<span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="isubscription">ISubscription<a class="headerlink" href="#isubscription" title="Permanent link">&para;</a></h2>
 <p>This interface provides the methods for managing a particular webhook.</p>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
@@ -2238,22 +2238,22 @@ const res = await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions()
 </tbody>
 </table>
 <h3 id="managing-a-webhook">Managing a webhook<a class="headerlink" href="#managing-a-webhook" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/subscriptions&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/subscriptions&quot;</span><span class="p">;</span>
 
-// Get details of a webhook based on its ID
-const webhookId = &quot;1f029e5c-16e4-4941-b46f-67895118763f&quot;;
-const webhook = await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions.getById(webhookId)();
+<span class="c1">// Get details of a webhook based on its ID</span>
+<span class="kr">const</span> <span class="nx">webhookId</span> <span class="o">=</span> <span class="s2">&quot;1f029e5c-16e4-4941-b46f-67895118763f&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">webhook</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webhookId</span><span class="p">)();</span>
 
-// Update a webhook
-const newDate = dateAdd(new Date(), &quot;day&quot; , 150).toISOString();
-const updatedWebhook = await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions.getById(webhookId).update(newDate);
+<span class="c1">// Update a webhook</span>
+<span class="kr">const</span> <span class="nx">newDate</span> <span class="o">=</span> <span class="nx">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;day&quot;</span> <span class="p">,</span> <span class="mi">150</span><span class="p">).</span><span class="nx">toISOString</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">updatedWebhook</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webhookId</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">newDate</span><span class="p">);</span>
 
-// Delete a webhook
-await sp.web.lists.getByTitle(&quot;Documents&quot;).subscriptions.getById(webhookId).delete();
-</code></pre>
+<span class="c1">// Delete a webhook</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webhookId</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

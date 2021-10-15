@@ -2216,112 +2216,112 @@
 <h2 id="sendemail">sendEmail<a class="headerlink" href="#sendemail" title="Permanent link">&para;</a></h2>
 <p>This methods allows you to send an email based on the supplied arguments. The method takes a single argument, a plain object defined by the EmailProperties interface (shown below).</p>
 <h3 id="emailproperties">EmailProperties<a class="headerlink" href="#emailproperties" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">export interface TypedHash&lt;T&gt; {
-    [key: string]: T;
-}
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">TypedHash</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nx">key</span>: <span class="kt">string</span><span class="p">]</span><span class="o">:</span> <span class="nx">T</span><span class="p">;</span>
+<span class="p">}</span>
 
-export interface EmailProperties {
-    To: string[];
-    CC?: string[];
-    BCC?: string[];
-    Subject: string;
-    Body: string;
-    AdditionalHeaders?: TypedHash&lt;string&gt;;
-    From?: string;
-}
-</code></pre>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">EmailProperties</span> <span class="p">{</span>
+    <span class="nx">To</span>: <span class="kt">string</span><span class="p">[];</span>
+    <span class="nx">CC?</span>: <span class="kt">string</span><span class="p">[];</span>
+    <span class="nx">BCC?</span>: <span class="kt">string</span><span class="p">[];</span>
+    <span class="nx">Subject</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">Body</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">AdditionalHeaders?</span>: <span class="kt">TypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="nx">From?</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
 <p>You must define the To, Subject, and Body values - the remaining are optional.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
-import { IEmailProperties } from &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IEmailProperties</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-const emailProps: IEmailProperties = {
-    To: [&quot;user@site.com&quot;],
-    CC: [&quot;user2@site.com&quot;, &quot;user3@site.com&quot;],
-    BCC: [&quot;user4@site.com&quot;, &quot;user5@site.com&quot;],
-    Subject: &quot;This email is about...&quot;,
-    Body: &quot;Here is the body. &lt;b&gt;It supports html&lt;/b&gt;&quot;,
-    AdditionalHeaders: {
-        &quot;content-type&quot;: &quot;text/html&quot;
-    }
-};
+<span class="kr">const</span> <span class="nx">emailProps</span>: <span class="kt">IEmailProperties</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">To</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">],</span>
+    <span class="nx">CC</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;user2@site.com&quot;</span><span class="p">,</span> <span class="s2">&quot;user3@site.com&quot;</span><span class="p">],</span>
+    <span class="nx">BCC</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;user4@site.com&quot;</span><span class="p">,</span> <span class="s2">&quot;user5@site.com&quot;</span><span class="p">],</span>
+    <span class="nx">Subject</span><span class="o">:</span> <span class="s2">&quot;This email is about...&quot;</span><span class="p">,</span>
+    <span class="nx">Body</span><span class="o">:</span> <span class="s2">&quot;Here is the body. &lt;b&gt;It supports html&lt;/b&gt;&quot;</span><span class="p">,</span>
+    <span class="nx">AdditionalHeaders</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;content-type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-await sp.utility.sendEmail(emailProps);
-console.log(&quot;Email Sent!&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">sendEmail</span><span class="p">(</span><span class="nx">emailProps</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Email Sent!&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="getcurrentuseremailaddresses">getCurrentUserEmailAddresses<a class="headerlink" href="#getcurrentuseremailaddresses" title="Permanent link">&para;</a></h2>
 <p>This method returns the current user's email addresses known to SharePoint.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
+<span class="kd">let</span> <span class="nx">addressString</span>: <span class="kt">string</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">getCurrentUserEmailAddresses</span><span class="p">();</span>
 
-// and use it with sendEmail
-await sp.utility.sendEmail({
-    To: [addressString],
-    Subject: &quot;This email is about...&quot;,
-    Body: &quot;Here is the body. &lt;b&gt;It supports html&lt;/b&gt;&quot;,
-    AdditionalHeaders: {
-        &quot;content-type&quot;: &quot;text/html&quot;
-    },
-});
-</code></pre>
+<span class="c1">// and use it with sendEmail</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">sendEmail</span><span class="p">({</span>
+    <span class="nx">To</span><span class="o">:</span> <span class="p">[</span><span class="nx">addressString</span><span class="p">],</span>
+    <span class="nx">Subject</span><span class="o">:</span> <span class="s2">&quot;This email is about...&quot;</span><span class="p">,</span>
+    <span class="nx">Body</span><span class="o">:</span> <span class="s2">&quot;Here is the body. &lt;b&gt;It supports html&lt;/b&gt;&quot;</span><span class="p">,</span>
+    <span class="nx">AdditionalHeaders</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;content-type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="resolveprincipal">resolvePrincipal<a class="headerlink" href="#resolveprincipal" title="Permanent link">&para;</a></h2>
 <p>Gets information about a principal that matches the specified Search criteria</p>
-<pre><code class="language-TypeScript">import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">IPrincipalInfo</span><span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let principal : IPrincipalInfo = await sp.utility.resolvePrincipal(&quot;user@site.com&quot;, PrincipalType.User, PrincipalSource.All, true, false, true);
+<span class="kd">let</span> <span class="nx">principal</span> : <span class="kt">IPrincipalInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">resolvePrincipal</span><span class="p">(</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">.</span><span class="nx">User</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">.</span><span class="nx">All</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-console.log(principal);
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principal</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="searchprincipals">searchPrincipals<a class="headerlink" href="#searchprincipals" title="Permanent link">&para;</a></h2>
 <p>Gets information about the principals that match the specified Search criteria.</p>
-<pre><code class="language-TypeScript">import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">IPrincipalInfo</span><span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">,</span> <span class="nx">PrincipalSource</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let principals : IPrincipalInfo[] = await sp.utility.searchPrincipals(&quot;john&quot;, PrincipalType.User, PrincipalSource.All,&quot;&quot;, 10);
+<span class="kd">let</span> <span class="nx">principals</span> : <span class="kt">IPrincipalInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">searchPrincipals</span><span class="p">(</span><span class="s2">&quot;john&quot;</span><span class="p">,</span> <span class="nx">PrincipalType</span><span class="p">.</span><span class="nx">User</span><span class="p">,</span> <span class="nx">PrincipalSource</span><span class="p">.</span><span class="nx">All</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
 
-console.log(principals);
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principals</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="createemailbodyforinvitation">createEmailBodyForInvitation<a class="headerlink" href="#createemailbodyforinvitation" title="Permanent link">&para;</a></h2>
 <p>Gets the external (outside the firewall) URL to a document or resource in a site.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let url : string = await sp.utility.createEmailBodyForInvitation(&quot;https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx&quot;);
-console.log(url);
-</code></pre>
+<span class="kd">let</span> <span class="nx">url</span> : <span class="kt">string</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createEmailBodyForInvitation</span><span class="p">(</span><span class="s2">&quot;https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="expandgroupstoprincipals">expandGroupsToPrincipals<a class="headerlink" href="#expandgroupstoprincipals" title="Permanent link">&para;</a></h2>
 <p>Resolves the principals contained within the supplied groups</p>
-<pre><code class="language-TypeScript">import { sp, IPrincipalInfo } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">IPrincipalInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let principals : IPrincipalInfo[] = await sp.utility.expandGroupsToPrincipals([&quot;Dev Owners&quot;, &quot;Dev Members&quot;]);
-console.log(principals);
+<span class="kd">let</span> <span class="nx">principals</span> : <span class="kt">IPrincipalInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">]);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principals</span><span class="p">);</span>
 
-// optionally supply a max results count. Default is 30.
-let principals : IPrincipalInfo[] = await sp.utility.expandGroupsToPrincipals([&quot;Dev Owners&quot;, &quot;Dev Members&quot;], 10);
-console.log(principals);
-</code></pre>
+<span class="c1">// optionally supply a max results count. Default is 30.</span>
+<span class="kd">let</span> <span class="nx">principals</span> : <span class="kt">IPrincipalInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">expandGroupsToPrincipals</span><span class="p">([</span><span class="s2">&quot;Dev Owners&quot;</span><span class="p">,</span> <span class="s2">&quot;Dev Members&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">principals</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="createwikipage">createWikiPage<a class="headerlink" href="#createwikipage" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sputilities&quot;;
-import { ICreateWikiPageResult } from &quot;@pnp/sp/sputilities&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ICreateWikiPageResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sputilities&quot;</span><span class="p">;</span>
 
-let newPage : ICreateWikiPageResult = await sp.utility.createWikiPage({
-    ServerRelativeUrl: &quot;/sites/dev/SitePages/mynewpage.aspx&quot;,
-    WikiHtmlContent: &quot;This is my &lt;b&gt;page&lt;/b&gt; content. It supports rich html.&quot;,
-});
+<span class="kd">let</span> <span class="nx">newPage</span> : <span class="kt">ICreateWikiPageResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">utility</span><span class="p">.</span><span class="nx">createWikiPage</span><span class="p">({</span>
+    <span class="nx">ServerRelativeUrl</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/SitePages/mynewpage.aspx&quot;</span><span class="p">,</span>
+    <span class="nx">WikiHtmlContent</span><span class="o">:</span> <span class="s2">&quot;This is my &lt;b&gt;page&lt;/b&gt; content. It supports rich html.&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// newPage contains the raw data returned by the service
-console.log(newPage.data);
+<span class="c1">// newPage contains the raw data returned by the service</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newPage</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
 
-// newPage contains a File instance you can use to further update the new page
-let file = await newPage.file.get();
-console.log(file);
-</code></pre>
+<span class="c1">// newPage contains a File instance you can use to further update the new page</span>
+<span class="kd">let</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">newPage</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

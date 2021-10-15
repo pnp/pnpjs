@@ -2296,12 +2296,12 @@
 <p>This article outlines the current scripts we've implemented and how to use them, with available options and examples.</p>
 <h2 id="start">Start<a class="headerlink" href="#start" title="Permanent link">&para;</a></h2>
 <p>Executes the <code>serve</code> command</p>
-<pre><code class="language-cmd">npm start
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm start
+</code></pre></div>
 <h2 id="serve">Serve<a class="headerlink" href="#serve" title="Permanent link">&para;</a></h2>
 <p>Starts a debugging server serving a bundled script with ./debug/serve/main.ts as the entry point. This allows you to run tests and debug code running within the context of a webpage rather than node.</p>
-<pre><code class="language-cmd">npm run serve
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm run serve
+</code></pre></div>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h2>
 <p>Runs the tests and coverage for the library.</p>
 <blockquote>
@@ -2314,72 +2314,72 @@
 <p><code>--package</code> or <code>-p</code></p>
 </blockquote>
 <p>This option will only run the tests associated with the package you specify. The values are the folder names within the ./packages directory.</p>
-<pre><code class="language-cmd"># run only sp tests
+<div class="highlight"><pre><span></span><code># run only sp tests
 npm test -- -p sp
 
 # run only logging tests
 npm test -- -package logging
-</code></pre>
+</code></pre></div>
 <h4 id="run-a-single-test-file">Run a Single Test File<a class="headerlink" href="#run-a-single-test-file" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--single</code> or <code>--s</code></p>
 </blockquote>
 <p>You can also run a specific file with a package. This option <em>must</em> be used with the single package option as you are essentially specifying the folder and file. This option uses either the  flags.</p>
-<pre><code class="language-cmd"># run only sp web tests
+<div class="highlight"><pre><span></span><code># run only sp web tests
 npm test -- -p sp -s web
 
 # run only graph groups tests
 npm test -- -package graph -single groups
-</code></pre>
+</code></pre></div>
 <h4 id="specify-a-site">Specify a Site<a class="headerlink" href="#specify-a-site" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--site</code></p>
 </blockquote>
 <p>By default every time you run the tests a new sub-site is created below the site specified in your <a href="../concepts/settings/">settings file</a>. You can choose to reuse a site for testing, which saves time when re-running a set of tests frequently. Testing content is not deleted after tests, so if you need to inspect the created content from testing you may wish to forgo this option.</p>
 <p>This option can be used with any or none of the other testing options.</p>
-<pre><code class="language-cmd"># run only sp web tests with a certain site
+<div class="highlight"><pre><span></span><code># run only sp web tests with a certain site
 npm test -- -p sp -s web --site https://some.site.com/sites/dev
-</code></pre>
+</code></pre></div>
 <h4 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--cleanup</code></p>
 </blockquote>
 <p>If you include this flag the testing web will be deleted once tests are complete. Useful for local testing where you do not need to inspect the web once the tests are complete. Works with any of the other options, be careful when specifying a web using <code>--site</code> as it will be deleted.</p>
-<pre><code class="language-cmd"># clean up our testing site
+<div class="highlight"><pre><span></span><code># clean up our testing site
 npm test -- --cleanup
-</code></pre>
+</code></pre></div>
 <h4 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p><code>--logging</code></p>
 </blockquote>
 <p>If you include this flag a console logger will be subscribed and the log level will be set to Info. This will provide console output for all the requests being made during testing. This flag is compatible with all other flags - however unless you are trying to debug a specific test this will produce a lot of chatty output.</p>
-<pre><code class="language-cmd"># enable logging during testing
+<div class="highlight"><pre><span></span><code># enable logging during testing
 npm test -- --logging
-</code></pre>
+</code></pre></div>
 <h4 id="spverbose">spVerbose<a class="headerlink" href="#spverbose" title="Permanent link">&para;</a></h4>
 <p><em>Added in 2.0.13</em></p>
 <blockquote>
 <p><code>--spverbose</code></p>
 </blockquote>
 <p>This flag will enable "verbose" OData mode for SharePoint tests. This flag is compatible with other flags.</p>
-<pre><code class="language-cmd">npm test -- --spverbose
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm test -- --spverbose
+</code></pre></div>
 <h2 id="build">build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
 <p>Invokes the pnpbuild cli to transpile the TypeScript into JavaScript. All behavior is controlled via the tsconfig.json in the root of the project and sub folders as needed.</p>
-<pre><code class="language-cmd">npm run build
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm run build
+</code></pre></div>
 <h2 id="package">package<a class="headerlink" href="#package" title="Permanent link">&para;</a></h2>
 <p>Invokes the pnpbuild cli to create the package directories under the dist folder. This will allow you to see exactly what will end up in the npm packages once they are published.</p>
-<pre><code class="language-cmd">npm run package
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm run package
+</code></pre></div>
 <h2 id="lint">lint<a class="headerlink" href="#lint" title="Permanent link">&para;</a></h2>
 <p>Runs the linter.</p>
-<pre><code class="language-cmd">npm run lint
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm run lint
+</code></pre></div>
 <h2 id="clean">clean<a class="headerlink" href="#clean" title="Permanent link">&para;</a></h2>
 <p>Removes any generated folders from the working directory.</p>
-<pre><code class="language-cmd">npm run clean
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm run clean
+</code></pre></div>
                 
               
               

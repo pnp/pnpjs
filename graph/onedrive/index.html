@@ -2336,184 +2336,170 @@ you can manage drives and drive items in Onedrive.</p>
 </table>
 <h2 id="get-the-default-drive">Get the default drive<a class="headerlink" href="#get-the-default-drive" title="Permanent link">&para;</a></h2>
 <p>Using the drive.get() you can get the default drive from Onedrive</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drive.get();
+<span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drive</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const drives = await graph.me.drive.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drive</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-all-of-the-drives">Get all of the drives<a class="headerlink" href="#get-all-of-the-drives" title="Permanent link">&para;</a></h2>
 <p>Using the drives.get() you can get the users available drives from Onedrive</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get();
+<span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const drives = await graph.me.drives.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-drive-by-id">Get drive by Id<a class="headerlink" href="#get-drive-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the drives.getById() you can get one of the available drives in Outlook</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const drive = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId');
+<span class="kr">const</span> <span class="nx">drive</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">);</span>
 
-const drive = await graph.me.drives.getById('driveId');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">drive</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-the-associated-list-of-a-drive">Get the associated list of a drive<a class="headerlink" href="#get-the-associated-list-of-a-drive" title="Permanent link">&para;</a></h2>
 <p>Using the list.get() you get the associated list</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const list = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list.get();
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">list</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const list = await graph.me.drives.getById('driveId').list.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">list</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-the-recent-files">Get the recent files<a class="headerlink" href="#get-the-recent-files" title="Permanent link">&para;</a></h2>
 <p>Using the recent.get() you get the recent files</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const files = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent.get();
+<span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">recent</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const files = await graph.me.drives.getById('driveId').recent.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">recent</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-the-files-shared-with-me">Get the files shared with me<a class="headerlink" href="#get-the-files-shared-with-me" title="Permanent link">&para;</a></h2>
 <p>Using the sharedWithMe.get() you get the files shared with the user</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe.get();
+<span class="kr">const</span> <span class="nx">shared</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">sharedWithMe</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const shared = await graph.me.drives.getById('driveId').sharedWithMe.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">shared</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">sharedWithMe</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-the-root-folder">Get the Root folder<a class="headerlink" href="#get-the-root-folder" title="Permanent link">&para;</a></h2>
 <p>Using the root.get() you get the root folder</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const root = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.get();
+<span class="kr">const</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const root = await graph.me.drives.getById('driveId').root.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-the-children">Get the Children<a class="headerlink" href="#get-the-children" title="Permanent link">&para;</a></h2>
 <p>Using the children.get() you get the children</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const rootChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.get();
+<span class="kr">const</span> <span class="nx">rootChildren</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const rootChildren = await graph.me.drives.getById('driveId').root.children.get();
+<span class="kr">const</span> <span class="nx">rootChildren</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const itemChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children.get();
+<span class="kr">const</span> <span class="nx">itemChildren</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">children</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const itemChildren = await graph.me.drives.getById('driveId').root.items.getById('itemId').children.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">itemChildren</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">children</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="add-item">Add Item<a class="headerlink" href="#add-item" title="Permanent link">&para;</a></h2>
 <p>Using the add you can add an item</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const add1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add(&quot;test.txt&quot;, &quot;My File Content String&quot;);
+<span class="kr">const</span> <span class="nx">add1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;My File Content String&quot;</span><span class="p">);</span>
 
-const add2 = await graph.me.drives.getById('driveId').root.children.add(&quot;filename.txt&quot;, &quot;My File Content String&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">add2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;filename.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;My File Content String&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="add-folder">Add folder<a class="headerlink" href="#add-folder" title="Permanent link">&para;</a></h2>
 <p>Using addFolder you can add a folder</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
-import { DriveItem as IDriveItem } from &quot;@microsoft/microsoft-graph-types&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">DriveItem</span> <span class="kr">as</span> <span class="nx">IDriveItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/microsoft-graph-types&quot;</span><span class="p">;</span>
 
-const addFolder1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.addFolder('New Folder');
+<span class="kr">const</span> <span class="nx">addFolder1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">addFolder</span><span class="p">(</span><span class="s1">&#39;New Folder&#39;</span><span class="p">);</span>
 
-const addFolder2 = await graph.me.drives.getById('driveId').root.children.addFolder('New Folder');
-</code></pre>
+<span class="kr">const</span> <span class="nx">addFolder2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">addFolder</span><span class="p">(</span><span class="s1">&#39;New Folder&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="search-items">Search items<a class="headerlink" href="#search-items" title="Permanent link">&para;</a></h2>
 <p>Using the search.get() you can search for items, and optionally select properties</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText').get();
+<span class="kr">const</span> <span class="nx">search</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">)</span><span class="nx">root</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="s1">&#39;queryText&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
 
-const search = await graph.me.drives.getById('driveId')root.search('queryText').get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">search</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">)</span><span class="nx">root</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="s1">&#39;queryText&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-specific-item-in-drive">Get specific item in drive<a class="headerlink" href="#get-specific-item-in-drive" title="Permanent link">&para;</a></h2>
 <p>Using the items.getById() you can get a specific item from the current drive</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const item = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId');
+<span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">);</span>
 
-const item = await graph.me.drives.getById('driveId').items.getById('itemId');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-thumbnails">Get thumbnails<a class="headerlink" href="#get-thumbnails" title="Permanent link">&para;</a></h2>
 <p>Using the thumbnails.get() you get the thumbnails</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails.get();
+<span class="kr">const</span> <span class="nx">thumbs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">thumbnails</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').thumbnails.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">thumbs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">thumbnails</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="delete-drive-item">Delete drive item<a class="headerlink" href="#delete-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you delete the current item</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').delete();
+<span class="kr">const</span> <span class="nx">thumbs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').delete();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">thumbs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="update-drive-item">Update drive item<a class="headerlink" href="#update-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the update() you update the current item</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-const update = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;New Name&quot;</span><span class="p">});</span>
 
-const update = await graph.me.drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;New Name&quot;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="move-drive-item">Move drive item<a class="headerlink" href="#move-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the move() you move the current item, and optionally update it</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/onedrive&quot;;
-import &quot;@pnp/graph/users&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/onedrive&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
 
-// Requires a parentReference to the new folder location
-const move = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
+<span class="c1">// Requires a parentReference to the new folder location</span>
+<span class="kr">const</span> <span class="nx">move</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">move</span><span class="p">({</span> <span class="nx">parentReference</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;itemId&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;New Name&quot;</span><span class="p">});</span>
 
-const move = await graph.me.drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">move</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">move</span><span class="p">({</span> <span class="nx">parentReference</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;itemId&#39;</span><span class="p">}},</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;New Name&quot;</span><span class="p">});</span>
+</code></pre></div>
                 
               
               

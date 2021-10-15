@@ -2729,110 +2729,110 @@
 </table>
 <h3 id="get-list-by-id">Get List by Id<a class="headerlink" href="#get-list-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a list from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// get the list by Id
-const list = sp.web.lists.getById(&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;);
+<span class="c1">// get the list by Id</span>
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">);</span>
 
-// we can use this 'list' variable to execute more queries on the list:
-const r = await list.select(&quot;Title&quot;)();
+<span class="c1">// we can use this &#39;list&#39; variable to execute more queries on the list:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// show the response from the server
-console.log(r.Title);
-</code></pre>
+<span class="c1">// show the response from the server</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-list-by-title">Get List by Title<a class="headerlink" href="#get-list-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a list from the collection by title.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// get the default document library 'Documents'
-const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
+<span class="c1">// get the default document library &#39;Documents&#39;</span>
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
 
-// we can use this 'list' variable to run more queries on the list:
-const r = await list.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;list&#39; variable to run more queries on the list:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the list Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the list Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-list">Add List<a class="headerlink" href="#add-list" title="Permanent link">&para;</a></h3>
 <p>You can add a list to the web's list collection using the .add-method. To invoke this method in its most simple form, you can provide only a title as a parameter. This will result in a standard out of the box list with all default settings, and the title you provide.</p>
-<pre><code class="language-TypeScript">// create a new list, passing only the title
-const listAddResult = await sp.web.lists.add(&quot;My new list&quot;);
+<div class="highlight"><pre><span></span><code><span class="c1">// create a new list, passing only the title</span>
+<span class="kr">const</span> <span class="nx">listAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My new list&quot;</span><span class="p">);</span>
 
-// we can work with the list created using the IListAddResult.list property:
-const r = await listAddResult.list.select(&quot;Title&quot;)();
+<span class="c1">// we can work with the list created using the IListAddResult.list property:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">listAddResult</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// log newly created list title to console
-console.log(r.Title);
-});
-</code></pre>
+<span class="c1">// log newly created list title to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <p>You can also provide other (optional) parameters like description, template and enableContentTypes. If that is not enough for you, you can use the parameter named 'additionalSettings' which is just a TypedHash, meaning you can sent whatever properties you'd like in the body (provided that the property is supported by the SharePoint API). You can find a <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.splisttemplatetype?view=sharepoint-server">listing of list template codes</a> in the official docs.</p>
-<pre><code class="language-TypeScript">// this will create a list with template 101 (Document library), content types enabled and show it on the quick launch (using additionalSettings)
-const listAddResult = await sp.web.lists.add(&quot;My Doc Library&quot;, &quot;This is a description of doc lib.&quot;, 101, true, { OnQuickLaunch: true });
+<div class="highlight"><pre><span></span><code><span class="c1">// this will create a list with template 101 (Document library), content types enabled and show it on the quick launch (using additionalSettings)</span>
+<span class="kr">const</span> <span class="nx">listAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Doc Library&quot;</span><span class="p">,</span> <span class="s2">&quot;This is a description of doc lib.&quot;</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">{</span> <span class="nx">OnQuickLaunch</span>: <span class="kt">true</span> <span class="p">});</span>
 
-// get the Id of the newly added document library
-const r = await listAddResult.list.select(&quot;Id&quot;).get();
+<span class="c1">// get the Id of the newly added document library</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">listAddResult</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
 
-// log id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="ensure-that-a-list-exists-by-title">Ensure that a List exists (by title)<a class="headerlink" href="#ensure-that-a-list-exists-by-title" title="Permanent link">&para;</a></h3>
 <p>Ensures that the specified list exists in the collection (note: this method not supported for batching). Just like with the add-method (see examples above) you can provide only the title, or any or all of the optional parameters desc, template, enableContentTypes and additionalSettings.</p>
-<pre><code class="language-TypeScript">// ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
-const listEnsureResult = await sp.web.lists.ensure(&quot;My List&quot;);
+<div class="highlight"><pre><span></span><code><span class="c1">// ensure that a list exists. If it doesn&#39;t it will be created with the provided title (the rest of the settings will be default):</span>
+<span class="kr">const</span> <span class="nx">listEnsureResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-// check if the list was created, or if it already existed:
-if (listEnsureResult.created) {
-    console.log(&quot;My List was created!&quot;);
-} else {
-    console.log(&quot;My List already existed!&quot;);
-}
+<span class="c1">// check if the list was created, or if it already existed:</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">listEnsureResult</span><span class="p">.</span><span class="nx">created</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;My List was created!&quot;</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;My List already existed!&quot;</span><span class="p">);</span>
+<span class="p">}</span>
 
-// work on the created/updated list
-const r = await listEnsureResult.list.select(&quot;Id&quot;)();
+<span class="c1">// work on the created/updated list</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">listEnsureResult</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the Id
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the Id</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <p>If the list already exists, the other settings you provide will be used to update the existing list.</p>
-<pre><code class="language-TypeScript">// add a new list to the lists collection of the web
-sp.web.lists.add(&quot;My List 2&quot;).then(async () =&gt; {
+<div class="highlight"><pre><span></span><code><span class="c1">// add a new list to the lists collection of the web</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My List 2&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-// then call ensure on the created list with an updated description
-const listEnsureResult = await sp.web.lists.ensure(&quot;My List 2&quot;, &quot;Updated description&quot;);
+<span class="c1">// then call ensure on the created list with an updated description</span>
+<span class="kr">const</span> <span class="nx">listEnsureResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;My List 2&quot;</span><span class="p">,</span> <span class="s2">&quot;Updated description&quot;</span><span class="p">);</span>
 
-// get the updated description
-const r = await listEnsureResult.list.select(&quot;Description&quot;)();
+<span class="c1">// get the updated description</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">listEnsureResult</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">)();</span>
 
-// log the updated description
-console.log(r.Description);
-});
-</code></pre>
+<span class="c1">// log the updated description</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Description</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="ensure-site-assets-library-exist">Ensure Site Assets Library exist<a class="headerlink" href="#ensure-site-assets-library-exist" title="Permanent link">&para;</a></h3>
 <p>Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.</p>
-<pre><code class="language-TypeScript">// get Site Assets library
-const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
+<div class="highlight"><pre><span></span><code><span class="c1">// get Site Assets library</span>
+<span class="kr">const</span> <span class="nx">siteAssetsList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensureSiteAssetsLibrary</span><span class="p">();</span>
 
-// get the Title
-const r = await siteAssetsList.select(&quot;Title&quot;)();
+<span class="c1">// get the Title</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">siteAssetsList</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// log Title
-console.log(r.Title);
-</code></pre>
+<span class="c1">// log Title</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="ensure-site-pages-library-exist">Ensure Site Pages Library exist<a class="headerlink" href="#ensure-site-pages-library-exist" title="Permanent link">&para;</a></h3>
 <p>Gets a list that is the default location for wiki pages.</p>
-<pre><code class="language-TypeScript">// get Site Pages library
-const siteAssetsList = await sp.web.lists.ensureSitePagesLibrary();
+<div class="highlight"><pre><span></span><code><span class="c1">// get Site Pages library</span>
+<span class="kr">const</span> <span class="nx">siteAssetsList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensureSitePagesLibrary</span><span class="p">();</span>
 
-// get the Title
-const r = await siteAssetsList.select(&quot;Title&quot;)();
+<span class="c1">// get the Title</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">siteAssetsList</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// log Title
-console.log(r.Title);
-</code></pre>
+<span class="c1">// log Title</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="ilist">IList<a class="headerlink" href="#ilist" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <table>
@@ -2863,171 +2863,170 @@ console.log(r.Title);
 </table>
 <h3 id="update-a-list">Update a list<a class="headerlink" href="#update-a-list" title="Permanent link">&para;</a></h3>
 <p>Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")</p>
-<pre><code class="language-TypeScript">import { IListUpdateResult } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">IListUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// create a TypedHash object with the properties to update
-const updateProperties = {
-    Description: &quot;This list title and description has been updated using PnPjs.&quot;,
-    Title: &quot;Updated title&quot;,
-};
+<span class="c1">// create a TypedHash object with the properties to update</span>
+<span class="kr">const</span> <span class="nx">updateProperties</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;This list title and description has been updated using PnPjs.&quot;</span><span class="p">,</span>
+    <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;Updated title&quot;</span><span class="p">,</span>
+<span class="p">};</span>
 
-// update the list with the properties above
-list.update(updateProperties).then(async (l: IListUpdateResult) =&gt; {
+<span class="c1">// update the list with the properties above</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">updateProperties</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">async</span> <span class="p">(</span><span class="nx">l</span>: <span class="kt">IListUpdateResult</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // get the updated title and description
-    const r = await l.list.select(&quot;Title&quot;, &quot;Description&quot;)();
+    <span class="c1">// get the updated title and description</span>
+    <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">l</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">)();</span>
 
-    // log the updated properties to the console
-    console.log(r.Title);
-    console.log(r.Description);
-});
-</code></pre>
+    <span class="c1">// log the updated properties to the console</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Description</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="get-changes-on-a-list">Get changes on a list<a class="headerlink" href="#get-changes-on-a-list" title="Permanent link">&para;</a></h3>
 <p>From the change log, you can get a collection of changes that have occurred within the list based on the specified query.</p>
-<pre><code class="language-TypeScript">import { sp, IChangeQuery } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">IChangeQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-// build the changeQuery object, here we look att changes regarding Add, DeleteObject and Restore
-const changeQuery: IChangeQuery = {
-    Add: true,
-    ChangeTokenEnd: null,
-    ChangeTokenStart: null,
-    DeleteObject: true,
-    Rename: true,
-    Restore: true,
-};
+<span class="c1">// build the changeQuery object, here we look att changes regarding Add, DeleteObject and Restore</span>
+<span class="kr">const</span> <span class="nx">changeQuery</span>: <span class="kt">IChangeQuery</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Add</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">ChangeTokenEnd</span>: <span class="kt">null</span><span class="p">,</span>
+    <span class="nx">ChangeTokenStart</span>: <span class="kt">null</span><span class="p">,</span>
+    <span class="nx">DeleteObject</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">Rename</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">Restore</span>: <span class="kt">true</span><span class="p">,</span>
+<span class="p">};</span>
 
-// get list changes
-const r = await list.getChanges(changeQuery);
+<span class="c1">// get list changes</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getChanges</span><span class="p">(</span><span class="nx">changeQuery</span><span class="p">);</span>
 
-// log changes to console
-console.log(r);
-</code></pre>
+<span class="c1">// log changes to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-list-items-using-a-caml-query">Get list items using a CAML Query<a class="headerlink" href="#get-list-items-using-a-caml-query" title="Permanent link">&para;</a></h3>
 <p>You can get items from SharePoint using a CAML Query.</p>
-<pre><code class="language-TypeScript">import { ICamlQuery } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// build the caml query object (in this example, we include Title field and limit rows to 5)
-const caml: ICamlQuery = {
-    ViewXml: &quot;&lt;View&gt;&lt;ViewFields&gt;&lt;FieldRef Name='Title' /&gt;&lt;/ViewFields&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;,
-};
+<span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
+<span class="kr">const</span> <span class="nx">caml</span>: <span class="kt">ICamlQuery</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">ViewXml</span><span class="o">:</span> <span class="s2">&quot;&lt;View&gt;&lt;ViewFields&gt;&lt;FieldRef Name=&#39;Title&#39; /&gt;&lt;/ViewFields&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">,</span>
+<span class="p">};</span>
 
-// get list items
-const r = await list.getItemsByCAMLQuery(caml);
+<span class="c1">// get list items</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getItemsByCAMLQuery</span><span class="p">(</span><span class="nx">caml</span><span class="p">);</span>
 
-// log resulting array to console
-console.log(r);
-</code></pre>
+<span class="c1">// log resulting array to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <p>If you need to get and expand a lookup field, there is a spread array parameter on the getItemsByCAMLQuery. This means that you can provide multiple properties to this method depending on how many lookup fields you are working with on your list. Below is a minimal example showing how to expand one field (RoleAssignment)</p>
-<pre><code class="language-TypeScript">import { ICamlQuery } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ICamlQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// build the caml query object (in this example, we include Title field and limit rows to 5)
-const caml: ICamlQuery = {
-    ViewXml: &quot;&lt;View&gt;&lt;ViewFields&gt;&lt;FieldRef Name='Title' /&gt;&lt;FieldRef Name='RoleAssignments' /&gt;&lt;/ViewFields&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;,
-};
+<span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
+<span class="kr">const</span> <span class="nx">caml</span>: <span class="kt">ICamlQuery</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">ViewXml</span><span class="o">:</span> <span class="s2">&quot;&lt;View&gt;&lt;ViewFields&gt;&lt;FieldRef Name=&#39;Title&#39; /&gt;&lt;FieldRef Name=&#39;RoleAssignments&#39; /&gt;&lt;/ViewFields&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">,</span>
+<span class="p">};</span>
 
-// get list items
-const r = await list.getItemsByCAMLQuery(caml, &quot;RoleAssignments&quot;);
+<span class="c1">// get list items</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getItemsByCAMLQuery</span><span class="p">(</span><span class="nx">caml</span><span class="p">,</span> <span class="s2">&quot;RoleAssignments&quot;</span><span class="p">);</span>
 
-// log resulting item array to console
-console.log(r);
-</code></pre>
+<span class="c1">// log resulting item array to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-list-items-changes-using-a-token">Get list items changes using a Token<a class="headerlink" href="#get-list-items-changes-using-a-token" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import {  IChangeLogItemQuery } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span>  <span class="nx">IChangeLogItemQuery</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// build the caml query object (in this example, we include Title field and limit rows to 5)
-const changeLogItemQuery: IChangeLogItemQuery = {
-    Contains: `&lt;Contains&gt;&lt;FieldRef Name=&quot;Title&quot;/&gt;&lt;Value Type=&quot;Text&quot;&gt;Item16&lt;/Value&gt;&lt;/Contains&gt;`,
-    QueryOptions: `&lt;QueryOptions&gt;
-    &lt;IncludeMandatoryColumns&gt;FALSE&lt;/IncludeMandatoryColumns&gt;
-    &lt;DateInUtc&gt;False&lt;/DateInUtc&gt;
-    &lt;IncludePermissions&gt;TRUE&lt;/IncludePermissions&gt;
-    &lt;IncludeAttachmentUrls&gt;FALSE&lt;/IncludeAttachmentUrls&gt;
-    &lt;Folder&gt;My List&lt;/Folder&gt;&lt;/QueryOptions&gt;`,
-};
+<span class="c1">// build the caml query object (in this example, we include Title field and limit rows to 5)</span>
+<span class="kr">const</span> <span class="nx">changeLogItemQuery</span>: <span class="kt">IChangeLogItemQuery</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Contains</span><span class="o">:</span> <span class="sb">`&lt;Contains&gt;&lt;FieldRef Name=&quot;Title&quot;/&gt;&lt;Value Type=&quot;Text&quot;&gt;Item16&lt;/Value&gt;&lt;/Contains&gt;`</span><span class="p">,</span>
+    <span class="nx">QueryOptions</span><span class="o">:</span> <span class="sb">`&lt;QueryOptions&gt;</span>
+<span class="sb">    &lt;IncludeMandatoryColumns&gt;FALSE&lt;/IncludeMandatoryColumns&gt;</span>
+<span class="sb">    &lt;DateInUtc&gt;False&lt;/DateInUtc&gt;</span>
+<span class="sb">    &lt;IncludePermissions&gt;TRUE&lt;/IncludePermissions&gt;</span>
+<span class="sb">    &lt;IncludeAttachmentUrls&gt;FALSE&lt;/IncludeAttachmentUrls&gt;</span>
+<span class="sb">    &lt;Folder&gt;My List&lt;/Folder&gt;&lt;/QueryOptions&gt;`</span><span class="p">,</span>
+<span class="p">};</span>
 
-// get list items
-const r = await list.getListItemChangesSinceToken(changeLogItemQuery);
+<span class="c1">// get list items</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getListItemChangesSinceToken</span><span class="p">(</span><span class="nx">changeLogItemQuery</span><span class="p">);</span>
 
-// log resulting XML to console
-console.log(r);
-</code></pre>
+<span class="c1">// log resulting XML to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="recycle-a-list">Recycle a list<a class="headerlink" href="#recycle-a-list" title="Permanent link">&para;</a></h3>
 <p>Removes the list from the web's list collection and puts it in the recycle bin.</p>
-<pre><code class="language-TypeScript">await list.recycle();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">recycle</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="render-list-data">Render list data<a class="headerlink" href="#render-list-data" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { IRenderListData } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// render list data, top 5 items
-const r: IRenderListData = await list.renderListData(&quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;);
+<span class="c1">// render list data, top 5 items</span>
+<span class="kr">const</span> <span class="nx">r</span>: <span class="kt">IRenderListData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">renderListData</span><span class="p">(</span><span class="s2">&quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">);</span>
 
-// log array of items in response
-console.log(r.Row);
-</code></pre>
+<span class="c1">// log array of items in response</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Row</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="render-list-data-as-stream">Render list data as stream<a class="headerlink" href="#render-list-data-as-stream" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { IRenderListDataParameters } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListDataParameters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// setup parameters object
-const renderListDataParams: IRenderListDataParameters = {
-    ViewXml: &quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;,
-};
+<span class="c1">// setup parameters object</span>
+<span class="kr">const</span> <span class="nx">renderListDataParams</span>: <span class="kt">IRenderListDataParameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">ViewXml</span><span class="o">:</span> <span class="s2">&quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">,</span>
+<span class="p">};</span>
 
-// render list data as stream
-const r = await list.renderListDataAsStream(renderListDataParams);
+<span class="c1">// render list data as stream</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">renderListDataAsStream</span><span class="p">(</span><span class="nx">renderListDataParams</span><span class="p">);</span>
 
-// log array of items in response
-console.log(r.Row);
-</code></pre>
+<span class="c1">// log array of items in response</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Row</span><span class="p">);</span>
+</code></pre></div>
 <p>You can also supply other options to renderListDataAsStream including <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.client.renderlistdataoverrideparameters?view=sharepoint-csom">override parameters</a> and query params. This can be helpful when looking to apply sorting to the returned data.</p>
-<pre><code class="language-TypeScript">import { IRenderListDataParameters } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">IRenderListDataParameters</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// setup parameters object
-const renderListDataParams: IRenderListDataParameters = {
-    ViewXml: &quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;,
-};
+<span class="c1">// setup parameters object</span>
+<span class="kr">const</span> <span class="nx">renderListDataParams</span>: <span class="kt">IRenderListDataParameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">ViewXml</span><span class="o">:</span> <span class="s2">&quot;&lt;View&gt;&lt;RowLimit&gt;5&lt;/RowLimit&gt;&lt;/View&gt;&quot;</span><span class="p">,</span>
+<span class="p">};</span>
 
-const overrideParams = {
-    ViewId = &quot;{view guid}&quot;
-};
+<span class="kr">const</span> <span class="nx">overrideParams</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">ViewId</span> <span class="o">=</span> <span class="s2">&quot;{view guid}&quot;</span>
+<span class="p">};</span>
 
-// OR if you don't want to supply override params use null
-// overrideParams = null;
+<span class="c1">// OR if you don&#39;t want to supply override params use null</span>
+<span class="c1">// overrideParams = null;</span>
 
-// Set the query params using a map
-const query = new Map&lt;string, string&gt;();
-query.set(&quot;SortField&quot;, &quot;{AField}&quot;);
-query.set(&quot;SortDir&quot;, &quot;Desc&quot;);
+<span class="c1">// Set the query params using a map</span>
+<span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="nx">query</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;SortField&quot;</span><span class="p">,</span> <span class="s2">&quot;{AField}&quot;</span><span class="p">);</span>
+<span class="nx">query</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;SortDir&quot;</span><span class="p">,</span> <span class="s2">&quot;Desc&quot;</span><span class="p">);</span>
 
-// render list data as stream
-const r = await list.renderListDataAsStream(renderListDataParams, overrideParams, query);
+<span class="c1">// render list data as stream</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">renderListDataAsStream</span><span class="p">(</span><span class="nx">renderListDataParams</span><span class="p">,</span> <span class="nx">overrideParams</span><span class="p">,</span> <span class="nx">query</span><span class="p">);</span>
 
-// log array of items in response
-console.log(r.Row);
-</code></pre>
+<span class="c1">// log array of items in response</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Row</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="reserve-list-item-id-for-idempotent-list-item-creation">Reserve list item Id for idempotent list item creation<a class="headerlink" href="#reserve-list-item-id-for-idempotent-list-item-creation" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const listItemId = await list.reserveListItemId();
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">listItemId</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">reserveListItemId</span><span class="p">();</span>
 
-// log id to console
-console.log(listItemId);
-</code></pre>
+<span class="c1">// log id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">listItemId</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-list-item-entity-type-name">Get list item entity type name<a class="headerlink" href="#get-list-item-entity-type-name" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const entityTypeFullName = await list.getListItemEntityTypeFullName();
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">entityTypeFullName</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getListItemEntityTypeFullName</span><span class="p">();</span>
 
-// log entity type name
-console.log(entityTypeFullName);
-</code></pre>
+<span class="c1">// log entity type name</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">entityTypeFullName</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-list-item-using-path-folder-validation-and-set-field-values">Add a list item using path (folder), validation and set field values<a class="headerlink" href="#add-a-list-item-using-path-folder-validation-and-set-field-values" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const list = await sp.webs.lists.getByTitle(&quot;MyList&quot;).select(&quot;Title&quot;, &quot;ParentWebUrl&quot;)();
-const formValues: IListItemFormUpdateValue[] = [
-                {
-                    FieldName: &quot;Title&quot;,
-                    FieldValue: title,
-                },
-            ];
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">webs</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;ParentWebUrl&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">formValues</span>: <span class="kt">IListItemFormUpdateValue</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nx">FieldName</span><span class="o">:</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
+                    <span class="nx">FieldValue</span>: <span class="kt">title</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">];</span>
 
-list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${list.Title}/MyFolder`)
-
-</code></pre>
+<span class="nx">list</span><span class="p">.</span><span class="nx">addValidateUpdateItemUsingPath</span><span class="p">(</span><span class="nx">formValues</span><span class="p">,</span><span class="sb">`</span><span class="si">${</span><span class="nx">list</span><span class="p">.</span><span class="nx">ParentWebUrl</span><span class="si">}</span><span class="sb">/Lists/</span><span class="si">${</span><span class="nx">list</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">/MyFolder`</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="content-types-imports">content-types imports<a class="headerlink" href="#content-types-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3053,9 +3052,9 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 </table>
 <h3 id="contenttypes">contentTypes<a class="headerlink" href="#contenttypes" title="Permanent link">&para;</a></h3>
 <p>Get all content types for a list</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const r = await list.contentTypes();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="fields-imports">fields imports<a class="headerlink" href="#fields-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3081,13 +3080,13 @@ const r = await list.contentTypes();
 </table>
 <h3 id="fields">fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h3>
 <p>Get all the fields for a list</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const r = await list.fields();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">fields</span><span class="p">();</span>
+</code></pre></div>
 <p>Add a field to the site, then add the site field to a list</p>
-<pre><code class="language-TypeScript">const fld = await sp.site.rootWeb.fields.addText(&quot;MyField&quot;);
-await sp.web.lists.getByTitle(&quot;MyList&quot;).fields.createFieldAsXml(fld.data.SchemaXml);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">rootWeb</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addText</span><span class="p">(</span><span class="s2">&quot;MyField&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fld</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">SchemaXml</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="folders-imports">folders imports<a class="headerlink" href="#folders-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3113,9 +3112,9 @@ await sp.web.lists.getByTitle(&quot;MyList&quot;).fields.createFieldAsXml(fld.da
 </table>
 <h3 id="folders">folders<a class="headerlink" href="#folders" title="Permanent link">&para;</a></h3>
 <p>Get the root folder of a list.</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const r = await list.rootFolder();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="forms-imports">forms imports<a class="headerlink" href="#forms-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3140,8 +3139,8 @@ const r = await list.rootFolder();
 </tbody>
 </table>
 <h3 id="forms">forms<a class="headerlink" href="#forms" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const r = await list.forms();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">forms</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="items-imports">items imports<a class="headerlink" href="#items-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3167,8 +3166,8 @@ const r = await list.rootFolder();
 </table>
 <h3 id="items">items<a class="headerlink" href="#items" title="Permanent link">&para;</a></h3>
 <p>Get a collection of list items.</p>
-<pre><code class="language-TypeScript">const r = await list.items();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="views-imports">views imports<a class="headerlink" href="#views-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3194,17 +3193,17 @@ const r = await list.rootFolder();
 </table>
 <h3 id="views">views<a class="headerlink" href="#views" title="Permanent link">&para;</a></h3>
 <p>Get the default view of the list</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const views = await list.views();
-const defaultView = await list.defaultView();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">views</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">defaultView</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">();</span>
+</code></pre></div>
 <p>Get a list view by Id</p>
-<pre><code class="language-TypeScript">const view = await list.getView(defaultView.Id).select(&quot;Title&quot;)();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">view</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getView</span><span class="p">(</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">Id</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="security-imports">security imports<a class="headerlink" href="#security-imports" title="Permanent link">&para;</a></h2>
 <p>To work with list security, you can import the list methods as follows:</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/security/list&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/list&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>For more information on how to call security methods for lists, please refer to the <a href="../security/">@pnp/sp/security</a> documentation.</p>
 <h2 id="subscriptions-imports">subscriptions imports<a class="headerlink" href="#subscriptions-imports" title="Permanent link">&para;</a></h2>
 <table>
@@ -3231,9 +3230,9 @@ const defaultView = await list.defaultView();
 </table>
 <h3 id="subscriptions">subscriptions<a class="headerlink" href="#subscriptions" title="Permanent link">&para;</a></h3>
 <p>Get all subscriptions on the list</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const subscriptions = await list.subscriptions();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">subscriptions</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="user-custom-actions-imports">user-custom-actions imports<a class="headerlink" href="#user-custom-actions-imports" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3259,19 +3258,19 @@ const subscriptions = await list.subscriptions();
 </table>
 <h2 id="usercustomactions">userCustomActions<a class="headerlink" href="#usercustomactions" title="Permanent link">&para;</a></h2>
 <p>Get a collection of the list's user custom actions.</p>
-<pre><code class="language-TypeScript">const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-const r = await list.userCustomActions();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="getparentinfos">getParentInfos<a class="headerlink" href="#getparentinfos" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.12</em></p>
 <p>Gets information about an list, including details about the parent list root folder, and parent web.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/items&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;Documents&quot;);
-await list.getParentInfos();
-</code></pre>
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getParentInfos</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

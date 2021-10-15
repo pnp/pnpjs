@@ -2276,178 +2276,178 @@
 <p>In previous versions of this library the sharing methods were part of the inheritance stack for SharePointQueryable objects. Starting with v2 this is no longer the case and they are now selectively importable. There are four objects within the SharePoint hierarchy that support sharing: Item, File, Folder, and Web. You can import the sharing methods for all of them, or for individual objects.</p>
 <h3 id="import-all">Import All<a class="headerlink" href="#import-all" title="Permanent link">&para;</a></h3>
 <p>To import and attach the sharing methods to all four of the sharable types include all of the sharing sub module:</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const user = await sp.web.siteUsers.getByEmail(&quot;user@site.com&quot;)();
-const r = await sp.web.shareWith(user.LoginName);
-</code></pre>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">getByEmail</span><span class="p">(</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">LoginName</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="selective-import">Selective Import<a class="headerlink" href="#selective-import" title="Permanent link">&para;</a></h3>
 <p>Import only the web's sharing methods into the library</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/sharing/web&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const user = await sp.web.siteUsers.getByEmail(&quot;user@site.com&quot;)();
-const r = await sp.web.shareWith(user.LoginName);
-</code></pre>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">getByEmail</span><span class="p">(</span><span class="s2">&quot;user@site.com&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">LoginName</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="getsharelink">getShareLink<a class="headerlink" href="#getsharelink" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Creates a sharing link for the given resource with an optional expiration.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import { SharingLinkKind, IShareLinkResponse } from &quot;@pnp/sp/sharing&quot;;
-import { dateAdd } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SharingLinkKind</span><span class="p">,</span> <span class="nx">IShareLinkResponse</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const result = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/folder1&quot;).getShareLink(SharingLinkKind.AnonymousView);
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">);</span>
 
-console.log(JSON.stringify(result, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
 
-const result2 = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/folder1&quot;).getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), &quot;day&quot;, 5));
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">getShareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousView</span><span class="p">,</span> <span class="nx">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
 
-console.log(JSON.stringify(result2, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="sharewith">shareWith<a class="headerlink" href="#sharewith" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File, Web</strong></p>
 <p>Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the <code>loginnames</code> parameter or an array of <code>loginnames</code>. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/files/web&quot;;
-import { ISharingResult, SharingRole } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingResult</span><span class="p">,</span> <span class="nx">SharingRole</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-const result = await sp.web.shareWith(&quot;i:0#.f|membership|user@site.com&quot;);
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">);</span>
 
-console.log(JSON.stringify(result, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-// Share and allow editing
-const result2 = await sp.web.shareWith(&quot;i:0#.f|membership|user@site.com&quot;, SharingRole.Edit);
+<span class="c1">// Share and allow editing</span>
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">);</span>
 
-console.log(JSON.stringify(result2, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
 
-// share folder
-const result3 = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/folder1&quot;).shareWith(&quot;i:0#.f|membership|user@site.com&quot;);
+<span class="c1">// share folder</span>
+<span class="kr">const</span> <span class="nx">result3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/folder1&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">);</span>
 
-// Share folder with edit permissions, and provide params for requireSignin and propagateAcl (apply to all children)
-await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).shareWith(&quot;i:0#.f|membership|user@site.com&quot;, SharingRole.Edit, true, true);
+<span class="c1">// Share folder with edit permissions, and provide params for requireSignin and propagateAcl (apply to all children)</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-// Share a file
-await sp.web.getFileByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test.txt&quot;).shareWith(&quot;i:0#.f|membership|user@site.com&quot;);
+<span class="c1">// Share a file</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">);</span>
 
-// Share a file with edit permissions
-await sp.web.getFileByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test.txt&quot;).shareWith(&quot;i:0#.f|membership|user@site.com&quot;, SharingRole.Edit);
-</code></pre>
+<span class="c1">// Share a file with edit permissions</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test.txt&quot;</span><span class="p">).</span><span class="nx">shareWith</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">Edit</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="shareobject-shareobjectraw">shareObject &amp; shareObjectRaw<a class="headerlink" href="#shareobject-shareobjectraw" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Web</strong></p>
 <p>Allows you to share any shareable object in a web by providing the appropriate parameters. These two methods differ in that shareObject will try and fix up your query based on the supplied parameters where shareObjectRaw will send your supplied json object directly to the server. The later method is provided for the greatest amount of flexibility.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import { ISharingResult, SharingRole } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingResult</span><span class="p">,</span> <span class="nx">SharingRole</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-// Share an object in this web
-const result = await sp.web.shareObject(&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;, &quot;i:0#.f|membership|user@site.com&quot;, SharingRole.View);
+<span class="c1">// Share an object in this web</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">SharingRole</span><span class="p">.</span><span class="nx">View</span><span class="p">);</span>
 
-// Share an object with all settings available
-await sp.web.shareObjectRaw({
-    url: &quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;,
-    peoplePickerInput: [{ Key: &quot;i:0#.f|membership|user@site.com&quot; }],
-    roleValue: &quot;role: 1973741327&quot;,
-    groupId: 0,
-    propagateAcl: false,
-    sendEmail: true,
-    includeAnonymousLinkInEmail: false,
-    emailSubject: &quot;subject&quot;,
-    emailBody: &quot;body&quot;,
-    useSimplifiedRoles: true,
-});
-</code></pre>
+<span class="c1">// Share an object with all settings available</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">shareObjectRaw</span><span class="p">({</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">,</span>
+    <span class="nx">peoplePickerInput</span><span class="o">:</span> <span class="p">[{</span> <span class="nx">Key</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span> <span class="p">}],</span>
+    <span class="nx">roleValue</span><span class="o">:</span> <span class="s2">&quot;role: 1973741327&quot;</span><span class="p">,</span>
+    <span class="nx">groupId</span>: <span class="kt">0</span><span class="p">,</span>
+    <span class="nx">propagateAcl</span>: <span class="kt">false</span><span class="p">,</span>
+    <span class="nx">sendEmail</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">includeAnonymousLinkInEmail</span>: <span class="kt">false</span><span class="p">,</span>
+    <span class="nx">emailSubject</span><span class="o">:</span> <span class="s2">&quot;subject&quot;</span><span class="p">,</span>
+    <span class="nx">emailBody</span><span class="o">:</span> <span class="s2">&quot;body&quot;</span><span class="p">,</span>
+    <span class="nx">useSimplifiedRoles</span>: <span class="kt">true</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="unshareobject">unshareObject<a class="headerlink" href="#unshareobject" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Web</strong></p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import { ISharingResult } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-const result = await sp.web.unshareObject(&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">unshareObject</span><span class="p">(</span><span class="s2">&quot;https://mysite.sharepoint.com/sites/dev/Docs/test.txt&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="checksharingpermissions">checkSharingPermissions<a class="headerlink" href="#checksharingpermissions" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Checks Permissions on the list of Users and returns back role the users have on the Item.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing/folders&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import { SharingEntityPermission } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SharingEntityPermission</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-// check the sharing permissions for a folder
-const perms = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).checkSharingPermissions([{ alias: &quot;i:0#.f|membership|user@site.com&quot; }]);
-</code></pre>
+<span class="c1">// check the sharing permissions for a folder</span>
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">checkSharingPermissions</span><span class="p">([{</span> <span class="nx">alias</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span> <span class="p">}]);</span>
+</code></pre></div>
 <h2 id="getsharinginformation">getSharingInformation<a class="headerlink" href="#getsharinginformation" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Get Sharing Information.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { ISharingInformation } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-// Get the sharing information for a folder
-const info = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).getSharingInformation();
-</code></pre>
+<span class="c1">// Get the sharing information for a folder</span>
+<span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getSharingInformation</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="getobjectsharingsettings">getObjectSharingSettings<a class="headerlink" href="#getobjectsharingsettings" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Gets the sharing settings</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { IObjectSharingSettings } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IObjectSharingSettings</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-// Gets the sharing object settings
-const settings: IObjectSharingSettings = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).getObjectSharingSettings();
-</code></pre>
+<span class="c1">// Gets the sharing object settings</span>
+<span class="kr">const</span> <span class="nx">settings</span>: <span class="kt">IObjectSharingSettings</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">getObjectSharingSettings</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="unshare">unshare<a class="headerlink" href="#unshare" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
 <p>Unshares a given resource</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { ISharingResult } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).unshare();
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span>: <span class="kt">ISharingResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshare</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="deletesharinglinkbykind">deleteSharingLinkByKind<a class="headerlink" href="#deletesharinglinkbykind" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { ISharingResult, SharingLinkKind } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISharingResult</span><span class="p">,</span> <span class="nx">SharingLinkKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit);
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span>: <span class="kt">ISharingResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">deleteSharingLinkByKind</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="unsharelink">unshareLink<a class="headerlink" href="#unsharelink" title="Permanent link">&para;</a></h2>
 <p><strong>Applies to: Item, Folder, File</strong></p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/sharing&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { SharingLinkKind } from &quot;@pnp/sp/sharing&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SharingLinkKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/sharing&quot;</span><span class="p">;</span>
 
-await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).unshareLink(SharingLinkKind.AnonymousEdit);
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">);</span>
 
-// specify the sharing link id if available
-await sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/test&quot;).unshareLink(SharingLinkKind.AnonymousEdit, &quot;12345&quot;);
-</code></pre>
+<span class="c1">// specify the sharing link id if available</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/test&quot;</span><span class="p">).</span><span class="nx">unshareLink</span><span class="p">(</span><span class="nx">SharingLinkKind</span><span class="p">.</span><span class="nx">AnonymousEdit</span><span class="p">,</span> <span class="s2">&quot;12345&quot;</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

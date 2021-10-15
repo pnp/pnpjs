@@ -2125,12 +2125,12 @@
 <li>Paste the below XML into the permissions request xml box and hit "Create"</li>
 <li>You should get a confirmation message.</li>
 </ol>
-<pre><code class="language-XML">  &lt;AppPermissionRequests AllowAppOnlyPolicy=&quot;true&quot;&gt;
-    &lt;AppPermissionRequest Scope=&quot;http://sharepoint/content/tenant&quot; Right=&quot;FullControl&quot; /&gt;
-    &lt;AppPermissionRequest Scope=&quot;http://sharepoint/social/tenant&quot; Right=&quot;FullControl&quot; /&gt;
-    &lt;AppPermissionRequest Scope=&quot;http://sharepoint/search&quot; Right=&quot;QueryAsUserIgnoreAppPrincipal&quot; /&gt;
-  &lt;/AppPermissionRequests&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code>  <span class="nt">&lt;AppPermissionRequests</span> <span class="na">AllowAppOnlyPolicy=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;AppPermissionRequest</span> <span class="na">Scope=</span><span class="s">&quot;http://sharepoint/content/tenant&quot;</span> <span class="na">Right=</span><span class="s">&quot;FullControl&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;AppPermissionRequest</span> <span class="na">Scope=</span><span class="s">&quot;http://sharepoint/social/tenant&quot;</span> <span class="na">Right=</span><span class="s">&quot;FullControl&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;AppPermissionRequest</span> <span class="na">Scope=</span><span class="s">&quot;http://sharepoint/search&quot;</span> <span class="na">Right=</span><span class="s">&quot;QueryAsUserIgnoreAppPrincipal&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/AppPermissionRequests&gt;</span>
+</code></pre></div>
 <p><strong>Note that the above XML will grant full tenant control. This is OK for testing, but you should grant only those permissions necessary for your application in production.</strong></p>
                 
               

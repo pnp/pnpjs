@@ -2171,85 +2171,85 @@
 </tr>
 </tbody>
 </table>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/regional-settings/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
-// get all the web's regional settings
-const s = await sp.web.regionalSettings();
+<span class="c1">// get all the web&#39;s regional settings</span>
+<span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">();</span>
 
-// select only some settings to return
-const s2 = await sp.web.regionalSettings.select(&quot;DecimalSeparator&quot;, &quot;ListSeparator&quot;, &quot;IsUIRightToLeft&quot;)();
-</code></pre>
+<span class="c1">// select only some settings to return</span>
+<span class="kr">const</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;DecimalSeparator&quot;</span><span class="p">,</span> <span class="s2">&quot;ListSeparator&quot;</span><span class="p">,</span> <span class="s2">&quot;IsUIRightToLeft&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="installed-languages">Installed Languages<a class="headerlink" href="#installed-languages" title="Permanent link">&para;</a></h3>
 <p>You can get a list of the installed languages in the web.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/regional-settings/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
-const s = await sp.web.regionalSettings.getInstalledLanguages();
-</code></pre>
+<span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">getInstalledLanguages</span><span class="p">();</span>
+</code></pre></div>
 <blockquote>
 <p>The installedLanguages property accessor is deprecated after 2.0.4 in favor of getInstalledLanguages and will be removed in future versions.</p>
 </blockquote>
 <h3 id="timezones">TimeZones<a class="headerlink" href="#timezones" title="Permanent link">&para;</a></h3>
 <p>You can also get information about the selected timezone in the web and all of the defined timezones.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/regional-settings/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings/web&quot;</span><span class="p">;</span>
 
-// get the web's configured timezone
-const s = await sp.web.regionalSettings.timeZone();
+<span class="c1">// get the web&#39;s configured timezone</span>
+<span class="kr">const</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">();</span>
 
-// select just the Description and Id
-const s2 = await sp.web.regionalSettings.timeZone.select(&quot;Description&quot;, &quot;Id&quot;)();
+<span class="c1">// select just the Description and Id</span>
+<span class="kr">const</span> <span class="nx">s2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span> <span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// get all the timezones
-const s3 = await sp.web.regionalSettings.timeZones();
+<span class="c1">// get all the timezones</span>
+<span class="kr">const</span> <span class="nx">s3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZones</span><span class="p">();</span>
 
-// get a specific timezone by id
-// list of ids: https://msdn.microsoft.com/en-us/library/office/jj247008.aspx
-const s4 = await sp.web.regionalSettings.timeZones.getById(23);
-const s5 = await s.localTimeToUTC(new Date());
+<span class="c1">// get a specific timezone by id</span>
+<span class="c1">// list of ids: https://msdn.microsoft.com/en-us/library/office/jj247008.aspx</span>
+<span class="kr">const</span> <span class="nx">s4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZones</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">23</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">s5</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">s</span><span class="p">.</span><span class="nx">localTimeToUTC</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
 
-// convert a given date from web's local time to UTC time
-const s6 = await sp.web.regionalSettings.timeZone.localTimeToUTC(new Date());
+<span class="c1">// convert a given date from web&#39;s local time to UTC time</span>
+<span class="kr">const</span> <span class="nx">s6</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">.</span><span class="nx">localTimeToUTC</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
 
-// convert a given date from UTC time to web's local time
-const s6 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date())
-const s7 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date(2019, 6, 10, 10, 0, 0, 0))
-</code></pre>
+<span class="c1">// convert a given date from UTC time to web&#39;s local time</span>
+<span class="kr">const</span> <span class="nx">s6</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">.</span><span class="nx">utcToLocalTime</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">())</span>
+<span class="kr">const</span> <span class="nx">s7</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">regionalSettings</span><span class="p">.</span><span class="nx">timeZone</span><span class="p">.</span><span class="nx">utcToLocalTime</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</code></pre></div>
 <h3 id="title-and-description-resources">Title and Description Resources<a class="headerlink" href="#title-and-description-resources" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.4</em></p>
 <p>Some objects allow you to read language specific title information as shown in the following sample. This applies to Web, List, Field, Content Type, and User Custom Actions.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/regional-settings&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/regional-settings&quot;</span><span class="p">;</span>
 
-//
-// The below methods appears on
-// - Web
-// - List
-// - Field
-// - ContentType
-// - User Custom Action
-//
-// after you import @pnp/sp/regional-settings
-//
-// you can also import just parts of the regional settings:
-// import &quot;@pnp/sp/regional-settings/web&quot;;
-// import &quot;@pnp/sp/regional-settings/list&quot;;
-// import &quot;@pnp/sp/regional-settings/content-type&quot;;
-// import &quot;@pnp/sp/regional-settings/field&quot;;
-// import &quot;@pnp/sp/regional-settings/user-custom-actions&quot;;
+<span class="c1">//</span>
+<span class="c1">// The below methods appears on</span>
+<span class="c1">// - Web</span>
+<span class="c1">// - List</span>
+<span class="c1">// - Field</span>
+<span class="c1">// - ContentType</span>
+<span class="c1">// - User Custom Action</span>
+<span class="c1">//</span>
+<span class="c1">// after you import @pnp/sp/regional-settings</span>
+<span class="c1">//</span>
+<span class="c1">// you can also import just parts of the regional settings:</span>
+<span class="c1">// import &quot;@pnp/sp/regional-settings/web&quot;;</span>
+<span class="c1">// import &quot;@pnp/sp/regional-settings/list&quot;;</span>
+<span class="c1">// import &quot;@pnp/sp/regional-settings/content-type&quot;;</span>
+<span class="c1">// import &quot;@pnp/sp/regional-settings/field&quot;;</span>
+<span class="c1">// import &quot;@pnp/sp/regional-settings/user-custom-actions&quot;;</span>
 
 
-const title = await sp.web.titleResource(&quot;en-us&quot;);
-const title2 = await sp.web.titleResource(&quot;de-de&quot;);
+<span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">titleResource</span><span class="p">(</span><span class="s2">&quot;en-us&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">title2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">titleResource</span><span class="p">(</span><span class="s2">&quot;de-de&quot;</span><span class="p">);</span>
 
-const description = await sp.web.descriptionResource(&quot;en-us&quot;);
-const description2 = await sp.web.descriptionResource(&quot;de-de&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">description</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">descriptionResource</span><span class="p">(</span><span class="s2">&quot;en-us&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">description2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">descriptionResource</span><span class="p">(</span><span class="s2">&quot;de-de&quot;</span><span class="p">);</span>
+</code></pre></div>
 <blockquote>
 <p>You can only read the values through the REST API, not set the value.</p>
 </blockquote>

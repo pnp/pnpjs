@@ -2146,76 +2146,76 @@
 <p>This concept works well with <a href="../custom-bundle/">custom bundling</a> to create a shared package tailored exactly to your needs.</p>
 <p>If you would prefer to not worry about selective imports please see the section on <a href="#presets">presets</a>.</p>
 <h2 id="old-way">Old way<a class="headerlink" href="#old-way" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">// the sp var came with all library functionality already attached
-// meaning treeshaking couldn't reduce the size
-import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// the sp var came with all library functionality already attached</span>
+<span class="c1">// meaning treeshaking couldn&#39;t reduce the size</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1).get();
-</code></pre>
+<span class="kr">const</span> <span class="nx">itemData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;00000000-0000-0000-0000-000000000000&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="new-way">New Way<a class="headerlink" href="#new-way" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">// the sp var now has almost nothing attached at import time and relies on
-import { sp } from &quot;@pnp/sp&quot;;
-// we need to import each of the pieces we need to &quot;attach&quot; them for chaining
-// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items/list&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// the sp var now has almost nothing attached at import time and relies on</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// we need to import each of the pieces we need to &quot;attach&quot; them for chaining</span>
+<span class="c1">// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items/list&quot;</span><span class="p">;</span>
 
-const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">itemData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;00000000-0000-0000-0000-000000000000&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
+</code></pre></div>
 <p>Above we are being very specific in what we are importing, but you can also import entire sub-modules and be slightly less specific</p>
-<pre><code class="language-TypeScript">// the sp var now has almost nothing attached at import time and relies on
-import { sp } from &quot;@pnp/sp&quot;;
-// we need to import each of the pieces we need to &quot;attach&quot; them for chaining
-// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/items&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// the sp var now has almost nothing attached at import time and relies on</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="c1">// we need to import each of the pieces we need to &quot;attach&quot; them for chaining</span>
+<span class="c1">// here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 
-const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">itemData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;00000000-0000-0000-0000-000000000000&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">)();</span>
+</code></pre></div>
 <p>The above two examples both work just fine but you may end up with slightly smaller bundle sizes using the first. Consider this example:</p>
-<pre><code class="language-TypeScript">// this import statement will attach content-type functionality to list, web, and item
-import &quot;@pnp/sp/content-types&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// this import statement will attach content-type functionality to list, web, and item</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/content-types&quot;</span><span class="p">;</span>
 
-// this import statement will only attach content-type functionality to web
-import &quot;@pnp/sp/content-types/web&quot;;
-</code></pre>
+<span class="c1">// this import statement will only attach content-type functionality to web</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/content-types/web&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>If you only need to access content types on the web object you can reduce size by only importing that piece.</p>
-<pre><code class="language-TypeScript">// this will fail
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// this will fail</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// do this instead
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
+<span class="c1">// do this instead</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-const lists = await sp.web.lists();
-</code></pre>
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="presets">Presets<a class="headerlink" href="#presets" title="Permanent link">&para;</a></h2>
 <p>Sometimes you don't care as much about bundle size - testing or node development for example. In these cases we have provided what we are calling presets to allow you to skip importing each module individually.</p>
 <h2 id="sp">SP<a class="headerlink" href="#sp" title="Permanent link">&para;</a></h2>
 <p>For the sp library there are two presets "all" and "core". The all preset mimics the behavior in v1 and includes everything in the library already attached to the sp var.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// sp.* exists as it did in v1, tree shaking will not work
-const lists = await sp.web.lists();
-</code></pre>
+<span class="c1">// sp.* exists as it did in v1, tree shaking will not work</span>
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+</code></pre></div>
 <p>The "core" preset includes sites, webs, lists, and items.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/core&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/core&quot;</span><span class="p">;</span>
 
-// sp.* exists as it did in v1, tree shaking will not work
-const lists = await sp.web.lists();
-</code></pre>
+<span class="c1">// sp.* exists as it did in v1, tree shaking will not work</span>
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="graph">Graph<a class="headerlink" href="#graph" title="Permanent link">&para;</a></h2>
 <p>The graph library contains a single preset, "all" mimicking the v1 structure.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// graph.* exists as it did in v1, tree shaking will not work
-</code></pre>
+<span class="c1">// graph.* exists as it did in v1, tree shaking will not work</span>
+</code></pre></div>
 <blockquote>
 <p>While we may look to add additional presets in the future you are encouraged to look at making your own <a href="../custom-bundle/">custom bundles</a> as a preferred solution.</p>
 </blockquote>

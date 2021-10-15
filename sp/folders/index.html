@@ -2529,38 +2529,38 @@
 </tbody>
 </table>
 <h3 id="get-folders-collection-for-various-sharepoint-objects">Get folders collection for various SharePoint objects<a class="headerlink" href="#get-folders-collection-for-various-sharepoint-objects" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// gets web's folders
-const webFolders = await sp.web.folders();
+<span class="c1">// gets web&#39;s folders</span>
+<span class="kr">const</span> <span class="nx">webFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
 
-// gets list's folders
-const listFolders = await sp.web.lists.getByTitle(&quot;My List&quot;).rootFolder.folders();
+<span class="c1">// gets list&#39;s folders</span>
+<span class="kr">const</span> <span class="nx">listFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
 
-// gets item's folders
-const itemFolders = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1).folder.folders();
-</code></pre>
+<span class="c1">// gets item&#39;s folders</span>
+<span class="kr">const</span> <span class="nx">itemFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">folder</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
 <p>Adds a new folder to collection of folders</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// creates a new folder for web with specified url
-const folderAddResult = await sp.web.folders.add(&quot;folder url&quot;);
-</code></pre>
+<span class="c1">// creates a new folder for web with specified url</span>
+<span class="kr">const</span> <span class="nx">folderAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;folder url&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="getbyname">getByName<a class="headerlink" href="#getbyname" title="Permanent link">&para;</a></h3>
 <p>Gets a folder instance from a collection by folder's name</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folder = await sp.web.folders.getByName(&quot;folder name&quot;)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">folder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;folder name&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="ifolder">IFolder<a class="headerlink" href="#ifolder" title="Permanent link">&para;</a></h2>
 <p>Represents an instance of a SharePoint folder.</p>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
@@ -2599,234 +2599,234 @@ const folder = await sp.web.folders.getByName(&quot;folder name&quot;)();
 </tbody>
 </table>
 <h3 id="get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item">Get a folder object associated with different SharePoint artifacts (web, list, list item)<a class="headerlink" href="#get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/items&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
 
-// web's folder
-const rootFolder = await sp.web.rootFolder();
+<span class="c1">// web&#39;s folder</span>
+<span class="kr">const</span> <span class="nx">rootFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">();</span>
 
-// list's folder
-const listRootFolder = await sp.web.lists.getByTitle(&quot;234&quot;).rootFolder();
+<span class="c1">// list&#39;s folder</span>
+<span class="kr">const</span> <span class="nx">listRootFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;234&quot;</span><span class="p">).</span><span class="nx">rootFolder</span><span class="p">();</span>
 
-// item's folder
-const itemFolder = await sp.web.lists.getByTitle(&quot;234&quot;).items.getById(1).folder();
-</code></pre>
+<span class="c1">// item&#39;s folder</span>
+<span class="kr">const</span> <span class="nx">itemFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;234&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">folder</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="getitem">getItem<a class="headerlink" href="#getitem" title="Permanent link">&para;</a></h3>
 <p>Gets list item associated with a folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folderItem = await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).folders.getByName(&quot;My Folder&quot;).getItem();
-</code></pre>
+<span class="kr">const</span> <span class="nx">folderItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="move">move<a class="headerlink" href="#move" title="Permanent link">&para;</a></h3>
 <p>It's possible to move a folder to a new destination within a site collection  </p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+<span class="c1">// destination is a server-relative url of a new folder</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).folders.getByName(&quot;My Folder&quot;).moveTo(destinationUrl);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="copy">copy<a class="headerlink" href="#copy" title="Permanent link">&para;</a></h3>
 <p>It's possible to copy a folder to a new destination within a site collection  </p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+<span class="c1">// destination is a server-relative url of a new folder</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).folders.getByName(&quot;My Folder&quot;).copyTo(destinationUrl);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">copyTo</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="move-by-path">move by path<a class="headerlink" href="#move-by-path" title="Permanent link">&para;</a></h3>
 <p>It's possible to move a folder to a new destination within the same or a different site collection  </p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+<span class="c1">// destination is a server-relative url of a new folder</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).folders.getByName(&quot;My Folder&quot;).moveByPath(destinationUrl, true);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">moveByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="copy-by-path">copy by path<a class="headerlink" href="#copy-by-path" title="Permanent link">&para;</a></h3>
 <p>It's possible to copy a folder to a new destination within the same or a different site collection  </p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+<span class="c1">// destination is a server-relative url of a new folder</span>
+<span class="kr">const</span> <span class="nx">destinationUrl</span> <span class="o">=</span> <span class="sb">`/sites/my-site/SiteAssets/new-folder`</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).folders.getByName(&quot;My Folder&quot;).copyByPath(destinationUrl, true);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">copyByPath</span><span class="p">(</span><span class="nx">destinationUrl</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
 <p>Deletes a folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;My Folder&quot;).delete();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="delete-with-params">delete with params<a class="headerlink" href="#delete-with-params" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.9</em></p>
 <p>Deletes a folder with options</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;My Folder&quot;).deleteWithParams({
-                BypassSharedLock: true,
-                DeleteIfEmpty: true,
-            });
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">deleteWithParams</span><span class="p">({</span>
+                <span class="nx">BypassSharedLock</span>: <span class="kt">true</span><span class="p">,</span>
+                <span class="nx">DeleteIfEmpty</span>: <span class="kt">true</span><span class="p">,</span>
+            <span class="p">});</span>
+</code></pre></div>
 <h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
 <p>Recycles a folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-await sp.web.rootFolder.folders.getByName(&quot;My Folder&quot;).recycle();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;My Folder&quot;</span><span class="p">).</span><span class="nx">recycle</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="serverrelativeurl">serverRelativeUrl<a class="headerlink" href="#serverrelativeurl" title="Permanent link">&para;</a></h3>
 <p>Gets folder's server relative url</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const relUrl = await sp.web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).serverRelativeUrl();
-</code></pre>
+<span class="kr">const</span> <span class="nx">relUrl</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">serverRelativeUrl</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="update">update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h3>
 <p>Updates folder's properties</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/Folder2&quot;).update({
-        &quot;Name&quot;: &quot;New name&quot;,
-    });
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+        <span class="s2">&quot;Name&quot;</span><span class="o">:</span> <span class="s2">&quot;New name&quot;</span><span class="p">,</span>
+    <span class="p">});</span>
+</code></pre></div>
 <h3 id="contenttypeorder">contentTypeOrder<a class="headerlink" href="#contenttypeorder" title="Permanent link">&para;</a></h3>
 <p>Gets content type order of a folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const order = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents&quot;).contentTypeOrder();
-</code></pre>
+<span class="kr">const</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">contentTypeOrder</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="folders">folders<a class="headerlink" href="#folders" title="Permanent link">&para;</a></h3>
 <p>Gets all child folders associated with the current folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folders = await sp.web.rootFolder.folders();
-</code></pre>
+<span class="kr">const</span> <span class="nx">folders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="files">files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h3>
 <p>Gets all files inside a folder</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/files/folder&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/folder&quot;</span><span class="p">;</span>
 
-const files = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents&quot;).files();
-</code></pre>
+<span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="listitemallfields">listItemAllFields<a class="headerlink" href="#listitemallfields" title="Permanent link">&para;</a></h3>
 <p>Gets this folder's list item field values</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const itemFields = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/My Folder&quot;).listItemAllFields();
-</code></pre>
+<span class="kr">const</span> <span class="nx">itemFields</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">).</span><span class="nx">listItemAllFields</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="parentfolder">parentFolder<a class="headerlink" href="#parentfolder" title="Permanent link">&para;</a></h3>
 <p>Gets the parent folder, if available</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const parentFolder = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/My Folder&quot;).parentFolder();
-</code></pre>
+<span class="kr">const</span> <span class="nx">parentFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">).</span><span class="nx">parentFolder</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="properties">properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
 <p>Gets this folder's properties</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const properties = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/Folder2&quot;).properties.get();
-</code></pre>
+<span class="kr">const</span> <span class="nx">properties</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">properties</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="uniquecontenttypeorder">uniqueContentTypeOrder<a class="headerlink" href="#uniquecontenttypeorder" title="Permanent link">&para;</a></h3>
 <p>Gets a value that specifies the content type order.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const contentTypeOrder = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/Folder2&quot;).uniqueContentTypeOrder();
-</code></pre>
+<span class="kr">const</span> <span class="nx">contentTypeOrder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/Folder2&quot;</span><span class="p">).</span><span class="nx">uniqueContentTypeOrder</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="rename-a-folder">Rename a folder<a class="headerlink" href="#rename-a-folder" title="Permanent link">&para;</a></h3>
 <p>You can rename a folder by updating <code>FileLeafRef</code> property:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folder = sp.web.getFolderByServerRelativePath(&quot;Shared Documents/My Folder&quot;);
+<span class="kr">const</span> <span class="nx">folder</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;Shared Documents/My Folder&quot;</span><span class="p">);</span>
 
-const item = await folder.getItem();
-const result = await item.update({ FileLeafRef: &quot;Folder2&quot; });
-</code></pre>
+<span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">folder</span><span class="p">.</span><span class="nx">getItem</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="nx">FileLeafRef</span><span class="o">:</span> <span class="s2">&quot;Folder2&quot;</span> <span class="p">});</span>
+</code></pre></div>
 <h3 id="create-a-folder-with-custom-content-type">Create a folder with custom content type<a class="headerlink" href="#create-a-folder-with-custom-content-type" title="Permanent link">&para;</a></h3>
 <p>Below code creates a new folder under Document library and assigns custom folder content type to a newly created folder. Additionally it sets a field of a custom folder content type.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-const newFolderResult = await sp.web.rootFolder.folders.getByName(&quot;Shared Documents&quot;).folders.add(&quot;My New Folder&quot;);
-const item = await newFolderResult.folder.listItemAllFields();
+<span class="kr">const</span> <span class="nx">newFolderResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;Shared Documents&quot;</span><span class="p">).</span><span class="nx">folders</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My New Folder&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">newFolderResult</span><span class="p">.</span><span class="nx">folder</span><span class="p">.</span><span class="nx">listItemAllFields</span><span class="p">();</span>
 
-await sp.web.lists.getByTitle(&quot;Documents&quot;).items.getById(item.ID).update({
-    ContentTypeId: &quot;0x0120001E76ED75A3E3F3408811F0BF56C4CDDD&quot;,
-    MyFolderField: &quot;field value&quot;,
-    Title: &quot;My New Folder&quot;,
-});
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">ID</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">ContentTypeId</span><span class="o">:</span> <span class="s2">&quot;0x0120001E76ED75A3E3F3408811F0BF56C4CDDD&quot;</span><span class="p">,</span>
+    <span class="nx">MyFolderField</span><span class="o">:</span> <span class="s2">&quot;field value&quot;</span><span class="p">,</span>
+    <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;My New Folder&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="addsubfolderusingpath">addSubFolderUsingPath<a class="headerlink" href="#addsubfolderusingpath" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.9</em></p>
 <p>You can use the addSubFolderUsingPath method to add a folder with some special chars supported</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { IFolder } from &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IFolder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-// add a folder to site assets
-const folder: IFolder = await web.rootFolder.folders.getByName(&quot;SiteAssets&quot;).addSubFolderUsingPath(&quot;folder name&quot;);
-</code></pre>
+<span class="c1">// add a folder to site assets</span>
+<span class="kr">const</span> <span class="nx">folder</span>: <span class="kt">IFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">folders</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;SiteAssets&quot;</span><span class="p">).</span><span class="nx">addSubFolderUsingPath</span><span class="p">(</span><span class="s2">&quot;folder name&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="getfolderbyid">getFolderById<a class="headerlink" href="#getfolderbyid" title="Permanent link">&para;</a></h3>
 <p>You can get a folder by Id from a web.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import { IFolder } from &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IFolder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folder: IFolder = sp.web.getFolderById(&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">folder</span>: <span class="kt">IFolder</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderById</span><span class="p">(</span><span class="s2">&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="getparentinfos">getParentInfos<a class="headerlink" href="#getparentinfos" title="Permanent link">&para;</a></h3>
 <p><em>Added in 2.0.12</em></p>
 <p>Gets information about folder, including details about the parent list, parent list root folder, and parent web.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
 
-const folder: IFolder = sp.web.getFolderById(&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;);
-await folder.getParentInfos();
-</code></pre>
+<span class="kr">const</span> <span class="nx">folder</span>: <span class="kt">IFolder</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderById</span><span class="p">(</span><span class="s2">&quot;2b281c7b-ece9-4b76-82f9-f5cf5e152ba0&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">folder</span><span class="p">.</span><span class="nx">getParentInfos</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

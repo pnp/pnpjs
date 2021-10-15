@@ -2171,57 +2171,57 @@
 </tbody>
 </table>
 <h2 id="get-all-categories-user">Get All Categories User<a class="headerlink" href="#get-all-categories-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/outlook&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/outlook&quot;</span><span class="p">;</span>
 
-// Delegated permissions
-const categories = await graph.me.outlook.masterCategories();
-// Application permissions
-const categories = await graph.users.getById('{user id}').outlook.masterCategories();
-</code></pre>
+<span class="c1">// Delegated permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">();</span>
+<span class="c1">// Application permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{user id}&#39;</span><span class="p">).</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="add-category-user">Add Category User<a class="headerlink" href="#add-category-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/outlook&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/outlook&quot;</span><span class="p">;</span>
 
-// Delegated permissions
-await graph.me.outlook.masterCategories.add({
-  displayName: 'Newsletters', 
-  color: 'preset2'
-});
-// Application permissions
-await graph.users.getById('{user id}').outlook.masterCategories.add({
-  displayName: 'Newsletters', 
-  color: 'preset2'
-});
-</code></pre>
+<span class="c1">// Delegated permissions</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
+  <span class="nx">displayName</span><span class="o">:</span> <span class="s1">&#39;Newsletters&#39;</span><span class="p">,</span> 
+  <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;preset2&#39;</span>
+<span class="p">});</span>
+<span class="c1">// Application permissions</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{user id}&#39;</span><span class="p">).</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span>
+  <span class="nx">displayName</span><span class="o">:</span> <span class="s1">&#39;Newsletters&#39;</span><span class="p">,</span> 
+  <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;preset2&#39;</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="update-category">Update Category<a class="headerlink" href="#update-category" title="Permanent link">&para;</a></h2>
 <p><img alt="Known Issue Banner" src="https://img.shields.io/badge/Known%20Issue-important.svg" /> Testing has shown that <code>displayName</code> cannot be updated.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/outlook&quot;;
-import { OutlookCategory } from &quot;@microsoft/microsoft-graph-types&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/outlook&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">OutlookCategory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@microsoft/microsoft-graph-types&quot;</span><span class="p">;</span>
 
-const categoryUpdate: OutlookCategory = {
-    color: &quot;preset5&quot;
-}
+<span class="kr">const</span> <span class="nx">categoryUpdate</span>: <span class="kt">OutlookCategory</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;preset5&quot;</span>
+<span class="p">}</span>
 
-// Delegated permissions
-const categories = await graph.me.outlook.masterCategories.getById('{category id}').update(categoryUpdate);
-// Application permissions
-const categories = await graph.users.getById('{user id}').outlook.masterCategories.getById('{category id}').update(categoryUpdate);
-</code></pre>
+<span class="c1">// Delegated permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{category id}&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">categoryUpdate</span><span class="p">);</span>
+<span class="c1">// Application permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{user id}&#39;</span><span class="p">).</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{category id}&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">categoryUpdate</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="delete-category">Delete Category<a class="headerlink" href="#delete-category" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/outlook&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/outlook&quot;</span><span class="p">;</span>
 
-// Delegated permissions
-const categories = await graph.me.outlook.masterCategories.getById('{category id}').delete();
-// Application permissions
-const categories = await graph.users.getById('{user id}').outlook.masterCategories.getById('{category id}').delete();
-</code></pre>
+<span class="c1">// Delegated permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{category id}&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="c1">// Application permissions</span>
+<span class="kr">const</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{user id}&#39;</span><span class="p">).</span><span class="nx">outlook</span><span class="p">.</span><span class="nx">masterCategories</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;{category id}&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

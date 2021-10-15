@@ -2091,27 +2091,27 @@
 <p>The SPRequestExecutorClient is an implementation of the HttpClientImpl interface that facilitates requests to SharePoint from an add-in. It relies on the SharePoint SP product libraries being present to allow use of the SP.RequestExecutor to make the request.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <p>To use the client you need to set it using the fetch client factory using the setup  method as shown below. This is only required when working within a SharePoint add-in web.</p>
-<pre><code class="language-TypeScript">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods
-import { sp, SPRequestExecutorClient } from &quot;@pnp/sp-addinhelpers&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">SPRequestExecutorClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-addinhelpers&quot;</span><span class="p">;</span>
 
-// this only needs to be done once within your application
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPRequestExecutorClient();
-        }
-    }
-});
+<span class="c1">// this only needs to be done once within your application</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPRequestExecutorClient</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-// now we need to use the crossDomainWeb method to make our requests to the host web
-const addInWenUrl = &quot;{The add-in web url, likely from the query string}&quot;;
-const hostWebUrl = &quot;{The host web url, likely from the query string}&quot;;
+<span class="c1">// now we need to use the crossDomainWeb method to make our requests to the host web</span>
+<span class="kr">const</span> <span class="nx">addInWenUrl</span> <span class="o">=</span> <span class="s2">&quot;{The add-in web url, likely from the query string}&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">hostWebUrl</span> <span class="o">=</span> <span class="s2">&quot;{The host web url, likely from the query string}&quot;</span><span class="p">;</span>
 
-// make requests into the host web via the SP.RequestExecutor
-sp.crossDomainWeb(addInWenUrl, hostWebUrl).get().then(w =&gt; {
-    console.log(JSON.stringify(w, null, 4));
-});
-</code></pre>
+<span class="c1">// make requests into the host web via the SP.RequestExecutor</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">crossDomainWeb</span><span class="p">(</span><span class="nx">addInWenUrl</span><span class="p">,</span> <span class="nx">hostWebUrl</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">w</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               

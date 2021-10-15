@@ -2131,73 +2131,72 @@
 <p>This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.</p>
 <h2 id="pnpclientstorage">PnPClientStorage<a class="headerlink" href="#pnpclientstorage" title="Permanent link">&para;</a></h2>
 <p>The main export of this module, contains properties representing local and session storage.</p>
-<pre><code class="language-TypeScript">import { PnPClientStorage } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const storage = new PnPClientStorage();
-const myvalue = storage.local.get(&quot;mykey&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">myvalue</span> <span class="o">=</span> <span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;mykey&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="pnpclientstoragewrapper">PnPClientStorageWrapper<a class="headerlink" href="#pnpclientstoragewrapper" title="Permanent link">&para;</a></h2>
 <p>Each of the storage locations (session and local) are wrapped with this helper class. You can use it directly, but generally it would be used
 from an instance of PnPClientStorage as shown below. These examples all use local storage, the operations are identical for session storage.</p>
-<pre><code class="language-TypeScript">import { PnPClientStorage } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const storage = new PnPClientStorage();
+<span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
 
-// get a value from storage
-const value = storage.local.get(&quot;mykey&quot;);
+<span class="c1">// get a value from storage</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;mykey&quot;</span><span class="p">);</span>
 
-// put a value into storage
-storage.local.put(&quot;mykey2&quot;, &quot;my value&quot;);
+<span class="c1">// put a value into storage</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&quot;mykey2&quot;</span><span class="p">,</span> <span class="s2">&quot;my value&quot;</span><span class="p">);</span>
 
-// put a value into storage with an expiration
-storage.local.put(&quot;mykey2&quot;, &quot;my value&quot;, new Date());
+<span class="c1">// put a value into storage with an expiration</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&quot;mykey2&quot;</span><span class="p">,</span> <span class="s2">&quot;my value&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
 
-// put a simple object into storage
-// because JSON.stringify is used to package the object we do NOT do a deep rehydration of stored objects
-storage.local.put(&quot;mykey3&quot;, {
-    key: &quot;value&quot;,
-    key2: &quot;value2&quot;,
-});
+<span class="c1">// put a simple object into storage</span>
+<span class="c1">// because JSON.stringify is used to package the object we do NOT do a deep rehydration of stored objects</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&quot;mykey3&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">key</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="nx">key2</span><span class="o">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// remove a value from storage
-storage.local.delete(&quot;mykey3&quot;);
+<span class="c1">// remove a value from storage</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">&quot;mykey3&quot;</span><span class="p">);</span>
 
-// get an item or add it if it does not exist
-// returns a promise in case you need time to get the value for storage
-// optionally takes a third parameter specifying the expiration
-storage.local.getOrPut(&quot;mykey4&quot;, () =&gt; {
-    return Promise.resolve(&quot;value&quot;);
-});
+<span class="c1">// get an item or add it if it does not exist</span>
+<span class="c1">// returns a promise in case you need time to get the value for storage</span>
+<span class="c1">// optionally takes a third parameter specifying the expiration</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">getOrPut</span><span class="p">(</span><span class="s2">&quot;mykey4&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">);</span>
+<span class="p">});</span>
 
-// delete expired items
-storage.local.deleteExpired();
-</code></pre>
+<span class="c1">// delete expired items</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">deleteExpired</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="cache-expiration">Cache Expiration<a class="headerlink" href="#cache-expiration" title="Permanent link">&para;</a></h3>
 <p>The ability remove of expired items based on a configured timeout can help if the cache is filling up. This can be accomplished in two ways. The first is to explicitly call the new deleteExpired method on the cache you wish to clear. A suggested usage is to add this into your page init code as clearing expired items once per page load is likely sufficient.</p>
-<pre><code class="language-TypeScript">import { PnPClientStorage } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const storage = new PnPClientStorage();
+<span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
 
-// session storage
-storage.session.deleteExpired();
+<span class="c1">// session storage</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">deleteExpired</span><span class="p">();</span>
 
-// local storage
-storage.local.deleteExpired();
+<span class="c1">// local storage</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">deleteExpired</span><span class="p">();</span>
 
-// this returns a promise, so you can perform some activity after the expired items are removed:
-storage.local.deleteExpired().then(_ =&gt; {
-    // init my application
-});
-</code></pre>
+<span class="c1">// this returns a promise, so you can perform some activity after the expired items are removed:</span>
+<span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">deleteExpired</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// init my application</span>
+<span class="p">});</span>
+</code></pre></div>
 <p>The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout.</p>
-<pre><code class="language-TypeScript">
-import { setup } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-setup({
-    enableCacheExpiration: true,
-    cacheExpirationIntervalMilliseconds: 1000, // optional
-});
-</code></pre>
+<span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">enableCacheExpiration</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">cacheExpirationIntervalMilliseconds</span>: <span class="kt">1000</span><span class="p">,</span> <span class="c1">// optional</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               

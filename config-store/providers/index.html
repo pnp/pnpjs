@@ -2105,35 +2105,35 @@
 <p>Currently there is a single provider included in the library, but contributions of additional providers are welcome.</p>
 <h2 id="splistconfigurationprovider">SPListConfigurationProvider<a class="headerlink" href="#splistconfigurationprovider" title="Permanent link">&para;</a></h2>
 <p>This provider is based on a SharePoint list it reads all of the rows and makes them available as a <code>TypedHash&lt;string&gt;</code>. By default the column names used are Title for key and "Value" for value, but you can update these as needed. Additionally, the settings class supports the idea of last value in wins - so you can easily load multiple configurations. This helps to support a common scenario in the enterprise where you might have one main list for global configuration but some settings can be set at the web level. In this case you would first load the global, then the local settings and any local values will take precedence.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/presets/all&quot;;
-import { Settings, SPListConfigurationProvider } from &quot;@pnp/config-store&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Settings</span><span class="p">,</span> <span class="nx">SPListConfigurationProvider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/config-store&quot;</span><span class="p">;</span>
 
-// create a new provider instance
-const w = Web(&quot;https://mytenant.sharepoint.com/sites/dev&quot;);
-const provider = new SPListConfigurationProvider(w, &quot;myconfiglistname&quot;);
+<span class="c1">// create a new provider instance</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SPListConfigurationProvider</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s2">&quot;myconfiglistname&quot;</span><span class="p">);</span>
 
-const settings = new Settings();
+<span class="kr">const</span> <span class="nx">settings</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Settings</span><span class="p">();</span>
 
-// load our values from the list
-await settings.load(provider);
-</code></pre>
+<span class="c1">// load our values from the list</span>
+<span class="nx">await</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">provider</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="cachingconfigurationprovider">CachingConfigurationProvider<a class="headerlink" href="#cachingconfigurationprovider" title="Permanent link">&para;</a></h2>
 <p>Because making requests on each page load is very inefficient you can optionally use the caching configuration provider, which wraps a
 provider and caches the configuration in local or session storage.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/presets/all&quot;;
-import { Settings, SPListConfigurationProvider } from &quot;@pnp/config-store&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Settings</span><span class="p">,</span> <span class="nx">SPListConfigurationProvider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/config-store&quot;</span><span class="p">;</span>
 
-// create a new provider instance
-const w = Web(&quot;https://mytenant.sharepoint.com/sites/dev&quot;);
-const provider = new SPListConfigurationProvider(w, &quot;myconfiglistname&quot;);
+<span class="c1">// create a new provider instance</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SPListConfigurationProvider</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s2">&quot;myconfiglistname&quot;</span><span class="p">);</span>
 
-// get an instance of the provider wrapped
-// you can optionally provide a key that will be used in the cache to the asCaching method
-const wrappedProvider = provider.asCaching();
+<span class="c1">// get an instance of the provider wrapped</span>
+<span class="c1">// you can optionally provide a key that will be used in the cache to the asCaching method</span>
+<span class="kr">const</span> <span class="nx">wrappedProvider</span> <span class="o">=</span> <span class="nx">provider</span><span class="p">.</span><span class="nx">asCaching</span><span class="p">();</span>
 
-// use that wrapped provider to populate the settings
-await settings.load(wrappedProvider);
-</code></pre>
+<span class="c1">// use that wrapped provider to populate the settings</span>
+<span class="nx">await</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">wrappedProvider</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

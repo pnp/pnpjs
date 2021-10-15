@@ -2202,128 +2202,128 @@
 <p>The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/odata base classes, such as @pnp/graph.</p>
 <h2 id="basic-example">Basic example<a class="headerlink" href="#basic-example" title="Permanent link">&para;</a></h2>
 <p>You can use the method without any additional configuration. We have made some default choices for you and will discuss ways to override them later. The code below will get items from a list, first checking the cache for the value. You can also use it with OData operators such as top and orderBy. The usingCaching() method should always be the last method in the chain before the get() (OR if you are using <a href="../odata-batch/">batching</a> these methods can be transposed, more details below).</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching().get();
-console.log(r);
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 
-const r2 = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching().get();
-console.log(r2);
-</code></pre>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r2</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="globally-configure-cache-settings">Globally Configure Cache Settings<a class="headerlink" href="#globally-configure-cache-settings" title="Permanent link">&para;</a></h2>
 <p>If you would not like to use the default values, but don't want to clutter your code by setting the caching values on each request you can configure custom options globally. These will be applied to all calls to usingCaching() throughout your application.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-sp.setup({
-    defaultCachingStore: &quot;session&quot;, // or &quot;local&quot;
-    defaultCachingTimeoutSeconds: 30,
-    globalCacheDisable: false // or true to disable caching in case of debugging/testing
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">defaultCachingStore</span><span class="o">:</span> <span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="c1">// or &quot;local&quot;</span>
+    <span class="nx">defaultCachingTimeoutSeconds</span>: <span class="kt">30</span><span class="p">,</span>
+    <span class="nx">globalCacheDisable</span>: <span class="kt">false</span> <span class="c1">// or true to disable caching in case of debugging/testing</span>
+<span class="p">});</span>
 
-const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching().get();
-console.log(r);
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="per-call-configuration">Per Call Configuration<a class="headerlink" href="#per-call-configuration" title="Permanent link">&para;</a></h2>
 <p>If you prefer more verbose code or have a need to manage the cache settings on a per request basis you can include individual caching settings for each request. These settings are passed to the usingCaching method call and are defined in the following interface. If you want to use the per-request options you must include the key.</p>
-<pre><code class="language-TypeScript">export interface ICachingOptions {
-    expiration?: Date;
-    storeName?: &quot;session&quot; | &quot;local&quot;;
-    key: string;
-}
-</code></pre>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { dateAdd } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ICachingOptions</span> <span class="p">{</span>
+    <span class="nx">expiration?</span>: <span class="kt">Date</span><span class="p">;</span>
+    <span class="nx">storeName</span><span class="o">?:</span> <span class="s2">&quot;session&quot;</span> <span class="o">|</span> <span class="s2">&quot;local&quot;</span><span class="p">;</span>
+    <span class="nx">key</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching({
-    expiration: dateAdd(new Date(), &quot;minute&quot;, 20),
-    key: &quot;My Key&quot;,
-    storeName: &quot;local&quot;
-}).get();
-console.log(r);
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">({</span>
+    <span class="nx">expiration</span>: <span class="kt">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="nx">key</span><span class="o">:</span> <span class="s2">&quot;My Key&quot;</span><span class="p">,</span>
+    <span class="nx">storeName</span><span class="o">:</span> <span class="s2">&quot;local&quot;</span>
+<span class="p">}).</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="using-batching-with-caching">Using <a href="../odata-batch/">Batching</a> with Caching<a class="headerlink" href="#using-batching-with-caching" title="Permanent link">&para;</a></h2>
 <p>You can use batching and caching together, but remember caching is only applied to get requests. When you use them together the methods can be transposed, the below example is valid.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-let batch = sp.createBatch();
+<span class="kd">let</span> <span class="nx">batch</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">createBatch</span><span class="p">();</span>
 
-sp.web.lists.inBatch(batch).usingCaching().get().then(r =&gt; {
-    console.log(r)
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+<span class="p">});</span>
 
-sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching().inBatch(batch).get().then(r =&gt; {
-    console.log(r)
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+<span class="p">});</span>
 
-batch.execute().then(() =&gt; console.log(&quot;All done!&quot;));
-</code></pre>
+<span class="nx">batch</span><span class="p">.</span><span class="nx">execute</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;All done!&quot;</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="implement-custom-caching">Implement Custom Caching<a class="headerlink" href="#implement-custom-caching" title="Permanent link">&para;</a></h2>
 <p>You may desire to use a different caching strategy than the one we implemented within the library. The easiest way to achieve this is to wrap the request in your custom caching functionality using the unresolved promise as needed. Here we show how to implement the Stale While Revalidate pattern <a href="https://github.com/pnp/pnpjs/issues/371">as discussed here</a>.</p>
 <h3 id="implement-caching-helper-method">Implement caching helper method<a class="headerlink" href="#implement-caching-helper-method" title="Permanent link">&para;</a></h3>
 <p>We create a map to act as our cache storage and a function to wrap the request caching logic</p>
-<pre><code class="language-TypeScript">const map = new Map&lt;string, any&gt;();
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span><span class="p">();</span>
 
-async function staleWhileRevalidate&lt;T&gt;(key: string, p: Promise&lt;T&gt;): Promise&lt;T&gt; {
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">staleWhileRevalidate</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">key</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">p</span>: <span class="kt">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    if (map.has(key)) {
+    <span class="k">if</span> <span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
 
-        // In Cache
-        p.then(u =&gt; {
-            // Update Cache once we have a result
-            map.set(key, u);
-        });
+        <span class="c1">// In Cache</span>
+        <span class="nx">p</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// Update Cache once we have a result</span>
+            <span class="nx">map</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">u</span><span class="p">);</span>
+        <span class="p">});</span>
 
-        // Return from Cache
-        return map.get(key);
-    }
+        <span class="c1">// Return from Cache</span>
+        <span class="k">return</span> <span class="nx">map</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    // Not In Cache so we need to wait for the value
-    const r = await p;
+    <span class="c1">// Not In Cache so we need to wait for the value</span>
+    <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">p</span><span class="p">;</span>
 
-    // Set Cache
-    map.set(key, r);
+    <span class="c1">// Set Cache</span>
+    <span class="nx">map</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">r</span><span class="p">);</span>
 
-    // Return from Promise
-    return r;
-}
-</code></pre>
+    <span class="c1">// Return from Promise</span>
+    <span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>Don't call usingCaching just apply the helper method</p>
 </blockquote>
-<pre><code class="language-TypeScript">// this one will wait for the request to finish
-const r1 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
+<div class="highlight"><pre><span></span><code><span class="c1">// this one will wait for the request to finish</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
 
-console.log(JSON.stringify(r1, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-// this one will return the result from cache and then update the cache in the background
-const r2 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
+<span class="c1">// this one will return the result from cache and then update the cache in the background</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
 
-console.log(JSON.stringify(r2, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="wrapper-function">Wrapper Function<a class="headerlink" href="#wrapper-function" title="Permanent link">&para;</a></h3>
 <p>You can wrap this call into a single function you can reuse within your application each time you need the web data for example. You can update the select and interface to match your needs as well.</p>
-<pre><code class="language-TypeScript">interface WebData {
-    Title: string;
-    Description: string;
-}
+<div class="highlight"><pre><span></span><code><span class="kr">interface</span> <span class="nx">WebData</span> <span class="p">{</span>
+    <span class="nx">Title</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">Description</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
 
-function getWebData(): Promise&lt;WebData&gt; {
+<span class="kd">function</span> <span class="nx">getWebData</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">WebData</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    return staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
-}
+    <span class="k">return</span> <span class="nx">staleWhileRevalidate</span><span class="p">(</span><span class="s2">&quot;test1&quot;</span><span class="p">,</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">());</span>
+<span class="p">}</span>
 
 
-// this one will wait for the request to finish
-const r1 = await getWebData();
+<span class="c1">// this one will wait for the request to finish</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWebData</span><span class="p">();</span>
 
-console.log(JSON.stringify(r1, null, 2));
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
 
-// this one will return the result from cache and then update the cache in the background
-const r2 = await getWebData();
+<span class="c1">// this one will return the result from cache and then update the cache in the background</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWebData</span><span class="p">();</span>
 
-console.log(JSON.stringify(r2, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
                 
               
               

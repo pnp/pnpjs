@@ -2360,157 +2360,157 @@
 </tbody>
 </table>
 <h3 id="get-views-in-a-list">Get views in a list<a class="headerlink" href="#get-views-in-a-list" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;My List&quot;);
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-// get all the views and their properties
-const views1 = await list.views();
+<span class="c1">// get all the views and their properties</span>
+<span class="kr">const</span> <span class="nx">views1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">();</span>
 
-// you can use odata select operations to get just a set a fields
-const views2 = await list.views.select(&quot;Id&quot;, &quot;Title&quot;)();
+<span class="c1">// you can use odata select operations to get just a set a fields</span>
+<span class="kr">const</span> <span class="nx">views2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// get the top three views
-const views3 = await list.views.top(3)();
-</code></pre>
+<span class="c1">// get the top three views</span>
+<span class="kr">const</span> <span class="nx">views3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="add-a-view">Add a View<a class="headerlink" href="#add-a-view" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;My List&quot;);
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-// create a new view with default fields and properties
-const result = await list.views.add(&quot;My New View&quot;);
+<span class="c1">// create a new view with default fields and properties</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My New View&quot;</span><span class="p">);</span>
 
-// create a new view with specific properties
-const result2 = await list.views.add(&quot;My New View 2&quot;, false, {
-    RowLimit: 10,
-    ViewQuery: &quot;&lt;OrderBy&gt;&lt;FieldRef Name='Modified' Ascending='False' /&gt;&lt;/OrderBy&gt;&quot;,
-});
+<span class="c1">// create a new view with specific properties</span>
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My New View 2&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">RowLimit</span>: <span class="kt">10</span><span class="p">,</span>
+    <span class="nx">ViewQuery</span><span class="o">:</span> <span class="s2">&quot;&lt;OrderBy&gt;&lt;FieldRef Name=&#39;Modified&#39; Ascending=&#39;False&#39; /&gt;&lt;/OrderBy&gt;&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// manipulate the view's fields
-await result2.view.fields.removeAll();
+<span class="c1">// manipulate the view&#39;s fields</span>
+<span class="nx">await</span> <span class="nx">result2</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">removeAll</span><span class="p">();</span>
 
-await Promise.all([
-    result2.view.fields.add(&quot;Title&quot;),
-    result2.view.fields.add(&quot;Modified&quot;),
-]);
-</code></pre>
+<span class="nx">await</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+    <span class="nx">result2</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">),</span>
+    <span class="nx">result2</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">),</span>
+<span class="p">]);</span>
+</code></pre></div>
 <h2 id="iview">IView<a class="headerlink" href="#iview" title="Permanent link">&para;</a></h2>
 <h3 id="get-a-views-information">Get a View's Information<a class="headerlink" href="#get-a-views-information" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;My List&quot;);
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-const result = await list.views.getById(&quot;{GUID view id}&quot;)();
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">)();</span>
 
-const result2 = await list.views.getByTitle(&quot;My View&quot;)();
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My View&quot;</span><span class="p">)();</span>
 
-const result3 = await list.views.getByTitle(&quot;My View&quot;).select(&quot;Id&quot;, &quot;Title&quot;)();
+<span class="kr">const</span> <span class="nx">result3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My View&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-const result4 = await list.defaultView();
+<span class="kr">const</span> <span class="nx">result4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">();</span>
 
-const result5 = await list.getView(&quot;{GUID view id}&quot;)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">result5</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getView</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="fields">fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;My List&quot;);
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-const result = await list.views.getById(&quot;{GUID view id}&quot;).fields();
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="update">update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const list = sp.web.lists.getByTitle(&quot;My List&quot;);
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">);</span>
 
-const result = await list.views.getById(&quot;{GUID view id}&quot;).update({
-    RowLimit: 20,
-});
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">RowLimit</span>: <span class="kt">20</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="renderashtml">renderAsHtml<a class="headerlink" href="#renderashtml" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const result = await sp.web.lists.getByTitle(&quot;My List&quot;).views.getById(&quot;{GUID view id}&quot;).renderAsHtml();
-</code></pre>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">).</span><span class="nx">renderAsHtml</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="setviewxml">setViewXml<a class="headerlink" href="#setviewxml" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const viewXml = &quot;...&quot;;
+<span class="kr">const</span> <span class="nx">viewXml</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).views.getById(&quot;{GUID view id}&quot;).setViewXml(viewXml);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">).</span><span class="nx">setViewXml</span><span class="p">(</span><span class="nx">viewXml</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const viewXml = &quot;...&quot;;
+<span class="kr">const</span> <span class="nx">viewXml</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).views.getById(&quot;{GUID view id}&quot;).delete();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">views</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{GUID view id}&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="viewfields">ViewFields<a class="headerlink" href="#viewfields" title="Permanent link">&para;</a></h2>
 <h3 id="getschemaxml">getSchemaXml<a class="headerlink" href="#getschemaxml" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-const xml = await sp.web.lists.getByTitle(&quot;My List&quot;).defaultView.fields.getSchemaXml();
-</code></pre>
+<span class="kr">const</span> <span class="nx">xml</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getSchemaXml</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).defaultView.fields.add(&quot;Created&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="move">move<a class="headerlink" href="#move" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).defaultView.fields.move(&quot;Created&quot;, 0);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="remove">remove<a class="headerlink" href="#remove" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).defaultView.fields.remove(&quot;Created&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="removeall">removeAll<a class="headerlink" href="#removeall" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/views&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/views&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;My List&quot;).defaultView.fields.removeAll();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">defaultView</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">removeAll</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

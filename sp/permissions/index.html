@@ -2148,55 +2148,55 @@
 <p>Permissions in SharePoint are assigned to the set of securable objects which include Site, Web, List, and List Item. These are the four level to which unique permissions can be assigned. As such @pnp/sp provides a set of methods defined in the QueryableSecurable class to handle these permissions. These examples all use the Web to get the values, however the methods work identically on all securables.</p>
 <h2 id="get-role-assignments">Get Role Assignments<a class="headerlink" href="#get-role-assignments" title="Permanent link">&para;</a></h2>
 <p>This gets a collection of all the role assignments on a given securable. The property returns a RoleAssignments collection which supports the OData collection operators.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/security&quot;;
-import { Logger } from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-const roles = await sp.web.roleAssignments.get();
-Logger.writeJSON(roles);
-</code></pre>
+<span class="kr">const</span> <span class="nx">roles</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">roles</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="first-unique-ancestor-securable-object">First Unique Ancestor Securable Object<a class="headerlink" href="#first-unique-ancestor-securable-object" title="Permanent link">&para;</a></h2>
 <p>This method can be used to find the securable parent up the hierarchy that has unique permissions. If everything inherits permissions this will be the Site. If a sub web has unique permissions it will be the web, and so on.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/security&quot;;
-import { Logger } from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-const obj = await sp.web.firstUniqueAncestorSecurableObject.get();
-Logger.writeJSON(obj);
-</code></pre>
+<span class="kr">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">firstUniqueAncestorSecurableObject</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="user-effective-permissions">User Effective Permissions<a class="headerlink" href="#user-effective-permissions" title="Permanent link">&para;</a></h2>
 <p>This method returns the BasePermissions for a given user or the current user. This value contains the High and Low values for a user on the securable you have queried.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/security&quot;;
-import { Logger } from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-const perms = await sp.web.getUserEffectivePermissions(&quot;i:0#.f|membership|user@site.com&quot;);
-Logger.writeJSON(perms);
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getUserEffectivePermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">);</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 
-const perms2 = await sp.web.getCurrentUserEffectivePermissions();
-Logger.writeJSON(perms2);
-</code></pre>
+<span class="kr">const</span> <span class="nx">perms2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">();</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">(</span><span class="nx">perms2</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="user-has-permissions">User Has Permissions<a class="headerlink" href="#user-has-permissions" title="Permanent link">&para;</a></h2>
 <p>Because the High and Low values in the BasePermission don't obviously mean anything you can use these methods along with the PermissionKind enumeration to check actual rights on the securable.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { PermissionKind } from &quot;@pnp/sp/security&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 
-const perms = await sp.web.userHasPermissions(&quot;i:0#.f|membership|user@site.com&quot;, PermissionKind.ApproveItems);
-console.log(perms);
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userHasPermissions</span><span class="p">(</span><span class="s2">&quot;i:0#.f|membership|user@site.com&quot;</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">perms</span><span class="p">);</span>
 
-const perms2 = await sp.web.currentUserHasPermissions(PermissionKind.ApproveItems);
-console.log(perms2);
-</code></pre>
+<span class="kr">const</span> <span class="nx">perms2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUserHasPermissions</span><span class="p">(</span><span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">ApproveItems</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">perms2</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="has-permissions">Has Permissions<a class="headerlink" href="#has-permissions" title="Permanent link">&para;</a></h2>
 <p>If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { PermissionKind } from &quot;@pnp/sp/security&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 
-const perms = await sp.web.getCurrentUserEffectivePermissions();
-if (sp.web.hasPermissions(perms, PermissionKind.AddListItems) &amp;&amp; sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {
-    // ...
-}
-</code></pre>
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">AddListItems</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hasPermissions</span><span class="p">(</span><span class="nx">perms</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">DeleteVersions</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               

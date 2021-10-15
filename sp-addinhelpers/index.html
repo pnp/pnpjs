@@ -2108,26 +2108,26 @@
 <p>Install the library and all dependencies,</p>
 <p><code>npm install @pnp/sp @pnp/sp-addinhelpers --save</code></p>
 <p>Now you can make requests to the host web from your add-in using the crossDomainWeb method.</p>
-<pre><code class="language-TypeScript">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods
-import { sp, SPRequestExecutorClient } from &quot;@pnp/sp-addinhelpers&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// note we are getting the sp variable from this library, it extends the sp export from @pnp/sp to add the required helper methods</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">SPRequestExecutorClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-addinhelpers&quot;</span><span class="p">;</span>
 
-// this only needs to be done once within your application
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPRequestExecutorClient();
-        }
-    }
-});
+<span class="c1">// this only needs to be done once within your application</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPRequestExecutorClient</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-// now we need to use the crossDomainWeb method to make our requests to the host web
-const addInWenUrl = &quot;{The add-in web url, likely from the query string}&quot;;
-const hostWebUrl = &quot;{The host web url, likely from the query string}&quot;;
+<span class="c1">// now we need to use the crossDomainWeb method to make our requests to the host web</span>
+<span class="kr">const</span> <span class="nx">addInWenUrl</span> <span class="o">=</span> <span class="s2">&quot;{The add-in web url, likely from the query string}&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">hostWebUrl</span> <span class="o">=</span> <span class="s2">&quot;{The host web url, likely from the query string}&quot;</span><span class="p">;</span>
 
-// make requests into the host web via the SP.RequestExecutor
-const w = await sp.crossDomainWeb(addInWenUrl, hostWebUrl).get();
-console.log(JSON.stringify(w, null, 4));
-</code></pre>
+<span class="c1">// make requests into the host web via the SP.RequestExecutor</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">crossDomainWeb</span><span class="p">(</span><span class="nx">addInWenUrl</span><span class="p">,</span> <span class="nx">hostWebUrl</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="library-topics">Library Topics<a class="headerlink" href="#library-topics" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="sp-request-executor-client/">SPRequestExecutorClient</a></li>

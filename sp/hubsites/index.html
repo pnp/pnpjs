@@ -2260,90 +2260,90 @@
 </tbody>
 </table>
 <h3 id="get-a-listing-of-all-hub-sites">Get a Listing of All Hub sites<a class="headerlink" href="#get-a-listing-of-all-hub-sites" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteInfo } from  &quot;@pnp/sp/hubsites&quot;;
-import &quot;@pnp/sp/hubsites&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IHubSiteInfo</span> <span class="p">}</span> <span class="nx">from</span>  <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
 
-// invoke the hub sites object
-const hubsites: IHubSiteInfo[] = await sp.hubSites();
+<span class="c1">// invoke the hub sites object</span>
+<span class="kr">const</span> <span class="nx">hubsites</span>: <span class="kt">IHubSiteInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">hubSites</span><span class="p">();</span>
 
-// you can also use select to only return certain fields:
-const hubsites2: IHubSiteInfo[] = await sp.hubSites.select(&quot;ID&quot;, &quot;Title&quot;, &quot;RelatedHubSiteIds&quot;)();
-</code></pre>
+<span class="c1">// you can also use select to only return certain fields:</span>
+<span class="kr">const</span> <span class="nx">hubsites2</span>: <span class="kt">IHubSiteInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">hubSites</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;RelatedHubSiteIds&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="get-hub-site-by-id">Get Hub site by Id<a class="headerlink" href="#get-hub-site-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method on the hubsites module to get a hub site by site Id (guid).</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteInfo } from  &quot;@pnp/sp/hubsites&quot;;
-import &quot;@pnp/sp/hubsites&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IHubSiteInfo</span> <span class="p">}</span> <span class="nx">from</span>  <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
 
-const hubsite: IHubSiteInfo = await sp.hubSites.getById(&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;)();
+<span class="kr">const</span> <span class="nx">hubsite</span>: <span class="kt">IHubSiteInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">hubSites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;</span><span class="p">)();</span>
 
-// log hub site title to console
-console.log(hubsite.Title);
-</code></pre>
+<span class="c1">// log hub site title to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hubsite</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-isite-instance">Get ISite instance<a class="headerlink" href="#get-isite-instance" title="Permanent link">&para;</a></h3>
 <p>We provide a helper method to load the ISite instance from the HubSite</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { ISite } from  &quot;@pnp/sp/sites&quot;;
-import &quot;@pnp/sp/hubsites&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ISite</span> <span class="p">}</span> <span class="nx">from</span>  <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
 
-const site: ISite = await sp.hubSites.getById(&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;).getSite();
+<span class="kr">const</span> <span class="nx">site</span>: <span class="kt">ISite</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">hubSites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;3504348e-b2be-49fb-a2a9-2d748db64beb&quot;</span><span class="p">).</span><span class="nx">getSite</span><span class="p">();</span>
 
-const siteData = await site();
+<span class="kr">const</span> <span class="nx">siteData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">site</span><span class="p">();</span>
 
-console.log(siteData.Title);
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">siteData</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-hub-site-data-for-a-web">Get Hub site data for a web<a class="headerlink" href="#get-hub-site-data-for-a-web" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IHubSiteWebData } from  &quot;@pnp/sp/hubsites&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/hubsites/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IHubSiteWebData</span> <span class="p">}</span> <span class="nx">from</span>  <span class="s2">&quot;@pnp/sp/hubsites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites/web&quot;</span><span class="p">;</span>
 
-const webData: Partial&lt;IHubSiteWebData&gt; = await sp.web.hubSiteData();
+<span class="kr">const</span> <span class="nx">webData</span>: <span class="kt">Partial</span><span class="o">&lt;</span><span class="nx">IHubSiteWebData</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hubSiteData</span><span class="p">();</span>
 
-// you can also force a refresh of the hub site data
-const webData2: Partial&lt;IHubSiteWebData&gt; = await sp.web.hubSiteData(true);
-</code></pre>
+<span class="c1">// you can also force a refresh of the hub site data</span>
+<span class="kr">const</span> <span class="nx">webData2</span>: <span class="kt">Partial</span><span class="o">&lt;</span><span class="nx">IHubSiteWebData</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">hubSiteData</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="synchubsitetheme">syncHubSiteTheme<a class="headerlink" href="#synchubsitetheme" title="Permanent link">&para;</a></h3>
 <p>Allows you to apply theme updates from the parent hub site collection.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/hubsites/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites/web&quot;</span><span class="p">;</span>
 
-await sp.web.syncHubSiteTheme();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">syncHubSiteTheme</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="hub-site-site-methods">Hub site Site Methods<a class="headerlink" href="#hub-site-site-methods" title="Permanent link">&para;</a></h2>
 <p>You manage hub sites at the Site level.</p>
 <h3 id="joinhubsite">joinHubSite<a class="headerlink" href="#joinhubsite" title="Permanent link">&para;</a></h3>
 <p>Id of the hub site collection you want to join. If you want to disassociate the site collection from hub site, then pass the siteId as 00000000-0000-0000-0000-000000000000</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sites&quot;;
-import &quot;@pnp/sp/hubsites/site&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites/site&quot;</span><span class="p">;</span>
 
-// join a site to a hub site
-await sp.site.joinHubSite(&quot;{parent hub site id}&quot;);
+<span class="c1">// join a site to a hub site</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">joinHubSite</span><span class="p">(</span><span class="s2">&quot;{parent hub site id}&quot;</span><span class="p">);</span>
 
-// remove a site from a hub site
-await sp.site.joinHubSite(&quot;00000000-0000-0000-0000-000000000000&quot;);
-</code></pre>
+<span class="c1">// remove a site from a hub site</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">joinHubSite</span><span class="p">(</span><span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="registerhubsite">registerHubSite<a class="headerlink" href="#registerhubsite" title="Permanent link">&para;</a></h3>
 <p>Registers the current site collection as hub site collection</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sites&quot;;
-import &quot;@pnp/sp/hubsites/site&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites/site&quot;</span><span class="p">;</span>
 
-// register current site as a hub site
-await sp.site.registerHubSite();
-</code></pre>
+<span class="c1">// register current site as a hub site</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">registerHubSite</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="unregisterhubsite">unRegisterHubSite<a class="headerlink" href="#unregisterhubsite" title="Permanent link">&para;</a></h3>
 <p>Un-registers the current site collection as hub site collection.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/sites&quot;;
-import &quot;@pnp/sp/hubsites/site&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/sites&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/hubsites/site&quot;</span><span class="p">;</span>
 
-// make a site no longer a hub
-await sp.site.unRegisterHubSite();
-</code></pre>
+<span class="c1">// make a site no longer a hub</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">unRegisterHubSite</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

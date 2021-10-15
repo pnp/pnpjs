@@ -2195,84 +2195,83 @@ Check out <a href="https://docs.microsoft.com/en-us/sharepoint/dev/declarative-c
 </tbody>
 </table>
 <h2 id="create-a-new-site-design">Create a new site design<a class="headerlink" href="#create-a-new-site-design" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-// WebTemplate: 64 Team site template, 68 Communication site template
-const siteDesign = await sp.siteDesigns.createSiteDesign({
-    SiteScriptIds: [&quot;884ed56b-1aab-4653-95cf-4be0bfa5ef0a&quot;],
-    Title: &quot;SiteDesign001&quot;,
-    WebTemplate: &quot;64&quot;,
-});
+<span class="c1">// WebTemplate: 64 Team site template, 68 Communication site template</span>
+<span class="kr">const</span> <span class="nx">siteDesign</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">createSiteDesign</span><span class="p">({</span>
+    <span class="nx">SiteScriptIds</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;884ed56b-1aab-4653-95cf-4be0bfa5ef0a&quot;</span><span class="p">],</span>
+    <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;SiteDesign001&quot;</span><span class="p">,</span>
+    <span class="nx">WebTemplate</span><span class="o">:</span> <span class="s2">&quot;64&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-console.log(siteDesign.Title);
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">siteDesign</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="applying-a-site-design-to-a-site">Applying a site design to a site<a class="headerlink" href="#applying-a-site-design-to-a-site" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-// Limited to 30 actions in a site script, but runs synchronously
-await sp.siteDesigns.applySiteDesign(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;,&quot;https://contoso.sharepoint.com/sites/teamsite-pnpjs001&quot;);
+<span class="c1">// Limited to 30 actions in a site script, but runs synchronously</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">applySiteDesign</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span><span class="s2">&quot;https://contoso.sharepoint.com/sites/teamsite-pnpjs001&quot;</span><span class="p">);</span>
 
-// Better use the following method for 300 actions in a site script
-const task = await sp.web.addSiteDesignTask(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-</code></pre>
+<span class="c1">// Better use the following method for 300 actions in a site script</span>
+<span class="kr">const</span> <span class="nx">task</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addSiteDesignTask</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="retrieval">Retrieval<a class="headerlink" href="#retrieval" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-// Retrieving all site designs
-const allSiteDesigns = await sp.siteDesigns.getSiteDesigns();
-console.log(`Total site designs: ${allSiteDesigns.length}`);
+<span class="c1">// Retrieving all site designs</span>
+<span class="kr">const</span> <span class="nx">allSiteDesigns</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesigns</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Total site designs: </span><span class="si">${</span><span class="nx">allSiteDesigns</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-// Retrieving a single site design by Id
-const siteDesign = await sp.siteDesigns.getSiteDesignMetadata(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-console.log(siteDesign.Title);
-</code></pre>
+<span class="c1">// Retrieving a single site design by Id</span>
+<span class="kr">const</span> <span class="nx">siteDesign</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignMetadata</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">siteDesign</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="update-and-delete">Update and delete<a class="headerlink" href="#update-and-delete" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-// Update
-const updatedSiteDesign = await sp.siteDesigns.updateSiteDesign({ Id: &quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;, Title: &quot;SiteDesignUpdatedTitle001&quot; });
+<span class="c1">// Update</span>
+<span class="kr">const</span> <span class="nx">updatedSiteDesign</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">updateSiteDesign</span><span class="p">({</span> <span class="nx">Id</span><span class="o">:</span> <span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span> <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;SiteDesignUpdatedTitle001&quot;</span> <span class="p">});</span>
 
-// Delete
-await sp.siteDesigns.deleteSiteDesign(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-</code></pre>
+<span class="c1">// Delete</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">deleteSiteDesign</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="setting-rightspermissions">Setting Rights/Permissions<a class="headerlink" href="#setting-rightspermissions" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-// Get
-const rights = await sp.siteDesigns.getSiteDesignRights(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-console.log(rights.length &gt; 0 ? rights[0].PrincipalName : &quot;&quot;);
+<span class="c1">// Get</span>
+<span class="kr">const</span> <span class="nx">rights</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rights</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">rights</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">PrincipalName</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
 
-// Grant
-await sp.siteDesigns.grantSiteDesignRights(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;, [&quot;user@contoso.onmicrosoft.com&quot;]);
+<span class="c1">// Grant</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">grantSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;user@contoso.onmicrosoft.com&quot;</span><span class="p">]);</span>
 
-// Revoke
-await sp.siteDesigns.revokeSiteDesignRights(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;, [&quot;user@contoso.onmicrosoft.com&quot;]);
+<span class="c1">// Revoke</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">revokeSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;user@contoso.onmicrosoft.com&quot;</span><span class="p">]);</span>
 
-// Reset all view rights
-const rights = await sp.siteDesigns.getSiteDesignRights(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-await sp.siteDesigns.revokeSiteDesignRights(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;, rights.map(u =&gt; u.PrincipalName));
-</code></pre>
+<span class="c1">// Reset all view rights</span>
+<span class="kr">const</span> <span class="nx">rights</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">revokeSiteDesignRights</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">,</span> <span class="nx">rights</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="nx">u</span><span class="p">.</span><span class="nx">PrincipalName</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="get-a-history-of-site-designs-that-have-run-on-a-web">Get a history of site designs that have run on a web<a class="headerlink" href="#get-a-history-of-site-designs-that-have-run-on-a-web" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/site-designs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-designs&quot;</span><span class="p">;</span>
 
-const runs = await sp.web.getSiteDesignRuns();
-const runs2 = await sp.siteDesigns.getSiteDesignRun(&quot;https://TENANT.sharepoint.com/sites/mysite&quot;);
+<span class="kr">const</span> <span class="nx">runs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRuns</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">runs2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRun</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">);</span>
 
-// Get runs specific to a site design
-const runs3 = await sp.web.getSiteDesignRuns(&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
-const runs4 = await sp.siteDesigns.getSiteDesignRun(&quot;https://TENANT.sharepoint.com/sites/mysite&quot;, &quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;);
+<span class="c1">// Get runs specific to a site design</span>
+<span class="kr">const</span> <span class="nx">runs3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRuns</span><span class="p">(</span><span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">runs4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRun</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">,</span> <span class="s2">&quot;75b9d8fe-4381-45d9-88c6-b03f483ae6a8&quot;</span><span class="p">);</span>
 
-// For more information about the site script actions
-const runStatus = await sp.web.getSiteDesignRunStatus(runs[0].ID);
-const runStatus2 = await sp.siteDesigns.getSiteDesignRunStatus(&quot;https://TENANT.sharepoint.com/sites/mysite&quot;, runs[0].ID);
-
-</code></pre>
+<span class="c1">// For more information about the site script actions</span>
+<span class="kr">const</span> <span class="nx">runStatus</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getSiteDesignRunStatus</span><span class="p">(</span><span class="nx">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">ID</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">runStatus2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">siteDesigns</span><span class="p">.</span><span class="nx">getSiteDesignRunStatus</span><span class="p">(</span><span class="s2">&quot;https://TENANT.sharepoint.com/sites/mysite&quot;</span><span class="p">,</span> <span class="nx">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">ID</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

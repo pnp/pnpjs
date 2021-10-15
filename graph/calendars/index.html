@@ -2297,200 +2297,198 @@
 </tbody>
 </table>
 <h2 id="get-all-calendars-for-a-user">Get All Calendars For a User<a class="headerlink" href="#get-all-calendars-for-a-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const calendars = await graph.users.getById('user@tenant.onmicrosoft.com').calendars();
+<span class="kr">const</span> <span class="nx">calendars</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">();</span>
 
-const myCalendars = await graph.me.calendars();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">myCalendars</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-a-specific-calendar-for-a-user">Get a Specific Calendar For a User<a class="headerlink" href="#get-a-specific-calendar-for-a-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const CALENDAR_ID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==';
+<span class="kr">const</span> <span class="nx">CALENDAR_ID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==&#39;</span><span class="p">;</span>
 
-const calendar = await graph.users.getById('user@tenant.onmicrosoft.com').calendars.getById(CALENDAR_ID)();
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">CALENDAR_ID</span><span class="p">)();</span>
 
-const myCalendar = await graph.me.calendars.getById(CALENDAR_ID)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">myCalendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">CALENDAR_ID</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="get-a-users-default-calendar">Get a User's Default Calendar<a class="headerlink" href="#get-a-users-default-calendar" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const calendar = await graph.users.getById('user@tenant.onmicrosoft.com').calendar();
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
 
-const myCalendar = await graph.me.calendar();
-</code></pre>
+<span class="kr">const</span> <span class="nx">myCalendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendar</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-events-for-a-users-default-calendar">Get Events For a User's Default Calendar<a class="headerlink" href="#get-events-for-a-users-default-calendar" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-// You can get the default calendar events
-const events = await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events();
-// or get all events for the user
-const events = await graph.users.getById('user@tenant.onmicrosoft.com').events();
+<span class="c1">// You can get the default calendar events</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or get all events for the user</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
 
-// You can get my default calendar events
-const events = await graph.me.calendar.events();
-// or get all events for me
-const events = await graph.me.events();
-</code></pre>
+<span class="c1">// You can get my default calendar events</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or get all events for me</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-events-by-id">Get Events By ID<a class="headerlink" href="#get-events-by-id" title="Permanent link">&para;</a></h2>
 <p>You can use .events.getByID to search through all the events in all calendars or narrow the request to a specific calendar.</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const CalendarID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA==';
+<span class="kr">const</span> <span class="nx">CalendarID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA==&#39;</span><span class="p">;</span>
 
-const EventID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==';
+<span class="kr">const</span> <span class="nx">EventID</span> <span class="o">=</span> <span class="s1">&#39;AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==&#39;</span><span class="p">;</span>
 
-// Get events by ID
-const event = await graph.users.getById('user@tenant.onmicrosoft.com').events.getByID(EventID);
+<span class="c1">// Get events by ID</span>
+<span class="kr">const</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 
-const events = await graph.me.events.getByID(EventID);
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 
-// Get an event by ID from a specific calendar
-const event = await graph.users.getById('user@tenant.onmicrosoft.com').calendars.getByID(CalendarID).events.getByID(EventID);
+<span class="c1">// Get an event by ID from a specific calendar</span>
+<span class="kr">const</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">CalendarID</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
 
-const events = await graph.me.calendars.getByID(CalendarID).events.getByID(EventID);
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendars</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">CalendarID</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getByID</span><span class="p">(</span><span class="nx">EventID</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="create-events">Create Events<a class="headerlink" href="#create-events" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events.add(
-{
-  &quot;subject&quot;: &quot;Let's go for lunch&quot;,
-  &quot;body&quot;: {
-    &quot;contentType&quot;: &quot;HTML&quot;,
-    &quot;content&quot;: &quot;Does late morning work for you?&quot;
-  },
-  &quot;start&quot;: {
-      &quot;dateTime&quot;: &quot;2017-04-15T12:00:00&quot;,
-      &quot;timeZone&quot;: &quot;Pacific Standard Time&quot;
-  },
-  &quot;end&quot;: {
-      &quot;dateTime&quot;: &quot;2017-04-15T14:00:00&quot;,
-      &quot;timeZone&quot;: &quot;Pacific Standard Time&quot;
-  },
-  &quot;location&quot;:{
-      &quot;displayName&quot;:&quot;Harry's Bar&quot;
-  },
-  &quot;attendees&quot;: [
-    {
-      &quot;emailAddress&quot;: {
-        &quot;address&quot;:&quot;samanthab@contoso.onmicrosoft.com&quot;,
-        &quot;name&quot;: &quot;Samantha Booth&quot;
-      },
-      &quot;type&quot;: &quot;required&quot;
-    }
-  ]
-});
-</code></pre>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span>
+<span class="p">{</span>
+  <span class="s2">&quot;subject&quot;</span><span class="o">:</span> <span class="s2">&quot;Let&#39;s go for lunch&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;body&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;contentType&quot;</span><span class="o">:</span> <span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;Does late morning work for you?&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;start&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;dateTime&quot;</span><span class="o">:</span> <span class="s2">&quot;2017-04-15T12:00:00&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;timeZone&quot;</span><span class="o">:</span> <span class="s2">&quot;Pacific Standard Time&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;end&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;dateTime&quot;</span><span class="o">:</span> <span class="s2">&quot;2017-04-15T14:00:00&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;timeZone&quot;</span><span class="o">:</span> <span class="s2">&quot;Pacific Standard Time&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;location&quot;</span><span class="o">:</span><span class="p">{</span>
+      <span class="s2">&quot;displayName&quot;</span><span class="o">:</span><span class="s2">&quot;Harry&#39;s Bar&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;attendees&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;emailAddress&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="o">:</span><span class="s2">&quot;samanthab@contoso.onmicrosoft.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Samantha Booth&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;required&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="update-events">Update Events<a class="headerlink" href="#update-events" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const EVENT_ID = 'BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=';
+<span class="kr">const</span> <span class="nx">EVENT_ID</span> <span class="o">=</span> <span class="s1">&#39;BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=&#39;</span><span class="p">;</span>
 
-await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events.getById(EVENT_ID).update({
-    reminderMinutesBeforeStart: 99,
-});
-</code></pre>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">reminderMinutesBeforeStart</span>: <span class="kt">99</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="delete-event">Delete Event<a class="headerlink" href="#delete-event" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const EVENT_ID = 'BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=';
+<span class="kr">const</span> <span class="nx">EVENT_ID</span> <span class="o">=</span> <span class="s1">&#39;BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=&#39;</span><span class="p">;</span>
 
-await graph.users.getById('user@tenant.onmicrosoft.com').events.getById(EVENT_ID).delete();
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-await graph.me.events.getById(EVENT_ID).delete();
-</code></pre>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">EVENT_ID</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-calendar-for-a-group">Get Calendar for a Group<a class="headerlink" href="#get-calendar-for-a-group" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/groups';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
 
-const calendar = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar();
-</code></pre>
+<span class="kr">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-events-for-a-group">Get Events for a Group<a class="headerlink" href="#get-events-for-a-group" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/groups';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/groups&#39;</span><span class="p">;</span>
 
-// You can do one of
-const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar.events();
-// or
-const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').events();
-</code></pre>
+<span class="c1">// You can do one of</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">calendar</span><span class="p">.</span><span class="nx">events</span><span class="p">();</span>
+<span class="c1">// or</span>
+<span class="kr">const</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;21aaf779-f6d8-40bd-88c2-4a03f456ee82&#39;</span><span class="p">).</span><span class="nx">events</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-calendar-view">Get Calendar View<a class="headerlink" href="#get-calendar-view" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.0.7</em>
 Gets the events in a calendar during a specified date range.</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-// basic request, note need to invoke the returned queryable
-const view = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+<span class="c1">// basic request, note need to invoke the returned queryable</span>
+<span class="kr">const</span> <span class="nx">view</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
 
-// you can use select, top, etc to filter your returned results
-const view2 = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
+<span class="c1">// you can use select, top, etc to filter your returned results</span>
+<span class="kr">const</span> <span class="nx">view2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;subject&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
 
-// you can specify times along with the dates
-const view3 = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)();
+<span class="c1">// you can specify times along with the dates</span>
+<span class="kr">const</span> <span class="nx">view3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01T19:00:00-08:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01T19:00:00-08:00&quot;</span><span class="p">)();</span>
 
-const view4 = await graph.me.calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">view4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">calendarView</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="find-rooms">Find Rooms<a class="headerlink" href="#find-rooms" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.5.0</em>
 Gets the <code>emailAddress</code> objects that represent all the meeting rooms in the user's tenant or in a specific room list.</p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-// basic request, note need to invoke the returned queryable
-const rooms1 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms()();
+<span class="c1">// basic request, note need to invoke the returned queryable</span>
+<span class="kr">const</span> <span class="nx">rooms1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">findRooms</span><span class="p">()();</span>
 
-// you can pass a room list to filter results
-const rooms2 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms('roomlist@tenant.onmicrosoft.com')();
+<span class="c1">// you can pass a room list to filter results</span>
+<span class="kr">const</span> <span class="nx">rooms2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">findRooms</span><span class="p">(</span><span class="s1">&#39;roomlist@tenant.onmicrosoft.com&#39;</span><span class="p">)();</span>
 
-// you can use select, top, etc to filter your returned results
-const rooms3 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms().select('name').top(10)();
-</code></pre>
+<span class="c1">// you can use select, top, etc to filter your returned results</span>
+<span class="kr">const</span> <span class="nx">rooms3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">findRooms</span><span class="p">().</span><span class="nx">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">10</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="get-event-instances">Get Event Instances<a class="headerlink" href="#get-event-instances" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.8.0</em>
 Get the instances (occurrences) of an event for a specified time range.</p>
 <p>If the event is a <code>seriesMaster</code> type, this returns the occurrences and exceptions of the event in the specified time range. </p>
-<pre><code class="language-ts">import { graph } from '@pnp/graph';
-import '@pnp/graph/calendars';
-import '@pnp/graph/users';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/graph&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/calendars&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@pnp/graph/users&#39;</span><span class="p">;</span>
 
-const event = graph.me.events.getById('');
+<span class="kr">const</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
 
-// basic request, note need to invoke the returned queryable
-const instances = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+<span class="c1">// basic request, note need to invoke the returned queryable</span>
+<span class="kr">const</span> <span class="nx">instances</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">event</span><span class="p">.</span><span class="nx">instances</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">)();</span>
 
-// you can use select, top, etc to filter your returned results
-const instances2 = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
+<span class="c1">// you can use select, top, etc to filter your returned results</span>
+<span class="kr">const</span> <span class="nx">instances2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">event</span><span class="p">.</span><span class="nx">instances</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;subject&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
 
-// you can specify times along with the dates
-const instance3 = await event.instances(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)(); 
-</code></pre>
+<span class="c1">// you can specify times along with the dates</span>
+<span class="kr">const</span> <span class="nx">instance3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">event</span><span class="p">.</span><span class="nx">instances</span><span class="p">(</span><span class="s2">&quot;2020-01-01T19:00:00-08:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2020-03-01T19:00:00-08:00&quot;</span><span class="p">)();</span> 
+</code></pre></div>
                 
               
               

@@ -2242,162 +2242,162 @@
 </table>
 <h2 id="basic-handling">Basic Handling<a class="headerlink" href="#basic-handling" title="Permanent link">&para;</a></h2>
 <p>For all operations involving a web request you should account for the possibility they might fail. That failure might be transient or permanent - you won't know until they happen 😉. The most basic type of error handling involves a simple try-catch.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-  // get a list that doesn't exist
-  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+  <span class="c1">// get a list that doesn&#39;t exist</span>
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)();</span>
 
-} catch (e) {
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  console.error(e);
-}
-</code></pre>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>This will produce output like:</p>
-<pre><code>Error making HttpClient request in queryable [404] Not Found ::&gt; {&quot;odata.error&quot;:{&quot;code&quot;:&quot;-1, System.ArgumentException&quot;,&quot;message&quot;:{&quot;lang&quot;:&quot;en-US&quot;,&quot;value&quot;:&quot;List 'no' does not exist at site with URL 'https://tenant.sharepoint.com/sites/dev'.&quot;}}} Data: {&quot;response&quot;:{&quot;size&quot;:0,&quot;timeout&quot;:0},&quot;status&quot;:404,&quot;statusText&quot;:&quot;Not Found&quot;,&quot;isHttpRequestError&quot;:true}
-</code></pre>
+<div class="highlight"><pre><span></span><code>Error making HttpClient request in queryable [404] Not Found ::&gt; {&quot;odata.error&quot;:{&quot;code&quot;:&quot;-1, System.ArgumentException&quot;,&quot;message&quot;:{&quot;lang&quot;:&quot;en-US&quot;,&quot;value&quot;:&quot;List &#39;no&#39; does not exist at site with URL &#39;https://tenant.sharepoint.com/sites/dev&#39;.&quot;}}} Data: {&quot;response&quot;:{&quot;size&quot;:0,&quot;timeout&quot;:0},&quot;status&quot;:404,&quot;statusText&quot;:&quot;Not Found&quot;,&quot;isHttpRequestError&quot;:true}
+</code></pre></div>
 <p>This is very descriptive and provides full details as to what happened, but you might want to handle things a little more cleanly.</p>
 <h2 id="reading-the-response">Reading the Response<a class="headerlink" href="#reading-the-response" title="Permanent link">&para;</a></h2>
 <p>In some cases the response body will have additional details such as a localized error messages which can be nicer to display rather than our normalized string. You can read the response directly and process it however you desire:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { HttpRequestError } from &quot;@pnp/odata&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">HttpRequestError</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-  // get a list that doesn't exist
-  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+  <span class="c1">// get a list that doesn&#39;t exist</span>
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)();</span>
 
-} catch (e) {
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  // are we dealing with an HttpRequestError?
-  if (e?.isHttpRequestError) {
+  <span class="c1">// are we dealing with an HttpRequestError?</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="o">?</span><span class="p">.</span><span class="nx">isHttpRequestError</span><span class="p">)</span> <span class="p">{</span>
 
-    // we can read the json from the response
-    const json = await (&lt;HttpRequestError&gt;e).response.json();
+    <span class="c1">// we can read the json from the response</span>
+    <span class="kr">const</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">await</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 
-    // if we have a value property we can show it
-    console.log(typeof json[&quot;odata.error&quot;] === &quot;object&quot; ? json[&quot;odata.error&quot;].message.value : e.message);
+    <span class="c1">// if we have a value property we can show it</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">json</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">?</span> <span class="nx">json</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">].</span><span class="nx">message.value</span> : <span class="kt">e.message</span><span class="p">);</span>
 
-    // add of course you have access to the other properties and can make choices on how to act
-    if ((&lt;HttpRequestError&gt;e).status === 404) {
-       console.error((&lt;HttpRequestError&gt;e).statusText);
-      // maybe create the resource, or redirect, or fallback to a secondary data source
-      // just ideas, handle any of the status codes uniquely as needed
-    }
+    <span class="c1">// add of course you have access to the other properties and can make choices on how to act</span>
+    <span class="k">if</span> <span class="p">((</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">((</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">statusText</span><span class="p">);</span>
+      <span class="c1">// maybe create the resource, or redirect, or fallback to a secondary data source</span>
+      <span class="c1">// just ideas, handle any of the status codes uniquely as needed</span>
+    <span class="p">}</span>
 
-  } else {
-    // not an HttpRequestError so we just log message
-    console.log(e.message);
-  }
-}
-</code></pre>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// not an HttpRequestError so we just log message</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="logging-errors">Logging errors<a class="headerlink" href="#logging-errors" title="Permanent link">&para;</a></h2>
 <p>Using the <a href="../../logging/">PnPjs Logging Framework</a> you can directly pass the error object and the normalized message will be logged. These techniques can be applied to any logging framework.</p>
-<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-try {
-  // get a list that doesn't exist
-  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();  
-} catch (e) {
+<span class="k">try</span> <span class="p">{</span>
+  <span class="c1">// get a list that doesn&#39;t exist</span>
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)();</span>  
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  Logger.error(e);
-}
-</code></pre>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>You may want to read the response and customize the message as described above:</p>
-<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { HttpRequestError } from &quot;@pnp/odata&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">HttpRequestError</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
 
-try {
-  // get a list that doesn't exist
-  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();  
-} catch (e) {
+<span class="k">try</span> <span class="p">{</span>
+  <span class="c1">// get a list that doesn&#39;t exist</span>
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)();</span>  
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  if (e?.isHttpRequestError) {
+  <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="o">?</span><span class="p">.</span><span class="nx">isHttpRequestError</span><span class="p">)</span> <span class="p">{</span>
 
-    // we can read the json from the response
-    const data = await (&lt;HttpRequestError&gt;e).response.json();
+    <span class="c1">// we can read the json from the response</span>
+    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">await</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 
-    // parse this however you want
-    const message = typeof data[&quot;odata.error&quot;] === &quot;object&quot; ? data[&quot;odata.error&quot;].message.value : e.message;
+    <span class="c1">// parse this however you want</span>
+    <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">data</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">?</span> <span class="nx">data</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">].</span><span class="nx">message.value</span> : <span class="kt">e.message</span><span class="p">;</span>
 
-    // we use the status to determine a custom logging level
-    const level: LogLevel = (&lt;HttpRequestError&gt;e).status === 404 ? LogLevel.Warning : LogLevel.Info;
+    <span class="c1">// we use the status to determine a custom logging level</span>
+    <span class="kr">const</span> <span class="nx">level</span>: <span class="kt">LogLevel</span> <span class="o">=</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span> <span class="o">?</span> <span class="nx">LogLevel.Warning</span> : <span class="kt">LogLevel.Info</span><span class="p">;</span>
 
-    // create a custom log entry
-    Logger.log({
-      data,
-      level,
-      message,
-    });
+    <span class="c1">// create a custom log entry</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+      <span class="nx">data</span><span class="p">,</span>
+      <span class="nx">level</span><span class="p">,</span>
+      <span class="nx">message</span><span class="p">,</span>
+    <span class="p">});</span>
 
-  } else {
-    // not an HttpRequestError so we just log message
-    Logger.error(e);
-  }
-}
-</code></pre>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// not an HttpRequestError so we just log message</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="putting-it-all-together">Putting it All Together<a class="headerlink" href="#putting-it-all-together" title="Permanent link">&para;</a></h2>
 <p>After reviewing the above section you might have thought it seems like a lot of work to include all that logic for every error. One approach is to establish a single function you use application wide to process errors. This allows all the error handling logic to be easily updated and consistent across the application.</p>
 <h3 id="errorhandlerts">errorhandler.ts<a class="headerlink" href="#errorhandlerts" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
-import { HttpRequestError } from &quot;@pnp/odata&quot;;
-import { hOP } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">HttpRequestError</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">hOP</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-export async function handleError(e: Error | HttpRequestError): Promise&lt;void&gt; {
+<span class="kr">export</span> <span class="nx">async</span> <span class="kd">function</span> <span class="nx">handleError</span><span class="p">(</span><span class="nx">e</span>: <span class="kt">Error</span> <span class="o">|</span> <span class="nx">HttpRequestError</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  if (hOP(e, &quot;isHttpRequestError&quot;)) {
+  <span class="k">if</span> <span class="p">(</span><span class="nx">hOP</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="s2">&quot;isHttpRequestError&quot;</span><span class="p">))</span> <span class="p">{</span>
 
-    // we can read the json from the response
-    const data = await (&lt;HttpRequestError&gt;e).response.json();
+    <span class="c1">// we can read the json from the response</span>
+    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">await</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 
-    // parse this however you want
-    const message = typeof data[&quot;odata.error&quot;] === &quot;object&quot; ? data[&quot;odata.error&quot;].message.value : e.message;
+    <span class="c1">// parse this however you want</span>
+    <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">data</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">?</span> <span class="nx">data</span><span class="p">[</span><span class="s2">&quot;odata.error&quot;</span><span class="p">].</span><span class="nx">message.value</span> : <span class="kt">e.message</span><span class="p">;</span>
 
-    // we use the status to determine a custom logging level
-    const level: LogLevel = (&lt;HttpRequestError&gt;e).status === 404 ? LogLevel.Warning : LogLevel.Info;
+    <span class="c1">// we use the status to determine a custom logging level</span>
+    <span class="kr">const</span> <span class="nx">level</span>: <span class="kt">LogLevel</span> <span class="o">=</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">HttpRequestError</span><span class="o">&gt;</span><span class="nx">e</span><span class="p">).</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span> <span class="o">?</span> <span class="nx">LogLevel.Warning</span> : <span class="kt">LogLevel.Info</span><span class="p">;</span>
 
-    // create a custom log entry
-    Logger.log({
-      data,
-      level,
-      message,
-    });
+    <span class="c1">// create a custom log entry</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+      <span class="nx">data</span><span class="p">,</span>
+      <span class="nx">level</span><span class="p">,</span>
+      <span class="nx">message</span><span class="p">,</span>
+    <span class="p">});</span>
 
-  } else {
-    // not an HttpRequestError so we just log message
-    Logger.error(e);
-  }
-}
-</code></pre>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// not an HttpRequestError so we just log message</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="web-requestts">web-request.ts<a class="headerlink" href="#web-requestts" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { handleError } from &quot;./errorhandler&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">handleError</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./errorhandler&quot;</span><span class="p">;</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)();</span>
 
-} catch (e) {
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  await handleError(e);
-}
-</code></pre>
+  <span class="nx">await</span> <span class="nx">handleError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="web-request2ts">web-request2.ts<a class="headerlink" href="#web-request2ts" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { handleError } from &quot;./errorhandler&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">handleError</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./errorhandler&quot;</span><span class="p">;</span>
 
-try {
+<span class="k">try</span> <span class="p">{</span>
 
-  const w = await sp.web.lists();
+  <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 
-} catch (e) {
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 
-  await handleError(e);
-}
-</code></pre>
+  <span class="nx">await</span> <span class="nx">handleError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               

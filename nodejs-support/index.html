@@ -2172,91 +2172,91 @@
 <p>But first a little history, you can skip this part if you just want to see how things work but we felt some folks might be interested. To make selective imports work we need to support es module syntax for client-side environments such as SPFx development. All versions of Nodejs that are currently LTS do not support es modules without flags (as of when this was written). We thought we had a scheme to handle this <a href="https://nodejs.org/docs/latest-v12.x/api/esm.html#esm_enabling">following the available guidance</a> but ultimately it didn't work across all node versions and we unpublished 2.0.1.</p>
 <h2 id="commonjs-libraries">CommonJS Libraries<a class="headerlink" href="#commonjs-libraries" title="Permanent link">&para;</a></h2>
 <p>Because of the difficulties of working with es modules in node we recommend using our mirror packages providing commonjs modules. These can be installed by using the package name and appending -commonjs, such as:</p>
-<pre><code class="language-CMD">npm install @pnp/sp-commonjs @pnp/nodejs-commonjs
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm install @pnp/sp-commonjs @pnp/nodejs-commonjs
+</code></pre></div>
 <p>These packages are built from the same source and released at the same time so all updates are included with each release. The only difference is that for the sp-commonjs and graph-commonjs packages we target the "all" preset as the entry point. This makes things a little easier in node where bundle sizes aren't an issue. You can see this in the <a href="https://github.com/pnp/pnpjs/tree/version-2/samples/nodejs-app">nodejs-app sample</a>. Here is that sample explained fully:</p>
 <h3 id="install-libraries">Install Libraries<a class="headerlink" href="#install-libraries" title="Permanent link">&para;</a></h3>
 <p>We want to make a simple request to SharePoint so we need to first install the modules we need:</p>
-<pre><code class="language-cmd">npm install @pnp/sp-commonjs @pnp/nodejs-commonjs --save
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm install @pnp/sp-commonjs @pnp/nodejs-commonjs --save
+</code></pre></div>
 <p>We will also install TypeScript:</p>
-<pre><code class="language-cmd">npm install typescript --save-dev
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm install typescript --save-dev
+</code></pre></div>
 <h3 id="indexts">index.ts<a class="headerlink" href="#indexts" title="Permanent link">&para;</a></h3>
 <p>We will create an index.ts file and add the following code. You will need to update the site url, client id, and client secret to your values. This should be done using a settings file or something like Azure KeyVault for production, but for this example it is good enough.</p>
-<pre><code class="language-TypeScript">// our imports come from the -commonjs libs
-import { SPFetchClient } from &quot;@pnp/nodejs-commonjs&quot;;
-import { sp } from &quot;@pnp/sp-commonjs&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// our imports come from the -commonjs libs</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
 
-// we call setup to use the node client
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{ site url }&quot;, &quot;{ client id }&quot;, &quot;{ client secret }&quot;);
-        },
-    },
-});
+<span class="c1">// we call setup to use the node client</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{ site url }&quot;</span><span class="p">,</span> <span class="s2">&quot;{ client id }&quot;</span><span class="p">,</span> <span class="s2">&quot;{ client secret }&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-async function makeRequest() {
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">makeRequest() {</span>
 
-    // make a request to get the web's details
-    const w = await sp.web();
-    console.log(JSON.stringify(w, null, 2));
-}
+    <span class="c1">// make a request to get the web&#39;s details</span>
+    <span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
 
-// get past no await at root of app
-makeRequest();
-</code></pre>
+<span class="c1">// get past no await at root of app</span>
+<span class="nx">makeRequest</span><span class="p">();</span>
+</code></pre></div>
 <blockquote>
 <p>Don't forget you will need to <a href="https://pnp.github.io/pnpjs/authentication/sp-app-registration/">register an app</a> to get the client id and secret.</p>
 </blockquote>
 <h3 id="add-a-tsconfigjson">Add a tsconfig.json<a class="headerlink" href="#add-a-tsconfigjson" title="Permanent link">&para;</a></h3>
 <p>Not strictly necessary but very useful to include a tsconfig.json to control how tsc transpiles your code to JavaScript</p>
-<pre><code class="language-JSON">{
-    &quot;compilerOptions&quot;: {
-        &quot;module&quot;: &quot;commonjs&quot;,
-        &quot;target&quot;: &quot;esnext&quot;,
-        &quot;moduleResolution&quot;: &quot;node&quot;,
-        &quot;declaration&quot;: true,
-        &quot;outDir&quot;: &quot;dist&quot;,
-        &quot;skipLibCheck&quot;: true,
-        &quot;sourceMap&quot;: true,
-        &quot;lib&quot;: [
-            &quot;dom&quot;,
-            &quot;esnext&quot;
-        ]
-    },
-    &quot;files&quot;: [
-        &quot;./index.ts&quot;
-    ]
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;compilerOptions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;module&quot;</span><span class="p">:</span> <span class="s2">&quot;commonjs&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;target&quot;</span><span class="p">:</span> <span class="s2">&quot;esnext&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;moduleResolution&quot;</span><span class="p">:</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;declaration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;outDir&quot;</span><span class="p">:</span> <span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;skipLibCheck&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;sourceMap&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;lib&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;dom&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;esnext&quot;</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;./index.ts&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="add-an-script-to-packagejson">Add an script to package.json<a class="headerlink" href="#add-an-script-to-packagejson" title="Permanent link">&para;</a></h3>
 <p>We add the "start" script to the default package.json</p>
-<pre><code class="language-JSON">{
-  &quot;name&quot;: &quot;nodejs-app&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;description&quot;: &quot;Sample nodejs app using PnPjs&quot;,
-  &quot;main&quot;: &quot;index.js&quot;,
-  &quot;scripts&quot;: {
-    &quot;start&quot;: &quot;tsc -p . &amp;&amp; node dist/index.js&quot;,
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-  },
-  &quot;author&quot;: &quot;&quot;,
-  &quot;license&quot;: &quot;MIT&quot;,
-  &quot;dependencies&quot;: {
-    &quot;@pnp/nodejs-commonjs&quot;: &quot;^2.0.2-5&quot;,
-    &quot;@pnp/sp-commonjs&quot;: &quot;^2.0.2-5&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;typescript&quot;: &quot;^3.7.5&quot;
-  }
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nodejs-app&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample nodejs app using PnPjs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;index.js&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;tsc -p . &amp;&amp; node dist/index.js&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;license&quot;</span><span class="p">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0.2-5&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;@pnp/sp-commonjs&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0.2-5&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;typescript&quot;</span><span class="p">:</span> <span class="s2">&quot;^3.7.5&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="run-it">Run It<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h3>
 <p>You can now run your program using:</p>
-<pre><code class="language-cmd">npm start
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm start
+</code></pre></div>
                 
               
               

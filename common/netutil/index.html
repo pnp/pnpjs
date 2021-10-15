@@ -2195,20 +2195,20 @@ underlying HttpClientImpl fetch method.</p>
 <p>This module export two classes of note, FetchClient and BearerTokenFetchClient. Both implement HttpClientImpl.</p>
 <h3 id="fetchclient">FetchClient<a class="headerlink" href="#fetchclient" title="Permanent link">&para;</a></h3>
 <p>Basic implementation that calls the global (window) fetch method with no additional processing.</p>
-<pre><code class="language-TypeScript">import { FetchClient } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">FetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const client = new FetchClient();
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FetchClient</span><span class="p">();</span>
 
-client.fetch(&quot;{url}&quot;, {});
-</code></pre>
+<span class="nx">client</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;{url}&quot;</span><span class="p">,</span> <span class="p">{});</span>
+</code></pre></div>
 <h3 id="bearertokenfetchclient">BearerTokenFetchClient<a class="headerlink" href="#bearertokenfetchclient" title="Permanent link">&para;</a></h3>
 <p>A simple implementation that takes a provided authentication token and adds the Authentication Bearer header to the request. No other processing is done and the token is treated as a static string.</p>
-<pre><code class="language-TypeScript">import { BearerTokenFetchClient } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">BearerTokenFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-const client = new BearerTokenFetchClient(&quot;{authentication token}&quot;);
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BearerTokenFetchClient</span><span class="p">(</span><span class="s2">&quot;{authentication token}&quot;</span><span class="p">);</span>
 
-client.fetch(&quot;{url}&quot;, {});
-</code></pre>
+<span class="nx">client</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;{url}&quot;</span><span class="p">,</span> <span class="p">{});</span>
+</code></pre></div>
                 
               
               

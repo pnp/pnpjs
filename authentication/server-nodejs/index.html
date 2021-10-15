@@ -2162,20 +2162,20 @@
 </blockquote>
 <p>Within the PnPjs testing framework we make use of SharePoint App Registration. This uses the <code>SPFetchClient</code> client from the nodejs package. This client works based on the <a href="https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs">legacy SharePoint App Registration model</a> making use of a client and secret granted permissions through AppInv.aspx. This method works and at the time of writing has no published end date.</p>
 <p>See: <a href="../sp-app-registration/">details on how to register a legacy SharePoint application</a>.</p>
-<pre><code class="language-TypeScript">import { SPFetchClient } from &quot;@pnp/nodejs&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{site url}&quot;, &quot;{client id}&quot;, &quot;{client secret}&quot;);
-        },
-    },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// execute a library request as normal
-const w = await sp.web.get();
-</code></pre>
+<span class="c1">// execute a library request as normal</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="msal">MSAL<a class="headerlink" href="#msal" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.0.11</em></p>
 <p>You can now use the <a href="https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node">@azure/msal-node</a> client with PnPjs using MsalFetchClient. You must configure an AAD application with the appropriate permissions for your application.</p>
@@ -2184,87 +2184,87 @@ const w = await sp.web.get();
 </blockquote>
 <h3 id="call-graph">Call Graph<a class="headerlink" href="#call-graph" title="Permanent link">&para;</a></h3>
 <p>You can call the Microsoft Graph API with a client id and secret or certificate (see SharePoint example for cert auth)</p>
-<pre><code class="language-TypeScript">import { MsalFetchClient } from &quot;@pnp/nodejs&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// configure your node options
-graph.setup({
-  graph: {
-    fetchClientFactory: () =&gt; {
-      return new MsalFetchClient({
-        auth: {
-          authority: &quot;https://login.microsoftonline.com/{tenant id or common}/&quot;,
-          clientId: &quot;{guid}&quot;,
-          clientSecret: &quot;{client secret}&quot;,
-        }
-      });
-    },
-  },
-});
+<span class="c1">// configure your node options</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">MsalFetchClient</span><span class="p">({</span>
+        <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant id or common}/&quot;</span><span class="p">,</span>
+          <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;{guid}&quot;</span><span class="p">,</span>
+          <span class="nx">clientSecret</span><span class="o">:</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-const userInfo = await graph.users();
-</code></pre>
+<span class="kr">const</span> <span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="call-sharepoint">Call SharePoint<a class="headerlink" href="#call-sharepoint" title="Permanent link">&para;</a></h3>
 <p>To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.</p>
-<pre><code class="language-CMD">mkdir \temp
+<div class="highlight"><pre><span></span><code>mkdir \temp
 cd \temp
-openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
+openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj &#39;/C=US/ST=Washington/L=Seattle&#39;
 openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
-</code></pre>
+</code></pre></div>
 <p>Using the above code you end up with three files, "cert.pem", "key.pem", and "keytmp.pem". The "cert.pem" file is uploaded to your AAD application registration. The "key.pem" is read as the private key for the configuration.</p>
 <blockquote>
 <p>You need to set the baseUrl property when using the MsalFetchClient</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { MsalFetchClient } from &quot;@pnp/nodejs&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import { readFileSync } from &quot;fs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">readFileSync</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
 
-// read in our private key
-const buffer = readFileSync(&quot;c:/temp/key.pem&quot;);
+<span class="c1">// read in our private key</span>
+<span class="kr">const</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">readFileSync</span><span class="p">(</span><span class="s2">&quot;c:/temp/key.pem&quot;</span><span class="p">);</span>
 
-// configure node options
-sp.setup({
-  sp: {
-    baseUrl: &quot;https://{my tenant}.sharepoint.com/sites/dev/&quot;,
-    fetchClientFactory: () =&gt; {
-      return new MsalFetchClient({
-        auth: {
-          authority: &quot;https://login.microsoftonline.com/{tenant id or common}/&quot;,
-          clientCertificate: {
-            thumbprint: &quot;{certificate thumbprint, displayed in AAD}&quot;,
-            privateKey: buffer.toString(),
-          },
-          clientId: &quot;{client id}&quot;,
-        }
-      }, [&quot;https://{my tenant}.sharepoint.com/.default&quot;]); // you must set the scope for SharePoint access
-    },
-  },
-});
+<span class="c1">// configure node options</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;https://{my tenant}.sharepoint.com/sites/dev/&quot;</span><span class="p">,</span>
+    <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">MsalFetchClient</span><span class="p">({</span>
+        <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant id or common}/&quot;</span><span class="p">,</span>
+          <span class="nx">clientCertificate</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">thumbprint</span><span class="o">:</span> <span class="s2">&quot;{certificate thumbprint, displayed in AAD}&quot;</span><span class="p">,</span>
+            <span class="nx">privateKey</span>: <span class="kt">buffer.toString</span><span class="p">(),</span>
+          <span class="p">},</span>
+          <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;https://{my tenant}.sharepoint.com/.default&quot;</span><span class="p">]);</span> <span class="c1">// you must set the scope for SharePoint access</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
 
-const w = await sp.web();
-</code></pre>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="adal">ADAL<a class="headerlink" href="#adal" title="Permanent link">&para;</a></h2>
 <p>The AdalFetchClient class depends on the <a href="https://www.npmjs.com/package/adal-node">adal-node</a> package to authenticate against Azure AD. The example below
 outlines usage with the @pnp/graph library, though it would work in any case where an Azure AD Bearer token is expected.</p>
 <p>See: <a href="../../nodejs/adal-fetch-client/">More details on the node client</a></p>
-<pre><code class="language-TypeScript">import { AdalFetchClient } from &quot;@pnp/nodejs&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// setup the client using graph setup function
-graph.setup({
-    graph: {
-        fetchClientFactory: () =&gt; {
-            return new AdalFetchClient(&quot;{tenant}&quot;, &quot;{app id}&quot;, &quot;{app secret}&quot;);
-        },
-    },
-});
+<span class="c1">// setup the client using graph setup function</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">AdalFetchClient</span><span class="p">(</span><span class="s2">&quot;{tenant}&quot;</span><span class="p">,</span> <span class="s2">&quot;{app id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{app secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// execute a library request as normal
-const g = await graph.groups.get();
+<span class="c1">// execute a library request as normal</span>
+<span class="kr">const</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-console.log(JSON.stringify(g, null, 4));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre></div>
                 
               
               

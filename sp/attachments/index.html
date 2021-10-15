@@ -2220,149 +2220,149 @@
 </tbody>
 </table>
 <h2 id="get-attachments">Get attachments<a class="headerlink" href="#get-attachments" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IAttachmentInfo } from &quot;@pnp/sp/attachments&quot;;
-import { IItem } from &quot;@pnp/sp/items/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-// get all the attachments
-const info: IAttachmentInfo[] = await item.attachmentFiles();
+<span class="c1">// get all the attachments</span>
+<span class="kr">const</span> <span class="nx">info</span>: <span class="kt">IAttachmentInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">();</span>
 
-// get a single file by file name
-const info2: IAttachmentInfo = await item.attachmentFiles.getByName(&quot;file.txt&quot;)();
+<span class="c1">// get a single file by file name</span>
+<span class="kr">const</span> <span class="nx">info2</span>: <span class="kt">IAttachmentInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)();</span>
 
-// select specific properties using odata operators and use Pick to type the result
-const info3: Pick&lt;IAttachmentInfo, &quot;ServerRelativeUrl&quot;&gt;[] = await item.attachmentFiles.select(&quot;ServerRelativeUrl&quot;)();
-</code></pre>
+<span class="c1">// select specific properties using odata operators and use Pick to type the result</span>
+<span class="kr">const</span> <span class="nx">info3</span>: <span class="kt">Pick</span><span class="o">&lt;</span><span class="nx">IAttachmentInfo</span><span class="p">,</span> <span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="o">&gt;</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;ServerRelativeUrl&quot;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="add-an-attachment">Add an Attachment<a class="headerlink" href="#add-an-attachment" title="Permanent link">&para;</a></h2>
 <p>You can add an attachment to a list item using the add method. This method takes either a string, Blob, or ArrayBuffer.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IItem } from &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-await item.attachmentFiles.add(&quot;file2.txt&quot;, &quot;Here is my content&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;Here is my content&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="add-multiple">Add Multiple<a class="headerlink" href="#add-multiple" title="Permanent link">&para;</a></h2>
 <p>This method allows you to pass an array of AttachmentFileInfo plain objects that will be added one at a time as attachments. Essentially automating the promise chaining.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
-import { IAttachmentFileInfo } from &quot;@pnp/sp/attachments&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAttachmentFileInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const list: IList = sp.web.lists.getByTitle(&quot;MyList&quot;);
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
 
-let fileInfos: IAttachmentFileInfo[] = [];
+<span class="kd">let</span> <span class="nx">fileInfos</span>: <span class="kt">IAttachmentFileInfo</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
 
-fileInfos.push({
-    name: &quot;My file name 1&quot;,
-    content: &quot;string, blob, or array&quot;
-});
+<span class="nx">fileInfos</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;My file name 1&quot;</span><span class="p">,</span>
+    <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;string, blob, or array&quot;</span>
+<span class="p">});</span>
 
-fileInfos.push({
-    name: &quot;My file name 2&quot;,
-    content: &quot;string, blob, or array&quot;
-});
+<span class="nx">fileInfos</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;My file name 2&quot;</span><span class="p">,</span>
+    <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;string, blob, or array&quot;</span>
+<span class="p">});</span>
 
-await list.items.getById(2).attachmentFiles.addMultiple(fileInfos);
-</code></pre>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">addMultiple</span><span class="p">(</span><span class="nx">fileInfos</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="delete-multiple">Delete Multiple<a class="headerlink" href="#delete-multiple" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IList } from &quot;./@pnp/sp/lists/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./@pnp/sp/lists/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const list: IList = sp.web.lists.getByTitle(&quot;MyList&quot;);
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
 
-await list.items.getById(2).attachmentFiles.deleteMultiple(&quot;1.txt&quot;, &quot;2.txt&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">deleteMultiple</span><span class="p">(</span><span class="s2">&quot;1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;2.txt&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="read-attachment-content">Read Attachment Content<a class="headerlink" href="#read-attachment-content" title="Permanent link">&para;</a></h2>
 <p>You can read the content of an attachment as a string, Blob, ArrayBuffer, or json using the methods supplied.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IItem } from &quot;@pnp/sp/items/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-const text = await item.attachmentFiles.getByName(&quot;file.txt&quot;).getText();
+<span class="kr">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">).</span><span class="nx">getText</span><span class="p">();</span>
 
-// use this in the browser, does not work in nodejs
-const blob = await item.attachmentFiles.getByName(&quot;file.mp4&quot;).getBlob();
+<span class="c1">// use this in the browser, does not work in nodejs</span>
+<span class="kr">const</span> <span class="nx">blob</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.mp4&quot;</span><span class="p">).</span><span class="nx">getBlob</span><span class="p">();</span>
 
-// use this in nodejs
-const buffer = await item.attachmentFiles.getByName(&quot;file.mp4&quot;).getBuffer();
+<span class="c1">// use this in nodejs</span>
+<span class="kr">const</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.mp4&quot;</span><span class="p">).</span><span class="nx">getBuffer</span><span class="p">();</span>
 
-// file must be valid json
-const json = await item.attachmentFiles.getByName(&quot;file.json&quot;).getJSON();
-</code></pre>
+<span class="c1">// file must be valid json</span>
+<span class="kr">const</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file.json&quot;</span><span class="p">).</span><span class="nx">getJSON</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="update-attachment-content">Update Attachment Content<a class="headerlink" href="#update-attachment-content" title="Permanent link">&para;</a></h2>
 <p>You can also update the content of an attachment. This API is limited compared to the full file API - so if you need to upload large files consider using a document library.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IItem } from &quot;@pnp/sp/items/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-await item.attachmentFiles.getByName(&quot;file2.txt&quot;).setContent(&quot;My new content!!!&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s2">&quot;My new content!!!&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="delete-attachment">Delete Attachment<a class="headerlink" href="#delete-attachment" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IItem } from &quot;@pnp/sp/items/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-await item.attachmentFiles.getByName(&quot;file2.txt&quot;).delete();
-</code></pre>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="recycle-attachment">Recycle Attachment<a class="headerlink" href="#recycle-attachment" title="Permanent link">&para;</a></h2>
 <p>Delete the attachment and send it to recycle bin</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IItem } from &quot;@pnp/sp/items/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/items/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const item: IItem = sp.web.lists.getByTitle(&quot;MyList&quot;).items.getById(1);
+<span class="kr">const</span> <span class="nx">item</span>: <span class="kt">IItem</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-await item.attachmentFiles.getByName(&quot;file2.txt&quot;).recycle();
-</code></pre>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">).</span><span class="nx">recycle</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="recycle-multiple-attachments">Recycle Multiple Attachments<a class="headerlink" href="#recycle-multiple-attachments" title="Permanent link">&para;</a></h2>
 <p>Delete multiple attachments and send them to recycle bin</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IList } from &quot;@pnp/sp/lists/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/attachments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/attachments&quot;</span><span class="p">;</span>
 
-const list: IList = sp.web.lists.getByTitle(&quot;MyList&quot;);
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MyList&quot;</span><span class="p">);</span>
 
-await list.items.getById(2).attachmentFiles.recycleMultiple(&quot;1.txt&quot;,&quot;2.txt&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">attachmentFiles</span><span class="p">.</span><span class="nx">recycleMultiple</span><span class="p">(</span><span class="s2">&quot;1.txt&quot;</span><span class="p">,</span><span class="s2">&quot;2.txt&quot;</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

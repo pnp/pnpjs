@@ -2104,22 +2104,22 @@
                 <h1 id="pnpnodejsspfetchclient">@pnp/nodejs/spfetchclient<a class="headerlink" href="#pnpnodejsspfetchclient" title="Permanent link">&para;</a></h1>
 <p>The SPFetchClient is used to authentication to SharePoint as a provider hosted add-in using a client and secret in nodejs. Remember it is not a good practice to expose client ids and secrets on the client and use of this class is intended for nodejs exclusively.</p>
 <p>See: <a href="../../authentication/sp-app-registration/">How to register a legacy SharePoint application</a></p>
-<pre><code class="language-TypeScript">import { SPFetchClient } from &quot;@pnp/nodejs&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{site url}&quot;, &quot;{client id}&quot;, &quot;{client secret}&quot;);
-        },
-    },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// execute a library request as normal
-const w = await sp.web.get();
+<span class="c1">// execute a library request as normal</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-console.log(JSON.stringify(w, null, 4));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="set-authentication-environment">Set Authentication Environment<a class="headerlink" href="#set-authentication-environment" title="Permanent link">&para;</a></h2>
 <p>For some areas such as Germany, China, and US Gov clouds you need to specify a different authentication url to the service. This is done by specifying the correct SPOAuthEnv enumeration to the SPFetchClient constructor. The options are listed below. If you are not sure which option to specify the default is likely OK.</p>
 <ul>
@@ -2129,30 +2129,30 @@ console.log(JSON.stringify(w, null, 4));
 <li>USDef: USA Defense cloud</li>
 <li>USGov: USA Government cloud</li>
 </ul>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { SPFetchClient, SPOAuthEnv } from &quot;@pnp/nodejs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{site url}&quot;, &quot;{client id}&quot;, &quot;{client secret}&quot;, SPOAuthEnv.China);
-        },
-    },
-});
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">.</span><span class="nx">China</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="set-realm">Set Realm<a class="headerlink" href="#set-realm" title="Permanent link">&para;</a></h2>
 <p>In some cases automatically resolving the realm may not work. In this case you can set the realm parameter in the SPFetchClient constructor. You can determine the correct value for the realm by navigating to <code>https://{site name}-admin.sharepoint.com/_layouts/15/TA_AllAppPrincipals.aspx</code> and copying the GUID value that appears after the "@" - this is the realm id.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-import { SPFetchClient, SPOAuthEnv } from &quot;@pnp/nodejs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{site url}&quot;, &quot;{client id}&quot;, &quot;{client secret}&quot;, SPOAuthEnv.SPO, &quot;{realm}&quot;);
-        },
-    },
-});
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{client secret}&quot;</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">.</span><span class="nx">SPO</span><span class="p">,</span> <span class="s2">&quot;{realm}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               

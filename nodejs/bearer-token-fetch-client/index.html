@@ -2045,23 +2045,23 @@
                 
                 <h1 id="pnpnodejsbearertokenfetchclient">@pnp/nodejs/BearerTokenFetchClient<a class="headerlink" href="#pnpnodejsbearertokenfetchclient" title="Permanent link">&para;</a></h1>
 <p>The BearerTokenFetchClient class allows you to easily specify your own Bearer tokens to be used in the requests. How you derive the token is up to you.</p>
-<pre><code class="language-TypeScript">import { BearerTokenFetchClient } from &quot;@pnp/nodejs&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">BearerTokenFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// setup the client using graph setup function
-graph.setup({
-    graph: {
-        fetchClientFactory: () =&gt; {
-            return new BearerTokenFetchClient(&quot;{Bearer Token}&quot;);
-        },
-    },
-});
+<span class="c1">// setup the client using graph setup function</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">BearerTokenFetchClient</span><span class="p">(</span><span class="s2">&quot;{Bearer Token}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// execute a library request as normal
-const g = await graph.groups.get();
+<span class="c1">// execute a library request as normal</span>
+<span class="kr">const</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-console.log(JSON.stringify(g, null, 4));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre></div>
                 
               
               

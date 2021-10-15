@@ -2148,47 +2148,47 @@
 <p>Pattern: !@{label name}::{value}</p>
 <p>Example: "!@p1::\sites\dev" or "!@p2::\text.txt"</p>
 <h3 id="example-without-aliasing">Example without aliasing<a class="headerlink" href="#example-without-aliasing" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// still works as expected, no aliasing
-const query = sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Documents/&quot;).files.select(&quot;Title&quot;).top(3);
+<span class="c1">// still works as expected, no aliasing</span>
+<span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Shared Documents/&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&amp;$top=3
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrl</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;/sites/dev/Shared Documents/&#39;)/files</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrlAndQuery</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;/sites/dev/Shared Documents/&#39;)/files?$select=Title&amp;$top=3</span>
 
-const r = await query.get();
-console.log(r);;
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);;</span>
+</code></pre></div>
 <h3 id="example-with-aliasing">Example with aliasing<a class="headerlink" href="#example-with-aliasing" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// same query with aliasing
-const query = sp.web.getFolderByServerRelativeUrl(&quot;!@p1::/sites/dev/Shared Documents/&quot;).files.select(&quot;Title&quot;).top(3);
+<span class="c1">// same query with aliasing</span>
+<span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;!@p1::/sites/dev/Shared Documents/&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrl</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;!@p1::/sites/dev/Shared Documents/&#39;)/files</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrlAndQuery</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1=&#39;/sites/dev/Shared Documents/&#39;&amp;$select=Title&amp;$top=3</span>
 
-const r = await query.get();
-console.log(r);
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">query</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="example-with-aliasing-and-batching">Example with aliasing and batching<a class="headerlink" href="#example-with-aliasing-and-batching" title="Permanent link">&para;</a></h3>
 <p>Aliasing is supported with batching as well:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
-// same query with aliasing and batching
-const batch = sp.web.createBatch();
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="c1">// same query with aliasing and batching</span>
+<span class="kr">const</span> <span class="nx">batch</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">createBatch</span><span class="p">();</span>
 
-const query = sp.web.getFolderByServerRelativeUrl(&quot;!@p1::/sites/dev/Shared Documents/&quot;).files.select(&quot;Title&quot;).top(3);
+<span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;!@p1::/sites/dev/Shared Documents/&quot;</span><span class="p">).</span><span class="nx">files</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrl</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(&#39;!@p1::/sites/dev/Shared Documents/&#39;)/files</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">toUrlAndQuery</span><span class="p">());</span> <span class="c1">// _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1=&#39;/sites/dev/Shared Documents/&#39;&amp;$select=Title&amp;$top=3</span>
 
-query.inBatch(batch).get().then(r =&gt; {
+<span class="nx">query</span><span class="p">.</span><span class="nx">inBatch</span><span class="p">(</span><span class="nx">batch</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    console.log(r);
-});
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+<span class="p">});</span>
 
-batch.execute();
-</code></pre>
+<span class="nx">batch</span><span class="p">.</span><span class="nx">execute</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

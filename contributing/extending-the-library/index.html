@@ -2200,175 +2200,175 @@
 <p>This article is targeted at people wishing to extend PnPjs itself, usually by adding a method or property.</p>
 </blockquote>
 <p>At the most basic level PnPjs is a set of libraries used to build and execute a web request and handle the response from that request. Conceptually each object in the fluent chain serves as input when creating the next object in the chain. This is how configuration, url, query, and other values are passed along. To get a sense for what this looks like see the code below. This is taken from inside the <a href="https://github.com/pnp/pnpjs/blob/version-2/packages/sp/webs/types.ts#L77">webs submodule</a> and shows how the "webs" property is added to the web class.</p>
-<pre><code class="language-ts">// TypeScript property, returning an interface
-public get webs(): IWebs {
-    // using the Webs factory function and providing &quot;this&quot; as the first parameter
-    return Webs(this);
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// TypeScript property, returning an interface</span>
+<span class="kr">public</span> <span class="nx">get</span> <span class="nx">webs</span><span class="p">()</span><span class="o">:</span> <span class="nx">IWebs</span> <span class="p">{</span>
+    <span class="c1">// using the Webs factory function and providing &quot;this&quot; as the first parameter</span>
+    <span class="k">return</span> <span class="nx">Webs</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="understanding-factory-functions">Understanding Factory Functions<a class="headerlink" href="#understanding-factory-functions" title="Permanent link">&para;</a></h2>
 <p>PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.</p>
-<pre><code class="language-ts">// create a constant which is a function of type ISPInvokableFactory having the name Webs
-// this is bound by the generic type param to return an IWebs instance
-// and it will use the _Webs concrete class to form the internal type of the invocable
-export const Webs = spInvokableFactory&lt;IWebs&gt;(_Webs);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// create a constant which is a function of type ISPInvokableFactory having the name Webs</span>
+<span class="c1">// this is bound by the generic type param to return an IWebs instance</span>
+<span class="c1">// and it will use the _Webs concrete class to form the internal type of the invocable</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">Webs</span> <span class="o">=</span> <span class="nx">spInvokableFactory</span><span class="o">&lt;</span><span class="nx">IWebs</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">_Webs</span><span class="p">);</span>
+</code></pre></div>
 <p>The ISPInvokableFactory type looks like:</p>
-<pre><code class="language-ts">export type ISPInvokableFactory&lt;R = any&gt; = (baseUrl: string | ISharePointQueryable, path?: string) =&gt; R;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="nx">type</span> <span class="nx">ISPInvokableFactory</span><span class="o">&lt;</span><span class="nx">R</span> <span class="o">=</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="nx">baseUrl</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">ISharePointQueryable</span><span class="p">,</span> <span class="nx">path?</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">R</span><span class="p">;</span>
+</code></pre></div>
 <p>And the matching graph type:</p>
-<pre><code class="language-ts">&lt;R&gt;(f: any): (baseUrl: string | IGraphQueryable, path?: string) =&gt; R
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">f</span>: <span class="kt">any</span><span class="p">)</span><span class="o">:</span> <span class="p">(</span><span class="nx">baseUrl</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">IGraphQueryable</span><span class="p">,</span> <span class="nx">path?</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">R</span>
+</code></pre></div>
 <p>The general idea of a factory function is that it takes two parameters. The first is either a string or Queryable derivative which forms base for the new object. The second is the next part of the url. In some cases (like the webs property example above) you will note there is no second parameter. Some classes are decorated with defaultPath, which automatically fills the second param. Don't worry too much right now about the deep internals of the library, let's instead focus on some concrete examples.</p>
-<pre><code class="language-ts">import { Web } from &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// create a web from an absolute url
-const web = Web(&quot;https://tenant.sharepoint.com&quot;);
+<span class="c1">// create a web from an absolute url</span>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com&quot;</span><span class="p">);</span>
 
-// as an example, create a new web using the first as a base
-// targets: https://tenant.sharepoint.com/sites/dev
-const web2 = Web(web, &quot;sites/dev&quot;);
+<span class="c1">// as an example, create a new web using the first as a base</span>
+<span class="c1">// targets: https://tenant.sharepoint.com/sites/dev</span>
+<span class="kr">const</span> <span class="nx">web2</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;sites/dev&quot;</span><span class="p">);</span>
 
-// or you can add any path components you want, here as an example we access the current user property
-const cu = Web(web, &quot;currentuser&quot;);
-const currentUserInfo = cu();
-</code></pre>
+<span class="c1">// or you can add any path components you want, here as an example we access the current user property</span>
+<span class="kr">const</span> <span class="nx">cu</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;currentuser&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">currentUserInfo</span> <span class="o">=</span> <span class="nx">cu</span><span class="p">();</span>
+</code></pre></div>
 <p>Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everything is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries <em>within</em> methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.</p>
 <h2 id="class-structure">Class structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
 <p>Internally to the library we have a bit of complexity to make the whole invocable proxy architecture work and provide the typings folks expect. Here is an example implementation with extra comments explaining what is happening. You don't need to understand the entire stack to <a href="#add-a-property">add a property</a> or <a href="#add-a-method">method</a></p>
-<pre><code class="language-ts">/*
-The concrete class implementation. This is never exported or shown directly
-to consumers of the library. It is wrapped by the Proxy we do expose.
+<div class="highlight"><pre><span></span><code><span class="cm">/*</span>
+<span class="cm">The concrete class implementation. This is never exported or shown directly</span>
+<span class="cm">to consumers of the library. It is wrapped by the Proxy we do expose.</span>
 
-It extends the _SharePointQueryableInstance class for which there is a matching
-_SharePointQueryableCollection. The generic parameter defines the return type
-of a get operation and the invoked result.
+<span class="cm">It extends the _SharePointQueryableInstance class for which there is a matching</span>
+<span class="cm">_SharePointQueryableCollection. The generic parameter defines the return type</span>
+<span class="cm">of a get operation and the invoked result.</span>
 
-Classes can have methods and properties as normal. This one has a single property as a simple example
-*/
-export class _HubSite extends _SharePointQueryableInstance&lt;IHubSiteInfo&gt; {
+<span class="cm">Classes can have methods and properties as normal. This one has a single property as a simple example</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">_HubSite</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableInstance</span><span class="o">&lt;</span><span class="nx">IHubSiteInfo</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    /**
-     * Gets the ISite instance associated with this hub site
-     */
-    // the tag decorator is used to provide some additional telemetry on what methods are
-    // being called.
-    @tag(&quot;hs.getSite&quot;)
-    public async getSite(): Promise&lt;ISite&gt; {
+    <span class="cm">/**</span>
+<span class="cm">     * Gets the ISite instance associated with this hub site</span>
+<span class="cm">     */</span>
+    <span class="c1">// the tag decorator is used to provide some additional telemetry on what methods are</span>
+    <span class="c1">// being called.</span>
+    <span class="kd">@tag</span><span class="p">(</span><span class="s2">&quot;hs.getSite&quot;</span><span class="p">)</span>
+    <span class="kr">public</span> <span class="nx">async</span> <span class="nx">getSite</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">ISite</span><span class="o">&gt;</span> <span class="p">{</span>
 
-        // we execute a request using this instance, selecting the SiteUrl property, and invoking it immediately and awaiting the result
-        const d = await this.select(&quot;SiteUrl&quot;)();
+        <span class="c1">// we execute a request using this instance, selecting the SiteUrl property, and invoking it immediately and awaiting the result</span>
+        <span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;SiteUrl&quot;</span><span class="p">)();</span>
 
-        // we then return a new ISite instance created from the Site factory using the returned SiteUrl property as the baseUrl
-        return Site(d.SiteUrl);
-    }
-}
+        <span class="c1">// we then return a new ISite instance created from the Site factory using the returned SiteUrl property as the baseUrl</span>
+        <span class="k">return</span> <span class="nx">Site</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">SiteUrl</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-/*
-This defines the interface we export and expose to consumers.
-In most cases this extends the concrete object but may add or remove some methods/properties
-in special cases
-*/
-export interface IHubSite extends _HubSite { }
+<span class="cm">/*</span>
+<span class="cm">This defines the interface we export and expose to consumers.</span>
+<span class="cm">In most cases this extends the concrete object but may add or remove some methods/properties</span>
+<span class="cm">in special cases</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">IHubSite</span> <span class="kr">extends</span> <span class="nx">_HubSite</span> <span class="p">{</span> <span class="p">}</span>
 
-/*
-This defines the HubSite factory function as discussed above
-binding the spInvokableFactory to a generic param of IHubSite and a param of _HubSite.
+<span class="cm">/*</span>
+<span class="cm">This defines the HubSite factory function as discussed above</span>
+<span class="cm">binding the spInvokableFactory to a generic param of IHubSite and a param of _HubSite.</span>
 
-This is understood to mean that HubSite is a factory function that returns a types of IHubSite
-which the spInvokableFactory will create using _HubSite as the concrete underlying type.
-*/
-export const HubSite = spInvokableFactory&lt;IHubSite&gt;(_HubSite);
-</code></pre>
+<span class="cm">This is understood to mean that HubSite is a factory function that returns a types of IHubSite</span>
+<span class="cm">which the spInvokableFactory will create using _HubSite as the concrete underlying type.</span>
+<span class="cm">*/</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">HubSite</span> <span class="o">=</span> <span class="nx">spInvokableFactory</span><span class="o">&lt;</span><span class="nx">IHubSite</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">_HubSite</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="add-a-property">Add a Property<a class="headerlink" href="#add-a-property" title="Permanent link">&para;</a></h2>
 <p>In most cases you won't need to create the class, interface, or factory - you just want to add a property or method. An example of this is sp.web.lists. web is a property of sp and lists is a property of web. You can have a look at those classes as examples. Let's have a look at the fields on the _View class.</p>
-<pre><code class="language-ts">export class _View extends _SharePointQueryableInstance&lt;IViewInfo&gt; {
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">class</span> <span class="nx">_View</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableInstance</span><span class="o">&lt;</span><span class="nx">IViewInfo</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    // ... other code removed
+    <span class="c1">// ... other code removed</span>
 
-    // add the property, and provide a return type
-    // return types should be interfaces
-    public get fields(): IViewFields {
-        // we use the ViewFields factory function supplying &quot;this&quot; as the first parameter
-        // this will create a url like &quot;.../fields/viewfields&quot; due to the defaultPath decorator
-        // on the _ViewFields class. This is equivalent to: ViewFields(this, &quot;viewfields&quot;)
-        return ViewFields(this);
-    }
+    <span class="c1">// add the property, and provide a return type</span>
+    <span class="c1">// return types should be interfaces</span>
+    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">fields</span><span class="p">()</span><span class="o">:</span> <span class="nx">IViewFields</span> <span class="p">{</span>
+        <span class="c1">// we use the ViewFields factory function supplying &quot;this&quot; as the first parameter</span>
+        <span class="c1">// this will create a url like &quot;.../fields/viewfields&quot; due to the defaultPath decorator</span>
+        <span class="c1">// on the _ViewFields class. This is equivalent to: ViewFields(this, &quot;viewfields&quot;)</span>
+        <span class="k">return</span> <span class="nx">ViewFields</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    // ... other code removed
-}
-</code></pre>
+    <span class="c1">// ... other code removed</span>
+<span class="p">}</span>
+</code></pre></div>
 <blockquote>
 <p>There are many examples throughout the library that follow this pattern.</p>
 </blockquote>
 <h2 id="add-a-method">Add a Method<a class="headerlink" href="#add-a-method" title="Permanent link">&para;</a></h2>
 <p>Adding a method is just like adding a property with the key difference that a method usually <em>does</em> something like make a web request or act like a property but take parameters. Let's look at the _Items getById method:</p>
-<pre><code class="language-ts">@defaultPath(&quot;items&quot;)
-export class _Items extends _SharePointQueryableCollection {
+<div class="highlight"><pre><span></span><code><span class="kd">@defaultPath</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">_Items</span> <span class="kr">extends</span> <span class="nx">_SharePointQueryableCollection</span> <span class="p">{</span>
 
-    /**
-    * Gets an Item by id
-    *
-    * @param id The integer id of the item to retrieve
-    */
-    // we declare a method and set the return type to an interface
-    public getById(id: number): IItem {
-        // here we use the tag helper to add some telemetry to our request
-        // we create a new IItem using the factory and appending the id value to the end
-        // this gives us a valid url path to a single item .../items/getById(2)
-        // we can then use the returned IItem to extend our chain or execute a request
-        return tag.configure(Item(this).concat(`(${id})`), &quot;is.getById&quot;);
-    }
+    <span class="cm">/**</span>
+<span class="cm">    * Gets an Item by id</span>
+<span class="cm">    *</span>
+<span class="cm">    * @param id The integer id of the item to retrieve</span>
+<span class="cm">    */</span>
+    <span class="c1">// we declare a method and set the return type to an interface</span>
+    <span class="kr">public</span> <span class="nx">getById</span><span class="p">(</span><span class="nx">id</span>: <span class="kt">number</span><span class="p">)</span><span class="o">:</span> <span class="nx">IItem</span> <span class="p">{</span>
+        <span class="c1">// here we use the tag helper to add some telemetry to our request</span>
+        <span class="c1">// we create a new IItem using the factory and appending the id value to the end</span>
+        <span class="c1">// this gives us a valid url path to a single item .../items/getById(2)</span>
+        <span class="c1">// we can then use the returned IItem to extend our chain or execute a request</span>
+        <span class="k">return</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="nx">Item</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="sb">`(</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">)`</span><span class="p">),</span> <span class="s2">&quot;is.getById&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    // ... other code removed
-}
-</code></pre>
+    <span class="c1">// ... other code removed</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="web-request-method">Web Request Method<a class="headerlink" href="#web-request-method" title="Permanent link">&para;</a></h3>
 <p>A second example is a method that performs a request. Here we use the _Item recycle method as an example:</p>
-<pre><code class="language-ts">/**
- * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
- */
-// we use the tag decorator to add telemetry
-@tag(&quot;i.recycle&quot;)
-// we return a promise
-public recycle(): Promise&lt;string&gt; {
-    // we use the spPost method to post the request created by cloning our current instance IItem using
-    // the Item factory and adding the path &quot;recycle&quot; to the end. Url will look like .../items/getById(2)/recycle
-    return spPost&lt;string&gt;(this.clone(Item, &quot;recycle&quot;));
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.</span>
+<span class="cm"> */</span>
+<span class="c1">// we use the tag decorator to add telemetry</span>
+<span class="kd">@tag</span><span class="p">(</span><span class="s2">&quot;i.recycle&quot;</span><span class="p">)</span>
+<span class="c1">// we return a promise</span>
+<span class="kr">public</span> <span class="nx">recycle</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="c1">// we use the spPost method to post the request created by cloning our current instance IItem using</span>
+    <span class="c1">// the Item factory and adding the path &quot;recycle&quot; to the end. Url will look like .../items/getById(2)/recycle</span>
+    <span class="k">return</span> <span class="nx">spPost</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">Item</span><span class="p">,</span> <span class="s2">&quot;recycle&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="augment-using-selective-imports">Augment Using Selective Imports<a class="headerlink" href="#augment-using-selective-imports" title="Permanent link">&para;</a></h2>
 <p>To understand is how to extend functionality within the selective imports structures look at <a href="https://github.com/pnp/pnpjs/blob/main/packages/sp/items/list.ts">list.ts</a> file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.</p>
-<pre><code class="language-ts">// import the addProp helper
-import { addProp } from &quot;@pnp/odata&quot;;
-// import the _List concrete class from the types module (not the index!)
-import { _List } from &quot;../lists/types&quot;;
-// import the interface and factory we are going to add to the List
-import { Items, IItems } from &quot;./types&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// import the addProp helper</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">addProp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="c1">// import the _List concrete class from the types module (not the index!)</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">_List</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;../lists/types&quot;</span><span class="p">;</span>
+<span class="c1">// import the interface and factory we are going to add to the List</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Items</span><span class="p">,</span> <span class="nx">IItems</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./types&quot;</span><span class="p">;</span>
 
-// This module declaration fixes up the types, allowing .items to appear in intellisense
-// when you import &quot;@pnp/sp/items/list&quot;;
-declare module &quot;../lists/types&quot; {
-    // we need to extend the concrete type
-    interface _List {
-        readonly items: IItems;
-    }
-    // we need to extend the interface
-    // this may not be strictly necessary as the IList interface extends _List so it
-    // should pick up the same additions, but we have seen in some cases this does seem
-    // to be required. So we include it for safety as it will all be removed during
-    // transpilation we don't need to care about the extra code
-    interface IList {
-        readonly items: IItems;
-    }
-}
+<span class="c1">// This module declaration fixes up the types, allowing .items to appear in intellisense</span>
+<span class="c1">// when you import &quot;@pnp/sp/items/list&quot;;</span>
+<span class="kr">declare</span> <span class="nx">module</span> <span class="s2">&quot;../lists/types&quot;</span> <span class="p">{</span>
+    <span class="c1">// we need to extend the concrete type</span>
+    <span class="kr">interface</span> <span class="nx">_List</span> <span class="p">{</span>
+        <span class="nx">readonly</span> <span class="nx">items</span>: <span class="kt">IItems</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// we need to extend the interface</span>
+    <span class="c1">// this may not be strictly necessary as the IList interface extends _List so it</span>
+    <span class="c1">// should pick up the same additions, but we have seen in some cases this does seem</span>
+    <span class="c1">// to be required. So we include it for safety as it will all be removed during</span>
+    <span class="c1">// transpilation we don&#39;t need to care about the extra code</span>
+    <span class="kr">interface</span> <span class="nx">IList</span> <span class="p">{</span>
+        <span class="nx">readonly</span> <span class="nx">items</span>: <span class="kt">IItems</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-// finally we add the property to the _List class
-// this method call says add a property to _List named &quot;items&quot; and that property returns a result using the Items factory
-// The factory will be called with &quot;this&quot; when the property is accessed. If needed there is a fourth parameter to append additional path
-// information to the property url
-addProp(_List, &quot;items&quot;, Items);
-</code></pre>
+<span class="c1">// finally we add the property to the _List class</span>
+<span class="c1">// this method call says add a property to _List named &quot;items&quot; and that property returns a result using the Items factory</span>
+<span class="c1">// The factory will be called with &quot;this&quot; when the property is accessed. If needed there is a fourth parameter to append additional path</span>
+<span class="c1">// information to the property url</span>
+<span class="nx">addProp</span><span class="p">(</span><span class="nx">_List</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="nx">Items</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="general-rules-for-extending-pnpjs">General Rules for Extending PnPjs<a class="headerlink" href="#general-rules-for-extending-pnpjs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Only expose interfaces to consumers</li>

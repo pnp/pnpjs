@@ -2160,102 +2160,102 @@
 <p>PnPjs is designed to work as easily as possible within the SharePoint Framework so the authentication setup is very simple for the base case. Supply the current SharePoint Framework context to the library. This works for both SharePoint authentication and Graph authentication using the current user. Graph permissions are controlled by the permissions granted to the SharePoint shared application within your tenant.</p>
 <p>The below example is taken from a SharePoint Framework webpart.</p>
 <h3 id="connect-to-sharepoint-as-current-user">Connect to SharePoint as Current User<a class="headerlink" href="#connect-to-sharepoint-as-current-user" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected async onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">async</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  await super.onInit();
+  <span class="nx">await</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">();</span>
 
-  // other init code may be present
+  <span class="c1">// other init code may be present</span>
 
-  sp.setup(this.context);
-}
+  <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ...
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h3 id="connect-to-graph-as-current-user">Connect to Graph as Current User<a class="headerlink" href="#connect-to-graph-as-current-user" title="Permanent link">&para;</a></h3>
 <p>Permissions for this graph connection are controlled by the Shared SharePoint Application. You can target other applications using the <a href="#msal-client">MSAL Client</a>.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected async onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">async</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  await super.onInit();
+  <span class="nx">await</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">();</span>
 
-  // other init code may be present
+  <span class="c1">// other init code may be present</span>
 
-  // this will use the ADAL client behind the scenes with no additional configuration work
-  graph.setup(this.context);
-}
+  <span class="c1">// this will use the ADAL client behind the scenes with no additional configuration work</span>
+  <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ...
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h2 id="msal-client">MSAL Client<a class="headerlink" href="#msal-client" title="Permanent link">&para;</a></h2>
 <p>You might want/need to use a client configured to use your own AAD application and not the shared SharePoint application. You can do so using the <a href="../msaljsclient/">MSAL client</a>. Here we show this using graph, this works the same with any of the <a href="../../getting-started/">setup strategies</a>. Please see the <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview">MSAL library docs</a> for more details on what values to supply in the configuration.</p>
 <blockquote>
 <p>Note: you must install the @pnp/msaljsclient client package before using it</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { MsalClientSetup  } from &quot;@pnp/msaljsclient&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span>  <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected async onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">async</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  await super.onInit();
+  <span class="nx">await</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">();</span>
 
-  // other init code may be present
+  <span class="c1">// other init code may be present</span>
 
-  graph.setup({
-      graph: {
-          fetchClientFactory: MsalClientSetup({
-              auth: {
-                  authority: &quot;https://login.microsoftonline.com/common&quot;,
-                  clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-                  redirectUri: &quot;{your redirect uri}&quot;,
-              },
-              cache: {
-                  cacheLocation: &quot;sessionStorage&quot;,
-              },
-          }, [&quot;email&quot;, &quot;Files.Read.All&quot;, &quot;User.Read.All&quot;]),
-      },
-  });
-}
+  <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+              <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/common&quot;</span><span class="p">,</span>
+                  <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                  <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;{your redirect uri}&quot;</span><span class="p">,</span>
+              <span class="p">},</span>
+              <span class="nx">cache</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">cacheLocation</span><span class="o">:</span> <span class="s2">&quot;sessionStorage&quot;</span><span class="p">,</span>
+              <span class="p">},</span>
+          <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;Files.Read.All&quot;</span><span class="p">,</span> <span class="s2">&quot;User.Read.All&quot;</span><span class="p">]),</span>
+      <span class="p">},</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-// ...
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <h2 id="adal-client">ADAL Client<a class="headerlink" href="#adal-client" title="Permanent link">&para;</a></h2>
 <p>You can use the ADAL client from within SPFx, though it is recommended to transition to the MSAL client.</p>
 <blockquote>
 <p>Note: you must install the @pnp/adaljsclient client package before using it</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { AdalClient  } from &quot;@pnp/adaljsclient&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span>  <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/adaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-// ...
+<span class="c1">// ...</span>
 
-protected async onInit(): Promise&lt;void&gt; {
+<span class="kr">protected</span> <span class="nx">async</span> <span class="nx">onInit</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span> <span class="p">{</span>
 
-  await super.onInit();
+  <span class="nx">await</span> <span class="kr">super</span><span class="p">.</span><span class="nx">onInit</span><span class="p">();</span>
 
-  // other init code may be present
+  <span class="c1">// other init code may be present</span>
 
-  graph.setup({
-      graph: {
-          fetchClientFactory: () =&gt; {
-            return new AdalClient(
-                &quot;00000000-0000-0000-0000-000000000000&quot;,
-                &quot;{tenant}.onmicrosoft.com&quot;,
-                &quot;&quot;);
-          },
-  });
-}
+  <span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+      <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">AdalClient</span><span class="p">(</span>
+                <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;{tenant}.onmicrosoft.com&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">);</span>
+          <span class="p">},</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-// ...
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
                 
               
               

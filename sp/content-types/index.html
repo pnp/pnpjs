@@ -2251,22 +2251,22 @@
 </table>
 <h3 id="add-an-existing-content-type-to-a-collection">Add an existing Content Type to a collection<a class="headerlink" href="#add-an-existing-content-type-to-a-collection" title="Permanent link">&para;</a></h3>
 <p>The following example shows how to add the built in Picture Content Type to the Documents library.</p>
-<pre><code class="language-TypeScript">sp.web.lists.getByTitle(&quot;Documents&quot;).contentTypes.addAvailableContentType(&quot;0x010102&quot;);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">addAvailableContentType</span><span class="p">(</span><span class="s2">&quot;0x010102&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-a-content-type-by-id">Get a Content Type by Id<a class="headerlink" href="#get-a-content-type-by-id" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const d: IContentType = await sp.web.contentTypes.getById(&quot;0x01&quot;)();
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">d</span>: <span class="kt">IContentType</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;0x01&quot;</span><span class="p">)();</span>
 
-// log content type name to console
-console.log(d.name);
-</code></pre>
+<span class="c1">// log content type name to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-new-content-type">Add a new Content Type<a class="headerlink" href="#add-a-new-content-type" title="Permanent link">&para;</a></h3>
 <p>To add a new Content Type to a collection, parameters id and name are required. For more information on creating content type IDs reference the <a href="https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)">Microsoft Documentation</a>. While this documentation references SharePoint 2010 the structure of the IDs has not changed.</p>
-<pre><code class="language-TypeScript">sp.web.contentTypes.add(&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;, &quot;My Content Type&quot;);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;</span><span class="p">,</span> <span class="s2">&quot;My Content Type&quot;</span><span class="p">);</span>
+</code></pre></div>
 <p>It is also possible to provide a description and group parameter. For other settings, we can use the parameter named 'additionalSettings' which is a TypedHash, meaning you can send whatever properties you'd like in the body (provided that the property is supported by the SharePoint API).</p>
-<pre><code class="language-TypeScript">//Adding a content type with id, name, description, group and setting it to read only mode (using additionalsettings)
-sp.web.contentTypes.add(&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;, &quot;My Content Type&quot;, &quot;This is my content type.&quot;, &quot;_PnP Content Types&quot;, { ReadOnly: true });
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">//Adding a content type with id, name, description, group and setting it to read only mode (using additionalsettings)</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;</span><span class="p">,</span> <span class="s2">&quot;My Content Type&quot;</span><span class="p">,</span> <span class="s2">&quot;This is my content type.&quot;</span><span class="p">,</span> <span class="s2">&quot;_PnP Content Types&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">ReadOnly</span>: <span class="kt">true</span> <span class="p">});</span>
+</code></pre></div>
 <h2 id="icontenttype">IContentType<a class="headerlink" href="#icontenttype" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2293,34 +2293,34 @@ sp.web.contentTypes.add(&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;, &quo
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <h3 id="get-the-field-links">Get the field links<a class="headerlink" href="#get-the-field-links" title="Permanent link">&para;</a></h3>
 <p>Use this method to get a collection containing all the field links (SP.FieldLink) for a Content Type.</p>
-<pre><code class="language-TypeScript">// get field links from built in Content Type Document (Id: &quot;0x0101&quot;)
-const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).fieldLinks();
+<div class="highlight"><pre><span></span><code><span class="c1">// get field links from built in Content Type Document (Id: &quot;0x0101&quot;)</span>
+<span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;0x0101&quot;</span><span class="p">).</span><span class="nx">fieldLinks</span><span class="p">();</span>
 
-// log collection of fieldlinks to console
-console.log(d);
-</code></pre>
+<span class="c1">// log collection of fieldlinks to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-content-type-fields">Get Content Type fields<a class="headerlink" href="#get-content-type-fields" title="Permanent link">&para;</a></h3>
 <p>To get a collection with all fields on the Content Type, simply use this method.</p>
-<pre><code class="language-TypeScript">// get fields from built in Content Type Document (Id: &quot;0x0101&quot;)
-const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).fields();
+<div class="highlight"><pre><span></span><code><span class="c1">// get fields from built in Content Type Document (Id: &quot;0x0101&quot;)</span>
+<span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;0x0101&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">();</span>
 
-// log collection of fields to console
-console.log(d);
-</code></pre>
+<span class="c1">// log collection of fields to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-parent-content-type">Get parent Content Type<a class="headerlink" href="#get-parent-content-type" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// get parent Content Type from built in Content Type Document (Id: &quot;0x0101&quot;)
-const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).parent();
+<div class="highlight"><pre><span></span><code><span class="c1">// get parent Content Type from built in Content Type Document (Id: &quot;0x0101&quot;)</span>
+<span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;0x0101&quot;</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
 
-// log name of parent Content Type to console
-console.log(d.Name)
-</code></pre>
+<span class="c1">// log name of parent Content Type to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="get-content-type-workflow-associations">Get Content Type Workflow associations<a class="headerlink" href="#get-content-type-workflow-associations" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// get workflow associations from built in Content Type Document (Id: &quot;0x0101&quot;)
-const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).workflowAssociations();
+<div class="highlight"><pre><span></span><code><span class="c1">// get workflow associations from built in Content Type Document (Id: &quot;0x0101&quot;)</span>
+<span class="kr">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;0x0101&quot;</span><span class="p">).</span><span class="nx">workflowAssociations</span><span class="p">();</span>
 
-// log collection of workflow associations to console
-console.log(d);
-</code></pre>
+<span class="c1">// log collection of workflow associations to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

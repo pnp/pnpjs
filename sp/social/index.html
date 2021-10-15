@@ -2263,119 +2263,119 @@
 with app-only permissions.</p>
 <h2 id="getfollowedsitesuri">getFollowedSitesUri<a class="headerlink" href="#getfollowedsitesuri" title="Permanent link">&para;</a></h2>
 <p>Gets a URI to a site that lists the current user's followed sites.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-const uri = await sp.social.getFollowedSitesUri();
-</code></pre>
+<span class="kr">const</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">getFollowedSitesUri</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="getfolloweddocumentsuri">getFollowedDocumentsUri<a class="headerlink" href="#getfolloweddocumentsuri" title="Permanent link">&para;</a></h2>
 <p>Gets a URI to a site that lists the current user's followed documents.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-const uri = await sp.social.getFollowedDocumentsUri();
-</code></pre>
+<span class="kr">const</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">getFollowedDocumentsUri</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="follow">follow<a class="headerlink" href="#follow" title="Permanent link">&para;</a></h2>
 <p>Makes the current user start following a user, document, site, or tag</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { SocialActorType } from &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SocialActorType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// follow a site
-const r1 = await sp.social.follow({
-    ActorType: SocialActorType.Site,
-    ContentUri: &quot;htts://tenant.sharepoint.com/sites/site&quot;,
-});
+<span class="c1">// follow a site</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">follow</span><span class="p">({</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.Site</span><span class="p">,</span>
+    <span class="nx">ContentUri</span><span class="o">:</span> <span class="s2">&quot;htts://tenant.sharepoint.com/sites/site&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// follow a person
-const r2 = await sp.social.follow({
-    AccountName: &quot;i:0#.f|membership|person@tenant.com&quot;,
-    ActorType: SocialActorType.User,
-});
+<span class="c1">// follow a person</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">follow</span><span class="p">({</span>
+    <span class="nx">AccountName</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|person@tenant.com&quot;</span><span class="p">,</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.User</span><span class="p">,</span>
+<span class="p">});</span>
 
-// follow a doc
-const r3 = await sp.social.follow({
-    ActorType: SocialActorType.Document,
-    ContentUri: &quot;https://tenant.sharepoint.com/sites/dev/SitePages/Test.aspx&quot;,
-});
+<span class="c1">// follow a doc</span>
+<span class="kr">const</span> <span class="nx">r3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">follow</span><span class="p">({</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.Document</span><span class="p">,</span>
+    <span class="nx">ContentUri</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/SitePages/Test.aspx&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-// follow a tag
-// You need the tag GUID to start following a tag.
-// You can't get the GUID by using the REST service, but you can use the .NET client object model or the JavaScript object model.
-// See How to get a tag's GUID based on the tag's name by using the JavaScript object model.
-// https://docs.microsoft.com/en-us/sharepoint/dev/general-development/follow-content-in-sharepoint#bk_getTagGuid
-const r4 = await sp.social.follow({
-    ActorType: SocialActorType.Tag,
-    TagGuid: &quot;19a4a484-c1dc-4bc5-8c93-bb96245ce928&quot;,
-});
-</code></pre>
+<span class="c1">// follow a tag</span>
+<span class="c1">// You need the tag GUID to start following a tag.</span>
+<span class="c1">// You can&#39;t get the GUID by using the REST service, but you can use the .NET client object model or the JavaScript object model.</span>
+<span class="c1">// See How to get a tag&#39;s GUID based on the tag&#39;s name by using the JavaScript object model.</span>
+<span class="c1">// https://docs.microsoft.com/en-us/sharepoint/dev/general-development/follow-content-in-sharepoint#bk_getTagGuid</span>
+<span class="kr">const</span> <span class="nx">r4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">follow</span><span class="p">({</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.Tag</span><span class="p">,</span>
+    <span class="nx">TagGuid</span><span class="o">:</span> <span class="s2">&quot;19a4a484-c1dc-4bc5-8c93-bb96245ce928&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="isfollowed">isFollowed<a class="headerlink" href="#isfollowed" title="Permanent link">&para;</a></h2>
 <p>Indicates whether the current user is following a specified user, document, site, or tag</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { SocialActorType } from &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SocialActorType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// pass the same social actor struct as shown in follow example for each type
-const r = await sp.social.isFollowed({
-    AccountName: &quot;i:0#.f|membership|person@tenant.com&quot;,
-    ActorType: SocialActorType.User,
-});
-</code></pre>
+<span class="c1">// pass the same social actor struct as shown in follow example for each type</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">isFollowed</span><span class="p">({</span>
+    <span class="nx">AccountName</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|person@tenant.com&quot;</span><span class="p">,</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.User</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="stopfollowing">stopFollowing<a class="headerlink" href="#stopfollowing" title="Permanent link">&para;</a></h2>
 <p>Makes the current user stop following a user, document, site, or tag</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { SocialActorType } from &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SocialActorType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// pass the same social actor struct as shown in follow example for each type
-const r = await sp.social.stopFollowing({
-    AccountName: &quot;i:0#.f|membership|person@tenant.com&quot;,
-    ActorType: SocialActorType.User,
-});
-</code></pre>
+<span class="c1">// pass the same social actor struct as shown in follow example for each type</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">stopFollowing</span><span class="p">({</span>
+    <span class="nx">AccountName</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|person@tenant.com&quot;</span><span class="p">,</span>
+    <span class="nx">ActorType</span>: <span class="kt">SocialActorType.User</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="my">my<a class="headerlink" href="#my" title="Permanent link">&para;</a></h2>
 <h3 id="get">get<a class="headerlink" href="#get" title="Permanent link">&para;</a></h3>
 <p>Gets this user's social information</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-const r = await sp.social.my.get();
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="followed">followed<a class="headerlink" href="#followed" title="Permanent link">&para;</a></h3>
 <p>Gets users, documents, sites, and tags that the current user is following based on the supplied flags.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { SocialActorType } from &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SocialActorType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// get all the followed documents
-const r1 = await sp.social.my.followed(SocialActorTypes.Document);
+<span class="c1">// get all the followed documents</span>
+<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">followed</span><span class="p">(</span><span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">Document</span><span class="p">);</span>
 
-// get all the followed documents and sites
-const r2 = await sp.social.my.followed(SocialActorTypes.Document | SocialActorTypes.Site);
+<span class="c1">// get all the followed documents and sites</span>
+<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">followed</span><span class="p">(</span><span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">Document</span> <span class="o">|</span> <span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">Site</span><span class="p">);</span>
 
-// get all the followed sites updated in the last 24 hours
-const r3 = await sp.social.my.followed(SocialActorTypes.Site | SocialActorTypes.WithinLast24Hours);
-</code></pre>
+<span class="c1">// get all the followed sites updated in the last 24 hours</span>
+<span class="kr">const</span> <span class="nx">r3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">followed</span><span class="p">(</span><span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">Site</span> <span class="o">|</span> <span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">WithinLast24Hours</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="followedcount">followedCount<a class="headerlink" href="#followedcount" title="Permanent link">&para;</a></h3>
 <p>Works as followed but returns on the count of actors specified by the query</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { SocialActorType } from &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SocialActorType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// get the followed documents count
-const r = await sp.social.my.followedCount(SocialActorTypes.Document);
-</code></pre>
+<span class="c1">// get the followed documents count</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">followedCount</span><span class="p">(</span><span class="nx">SocialActorTypes</span><span class="p">.</span><span class="nx">Document</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="followers">followers<a class="headerlink" href="#followers" title="Permanent link">&para;</a></h3>
 <p>Gets the users who are following the current user.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// get the followed documents count
-const r = await sp.social.my.followers();
-</code></pre>
+<span class="c1">// get the followed documents count</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">followers</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="suggestions">suggestions<a class="headerlink" href="#suggestions" title="Permanent link">&para;</a></h3>
 <p>Gets users who the current user might want to follow.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/social&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/social&quot;</span><span class="p">;</span>
 
-// get the followed documents count
-const r = await sp.social.my.suggestions();
-</code></pre>
+<span class="c1">// get the followed documents count</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">social</span><span class="p">.</span><span class="nx">my</span><span class="p">.</span><span class="nx">suggestions</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

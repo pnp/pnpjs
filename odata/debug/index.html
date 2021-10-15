@@ -2134,62 +2134,62 @@
 <p>The debug extensions are added by including the <code>import "@pnp/odata/debug";</code> statement in your project. It should be removed for production. This module provides several methods to help with debugging Queryable Proxy objects.</p>
 <h2 id="unwrap">Unwrap<a class="headerlink" href="#unwrap" title="Permanent link">&para;</a></h2>
 <p>The <code>__unwrap()</code> method returns the concrete Queryable instance wrapped by the Proxy. You can then examine this object in various ways or dump it to the console for debugging.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/odata/debug&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/odata/debug&quot;</span><span class="p">;</span>
 
-// unwrap the underlying concrete queryable instance
-const unwrapped = sp.web.__unwrap();
+<span class="c1">// unwrap the underlying concrete queryable instance</span>
+<span class="kr">const</span> <span class="nx">unwrapped</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">__unwrap</span><span class="p">();</span>
 
-console.log(JSON.stringify(unwrapped, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">unwrapped</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <blockquote>
 <p>Note: It is not supported to unwrap objects and then use them. It may work in some cases, but this behavior may change as what is contained with the Proxy is an implementation detail and should not be relied upon. Without the Proxy wrapper we make no guarantees.</p>
 </blockquote>
 <h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
 <p>All of the information related to a queryable's request is contained within the "data" property. If you need to grab that information you can use the <code>__data</code> property.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/odata/debug&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/odata/debug&quot;</span><span class="p">;</span>
 
-// get the underlying queryable's data
-const data = sp.web.__data;
+<span class="c1">// get the underlying queryable&#39;s data</span>
+<span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">__data</span><span class="p">;</span>
 
-console.log(JSON.stringify(data, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="json">JSON<a class="headerlink" href="#json" title="Permanent link">&para;</a></h2>
 <p>You can also get a representation of the wrapped instance in JSON format consisting of all its own properties and values.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/odata/debug&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/odata/debug&quot;</span><span class="p">;</span>
 
-// get the underlying queryable's as JSON
-const data = sp.web.__json();
+<span class="c1">// get the underlying queryable&#39;s as JSON</span>
+<span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">__json</span><span class="p">();</span>
 
-console.log(JSON.stringify(data, null, 2));
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="deep-trace">Deep Trace<a class="headerlink" href="#deep-trace" title="Permanent link">&para;</a></h2>
 <p>Deep tracing is the ability to write every property and method access to the log. This produces VERY verbose output but can be helpful in situations where you need to trace how things are called and when within the Proxy. You enable deep tracing using the <code>__enableDeepTrace</code> method and disable using <code>__disableDeepTrace</code>.</p>
-<pre><code class="language-TypeScript">import { Logger, ConsoleListener } from &quot;@pnp/logging&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/odata/debug&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span><span class="p">,</span> <span class="nx">ConsoleListener</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/odata/debug&quot;</span><span class="p">;</span>
 
-Logger.subscribe(new ConsoleListener());
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">new</span> <span class="nx">ConsoleListener</span><span class="p">());</span>
 
-// grab an instance to enable deep trace
-const web = sp.web;
+<span class="c1">// grab an instance to enable deep trace</span>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">;</span>
 
-// enable deep trace on the instance
-web.__enableDeepTrace();
+<span class="c1">// enable deep trace on the instance</span>
+<span class="nx">web</span><span class="p">.</span><span class="nx">__enableDeepTrace</span><span class="p">();</span>
 
-const y = await web.lists();
+<span class="kr">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
 
-// disable deep trace
-web.__disableDeepTrace();
-</code></pre>
+<span class="c1">// disable deep trace</span>
+<span class="nx">web</span><span class="p">.</span><span class="nx">__disableDeepTrace</span><span class="p">();</span>
+</code></pre></div>
 <p>The example above produces the following output:</p>
-<pre><code>Message: get ::&gt; lists
+<div class="highlight"><pre><span></span><code>Message: get ::&gt; lists
 Message: get ::&gt; lists
 Message: get ::&gt; toUrl
 Message: get ::&gt; toUrl
@@ -2216,7 +2216,7 @@ Message: [5912fe3e-6c2a-4538-84ee-eec28a29cfef] (1580232124102) Returning result
 Message: [5912fe3e-6c2a-4538-84ee-eec28a29cfef] (1580232124102) Returning result from pipeline. Set logging to verbose to see data. Data: {}
 Message: get ::&gt; __disableDeepTrace
 Message: get ::&gt; __disableDeepTrace
-</code></pre>
+</code></pre></div>
                 
               
               

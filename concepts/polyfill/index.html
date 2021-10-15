@@ -2177,44 +2177,44 @@
 <h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
 <p><code>npm install @pnp/polyfill-ie11 --save</code></p>
 <h3 id="use">Use<a class="headerlink" href="#use" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import &quot;@pnp/polyfill-ie11&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`).get().then(r =&gt; {
-  this.domElement.innerHTML += r.map(l =&gt; `${l.Title}&lt;br /&gt;`);
-});
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="sb">`ID gt 6000`</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">l</span> <span class="o">=&gt;</span> <span class="sb">`</span><span class="si">${</span><span class="nx">l</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">&lt;br /&gt;`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="selective-use">Selective Use<a class="headerlink" href="#selective-use" title="Permanent link">&para;</a></h3>
 <p>Starting with version 2.0.2 you can selectively include the polyfills from the package. Depending on your needs it may make sense in your application to use the underlying libraries directly. We have added an <a href="#general-statement-on-polyfills">expanded statement on our polyfills</a>.</p>
-<pre><code class="language-TypeScript">// individually include polyfills as needed to match your requirements
-import &quot;@pnp/polyfill-ie11/dist/fetch&quot;;
-import &quot;@pnp/polyfill-ie11/dist/fill&quot;;
-import &quot;@pnp/polyfill-ie11/dist/from&quot;;
-import &quot;@pnp/polyfill-ie11/dist/iterator&quot;;
-import &quot;@pnp/polyfill-ie11/dist/map&quot;;
-import &quot;@pnp/polyfill-ie11/dist/promise&quot;;
-import &quot;@pnp/polyfill-ie11/dist/reflect&quot;;
-import &quot;@pnp/polyfill-ie11/dist/symbol&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// individually include polyfills as needed to match your requirements</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/fetch&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/fill&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/from&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/iterator&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/map&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/promise&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/reflect&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/symbol&quot;</span><span class="p">;</span>
 
 
-// works in IE11 and other browsers
-sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`).get().then(r =&gt; {
-  this.domElement.innerHTML += r.map(l =&gt; `${l.Title}&lt;br /&gt;`);
-});
-</code></pre>
+<span class="c1">// works in IE11 and other browsers</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="sb">`ID gt 6000`</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">l</span> <span class="o">=&gt;</span> <span class="sb">`</span><span class="si">${</span><span class="nx">l</span><span class="p">.</span><span class="nx">Title</span><span class="si">}</span><span class="sb">&lt;br /&gt;`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="searchquerybuilder">SearchQueryBuilder<a class="headerlink" href="#searchquerybuilder" title="Permanent link">&para;</a></h3>
 <p>Because the latest version of SearchQueryBuilder uses Proxy internally you can fall back on the older version as shown below.</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/polyfill-ie11&quot;;
-import { SearchQueryBuilder } from &quot;@pnp/polyfill-ie11/dist/searchquerybuilder&quot;;
-import { sp, ISearchQueryBuilder } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/polyfill-ie11&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/polyfill-ie11/dist/searchquerybuilder&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ISearchQueryBuilder</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-// works in IE11 and other browsers
-const builder: ISearchQueryBuilder = SearchQueryBuilder().text(&quot;test&quot;);
+<span class="c1">// works in IE11 and other browsers</span>
+<span class="kr">const</span> <span class="nx">builder</span>: <span class="kt">ISearchQueryBuilder</span> <span class="o">=</span> <span class="nx">SearchQueryBuilder</span><span class="p">().</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">);</span>
 
-sp.search(builder).then(r =&gt; {
-  this.domElement.innerHTML = JSON.stringify(r);
-});
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">builder</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">domElement</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="general-statement-on-polyfills">General Statement on Polyfills<a class="headerlink" href="#general-statement-on-polyfills" title="Permanent link">&para;</a></h2>
 <p>Internet Explorer 11 (IE11) has been an enterprise standard browser for many years. Given the complexity in changing technical platforms in many organizations, it is no surprise standardization on this out-of-date browser continues. Unfortunately, for those organizations, the Internet has moved on and many - if not all - SaaS platforms are embracing modern standards and no longer supporting the legacy IE11 browser. Even Microsoft states in their official documentation that Microsoft 365 is best experienced with a modern browser. They have even gone so far to build the latest version of Microsoft Edge based on Chromium (Edge Chromium), with an "Internet Explorer mode" allowing organizations to load legacy sites which require IE automatically.</p>
 <p>PnPjs is now "modern" as well, and by that we mean we have moved to using capabilities of current browsers and JavaScript which are not present in IE11. We understand as a developer your ability to require an organization to switch browsers is unrealistic. We want to do everything we can to support you, but it is up to you to ensure your application is properly supported in IE11.</p>

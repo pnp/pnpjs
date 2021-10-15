@@ -2046,45 +2046,45 @@
                 <h1 id="pnpconfig-storeconfiguration">@pnp/config-store/configuration<a class="headerlink" href="#pnpconfig-storeconfiguration" title="Permanent link">&para;</a></h1>
 <p>The main class exported from the config-store package is Settings. This is the class through which you will load and access your
 settings via <a href="../providers/">providers</a>.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/presets/all&quot;;
-import { Settings, SPListConfigurationProvider } from &quot;@pnp/config-store&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Settings</span><span class="p">,</span> <span class="nx">SPListConfigurationProvider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/config-store&quot;</span><span class="p">;</span>
 
-// create an instance of the settings class, could be static and shared across your application
-// or built as needed.
-const settings = new Settings();
+<span class="c1">// create an instance of the settings class, could be static and shared across your application</span>
+<span class="c1">// or built as needed.</span>
+<span class="kr">const</span> <span class="nx">settings</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Settings</span><span class="p">();</span>
 
-// you can add/update a single value using add
-settings.add(&quot;mykey&quot;, &quot;myvalue&quot;);
+<span class="c1">// you can add/update a single value using add</span>
+<span class="nx">settings</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;mykey&quot;</span><span class="p">,</span> <span class="s2">&quot;myvalue&quot;</span><span class="p">);</span>
 
-// you can also add/update a JSON value which will be stringified for you as a shorthand
-settings.addJSON(&quot;mykey2&quot;, {
-    field: 1,
-    field2: 2,
-    field3: 3,
-});
+<span class="c1">// you can also add/update a JSON value which will be stringified for you as a shorthand</span>
+<span class="nx">settings</span><span class="p">.</span><span class="nx">addJSON</span><span class="p">(</span><span class="s2">&quot;mykey2&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">field</span>: <span class="kt">1</span><span class="p">,</span>
+    <span class="nx">field2</span>: <span class="kt">2</span><span class="p">,</span>
+    <span class="nx">field3</span>: <span class="kt">3</span><span class="p">,</span>
+<span class="p">});</span>
 
-// and you can apply a plain object of keys/values that will be written as single values
-// this results in each enumerable property of the supplied object being added to the settings collection
-settings.apply({
-    field: 1,
-    field2: 2,
-    field3: 3,
-});
+<span class="c1">// and you can apply a plain object of keys/values that will be written as single values</span>
+<span class="c1">// this results in each enumerable property of the supplied object being added to the settings collection</span>
+<span class="nx">settings</span><span class="p">.</span><span class="nx">apply</span><span class="p">({</span>
+    <span class="nx">field</span>: <span class="kt">1</span><span class="p">,</span>
+    <span class="nx">field2</span>: <span class="kt">2</span><span class="p">,</span>
+    <span class="nx">field3</span>: <span class="kt">3</span><span class="p">,</span>
+<span class="p">});</span>
 
-// and finally you can load values from a configuration provider
-const w = Web(&quot;https://mytenant.sharepoint.com/sites/dev&quot;);
-const provider = new SPListConfigurationProvider(w, &quot;myconfiglistname&quot;);
+<span class="c1">// and finally you can load values from a configuration provider</span>
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/dev&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SPListConfigurationProvider</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s2">&quot;myconfiglistname&quot;</span><span class="p">);</span>
 
-// this will load values from the supplied list
-// by default the key will be from the Title field and the value from a column named Value
-await settings.load(provider);
+<span class="c1">// this will load values from the supplied list</span>
+<span class="c1">// by default the key will be from the Title field and the value from a column named Value</span>
+<span class="nx">await</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">provider</span><span class="p">);</span>
 
-// once we have loaded values we can then read them
-const value = settings.get(&quot;mykey&quot;);
+<span class="c1">// once we have loaded values we can then read them</span>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;mykey&quot;</span><span class="p">);</span>
 
-// or read JSON that will be parsed for you from the store
-const value2 = settings.getJSON(&quot;mykey2&quot;);
-</code></pre>
+<span class="c1">// or read JSON that will be parsed for you from the store</span>
+<span class="kr">const</span> <span class="nx">value2</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s2">&quot;mykey2&quot;</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

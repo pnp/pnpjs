@@ -2154,44 +2154,39 @@
 </ul>
 <h2 id="get-all-of-the-subscriptions">Get all of the Subscriptions<a class="headerlink" href="#get-all-of-the-subscriptions" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions(). If successful this method returns a 200 OK response code and a list of subscription objects in the response body.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/subscriptions&quot;</span>
 
-const subscriptions = await graph.subscriptions();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">subscriptions</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="create-a-new-subscription">Create a new Subscription<a class="headerlink" href="#create-a-new-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.add(). Creating a subscription requires read scope to the resource. For example, to get notifications messages, your app needs the Mail.Read permission. To learn more about the scopes visit <a href="https://docs.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0">this</a> url.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/subscriptions&quot;</span>
 
-const addedSubscription = await graph.subscriptions.add(&quot;created,updated&quot;, &quot;https://webhook.azurewebsites.net/api/send/myNotifyClient&quot;, &quot;me/mailFolders('Inbox')/messages&quot;, &quot;2019-11-20T18:23:45.9356913Z&quot;);
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">addedSubscription</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;created,updated&quot;</span><span class="p">,</span> <span class="s2">&quot;https://webhook.azurewebsites.net/api/send/myNotifyClient&quot;</span><span class="p">,</span> <span class="s2">&quot;me/mailFolders(&#39;Inbox&#39;)/messages&quot;</span><span class="p">,</span> <span class="s2">&quot;2019-11-20T18:23:45.9356913Z&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-subscription-by-id">Get Subscription by Id<a class="headerlink" href="#get-subscription-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById() you can get one of the subscriptions</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/subscriptions&quot;</span>
 
-const subscription = await graph.subscriptions.getById('subscriptionId')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="delete-a-subscription">Delete a Subscription<a class="headerlink" href="#delete-a-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById().delete() you can remove one of the Subscriptions</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/subscriptions&quot;</span>
 
-const delSubscription = await graph.subscriptions.getById('subscriptionId').delete();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">delSubscription</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="update-a-subscription">Update a Subscription<a class="headerlink" href="#update-a-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById().update() you can update one of the Subscriptions</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/subscriptions&quot;</span>
 
-const updSubscription = await graph.subscriptions.getById('subscriptionId').update({changeType: &quot;created,updated,deleted&quot; });
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">updSubscription</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;subscriptionId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">changeType</span><span class="o">:</span> <span class="s2">&quot;created,updated,deleted&quot;</span> <span class="p">});</span>
+</code></pre></div>
                 
               
               

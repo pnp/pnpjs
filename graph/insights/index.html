@@ -2249,94 +2249,94 @@
 </table>
 <h3 id="get-all-trending-documents">Get all Trending documents<a class="headerlink" href="#get-all-trending-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents from OneDrive and SharePoint sites trending around a user.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const trending = await graph.me.insights.trending()
+<span class="kr">const</span> <span class="nx">trending</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">()</span>
 
-const trending = await graph.users.getById(&quot;userId&quot;).insights.trending()
-</code></pre>
+<span class="kr">const</span> <span class="nx">trending</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="get-a-trending-document-by-id">Get a Trending document by Id<a class="headerlink" href="#get-a-trending-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a trending document by Id.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const trendingDoc = await graph.me.insights.trending.getById('Id')()
+<span class="kr">const</span> <span class="nx">trendingDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
 
-const trendingDoc = await graph.users.getById(&quot;userId&quot;).insights.trending.getById('Id')()
-</code></pre>
+<span class="kr">const</span> <span class="nx">trendingDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
+</code></pre></div>
 <h3 id="get-the-resource-from-trending-document">Get the resource from Trending document<a class="headerlink" href="#get-the-resource-from-trending-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a trending document.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const resource = await graph.me.insights.trending.getById('Id').resource()
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
 
-const resource = await graph.users.getById(&quot;userId&quot;).insights.trending.getById('Id').resource()
-</code></pre>
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">trending</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="get-all-used-documents">Get all Used documents<a class="headerlink" href="#get-all-used-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents viewed and modified by a user. Includes documents the user used in OneDrive for Business, SharePoint, opened as email attachments, and as link attachments from sources like Box, DropBox and Google Drive.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const used = await graph.me.insights.used()
+<span class="kr">const</span> <span class="nx">used</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">()</span>
 
-const used = await graph.users.getById(&quot;userId&quot;).insights.used()
-</code></pre>
+<span class="kr">const</span> <span class="nx">used</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="get-a-used-document-by-id">Get a Used document by Id<a class="headerlink" href="#get-a-used-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a used document by Id.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const usedDoc = await graph.me.insights.used.getById('Id')()
+<span class="kr">const</span> <span class="nx">usedDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
 
-const usedDoc = await graph.users.getById(&quot;userId&quot;).insights.used.getById('Id')()
-</code></pre>
+<span class="kr">const</span> <span class="nx">usedDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
+</code></pre></div>
 <h3 id="get-the-resource-from-used-document">Get the resource from Used document<a class="headerlink" href="#get-the-resource-from-used-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a used document.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const resource = await graph.me.insights.used.getById('Id').resource()
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
 
-const resource = await graph.users.getById(&quot;userId&quot;).insights.used.getById('Id').resource()
-</code></pre>
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">used</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="get-all-shared-documents">Get all Shared documents<a class="headerlink" href="#get-all-shared-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents shared with a user. Documents can be shared as email attachments or as OneDrive for Business links sent in emails.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const shared = await graph.me.insights.shared()
+<span class="kr">const</span> <span class="nx">shared</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">()</span>
 
-const shared = await graph.users.getById(&quot;userId&quot;).insights.shared()
-</code></pre>
+<span class="kr">const</span> <span class="nx">shared</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="get-a-shared-document-by-id">Get a Shared document by Id<a class="headerlink" href="#get-a-shared-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a shared document by Id.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const sharedDoc = await graph.me.insights.shared.getById('Id')()
+<span class="kr">const</span> <span class="nx">sharedDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
 
-const sharedDoc = await graph.users.getById(&quot;userId&quot;).insights.shared.getById('Id')()
-</code></pre>
+<span class="kr">const</span> <span class="nx">sharedDoc</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)()</span>
+</code></pre></div>
 <h3 id="get-the-resource-from-a-shared-document">Get the resource from a Shared document<a class="headerlink" href="#get-the-resource-from-a-shared-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a shared document.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/insights&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/insights&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const resource = await graph.me.insights.shared.getById('Id').resource()
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
 
-const resource = await graph.users.getById(&quot;userId&quot;).insights.shared.getById('Id').resource()
-</code></pre>
+<span class="kr">const</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">).</span><span class="nx">insights</span><span class="p">.</span><span class="nx">shared</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">).</span><span class="nx">resource</span><span class="p">()</span>
+</code></pre></div>
                 
               
               

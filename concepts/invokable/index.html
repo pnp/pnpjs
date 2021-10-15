@@ -2087,32 +2087,32 @@
                 
                 <h1 id="invokables">Invokables<a class="headerlink" href="#invokables" title="Permanent link">&para;</a></h1>
 <p>For people who have been using the library since the early days you are familiar with the need to use the <code>.get()</code> method to invoke a method chain:</p>
-<pre><code class="language-TypeScript">// an example of get
-const lists = await sp.web.lists.get();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// an example of get</span>
+<span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <p>Starting with v2 this is no longer required, you can invoke the object directly to execute the default action for that class - typically a get.</p>
-<pre><code class="language-TypeScript">const lists = await sp.web.lists();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">lists</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
+</code></pre></div>
 <p>This has two main benefits for people using the library: you can write less code, and we now have a way to model default actions for objects that might do something other than a get. The way we designed the library prior to v2 hid the post, put, delete operations as protected methods attached to the Queryable classes. Without diving into why we did this, having a rethink seemed appropriate for v2. Based on that, the entire queryable chain is now invokable as well for any of the operations.</p>
 <h2 id="other-operations-post-put-delete">Other Operations (post, put, delete)<a class="headerlink" href="#other-operations-post-put-delete" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp, spPost } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spPost</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// do a post to a web - just an example doesn't do anything fancy
-spPost(sp.web);
-</code></pre>
+<span class="c1">// do a post to a web - just an example doesn&#39;t do anything fancy</span>
+<span class="nx">spPost</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">);</span>
+</code></pre></div>
 <p>Things get a little more interesting in that you can now do posts (or any of the operations) to any of the urls defined by a fluent chain. Meaning you can easily implement methods that are not yet part of the library. For this example I have made up a method called "MagicFieldCreationMethod" that doesn't exist. Imagine it was just added to the SharePoint API and we do not yet have support for it. You can now write code like so:</p>
-<pre><code class="language-TypeScript">import { sp, spPost, SharePointQueryable } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/fields/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">spPost</span><span class="p">,</span> <span class="nx">SharePointQueryable</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields/web&quot;</span><span class="p">;</span>
 
-// call our made up example method
-spPost(SharePointQueryable(sp.web.fields, &quot;MagicFieldCreationMethod&quot;), {
-    body: JSON.stringify({
-        // ... this would be the post body
-    }),
-});
-</code></pre>
+<span class="c1">// call our made up example method</span>
+<span class="nx">spPost</span><span class="p">(</span><span class="nx">SharePointQueryable</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">,</span> <span class="s2">&quot;MagicFieldCreationMethod&quot;</span><span class="p">),</span> <span class="p">{</span>
+    <span class="nx">body</span>: <span class="kt">JSON.stringify</span><span class="p">({</span>
+        <span class="c1">// ... this would be the post body</span>
+    <span class="p">}),</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               

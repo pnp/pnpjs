@@ -2202,45 +2202,45 @@
 <blockquote>
 <p>If you are calling Microsoft Graph sovereign or gov clouds the scope may need to be updated.</p>
 </blockquote>
-<pre><code class="language-JavaScript">const privateKey = `-----BEGIN RSA PRIVATE KEY-----
-your private key, read from a file or included here
------END RSA PRIVATE KEY-----
-`;
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">privateKey</span> <span class="o">=</span> <span class="sb">`-----BEGIN RSA PRIVATE KEY-----</span>
+<span class="sb">your private key, read from a file or included here</span>
+<span class="sb">-----END RSA PRIVATE KEY-----</span>
+<span class="sb">`</span><span class="p">;</span>
 
-var msalInit = {
-    auth: {
-        authority: &quot;https://login.microsoftonline.com/{tenant id}&quot;,
-        clientCertificate: {
-            thumbprint: &quot;{certificate thumbnail}&quot;,
-            privateKey: privateKey,
-        },
-        clientId: &quot;{AAD App registration id}&quot;,
-    }
-}
+<span class="kd">var</span> <span class="nx">msalInit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant id}&quot;</span><span class="p">,</span>
+        <span class="nx">clientCertificate</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">thumbprint</span><span class="o">:</span> <span class="s2">&quot;{certificate thumbnail}&quot;</span><span class="p">,</span>
+            <span class="nx">privateKey</span><span class="o">:</span> <span class="nx">privateKey</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;{AAD App registration id}&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-var settings = {
-    testing: {
-        enableWebTests: true,
-        testUser: &quot;i:0#.f|membership|user@consto.com&quot;,
-        sp: {
-            url: &quot;{required for MSAL - absolute url of test site}&quot;,
-            notificationUrl: &quot;{ optional: notification url }&quot;,
-            msal: {
-                init: msalInit,
-                scopes: [&quot;https://{tenant}.sharepoint.com/.default&quot;]
-            },
-        },
-        graph: {
-            msal: {
-                init: msalInit,
-                scopes: [&quot;https://graph.microsoft.com/.default&quot;]
-            },
-        },
-    },
-}
+<span class="kd">var</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">testing</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">enableWebTests</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">testUser</span><span class="o">:</span> <span class="s2">&quot;i:0#.f|membership|user@consto.com&quot;</span><span class="p">,</span>
+        <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;{required for MSAL - absolute url of test site}&quot;</span><span class="p">,</span>
+            <span class="nx">notificationUrl</span><span class="o">:</span> <span class="s2">&quot;{ optional: notification url }&quot;</span><span class="p">,</span>
+            <span class="nx">msal</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">init</span><span class="o">:</span> <span class="nx">msalInit</span><span class="p">,</span>
+                <span class="nx">scopes</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;https://{tenant}.sharepoint.com/.default&quot;</span><span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">msal</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">init</span><span class="o">:</span> <span class="nx">msalInit</span><span class="p">,</span>
+                <span class="nx">scopes</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;https://graph.microsoft.com/.default&quot;</span><span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 
-module.exports = settings;
-</code></pre>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">;</span>
+</code></pre></div>
 <p>The settings object has a single sub-object <code>testing</code> which contains the configuration used for debugging and testing PnPjs. The parts of this object are described in detail below.</p>
 <table>
 <thead>
@@ -2308,26 +2308,26 @@ module.exports = settings;
 </tbody>
 </table>
 <h2 id="settings-file-format-2012">Settings File Format (&lt;= 2.0.12)<a class="headerlink" href="#settings-file-format-2012" title="Permanent link">&para;</a></h2>
-<pre><code class="language-JavaScript">var settings = {
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
 
-    testing: {
-        enableWebTests: true,
-        sp: {
-            id: &quot;{ client id }&quot;,
-            secret: &quot;{ client secret }&quot;,
-            url: &quot;{ site collection url }&quot;,
-            notificationUrl: &quot;{ optional: notification url }&quot;,
-        },
-        graph: {
-            tenant: &quot;{tenant.onmicrosoft.com}&quot;,
-            id: &quot;{your app id}&quot;,
-            secret: &quot;{your secret}&quot;
-        },
-    }
-}
+    <span class="nx">testing</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">enableWebTests</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;{ client id }&quot;</span><span class="p">,</span>
+            <span class="nx">secret</span><span class="o">:</span> <span class="s2">&quot;{ client secret }&quot;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;{ site collection url }&quot;</span><span class="p">,</span>
+            <span class="nx">notificationUrl</span><span class="o">:</span> <span class="s2">&quot;{ optional: notification url }&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">tenant</span><span class="o">:</span> <span class="s2">&quot;{tenant.onmicrosoft.com}&quot;</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;{your app id}&quot;</span><span class="p">,</span>
+            <span class="nx">secret</span><span class="o">:</span> <span class="s2">&quot;{your secret}&quot;</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-module.exports = settings;
-</code></pre>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">settings</span><span class="p">;</span>
+</code></pre></div>
 <table>
 <thead>
 <tr>

@@ -2172,44 +2172,44 @@
 </table>
 <h2 id="current-user-photo">Current User Photo<a class="headerlink" href="#current-user-photo" title="Permanent link">&para;</a></h2>
 <p>This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/photos&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/photos&quot;</span><span class="p">;</span>
 
-const photoValue = await graph.me.photo.getBlob();
-const url = window.URL || window.webkitURL;
-const blobUrl = url.createObjectURL(photoValue);
-document.getElementById(&quot;photoElement&quot;).setAttribute(&quot;src&quot;, blobUrl);
-</code></pre>
+<span class="kr">const</span> <span class="nx">photoValue</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">photo</span><span class="p">.</span><span class="nx">getBlob</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webkitURL</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">blobUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">photoValue</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;photoElement&quot;</span><span class="p">).</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="nx">blobUrl</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="current-group-photo">Current Group Photo<a class="headerlink" href="#current-group-photo" title="Permanent link">&para;</a></h2>
 <p>This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/groups&quot;;
-import &quot;@pnp/graph/photos&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/photos&quot;</span><span class="p">;</span>
 
-const photoValue = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).photo.getBlob();
-const url = window.URL || window.webkitURL;
-const blobUrl = url.createObjectURL(photoValue);
-document.getElementById(&quot;photoElement&quot;).setAttribute(&quot;src&quot;, blobUrl);
-</code></pre>
+<span class="kr">const</span> <span class="nx">photoValue</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;</span><span class="p">).</span><span class="nx">photo</span><span class="p">.</span><span class="nx">getBlob</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webkitURL</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">blobUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">photoValue</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;photoElement&quot;</span><span class="p">).</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="nx">blobUrl</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="set-user-photo">Set User Photo<a class="headerlink" href="#set-user-photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/photos&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/photos&quot;</span><span class="p">;</span>
 
-const input = &lt;HTMLInputElement&gt;document.getElementById(&quot;thefileinput&quot;);
-const file = input.files[0];
-await graph.me.photo.setContent(file);
-</code></pre>
+<span class="kr">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;thefileinput&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">photo</span><span class="p">.</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="set-group-photo">Set Group Photo<a class="headerlink" href="#set-group-photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/photos&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/photos&quot;</span><span class="p">;</span>
 
-const input = &lt;HTMLInputElement&gt;document.getElementById(&quot;thefileinput&quot;);
-const file = input.files[0];
-await graph.me.photo.setContent(file);
-</code></pre>
+<span class="kr">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;thefileinput&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">photo</span><span class="p">.</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

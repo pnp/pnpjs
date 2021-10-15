@@ -2289,67 +2289,67 @@
 <h2 id="how-to-create-a-debug-module">How to: Create a Debug Module<a class="headerlink" href="#how-to-create-a-debug-module" title="Permanent link">&para;</a></h2>
 <p>If you are working on multiple features or want to save sample code for various tasks you can create your own debugging modules and leave them in the debug/launch folder locally. The gitignore file is setup to ignore any files that aren't already in git.</p>
 <p>Using <a href="https://github.com/pnp/pnpjs/blob/main/debug/launch/sp.ts">./debug/launch/sp.ts</a> as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:</p>
-<pre><code class="language-TypeScript">// note we can use the actual package names for our imports (ex: @pnp/logging)
-import { Logger, LogLevel, ConsoleListener } from &quot;@pnp/logging&quot;;
-// using the all preset for simplicity in the example, selective imports work as expected
-import { sp, ListEnsureResult } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// note we can use the actual package names for our imports (ex: @pnp/logging)</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Logger</span><span class="p">,</span> <span class="nx">LogLevel</span><span class="p">,</span> <span class="nx">ConsoleListener</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
+<span class="c1">// using the all preset for simplicity in the example, selective imports work as expected</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ListEnsureResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-declare var process: { exit(code?: number): void };
+<span class="kr">declare</span> <span class="kd">var</span> <span class="nx">process</span><span class="o">:</span> <span class="p">{</span> <span class="nx">exit</span><span class="p">(</span><span class="nx">code?</span>: <span class="kt">number</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">};</span>
 
-export async function MyDebug() {
+<span class="kr">export</span> <span class="nx">async</span> <span class="kd">function</span> <span class="nx">MyDebug() {</span>
 
-  // configure your options
-  // you can have different configs in different modules as needed for your testing/dev work
-  sp.setup({
-    sp: {
-      fetchClientFactory: () =&gt; {
-        return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret);
-      },
-    },
-  });
+  <span class="c1">// configure your options</span>
+  <span class="c1">// you can have different configs in different modules as needed for your testing/dev work</span>
+  <span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">secret</span><span class="p">);</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+  <span class="p">});</span>
 
-  // run some debugging
-  const list = await sp.web.lists.ensure(&quot;MyFirstList&quot;);
+  <span class="c1">// run some debugging</span>
+  <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;MyFirstList&quot;</span><span class="p">);</span>
 
-  Logger.log({
-    data: list.created,
-    level: LogLevel.Info,
-    message: &quot;Was list created?&quot;,
-  });
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+    <span class="nx">data</span>: <span class="kt">list.created</span><span class="p">,</span>
+    <span class="nx">level</span>: <span class="kt">LogLevel.Info</span><span class="p">,</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Was list created?&quot;</span><span class="p">,</span>
+  <span class="p">});</span>
 
-  if (list.created) {
+  <span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">created</span><span class="p">)</span> <span class="p">{</span>
 
-    Logger.log({
-      data: list.data,
-      level: LogLevel.Info,
-      message: &quot;Raw data from list creation.&quot;,
-    });
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+      <span class="nx">data</span>: <span class="kt">list.data</span><span class="p">,</span>
+      <span class="nx">level</span>: <span class="kt">LogLevel.Info</span><span class="p">,</span>
+      <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Raw data from list creation.&quot;</span><span class="p">,</span>
+    <span class="p">});</span>
 
-  } else {
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 
-    Logger.log({
-      data: null,
-      level: LogLevel.Info,
-      message: &quot;List already existed!&quot;,
-    });
-  }
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+      <span class="nx">data</span>: <span class="kt">null</span><span class="p">,</span>
+      <span class="nx">level</span>: <span class="kt">LogLevel.Info</span><span class="p">,</span>
+      <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;List already existed!&quot;</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
 
-  process.exit(0);
-}
-</code></pre>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="update-maints-to-launch-your-module">Update main.ts to launch your module<a class="headerlink" href="#update-maints-to-launch-your-module" title="Permanent link">&para;</a></h3>
 <p>First comment out the import for the default example and then add the import and function call for yours, the updated launch/main.ts should look like this:</p>
-<pre><code class="language-TypeScript">// ...
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
 
-// comment out the example
-// import { Example } from &quot;./example&quot;;
-// Example();
+<span class="c1">// comment out the example</span>
+<span class="c1">// import { Example } from &quot;./example&quot;;</span>
+<span class="c1">// Example();</span>
 
-import { MyDebug } from &quot;./mydebug&quot;
-MyDebug();
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">MyDebug</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./mydebug&quot;</span>
+<span class="nx">MyDebug</span><span class="p">();</span>
 
-// ...
-</code></pre>
+<span class="c1">// ...</span>
+</code></pre></div>
 <blockquote>
 <p>Remember, please don't commit any changes to the shared files within the debug folder. (Unless you've found a bug that needs fixing in the original file)</p>
 </blockquote>
@@ -2364,9 +2364,9 @@ MyDebug();
 <p><code>gulp serve</code></p>
 <h3 id="add-reference-to-library">Add reference to library<a class="headerlink" href="#add-reference-to-library" title="Permanent link">&para;</a></h3>
 <p>Within a SharePoint page add a script editor web part and then paste in the following code. The div is to give you a place to target with visual updates should you desire.</p>
-<pre><code class="language-HTML">&lt;script src=&quot;https://localhost:8080/assets/pnp.js&quot;&gt;&lt;/script&gt;
-&lt;div id=&quot;pnp-test&quot;&gt;&lt;/div&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://localhost:8080/assets/pnp.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;pnp-test&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
 <p>You should see an alert with the current web's title using the default main.ts. Feel free to update main.ts to do whatever you would like, but remember not to commit changes to the shared files.</p>
 <h3 id="debug_1">Debug<a class="headerlink" href="#debug_1" title="Permanent link">&para;</a></h3>
 <p>Refresh the page and open the developer tools in your browser of choice. If the pnp.js file is blocked due to security restrictions you will need to allow it.</p>

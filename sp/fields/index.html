@@ -2495,473 +2495,473 @@
 </table>
 <h3 id="get-field-by-id">Get Field by Id<a class="headerlink" href="#get-field-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IField</span><span class="p">,</span> <span class="nx">IFieldInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// get the field by Id for web
-const field: IField = sp.web.fields.getById(&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;);
-// get the field by Id for list 'My List'
-const field2: IFieldInfo = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getById(&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;)();
+<span class="c1">// get the field by Id for web</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">);</span>
+<span class="c1">// get the field by Id for list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;03b05ff4-d95d-45ed-841d-3855f77a2483&quot;</span><span class="p">)();</span>
 
-// we can use this 'field' variable to execute more queries on the field:
-const r = await field.select(&quot;Title&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to execute more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)();</span>
 
-// show the response from the server
-console.log(r.Title);
-</code></pre>
+<span class="c1">// show the response from the server</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-field-by-title">Get Field by Title<a class="headerlink" href="#get-field-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection by title.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IField</span><span class="p">,</span> <span class="nx">IFieldInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// get the field with the title 'Author' for web
-const field: IField = sp.web.fields.getByTitle(&quot;Author&quot;);
-// get the field with the title 'Author' for list 'My List'
-const field2: IFieldInfo = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;Author&quot;)();
+<span class="c1">// get the field with the title &#39;Author&#39; for web</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">);</span>
+<span class="c1">// get the field with the title &#39;Author&#39; for list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">)();</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-field-by-internal-name-or-title">Get Field by Internal Name or Title<a class="headerlink" href="#get-field-by-internal-name-or-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection regardless of if the string is the fields internal name or title which can be different.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IField</span><span class="p">,</span> <span class="nx">IFieldInfo</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// get the field with the internal name 'ModifiedBy' for web
-const field: IField = sp.web.fields.getByInternalNameOrTitle(&quot;ModifiedBy&quot;);
-// get the field with the internal name 'ModifiedBy' for list 'My List'
-const field2: IFieldInfo = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByInternalNameOrTitle(&quot;ModifiedBy&quot;)();
+<span class="c1">// get the field with the internal name &#39;ModifiedBy&#39; for web</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IField</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">);</span>
+<span class="c1">// get the field with the internal name &#39;ModifiedBy&#39; for list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByInternalNameOrTitle</span><span class="p">(</span><span class="s2">&quot;ModifiedBy&quot;</span><span class="p">)();</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="create-a-field-using-an-xml-schema">Create a Field using an XML schema<a class="headerlink" href="#create-a-field-using-an-xml-schema" title="Permanent link">&para;</a></h3>
 <p>Create a new field by defining an XML schema that assigns all the properties for the field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IField</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// define the schema for your new field, in this case a date field with a default date of today.
-const fieldSchema = `&lt;Field ID=&quot;{03b09ff4-d99d-45ed-841d-3855f77a2483}&quot; StaticName=&quot;MyField&quot; Name=&quot;MyField&quot; DisplayName=&quot;My New Field&quot; FriendlyDisplayFormat=&quot;Disabled&quot; Format=&quot;DateOnly&quot; Type=&quot;DateTime&quot; Group=&quot;My Group&quot;&gt;&lt;Default&gt;[today]&lt;/Default&gt;&lt;/Field&gt;`;
+<span class="c1">// define the schema for your new field, in this case a date field with a default date of today.</span>
+<span class="kr">const</span> <span class="nx">fieldSchema</span> <span class="o">=</span> <span class="sb">`&lt;Field ID=&quot;{03b09ff4-d99d-45ed-841d-3855f77a2483}&quot; StaticName=&quot;MyField&quot; Name=&quot;MyField&quot; DisplayName=&quot;My New Field&quot; FriendlyDisplayFormat=&quot;Disabled&quot; Format=&quot;DateOnly&quot; Type=&quot;DateTime&quot; Group=&quot;My Group&quot;&gt;&lt;Default&gt;[today]&lt;/Default&gt;&lt;/Field&gt;`</span><span class="p">;</span>
 
-// create the new field in the web
-const field: IFieldAddResult = await sp.web.fields.createFieldAsXml(fieldSchema);
-// create the new field in the list 'My List'
-const field2: IFieldAddResult = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.createFieldAsXml(fieldSchema);
+<span class="c1">// create the new field in the web</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
+<span class="c1">// create the new field in the list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">fieldSchema</span><span class="p">);</span>
 
-// we can use this 'field' variable to run more queries on the list:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the list:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-new-field">Add a New Field<a class="headerlink" href="#add-a-new-field" title="Permanent link">&para;</a></h3>
 <p>Use the add method to create a new field where you define the field type</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IField</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add(&quot;My Field&quot;, &quot;SP.FieldText&quot;, { FieldTypeKind: 3, Group: &quot;My Group&quot; });
-// create a new field called 'My Field' in the list 'My List'
-const field2: IFieldAddResult = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.add(&quot;My Field&quot;, &quot;SP.FieldText&quot;, { FieldTypeKind: 3, Group: &quot;My Group&quot; });
+<span class="c1">// create a new field called &#39;My Field&#39; in web.</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new field called &#39;My Field&#39; in the list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-site-field-to-a-list">Add a Site Field to a List<a class="headerlink" href="#add-a-site-field-to-a-list" title="Permanent link">&para;</a></h3>
 <p>Use the createFieldAsXml method to add a site field to a list.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IFieldAddResult } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IFieldAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add(&quot;My Field&quot;, &quot;SP.FieldText&quot;, { FieldTypeKind: 3, Group: &quot;My Group&quot; });
-// add the site field 'My Field' to the list 'My List'
-const r = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.createFieldAsXml(field.data.SchemaXml);
+<span class="c1">// create a new field called &#39;My Field&#39; in web.</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;SP.FieldText&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">FieldTypeKind</span>: <span class="kt">3</span><span class="p">,</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// add the site field &#39;My Field&#39; to the list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">SchemaXml</span><span class="p">);</span>
 
-// log the field Id to console
-console.log(r.data.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-text-field">Add a Text Field<a class="headerlink" href="#add-a-text-field" title="Permanent link">&para;</a></h3>
 <p>Use the addText method to create a new text field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { IFieldAddResult } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IFieldAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new text field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.addText(&quot;My Field&quot;, 255, { Group: &quot;My Group&quot; });
-// create a new text field called 'My Field' in the list 'My List'.
-const field2: IFieldAddResult = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addText(&quot;My Field&quot;, 255, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new text field called &#39;My Field&#39; in web.</span>
+<span class="kr">const</span> <span class="nx">field</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new text field called &#39;My Field&#39; in the list &#39;My List&#39;.</span>
+<span class="kr">const</span> <span class="nx">field2</span>: <span class="kt">IFieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-calculated-field">Add a Calculated Field<a class="headerlink" href="#add-a-calculated-field" title="Permanent link">&para;</a></h3>
 <p>Use the addCalculated method to create a new calculated field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { DateTimeFieldFormatType, FieldTypes } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">,</span> <span class="nx">FieldTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new calculated field called 'My Field' in web
-const field = await sp.web.fields.addCalculated(&quot;My Field&quot;, &quot;=Modified+1&quot;, DateTimeFieldFormatType.DateOnly, FieldTypes.DateTime, { Group: &quot;MyGroup&quot; });
-// create a new calculated field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addCalculated(&quot;My Field&quot;, &quot;=Modified+1&quot;, DateTimeFieldFormatType.DateOnly, FieldTypes.DateTime, { Group: &quot;MyGroup&quot; });
+<span class="c1">// create a new calculated field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCalculated</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;=Modified+1&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">FieldTypes</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;MyGroup&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new calculated field called &#39;My Field&#39; in the list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCalculated</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="s2">&quot;=Modified+1&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">FieldTypes</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;MyGroup&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-datetime-field">Add a Date/Time Field<a class="headerlink" href="#add-a-datetime-field" title="Permanent link">&para;</a></h3>
 <p>Use the addDateTime method to create a new date/time field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { DateTimeFieldFormatType, CalendarType, DateTimeFieldFriendlyFormatType } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">,</span> <span class="nx">CalendarType</span><span class="p">,</span> <span class="nx">DateTimeFieldFriendlyFormatType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new date/time field called 'My Field' in web
-const field = await sp.web.fields.addDateTime(&quot;My Field&quot;, DateTimeFieldFormatType.DateOnly, CalendarType.Gregorian, DateTimeFieldFriendlyFormatType.Disabled, { Group: &quot;My Group&quot; });
-// create a new date/time field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addDateTime(&quot;My Field&quot;, DateTimeFieldFormatType.DateOnly, CalendarType.Gregorian, DateTimeFieldFriendlyFormatType.Disabled, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new date/time field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDateTime</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">CalendarType</span><span class="p">.</span><span class="nx">Gregorian</span><span class="p">,</span> <span class="nx">DateTimeFieldFriendlyFormatType</span><span class="p">.</span><span class="nx">Disabled</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new date/time field called &#39;My Field&#39; in the list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDateTime</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">DateTimeFieldFormatType</span><span class="p">.</span><span class="nx">DateOnly</span><span class="p">,</span> <span class="nx">CalendarType</span><span class="p">.</span><span class="nx">Gregorian</span><span class="p">,</span> <span class="nx">DateTimeFieldFriendlyFormatType</span><span class="p">.</span><span class="nx">Disabled</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-currency-field">Add a Currency Field<a class="headerlink" href="#add-a-currency-field" title="Permanent link">&para;</a></h3>
 <p>Use the addCurrency method to create a new currency field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new currency field called 'My Field' in web
-const field = await sp.web.fields.addCurrency(&quot;My Field&quot;, 0, 100, 1033, { Group: &quot;My Group&quot; });
-// create a new currency field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addCurrency(&quot;My Field&quot;, 0, 100, 1033, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new currency field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCurrency</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1033</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new currency field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addCurrency</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1033</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-multi-line-text-field">Add a Multi-line Text Field<a class="headerlink" href="#add-a-multi-line-text-field" title="Permanent link">&para;</a></h3>
 <p>Use the addMultilineText method to create a new multi-line text field. </p>
 <blockquote>
 <p>For Enhanced Rich Text mode, see the next section.</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new multi-line text field called 'My Field' in web
-const field = await sp.web.fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
-// create a new multi-line text field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addMultilineText(&quot;My Field&quot;, 6, true, false, false, true, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new multi-line text field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addMultilineText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new multi-line text field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addMultilineText</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-multi-line-text-field-with-enhanced-rich-text">Add a Multi-line Text Field with Enhanced Rich Text<a class="headerlink" href="#add-a-multi-line-text-field-with-enhanced-rich-text" title="Permanent link">&para;</a></h3>
 <p>The REST endpoint doesn't support setting the <code>RichTextMode</code> field therefore you will need to revert to Xml to create the field. The following is an example that will create a multi-line text field in Enhanced Rich Text mode.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-//Create a new multi-line text field called 'My Field' in web
-const field = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.createFieldAsXml(
-    `&lt;Field Type=&quot;Note&quot; Name=&quot;MyField&quot; DisplayName=&quot;My Field&quot; Required=&quot;FALSE&quot; RichText=&quot;TRUE&quot; RichTextMode=&quot;FullHtml&quot; /&gt;`
-);
+<span class="c1">//Create a new multi-line text field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">createFieldAsXml</span><span class="p">(</span>
+    <span class="sb">`&lt;Field Type=&quot;Note&quot; Name=&quot;MyField&quot; DisplayName=&quot;My Field&quot; Required=&quot;FALSE&quot; RichText=&quot;TRUE&quot; RichTextMode=&quot;FullHtml&quot; /&gt;`</span>
+<span class="p">);</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-number-field">Add a Number Field<a class="headerlink" href="#add-a-number-field" title="Permanent link">&para;</a></h3>
 <p>Use the addNumber method to create a new number field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new number field called 'My Field' in web
-const field = await sp.web.fields.addNumber(&quot;My Field&quot;, 1, 100, { Group: &quot;My Group&quot; });
-// create a new number field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addNumber(&quot;My Field&quot;, 1, 100, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new number field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addNumber</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new number field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addNumber</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-url-field">Add a URL Field<a class="headerlink" href="#add-a-url-field" title="Permanent link">&para;</a></h3>
 <p>Use the addUrl method to create a new url field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { UrlFieldFormatType } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">UrlFieldFormatType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new url field called 'My Field' in web
-const field = await sp.web.fields.addUrl(&quot;My Field&quot;, UrlFieldFormatType.Hyperlink, { Group: &quot;My Group&quot; });
-// create a new url field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addUrl(&quot;My Field&quot;, UrlFieldFormatType.Hyperlink, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new url field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUrl</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">UrlFieldFormatType</span><span class="p">.</span><span class="nx">Hyperlink</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new url field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUrl</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">UrlFieldFormatType</span><span class="p">.</span><span class="nx">Hyperlink</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-user-field">Add a User Field<a class="headerlink" href="#add-a-user-field" title="Permanent link">&para;</a></h3>
 <p>Use the addUser method to create a new user field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { FieldUserSelectionMode } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">FieldUserSelectionMode</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new user field called 'My Field' in web
-const field = await sp.web.fields.addUser(&quot;My Field&quot;, FieldUserSelectionMode.PeopleOnly, { Group: &quot;My Group&quot; });
-// create a new user field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addUser(&quot;My Field&quot;, FieldUserSelectionMode.PeopleOnly, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new user field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUser</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">FieldUserSelectionMode</span><span class="p">.</span><span class="nx">PeopleOnly</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new user field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addUser</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">FieldUserSelectionMode</span><span class="p">.</span><span class="nx">PeopleOnly</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-lookup-field">Add a Lookup Field<a class="headerlink" href="#add-a-lookup-field" title="Permanent link">&para;</a></h3>
 <p>Use the addLookup method to create a new lookup field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-const list = await sp.web.lists.getByTitle(&quot;My Lookup List&quot;)();
-// create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in web.
-const field = await sp.web.fields.addLookup(&quot;My Field&quot;, list.Id, &quot;Title&quot;,  { Group: &quot;My Group&quot; });
-// create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addLookup(&quot;My Field&quot;, list.Id, &quot;Title&quot;,  { Group: &quot;My Group&quot; });
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Lookup List&quot;</span><span class="p">)();</span>
+<span class="c1">// create a new lookup field called &#39;My Field&#39; based on an existing list &#39;My Lookup List&#39; showing &#39;Title&#39; field in web.</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLookup</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">list</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>  <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new lookup field called &#39;My Field&#39; based on an existing list &#39;My Lookup List&#39; showing &#39;Title&#39; field in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLookup</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">list</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>  <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
 
-// **
-// Adding a lookup that supports multiple values takes two calls:
-const fieldAddResult = await sp.web.fields.addLookup(&quot;Test Lookup 124&quot;, &quot;GUID&quot;, &quot;Title&quot;);
+<span class="c1">// **</span>
+<span class="c1">// Adding a lookup that supports multiple values takes two calls:</span>
+<span class="kr">const</span> <span class="nx">fieldAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLookup</span><span class="p">(</span><span class="s2">&quot;Test Lookup 124&quot;</span><span class="p">,</span> <span class="s2">&quot;GUID&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">);</span>
 
-await fieldAddResult.field.update({ Description: 'New Description' }, &quot;SP.FieldLookup&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">fieldAddResult</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s1">&#39;New Description&#39;</span> <span class="p">},</span> <span class="s2">&quot;SP.FieldLookup&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-choice-field">Add a Choice Field<a class="headerlink" href="#add-a-choice-field" title="Permanent link">&para;</a></h3>
 <p>Use the addChoice method to create a new choice field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import { ChoiceFieldFormatType } from &quot;@pnp/sp/fields/types&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ChoiceFieldFormatType</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/fields/types&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
-// create a new choice field called 'My Field' in web
-const field = await sp.web.fields.addChoice(&quot;My Field&quot;, choices, ChoiceFieldFormatType.Dropdown, false, { Group: &quot;My Group&quot; });
-// create a new choice field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addChoice(&quot;My Field&quot;, choices, ChoiceFieldFormatType.Dropdown, false, { Group: &quot;My Group&quot; });
+<span class="kr">const</span> <span class="nx">choices</span> <span class="o">=</span> <span class="p">[</span><span class="sb">`ChoiceA`</span><span class="p">,</span> <span class="sb">`ChoiceB`</span><span class="p">,</span> <span class="sb">`ChoiceC`</span><span class="p">];</span>
+<span class="c1">// create a new choice field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addChoice</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">choices</span><span class="p">,</span> <span class="nx">ChoiceFieldFormatType</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new choice field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addChoice</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">choices</span><span class="p">,</span> <span class="nx">ChoiceFieldFormatType</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-multi-choice-field">Add a Multi-Choice Field<a class="headerlink" href="#add-a-multi-choice-field" title="Permanent link">&para;</a></h3>
 <p>Use the addMultiChoice method to create a new multi-choice field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
-// create a new multi-choice field called 'My Field' in web
-const field = await sp.web.fields.addMultiChoice(&quot;My Field&quot;, choices, false, { Group: &quot;My Group&quot; });
-// create a new multi-choice field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addMultiChoice(&quot;My Field&quot;, choices, false, { Group: &quot;My Group&quot; });
+<span class="kr">const</span> <span class="nx">choices</span> <span class="o">=</span> <span class="p">[</span><span class="sb">`ChoiceA`</span><span class="p">,</span> <span class="sb">`ChoiceB`</span><span class="p">,</span> <span class="sb">`ChoiceC`</span><span class="p">];</span>
+<span class="c1">// create a new multi-choice field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addMultiChoice</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">choices</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new multi-choice field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addMultiChoice</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="nx">choices</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-boolean-field">Add a Boolean Field<a class="headerlink" href="#add-a-boolean-field" title="Permanent link">&para;</a></h3>
 <p>Use the addBoolean method to create a new boolean field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new boolean field called 'My Field' in web
-const field = await sp.web.fields.addBoolean(&quot;My Field&quot;, { Group: &quot;My Group&quot; });
-// create a new boolean field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addBoolean(&quot;My Field&quot;, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new boolean field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addBoolean</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new boolean field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addBoolean</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-dependent-lookup-field">Add a Dependent Lookup Field<a class="headerlink" href="#add-a-dependent-lookup-field" title="Permanent link">&para;</a></h3>
 <p>Use the addDependentLookupField method to create a new dependent lookup field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in web.
-const field = await sp.web.fields.getByTitle(&quot;My Field&quot;)();
-const fieldDep = await sp.web.fields.addDependentLookupField(&quot;My Dep Field&quot;, field.Id, &quot;Description&quot;);
-// create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;)();
-const fieldDep2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addDependentLookupField(&quot;My Dep Field&quot;, field2.Id, &quot;Description&quot;);
+<span class="c1">// create a new dependent lookup field called &#39;My Dep Field&#39; showing &#39;Description&#39; based on an existing &#39;My Field&#39; lookup field in web.</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">fieldDep</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDependentLookupField</span><span class="p">(</span><span class="s2">&quot;My Dep Field&quot;</span><span class="p">,</span> <span class="nx">field</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">);</span>
+<span class="c1">// create a new dependent lookup field called &#39;My Dep Field&#39; showing &#39;Description&#39; based on an existing &#39;My Field&#39; lookup field in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">fieldDep2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addDependentLookupField</span><span class="p">(</span><span class="s2">&quot;My Dep Field&quot;</span><span class="p">,</span> <span class="nx">field2</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">);</span>
 
-// we can use this 'fieldDep' variable to run more queries on the field:
-const r = await fieldDep.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;fieldDep&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">fieldDep</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="add-a-location-field">Add a Location Field<a class="headerlink" href="#add-a-location-field" title="Permanent link">&para;</a></h3>
 <p>Use the addLocation method to create a new location field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// create a new location field called 'My Field' in web
-const field = await sp.web.fields.addLocation(&quot;My Field&quot;, { Group: &quot;My Group&quot; });
-// create a new location field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.addLocation(&quot;My Field&quot;, { Group: &quot;My Group&quot; });
+<span class="c1">// create a new location field called &#39;My Field&#39; in web</span>
+<span class="kr">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLocation</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
+<span class="c1">// create a new location field called &#39;My Field&#39; in list &#39;My List&#39;</span>
+<span class="kr">const</span> <span class="nx">field2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">addLocation</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Group</span><span class="o">:</span> <span class="s2">&quot;My Group&quot;</span> <span class="p">});</span>
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select(&quot;Id&quot;)();
+<span class="c1">// we can use this &#39;field&#39; variable to run more queries on the field:</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">field</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Id&quot;</span><span class="p">)();</span>
 
-// log the field Id to console
-console.log(r.Id);
-</code></pre>
+<span class="c1">// log the field Id to console</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="delete-a-field">Delete a Field<a class="headerlink" href="#delete-a-field" title="Permanent link">&para;</a></h3>
 <p>Use the delete method to delete a field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// delete one or more fields from web, returns boolean
-const result = await sp.web.fields.getByTitle(&quot;My Field&quot;).delete();
-const result2 = await sp.web.fields.getByTitle(&quot;My Field 2&quot;).delete();
-// delete one or more fields from list 'My List', returns boolean
-const result = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;).delete();
-const result2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field 2&quot;).delete();
-</code></pre>
+<span class="c1">// delete one or more fields from web, returns boolean</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field 2&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="c1">// delete one or more fields from list &#39;My List&#39;, returns boolean</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field 2&quot;</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="update-a-field">Update a Field<a class="headerlink" href="#update-a-field" title="Permanent link">&para;</a></h3>
 <p>Use the update method to update a field.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// update the field called 'My Field' with a description in web, returns FieldUpdateResult
-const fieldUpdate = await sp.web.fields.getByTitle(&quot;My Field&quot;).update({ Description: &quot;My Description&quot; });
-// update the field called 'My Field' with a description in list 'My List', returns FieldUpdateResult
-const fieldUpdate2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;).update({ Description: &quot;My Description&quot; });
+<span class="c1">// update the field called &#39;My Field&#39; with a description in web, returns FieldUpdateResult</span>
+<span class="kr">const</span> <span class="nx">fieldUpdate</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span> <span class="p">});</span>
+<span class="c1">// update the field called &#39;My Field&#39; with a description in list &#39;My List&#39;, returns FieldUpdateResult</span>
+<span class="kr">const</span> <span class="nx">fieldUpdate2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Description</span><span class="o">:</span> <span class="s2">&quot;My Description&quot;</span> <span class="p">});</span>
 
-// if you need to update a field with properties for a specific field type you can optionally include the field type as a second param
-// if you do not include it we will look up the type, but that adds a call to the server
-const fieldUpdate2 = await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Look up Field&quot;).update({ RelationshipDeleteBehavior: 1 }, &quot;SP.FieldLookup&quot;);
-</code></pre>
+<span class="c1">// if you need to update a field with properties for a specific field type you can optionally include the field type as a second param</span>
+<span class="c1">// if you do not include it we will look up the type, but that adds a call to the server</span>
+<span class="kr">const</span> <span class="nx">fieldUpdate2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Look up Field&quot;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">RelationshipDeleteBehavior</span>: <span class="kt">1</span> <span class="p">},</span> <span class="s2">&quot;SP.FieldLookup&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="show-a-field-in-the-display-form">Show a Field in the Display Form<a class="headerlink" href="#show-a-field-in-the-display-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInDisplayForm method to add a field to the display form.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// show field called 'My Field' in display form throughout web
-await sp.web.fields.getByTitle(&quot;My Field&quot;).setShowInDisplayForm(true);
-// show field called 'My Field' in display form for list 'My List'
-await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;).setShowInDisplayForm(true);
-</code></pre>
+<span class="c1">// show field called &#39;My Field&#39; in display form throughout web</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInDisplayForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="c1">// show field called &#39;My Field&#39; in display form for list &#39;My List&#39;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInDisplayForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="show-a-field-in-the-edit-form">Show a Field in the Edit Form<a class="headerlink" href="#show-a-field-in-the-edit-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInEditForm method to add a field to the edit form.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// show field called 'My Field' in edit form throughout web
-await sp.web.fields.getByTitle(&quot;My Field&quot;).setShowInEditForm(true);
-// show field called 'My Field' in edit form for list 'My List'
-await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;).setShowInEditForm(true);
-</code></pre>
+<span class="c1">// show field called &#39;My Field&#39; in edit form throughout web</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInEditForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="c1">// show field called &#39;My Field&#39; in edit form for list &#39;My List&#39;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInEditForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="show-a-field-in-the-new-form">Show a Field in the New Form<a class="headerlink" href="#show-a-field-in-the-new-form" title="Permanent link">&para;</a></h3>
 <p>Use the setShowInNewForm method to add a field to the display form.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/fields&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/fields&quot;</span><span class="p">;</span>
 
-// show field called 'My Field' in new form throughout web
-await sp.web.fields.getByTitle(&quot;My Field&quot;).setShowInNewForm(true);
-// show field called 'My Field' in new form for list 'My List'
-await sp.web.lists.getByTitle(&quot;My List&quot;).fields.getByTitle(&quot;My Field&quot;).setShowInNewForm(true);
-</code></pre>
+<span class="c1">// show field called &#39;My Field&#39; in new form throughout web</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInNewForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="c1">// show field called &#39;My Field&#39; in new form for list &#39;My List&#39;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My List&quot;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;My Field&quot;</span><span class="p">).</span><span class="nx">setShowInNewForm</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

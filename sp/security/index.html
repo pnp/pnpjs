@@ -2150,148 +2150,148 @@
 </blockquote>
 <h2 id="a-note-on-selective-imports-for-security">A Note on Selective Imports for Security<a class="headerlink" href="#a-note-on-selective-imports-for-security" title="Permanent link">&para;</a></h2>
 <p>Because the method are shared you can opt to import only the methods for one of the instances.</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/security/web&quot;;
-import &quot;@pnp/sp/security/list&quot;;
-import &quot;@pnp/sp/security/item&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/item&quot;</span><span class="p">;</span>
+</code></pre></div>
 <p>Possibly useful if you are trying to hyper-optimize for bundle size but it is just as easy to import the whole module:</p>
-<pre><code class="language-TypeScript">import &quot;@pnp/sp/security&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
+</code></pre></div>
 <h2 id="securable-methods">Securable Methods<a class="headerlink" href="#securable-methods" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/security/list&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
-import { PermissionKind } from &quot;@pnp/sp/security&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 
-// ensure we have a list
-const ler = await sp.web.lists.ensure(&quot;SecurityTestingList&quot;);
-const list: IList = ler.list;
+<span class="c1">// ensure we have a list</span>
+<span class="kr">const</span> <span class="nx">ler</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;SecurityTestingList&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">ler</span><span class="p">.</span><span class="nx">list</span><span class="p">;</span>
 
-// role assignments (see section below)
-await list.roleAssignments();
+<span class="c1">// role assignments (see section below)</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">();</span>
 
-// data will represent one of the possible parents Site, Web, or List
-const data = await list.firstUniqueAncestorSecurableObject();
+<span class="c1">// data will represent one of the possible parents Site, Web, or List</span>
+<span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">firstUniqueAncestorSecurableObject</span><span class="p">();</span>
 
-// getUserEffectivePermissions
-const users = await sp.web.siteUsers.top(1).select(&quot;LoginName&quot;)();
-const perms = await list.getUserEffectivePermissions(users[0].LoginName);
+<span class="c1">// getUserEffectivePermissions</span>
+<span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteUsers</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;LoginName&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">perms</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getUserEffectivePermissions</span><span class="p">(</span><span class="nx">users</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">LoginName</span><span class="p">);</span>
 
-// getCurrentUserEffectivePermissions
-const perms2 = list.getCurrentUserEffectivePermissions();
+<span class="c1">// getCurrentUserEffectivePermissions</span>
+<span class="kr">const</span> <span class="nx">perms2</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">getCurrentUserEffectivePermissions</span><span class="p">();</span>
 
-// userHasPermissions
-const v: boolean = list.userHasPermissions(users[0].LoginName, PermissionKind.AddListItems)
+<span class="c1">// userHasPermissions</span>
+<span class="kr">const</span> <span class="nx">v</span>: <span class="kt">boolean</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">userHasPermissions</span><span class="p">(</span><span class="nx">users</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">LoginName</span><span class="p">,</span> <span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">AddListItems</span><span class="p">)</span>
 
-// currentUserHasPermissions
-const v2: boolean = list.currentUserHasPermissions(PermissionKind.AddListItems)
+<span class="c1">// currentUserHasPermissions</span>
+<span class="kr">const</span> <span class="nx">v2</span>: <span class="kt">boolean</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">currentUserHasPermissions</span><span class="p">(</span><span class="nx">PermissionKind</span><span class="p">.</span><span class="nx">AddListItems</span><span class="p">)</span>
 
-// breakRoleInheritance
-await list.breakRoleInheritance();
-// copy existing permissions
-await list.breakRoleInheritance(true);
-// copy existing permissions and reset all child securables to the new permissions
-await list.breakRoleInheritance(true, true);
+<span class="c1">// breakRoleInheritance</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">breakRoleInheritance</span><span class="p">();</span>
+<span class="c1">// copy existing permissions</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">breakRoleInheritance</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="c1">// copy existing permissions and reset all child securables to the new permissions</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">breakRoleInheritance</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-// resetRoleInheritance
-await list.resetRoleInheritance();
-</code></pre>
+<span class="c1">// resetRoleInheritance</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">resetRoleInheritance</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="web-specific-methods">Web Specific methods<a class="headerlink" href="#web-specific-methods" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/security/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/web&quot;</span><span class="p">;</span>
 
-// role definitions (see section below)
-const defs = await sp.web.roleDefinitions();
-</code></pre>
+<span class="c1">// role definitions (see section below)</span>
+<span class="kr">const</span> <span class="nx">defs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="role-assignments">Role Assignments<a class="headerlink" href="#role-assignments" title="Permanent link">&para;</a></h2>
 <p>Allows you to list and manipulate the set of role assignments for the given securable. Again we show usage using list, but the examples apply to web and item as well.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists&quot;;
-import &quot;@pnp/sp/security/web&quot;;
-import &quot;@pnp/sp/site-users/web&quot;;
-import { IList } from &quot;@pnp/sp/lists&quot;;
-import { PermissionKind } from &quot;@pnp/sp/security&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-users/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PermissionKind</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/security&quot;</span><span class="p">;</span>
 
-// ensure we have a list
-const ler = await sp.web.lists.ensure(&quot;SecurityTestingList&quot;);
-const list: IList = ler.list;
+<span class="c1">// ensure we have a list</span>
+<span class="kr">const</span> <span class="nx">ler</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">ensure</span><span class="p">(</span><span class="s2">&quot;SecurityTestingList&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">list</span>: <span class="kt">IList</span> <span class="o">=</span> <span class="nx">ler</span><span class="p">.</span><span class="nx">list</span><span class="p">;</span>
 
-// list role assignments
-const assignments = await list.roleAssignments();
+<span class="c1">// list role assignments</span>
+<span class="kr">const</span> <span class="nx">assignments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">();</span>
 
-// add a role assignment
-const defs = await sp.web.roleDefinitions();
-const user = await sp.web.currentUser();
-const r = await list.roleAssignments.add(user.Id, defs[0].Id);
+<span class="c1">// add a role assignment</span>
+<span class="kr">const</span> <span class="nx">defs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="nx">defs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">Id</span><span class="p">);</span>
 
-// remove a role assignment
-const { Id: fullRoleDefId } = await list.roleDefinitions.getByName('Full Control')();
-const ras = await list.roleAssignments();
-// filter/find the role assignment you want to remove
-// here we just grab the first
-const ra = ras.find(v =&gt; true);
-const r = await list.roleAssignments.remove(ra.PrincipalId, fullRoleDefId);
+<span class="c1">// remove a role assignment</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">Id</span>: <span class="kt">fullRoleDefId</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s1">&#39;Full Control&#39;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">ras</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">();</span>
+<span class="c1">// filter/find the role assignment you want to remove</span>
+<span class="c1">// here we just grab the first</span>
+<span class="kr">const</span> <span class="nx">ra</span> <span class="o">=</span> <span class="nx">ras</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">ra</span><span class="p">.</span><span class="nx">PrincipalId</span><span class="p">,</span> <span class="nx">fullRoleDefId</span><span class="p">);</span>
 
-// read role assignment info
-const info = await list.roleAssignments.getById(ra.Id)();
+<span class="c1">// read role assignment info</span>
+<span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">ra</span><span class="p">.</span><span class="nx">Id</span><span class="p">)();</span>
 
-// get the groups
-const info2 = await list.roleAssignments.getById(ra.Id).groups();
+<span class="c1">// get the groups</span>
+<span class="kr">const</span> <span class="nx">info2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">ra</span><span class="p">.</span><span class="nx">Id</span><span class="p">).</span><span class="nx">groups</span><span class="p">();</span>
 
-// get the bindings
-const info3 = await list.roleAssignments.getById(ra.Id).bindings();
+<span class="c1">// get the bindings</span>
+<span class="kr">const</span> <span class="nx">info3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">ra</span><span class="p">.</span><span class="nx">Id</span><span class="p">).</span><span class="nx">bindings</span><span class="p">();</span>
 
-// delete a role assignment (same as remove)
-const ras = await list.roleAssignments();
-// filter/find the role assignment you want to remove
-// here we just grab the first
-const ra = ras.find(v =&gt; true);
+<span class="c1">// delete a role assignment (same as remove)</span>
+<span class="kr">const</span> <span class="nx">ras</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">();</span>
+<span class="c1">// filter/find the role assignment you want to remove</span>
+<span class="c1">// here we just grab the first</span>
+<span class="kr">const</span> <span class="nx">ra</span> <span class="o">=</span> <span class="nx">ras</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">);</span>
 
-// delete it
-await list.roleAssignments.getById(ra.Id).delete();
-</code></pre>
+<span class="c1">// delete it</span>
+<span class="nx">await</span> <span class="nx">list</span><span class="p">.</span><span class="nx">roleAssignments</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">ra</span><span class="p">.</span><span class="nx">Id</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="role-definitions">Role Definitions<a class="headerlink" href="#role-definitions" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/security/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/security/web&quot;</span><span class="p">;</span>
 
-// read role definitions
-const defs = await sp.web.roleDefinitions();
+<span class="c1">// read role definitions</span>
+<span class="kr">const</span> <span class="nx">defs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">();</span>
 
-// get by id
-const def = await sp.web.roleDefinitions.getById(5)();
-const def = await sp.web.roleDefinitions.getById(5).select(&quot;Name&quot;, &quot;Order&quot;)();
+<span class="c1">// get by id</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">5</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Order&quot;</span><span class="p">)();</span>
 
-// get by name
-const def = await sp.web.roleDefinitions.getByName(&quot;Full Control&quot;)();
-const def = await sp.web.roleDefinitions.getByName(&quot;Full Control&quot;).select(&quot;Name&quot;, &quot;Order&quot;)();
+<span class="c1">// get by name</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;Full Control&quot;</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;Full Control&quot;</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Order&quot;</span><span class="p">)();</span>
 
-// get by type
-const def = await sp.web.roleDefinitions.getByType(5)();
-const def = await sp.web.roleDefinitions.getByType(5).select(&quot;Name&quot;, &quot;Order&quot;)();
+<span class="c1">// get by type</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getByType</span><span class="p">(</span><span class="mi">5</span><span class="p">)();</span>
+<span class="kr">const</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getByType</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Order&quot;</span><span class="p">)();</span>
 
-// add
-// name The new role definition's name
-// description The new role definition's description
-// order The order in which the role definition appears
-// basePermissions The permissions mask for this role definition
-const rdar = await sp.web.roleDefinitions.add(&quot;title&quot;, &quot;description&quot;, 99, { High: 1, Low: 2 });
+<span class="c1">// add</span>
+<span class="c1">// name The new role definition&#39;s name</span>
+<span class="c1">// description The new role definition&#39;s description</span>
+<span class="c1">// order The order in which the role definition appears</span>
+<span class="c1">// basePermissions The permissions mask for this role definition</span>
+<span class="kr">const</span> <span class="nx">rdar</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="p">{</span> <span class="nx">High</span>: <span class="kt">1</span><span class="p">,</span> <span class="nx">Low</span>: <span class="kt">2</span> <span class="p">});</span>
 
 
 
-// the following methods work on a single role def, you can use any of the three getBy methods, here we use getById as an example
+<span class="c1">// the following methods work on a single role def, you can use any of the three getBy methods, here we use getById as an example</span>
 
-// delete
-await sp.web.roleDefinitions.getById(5).delete();
+<span class="c1">// delete</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-// update
-const res = sp.web.roleDefinitions.getById(5).update({ Name: &quot;New Name&quot; });
-</code></pre>
+<span class="c1">// update</span>
+<span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">roleDefinitions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">Name</span><span class="o">:</span> <span class="s2">&quot;New Name&quot;</span> <span class="p">});</span>
+</code></pre></div>
                 
               
               

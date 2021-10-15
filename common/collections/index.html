@@ -2119,23 +2119,23 @@
 <p>The collections module provides typings and classes related to working with dictionaries.</p>
 <h2 id="typedhash">TypedHash<T><a class="headerlink" href="#typedhash" title="Permanent link">&para;</a></h2>
 <p>Interface used to described an object with string keys corresponding to values of type T</p>
-<pre><code class="language-TypeScript">export interface TypedHash&lt;T&gt; {
-    [key: string]: T;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">TypedHash</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nx">key</span>: <span class="kt">string</span><span class="p">]</span><span class="o">:</span> <span class="nx">T</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="objecttomap">objectToMap<a class="headerlink" href="#objecttomap" title="Permanent link">&para;</a></h2>
 <p>Converts a plain object to a Map instance</p>
-<pre><code class="language-TypeScript">const map = objectToMap({ a: &quot;b&quot;, c: &quot;d&quot;});
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">objectToMap</span><span class="p">({</span> <span class="nx">a</span><span class="o">:</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="nx">c</span><span class="o">:</span> <span class="s2">&quot;d&quot;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="mergemaps">mergeMaps<a class="headerlink" href="#mergemaps" title="Permanent link">&para;</a></h2>
 <p>Merges two or more maps, overwriting values with the same key. Last value in wins.</p>
-<pre><code class="language-TypeScript">const m1 = new Map();
-const m2 = new Map();
-const m3 = new Map();
-const m4 = new Map();
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">m1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">m2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">m3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">m4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">();</span>
 
-const m = mergeMaps(m1, m2, m3, m4);
-</code></pre>
+<span class="kr">const</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">mergeMaps</span><span class="p">(</span><span class="nx">m1</span><span class="p">,</span> <span class="nx">m2</span><span class="p">,</span> <span class="nx">m3</span><span class="p">,</span> <span class="nx">m4</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

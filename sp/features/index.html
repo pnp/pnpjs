@@ -2218,41 +2218,41 @@
 </table>
 <h3 id="getbyid">getById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
 <p>Gets the information about a feature for the given GUID</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/features&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/features&quot;</span><span class="p">;</span>
 
-//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
-const webFeatureId = &quot;guid-of-web-feature&quot;;
-const webFeature = await sp.web.features.getById(webFeatureId)();
+<span class="c1">//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a</span>
+<span class="kr">const</span> <span class="nx">webFeatureId</span> <span class="o">=</span> <span class="s2">&quot;guid-of-web-feature&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">webFeature</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">)();</span>
 
-const siteFeatureId = &quot;guid-of-site-scope-feature&quot;;
-const siteFeature = await sp.site.features.getById(siteFeatureId)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">siteFeatureId</span> <span class="o">=</span> <span class="s2">&quot;guid-of-site-scope-feature&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">siteFeature</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">siteFeatureId</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
 <p>Adds (activates) a feature at the Site or Web level</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/features&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/features&quot;</span><span class="p">;</span>
 
-//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
-const webFeatureId = &quot;guid-of-web-feature&quot;;
-let res = await sp.web.features.add(webFeatureId);
-// Activate with force
-res = await sp.web.features.add(webFeatureId, true);
-</code></pre>
+<span class="c1">//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a</span>
+<span class="kr">const</span> <span class="nx">webFeatureId</span> <span class="o">=</span> <span class="s2">&quot;guid-of-web-feature&quot;</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">);</span>
+<span class="c1">// Activate with force</span>
+<span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="remove">remove<a class="headerlink" href="#remove" title="Permanent link">&para;</a></h3>
 <p>Removes and deactivates the specified feature from the SharePoint Site or Web</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/features&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/features&quot;</span><span class="p">;</span>
 
-//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
-const webFeatureId = &quot;guid-of-web-feature&quot;;
-let res = await sp.web.features.remove(webFeatureId);
-// Deactivate with force
-res = await sp.web.features.remove(webFeatureId, true);
-</code></pre>
+<span class="c1">//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a</span>
+<span class="kr">const</span> <span class="nx">webFeatureId</span> <span class="o">=</span> <span class="s2">&quot;guid-of-web-feature&quot;</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">);</span>
+<span class="c1">// Deactivate with force</span>
+<span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="ifeature">IFeature<a class="headerlink" href="#ifeature" title="Permanent link">&para;</a></h2>
 <p>Represents an instance of a SharePoint feature.</p>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
@@ -2288,17 +2288,17 @@ res = await sp.web.features.remove(webFeatureId, true);
 </table>
 <h3 id="deactivate">deactivate<a class="headerlink" href="#deactivate" title="Permanent link">&para;</a></h3>
 <p>Deactivates the specified feature from the SharePoint Site or Web</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/features&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/features&quot;</span><span class="p">;</span>
 
-//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
-const webFeatureId = &quot;guid-of-web-feature&quot;;
-sp.web.features.getById(webFeatureId).deactivate()
+<span class="c1">//Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a</span>
+<span class="kr">const</span> <span class="nx">webFeatureId</span> <span class="o">=</span> <span class="s2">&quot;guid-of-web-feature&quot;</span><span class="p">;</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">).</span><span class="nx">deactivate</span><span class="p">()</span>
 
-// Deactivate with force
-sp.web.features.getById(webFeatureId).deactivate(true)
-</code></pre>
+<span class="c1">// Deactivate with force</span>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">webFeatureId</span><span class="p">).</span><span class="nx">deactivate</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
                 
               
               

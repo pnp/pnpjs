@@ -2108,61 +2108,61 @@
 </blockquote>
 <h2 id="signature">Signature<a class="headerlink" href="#signature" title="Permanent link">&para;</a></h2>
 <p>The LambdaFetchClient accepts a single argument of type ILambdaTokenFactoryParams.</p>
-<pre><code class="language-TypeScript">// signature of method, the return string is the access token
-(parms: ILambdaTokenFactoryParams) =&gt; Promise&lt;string&gt;
+<div class="highlight"><pre><span></span><code><span class="c1">// signature of method, the return string is the access token</span>
+<span class="p">(</span><span class="nx">parms</span>: <span class="kt">ILambdaTokenFactoryParams</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>
 
-// ILambdaTokenFactoryParams
-export interface ILambdaTokenFactoryParams {
-    /**
-     * Url to which the request for which we are requesting a token will be sent
-     */
-    url: string;
-    /**
-     * Any options supplied for the request
-     */
-    options: IFetchOptions;
-}
-</code></pre>
+<span class="c1">// ILambdaTokenFactoryParams</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ILambdaTokenFactoryParams</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Url to which the request for which we are requesting a token will be sent</span>
+<span class="cm">     */</span>
+    <span class="nx">url</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Any options supplied for the request</span>
+<span class="cm">     */</span>
+    <span class="nx">options</span>: <span class="kt">IFetchOptions</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="azuremsal-browser-example">@azure/msal-browser example<a class="headerlink" href="#azuremsal-browser-example" title="Permanent link">&para;</a></h2>
 <p>This example shows how to use <a href="https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-browser">@azure/msal-browser</a> along with LambdaFetchClient to achieve signin. msal-browser has many possible configurations which are described within their documentation.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import { LambdaFetchClient } from &quot;@pnp/common&quot;;
-import { PublicClientApplication, Configuration } from &quot;@azure/msal-browser&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">LambdaFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PublicClientApplication</span><span class="p">,</span> <span class="nx">Configuration</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@azure/msal-browser&quot;</span><span class="p">;</span>
 
-const config: Configuration = {
-    auth: {
-        clientId: &quot;{client id}&quot;,
-        authority: &quot;https://login.microsoftonline.com/common/&quot;
-    }
-}
+<span class="kr">const</span> <span class="nx">config</span>: <span class="kt">Configuration</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;{client id}&quot;</span><span class="p">,</span>
+        <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/common/&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-// create a single application, could also create this within the lambda client, but it would create a new applicaiton per request
-const msal = new PublicClientApplication(config);
+<span class="c1">// create a single application, could also create this within the lambda client, but it would create a new applicaiton per request</span>
+<span class="kr">const</span> <span class="nx">msal</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PublicClientApplication</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
 
-// create a new instance of the lambda fetch client
-const client = new LambdaFetchClient(async () =&gt; {
+<span class="c1">// create a new instance of the lambda fetch client</span>
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LambdaFetchClient</span><span class="p">(</span><span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    const request = {
-        scopes: [&quot;User.Read.All&quot;],
-    };
+    <span class="kr">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">scopes</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;User.Read.All&quot;</span><span class="p">],</span>
+    <span class="p">};</span>
 
-    const response = await msal.loginPopup(request);
+    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">msal</span><span class="p">.</span><span class="nx">loginPopup</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
 
-    // lamba returns the access token
-    return response.accessToken;
-});
+    <span class="c1">// lamba returns the access token</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">accessToken</span><span class="p">;</span>
+<span class="p">});</span>
 
-// setup graph with the client
-graph.setup({
-    graph: {
-        fetchClientFactory: () =&gt; client,
-    },
-});
+<span class="c1">// setup graph with the client</span>
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">client</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// execute the request to graph which will use the client defined above
-const result = await graph.users();
-</code></pre>
+<span class="c1">// execute the request to graph which will use the client defined above</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

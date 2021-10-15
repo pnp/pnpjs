@@ -2217,114 +2217,113 @@
 <p>Before you begin provisioning applications it is important to understand the relationship between a local web catalog and the tenant app catalog. Some of the methods described below only work within the context of the tenant app catalog web, such as adding an app to the catalog and the app actions retract, remove, and deploy. You can install, uninstall, and upgrade an app in any web. <a href="https://docs.microsoft.com/en-us/sharepoint/dev/apis/alm-api-for-spfx-add-ins">Read more in the official documentation</a>.</p>
 <h2 id="referencing-an-app-catalog">Referencing an App Catalog<a class="headerlink" href="#referencing-an-app-catalog" title="Permanent link">&para;</a></h2>
 <p>There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/appcatalog&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/appcatalog&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// get the current context web's tenant app catalog
-const catalog = await sp.web.getAppCatalog()();
+<span class="c1">// get the current context web&#39;s tenant app catalog</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">()();</span>
 
-// you can also chain off the app catalog
-const apps = await sp.web.getAppCatalog()();
-console.log(apps);
-</code></pre>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/appcatalog&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<span class="c1">// you can also chain off the app catalog</span>
+<span class="kr">const</span> <span class="nx">apps</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">()();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">apps</span><span class="p">);</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/appcatalog&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
-const appCatWeb = await sp.getTenantAppCatalogWeb()();
-const appCatalog = await appCatWeb.getAppCatalog()();
+<span class="c1">// you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method</span>
+<span class="kr">const</span> <span class="nx">appCatWeb</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">getTenantAppCatalogWeb</span><span class="p">()();</span>
+<span class="kr">const</span> <span class="nx">appCatalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">appCatWeb</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">()();</span>
 
-// you can get the tenant app catalog (or any app catalog) by passing in a url
-// get the tenant app catalog
-const tenantCatalog = await sp.web.getAppCatalog(&quot;https://mytenant.sharepoint.com/sites/appcatalog&quot;)();
+<span class="c1">// you can get the tenant app catalog (or any app catalog) by passing in a url</span>
+<span class="c1">// get the tenant app catalog</span>
+<span class="kr">const</span> <span class="nx">tenantCatalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/appcatalog&quot;</span><span class="p">)();</span>
 
-// get a different web's tenant app catalog
-const catalog = await sp.web.getAppCatalog(&quot;https://mytenant.sharepoint.com/sites/anothersite&quot;)();
-</code></pre>
-<pre><code class="language-TypeScript">// alternatively you can create a new app catalog instance directly by importing the AppCatalog class
-import { IAppCatalog, AppCatalog } from '@pnp/sp/appcatalog';
+<span class="c1">// get a different web&#39;s tenant app catalog</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/anothersite&quot;</span><span class="p">)();</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// alternatively you can create a new app catalog instance directly by importing the AppCatalog class</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IAppCatalog</span><span class="p">,</span> <span class="nx">AppCatalog</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/appcatalog&#39;</span><span class="p">;</span>
 
-const catalog: IAppCatalog = await AppCatalog(&quot;https://mytenant.sharepoint.com/sites/apps&quot;)();
-</code></pre>
-<pre><code class="language-TypeScript">// and finally you can combine use of the Web and AppCatalog classes to create an AppCatalog instance from an existing Web
-import { Web } from '@pnp/sp/webs';
-import { AppCatalog } from '@pnp/sp/appcatalog';
+<span class="kr">const</span> <span class="nx">catalog</span>: <span class="kt">IAppCatalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">AppCatalog</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/apps&quot;</span><span class="p">)();</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// and finally you can combine use of the Web and AppCatalog classes to create an AppCatalog instance from an existing Web</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/webs&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AppCatalog</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/appcatalog&#39;</span><span class="p">;</span>
 
-const web = Web(&quot;https://mytenant.sharepoint.com/sites/apps&quot;);
-const catalog = await AppCatalog(web)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">web</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://mytenant.sharepoint.com/sites/apps&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">AppCatalog</span><span class="p">(</span><span class="nx">web</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="site-collection-app-catalog">Site Collection App Catalog<a class="headerlink" href="#site-collection-app-catalog" title="Permanent link">&para;</a></h3>
 <p>By default, getting an app catalog instance will return the tenant app catalog associated with that site. 
 Fetching the site collection's app catalog relies on a separate endpoint so must be explicitly requested.
 This can be done by passing a second argument to <code>getAppCatalog</code>:</p>
-<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/appcatalog&quot;;
-import &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/appcatalog&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-// get the current context web's site collection app catalog
-const catalog = await sp.web.getAppCatalog(undefined, 'sitecollection')();
-</code></pre>
+<span class="c1">// get the current context web&#39;s site collection app catalog</span>
+<span class="kr">const</span> <span class="nx">catalog</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getAppCatalog</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="s1">&#39;sitecollection&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <p>The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.</p>
 <h2 id="list-available-apps">List Available Apps<a class="headerlink" href="#list-available-apps" title="Permanent link">&para;</a></h2>
 <p>The AppCatalog is itself a queryable collection so you can query this object directly to get a list of available apps. Also, the odata operators work on the catalog to sort, filter, and select.</p>
-<pre><code class="language-TypeScript">// get available apps
-await catalog.get();
+<div class="highlight"><pre><span></span><code><span class="c1">// get available apps</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 
-// get available apps selecting two fields
-await catalog.select(&quot;Title&quot;, &quot;Deployed&quot;).get();
-</code></pre>
+<span class="c1">// get available apps selecting two fields</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Deployed&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="add-an-app">Add an App<a class="headerlink" href="#add-an-app" title="Permanent link">&para;</a></h2>
 <p>This action must be performed in the context of the tenant app catalog</p>
-<pre><code class="language-TypeScript">// this represents the file bytes of the app package file
-const blob = new Blob();
+<div class="highlight"><pre><span></span><code><span class="c1">// this represents the file bytes of the app package file</span>
+<span class="kr">const</span> <span class="nx">blob</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Blob</span><span class="p">();</span>
 
-// there is an optional third argument to control overwriting existing files
-const r = await catalog.add(&quot;myapp.app&quot;, blob);
+<span class="c1">// there is an optional third argument to control overwriting existing files</span>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;myapp.app&quot;</span><span class="p">,</span> <span class="nx">blob</span><span class="p">);</span>
 
-// this is at its core a file add operation so you have access to the response data as well
-// as a File instance representing the created file
-console.log(JSON.stringify(r.data, null, 4));
+<span class="c1">// this is at its core a file add operation so you have access to the response data as well</span>
+<span class="c1">// as a File instance representing the created file</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
 
-// all file operations are available
-const nameData = await r.file.select(&quot;Name&quot;).get();
-</code></pre>
+<span class="c1">// all file operations are available</span>
+<span class="kr">const</span> <span class="nx">nameData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">r</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-an-app">Get an App<a class="headerlink" href="#get-an-app" title="Permanent link">&para;</a></h2>
 <p>You can get the details of a single app by GUID id. This is also the branch point to perform specific app actions</p>
-<pre><code class="language-TypeScript">const app = await catalog.getAppById(&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;).get();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="s2">&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="perform-app-actions">Perform app actions<a class="headerlink" href="#perform-app-actions" title="Permanent link">&para;</a></h2>
 <p>Remember: retract, deploy, and remove only work in the context of the tenant app catalog web. All of these methods return void and you can monitor success by wrapping the call in a try/catch block.</p>
-<pre><code class="language-TypeScript">const myAppId = &quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">myAppId</span> <span class="o">=</span> <span class="s2">&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;</span><span class="p">;</span>
 
-// deploy
-await catalog.getAppById(myAppId).deploy();
+<span class="c1">// deploy</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">deploy</span><span class="p">();</span>
 
-// retract
-await catalog.getAppById(myAppId).retract();
+<span class="c1">// retract</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">retract</span><span class="p">();</span>
 
-// install
-await catalog.getAppById(myAppId).install();
+<span class="c1">// install</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">install</span><span class="p">();</span>
 
-// uninstall
-await catalog.getAppById(myAppId).uninstall();
+<span class="c1">// uninstall</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">uninstall</span><span class="p">();</span>
 
-// upgrade
-await catalog.getAppById(myAppId).upgrade();
+<span class="c1">// upgrade</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">upgrade</span><span class="p">();</span>
 
-// remove
-await catalog.getAppById(myAppId).remove();
-
-</code></pre>
+<span class="c1">// remove</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">getAppById</span><span class="p">(</span><span class="nx">myAppId</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="synchronize-a-solutionapp-to-the-microsoft-teams-app-catalog">Synchronize a solution/app to the Microsoft Teams App Catalog<a class="headerlink" href="#synchronize-a-solutionapp-to-the-microsoft-teams-app-catalog" title="Permanent link">&para;</a></h2>
 <p>By default this REST call requires the SharePoint item id of the app, not the app id. PnPjs will try to fetch the SharePoint item id by default. You can still use this the second parameter <strong>useSharePointItemId</strong> to pass your own item id in the first parameter <strong>id</strong>.</p>
-<pre><code class="language-TypeScript">// Using the app id
-await catalog.syncSolutionToTeams(&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;);
+<div class="highlight"><pre><span></span><code><span class="c1">// Using the app id</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">syncSolutionToTeams</span><span class="p">(</span><span class="s2">&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;</span><span class="p">);</span>
 
-// Using the SharePoint apps item id
-await catalog.syncSolutionToTeams(&quot;123&quot;, true);
-</code></pre>
+<span class="c1">// Using the SharePoint apps item id</span>
+<span class="nx">await</span> <span class="nx">catalog</span><span class="p">.</span><span class="nx">syncSolutionToTeams</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The app catalog is just a document library under the hood, so you can also perform non-ALM actions on the library if needed. But you should be aware of possible side-effects to the ALM life-cycle when doing so.</li>

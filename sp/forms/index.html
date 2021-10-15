@@ -2141,13 +2141,13 @@
 </table>
 <h3 id="get-form-by-id">Get Form by Id<a class="headerlink" href="#get-form-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a form from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/forms&quot;;
-import &quot;@pnp/sp/lists&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/forms&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
 
-// get the field by Id for web
-const form = sp.web.lists.getByTitle(&quot;Documents&quot;).forms.getById(&quot;{c4486774-f1e2-4804-96f3-91edf3e22a19}&quot;).get();
-</code></pre>
+<span class="c1">// get the field by Id for web</span>
+<span class="kr">const</span> <span class="nx">form</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">forms</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;{c4486774-f1e2-4804-96f3-91edf3e22a19}&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

@@ -2145,133 +2145,133 @@
 <p>Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and contains the global configuration shared across the libraries. You can also extend the configuration for use within your own applications.</p>
 <h2 id="ilibraryconfiguration-interface">ILibraryConfiguration Interface<a class="headerlink" href="#ilibraryconfiguration-interface" title="Permanent link">&para;</a></h2>
 <p>Defines the shared configurable values used across the library as shown below. Each of these has a default value as shown below</p>
-<pre><code class="language-TypeScript">export interface ILibraryConfiguration {
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ILibraryConfiguration</span> <span class="p">{</span>
 
-    /**
-     * Allows caching to be global disabled, default: false
-     */
-    globalCacheDisable?: boolean;
+    <span class="cm">/**</span>
+<span class="cm">     * Allows caching to be global disabled, default: false</span>
+<span class="cm">     */</span>
+    <span class="nx">globalCacheDisable?</span>: <span class="kt">boolean</span><span class="p">;</span>
 
-    /**
-     * Defines the default store used by the usingCaching method, default: session
-     */
-    defaultCachingStore?: &quot;session&quot; | &quot;local&quot;;
+    <span class="cm">/**</span>
+<span class="cm">     * Defines the default store used by the usingCaching method, default: session</span>
+<span class="cm">     */</span>
+    <span class="nx">defaultCachingStore</span><span class="o">?:</span> <span class="s2">&quot;session&quot;</span> <span class="o">|</span> <span class="s2">&quot;local&quot;</span><span class="p">;</span>
 
-    /**
-     * Defines the default timeout in seconds used by the usingCaching method, default 30
-     */
-    defaultCachingTimeoutSeconds?: number;
+    <span class="cm">/**</span>
+<span class="cm">     * Defines the default timeout in seconds used by the usingCaching method, default 30</span>
+<span class="cm">     */</span>
+    <span class="nx">defaultCachingTimeoutSeconds?</span>: <span class="kt">number</span><span class="p">;</span>
 
-    /**
-     * If true a timeout expired items will be removed from the cache in intervals determined by cacheTimeoutInterval
-     */
-    enableCacheExpiration?: boolean;
+    <span class="cm">/**</span>
+<span class="cm">     * If true a timeout expired items will be removed from the cache in intervals determined by cacheTimeoutInterval</span>
+<span class="cm">     */</span>
+    <span class="nx">enableCacheExpiration?</span>: <span class="kt">boolean</span><span class="p">;</span>
 
-    /**
-     * Determines the interval in milliseconds at which the cache is checked to see if items have expired (min: 100)
-     */
-    cacheExpirationIntervalMilliseconds?: number;
+    <span class="cm">/**</span>
+<span class="cm">     * Determines the interval in milliseconds at which the cache is checked to see if items have expired (min: 100)</span>
+<span class="cm">     */</span>
+    <span class="nx">cacheExpirationIntervalMilliseconds?</span>: <span class="kt">number</span><span class="p">;</span>
 
-    /**
-     * Used to supply the current context from an SPFx webpart to the library
-     */
-    spfxContext?: any;
-}
-</code></pre>
+    <span class="cm">/**</span>
+<span class="cm">     * Used to supply the current context from an SPFx webpart to the library</span>
+<span class="cm">     */</span>
+    <span class="nx">spfxContext?</span>: <span class="kt">any</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="runtimeconfigimpl">RuntimeConfigImpl<a class="headerlink" href="#runtimeconfigimpl" title="Permanent link">&para;</a></h2>
 <p>The class which implements the runtime configuration management as well as sets the default values used within the library. At its heart lies a <a href="../collections/">Dictionary</a>
 used to track the configuration values. The keys will match the values in the interface or plain object passed to the extend method.</p>
 <h3 id="assign">assign<a class="headerlink" href="#assign" title="Permanent link">&para;</a></h3>
 <p>The assign method is used to add configuration to the global configuration instance. You can pass it any plain object with string keys and those values will be added. Any existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please see the section below "Using RuntimeConfig within your application". Note there are no methods to remove/clear the global config as it should be considered fairly static as frequent updates may have unpredictable side effects as it is a global shared object. Generally it should be set at the start of your application.</p>
-<pre><code class="language-TypeScript">import { RuntimeConfig } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// add your custom keys to the global configuration
-// note you can use object hashes as values
-RuntimeConfig.assign({
-   &quot;myKey1&quot;: &quot;value 1&quot;,
-   &quot;myKey2&quot;: {
-       &quot;subKey&quot;: &quot;sub value 1&quot;,
-       &quot;subKey2&quot;: &quot;sub value 2&quot;,
-   },
-});
+<span class="c1">// add your custom keys to the global configuration</span>
+<span class="c1">// note you can use object hashes as values</span>
+<span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">assign</span><span class="p">({</span>
+   <span class="s2">&quot;myKey1&quot;</span><span class="o">:</span> <span class="s2">&quot;value 1&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;myKey2&quot;</span><span class="o">:</span> <span class="p">{</span>
+       <span class="s2">&quot;subKey&quot;</span><span class="o">:</span> <span class="s2">&quot;sub value 1&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;subKey2&quot;</span><span class="o">:</span> <span class="s2">&quot;sub value 2&quot;</span><span class="p">,</span>
+   <span class="p">},</span>
+<span class="p">});</span>
 
-// read your custom values
-const v = RuntimeConfig.get(&quot;myKey1&quot;); // &quot;value 1&quot;
-</code></pre>
+<span class="c1">// read your custom values</span>
+<span class="kr">const</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;myKey1&quot;</span><span class="p">);</span> <span class="c1">// &quot;value 1&quot;</span>
+</code></pre></div>
 <h2 id="using-runtimeconfig-within-your-application">Using RuntimeConfig within your Application<a class="headerlink" href="#using-runtimeconfig-within-your-application" title="Permanent link">&para;</a></h2>
 <p>If you have a set of properties you will access very frequently it may be desirable to implement your own configuration object and expose those values as properties. To do so you will need to create an interface for your configuration (optional) and a wrapper class for RuntimeConfig to expose your properties</p>
-<pre><code class="language-TypeScript">import { ILibraryConfiguration, RuntimeConfig, ITypedHash } from &quot;@pnp/common&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">RuntimeConfig</span><span class="p">,</span> <span class="nx">ITypedHash</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
 
-// first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because
-// TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.
+<span class="c1">// first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because</span>
+<span class="c1">// TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.</span>
 
-// create the interface of your properties
-// by creating this separately you allows others to compose your parts into their own config
-interface MyConfigurationPart {
+<span class="c1">// create the interface of your properties</span>
+<span class="c1">// by creating this separately you allows others to compose your parts into their own config</span>
+<span class="kr">interface</span> <span class="nx">MyConfigurationPart</span> <span class="p">{</span>
 
-    // you can create a grouped definition and access your settings as an object
-    // keys can be optional or required as defined by your interface
-    my?: {
-        prop1?: string;
-        prop2?: string;
-    }
+    <span class="c1">// you can create a grouped definition and access your settings as an object</span>
+    <span class="c1">// keys can be optional or required as defined by your interface</span>
+    <span class="nx">my</span><span class="o">?:</span> <span class="p">{</span>
+        <span class="nx">prop1?</span>: <span class="kt">string</span><span class="p">;</span>
+        <span class="nx">prop2?</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    // and/or define multiple top level properties (beware key collision)
-    // it is good practice to use a unique prefix
-    myProp1: string;
-    myProp2: number;
-}
+    <span class="c1">// and/or define multiple top level properties (beware key collision)</span>
+    <span class="c1">// it is good practice to use a unique prefix</span>
+    <span class="nx">myProp1</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">myProp2</span>: <span class="kt">number</span><span class="p">;</span>
+<span class="p">}</span>
 
-// now create a combined interface
-interface MyConfiguration extends ILibraryConfiguration, MyConfigurationPart { }
+<span class="c1">// now create a combined interface</span>
+<span class="kr">interface</span> <span class="nx">MyConfiguration</span> <span class="kr">extends</span> <span class="nx">ILibraryConfiguration</span><span class="p">,</span> <span class="nx">MyConfigurationPart</span> <span class="p">{</span> <span class="p">}</span>
 
 
-// now create a wrapper object and expose your properties
-class MyRuntimeConfigImpl {
+<span class="c1">// now create a wrapper object and expose your properties</span>
+<span class="kr">class</span> <span class="nx">MyRuntimeConfigImpl</span> <span class="p">{</span>
 
-    // exposing a nested property
-    public get prop1(): ITypedHash&lt;string&gt; {
+    <span class="c1">// exposing a nested property</span>
+    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">prop1</span><span class="p">()</span><span class="o">:</span> <span class="nx">ITypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="p">{</span>
 
-        const myPart = RuntimeConfig.get(&quot;my&quot;);
-        if (myPart !== null &amp;&amp; typeof myPart !== &quot;undefined&quot; &amp;&amp; typeof myPart.prop1 !== &quot;undefined&quot;) {
-            return myPart.prop1;
-        }
+        <span class="kr">const</span> <span class="nx">myPart</span> <span class="o">=</span> <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;my&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">myPart</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">myPart</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">myPart</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">myPart</span><span class="p">.</span><span class="nx">prop1</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        return {};
-    }
+        <span class="k">return</span> <span class="p">{};</span>
+    <span class="p">}</span>
 
-    // exposing a root level property
-    public get myProp1(): string | null {
+    <span class="c1">// exposing a root level property</span>
+    <span class="kr">public</span> <span class="nx">get</span> <span class="nx">myProp1</span><span class="p">()</span><span class="o">:</span> <span class="kt">string</span> <span class="o">|</span> <span class="kc">null</span> <span class="p">{</span>
 
-        let myProp1 = RuntimeConfig.get(&quot;myProp1&quot;);
+        <span class="kd">let</span> <span class="nx">myProp1</span> <span class="o">=</span> <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;myProp1&quot;</span><span class="p">);</span>
 
-        if (myProp1 === null) {
-            myProp1 = &quot;some default value&quot;;
-        }
+        <span class="k">if</span> <span class="p">(</span><span class="nx">myProp1</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">myProp1</span> <span class="o">=</span> <span class="s2">&quot;some default value&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        return myProp1;
-    }
+        <span class="k">return</span> <span class="nx">myProp1</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    setup(config: MyConfiguration): void {
-        RuntimeConfig.assign(config);
-    }
-}
+    <span class="nx">setup</span><span class="p">(</span><span class="nx">config</span>: <span class="kt">MyConfiguration</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="nx">RuntimeConfig</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-// create a single static instance of your impl class
-export let MyRuntimeConfig = new MyRuntimeConfigImpl();
-</code></pre>
+<span class="c1">// create a single static instance of your impl class</span>
+<span class="kr">export</span> <span class="kd">let</span> <span class="nx">MyRuntimeConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRuntimeConfigImpl</span><span class="p">();</span>
+</code></pre></div>
 <p>Now in other files you can use and set your configuration with a typed interface and properties</p>
-<pre><code class="language-TypeScript">import { MyRuntimeConfig } from &quot;{location of module}&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MyRuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;{location of module}&quot;</span><span class="p">;</span>
 
 
-MyRuntimeConfig.setup({
-    my: {
-        prop1: &quot;hello&quot;,
-    },
-});
+<span class="nx">MyRuntimeConfig</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">my</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">prop1</span><span class="o">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const value = MyRuntimeConfig.myProp1; // &quot;hello&quot;
-</code></pre>
+<span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">MyRuntimeConfig</span><span class="p">.</span><span class="nx">myProp1</span><span class="p">;</span> <span class="c1">// &quot;hello&quot;</span>
+</code></pre></div>
                 
               
               

@@ -2212,193 +2212,193 @@
 </table>
 <h2 id="get-folder-defaults">Get Folder Defaults<a class="headerlink" href="#get-folder-defaults" title="Permanent link">&para;</a></h2>
 <p>You can get the default values for a specific folder as shown below:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-const defaults = await sp.web.getFolderByServerRelativePath(&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;).getDefaultColumnValues();
+<span class="kr">const</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;</span><span class="p">).</span><span class="nx">getDefaultColumnValues</span><span class="p">();</span>
 
-/*
-The resulting structure will have the form:
+<span class="cm">/*</span>
+<span class="cm">The resulting structure will have the form:</span>
 
-[
-  {
-    &quot;name&quot;: &quot;{field internal name}&quot;,
-    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,
-    &quot;value&quot;: &quot;{the default value}&quot;
-  },
-  {
-    &quot;name&quot;: &quot;{field internal name}&quot;,
-    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,
-    &quot;value&quot;: &quot;{the default value}&quot;
-  }
-]
-*/
-</code></pre>
+<span class="cm">[</span>
+<span class="cm">  {</span>
+<span class="cm">    &quot;name&quot;: &quot;{field internal name}&quot;,</span>
+<span class="cm">    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,</span>
+<span class="cm">    &quot;value&quot;: &quot;{the default value}&quot;</span>
+<span class="cm">  },</span>
+<span class="cm">  {</span>
+<span class="cm">    &quot;name&quot;: &quot;{field internal name}&quot;,</span>
+<span class="cm">    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,</span>
+<span class="cm">    &quot;value&quot;: &quot;{the default value}&quot;</span>
+<span class="cm">  }</span>
+<span class="cm">]</span>
+<span class="cm">*/</span>
+</code></pre></div>
 <h2 id="set-folder-defaults">Set Folder Defaults<a class="headerlink" href="#set-folder-defaults" title="Permanent link">&para;</a></h2>
 <p>When setting the defaults for a folder you need to include the field's internal name and the value.</p>
 <blockquote>
 <p>For more examples of other field types see the section <a href="#Pattern-for-setting-defaults-on-various-column-types">Pattern for setting defaults on various column types</a></p>
 <p><em>Note: Be very careful when setting the path as the site collection url is case sensitive</em></p>
 </blockquote>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-await sp.web.getFolderByServerRelativePath(&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;).setDefaultColumnValues([{
-  name: &quot;TextField&quot;,
-  value: &quot;Something&quot;,
-},
-{
-  name: &quot;NumberField&quot;,
-  value: 14,
-}]);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;</span><span class="p">).</span><span class="nx">setDefaultColumnValues</span><span class="p">([{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TextField&quot;</span><span class="p">,</span>
+  <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;Something&quot;</span><span class="p">,</span>
+<span class="p">},</span>
+<span class="p">{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;NumberField&quot;</span><span class="p">,</span>
+  <span class="nx">value</span>: <span class="kt">14</span><span class="p">,</span>
+<span class="p">}]);</span>
+</code></pre></div>
 <h2 id="get-library-defaults">Get Library Defaults<a class="headerlink" href="#get-library-defaults" title="Permanent link">&para;</a></h2>
 <p>You can also get all of the defaults for the entire library.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-const defaults = await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).getDefaultColumnValues();
+<span class="kr">const</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;DefaultColumnValues&quot;</span><span class="p">).</span><span class="nx">getDefaultColumnValues</span><span class="p">();</span>
 
-/*
-The resulting structure will have the form:
+<span class="cm">/*</span>
+<span class="cm">The resulting structure will have the form:</span>
 
-[
-  {
-    &quot;name&quot;: &quot;{field internal name}&quot;,
-    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues&quot;,
-    &quot;value&quot;: &quot;{the default value}&quot;
-  },
-  {
-    &quot;name&quot;: &quot;{field internal name}&quot;,
-    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,
-    &quot;value&quot;: &quot;{a different default value}&quot;
-  }
-]
-*/
-</code></pre>
+<span class="cm">[</span>
+<span class="cm">  {</span>
+<span class="cm">    &quot;name&quot;: &quot;{field internal name}&quot;,</span>
+<span class="cm">    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues&quot;,</span>
+<span class="cm">    &quot;value&quot;: &quot;{the default value}&quot;</span>
+<span class="cm">  },</span>
+<span class="cm">  {</span>
+<span class="cm">    &quot;name&quot;: &quot;{field internal name}&quot;,</span>
+<span class="cm">    &quot;path&quot;: &quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;,</span>
+<span class="cm">    &quot;value&quot;: &quot;{a different default value}&quot;</span>
+<span class="cm">  }</span>
+<span class="cm">]</span>
+<span class="cm">*/</span>
+</code></pre></div>
 <h2 id="set-library-defaults">Set Library Defaults<a class="headerlink" href="#set-library-defaults" title="Permanent link">&para;</a></h2>
 <p>You can also set the defaults for an entire library at once (root and all sub-folders). This may be helpful in provisioning a library or other scenarios. When setting the defaults for the entire library you must also include the path value with is the server relative path to the folder. When setting the defaults for a folder you need to include the field's internal name and the value.</p>
 <blockquote>
 <p>For more examples of other field types see the section <a href="#Pattern-for-setting-defaults-on-various-column-types">Pattern for setting defaults on various column types</a></p>
 <p><em>Note: Be very careful when setting the path as the site collection url is case sensitive</em></p>
 </blockquote>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).setDefaultColumnValues([{
-                name: &quot;TextField&quot;,
-                path: &quot;/sites/dev/DefaultColumnValues&quot;,
-                value: &quot;#PnPjs Rocks!&quot;,
-            }]);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;DefaultColumnValues&quot;</span><span class="p">).</span><span class="nx">setDefaultColumnValues</span><span class="p">([{</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TextField&quot;</span><span class="p">,</span>
+                <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;#PnPjs Rocks!&quot;</span><span class="p">,</span>
+            <span class="p">}]);</span>
+</code></pre></div>
 <h2 id="clear-folder-defaults">Clear Folder Defaults<a class="headerlink" href="#clear-folder-defaults" title="Permanent link">&para;</a></h2>
 <p>If you want to clear all of the folder defaults you can use the clear method:</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-await sp.web.getFolderByServerRelativePath(&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;).clearDefaultColumnValues();
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFolderByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/DefaultColumnValues/fld_GHk5&quot;</span><span class="p">).</span><span class="nx">clearDefaultColumnValues</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="clear-library-defaults">Clear Library Defaults<a class="headerlink" href="#clear-library-defaults" title="Permanent link">&para;</a></h2>
 <p>If you need to clear all of the default column values in a library you can pass an empty array to the list's setDefaultColumnValues method.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
 
-await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).setDefaultColumnValues([]);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;DefaultColumnValues&quot;</span><span class="p">).</span><span class="nx">setDefaultColumnValues</span><span class="p">([]);</span>
+</code></pre></div>
 <h2 id="pattern-for-setting-defaults-on-various-column-types">Pattern for setting defaults on various column types<a class="headerlink" href="#pattern-for-setting-defaults-on-various-column-types" title="Permanent link">&para;</a></h2>
 <p>The following is an example of the structure for setting the default column value when using the setDefaultColumnValues that covers the various field types.</p>
-<pre><code class="language-TS">[{
-    // Text/Boolean/CurrencyDateTime/Choice/User
-    name: &quot;TextField&quot;:
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: &quot;#PnPjs Rocks!&quot;,
-}, {
-    //Number
-    name: &quot;NumberField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: 42,
-}, {
-    //Date
-    name: &quot;NumberField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: &quot;1900-01-01T00:00:00Z&quot;,
-}, {
-    //Date - Today
-    name: &quot;NumberField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: &quot;[today]&quot;,
-}, {
-    //MultiChoice
-    name: &quot;MultiChoiceField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: [&quot;Item 1&quot;, &quot;Item 2&quot;],
-}, {
-    //MultiChoice - single value
-    name: &quot;MultiChoiceField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues/folder2&quot;,
-    value: [&quot;Item 1&quot;],
-}, {
-    //Taxonomy - single value
-    name: &quot;TaxonomyField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: {
-        wssId:&quot;-1&quot;,
-        termName: &quot;TaxValueName&quot;,
-        termId: &quot;924d2077-d5e3-4507-9f36-4a3655e74274&quot;
-        }
-}, {
-    //Taxonomy - multiple value
-    name: &quot;TaxonomyMultiField&quot;,
-    path: &quot;/sites/dev/DefaultColumnValues&quot;,
-    value: [{
-        wssId:&quot;-1&quot;,
-        termName: &quot;TaxValueName&quot;,
-        termId: &quot;924d2077-d5e3-4507-9f36-4a3655e74274&quot;
-        },{
-        wssId:&quot;-1&quot;,
-        termName: &quot;TaxValueName2&quot;,
-        termId: &quot;95d4c307-dde5-49d8-b861-392e145d94d3&quot;
-        },]
-}]);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">[{</span>
+    <span class="c1">// Text/Boolean/CurrencyDateTime/Choice/User</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TextField&quot;</span><span class="o">:</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;#PnPjs Rocks!&quot;</span><span class="p">,</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//Number</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;NumberField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span>: <span class="kt">42</span><span class="p">,</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//Date</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;NumberField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;1900-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//Date - Today</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;NumberField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;[today]&quot;</span><span class="p">,</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//MultiChoice</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;MultiChoiceField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Item 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Item 2&quot;</span><span class="p">],</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//MultiChoice - single value</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;MultiChoiceField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues/folder2&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Item 1&quot;</span><span class="p">],</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//Taxonomy - single value</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TaxonomyField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">wssId</span><span class="o">:</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+        <span class="nx">termName</span><span class="o">:</span> <span class="s2">&quot;TaxValueName&quot;</span><span class="p">,</span>
+        <span class="nx">termId</span><span class="o">:</span> <span class="s2">&quot;924d2077-d5e3-4507-9f36-4a3655e74274&quot;</span>
+        <span class="p">}</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="c1">//Taxonomy - multiple value</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;TaxonomyMultiField&quot;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/sites/dev/DefaultColumnValues&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="nx">wssId</span><span class="o">:</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+        <span class="nx">termName</span><span class="o">:</span> <span class="s2">&quot;TaxValueName&quot;</span><span class="p">,</span>
+        <span class="nx">termId</span><span class="o">:</span> <span class="s2">&quot;924d2077-d5e3-4507-9f36-4a3655e74274&quot;</span>
+        <span class="p">},{</span>
+        <span class="nx">wssId</span><span class="o">:</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+        <span class="nx">termName</span><span class="o">:</span> <span class="s2">&quot;TaxValueName2&quot;</span><span class="p">,</span>
+        <span class="nx">termId</span><span class="o">:</span> <span class="s2">&quot;95d4c307-dde5-49d8-b861-392e145d94d3&quot;</span>
+        <span class="p">},]</span>
+<span class="p">}]);</span>
+</code></pre></div>
 <h2 id="taxonomy-full-example">Taxonomy Full Example<a class="headerlink" href="#taxonomy-full-example" title="Permanent link">&para;</a></h2>
 <p>This example shows fully how to get the taxonomy values and set them as a default column value using PnPjs.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/column-defaults&quot;;
-import &quot;@pnp/sp/taxonomy&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/column-defaults&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/taxonomy&quot;</span><span class="p">;</span>
 
-// get the term's info we want to use as the default
-const term = await sp.termStore.sets.getById(&quot;ea6fc521-d293-4f3d-9e84-f3a5bc0936ce&quot;).getTermById(&quot;775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a&quot;)();
+<span class="c1">// get the term&#39;s info we want to use as the default</span>
+<span class="kr">const</span> <span class="nx">term</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">termStore</span><span class="p">.</span><span class="nx">sets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;ea6fc521-d293-4f3d-9e84-f3a5bc0936ce&quot;</span><span class="p">).</span><span class="nx">getTermById</span><span class="p">(</span><span class="s2">&quot;775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a&quot;</span><span class="p">)();</span>
 
-// get the default term label
-const defLabel = term.labels.find(v =&gt; v.isDefault);
+<span class="c1">// get the default term label</span>
+<span class="kr">const</span> <span class="nx">defLabel</span> <span class="o">=</span> <span class="nx">term</span><span class="p">.</span><span class="nx">labels</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">isDefault</span><span class="p">);</span>
 
-// set the default value using -1, the term id, and the term's default label name
-await sp.web.lists.getByTitle(&quot;MetaDataDocLib&quot;).rootFolder.setDefaultColumnValues([{
-    name: &quot;MetaDataColumnInternalName&quot;,
-    value: {
-        wssId: &quot;-1&quot;,
-        termId: term.id,
-        termName: defLabel.name,
-    }
-}])
+<span class="c1">// set the default value using -1, the term id, and the term&#39;s default label name</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MetaDataDocLib&quot;</span><span class="p">).</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">setDefaultColumnValues</span><span class="p">([{</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;MetaDataColumnInternalName&quot;</span><span class="p">,</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">wssId</span><span class="o">:</span> <span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+        <span class="nx">termId</span>: <span class="kt">term.id</span><span class="p">,</span>
+        <span class="nx">termName</span>: <span class="kt">defLabel.name</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}])</span>
 
-// check that the defaults have updated
-const newDefaults = await sp.web.lists.getByTitle(&quot;MetaDataDocLib&quot;).getDefaultColumnValues();
-</code></pre>
+<span class="c1">// check that the defaults have updated</span>
+<span class="kr">const</span> <span class="nx">newDefaults</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;MetaDataDocLib&quot;</span><span class="p">).</span><span class="nx">getDefaultColumnValues</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

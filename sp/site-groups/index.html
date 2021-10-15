@@ -2250,56 +2250,55 @@
 </tbody>
 </table>
 <h3 id="get-all-site-groups">Get all site groups<a class="headerlink" href="#get-all-site-groups" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups/web&quot;</span><span class="p">;</span>
 
-// gets all site groups of the web
-const groups = await sp.web.siteGroups();
-</code></pre>
+<span class="c1">// gets all site groups of the web</span>
+<span class="kr">const</span> <span class="nx">groups</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="get-the-associated-groups-of-a-web">Get the associated groups of a web<a class="headerlink" href="#get-the-associated-groups-of-a-web" title="Permanent link">&para;</a></h3>
 <p>You can get the associated Owner, Member and Visitor groups of a web</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups/web&quot;</span><span class="p">;</span>
 
-// Gets the associated visitors group of a web
-const visitorGroup = await sp.web.associatedVisitorGroup();
+<span class="c1">// Gets the associated visitors group of a web</span>
+<span class="kr">const</span> <span class="nx">visitorGroup</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">associatedVisitorGroup</span><span class="p">();</span>
 
-// Gets the associated members group of a web
-const memberGroup = await sp.web.associatedMemberGroup();
+<span class="c1">// Gets the associated members group of a web</span>
+<span class="kr">const</span> <span class="nx">memberGroup</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">associatedMemberGroup</span><span class="p">();</span>
 
-// Gets the associated owners group of a web
-const ownerGroup = await sp.web.associatedOwnerGroup();
-
-</code></pre>
+<span class="c1">// Gets the associated owners group of a web</span>
+<span class="kr">const</span> <span class="nx">ownerGroup</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">associatedOwnerGroup</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="create-the-default-associated-groups-for-a-web">Create the default associated groups for a web<a class="headerlink" href="#create-the-default-associated-groups-for-a-web" title="Permanent link">&para;</a></h3>
 <p><img alt="Known Issue Banner" src="https://img.shields.io/badge/Known%20Issue-important.svg" /> CreateDefaultAssociatedGroups throws a 403 "Access Denied" if "No Script Site" is set to true. For more information please follow: <a href="https://github.com/SharePoint/sp-dev-docs/issues/6760">sp-dev-docs Issue 6760</a>.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups/web&quot;</span><span class="p">;</span>
 
-// Breaks permission inheritance and creates the default associated groups for the web
+<span class="c1">// Breaks permission inheritance and creates the default associated groups for the web</span>
 
-// Login name of the owner
-const owner1 = &quot;owner@example.onmicrosoft.com&quot;;
+<span class="c1">// Login name of the owner</span>
+<span class="kr">const</span> <span class="nx">owner1</span> <span class="o">=</span> <span class="s2">&quot;owner@example.onmicrosoft.com&quot;</span><span class="p">;</span>
 
-// Specify true, the permissions should be copied from the current parent scope, else false
-const copyRoleAssignments = false;
+<span class="c1">// Specify true, the permissions should be copied from the current parent scope, else false</span>
+<span class="kr">const</span> <span class="nx">copyRoleAssignments</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
-// Specify true to make all child securable objects inherit role assignments from the current object
-const clearSubScopes = true;
+<span class="c1">// Specify true to make all child securable objects inherit role assignments from the current object</span>
+<span class="kr">const</span> <span class="nx">clearSubScopes</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-await sp.web.createDefaultAssociatedGroups(&quot;PnP Site&quot;, owner1, copyRoleAssignments, clearSubScopes);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">createDefaultAssociatedGroups</span><span class="p">(</span><span class="s2">&quot;PnP Site&quot;</span><span class="p">,</span> <span class="nx">owner1</span><span class="p">,</span> <span class="nx">copyRoleAssignments</span><span class="p">,</span> <span class="nx">clearSubScopes</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="create-a-new-site-group">Create a new site group<a class="headerlink" href="#create-a-new-site-group" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups/web&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups/web&quot;</span><span class="p">;</span>
 
-// Creates a new site group with the specified title
-await sp.web.siteGroups.add({&quot;Title&quot;:&quot;new group name&quot;});
-</code></pre>
+<span class="c1">// Creates a new site group with the specified title</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span><span class="s2">&quot;Title&quot;</span><span class="o">:</span><span class="s2">&quot;new group name&quot;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="isitegroup">ISiteGroup<a class="headerlink" href="#isitegroup" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <table>
@@ -2325,45 +2324,45 @@ await sp.web.siteGroups.add({&quot;Title&quot;:&quot;new group name&quot;});
 </tbody>
 </table>
 <h3 id="getting-and-updating-the-groups-of-a-sharepoint-web">Getting and updating the groups of a sharepoint web<a class="headerlink" href="#getting-and-updating-the-groups-of-a-sharepoint-web" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups&quot;</span><span class="p">;</span>
 
-// get the group using a group id
-const groupID = 33;
-let grp = await sp.web.siteGroups.getById(groupID)();
+<span class="c1">// get the group using a group id</span>
+<span class="kr">const</span> <span class="nx">groupID</span> <span class="o">=</span> <span class="mi">33</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">grp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">groupID</span><span class="p">)();</span>
 
-// get the group using the group's name
-const groupName = &quot;ClassicTeam Visitors&quot;;
-grp = await sp.web.siteGroups.getByName(groupName)();
+<span class="c1">// get the group using the group&#39;s name</span>
+<span class="kr">const</span> <span class="nx">groupName</span> <span class="o">=</span> <span class="s2">&quot;ClassicTeam Visitors&quot;</span><span class="p">;</span>
+<span class="nx">grp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="nx">groupName</span><span class="p">)();</span>
 
-// update a group
-await sp.web.siteGroups.getById(groupID).update({&quot;Title&quot;: &quot;New Group Title&quot;});
+<span class="c1">// update a group</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">groupID</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;New Group Title&quot;</span><span class="p">});</span>
 
-// delete a group from the site using group id
-await sp.web.siteGroups.removeById(groupID);
+<span class="c1">// delete a group from the site using group id</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">removeById</span><span class="p">(</span><span class="nx">groupID</span><span class="p">);</span>
 
-// delete a group from the site using group name
-await sp.web.siteGroups.removeByLoginName(groupName);
-</code></pre>
+<span class="c1">// delete a group from the site using group name</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">removeByLoginName</span><span class="p">(</span><span class="nx">groupName</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="getting-all-users-of-a-group">Getting all users of a group<a class="headerlink" href="#getting-all-users-of-a-group" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups&quot;</span><span class="p">;</span>
 
-// get all users of group
-const groupID = 7;
-const users = await sp.web.siteGroups.getById(groupID).users();
-</code></pre>
+<span class="c1">// get all users of group</span>
+<span class="kr">const</span> <span class="nx">groupID</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">groupID</span><span class="p">).</span><span class="nx">users</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="updating-the-owner-of-a-site-group">Updating the owner of a site group<a class="headerlink" href="#updating-the-owner-of-a-site-group" title="Permanent link">&para;</a></h3>
 <p>Unfortunately for now setting the owner of a group as another or same SharePoint group is currently unsupported in REST. Setting the owner as a user is supported.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/site-groups&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/site-groups&quot;</span><span class="p">;</span>
 
-// Update the owner with a user id
-await sp.web.siteGroups.getById(7).setUserAsOwner(4);
-</code></pre>
+<span class="c1">// Update the owner with a user id</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">siteGroups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">7</span><span class="p">).</span><span class="nx">setUserAsOwner</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

@@ -2343,155 +2343,145 @@
 <p>The ability to manage Team is a capability introduced in the 1.2.7 of @pnp/graph. Through the methods described
 you can add, update and delete items in Teams.</p>
 <h2 id="teams-the-user-is-a-member-of">Teams the user is a member of<a class="headerlink" href="#teams-the-user-is-a-member-of" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const joinedTeams = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').joinedTeams();
+<span class="kr">const</span> <span class="nx">joinedTeams</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;99dc1039-eb80-43b1-a09e-250d50a80b26&#39;</span><span class="p">).</span><span class="nx">joinedTeams</span><span class="p">();</span>
 
-const myJoinedTeams = await graph.me.joinedTeams();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">myJoinedTeams</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">joinedTeams</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-teams-by-id">Get Teams by Id<a class="headerlink" href="#get-teams-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the teams.getById() you can get a specific Team.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
-</code></pre>
+<span class="kr">const</span> <span class="nx">team</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="create-new-teamgroup-method-1">Create new Team/Group - Method #1<a class="headerlink" href="#create-new-teamgroup-method-1" title="Permanent link">&para;</a></h2>
 <p>The first way to create a new Team and corresponding Group is to first create the group and then create the team.
 Follow the example in Groups to create the group and get the GroupID. Then make a call to create the team from the group.</p>
 <h2 id="create-a-team-via-a-specific-group">Create a Team via a specific group<a class="headerlink" href="#create-a-team-via-a-specific-group" title="Permanent link">&para;</a></h2>
 <p>Here we get the group via id and use <code>createTeam</code></p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
-import &quot;@pnp/graph/groups&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/groups&quot;</span>
 
-const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec332472dd').createTeam({
-&quot;memberSettings&quot;: {
-    &quot;allowCreateUpdateChannels&quot;: true
-},
-&quot;messagingSettings&quot;: {
-        &quot;allowUserEditMessages&quot;: true,
-&quot;allowUserDeleteMessages&quot;: true
-},
-&quot;funSettings&quot;: {
-    &quot;allowGiphy&quot;: true,
-    &quot;giphyContentRating&quot;: &quot;strict&quot;
-}});
-</code></pre>
+<span class="kr">const</span> <span class="nx">createdTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;679c8ff4-f07d-40de-b02b-60ec332472dd&#39;</span><span class="p">).</span><span class="nx">createTeam</span><span class="p">({</span>
+<span class="s2">&quot;memberSettings&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;allowCreateUpdateChannels&quot;</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="s2">&quot;messagingSettings&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;allowUserEditMessages&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="s2">&quot;allowUserDeleteMessages&quot;</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="s2">&quot;funSettings&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;allowGiphy&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s2">&quot;giphyContentRating&quot;</span><span class="o">:</span> <span class="s2">&quot;strict&quot;</span>
+<span class="p">}});</span>
+</code></pre></div>
 <h2 id="create-new-teamgroup-method-2">Create new Team/Group - Method #2<a class="headerlink" href="#create-new-teamgroup-method-2" title="Permanent link">&para;</a></h2>
 <p>The second way to create a new Team and corresponding Group is to do so in one call. This can be done by using the createTeam method.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const team = {
-        &quot;template@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/teamsTemplates('standard')&quot;,
-        &quot;displayName&quot;: &quot;PnPJS Test Team&quot;,
-        &quot;description&quot;: &quot;PnPJS Test Team’s Description&quot;,
-        &quot;members&quot;: [
-            {
-                &quot;@odata.type&quot;: &quot;#microsoft.graph.aadUserConversationMember&quot;,
-                &quot;roles&quot;: [&quot;owner&quot;],
-                &quot;user@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/users('{owners user id}')&quot;,
-            },
-        ],
-    };
+<span class="kr">const</span> <span class="nx">team</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;template@odata.bind&quot;</span><span class="o">:</span> <span class="s2">&quot;https://graph.microsoft.com/v1.0/teamsTemplates(&#39;standard&#39;)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;displayName&quot;</span><span class="o">:</span> <span class="s2">&quot;PnPJS Test Team&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;PnPJS Test Team’s Description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;members&quot;</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;@odata.type&quot;</span><span class="o">:</span> <span class="s2">&quot;#microsoft.graph.aadUserConversationMember&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;roles&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;owner&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;user@odata.bind&quot;</span><span class="o">:</span> <span class="s2">&quot;https://graph.microsoft.com/v1.0/users(&#39;{owners user id}&#39;)&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">};</span>
 
-const createdTeam: ITeamCreateResultAsync = await graph.teams.create(team);
-//To check the status of the team creation, call getOperationById for the newly created team.
-const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
-</code></pre>
+<span class="kr">const</span> <span class="nx">createdTeam</span>: <span class="kt">ITeamCreateResultAsync</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">team</span><span class="p">);</span>
+<span class="c1">//To check the status of the team creation, call getOperationById for the newly created team.</span>
+<span class="kr">const</span> <span class="nx">createdTeamStatus</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">createdTeam</span><span class="p">.</span><span class="nx">teamId</span><span class="p">).</span><span class="nx">getOperationById</span><span class="p">(</span><span class="nx">createdTeam</span><span class="p">.</span><span class="nx">operationId</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="clone-a-team">Clone a Team<a class="headerlink" href="#clone-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
-'Cloned','description','apps,tabs,settings,channels,members','public');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">clonedTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">cloneTeam</span><span class="p">(</span>
+<span class="s1">&#39;Cloned&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;apps,tabs,settings,channels,members&#39;</span><span class="p">,</span><span class="s1">&#39;public&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-teams-async-operation">Get Teams Async Operation<a class="headerlink" href="#get-teams-async-operation" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
-'Cloned','description','apps,tabs,settings,channels,members','public');
-const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
-</code></pre>
+<span class="kr">const</span> <span class="nx">clonedTeam</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">cloneTeam</span><span class="p">(</span>
+<span class="s1">&#39;Cloned&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;apps,tabs,settings,channels,members&#39;</span><span class="p">,</span><span class="s1">&#39;public&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">clonedTeamStatus</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">clonedTeam</span><span class="p">.</span><span class="nx">teamId</span><span class="p">).</span><span class="nx">getOperationById</span><span class="p">(</span><span class="nx">clonedTeam</span><span class="p">.</span><span class="nx">operationId</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="archive-a-team">Archive a Team<a class="headerlink" href="#archive-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').archive();
-</code></pre>
+<span class="kr">const</span> <span class="nx">archived</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">archive</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="unarchive-a-team">Unarchive a Team<a class="headerlink" href="#unarchive-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
-</code></pre>
+<span class="kr">const</span> <span class="nx">archived</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">unarchive</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-all-channels-of-a-team">Get all channels of a Team<a class="headerlink" href="#get-all-channels-of-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
-</code></pre>
+<span class="kr">const</span> <span class="nx">channels</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">channels</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-channel-by-id">Get channel by Id<a class="headerlink" href="#get-channel-by-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">channel</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">channels</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;19:65723d632b384ca89c81115c281428a3@thread.skype&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="create-a-new-channel">Create a new Channel<a class="headerlink" href="#create-a-new-channel" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.create('New Channel', 'Description');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">newChannel</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">channels</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;New Channel&#39;</span><span class="p">,</span> <span class="s1">&#39;Description&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-installed-apps">Get installed Apps<a class="headerlink" href="#get-installed-apps" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-const installedApps = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.get();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">installedApps</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">installedApps</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="add-an-app">Add an App<a class="headerlink" href="#add-an-app" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-const addedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.add('https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">addedApp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">installedApps</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="remove-an-app">Remove an App<a class="headerlink" href="#remove-an-app" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
-const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.remove();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">removedApp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">installedApps</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-tabs-from-a-channel">Get Tabs from a Channel<a class="headerlink" href="#get-tabs-from-a-channel" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const tabs = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
-channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">tabs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span>
+<span class="nx">channels</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;19:65723d632b384ca89c81115c281428a3@thread.skype&#39;</span><span class="p">).</span><span class="nx">tabs</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-tab-by-id">Get Tab by Id<a class="headerlink" href="#get-tab-by-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
-channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">tab</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span>
+<span class="nx">channels</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;19:65723d632b384ca89c81115c281428a3@thread.skype&#39;</span><span class="p">).</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="add-a-new-tab">Add a new Tab<a class="headerlink" href="#add-a-new-tab" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
-const newTab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
-channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('Tab','https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a',&lt;TabsConfiguration&gt;{});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">newTab</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span>
+<span class="nx">channels</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;19:65723d632b384ca89c81115c281428a3@thread.skype&#39;</span><span class="p">).</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Tab&#39;</span><span class="p">,</span><span class="s1">&#39;https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a&#39;</span><span class="p">,</span><span class="o">&lt;</span><span class="nx">TabsConfiguration</span><span class="o">&gt;</span><span class="p">{});</span>
+</code></pre></div>
 <h2 id="team-membership">Team Membership<a class="headerlink" href="#team-membership" title="Permanent link">&para;</a></h2>
 <p>Get the members and/or owners of a group.</p>
 <p>See <a href="../groups/">Groups</a></p>

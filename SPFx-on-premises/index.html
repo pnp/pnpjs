@@ -2088,9 +2088,9 @@
                 <h1 id="workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019">Workaround for on-premises SPFx TypeScript Version (SharePoint 2016 or 2019)<a class="headerlink" href="#workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019" title="Permanent link">&para;</a></h1>
 <p><em>Note this article applies to version 1.4.1 SharePoint Framework projects targeting on-premises only.</em></p>
 <p>When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premises it installs TypeScript version 2.2.2 (SP2016) or 2.4.2/2.4.1 (SP2019). Unfortunately this library relies on 3.6.4 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.</p>
-<pre><code class="language-bash">npm i
-npm i -g rimraf # used to remove the node_modules folder (much better/faster)
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm i
+npm i -g rimraf <span class="c1"># used to remove the node_modules folder (much better/faster)</span>
+</code></pre></div>
 <ol>
 <li>Ensure that the <strong>@pnp/sp</strong> package is already installed <code>npm i @pnp/sp</code></li>
 <li>Remove the package-lock.json file &amp; node_modules <code>rimraf node_modules</code> folder and execute <code>npm install</code></li>
@@ -2099,13 +2099,13 @@ npm i -g rimraf # used to remove the node_modules folder (much better/faster)
 <li>Replace "2.4.1" or "2.2.2" with "3.6.4"</li>
 <li>
 <p>Search for the next <code>"typescript"</code> occurrence and replace the block with:</p>
-<p><code>JSON
-"typescript": {
-    "version": "3.6.4",
-    "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz",
-    "integrity": "sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==",
-    "dev": true
-}</code></p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;typescript&quot;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;3.6.4&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;resolved&quot;</span><span class="p">:</span> <span class="s2">&quot;https://registry.npmjs.org/typescript/-/typescript-3.6.4.tgz&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;integrity&quot;</span><span class="p">:</span> <span class="s2">&quot;sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;dev&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
 <li>
 <p>Remove node_modules folder <code>rimraf node_modules</code></p>
@@ -2116,20 +2116,20 @@ npm i -g rimraf # used to remove the node_modules folder (much better/faster)
 <ol>
 <li>
 <p>Install resolutions package and TypeScript providing considered version explicitly:</p>
-<p><code>bash
-npm i -D npm-force-resolutions typescript@3.6.4</code></p>
+<div class="highlight"><pre><span></span><code>npm i -D npm-force-resolutions typescript@3.6.4
+</code></pre></div>
 </li>
 <li>
 <p>Add a resolution for TypeScript and preinstall script into <code>package.json</code> to a corresponding code blocks:</p>
-<p><code>JSON
-{
-    "scripts": {
-    "preinstall": "npx npm-force-resolutions"
-    },
-    "resolutions": {
-    "typescript": "3.6.4"
-    }
-}</code></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;preinstall&quot;</span><span class="p">:</span> <span class="s2">&quot;npx npm-force-resolutions&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;resolutions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;typescript&quot;</span><span class="p">:</span> <span class="s2">&quot;3.6.4&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
 <li>
 <p>Run <code>npm install</code> to trigger preinstall script and bumping TypeScript version into <code>package-lock.json</code></p>

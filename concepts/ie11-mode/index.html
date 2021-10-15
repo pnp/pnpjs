@@ -2123,15 +2123,15 @@
 </ul>
 <h2 id="configure-ie11-mode">Configure IE11 Mode<a class="headerlink" href="#configure-ie11-mode" title="Permanent link">&para;</a></h2>
 <p>To enable IE11 Mode set the ie11 flag to true in the setup object. Optionally, supply the context object when working in <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview">SharePoint Framework</a>.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-sp.setup({
-  // set ie 11 mode
-  ie11: true,
-  // only needed when working within SharePoint Framework
-  spfxContext: this.context
-});
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+  <span class="c1">// set ie 11 mode</span>
+  <span class="nx">ie11</span>: <span class="kt">true</span><span class="p">,</span>
+  <span class="c1">// only needed when working within SharePoint Framework</span>
+  <span class="nx">spfxContext</span>: <span class="kt">this.context</span>
+<span class="p">});</span>
+</code></pre></div>
 <blockquote>
 <p>If you are supporting IE 11, please see the article on required <a href="../polyfill/">polyfills</a>.</p>
 </blockquote>

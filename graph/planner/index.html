@@ -2351,142 +2351,125 @@ you can add, update and delete items in Planner.</p>
 <h2 id="get-plans-by-id">Get Plans by Id<a class="headerlink" href="#get-plans-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.plans.getById() you can get a specific Plan.
 Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const plan = await graph.planner.plans.getById('planId')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">plan</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="add-new-plan">Add new Plan<a class="headerlink" href="#add-new-plan" title="Permanent link">&para;</a></h2>
 <p>Using the planner.plans.add() you can create a new Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">newPlan</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;groupObjectId&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-tasks-in-plan">Get Tasks in Plan<a class="headerlink" href="#get-tasks-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the tasks() you can get the Tasks in a Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const planTasks = await graph.planner.plans.getById('planId').tasks();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">planTasks</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">tasks</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-buckets-in-plan">Get Buckets in Plan<a class="headerlink" href="#get-buckets-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the buckets() you can get the Buckets in a Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const planBuckets = await graph.planner.plans.getById('planId').buckets();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">planBuckets</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">buckets</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-details-in-plan">Get Details in Plan<a class="headerlink" href="#get-details-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the details() you can get the details in a Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const planDetails = await graph.planner.plans.getById('planId').details();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">planDetails</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">details</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="delete-plan">Delete Plan<a class="headerlink" href="#delete-plan" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const delPlan = await graph.planner.plans.getById('planId').delete('planEtag');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">delPlan</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;planEtag&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="update-plan">Update Plan<a class="headerlink" href="#update-plan" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Plan.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">updPlan</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;New Title&#39;</span><span class="p">,</span> <span class="nx">eTag</span><span class="o">:</span> <span class="s1">&#39;planEtag&#39;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="get-task-by-id">Get Task by Id<a class="headerlink" href="#get-task-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.tasks.getById() you can get a specific Task.
 Planner.tasks is not an available endpoint, you need to get a specific Task.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const task = await graph.planner.tasks.getById('taskId')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">task</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;taskId&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="add-new-task">Add new Task<a class="headerlink" href="#add-new-task" title="Permanent link">&para;</a></h2>
 <p>Using the planner.tasks.add() you can create a new Task.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const newTask = await graph.planner.tasks.add('planId', 'title');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">newTask</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-details-in-task">Get Details in Task<a class="headerlink" href="#get-details-in-task" title="Permanent link">&para;</a></h2>
 <p>Using the details() you can get the details in a Task.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const taskDetails = await graph.planner.tasks.getById('taskId').details();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">taskDetails</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;taskId&#39;</span><span class="p">).</span><span class="nx">details</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="delete-task">Delete Task<a class="headerlink" href="#delete-task" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Task.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">delTask</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;taskId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;taskEtag&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="update-task">Update Task<a class="headerlink" href="#update-task" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Task.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const updTask = await graph.planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">updTask</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;taskId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">properties</span><span class="p">,</span> <span class="nx">eTag</span><span class="o">:</span><span class="s1">&#39;taskEtag&#39;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="get-buckets-by-id">Get Buckets by Id<a class="headerlink" href="#get-buckets-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.buckets.getById() you can get a specific Bucket.
 planner.buckets is not an available endpoint, you need to get a specific Bucket.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const bucket = await graph.planner.buckets.getById('bucketId')();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;bucketId&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="add-new-bucket">Add new Bucket<a class="headerlink" href="#add-new-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the planner.buckets.add() you can create a new Bucket.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const newBucket = await graph.planner.buckets.add('name', 'planId');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">newBucket</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;planId&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="update-bucket">Update Bucket<a class="headerlink" href="#update-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Bucket.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const updBucket = await graph.planner.buckets.getById('bucketId').update({name: &quot;Name&quot;, eTag:'bucketEtag'});
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">updBucket</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;bucketId&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="nx">eTag</span><span class="o">:</span><span class="s1">&#39;bucketEtag&#39;</span><span class="p">});</span>
+</code></pre></div>
 <h2 id="delete-bucket">Delete Bucket<a class="headerlink" href="#delete-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Bucket.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const delBucket = await graph.planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">delBucket</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;bucketId&#39;</span><span class="p">).</span><span class="k">delete</span><span class="p">(</span><span class="nx">eTag</span><span class="o">:</span><span class="s1">&#39;bucketEtag&#39;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-bucket-tasks">Get Bucket Tasks<a class="headerlink" href="#get-bucket-tasks" title="Permanent link">&para;</a></h2>
 <p>Using the tasks() you can get Tasks in a Bucket.</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/planner&quot;</span>
 
-const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">bucketTasks</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;bucketId&#39;</span><span class="p">).</span><span class="nx">tasks</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

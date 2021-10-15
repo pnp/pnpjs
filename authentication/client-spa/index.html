@@ -2045,26 +2045,26 @@
                 
                 <h1 id="authentication-in-single-page-application">Authentication in Single Page Application<a class="headerlink" href="#authentication-in-single-page-application" title="Permanent link">&para;</a></h1>
 <p>If you are writing a single page application deployed outside SharePoint it is recommended to use the MSAL client. You can find further details on the settings in the <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview">MSAL docs</a>. You will need to ensure that you grant the permissions required to the application you are trying to use.</p>
-<pre><code class="language-TypeScript">import { MsalClientSetup  } from &quot;@pnp/msaljsclient&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span>  <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-graph.setup({
-    graph: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: &quot;https://login.microsoftonline.com/common&quot;,
-                clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-                redirectUri: &quot;{your redirect uri}&quot;,
-            },
-            cache: {
-                cacheLocation: &quot;sessionStorage&quot;,
-            },
-        }, [&quot;email&quot;, &quot;Files.Read.All&quot;, &quot;User.Read.All&quot;]),
-    },
-});
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+            <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/common&quot;</span><span class="p">,</span>
+                <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;{your redirect uri}&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="nx">cache</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">cacheLocation</span><span class="o">:</span> <span class="s2">&quot;sessionStorage&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;Files.Read.All&quot;</span><span class="p">,</span> <span class="s2">&quot;User.Read.All&quot;</span><span class="p">]),</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const data = await graph.me();
-</code></pre>
+<span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

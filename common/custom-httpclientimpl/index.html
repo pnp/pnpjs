@@ -2120,41 +2120,41 @@
 <p>It is possible you may need complete control over the sending and receiving of requests.</p>
 <p>Before you get started read and understand the <a href="https://fetch.spec.whatwg.org/">fetch specification</a> as you are essentially writing a custom fetch implementation.</p>
 <p>The first step (second if you read the fetch spec as mentioned just above) is to understand the interface you need to implement, HttpClientImpl.</p>
-<pre><code class="language-TypeScript">export interface HttpClientImpl {
-    fetch(url: string, options: FetchOptions): Promise&lt;Response&gt;;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">HttpClientImpl</span> <span class="p">{</span>
+    <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">options</span>: <span class="kt">FetchOptions</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">Response</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>There is a single method "fetch" which takes a url string and a set of options. These options can be just about anything but are constrained within the library to the FetchOptions interface.</p>
-<pre><code class="language-TypeScript">export interface FetchOptions {
-    method?: string;
-    headers?: HeadersInit | { [index: string]: string };
-    body?: BodyInit;
-    mode?: string | RequestMode;
-    credentials?: string | RequestCredentials;
-    cache?: string | RequestCache;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">FetchOptions</span> <span class="p">{</span>
+    <span class="nx">method?</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">headers?</span>: <span class="kt">HeadersInit</span> <span class="o">|</span> <span class="p">{</span> <span class="p">[</span><span class="nx">index</span>: <span class="kt">string</span><span class="p">]</span><span class="o">:</span> <span class="kt">string</span> <span class="p">};</span>
+    <span class="nx">body?</span>: <span class="kt">BodyInit</span><span class="p">;</span>
+    <span class="nx">mode?</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">RequestMode</span><span class="p">;</span>
+    <span class="nx">credentials?</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">RequestCredentials</span><span class="p">;</span>
+    <span class="nx">cache?</span>: <span class="kt">string</span> <span class="o">|</span> <span class="nx">RequestCache</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>So you will need to handle any of those options along with the provided url when sending your request. The library will expect your implementation to return a Promise that resolves to a Response defined by the <a href="https://fetch.spec.whatwg.org/">fetch specification</a> - which you've already read 👍.</p>
 <h2 id="using-your-custom-httpclientimpl">Using Your Custom HttpClientImpl<a class="headerlink" href="#using-your-custom-httpclientimpl" title="Permanent link">&para;</a></h2>
 <p>Once you have written your implementation using it on your requests is done by setting it in the global library configuration:</p>
-<pre><code class="language-TypeScript">import { setup } from &quot;@pnp/common&quot;;
-import { sp, Web } from &quot;@pnp/sp&quot;;
-import { MyAwesomeClient } from &quot;./awesomeclient&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">MyAwesomeClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./awesomeclient&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new MyAwesomeClient();
-        }
-    }
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">MyAwesomeClient</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-let w = new Web(&quot;{site url}&quot;);
+<span class="kd">let</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;{site url}&quot;</span><span class="p">);</span>
 
-// this request will use your client.
-const result = await w.select(&quot;Title&quot;).get();
-console.log(result);
-</code></pre>
+<span class="c1">// this request will use your client.</span>
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">w</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="subclassing-is-better">Subclassing is Better<a class="headerlink" href="#subclassing-is-better" title="Permanent link">&para;</a></h2>
 <p>You can of course inherit from one of the implementations available within the @pnp scope if you just need to say add a header or need to do <em>something</em> to every request sent. Perhaps some advanced logging. This approach will save you from needing to fully write a fetch implementation.</p>
 <h2 id="a-final-note">A FINAL NOTE<a class="headerlink" href="#a-final-note" title="Permanent link">&para;</a></h2>

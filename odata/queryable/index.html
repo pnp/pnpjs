@@ -2277,35 +2277,35 @@
 <p>Directly concatenates the supplied string to the current url, not normalizing "/" chars</p>
 <h3 id="configure">configure<a class="headerlink" href="#configure" title="Permanent link">&para;</a></h3>
 <p>Sets custom options for current object and all derived objects accessible via chaining</p>
-<pre><code class="language-TypeScript">import { ConfigOptions } from &quot;@pnp/odata&quot;;
-import { sp } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">ConfigOptions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const headers: ConfigOptions = {
-    Accept: 'application/json;odata=nometadata'
-};
+<span class="kr">const</span> <span class="nx">headers</span>: <span class="kt">ConfigOptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Accept</span><span class="o">:</span> <span class="s1">&#39;application/json;odata=nometadata&#39;</span>
+<span class="p">};</span>
 
-// here we use configure to set the headers value for all child requests of the list instance
-const list = sp.web.lists.getByTitle(&quot;List1&quot;).configure({ headers });
+<span class="c1">// here we use configure to set the headers value for all child requests of the list instance</span>
+<span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;List1&quot;</span><span class="p">).</span><span class="nx">configure</span><span class="p">({</span> <span class="nx">headers</span> <span class="p">});</span>
 
-// this will use the values set in configure
-list.items.get().then(items =&gt; console.log(JSON.stringify(items, null, 2));
-</code></pre>
+<span class="c1">// this will use the values set in configure</span>
+<span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">items</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre></div>
 <p>For reference the ConfigOptions interface is shown below:</p>
-<pre><code class="language-TypeScript">export interface ConfigOptions {
-    headers?: string[][] | { [key: string]: string } | Headers;
-    mode?: &quot;navigate&quot; | &quot;same-origin&quot; | &quot;no-cors&quot; | &quot;cors&quot;;
-    credentials?: &quot;omit&quot; | &quot;same-origin&quot; | &quot;include&quot;;
-    cache?: &quot;default&quot; | &quot;no-store&quot; | &quot;reload&quot; | &quot;no-cache&quot; | &quot;force-cache&quot; | &quot;only-if-cached&quot;;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ConfigOptions</span> <span class="p">{</span>
+    <span class="nx">headers?</span>: <span class="kt">string</span><span class="p">[][]</span> <span class="o">|</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span>: <span class="kt">string</span><span class="p">]</span><span class="o">:</span> <span class="kt">string</span> <span class="p">}</span> <span class="o">|</span> <span class="nx">Headers</span><span class="p">;</span>
+    <span class="nx">mode</span><span class="o">?:</span> <span class="s2">&quot;navigate&quot;</span> <span class="o">|</span> <span class="s2">&quot;same-origin&quot;</span> <span class="o">|</span> <span class="s2">&quot;no-cors&quot;</span> <span class="o">|</span> <span class="s2">&quot;cors&quot;</span><span class="p">;</span>
+    <span class="nx">credentials</span><span class="o">?:</span> <span class="s2">&quot;omit&quot;</span> <span class="o">|</span> <span class="s2">&quot;same-origin&quot;</span> <span class="o">|</span> <span class="s2">&quot;include&quot;</span><span class="p">;</span>
+    <span class="nx">cache</span><span class="o">?:</span> <span class="s2">&quot;default&quot;</span> <span class="o">|</span> <span class="s2">&quot;no-store&quot;</span> <span class="o">|</span> <span class="s2">&quot;reload&quot;</span> <span class="o">|</span> <span class="s2">&quot;no-cache&quot;</span> <span class="o">|</span> <span class="s2">&quot;force-cache&quot;</span> <span class="o">|</span> <span class="s2">&quot;only-if-cached&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="configurefrom">configureFrom<a class="headerlink" href="#configurefrom" title="Permanent link">&para;</a></h3>
 <p>Sets custom options from another queryable instance's options. Identical to configure except the options are derived from the supplied instance.</p>
 <h3 id="usingcaching">usingCaching<a class="headerlink" href="#usingcaching" title="Permanent link">&para;</a></h3>
 <p>Enables caching for this request. See <a href="../caching/">caching</a> for more details.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span>
 
-sp.web.usingCaching().get().then(...);
-</code></pre>
+<span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">usingCaching</span><span class="p">().</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(...);</span>
+</code></pre></div>
 <h3 id="inbatch">inBatch<a class="headerlink" href="#inbatch" title="Permanent link">&para;</a></h3>
 <p>Adds this query to the supplied batch</p>
 <h3 id="tourl">toUrl<a class="headerlink" href="#tourl" title="Permanent link">&para;</a></h3>

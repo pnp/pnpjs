@@ -2156,31 +2156,31 @@ value to be returned. It has two methods, one is optional:</p>
 <p>The base class used by all parsers in the @pnp libraries. It is optional to use when creating your own custom parsers, but does contain several helper methods.</p>
 <h3 id="create-a-custom-parser-from-odataparserbase">Create a custom parser from ODataParserBase<T><a class="headerlink" href="#create-a-custom-parser-from-odataparserbase" title="Permanent link">&para;</a></h3>
 <p>You can always create custom parsers for your projects, however it is likely you will not require this step as the default parsers should work for most cases.</p>
-<pre><code class="language-TypeScript">class MyParser extends ODataParserBase&lt;any&gt; {
+<div class="highlight"><pre><span></span><code><span class="kr">class</span> <span class="nx">MyParser</span> <span class="kr">extends</span> <span class="nx">ODataParserBase</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    // we need to override the parse method to do our custom stuff
-    public parse(r: Response): Promise&lt;T&gt; {
+    <span class="c1">// we need to override the parse method to do our custom stuff</span>
+    <span class="kr">public</span> <span class="nx">parse</span><span class="p">(</span><span class="nx">r</span>: <span class="kt">Response</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
 
-        // we wrap everything in a promise
-        return new Promise((resolve, reject) =&gt; {
+        <span class="c1">// we wrap everything in a promise</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-            // lets use the default error handling which returns true for no error
-            // and will call reject with an error if one exists
-            if (this.handleError(r, reject)) {
+            <span class="c1">// lets use the default error handling which returns true for no error</span>
+            <span class="c1">// and will call reject with an error if one exists</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">handleError</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">reject</span><span class="p">))</span> <span class="p">{</span>
 
-                // now we add our custom parsing here
-                r.text().then(txt =&gt; {
-                    // here we call a made up function to parse the result
-                    // this is where we would do our parsing as required
-                    myCustomerUnencode(txt).then(v =&gt; {
-                        resolve(v);
-                    });
-                });
-            }
-        });
-    }
-}
-</code></pre>
+                <span class="c1">// now we add our custom parsing here</span>
+                <span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">txt</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// here we call a made up function to parse the result</span>
+                    <span class="c1">// this is where we would do our parsing as required</span>
+                    <span class="nx">myCustomerUnencode</span><span class="p">(</span><span class="nx">txt</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                        <span class="nx">resolve</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                    <span class="p">});</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               

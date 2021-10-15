@@ -2427,244 +2427,244 @@
 <p>The profile services allows you to work with the SharePoint User Profile Store.</p>
 <h2 id="profiles">Profiles<a class="headerlink" href="#profiles" title="Permanent link">&para;</a></h2>
 <p>Profiles is accessed directly from the root sp object.</p>
-<pre><code class="language-typescript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/profiles&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/profiles&quot;</span><span class="p">;</span>
+</code></pre></div>
 <h2 id="get-edit-profile-link-for-the-current-user">Get edit profile link for the current user<a class="headerlink" href="#get-edit-profile-link-for-the-current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">editProfileLink(): Promise&lt;string&gt;
-</code></pre>
-<pre><code class="language-typescript">const editProfileLink = await sp.profiles.editProfileLink();
-console.log(&quot;My edit profile link =&quot; + editProfileLink);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">editProfileLink</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">editProfileLink</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">editProfileLink</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;My edit profile link =&quot;</span> <span class="o">+</span> <span class="nx">editProfileLink</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="is-my-people-list-public">Is My People List Public<a class="headerlink" href="#is-my-people-list-public" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users "People I'm Following" list is public or not</p>
-<pre><code class="language-typescript">isMyPeopleListPublic(): Promise&lt;boolean&gt;
-</code></pre>
-<pre><code class="language-typescript">const isPublic = await sp.profiles.isMyPeopleListPublic();
-console.log(&quot;Is my Following list Public =&quot; + isPubic);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">isMyPeopleListPublic</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kr">boolean</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">isPublic</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">isMyPeopleListPublic</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Is my Following list Public =&quot;</span> <span class="o">+</span> <span class="nx">isPubic</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="find-out-if-the-current-user-is-followed-by-another-user">Find out if the current user is followed by another user<a class="headerlink" href="#find-out-if-the-current-user-is-followed-by-another-user" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users is followed by a specific user.</p>
-<pre><code class="language-typescript">amIFollowedBy(loginName: string): Promise&lt;boolean&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const isFollowedBy = await sp.profiles.amIFollowedBy(loginName);
-console.log(&quot;Is &quot; + loginName + &quot; following me? &quot; + isFollowedBy);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">amIFollowedBy</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kr">boolean</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">isFollowedBy</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">amIFollowedBy</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Is &quot;</span> <span class="o">+</span> <span class="nx">loginName</span> <span class="o">+</span> <span class="s2">&quot; following me? &quot;</span> <span class="o">+</span> <span class="nx">isFollowedBy</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="find-out-if-i-am-following-a-specific-user">Find out if I am following a specific user<a class="headerlink" href="#find-out-if-i-am-following-a-specific-user" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users is followed by a specific user.</p>
-<pre><code class="language-typescript">amIFollowing(loginName: string): Promise&lt;boolean&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const following = await sp.profiles.amIFollowing(loginName);
-console.log(&quot;Am I following &quot; + loginName + &quot;? &quot; + following);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">amIFollowing</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kr">boolean</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">following</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">amIFollowing</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Am I following &quot;</span> <span class="o">+</span> <span class="nx">loginName</span> <span class="o">+</span> <span class="s2">&quot;? &quot;</span> <span class="o">+</span> <span class="nx">following</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-the-tags-i-follow">Get the tags I follow<a class="headerlink" href="#get-the-tags-i-follow" title="Permanent link">&para;</a></h2>
 <p>Gets the tags the current user is following. Accepts max count, default is 20.</p>
-<pre><code class="language-typescript">getFollowedTags(maxCount = 20): Promise&lt;string[]&gt;
-</code></pre>
-<pre><code class="language-typescript">const tags = await sp.profiles.getFollowedTags();
-console.log(tags);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">getFollowedTags</span><span class="p">(</span><span class="nx">maxCount</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">[]</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowedTags</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tags</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-followers-for-a-specific-user">Get followers for a specific user<a class="headerlink" href="#get-followers-for-a-specific-user" title="Permanent link">&para;</a></h2>
 <p>Gets the people who are following the specified user.</p>
-<pre><code class="language-typescript">getFollowersFor(loginName: string): Promise&lt;any[]&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const followers = await sp.profiles.getFollowersFor(loginName);
-followers.forEach((value) =&gt; {
-  console.log(value);
-});
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="p">[]</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">followers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">followers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="get-followers-for-the-current">Get followers for the current<a class="headerlink" href="#get-followers-for-the-current" title="Permanent link">&para;</a></h2>
 <p>Gets the people who are following the current user.</p>
-<pre><code class="language-typescript">myFollowers(): ISharePointQueryableCollection
-</code></pre>
-<pre><code class="language-typescript">const folowers = await sp.profiles.myFollowers();
-console.log(folowers);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">myFollowers</span><span class="p">()</span><span class="o">:</span> <span class="nx">ISharePointQueryableCollection</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">folowers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">myFollowers</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">folowers</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-the-properties-for-the-current-user">Get the properties for the current user<a class="headerlink" href="#get-the-properties-for-the-current-user" title="Permanent link">&para;</a></h2>
 <p>Gets user properties for the current user.</p>
-<pre><code class="language-typescript">myProperties(): _SharePointQueryableInstance
-</code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.myProperties.get();
-console.log(profile.DisplayName);
-console.log(profile.Email);
-console.log(profile.Title);
-console.log(profile.UserProfileProperties.length);
+<div class="highlight"><pre><span></span><code><span class="nx">myProperties</span><span class="p">()</span><span class="o">:</span> <span class="nx">_SharePointQueryableInstance</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">profile</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">myProperties</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">DisplayName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">Email</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">UserProfileProperties</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
 
-// Properties are stored in Key/Value pairs,
-// so parse into an object called userProperties
-var props = {};
-profile.UserProfileProperties.forEach((prop) =&gt; {
-  props[prop.Key] = prop.Value;
-});
-profile.userProperties = props;
-console.log(&quot;Account Name: &quot; + profile.userProperties.AccountName);
-</code></pre>
+<span class="c1">// Properties are stored in Key/Value pairs,</span>
+<span class="c1">// so parse into an object called userProperties</span>
+<span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">UserProfileProperties</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">prop</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">props</span><span class="p">[</span><span class="nx">prop</span><span class="p">.</span><span class="nx">Key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">prop</span><span class="p">.</span><span class="nx">Value</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Account Name: &quot;</span> <span class="o">+</span> <span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span><span class="p">.</span><span class="nx">AccountName</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="gets-people-specified-user-is-following">Gets people specified user is following<a class="headerlink" href="#gets-people-specified-user-is-following" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">getPeopleFollowedBy(loginName: string): Promise&lt;any[]&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const folowers = await sp.profiles.getFollowersFor(loginName);
-followers.forEach((value) =&gt; {
-  console.log(value);
-});
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">getPeopleFollowedBy</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="p">[]</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">folowers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getFollowersFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">followers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="gets-properties-for-a-specified-user">Gets properties for a specified user<a class="headerlink" href="#gets-properties-for-a-specified-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">getPropertiesFor(loginName: string): Promise&lt;any&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const profile = await sp.profiles.getPropertiesFor(loginName);
-console.log(profile.DisplayName);
-console.log(profile.Email);
-console.log(profile.Title);
-console.log(profile.UserProfileProperties.length);
+<div class="highlight"><pre><span></span><code><span class="nx">getPropertiesFor</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">profile</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getPropertiesFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">DisplayName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">Email</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">Title</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">UserProfileProperties</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
 
-// Properties are stored in inconvenient Key/Value pairs,
-// so parse into an object called userProperties
-var props = {};
-profile.UserProfileProperties.forEach((prop) =&gt; {
-  props[prop.Key] = prop.Value;
-});
+<span class="c1">// Properties are stored in inconvenient Key/Value pairs,</span>
+<span class="c1">// so parse into an object called userProperties</span>
+<span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">UserProfileProperties</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">prop</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">props</span><span class="p">[</span><span class="nx">prop</span><span class="p">.</span><span class="nx">Key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">prop</span><span class="p">.</span><span class="nx">Value</span><span class="p">;</span>
+<span class="p">});</span>
 
-profile.userProperties = props;
-console.log(&quot;Account Name: &quot; + profile.userProperties.AccountName);
-</code></pre>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Account Name: &quot;</span> <span class="o">+</span> <span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span><span class="p">.</span><span class="nx">AccountName</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="gets-most-popular-tags">Gets most popular tags<a class="headerlink" href="#gets-most-popular-tags" title="Permanent link">&para;</a></h2>
 <p>Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first</p>
-<pre><code class="language-typescript">trendingTags(): Promise&lt;IHashTagCollection&gt;
-</code></pre>
-<pre><code class="language-typescript">const tags = await sp.profiles.trendingTags();
-tags.Items.forEach((tag) =&gt; {
-  console.log(tag);
-});
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">trendingTags</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">IHashTagCollection</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">trendingTags</span><span class="p">();</span>
+<span class="nx">tags</span><span class="p">.</span><span class="nx">Items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">tag</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tag</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="gets-specified-user-profile-property-for-the-specified-user">Gets specified user profile property for the specified user<a class="headerlink" href="#gets-specified-user-profile-property-for-the-specified-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">getUserProfilePropertyFor(loginName: string, propertyName: string): Promise&lt;string&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const propertyName = &quot;AccountName&quot;;
-const property = await sp.profiles.getUserProfilePropertyFor(loginName, propertyName);
-console.log(property);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">getUserProfilePropertyFor</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">propertyName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="s2">&quot;AccountName&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">property</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getUserProfilePropertyFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">property</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="hide-specific-user-from-list-of-suggested-people">Hide specific user from list of suggested people<a class="headerlink" href="#hide-specific-user-from-list-of-suggested-people" title="Permanent link">&para;</a></h2>
 <p>Removes the specified user from the user's list of suggested people to follow.</p>
-<pre><code class="language-typescript">hideSuggestion(loginName: string): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-await sp.profiles.hideSuggestion(loginName);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">hideSuggestion</span><span class="p">(</span><span class="nx">loginName</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">hideSuggestion</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="is-one-user-following-another">Is one user following another<a class="headerlink" href="#is-one-user-following-another" title="Permanent link">&para;</a></h2>
 <p>Indicates whether the first user is following the second user.
 First parameter is the account name of the user who might be following the followee.
 Second parameter is the account name of the user who might be followed by the follower.</p>
-<pre><code class="language-typescript">isFollowing(follower: string, followee: string): Promise&lt;boolean&gt;
-</code></pre>
-<pre><code class="language-typescript">const follower = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const followee = &quot;i:0#.f|membership|testuser2@mytenant.onmicrosoft.com&quot;;
-const isFollowing = await sp.profiles.isFollowing(follower, followee);
-console.log(isFollowing);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">isFollowing</span><span class="p">(</span><span class="nx">follower</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">followee</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kr">boolean</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">follower</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">followee</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser2@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">isFollowing</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">isFollowing</span><span class="p">(</span><span class="nx">follower</span><span class="p">,</span> <span class="nx">followee</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">isFollowing</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="set-user-profile-picture">Set User Profile Picture<a class="headerlink" href="#set-user-profile-picture" title="Permanent link">&para;</a></h2>
 <p>Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
 Accepts the profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB.</p>
-<pre><code class="language-typescript">setMyProfilePic(profilePicSource: Blob): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/lists/web&quot;;
-import &quot;@pnp/sp/profiles&quot;;
-import &quot;@pnp/sp/folders&quot;;
-import &quot;@pnp/sp/files&quot;;
+<div class="highlight"><pre><span></span><code><span class="nx">setMyProfilePic</span><span class="p">(</span><span class="nx">profilePicSource</span>: <span class="kt">Blob</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/profiles&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files&quot;</span><span class="p">;</span>
 
-// get the blob object through a request or from a file input
-const blob = await sp.web.lists.getByTitle(&quot;Documents&quot;).rootFolder.files.getByName(&quot;profile.jpg&quot;).getBlob();
+<span class="c1">// get the blob object through a request or from a file input</span>
+<span class="kr">const</span> <span class="nx">blob</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;profile.jpg&quot;</span><span class="p">).</span><span class="nx">getBlob</span><span class="p">();</span>
 
-await sp.profiles.setMyProfilePic(blob);
-</code></pre>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">setMyProfilePic</span><span class="p">(</span><span class="nx">blob</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="sets-single-value-user-profile-property">Sets single value User Profile property<a class="headerlink" href="#sets-single-value-user-profile-property" title="Permanent link">&para;</a></h2>
 <p>accountName The account name of the user
 propertyName Property name
 propertyValue Property value</p>
-<pre><code class="language-typescript">setSingleValueProfileProperty(accountName: string, propertyName: string, propertyValue: string): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-await sp.profiles.setSingleValueProfileProperty(loginName, &quot;CellPhone&quot;, &quot;(123) 555-1212&quot;);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">setSingleValueProfileProperty</span><span class="p">(</span><span class="nx">accountName</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">propertyName</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">propertyValue</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">setSingleValueProfileProperty</span><span class="p">(</span><span class="nx">loginName</span><span class="p">,</span> <span class="s2">&quot;CellPhone&quot;</span><span class="p">,</span> <span class="s2">&quot;(123) 555-1212&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="sets-a-mult-value-user-profile-property">Sets a mult-value User Profile property<a class="headerlink" href="#sets-a-mult-value-user-profile-property" title="Permanent link">&para;</a></h2>
 <p>accountName The account name of the user
 propertyName Property name
 propertyValues Property values</p>
-<pre><code class="language-typescript">setMultiValuedProfileProperty(accountName: string, propertyName: string, propertyValues: string[]): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
-const propertyName = &quot;SPS-Skills&quot;;
-const propertyValues = [&quot;SharePoint&quot;, &quot;Office 365&quot;, &quot;Architecture&quot;, &quot;Azure&quot;];
-await sp.profiles.setMultiValuedProfileProperty(loginName, propertyName, propertyValues);
-const profile = await sp.profiles.getPropertiesFor(loginName);
-var props = {};
-profile.UserProfileProperties.forEach((prop) =&gt; {
-  props[prop.Key] = prop.Value;
-});
-profile.userProperties = props;
-console.log(profile.userProperties[propertyName]);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">setMultiValuedProfileProperty</span><span class="p">(</span><span class="nx">accountName</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">propertyName</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">propertyValues</span>: <span class="kt">string</span><span class="p">[])</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">loginName</span> <span class="o">=</span> <span class="s2">&quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="s2">&quot;SPS-Skills&quot;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">propertyValues</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SharePoint&quot;</span><span class="p">,</span> <span class="s2">&quot;Office 365&quot;</span><span class="p">,</span> <span class="s2">&quot;Architecture&quot;</span><span class="p">,</span> <span class="s2">&quot;Azure&quot;</span><span class="p">];</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">setMultiValuedProfileProperty</span><span class="p">(</span><span class="nx">loginName</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">,</span> <span class="nx">propertyValues</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">profile</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">getPropertiesFor</span><span class="p">(</span><span class="nx">loginName</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">UserProfileProperties</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">prop</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">props</span><span class="p">[</span><span class="nx">prop</span><span class="p">.</span><span class="nx">Key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">prop</span><span class="p">.</span><span class="nx">Value</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">.</span><span class="nx">userProperties</span><span class="p">[</span><span class="nx">propertyName</span><span class="p">]);</span>
+</code></pre></div>
 <h2 id="create-personal-site-for-specified-users">Create Personal Site for specified users<a class="headerlink" href="#create-personal-site-for-specified-users" title="Permanent link">&para;</a></h2>
 <p>Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
 Emails The email addresses of the users to provision sites for</p>
-<pre><code class="language-typescript">createPersonalSiteEnqueueBulk(...emails: string[]): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">let userEmails: string[] = [&quot;testuser1@mytenant.onmicrosoft.com&quot;, &quot;testuser2@mytenant.onmicrosoft.com&quot;];
-await sp.profiles.createPersonalSiteEnqueueBulk(userEmails);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">createPersonalSiteEnqueueBulk</span><span class="p">(...</span><span class="nx">emails</span>: <span class="kt">string</span><span class="p">[])</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">userEmails</span>: <span class="kt">string</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;testuser1@mytenant.onmicrosoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;testuser2@mytenant.onmicrosoft.com&quot;</span><span class="p">];</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">createPersonalSiteEnqueueBulk</span><span class="p">(</span><span class="nx">userEmails</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-the-user-profile-of-the-owner-for-the-current-site">Get the user profile of the owner for the current site<a class="headerlink" href="#get-the-user-profile-of-the-owner-for-the-current-site" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">ownerUserProfile(): Promise&lt;IUserProfile&gt;
-</code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.ownerUserProfile();
-console.log(profile);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">ownerUserProfile</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">IUserProfile</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">profile</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">ownerUserProfile</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="get-the-user-profile-of-the-current-user">Get the user profile of the current user<a class="headerlink" href="#get-the-user-profile-of-the-current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">userProfile(): Promise&lt;any&gt;
-</code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.userProfile();
-console.log(profile);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">userProfile</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">profile</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">userProfile</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">profile</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="create-personal-site-for-current-user">Create personal site for current user<a class="headerlink" href="#create-personal-site-for-current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-typescript">createPersonalSite(interactiveRequest = false): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">await sp.profiles.createPersonalSite();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">createPersonalSite</span><span class="p">(</span><span class="nx">interactiveRequest</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">createPersonalSite</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="make-all-profile-data-public-or-private">Make all profile data public or private<a class="headerlink" href="#make-all-profile-data-public-or-private" title="Permanent link">&para;</a></h2>
 <p>Set the privacy settings for all social data.</p>
-<pre><code class="language-typescript">shareAllSocialData(share: boolean): Promise&lt;void&gt;
-</code></pre>
-<pre><code class="language-typescript">await sp.profiles.shareAllSocialData(true);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">shareAllSocialData</span><span class="p">(</span><span class="nx">share</span>: <span class="kt">boolean</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">shareAllSocialData</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="resolve-a-user-or-group">Resolve a user or group<a class="headerlink" href="#resolve-a-user-or-group" title="Permanent link">&para;</a></h2>
 <p>Resolves user or group using specified query parameters</p>
-<pre><code class="language-typescript">clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): Promise&lt;IPeoplePickerEntity&gt;
-</code></pre>
-<pre><code class="language-typescript">const result = await sp.profiles.clientPeoplePickerSearchUser({
-  AllowEmailAddresses: true,
-  AllowMultipleEntities: false,
-  MaximumEntitySuggestions: 25,
-  QueryString: 'John'
-});
-console.log(result);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">clientPeoplePickerResolveUser</span><span class="p">(</span><span class="nx">queryParams</span>: <span class="kt">IClientPeoplePickerQueryParameters</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">IPeoplePickerEntity</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">clientPeoplePickerSearchUser</span><span class="p">({</span>
+  <span class="nx">AllowEmailAddresses</span>: <span class="kt">true</span><span class="p">,</span>
+  <span class="nx">AllowMultipleEntities</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">MaximumEntitySuggestions</span>: <span class="kt">25</span><span class="p">,</span>
+  <span class="nx">QueryString</span><span class="o">:</span> <span class="s1">&#39;John&#39;</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="search-a-user-or-group">Search a user or group<a class="headerlink" href="#search-a-user-or-group" title="Permanent link">&para;</a></h2>
 <p>Searches for users or groups using specified query parameters</p>
-<pre><code class="language-typescript">clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): Promise&lt;IPeoplePickerEntity[]&gt;
-</code></pre>
-<pre><code class="language-typescript">const result = await sp.profiles.clientPeoplePickerSearchUser({
-  AllowEmailAddresses: true,
-  AllowMultipleEntities: false,
-  MaximumEntitySuggestions: 25,
-  QueryString: 'John'
-});
-console.log(result);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">clientPeoplePickerSearchUser</span><span class="p">(</span><span class="nx">queryParams</span>: <span class="kt">IClientPeoplePickerQueryParameters</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="nx">IPeoplePickerEntity</span><span class="p">[]</span><span class="o">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">profiles</span><span class="p">.</span><span class="nx">clientPeoplePickerSearchUser</span><span class="p">({</span>
+  <span class="nx">AllowEmailAddresses</span>: <span class="kt">true</span><span class="p">,</span>
+  <span class="nx">AllowMultipleEntities</span>: <span class="kt">false</span><span class="p">,</span>
+  <span class="nx">MaximumEntitySuggestions</span>: <span class="kt">25</span><span class="p">,</span>
+  <span class="nx">QueryString</span><span class="o">:</span> <span class="s1">&#39;John&#39;</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

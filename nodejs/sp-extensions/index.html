@@ -2150,77 +2150,77 @@
 </blockquote>
 <h2 id="ifilegetstream">IFile.getStream<a class="headerlink" href="#ifilegetstream" title="Permanent link">&para;</a></h2>
 <p>Allows you to read a response body as a nodejs PassThrough stream.</p>
-<pre><code class="language-TypeScript">// by importing the the library the node specific extensions are automatically applied
-import { SPFetchClient, SPNS } from &quot;@pnp/nodejs-commonjs&quot;;
-import { sp } from &quot;@pnp/sp-commonjs&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// by importing the the library the node specific extensions are automatically applied</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPNS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp-commonjs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
-            return new SPFetchClient(&quot;{url}&quot;, &quot;{id}&quot;, &quot;{secret}&quot;);
-        },
-    },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="s2">&quot;{url}&quot;</span><span class="p">,</span> <span class="s2">&quot;{id}&quot;</span><span class="p">,</span> <span class="s2">&quot;{secret}&quot;</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-// get the stream
-const streamResult: SPNS.IResponseBodyStream = await sp.web.getFileByServerRelativeUrl(&quot;/sites/dev/file.txt&quot;).getStream();
+<span class="c1">// get the stream</span>
+<span class="kr">const</span> <span class="nx">streamResult</span>: <span class="kt">SPNS.IResponseBodyStream</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/file.txt&quot;</span><span class="p">).</span><span class="nx">getStream</span><span class="p">();</span>
 
-// see if we have a known length
-console.log(streamResult.knownLength);
+<span class="c1">// see if we have a known length</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">streamResult</span><span class="p">.</span><span class="nx">knownLength</span><span class="p">);</span>
 
-// read the stream
-// this is a very basic example - you can do tons more with streams in node
-const txt = await new Promise&lt;string&gt;((resolve) =&gt; {
-    let data = &quot;&quot;;
-    stream.body.on(&quot;data&quot;, (chunk) =&gt; data += chunk);
-    stream.body.on(&quot;end&quot;, () =&gt; resolve(data));
-});
-</code></pre>
+<span class="c1">// read the stream</span>
+<span class="c1">// this is a very basic example - you can do tons more with streams in node</span>
+<span class="kr">const</span> <span class="nx">txt</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="nx">stream</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">chunk</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">data</span> <span class="o">+=</span> <span class="nx">chunk</span><span class="p">);</span>
+    <span class="nx">stream</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="ifilesaddchunked">IFiles.addChunked<a class="headerlink" href="#ifilesaddchunked" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.1.0</em></p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/folders/list&quot;;
-import &quot;@pnp/sp/files/web&quot;;
-import &quot;@pnp/sp/files/folder&quot;;
-import * as fs from &quot;fs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/folder&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
 
 
-const stream = fs.createReadStream(&quot;{file path}&quot;);
-const files = sp.web.defaultDocumentLibrary.rootFolder.files;
+<span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="s2">&quot;{file path}&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">defaultDocumentLibrary</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">files</span><span class="p">;</span>
 
-await files.addChunked(name, stream, null, true, 10);
-</code></pre>
+<span class="nx">await</span> <span class="nx">files</span><span class="p">.</span><span class="nx">addChunked</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">stream</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="ifilesetstreamcontentchunked">IFile.setStreamContentChunked<a class="headerlink" href="#ifilesetstreamcontentchunked" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.1.0</em></p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/folders/web&quot;;
-import &quot;@pnp/sp/folders/list&quot;;
-import &quot;@pnp/sp/files/web&quot;;
-import &quot;@pnp/sp/files/folder&quot;;
-import * as fs from &quot;fs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/folders/list&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/folder&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s2">&quot;fs&quot;</span><span class="p">;</span>
 
-const stream = fs.createReadStream(&quot;{file path}&quot;);
-const file = sp.web.defaultDocumentLibrary.rootFolder.files..getByName(&quot;file-name.txt&quot;);
+<span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="s2">&quot;{file path}&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">defaultDocumentLibrary</span><span class="p">.</span><span class="nx">rootFolder</span><span class="p">.</span><span class="nx">files</span><span class="p">..</span><span class="nx">getByName</span><span class="p">(</span><span class="s2">&quot;file-name.txt&quot;</span><span class="p">);</span>
 
-await file.setStreamContentChunked(stream);
-</code></pre>
+<span class="nx">await</span> <span class="nx">file</span><span class="p">.</span><span class="nx">setStreamContentChunked</span><span class="p">(</span><span class="nx">stream</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="explicit-import">Explicit import<a class="headerlink" href="#explicit-import" title="Permanent link">&para;</a></h2>
 <p>If you don't need to import anything from the library, but would like to include the extensions just import the library as shown.</p>
-<pre><code class="language-TypeScript">// ES Modules:  import &quot;@pnp/nodejs&quot;;
-import &quot;@pnp/nodejs-commonjs&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// ES Modules:  import &quot;@pnp/nodejs&quot;;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
 
-// get the stream
-const streamResult = await sp.web.getFileByServerRelativeUrl(&quot;/sites/dev/file.txt&quot;).getStream();
-</code></pre>
+<span class="c1">// get the stream</span>
+<span class="kr">const</span> <span class="nx">streamResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/file.txt&quot;</span><span class="p">).</span><span class="nx">getStream</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="accessing-sp-extension-namespace">Accessing SP Extension Namespace<a class="headerlink" href="#accessing-sp-extension-namespace" title="Permanent link">&para;</a></h2>
 <p>There are classes and interfaces included in extension modules, which you can access through a namespace, "SPNS".</p>
-<pre><code class="language-TypeScript">import { SPNS } from &quot;@pnp/nodejs-commonjs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPNS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs-commonjs&quot;</span><span class="p">;</span>
 
-const parser = new SPNS.StreamParser();
-</code></pre>
+<span class="kr">const</span> <span class="nx">parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SPNS</span><span class="p">.</span><span class="nx">StreamParser</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

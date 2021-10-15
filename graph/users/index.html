@@ -2269,69 +2269,69 @@
 </tbody>
 </table>
 <h2 id="current-user">Current User<a class="headerlink" href="#current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const currentUser = await graph.me();
-</code></pre>
+<span class="kr">const</span> <span class="nx">currentUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-all-users-in-the-organization">Get All Users in the Organization<a class="headerlink" href="#get-all-users-in-the-organization" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const allUsers = await graph.users();
-</code></pre>
+<span class="kr">const</span> <span class="nx">allUsers</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-a-user-by-email-address-or-user-id">Get a User by email address (or user id)<a class="headerlink" href="#get-a-user-by-email-address-or-user-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const matchingUser = await graph.users.getById('jane@contoso.com')();
-</code></pre>
+<span class="kr">const</span> <span class="nx">matchingUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;jane@contoso.com&#39;</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="update-current-user">Update Current User<a class="headerlink" href="#update-current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-await graph.me.update({
-    displayName: 'John Doe'
-});
-</code></pre>
+<span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">displayName</span><span class="o">:</span> <span class="s1">&#39;John Doe&#39;</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="people">People<a class="headerlink" href="#people" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const people = await graph.me.people();
+<span class="kr">const</span> <span class="nx">people</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">people</span><span class="p">();</span>
 
-// get the top 3 people
-const people = await graph.me.people.top(3)();
-</code></pre>
+<span class="c1">// get the top 3 people</span>
+<span class="kr">const</span> <span class="nx">people</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="people_1">People<a class="headerlink" href="#people_1" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const people = await graph.me.people();
+<span class="kr">const</span> <span class="nx">people</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">people</span><span class="p">();</span>
 
-// get the top 3 people
-const people = await graph.me.people.top(3)();
-</code></pre>
+<span class="c1">// get the top 3 people</span>
+<span class="kr">const</span> <span class="nx">people</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+</code></pre></div>
 <h2 id="manager">Manager<a class="headerlink" href="#manager" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const manager = await graph.me.manager();
-</code></pre>
+<span class="kr">const</span> <span class="nx">manager</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">manager</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="direct-reports">Direct Reports<a class="headerlink" href="#direct-reports" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
 
-const reports = await graph.me.directReports();
-</code></pre>
+<span class="kr">const</span> <span class="nx">reports</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">directReports</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="photo">Photo<a class="headerlink" href="#photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;;
-import &quot;@pnp/graph/photos&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/users&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/photos&quot;</span><span class="p">;</span>
 
-const currentUser = await graph.me.photo();
-const specificUser = await graph.users.getById('jane@contoso.com').photo();
-</code></pre>
+<span class="kr">const</span> <span class="nx">currentUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">me</span><span class="p">.</span><span class="nx">photo</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">specificUser</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;jane@contoso.com&#39;</span><span class="p">).</span><span class="nx">photo</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="user-photo-operations">User Photo Operations<a class="headerlink" href="#user-photo-operations" title="Permanent link">&para;</a></h2>
 <p>See <a href="../photos/">Photos</a></p>
 <h2 id="user-presence-operation">User Presence Operation<a class="headerlink" href="#user-presence-operation" title="Permanent link">&para;</a></h2>

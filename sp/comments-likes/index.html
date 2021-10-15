@@ -2347,164 +2347,164 @@
 <p>The IClientsidePage interface has three methods to provide easier access to the comments for a page, without requiring that you load the item separately.</p>
 <h3 id="add-comments">Add Comments<a class="headerlink" href="#add-comments" title="Permanent link">&para;</a></h3>
 <p>You can add a comment using the addComment method as shown</p>
-<pre><code class="language-TypeScript">import { CreateClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
-import &quot;@pnp/sp/comments/clientside-page&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
-const page = await CreateClientsidePage(sp.web, &quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
-// optionally publish the page first
-await page.save();
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
+<span class="c1">// optionally publish the page first</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-const comment = await page.addComment(&quot;A test comment&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">comment</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-page-comments">Get Page Comments<a class="headerlink" href="#get-page-comments" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { CreateClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
-import &quot;@pnp/sp/comments/clientside-page&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
-const page = await CreateClientsidePage(sp.web, &quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
-// optionally publish the page first
-await page.save();
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
+<span class="c1">// optionally publish the page first</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-await page.addComment(&quot;A test comment&quot;);
-await page.addComment(&quot;A test comment&quot;);
-await page.addComment(&quot;A test comment&quot;);
-await page.addComment(&quot;A test comment&quot;);
-await page.addComment(&quot;A test comment&quot;);
-await page.addComment(&quot;A test comment&quot;);
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
 
-const comments = await page.getComments();
-</code></pre>
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getComments</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="enablecomments-disablecomments">enableComments &amp; disableComments<a class="headerlink" href="#enablecomments-disablecomments" title="Permanent link">&para;</a></h3>
 <p>Used to control the availability of comments on a page</p>
-<pre><code class="language-TypeScript">// you need to import the comments sub-module or use the all preset
-import &quot;@pnp/sp/comments/clientside-page&quot;;
+<div class="highlight"><pre><span></span><code><span class="c1">// you need to import the comments sub-module or use the all preset</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
-// our page instance
-const page: IClientsidePage;
+<span class="c1">// our page instance</span>
+<span class="kr">const</span> <span class="nx">page</span>: <span class="kt">IClientsidePage</span><span class="p">;</span>
 
-// turn on comments
-await page.enableComments();
+<span class="c1">// turn on comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">enableComments</span><span class="p">();</span>
 
-// turn off comments
-await page.disableComments();
-</code></pre>
+<span class="c1">// turn off comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">disableComments</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="getbyid">GetById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { CreateClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
-import &quot;@pnp/sp/comments/clientside-page&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">CreateClientsidePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
 
-const page = await CreateClientsidePage(sp.web, &quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
-// optionally publish the page first
-await page.save();
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">CreateClientsidePage</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">,</span> <span class="s2">&quot;mypage&quot;</span><span class="p">,</span> <span class="s2">&quot;My Page Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Article&quot;</span><span class="p">);</span>
+<span class="c1">// optionally publish the page first</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 
-const comment = await page.addComment(&quot;A test comment&quot;);
+<span class="kr">const</span> <span class="nx">comment</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addComment</span><span class="p">(</span><span class="s2">&quot;A test comment&quot;</span><span class="p">);</span>
 
-const commentData = await page.getCommentById(parseInt(comment.id, 10));
-</code></pre>
+<span class="kr">const</span> <span class="nx">commentData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getCommentById</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">comment</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="clear-comments">Clear Comments<a class="headerlink" href="#clear-comments" title="Permanent link">&para;</a></h3>
 <h2 id="item-comments">Item Comments<a class="headerlink" href="#item-comments" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/files/web&quot;;
-import &quot;@pnp/sp/items&quot;;
-import &quot;@pnp/sp/comments/item&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/files/web&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/items&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/item&quot;</span><span class="p">;</span>
 
-const item = await sp.web.getFileByServerRelativeUrl(&quot;/sites/dev/SitePages/Test_8q5L.aspx&quot;).getItem();
+<span class="kr">const</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/SitePages/Test_8q5L.aspx&quot;</span><span class="p">).</span><span class="nx">getItem</span><span class="p">();</span>
 
-// as an example, or any of the below options
-await item.like();
-</code></pre>
+<span class="c1">// as an example, or any of the below options</span>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
+</code></pre></div>
 <p>The below examples use a variable named "item" which is taken to represent an IItem instance.</p>
 <h2 id="comments">Comments<a class="headerlink" href="#comments" title="Permanent link">&para;</a></h2>
 <h3 id="get-item-comments">Get Item Comments<a class="headerlink" href="#get-item-comments" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const comments = await item.comments();
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">();</span>
+</code></pre></div>
 <p>You can also get the comments merged with instances of the Comment class to immediately start accessing the properties and methods:</p>
-<pre><code class="language-TypeScript">import { spODataEntityArray } from &quot;@pnp/sp/odata&quot;;
-import { Comment, ICommentData } from &quot;@pnp/sp/comments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/odata&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">ICommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/comments&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-// these will be Comment instances in the array
-comments[0].replies.add({ text: &quot;#PnPjs is pretty ok!&quot; });
+<span class="c1">// these will be Comment instances in the array</span>
+<span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">replies</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;#PnPjs is pretty ok!&quot;</span> <span class="p">});</span>
 
-//load the top 20 replies and comments for an item including likedBy information
-const comments = await item.comments.expand(&quot;replies&quot;, &quot;likedBy&quot;, &quot;replies/likedBy&quot;).top(20).get();
-</code></pre>
+<span class="c1">//load the top 20 replies and comments for an item including likedBy information</span>
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">.</span><span class="nx">expand</span><span class="p">(</span><span class="s2">&quot;replies&quot;</span><span class="p">,</span> <span class="s2">&quot;likedBy&quot;</span><span class="p">,</span> <span class="s2">&quot;replies/likedBy&quot;</span><span class="p">).</span><span class="nx">top</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add-comment">Add Comment<a class="headerlink" href="#add-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">// you can add a comment as a string
-item.comments.add(&quot;string comment&quot;);
+<div class="highlight"><pre><span></span><code><span class="c1">// you can add a comment as a string</span>
+<span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;string comment&quot;</span><span class="p">);</span>
 
-// or you can add it as an object to include mentions
-item.comments.add({ text: &quot;comment from object property&quot; });
-</code></pre>
+<span class="c1">// or you can add it as an object to include mentions</span>
+<span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;comment from object property&quot;</span> <span class="p">});</span>
+</code></pre></div>
 <h3 id="delete-a-comment">Delete a Comment<a class="headerlink" href="#delete-a-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { spODataEntityArray, Comment, CommentData } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-// these will be Comment instances in the array
-comments[0].delete()
-</code></pre>
+<span class="c1">// these will be Comment instances in the array</span>
+<span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="k">delete</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="like-comment">Like Comment<a class="headerlink" href="#like-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { spODataEntityArray, Comment, CommentData } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-// these will be Comment instances in the array
-comments[0].like()
-</code></pre>
+<span class="c1">// these will be Comment instances in the array</span>
+<span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">like</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="unlike-comment">Unlike Comment<a class="headerlink" href="#unlike-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { spODataEntityArray, Comment, CommentData } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-comments[0].unlike()
-</code></pre>
+<span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">unlike</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="reply-to-a-comment">Reply to a Comment<a class="headerlink" href="#reply-to-a-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { spODataEntityArray, Comment, CommentData } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-const comment: Comment &amp; CommentData = await comments[0].replies.add({ text: &quot;#PnPjs is pretty ok!&quot; });
-</code></pre>
+<span class="kr">const</span> <span class="nx">comment</span>: <span class="kt">Comment</span> <span class="o">&amp;</span> <span class="nx">CommentData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">replies</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;#PnPjs is pretty ok!&quot;</span> <span class="p">});</span>
+</code></pre></div>
 <h3 id="load-replies-to-a-comment">Load Replies to a Comment<a class="headerlink" href="#load-replies-to-a-comment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { spODataEntityArray, Comment, CommentData } from &quot;@pnp/sp&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">spODataEntityArray</span><span class="p">,</span> <span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
-const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&gt;(Comment));
+<span class="kr">const</span> <span class="nx">comments</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">comments</span><span class="p">(</span><span class="nx">spODataEntityArray</span><span class="o">&lt;</span><span class="nx">Comment</span><span class="p">,</span> <span class="nx">CommentData</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">Comment</span><span class="p">));</span>
 
-const replies = await comments[0].replies();
-</code></pre>
+<span class="kr">const</span> <span class="nx">replies</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">comments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">replies</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="like">Like<a class="headerlink" href="#like" title="Permanent link">&para;</a></h2>
 <p>You can like/unlike client-side pages, items, and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/comments/item&quot;;
-import { ILikeData, ILikedByInformation } from &quot;@pnp/sp/comments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/item&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILikeData</span><span class="p">,</span> <span class="nx">ILikedByInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/comments&quot;</span><span class="p">;</span>
 
-// like an item
-await item.like();
+<span class="c1">// like an item</span>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
 
-// unlike an item
-await item.unlike();
+<span class="c1">// unlike an item</span>
+<span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">unlike</span><span class="p">();</span>
 
-// get the liked by data
-const likedByData: ILikeData[] = await item.getLikedBy();
+<span class="c1">// get the liked by data</span>
+<span class="kr">const</span> <span class="nx">likedByData</span>: <span class="kt">ILikeData</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">getLikedBy</span><span class="p">();</span>
 
-// get the liked by information
-const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
-</code></pre>
+<span class="c1">// get the liked by information</span>
+<span class="kr">const</span> <span class="nx">likedByInfo</span>: <span class="kt">ILikedByInformation</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">item</span><span class="p">.</span><span class="nx">getLikedByInformation</span><span class="p">();</span>
+</code></pre></div>
 <p>To like/unlike a client-side page and get liked by information.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/comments/clientside-page&quot;;
-import { ILikedByInformation } from &quot;@pnp/sp/comments&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/comments/clientside-page&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ILikedByInformation</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/comments&quot;</span><span class="p">;</span>
 
-// like a page
-await page.like();
+<span class="c1">// like a page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
 
-// unlike a page
-await page.unlike();
+<span class="c1">// unlike a page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">unlike</span><span class="p">();</span>
 
-// get the liked by information
-const likedByInfo: ILikedByInformation = await page.getLikedByInformation();
-</code></pre>
+<span class="c1">// get the liked by information</span>
+<span class="kr">const</span> <span class="nx">likedByInfo</span>: <span class="kt">ILikedByInformation</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getLikedByInformation</span><span class="p">();</span>
+</code></pre></div>
                 
               
               

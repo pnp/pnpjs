@@ -2243,131 +2243,131 @@
 <p><code>npm install @pnp/logging --save</code></p>
 <h2 id="understanding-the-logging-framework">Understanding the Logging Framework<a class="headerlink" href="#understanding-the-logging-framework" title="Permanent link">&para;</a></h2>
 <p>The logging framework is centered on the Logger class to which any number of listeners can be subscribed. Each of these listeners will receive each of the messages logged. Each listener must implement the <em>ILogListener</em> interface, shown below. There is only one method to implement and it takes an instance of the LogEntry interface as a parameter.</p>
-<pre><code class="language-TypeScript">/**
- * Interface that defines a log listener
- *
- */
-export interface ILogListener {
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    log(entry: ILogEntry): void;
-}
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Interface that defines a log listener</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ILogListener</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Any associated data that a given logging listener may choose to log or ignore</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param entry The information to be logged</span>
+<span class="cm">     */</span>
+    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span><span class="p">;</span>
+<span class="p">}</span>
 
-/**
- * Interface that defines a log entry
- *
- */
-export interface ILogEntry {
-    /**
-     * The main message to be logged
-     */
-    message: string;
-    /**
-     * The level of information this message represents
-     */
-    level: LogLevel;
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     */
-    data?: any;
-}
-</code></pre>
+<span class="cm">/**</span>
+<span class="cm"> * Interface that defines a log entry</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">ILogEntry</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * The main message to be logged</span>
+<span class="cm">     */</span>
+    <span class="nx">message</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="cm">/**</span>
+<span class="cm">     * The level of information this message represents</span>
+<span class="cm">     */</span>
+    <span class="nx">level</span>: <span class="kt">LogLevel</span><span class="p">;</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Any associated data that a given logging listener may choose to log or ignore</span>
+<span class="cm">     */</span>
+    <span class="nx">data?</span>: <span class="kt">any</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="log-levels">Log Levels<a class="headerlink" href="#log-levels" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">export const enum LogLevel {
-    Verbose = 0,
-    Info = 1,
-    Warning = 2,
-    Error = 3,
-    Off = 99,
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kr">export</span> <span class="kr">const</span> <span class="kr">enum</span> <span class="nx">LogLevel</span> <span class="p">{</span>
+    <span class="nx">Verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">Info</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">Warning</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">Error</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nx">Off</span> <span class="o">=</span> <span class="mi">99</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="writing-to-the-logger">Writing to the Logger<a class="headerlink" href="#writing-to-the-logger" title="Permanent link">&para;</a></h2>
 <p>To write information to a logger you can use either write, writeJSON, or log.</p>
-<pre><code class="language-TypeScript">import {
-    Logger,
-    LogLevel
-} from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">,</span>
+    <span class="nx">LogLevel</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-// write logs a simple string as the message value of the LogEntry
-Logger.write(&quot;This is logging a simple string&quot;);
+<span class="c1">// write logs a simple string as the message value of the LogEntry</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;This is logging a simple string&quot;</span><span class="p">);</span>
 
-// optionally passing a level, default level is Verbose
-Logger.write(&quot;This is logging a simple string&quot;, LogLevel.Error);
+<span class="c1">// optionally passing a level, default level is Verbose</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;This is logging a simple string&quot;</span><span class="p">,</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nb">Error</span><span class="p">);</span>
 
-// this will convert the object to a string using JSON.stringify and set the message with the result
-Logger.writeJSON({ name: &quot;value&quot;, name2: &quot;value2&quot;});
+<span class="c1">// this will convert the object to a string using JSON.stringify and set the message with the result</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="nx">name2</span><span class="o">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">});</span>
 
-// optionally passing a level, default level is Verbose
-Logger.writeJSON({ name: &quot;value&quot;, name2: &quot;value2&quot;}, LogLevel.Warning);
+<span class="c1">// optionally passing a level, default level is Verbose</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">writeJSON</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="nx">name2</span><span class="o">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">},</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nx">Warning</span><span class="p">);</span>
 
-// specify the entire LogEntry interface using log
-Logger.log({
-    data: { name: &quot;value&quot;, name2: &quot;value2&quot;},
-    level: LogLevel.Warning,
-    message: &quot;This is my message&quot;
-});
-</code></pre>
+<span class="c1">// specify the entire LogEntry interface using log</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="nx">name2</span><span class="o">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">},</span>
+    <span class="nx">level</span>: <span class="kt">LogLevel.Warning</span><span class="p">,</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;This is my message&quot;</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="log-an-error">Log an error<a class="headerlink" href="#log-an-error" title="Permanent link">&para;</a></h2>
 <p>There exists a shortcut method to log an error to the Logger. This will log an entry to the subscribed loggers where the data property will be the Error
 instance passed in, the level will be 'Error', and the message will be the Error instance's message property.</p>
-<pre><code class="language-TypeScript">const e = Error(&quot;An Error&quot;);
+<div class="highlight"><pre><span></span><code><span class="kr">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;An Error&quot;</span><span class="p">);</span>
 
-Logger.error(e);
-</code></pre>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="subscribing-a-listener">Subscribing a Listener<a class="headerlink" href="#subscribing-a-listener" title="Permanent link">&para;</a></h2>
 <p>By default no listeners are subscribed, so if you would like to get logging information you need to subscribe at least one listener. This is done as shown below by importing the Logger and your listener(s) of choice. Here we are using the provided ConsoleListener. We are also setting the active log level, which controls the level of logging that will be output. Be aware that Verbose produces a substantial amount of data about each request.</p>
-<pre><code class="language-TypeScript">import {
-    Logger,
-    ConsoleListener,
-    LogLevel
-} from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">,</span>
+    <span class="nx">ConsoleListener</span><span class="p">,</span>
+    <span class="nx">LogLevel</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-// subscribe a listener
-Logger.subscribe(new ConsoleListener());
+<span class="c1">// subscribe a listener</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">new</span> <span class="nx">ConsoleListener</span><span class="p">());</span>
 
-// set the active log level
-Logger.activeLogLevel = LogLevel.Info;
-</code></pre>
+<span class="c1">// set the active log level</span>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">activeLogLevel</span> <span class="o">=</span> <span class="nx">LogLevel</span><span class="p">.</span><span class="nx">Info</span><span class="p">;</span>
+</code></pre></div>
 <h2 id="available-listeners">Available Listeners<a class="headerlink" href="#available-listeners" title="Permanent link">&para;</a></h2>
 <p>There are two listeners included in the library, ConsoleListener and FunctionListener.</p>
 <h3 id="consolelistener">ConsoleListener<a class="headerlink" href="#consolelistener" title="Permanent link">&para;</a></h3>
 <p>This listener outputs information to the console and works in Node as well as within browsers. It takes no settings and writes to the appropriate console method based on message level. For example a LogEntry with level Warning will be written to console.warn. Usage is shown in the example above.</p>
 <h3 id="functionlistener">FunctionListener<a class="headerlink" href="#functionlistener" title="Permanent link">&para;</a></h3>
 <p>The FunctionListener allows you to wrap any functionality by creating a function that takes a LogEntry as its single argument. This produces the same result as implementing the LogListener interface, but is useful if you already have a logging method or framework to which you want to pass the messages.</p>
-<pre><code class="language-TypeScript">import {
-    Logger,
-    FunctionListener,
-    ILogEntry
-} from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">,</span>
+    <span class="nx">FunctionListener</span><span class="p">,</span>
+    <span class="nx">ILogEntry</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-let listener = new FunctionListener((entry: ILogEntry) =&gt; {
+<span class="kd">let</span> <span class="nx">listener</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FunctionListener</span><span class="p">((</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    // pass all logging data to an existing framework
-    MyExistingCompanyLoggingFramework.log(entry.message);
-});
+    <span class="c1">// pass all logging data to an existing framework</span>
+    <span class="nx">MyExistingCompanyLoggingFramework</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">});</span>
 
-Logger.subscribe(listener);
-</code></pre>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">listener</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="create-a-custom-listener">Create a Custom Listener<a class="headerlink" href="#create-a-custom-listener" title="Permanent link">&para;</a></h3>
 <p>If desirable for your project you can create a custom listener to perform any logging action you would like. This is done by implementing the ILogListener interface.</p>
-<pre><code class="language-TypeScript">import {
-    Logger,
-    ILogListener,
-    ILogEntry
-} from &quot;@pnp/logging&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">,</span>
+    <span class="nx">ILogListener</span><span class="p">,</span>
+    <span class="nx">ILogEntry</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-class MyListener implements ILogListener {
+<span class="kr">class</span> <span class="nx">MyListener</span> <span class="kr">implements</span> <span class="nx">ILogListener</span> <span class="p">{</span>
 
-    log(entry: ILogEntry): void {
-        // here you would do something with the entry
-    }
-}
+    <span class="nx">log</span><span class="p">(</span><span class="nx">entry</span>: <span class="kt">ILogEntry</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// here you would do something with the entry</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-Logger.subscribe(new MyListener());
-</code></pre>
+<span class="nx">Logger</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="k">new</span> <span class="nx">MyListener</span><span class="p">());</span>
+</code></pre></div>
                 
               
               

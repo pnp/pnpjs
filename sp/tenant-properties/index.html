@@ -2119,32 +2119,32 @@
 <p>You can set, read, and remove tenant properties using the methods shown below:</p>
 <h2 id="setstorageentity">setStorageEntity<a class="headerlink" href="#setstorageentity" title="Permanent link">&para;</a></h2>
 <p>This method MUST be called in the context of the app catalog web or you will get an access denied message.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-const w = Web(&quot;https://tenant.sharepoint.com/sites/appcatalog/&quot;);
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/appcatalog/&quot;</span><span class="p">);</span>
 
-// specify required key and value
-await w.setStorageEntity(&quot;Test1&quot;, &quot;Value 1&quot;);
+<span class="c1">// specify required key and value</span>
+<span class="nx">await</span> <span class="nx">w</span><span class="p">.</span><span class="nx">setStorageEntity</span><span class="p">(</span><span class="s2">&quot;Test1&quot;</span><span class="p">,</span> <span class="s2">&quot;Value 1&quot;</span><span class="p">);</span>
 
-// specify optional description and comments
-await w.setStorageEntity(&quot;Test2&quot;, &quot;Value 2&quot;, &quot;description&quot;, &quot;comments&quot;);
-</code></pre>
+<span class="c1">// specify optional description and comments</span>
+<span class="nx">await</span> <span class="nx">w</span><span class="p">.</span><span class="nx">setStorageEntity</span><span class="p">(</span><span class="s2">&quot;Test2&quot;</span><span class="p">,</span> <span class="s2">&quot;Value 2&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;comments&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="getstorageentity">getStorageEntity<a class="headerlink" href="#getstorageentity" title="Permanent link">&para;</a></h2>
 <p>This method can be used from any web to retrieve values previously set.</p>
-<pre><code class="language-TypeScript">import { sp, IStorageEntity } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">IStorageEntity</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-const prop: IStorageEntity = await sp.web.getStorageEntity(&quot;Test1&quot;);
+<span class="kr">const</span> <span class="nx">prop</span>: <span class="kt">IStorageEntity</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getStorageEntity</span><span class="p">(</span><span class="s2">&quot;Test1&quot;</span><span class="p">);</span>
 
-console.log(prop.Value);
-</code></pre>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">prop</span><span class="p">.</span><span class="nx">Value</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="removestorageentity">removeStorageEntity<a class="headerlink" href="#removestorageentity" title="Permanent link">&para;</a></h2>
 <p>This method MUST be called in the context of the app catalog web or you will get an access denied message.</p>
-<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/webs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
 
-const w = Web(&quot;https://tenant.sharepoint.com/sites/appcatalog/&quot;);
+<span class="kr">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;https://tenant.sharepoint.com/sites/appcatalog/&quot;</span><span class="p">);</span>
 
-await w.removeStorageEntity(&quot;Test1&quot;);
-</code></pre>
+<span class="nx">await</span> <span class="nx">w</span><span class="p">.</span><span class="nx">removeStorageEntity</span><span class="p">(</span><span class="s2">&quot;Test1&quot;</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

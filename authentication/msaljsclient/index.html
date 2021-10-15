@@ -2197,81 +2197,81 @@
 <blockquote>
 <p>When calling the SharePoint REST API we must use only a special scope "https://{tenant}.sharepoint.com/.default"</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { MsalClientSetup  } from &quot;@pnp/msaljsclient&quot;;
-import { sp } from &quot;@pnp/sp/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span>  <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: &quot;https://login.microsoftonline.com/mytentant.onmicrosoft.com/&quot;,
-                clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-                redirectUri: &quot;https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;,
-            },
-        }, [&quot;https://mytentant.sharepoint.com/.default&quot;]),
-    },
-});
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+            <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/mytentant.onmicrosoft.com/&quot;</span><span class="p">,</span>
+                <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;https://mytentant.sharepoint.com/.default&quot;</span><span class="p">]),</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const r = await sp.web();
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="calling-graph-via-msal">Calling Graph via MSAL<a class="headerlink" href="#calling-graph-via-msal" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>When calling the graph API you must specify the scopes you need and ensure they are configured in AAD</p>
 </blockquote>
-<pre><code class="language-TypeScript">import { MsalClientSetup } from &quot;@pnp/msaljsclient&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-graph.setup({
-    graph: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: &quot;https://login.microsoftonline.com/tenant.onmicrosoft.com/&quot;,
-                clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-                redirectUri: &quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;,
-            },
-        }, [&quot;Group.Read.All&quot;]),
-    },
-});
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+            <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/tenant.onmicrosoft.com/&quot;</span><span class="p">,</span>
+                <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;Group.Read.All&quot;</span><span class="p">]),</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const r = await graph.groups();
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="use-in-single-page-applications">Use in Single Page Applications<a class="headerlink" href="#use-in-single-page-applications" title="Permanent link">&para;</a></h2>
 <p>You can also use the PnPjs MSAL client within your SPA applications. Please <a href="https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-core/modules/_configuration_.html">review the various settings</a> to ensure you are configuring MSAL as needed for your application</p>
-<pre><code class="language-TypeScript">import { MsalClientSetup } from &quot;@pnp/msaljsclient&quot;;
-import { graph } from &quot;@pnp/graph/presets/all&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClientSetup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph/presets/all&quot;</span><span class="p">;</span>
 
-graph.setup({
-    graph: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: &quot;https://login.microsoftonline.com/tenant.onmicrosoft.com/&quot;,
-                clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-                redirectUri: &quot;https://myapp.com/login.aspx&quot;,
-            },
-        }, [&quot;Group.Read.All&quot;]),
-    },
-});
+<span class="nx">graph</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">graph</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span>: <span class="kt">MsalClientSetup</span><span class="p">({</span>
+            <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/tenant.onmicrosoft.com/&quot;</span><span class="p">,</span>
+                <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+                <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://myapp.com/login.aspx&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span> <span class="p">[</span><span class="s2">&quot;Group.Read.All&quot;</span><span class="p">]),</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const r = await graph.groups();
-</code></pre>
+<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">groups</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="get-a-token">Get a Token<a class="headerlink" href="#get-a-token" title="Permanent link">&para;</a></h2>
 <p>You can also use the client to get a token if you need a token for use outside the PnPjs libraries</p>
-<pre><code class="language-TypeScript">import { MsalClient } from &quot;@pnp/msaljsclient&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">MsalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/msaljsclient&quot;</span><span class="p">;</span>
 
-// note we do not provide scopes here as the second parameter. We certainly could and will get a token
-// based on those scopes by making a call to getToken() without a param.
-const client = new MsalClient({
-    auth: {
-        authority: &quot;https://login.microsoftonline.com/{tenant}.onmicrosoft.com/&quot;,
-        clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
-        redirectUri: &quot;https://{tenant}.sharepoint.com/sites/dev/SitePages/webpacktest.aspx&quot;,
-    },
-});
+<span class="c1">// note we do not provide scopes here as the second parameter. We certainly could and will get a token</span>
+<span class="c1">// based on those scopes by making a call to getToken() without a param.</span>
+<span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MsalClient</span><span class="p">({</span>
+    <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">authority</span><span class="o">:</span> <span class="s2">&quot;https://login.microsoftonline.com/{tenant}.onmicrosoft.com/&quot;</span><span class="p">,</span>
+        <span class="nx">clientId</span><span class="o">:</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">,</span>
+        <span class="nx">redirectUri</span><span class="o">:</span> <span class="s2">&quot;https://{tenant}.sharepoint.com/sites/dev/SitePages/webpacktest.aspx&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
 
-const token = await client.getToken([&quot;Group.Read.All&quot;]);
+<span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">getToken</span><span class="p">([</span><span class="s2">&quot;Group.Read.All&quot;</span><span class="p">]);</span>
 
-const token2 = await client.getToken([&quot;Files.Read&quot;]);
-</code></pre>
+<span class="kr">const</span> <span class="nx">token2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">getToken</span><span class="p">([</span><span class="s2">&quot;Files.Read&quot;</span><span class="p">]);</span>
+</code></pre></div>
                 
               
               

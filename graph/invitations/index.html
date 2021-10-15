@@ -2126,12 +2126,11 @@
 <h2 id="create-invitation">Create Invitation<a class="headerlink" href="#create-invitation" title="Permanent link">&para;</a></h2>
 <p>Using the invitations.create() you can create an Invitation.
 We need the email address of the user being invited and the URL user should be redirected to once the invitation is redeemed (redirect URL).</p>
-<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/invitations&quot;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/invitations&quot;</span>
 
-const invitationResult = await graph.invitations.create('external.user@email-address.com', 'https://tenant.sharepoint.com/sites/redirecturi');
-
-</code></pre>
+<span class="kr">const</span> <span class="nx">invitationResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">invitations</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;external.user@email-address.com&#39;</span><span class="p">,</span> <span class="s1">&#39;https://tenant.sharepoint.com/sites/redirecturi&#39;</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

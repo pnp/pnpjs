@@ -2222,67 +2222,67 @@
 </tbody>
 </table>
 <h3 id="get-a-collection-of-user-custom-actions-from-a-web">Get a collection of User Custom Actions from a web<a class="headerlink" href="#get-a-collection-of-user-custom-actions-from-a-web" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/user-custom-actions&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
-const userCustomActions = sp.web.userCustomActions();
-</code></pre>
+<span class="kr">const</span> <span class="nx">userCustomActions</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="add-a-new-user-custom-action">Add a new User Custom Action<a class="headerlink" href="#add-a-new-user-custom-action" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/user-custom-actions&quot;;
-import { IUserCustomActionAddResult } from '@pnp/sp/user-custom-actions';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionAddResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/user-custom-actions&#39;</span><span class="p">;</span>
 
-const newValues: TypedHash&lt;string&gt; = {
-    &quot;Title&quot;: &quot;New Title&quot;,
-    &quot;Description&quot;: &quot;New Description&quot;,
-    &quot;Location&quot;: &quot;ScriptLink&quot;,
-    &quot;ScriptSrc&quot;: &quot;https://...&quot;
-};
+<span class="kr">const</span> <span class="nx">newValues</span>: <span class="kt">TypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;New Title&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Description&quot;</span><span class="o">:</span> <span class="s2">&quot;New Description&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Location&quot;</span><span class="o">:</span> <span class="s2">&quot;ScriptLink&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ScriptSrc&quot;</span><span class="o">:</span> <span class="s2">&quot;https://...&quot;</span>
+<span class="p">};</span>
 
-const response : IUserCustomActionAddResult = await sp.web.userCustomActions.add(newValues);
-</code></pre>
+<span class="kr">const</span> <span class="nx">response</span> : <span class="kt">IUserCustomActionAddResult</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">newValues</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="get-a-user-custom-action-by-id">Get a User Custom Action by ID<a class="headerlink" href="#get-a-user-custom-action-by-id" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/user-custom-actions&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
-const uca: IUserCustomAction = sp.web.userCustomActions.getById(&quot;00000000-0000-0000-0000-000000000000&quot;);
+<span class="kr">const</span> <span class="nx">uca</span>: <span class="kt">IUserCustomAction</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">);</span>
 
-const ucaData = await uca();
-</code></pre>
+<span class="kr">const</span> <span class="nx">ucaData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">uca</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="clear-the-user-custom-action-collection">Clear the User Custom Action collection<a class="headerlink" href="#clear-the-user-custom-action-collection" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/user-custom-actions&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
 
-// Site collection level
-await sp.site.userCustomActions.clear();
+<span class="c1">// Site collection level</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">site</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
 
-// Site (web) level
-await sp.web.userCustomActions.clear();
+<span class="c1">// Site (web) level</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
 
-// List level
-await sp.web.lists.getByTitle(&quot;Documents&quot;).userCustomActions.clear();
-</code></pre>
+<span class="c1">// List level</span>
+<span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Documents&quot;</span><span class="p">).</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="iusercustomaction">IUserCustomAction<a class="headerlink" href="#iusercustomaction" title="Permanent link">&para;</a></h2>
 <h3 id="update-an-existing-user-custom-action">Update an existing User Custom Action<a class="headerlink" href="#update-an-existing-user-custom-action" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/user-custom-actions&quot;;
-import { IUserCustomActionUpdateResult } from '@pnp/sp/user-custom-actions';
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/user-custom-actions&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">IUserCustomActionUpdateResult</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@pnp/sp/user-custom-actions&#39;</span><span class="p">;</span>
 
-const uca = sp.web.userCustomActions.getById(&quot;00000000-0000-0000-0000-000000000000&quot;);
+<span class="kr">const</span> <span class="nx">uca</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">userCustomActions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span><span class="p">);</span>
 
-const newValues: TypedHash&lt;string&gt; = {
-    &quot;Title&quot;: &quot;New Title&quot;,
-    &quot;Description&quot;: &quot;New Description&quot;,
-    &quot;ScriptSrc&quot;: &quot;https://...&quot;
-};
+<span class="kr">const</span> <span class="nx">newValues</span>: <span class="kt">TypedHash</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Title&quot;</span><span class="o">:</span> <span class="s2">&quot;New Title&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Description&quot;</span><span class="o">:</span> <span class="s2">&quot;New Description&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ScriptSrc&quot;</span><span class="o">:</span> <span class="s2">&quot;https://...&quot;</span>
+<span class="p">};</span>
 
-const response: IUserCustomActionUpdateResult = uca.update(newValues);
-</code></pre>
+<span class="kr">const</span> <span class="nx">response</span>: <span class="kt">IUserCustomActionUpdateResult</span> <span class="o">=</span> <span class="nx">uca</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">newValues</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

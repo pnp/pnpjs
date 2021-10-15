@@ -2277,25 +2277,25 @@
 <li>property2</li>
 <li>property3,containingcomma</li>
 </ul>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-// Will return a menu state of the default SiteMapProvider 'SPSiteMapProvider' where the dump starts a the RootNode (within the site) with a depth of 10 levels.
-const state = await sp.navigation.getMenuState();
+<span class="c1">// Will return a menu state of the default SiteMapProvider &#39;SPSiteMapProvider&#39; where the dump starts a the RootNode (within the site) with a depth of 10 levels.</span>
+<span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">getMenuState</span><span class="p">();</span>
 
-// Will return the menu state of the 'SPSiteMapProvider', starting with the node with the key '1002' with a depth of 5
-const state2 = await sp.navigation.getMenuState(&quot;1002&quot;, 5);
+<span class="c1">// Will return the menu state of the &#39;SPSiteMapProvider&#39;, starting with the node with the key &#39;1002&#39; with a depth of 5</span>
+<span class="kr">const</span> <span class="nx">state2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">getMenuState</span><span class="p">(</span><span class="s2">&quot;1002&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 
-// Will return the menu state of the 'CurrentNavSiteMapProviderNoEncode' from the root node of the provider with a depth of 5
-const state3 = await sp.navigation.getMenuState(null, 5, &quot;CurrentNavSiteMapProviderNoEncode&quot;);
-</code></pre>
+<span class="c1">// Will return the menu state of the &#39;CurrentNavSiteMapProviderNoEncode&#39; from the root node of the provider with a depth of 5</span>
+<span class="kr">const</span> <span class="nx">state3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">getMenuState</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;CurrentNavSiteMapProviderNoEncode&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="getmenunodekey">getMenuNodeKey<a class="headerlink" href="#getmenunodekey" title="Permanent link">&para;</a></h3>
 <p>Tries to get a SiteMapNode.Key for a given URL within a site collection. If the SiteMapNode cannot be found an Exception is returned. The method is using SiteMapProvider.FindSiteMapNodeFromKey(string rawUrl) to lookup the SiteMapNode. Depending on the actual implementation of FindSiteMapNodeFromKey the matching can differ for different SiteMapProviders.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const key = await sp.navigation.getMenuNodeKey(&quot;/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx&quot;);
-</code></pre>
+<span class="kr">const</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">getMenuNodeKey</span><span class="p">(</span><span class="s2">&quot;/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx&quot;</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="web-navigation">Web Navigation<a class="headerlink" href="#web-navigation" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <table>
@@ -2314,94 +2314,94 @@ const key = await sp.navigation.getMenuNodeKey(&quot;/sites/dev/Lists/SPPnPJSExa
 </table>
 <p>The navigation object contains two properties "quicklaunch" and "topnavigationbar". Both have the same set of methods so our examples below show use of only quicklaunch but apply equally to topnavigationbar.</p>
 <h3 id="get-navigation">Get navigation<a class="headerlink" href="#get-navigation" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const top = await sp.web.navigation.topNavigationBar();
-const quick = await sp.web.navigation.quicklaunch();
-</code></pre>
+<span class="kr">const</span> <span class="nx">top</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">topNavigationBar</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">quick</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">quicklaunch</span><span class="p">();</span>
+</code></pre></div>
 <p>For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch:</p>
-<pre><code class="language-TypeScript">// note we are just getting a ref to the nav object, not executing a request
-const nav = sp.web.navigation.topNavigationBar;
+<div class="highlight"><pre><span></span><code><span class="c1">// note we are just getting a ref to the nav object, not executing a request</span>
+<span class="kr">const</span> <span class="nx">nav</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">topNavigationBar</span><span class="p">;</span>
 
-// -- OR -- 
+<span class="c1">// -- OR -- </span>
 
-// note we are just getting a ref to the nav object, not executing a request
-const nav = sp.web.navigation.quicklaunch;
-</code></pre>
+<span class="c1">// note we are just getting a ref to the nav object, not executing a request</span>
+<span class="kr">const</span> <span class="nx">nav</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">navigation</span><span class="p">.</span><span class="nx">quicklaunch</span><span class="p">;</span>
+</code></pre></div>
 <h3 id="getbyid">getById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const node = await nav.getById(3)();
-</code></pre>
+<span class="kr">const</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">3</span><span class="p">)();</span>
+</code></pre></div>
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const result = await nav.add(&quot;Node Title&quot;, &quot;/sites/dev/pages/mypage.aspx&quot;, true);
+<span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;Node Title&quot;</span><span class="p">,</span> <span class="s2">&quot;/sites/dev/pages/mypage.aspx&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-const nodeDataRaw = result.data;
+<span class="kr">const</span> <span class="nx">nodeDataRaw</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
 
-// request the data from the created node
-const nodeData = result.node();
-</code></pre>
+<span class="c1">// request the data from the created node</span>
+<span class="kr">const</span> <span class="nx">nodeData</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">node</span><span class="p">();</span>
+</code></pre></div>
 <h3 id="moveafter">moveAfter<a class="headerlink" href="#moveafter" title="Permanent link">&para;</a></h3>
 <p>Places a navigation node after another node in the tree</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const node1result = await nav.add(`Testing - ${getRandomString(4)} (1)`, url, true);
-const node2result = await nav.add(`Testing - ${getRandomString(4)} (2)`, url, true);
-const node1 = await node1result.node();
-const node2 = await node2result.node();
+<span class="kr">const</span> <span class="nx">node1result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="sb">`Testing - </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb"> (1)`</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">node2result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="sb">`Testing - </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb"> (2)`</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">node1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">node1result</span><span class="p">.</span><span class="nx">node</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">node2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">node2result</span><span class="p">.</span><span class="nx">node</span><span class="p">();</span>
 
-await nav.moveAfter(node1.Id, node2.Id);
-</code></pre>
+<span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">moveAfter</span><span class="p">(</span><span class="nx">node1</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="nx">node2</span><span class="p">.</span><span class="nx">Id</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
 <p>Deletes a given node</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const node1result = await nav.add(`Testing - ${getRandomString(4)}`, url, true);
-let nodes = await nav();
-// check we added a node
-let index = nodes.findIndex(n =&gt; n.Id === node1result.data.Id)
-// index &gt;= 0
+<span class="kr">const</span> <span class="nx">node1result</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="sb">`Testing - </span><span class="si">${</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">nodes</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">();</span>
+<span class="c1">// check we added a node</span>
+<span class="kd">let</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Id</span> <span class="o">===</span> <span class="nx">node1result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Id</span><span class="p">)</span>
+<span class="c1">// index &gt;= 0</span>
 
-// delete a node
-await nav.getById(node1result.data.Id).delete();
+<span class="c1">// delete a node</span>
+<span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">node1result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Id</span><span class="p">).</span><span class="k">delete</span><span class="p">();</span>
 
-nodes = await nav();
-index = nodes.findIndex(n =&gt; n.Id === node1result.data.Id)
-// index = -1
-</code></pre>
+<span class="nx">nodes</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">();</span>
+<span class="nx">index</span> <span class="o">=</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Id</span> <span class="o">===</span> <span class="nx">node1result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Id</span><span class="p">)</span>
+<span class="c1">// index = -1</span>
+</code></pre></div>
 <h3 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
 
-await nav.getById(4).update({
-    Title: &quot;A new title&quot;,
-});
-</code></pre>
+<span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;A new title&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
 <h3 id="children">Children<a class="headerlink" href="#children" title="Permanent link">&para;</a></h3>
 <p>The children property of a Navigation Node represents a collection with all the same properties and methods available on topNavigationBar or quicklaunch.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/navigation&quot;</span><span class="p">;</span>
 
-const childrenData = await nav.getById(1).children();
+<span class="kr">const</span> <span class="nx">childrenData</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">children</span><span class="p">();</span>
 
-// add a child
-await nav.getById(1).children.add(&quot;Title&quot;, &quot;Url&quot;, true);
-</code></pre>
+<span class="c1">// add a child</span>
+<span class="nx">await</span> <span class="nx">nav</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">children</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Url&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div>
                 
               
               

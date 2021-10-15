@@ -2048,55 +2048,55 @@
 <h1 id="setproxyurl">setProxyUrl<a class="headerlink" href="#setproxyurl" title="Permanent link">&para;</a></h1>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
 <p>You need to import the <code>setProxyUrl</code> function from @pnp/nodejs library and call it with your proxy url. Once done an <a href="https://github.com/TooTallNate/node-https-proxy-agent">https-proxy-agent</a> will be used with each request. This works across all clients within the @pnp/nodejs library.</p>
-<pre><code class="language-TypeScript">import { SPFetchClient, SPOAuthEnv, setProxyUrl } from &quot;@pnp/nodejs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">,</span> <span class="nx">setProxyUrl</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-            // call the set proxy url function and it will be used for all requests regardless of client
-            setProxyUrl(&quot;{your proxy url}&quot;);
-            return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
-        },
-    },
-});
-</code></pre>
+            <span class="c1">// call the set proxy url function and it will be used for all requests regardless of client</span>
+            <span class="nx">setProxyUrl</span><span class="p">(</span><span class="s2">&quot;{your proxy url}&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">.</span><span class="nx">SPO</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h2 id="use-with-fiddler">Use with Fiddler<a class="headerlink" href="#use-with-fiddler" title="Permanent link">&para;</a></h2>
 <p>To get Fiddler to work you may need to set an environment variable. <strong>This should only be done for testing!</strong></p>
-<pre><code class="language-TypeScript">import { SPFetchClient, SPOAuthEnv, setProxyUrl } from &quot;@pnp/nodejs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">,</span> <span class="nx">setProxyUrl</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-            // ignore certificate errors: ONLY FOR TESTING!!
-            process.env.NODE_TLS_REJECT_UNAUTHORIZED = &quot;0&quot;;
+            <span class="c1">// ignore certificate errors: ONLY FOR TESTING!!</span>
+            <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_TLS_REJECT_UNAUTHORIZED</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span><span class="p">;</span>
 
-            // this is my fiddler url locally
-            setProxyUrl(&quot;http://127.0.0.1:8888&quot;);
-            return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
-        },
-    },
-});
-</code></pre>
+            <span class="c1">// this is my fiddler url locally</span>
+            <span class="nx">setProxyUrl</span><span class="p">(</span><span class="s2">&quot;http://127.0.0.1:8888&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">.</span><span class="nx">SPO</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
 <h1 id="setproxyagent">setProxyAgent<a class="headerlink" href="#setproxyagent" title="Permanent link">&para;</a></h1>
 <p><em>Added in 2.0.11</em></p>
 <p>You need to import the <code>setProxyAgent</code> function from @pnp/nodejs library and call it with your proxy url. You can supply any valid proxy and it will be used.</p>
-<pre><code class="language-TypeScript">import { SPFetchClient, SPOAuthEnv, setProxyAgent } from &quot;@pnp/nodejs&quot;;
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">SPFetchClient</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">,</span> <span class="nx">setProxyAgent</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/nodejs&quot;</span><span class="p">;</span>
 
-sp.setup({
-    sp: {
-        fetchClientFactory: () =&gt; {
+<span class="nx">sp</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">sp</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">fetchClientFactory</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-            const myAgent = new MyAgentOfSomeType({});
+            <span class="kr">const</span> <span class="nx">myAgent</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyAgentOfSomeType</span><span class="p">({});</span>
 
-            // call the set proxy agent function and it will be used for all requests regardless of client
-            setProxyAgent(myAgent);
-            return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
-        },
-    },
-});
-</code></pre>
+            <span class="c1">// call the set proxy agent function and it will be used for all requests regardless of client</span>
+            <span class="nx">setProxyAgent</span><span class="p">(</span><span class="nx">myAgent</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">SPFetchClient</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">testing</span><span class="p">.</span><span class="nx">sp</span><span class="p">.</span><span class="nx">secret</span><span class="p">,</span> <span class="nx">SPOAuthEnv</span><span class="p">.</span><span class="nx">SPO</span><span class="p">);</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
                 
               
               
