@@ -6,6 +6,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
+import "@pnp/sp/appcatalog";
 
 declare var process: { exit(code?: number): void };
 
@@ -49,7 +50,9 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
-        const y = await sp2.web();
+        const web = await sp2.getTenantAppCatalogWeb();
+
+        const y = await web();
 
         console.log(JSON.stringify(y));
 

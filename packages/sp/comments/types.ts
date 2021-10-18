@@ -4,7 +4,7 @@ import {
     spInvokableFactory,
     _SPInstance,
 } from "../spqueryable.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 

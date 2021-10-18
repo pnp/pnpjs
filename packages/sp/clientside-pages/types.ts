@@ -1,12 +1,12 @@
-import { body, headers, CopyFromQueryable } from "@pnp/queryable";
-import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
+import { body, headers } from "@pnp/queryable";
+import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray, AssignFrom } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../spqueryable.js";
 import { List } from "../lists/types.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { Web, IWeb } from "../webs/types.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Site } from "../sites/types.js";
 import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
@@ -612,7 +612,7 @@ export class _ClientsidePage extends _SPQueryable {
     public async setAuthorById(authorId: number): Promise<void> {
 
         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(CopyFromQueryable(this))
+            .using(AssignFrom(this))
             .filter(`Id eq ${authorId}`)
             .select("LoginName")<{ LoginName: string }[]>();
 
@@ -631,7 +631,7 @@ export class _ClientsidePage extends _SPQueryable {
     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
 
         const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(CopyFromQueryable(this))
+            .using(AssignFrom(this))
             .filter(`LoginName eq '${authorLoginName}'`)
             .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
@@ -657,9 +657,9 @@ export class _ClientsidePage extends _SPQueryable {
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
         const initer = ClientsidePage(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
-        const item = List(listData["odata.id"]).using(CopyFromQueryable(this)).items.getById(this.json.Id);
+        const item = List(listData["odata.id"]).using(AssignFrom(this)).items.getById(this.json.Id);
         const itemData: T = await item.select(...selects)();
-        return Object.assign(Item(odataUrlFrom(itemData)).using(CopyFromQueryable(this)), itemData);
+        return Object.assign(Item(odataUrlFrom(itemData)).using(AssignFrom(this)), itemData);
     }
 
     protected getCanvasContent1(): string {
@@ -880,7 +880,7 @@ const ClientsidePage = (
 export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePage> => {
 
     const item = await file.getItem<{ Id: number }>();
-    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true).using(CopyFromQueryable(file));
+    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true).using(AssignFrom(file));
     return page.load();
 };
 

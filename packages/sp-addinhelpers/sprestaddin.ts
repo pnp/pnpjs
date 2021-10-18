@@ -8,10 +8,10 @@ import { Site, ISite } from "@pnp/sp/sites";
 import {
     isUrlAbsolute,
     combine,
+    AssignFrom,
 } from "@pnp/core";
 
 import { ISPQueryable } from "@pnp/sp";
-import { CopyFromQueryable } from "@pnp/queryable";
 
 export class SPRestAddIn extends SPFI {
 
@@ -62,7 +62,7 @@ export class SPRestAddIn extends SPFI {
         const instance = factory(url, urlPart);
         instance.query.set("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
 
-        instance.using(CopyFromQueryable(this._root));
+        instance.using(AssignFrom(this._root));
 
         return instance;
     }

@@ -26,8 +26,10 @@ const DefaultMoments = {
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
-    protected _url: string;
     private _query: Map<string, string>;
+    protected _url: string;
+    protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
+    protected InternalRejectEvent = Symbol.for("Queryable_Reject");
 
     constructor(init: Queryable<any> | string, path?: string) {
 
@@ -43,9 +45,6 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
             const { _url } = init;
 
             url = combine(_url, path);
-            // TODO:: doesn't work due to data event (maybe others)
-            // pre, post, send, auth, error, log
-            // data
             observers = init.observers;
         }
 
@@ -115,6 +114,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                     this.log(`[request:${requestId}] Result returned from pre`, 1);
                     this.log(`[request:${requestId}] Emitting data`, 0);
+                    this.emit[this.InternalResolveEvent](result);
                     this.emit.data(result);
                     this.log(`[request:${requestId}] Emitted data`, 0);
 
@@ -142,14 +142,20 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 // completed event to signal the request is completed?
                 if (typeof result !== "undefined") {
                     this.log(`[request:${requestId}] Emitting data`, 0);
+                    this.emit[this.InternalResolveEvent](result);
                     this.emit.data(result);
                     this.log(`[request:${requestId}] Emitted data`, 0);
+                } else {
+                    // we need to resolve the promise, perhaps this queryable doesn't return a result
+                    // but hasn't produced an error
+                    this.emit[this.InternalResolveEvent](result);
                 }
 
             } catch (e) {
 
                 this.log(`[request:${requestId}] Emitting error: "${e.message || e}"`, 3);
                 // anything that throws we emit and continue
+                this.emit[this.InternalRejectEvent](e);
                 this.error(e);
                 this.log(`[request:${requestId}] Emitted error: "${e.message || e}"`, 3);
 
@@ -161,8 +167,8 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         }, 0);
 
         return new Promise((resolve, reject) => {
-            this.on.data.replace(resolve);
-            this.on.error(reject);
+            this.on[this.InternalResolveEvent].replace(resolve);
+            this.on[this.InternalRejectEvent].replace(reject);
         });
     }
 }
@@ -172,7 +178,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
  * The code is contained in invokable decorator
  */
 // eslint-disable-next-line no-redeclare
-export interface Queryable<R = any> extends IInvokable<R> {}
+export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {

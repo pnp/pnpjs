@@ -1,12 +1,11 @@
 import { getGUID, isFunc } from "@pnp/core/util";
-import { CopyFromQueryable, headers } from "@pnp/queryable";
+import { headers } from "@pnp/queryable";
 import { File, Files, IFile, IFileAddResult, IFileInfo, IFiles, IFileUploadProgressData } from "@pnp/sp/files";
 import { spPost } from "@pnp/sp/operations";
-import { escapeQueryStrValue } from "@pnp/sp/utils/escapeQueryStrValue";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
-import { extendFactory } from "@pnp/core";
-import { odataUrlFrom } from "@pnp/sp";
+import { AssignFrom, extendFactory } from "@pnp/core";
+import { odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { StreamParse } from "../behaviors/stream-parse.js";
 
 export interface IResponseBodyStream {
@@ -87,7 +86,7 @@ extendFactory(Files, {
     ): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
-        const file = File(odataUrlFrom(response)).using(CopyFromQueryable(this));
+        const file = File(odataUrlFrom(response)).using(AssignFrom(this));
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress);

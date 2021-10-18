@@ -8,4 +8,5 @@ export * from "./extendable.js";
 /**
  * Behavior exports
  */
-export * from "./behaviors/copyfrom.js";
+export * from "./behaviors/assign-from.js";
+export * from "./behaviors/copy-from.js";

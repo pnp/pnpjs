@@ -1,13 +1,13 @@
 import { _SPInstance, spInvokableFactory, SPQueryable } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP } from "@pnp/core";
-import { body, CopyFromQueryable } from "@pnp/queryable";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { AssignFrom, hOP } from "@pnp/core";
+import { body } from "@pnp/queryable";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { IChangeQuery } from "../types.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";
 
 @defaultPath("_api/site")
@@ -42,7 +42,7 @@ export class _Site extends _SPInstance {
         const data = await spPost(Site(this, `openWebById('${webId}')`));
         return {
             data,
-            web: Web(extractWebUrl(odataUrlFrom(data))).using(CopyFromQueryable(this)),
+            web: Web(extractWebUrl(odataUrlFrom(data))).using(AssignFrom(this)),
         };
     }
 
@@ -52,7 +52,7 @@ export class _Site extends _SPInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return Web(web.Url).using(CopyFromQueryable(this));
+        return Web(web.Url).using(AssignFrom(this));
     }
 
     /**

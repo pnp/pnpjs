@@ -1,4 +1,5 @@
-import { body, CopyFromQueryable } from "@pnp/queryable";
+import { AssignFrom } from "@pnp/core";
+import { body } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -12,9 +13,9 @@ import {
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 
 @defaultPath("webs")
 export class _Webs extends _SPCollection<IWebInfo[]> {
@@ -46,7 +47,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
 
         return {
             data,
-            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(CopyFromQueryable(this)),
+            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(AssignFrom(this)),
         };
     }
 }
@@ -93,7 +94,7 @@ export class _Web extends _SPInstance<IWebInfo> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
             return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length))
-                .using(CopyFromQueryable(this));
+                .using(AssignFrom(this));
         }
         return null;
     }

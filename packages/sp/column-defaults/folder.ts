@@ -1,6 +1,6 @@
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
+import { IResourcePath } from "../utils/to-resource-path.js";
 import { Web } from "../webs/types.js";
 import "../lists/web.js";
 import { _Folder, Folder } from "../folders/types.js";

@@ -50,7 +50,7 @@ type DistributeEmit<T extends Moments> =
 /**
  * Virtual events that are present on all Timelines
  */
-type DefaultTimelineEvents<T extends Moments> = {
+type DefaultTimelineMoments<T extends Moments> = {
     init: (observers: ((this: Timeline<T>) => void)[], ...args: any[]) => void;
     dispose: (observers: ((this: Timeline<T>) => void)[], ...args: any[]) => void;
     log: (observers: ((this: Timeline<T>, message: string, level: number) => void)[], ...args: any[]) => void;
@@ -60,12 +60,12 @@ type DefaultTimelineEvents<T extends Moments> = {
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineEvents<T>, T>;
+type OnProxyType<T extends Moments> = DistributeOn<T> & DistributeOn<DefaultTimelineMoments<T>, T>;
 
 /**
  * The type combining the defined moments and DefaultTimelineEvents
  */
-type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineEvents<T>>;
+type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<DefaultTimelineMoments<T>>;
 
 /**
  * Represents a function accepting and returning a timeline, possibly manipulating the observers present
@@ -129,7 +129,7 @@ export abstract class Timeline<T extends Moments> {
 
                         if (Reflect.has(target.observers, p)) {
                             target.cloneObserversOnChange();
-                            // we trust outselves that this will be an array
+                            // we trust ourselves that this will be an array
                             (<ObserverCollection>target.observers)[p].length = 0;
                             return true;
                         }

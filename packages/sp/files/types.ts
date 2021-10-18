@@ -10,12 +10,12 @@ import {
     deleteableWithETag,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
-import { toResourcePath } from "../utils/toResourcePath.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
+import { toResourcePath } from "../utils/to-resource-path.js";
 
 /**
  * Describes a collection of File objects
