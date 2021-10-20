@@ -290,7 +290,7 @@ describe("Web", function () {
             });
         });
 
-        describe.only("hub-sites", function () {
+        describe("hub-sites", function () {
 
             it(".hubSiteData", async function () {
 

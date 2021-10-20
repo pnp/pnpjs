@@ -1,19 +1,16 @@
 
-import { getRandomString } from "@pnp/core";
+import { delay, getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-designs";
 import "@pnp/sp/site-users/web";
-import { ISiteDesignRun } from "@pnp/sp/site-designs";
+import { ISiteDesignRun, ISiteDesignTask } from "@pnp/sp/site-designs";
 import { getSP, testSettings } from "../main.js";
 import { SPFI } from "@pnp/sp";
 
-const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
-    r();
-}, ms));
-
-describe("SiteDesigns", function () {
-
+// Can only run on a new site collection
+describe.skip("SiteDesigns", function () {
+    this.timeout(120000);
     const testuser = testSettings.testUser;
 
     if (testSettings.enableWebTests) {
@@ -25,18 +22,18 @@ describe("SiteDesigns", function () {
 
         const createdSiteDesignIds: string[] = [];
 
-        it("creates a site design", function () {
-
+        it(".createSiteDesign", async function () {
             const title = `Test_create_sitedesign_${getRandomString(8)}`;
-            const p = _spfi.siteDesigns.createSiteDesign({
+            const sd = await _spfi.siteDesigns.createSiteDesign({
                 Title: title,
                 WebTemplate: "68",
-            }).then(sd => createdSiteDesignIds.push(sd.Id));
+            });
+            createdSiteDesignIds.push(sd.Id)
 
-            return expect(p, `site design '${title}' should've been created`).to.eventually.be.fulfilled;
+            return expect(sd.Title).to.be.equal(title);
         });
 
-        it("deletes a site design", async function () {
+        it(".deleteSiteDesign", async function () {
 
             const title = `Test_to_be_deleted_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -48,13 +45,7 @@ describe("SiteDesigns", function () {
                 `site design '${title}' should've been deleted`).to.eventually.be.fulfilled;
         });
 
-        it("fails to delete a site design with non-existing id", function () {
-
-            return expect(_spfi.siteDesigns.deleteSiteDesign(null),
-                "site design should NOT have been deleted").to.eventually.be.rejected;
-        });
-
-        it("gets the site design metadata", async function () {
+        it(".getSiteDesignMetadata", async function () {
 
             const title = `Test_get_metadata_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -68,7 +59,7 @@ describe("SiteDesigns", function () {
                 `metadata of site design '${title}' should have been retrieved`).to.eventually.be.fulfilled;
         });
 
-        it("applies a site designs", async function () {
+        it(".applySiteDesign", async function () {
 
             const title = `Test_applying_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -77,12 +68,10 @@ describe("SiteDesigns", function () {
             });
 
             createdSiteDesignIds.push(sd.Id);
-            // TODO: Validate this test
-            return expect(_spfi.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.webUrl),
-                `site design '${title}' should've been applied to site '${testSettings.sp.webUrl}'`).to.eventually.be.fulfilled;
+            return expect(_spfi.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.testWebUrl)).to.eventually.be.fulfilled;
         });
 
-        it("updates a site designs", async function () {
+        it(".updateSiteDesign", async function () {
 
             const title = `Test_to_update_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -99,13 +88,13 @@ describe("SiteDesigns", function () {
             }), `site design '${title}' should've been updated`).to.eventually.be.fulfilled;
         });
 
-        it("gets all the site designs", async function () {
+        it(".getSiteDesigns", async function () {
 
             return expect(_spfi.siteDesigns.getSiteDesigns(),
                 "all the site designs should've been fetched").to.eventually.be.fulfilled;
         });
 
-        it("gets the site designs rights", async function () {
+        it(".getSiteDesignRights", async function () {
 
             const title = `Test_to_get_sitedesign_rights__${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -119,7 +108,7 @@ describe("SiteDesigns", function () {
                 `rights for the site design '${title}' should've been fetched`).to.eventually.be.fulfilled;
         });
 
-        it("grants the site design rights", async function () {
+        it(".grantSiteDesignRights", async function () {
 
             const title = `Test_grant_rights_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -135,7 +124,7 @@ describe("SiteDesigns", function () {
             ), `rights of site design '${title}' should have been granted to user '${testuser}'`).to.eventually.be.fulfilled;
         });
 
-        it("revokes the site design rights", async function () {
+        it(".revokeSiteDesignRights", async function () {
 
             const title = `Test_revoke_rights_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -151,13 +140,13 @@ describe("SiteDesigns", function () {
                 `rights of site design '${title}' should have been revoked from user '${testuser}'`).to.eventually.be.fulfilled;
         });
 
-        it("gets the site design runs", async function () {
+        it(".getSiteDesignRuns", async function () {
 
             return expect(_spfi.web.getSiteDesignRuns(),
                 "site design runs should've been fetched").to.eventually.be.fulfilled;
         });
 
-        it("adds a site design task with absolute web url", async function () {
+        it(".addSiteDesignTask (Absolute Url)", async function () {
 
             const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -166,12 +155,11 @@ describe("SiteDesigns", function () {
             });
 
             createdSiteDesignIds.push(sd.Id);
-            // TODO: Validate this test
-            return expect(_spfi.siteDesigns.addSiteDesignTask(testSettings.sp.webUrl, sd.Id),
-                "site design task should've been created with absolute web url").to.eventually.be.fulfilled;
+            const siteDesignTask: ISiteDesignTask = await _spfi.siteDesigns.addSiteDesignTask(testSettings.sp.testWebUrl, sd.Id);
+            return expect(siteDesignTask).to.be.equal(sd.Id);
         });
 
-        it("adds a site design task", async function () {
+        it(".addSiteDesignTask", async function () {
 
             const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -186,7 +174,7 @@ describe("SiteDesigns", function () {
                 "site design task should've been created").to.not.be.null;
         });
 
-        it("gets a site design task", async function () {
+        it(".getSiteDesignTask", async function () {
 
             const title = `Test_get_task_run_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -202,7 +190,7 @@ describe("SiteDesigns", function () {
                 "site design task should've been fetched").to.eventually.be.fulfilled;
         });
 
-        it("gets a site design run status", async function () {
+        it(".getSiteDesignRunStatus", async function () {
 
             const title = `Test_add_task_run_sitedesign_${getRandomString(8)}`;
             const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -216,7 +204,7 @@ describe("SiteDesigns", function () {
 
             let task = null;
             do {
-                await sleep(10000);
+                await delay(10000);
                 task = await _spfi.siteDesigns.getSiteDesignTask(originalTask.ID);
             }
             while (task != null);
