@@ -1,11 +1,15 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/site-scripts";
-import { getSP, testSettings } from "../main.js";
+import { testSettings } from "../main.js";
 import { IList } from "@pnp/sp/lists";
-import { SPFI } from "@pnp/sp";
+import { spfi, SPFI } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
 
-describe("SiteScripts", function () {
+// TODO: None of these will execute in a reasonable time
+describe.skip("SiteScripts", function () {
+    // this may take some time, don't timeout early
+    this.timeout(120000);
 
     const defaultScriptSchema = {
         "$schema": "schema.json",
@@ -23,7 +27,12 @@ describe("SiteScripts", function () {
         let _spfi: SPFI = null;
 
         before(function () {
-            _spfi = getSP();
+            _spfi = spfi(testSettings.sp.url).using(SPDefault({
+                msal: {
+                    config: testSettings.sp.msal.init,
+                    scopes: testSettings.sp.msal.scopes,
+                },
+            }));
         });
         const createdSiteScriptIds: string[] = [];
         const createdLists: IList[] = [];

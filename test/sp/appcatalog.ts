@@ -65,7 +65,7 @@ describe.skip("AppCatalog", function () {
 
         it("it installs an app on a web", async function () {
             const myApp = _spfi.web.getAppCatalog().getAppById(appId);
-            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
@@ -84,12 +84,12 @@ describe.skip("AppCatalog", function () {
                 retryCount++;
             } while (app.InstalledVersion === "");
 
-            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it upgrades an app", async function () {
             const myApp = _spfi.web.getAppCatalog().getAppById(appId);
-            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it retracts an app", async function () {

@@ -23,12 +23,11 @@ describe("Lists", function () {
             _spfi = getSP();
         });
 
-        // TODO: Fix issue with typing select
-        // it(".getById", function () {
-        //     return expect(_spfi.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>().then((list) => {
-        //         return _spfi.web.lists.getById(list.Id).select("Title").get();
-        //     })).to.eventually.have.property("Title", "Documents");
-        // });
+        it(".getById", async function () {
+            const list = await _spfi.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>();
+            const title = await _spfi.web.lists.getById(list.Id).select("Title")();
+            return expect(title).to.eventually.have.property("Title");
+        });
 
         it(".getByTitle", async function () {
             return expect(_spfi.web.lists.getByTitle("Documents").select("Title")()).to.eventually.be.fulfilled;
@@ -139,21 +138,6 @@ describe("List", function () {
             return expect(listEnsure.list.update({ Title: newTitle })).to.eventually.be.fulfilled;
         });
 
-        // TODO: What are we doing with 'Verbose' mode
-        // it(".update verbose", async function () {
-        //     // config the node client to use verbose mode
-        //     const verboseOptions: IConfigOptions = {
-        //         headers: {
-        //             "Accept": "application/json;odata=verbose",
-        //         },
-        //     };
-        //     const spVerbose: SPFI = _spfi.configure(verboseOptions);
-
-        //     const listEnsure: IListEnsureResult = await spVerbose.web.lists.ensure("pnp testing update verbose");
-        //     const newTitle = "New title after update";
-        //     return expect(listEnsure.list.update({ Title: newTitle })).to.eventually.be.fulfilled;
-        // });
-
         it(".getChanges", async function () {
             const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getChanges");
             return expect(listEnsure.list.getChanges({
@@ -194,24 +178,6 @@ describe("List", function () {
             return expect(listEnsure.list.select("Title")()).to.eventually.be.rejected;
         });
 
-        // TODO: What are we doing with verbose mode
-        // it(".recycle verbose", async function () {
-        //     // config the node client to use verbose mode
-        //     const verboseOptions: IConfigOptions = {
-        //         headers: {
-        //             "Accept": "application/json;odata=verbose",
-        //         },
-        //     };
-        //     const spVerbose: SPFI = _spfi.configure(verboseOptions);
-
-        //     const listEnsure: IListEnsureResult = await spVerbose.web.lists.ensure("pnp testing recycle");
-        //     const recycleResponse = await listEnsure.list.recycle();
-        //     if (typeof recycleResponse !== "string") {
-        //         throw Error("Expected a string returned from recycle.");
-        //     }
-        //     return expect(listEnsure.list.select("Title").get()).to.eventually.be.rejected;
-        // });
-
         it(".renderListData", async function () {
             const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing renderListData");
             await listEnsure.list.items.add({
@@ -226,30 +192,6 @@ describe("List", function () {
 
             return expect(listEnsure.list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.have.property("Row").that.is.not.empty;
         });
-
-        // TODO: What are we doing with verbose mode
-        // it(".renderListData verbose", async function () {
-        //     // config the node client to use verbose mode
-        //     const verboseOptions: IConfigOptions = {
-        //         headers: {
-        //             "Accept": "application/json;odata=verbose",
-        //         },
-        //     };
-        //     const spVerbose: SPFI = _spfi.configure(verboseOptions);
-
-        //     const listEnsure: IListEnsureResult = await spVerbose.web.lists.ensure("pnp testing renderListDataVerbose");
-
-        //     await listEnsure.list.items.add({
-        //         Title: "Item 1",
-        //     });
-        //     await listEnsure.list.items.add({
-        //         Title: "Item 2",
-        //     });
-        //     await listEnsure.list.items.add({
-        //         Title: "Item 3",
-        //     });
-        //     return expect(listEnsure.list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.be.fulfilled;
-        // });
 
         const setupRenderListDataAsStream = async function (): Promise<IList> {
 
@@ -343,44 +285,9 @@ describe("List", function () {
             return expect(listEnsure.list.renderListFormData(1, "editform", ControlMode.Edit)).to.be.eventually.fulfilled;
         });
 
-        // TODO: What are we doing with verbose mode
-        // it(".renderListFormData verbose", async function () {
-        //     // config the node client to use verbose mode
-        //     const verboseOptions: IConfigOptions = {
-        //         headers: {
-        //             "Accept": "application/json;odata=verbose",
-        //         },
-        //     };
-        //     const spVerbose: SPFI = _spfi.configure(verboseOptions);
-        //     const listEnsure: IListEnsureResult = await spVerbose.web.lists.ensure("pnp testing renderListFormData");
-        //     await listEnsure.list.items.add({
-        //         Title: "Item 1",
-        //     });
-
-        //     return expect(listEnsure.list.renderListFormData(1, "editform", ControlMode.Edit)).to.be.eventually.fulfilled;
-        // });
-
         it(".reserveListItemId", function () {
             return expect(list.reserveListItemId()).to.eventually.be.fulfilled;
         });
-
-        // TODO: What are we doing with verbose mode
-        // it(".reserveListItemId verbose", async function () {
-        //     // config the node client to use verbose mode
-        //     const verboseOptions: IConfigOptions = {
-        //         headers: {
-        //             "Accept": "application/json;odata=verbose",
-        //         },
-        //     };
-        //     const spVerbose: SPFI = _spfi.configure(verboseOptions);
-        //     const listEnsure: IListEnsureResult = await spVerbose.web.lists.ensure("pnp testing reserveListItemId verbose");
-        //     return expect(listEnsure.list.reserveListItemId()).to.eventually.be.fulfilled;
-        // });
-
-        // TODO: What are we doing with getListItemEntityTypeFullName
-        // it(".getListItemEntityTypeFullName", function () {
-        //     return expect(list.getListItemEntityTypeFullName()).to.eventually.be.fulfilled;
-        // });
 
         // Removing unit tests for failing and undocumented APIs that seem to no longer be supported.
 

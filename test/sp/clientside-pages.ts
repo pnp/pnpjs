@@ -17,7 +17,7 @@ describe("Clientside Pages", function () {
 
         before(function () {
             _spfi = getSP();
-            relUrl = "/" + testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
+            relUrl = "/" + testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
         });
 
         it("web.addClientSidePage", async function () {
@@ -56,7 +56,7 @@ describe("Clientside Pages", function () {
             await _spfi.web.addClientsidePage(pageFileName);
 
             // need to make the path relative
-            const rel = testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/"));
+            const rel = testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
             const promise = ClientsidePageFromFile(_spfi.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
             return expect(promise).to.eventually.be.fulfilled;
         });
@@ -75,7 +75,7 @@ describe("Clientside Pages", function () {
 
             it("can load a page", async function () {
 
-                const serverRelativePath = combine("/", testSettings.sp.webUrl.substr(testSettings.sp.webUrl.indexOf("/sites/")), "SitePages", pageName);
+                const serverRelativePath = combine("/", testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/")), "SitePages", pageName);
 
                 page = await _spfi.web.loadClientsidePage(serverRelativePath);
 

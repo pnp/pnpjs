@@ -10,7 +10,7 @@ import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
-describe("Related Items", function () {
+describe.only("Related Items", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -20,7 +20,7 @@ describe("Related Items", function () {
         let targetListName = "";
         let webUrl = "";
 
-        before(async function (done) {
+        before(async function () {
             _spfi = getSP();
 
             // we need two lists to use for creating related items.
@@ -32,9 +32,8 @@ describe("Related Items", function () {
             sourceList = ler1.list;
             targetList = ler2.list;
 
-            sourceListName = await sourceList.select("Id")().then(r => r.Id);
-            targetListName = await targetList.select("Id")().then(r => r.Id);
-            done();
+            sourceListName = ler1.data.Id;
+            targetListName = ler2.data.Id;
         });
 
         it("addSingleLink", async function () {

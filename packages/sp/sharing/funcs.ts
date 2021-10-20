@@ -250,7 +250,7 @@ async function getRoleValue(role: SharingRole, group: RoleType): Promise<string>
 
         const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
         const def = await RoleDefinitions("_api/web").select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`)<{ Id: number }[]>();
-        if (def.length < 1) {
+        if (def === undefined || def?.length < 1) {
             throw Error("Could not locate associated role definition for supplied role. Edit and View are supported");
         }
         return `role: ${def[0].Id}`;
