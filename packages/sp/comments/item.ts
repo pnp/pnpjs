@@ -2,7 +2,7 @@ import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
 import { spPost } from "../operations.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine } from "@pnp/core";
 import { SPQueryable } from "../spqueryable.js";
 

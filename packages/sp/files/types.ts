@@ -10,12 +10,12 @@ import {
     deleteableWithETag,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
-import { toResourcePath } from "../utils/toResourcePath.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
+import { toResourcePath } from "../utils/to-resource-path.js";
 
 /**
  * Describes a collection of File objects
@@ -394,16 +394,16 @@ export class _File extends _SPInstance<IFileInfo> {
 
         // report that we are starting
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });
-        let currentPointer = await this.startUpload(uploadId, file.slice(0, chunkSize));
+        let currentPointer = await File(this).startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
         for (let i = 2; i < totalBlocks; i++) {
             progress({ uploadId, blockNumber: i, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
-            currentPointer = await this.continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
+            currentPointer = await File(this).continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
         }
 
         progress({ uploadId, blockNumber: totalBlocks, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
-        return this.finishUpload(uploadId, currentPointer, file.slice(currentPointer));
+        return File(this).finishUpload(uploadId, currentPointer, file.slice(currentPointer));
     }
 
     /**

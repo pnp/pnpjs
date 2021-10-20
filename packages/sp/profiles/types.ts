@@ -7,10 +7,11 @@ import {
     spInvokableFactory,
     _SPQueryable,
 } from "../spqueryable.js";
-import { body, CopyFromQueryable } from "@pnp/queryable";
+import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
+import { AssignFrom } from "@pnp/core";
 
 export class _Profiles extends _SPInstance {
 
@@ -25,8 +26,8 @@ export class _Profiles extends _SPInstance {
     constructor(baseUrl: string | ISPQueryable, path = "_api/sp.userprofiles.peoplemanager") {
         super(baseUrl, path);
 
-        this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).using(CopyFromQueryable(this));
-        this.profileLoader = (new ProfileLoader(baseUrl)).using(CopyFromQueryable(this));
+        this.clientPeoplePickerQuery = (new ClientPeoplePickerQuery(baseUrl)).using(AssignFrom(this));
+        this.profileLoader = (new ProfileLoader(baseUrl)).using(AssignFrom(this));
     }
 
     /**

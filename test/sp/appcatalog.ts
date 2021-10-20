@@ -1,5 +1,5 @@
 
-import { getRandomString } from "@pnp/core";
+import { getRandomString, delay } from "@pnp/core";
 import { expect } from "chai";
 import { getSP, testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
@@ -10,10 +10,6 @@ import * as fs from "fs";
 import * as path from "path";
 import findupSync = require("findup-sync");
 import { SPFI } from "@pnp/sp";
-
-const sleep = (ms: number) => new Promise<void>(r => setTimeout(() => {
-    r();
-}, ms));
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
@@ -32,7 +28,7 @@ describe.skip("AppCatalog", function () {
         before(function () {
             _spfi = getSP();
             // appCatWeb = await sp.getTenantAppCatalogWeb();
-            appCatalog = _spfi.web.getAppCatalog();
+            appCatalog = _spfi.web.appcatalog;
             // return Promise.resolve();
         });
 
@@ -64,14 +60,14 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it installs an app on a web", async function () {
-            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
-            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            const myApp = _spfi.web.appcatalog.getAppById(appId);
+            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
-            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
+            const myApp = _spfi.web.appcatalog.getAppById(appId);
             let app = { InstalledVersion: "" };
             let retryCount = 0;
 
@@ -79,7 +75,7 @@ describe.skip("AppCatalog", function () {
                 if (retryCount === 5) {
                     break;
                 }
-                await sleep(10000); // Sleep for 10 seconds
+                await delay(10000); // Sleep for 10 seconds
                 app = await myApp();
                 retryCount++;
             } while (app.InstalledVersion === "");
@@ -88,8 +84,8 @@ describe.skip("AppCatalog", function () {
         });
 
         it("it upgrades an app", async function () {
-            const myApp = _spfi.web.getAppCatalog().getAppById(appId);
-            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            const myApp = _spfi.web.appcatalog.getAppById(appId);
+            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it retracts an app", async function () {

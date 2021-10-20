@@ -1,7 +1,7 @@
 import { body } from "@pnp/queryable";
 import { jsS } from "@pnp/core";
 import { SPCollection, SPInstance } from "../spqueryable.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Web } from "../webs/types.js";
 import {
     ShareableQueryable,

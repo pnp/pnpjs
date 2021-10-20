@@ -9,13 +9,13 @@ import {
     SPInstance,
     ISPInstance,
 } from "../spqueryable.js";
-import { hOP } from "@pnp/core";
+import { hOP, AssignFrom } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
-import { body, headers, parseBinderWithErrorCheck, parseODataJSON, CopyFromQueryable } from "@pnp/queryable";
+import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
+import { IResourcePath } from "../utils/to-resource-path.js";
 
 /**
  * Describes a collection of Item objects
@@ -309,7 +309,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = <IItems>Items(this.nextUrl, null).using(CopyFromQueryable(this.parent));
+            const items = <IItems>Items(this.nextUrl, null).using(AssignFrom(this.parent));
             return items.getPaged<T>();
         }
 

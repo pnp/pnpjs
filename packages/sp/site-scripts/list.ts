@@ -3,7 +3,7 @@ import { _List, List } from "../lists/types.js";
 import { SiteScripts } from "./types.js";
 import "../folders/list.js";
 import { Web } from "../webs/types.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 
 declare module "../lists/types" {
     interface _List {
