@@ -545,6 +545,8 @@ export class _ClientsidePage extends _SPQueryable {
         }
 
         this.json.BannerImageUrl = url;
+        // update serverProcessedContent (page behavior change 2021-Oct-13)
+        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url }, };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
@@ -1259,6 +1261,18 @@ export class ClientsideWebpart extends ColumnControl<IClientsideWebPartData> {
         return <T>this.data.webPartData.properties;
     }
 
+    public setServerProcessedContent<T = any>(properties: T): this {
+        this.data.webPartData.serverProcessedContent = {
+            ...this.data.webPartData.serverProcessedContent,
+            ...properties,
+        };
+        return this;
+    }
+
+    public getServerProcessedContent<T = any>(): T {
+        return <T>this.data.webPartData.serverProcessedContent;
+    }
+
     protected onColumnChange(col: CanvasColumn): void {
         this.data.position.sectionFactor = col.factor;
         this.data.position.controlIndex = getNextOrder(col.controls);
@@ -1439,10 +1453,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            "htmlStrings": Record<string, string>;
-            "searchablePlainTexts": Record<string, string>;
-            "imageSources": Record<string, string>;
-            "links": Record<string, string>;
+            htmlStrings?: Record<string, string>;
+            searchablePlainTexts?: Record<string, string>;
+            imageSources?: Record<string, string>;
+            links?: Record<string, string>;
         };
         dataVersion: string;
         properties: PropertiesType;
@@ -1462,10 +1476,10 @@ interface ILayoutPartsContent {
     title: string;
     description: string;
     serverProcessedContent: {
-        htmlStrings: Record<string, string>;
-        searchablePlainTexts: Record<string, string>;
-        imageSources: Record<string, string>;
-        links: Record<string, string>;
+        htmlStrings?: Record<string, string>;
+        searchablePlainTexts?: Record<string, string>;
+        imageSources?: Record<string, string>;
+        links?: Record<string, string>;
         customMetadata?: {
             imageSource?: {
                 siteId: string;

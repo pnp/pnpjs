@@ -135,9 +135,8 @@ export class _RoleDefinitions extends _SPCollection<IRoleDefinitionInfo[]> {
             Description: description,
             Name: name,
             Order: order,
-            __metadata: { "type": "SP.RoleDefinition" },
         });
-
+        //__metadata: { "type": "SP.RoleDefinition" },
         const data = await spPost(this, postBody);
 
         return {

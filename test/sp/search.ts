@@ -4,7 +4,7 @@ import { SearchQueryBuilder } from "@pnp/sp/search";
 import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 
-// we skip these tests due to permissions difficulties across environments
+// we skip these tests due to app level permissions not being able to use search
 describe.skip("Search", function () {
     let _spfi: SPFI = null;
 
@@ -12,12 +12,11 @@ describe.skip("Search", function () {
         _spfi = getSP();
     });
 
-    it(".search - 1", function () {
-
+    it(".search (Basic)", function () {
         return expect(_spfi.search("test")).to.eventually.be.fulfilled;
     });
 
-    it(".search - 2", function () {
+    it(".search (Advanced)", function () {
 
         return expect(_spfi.search({
             ProcessBestBets: true,
@@ -26,14 +25,14 @@ describe.skip("Search", function () {
         })).to.eventually.be.fulfilled;
     });
 
-    it(".search - 3", function () {
+    it(".search (BestBets)", function () {
 
         const builder = SearchQueryBuilder("test").processBestBets.rowLimit(10);
 
         return expect(_spfi.search(builder)).to.eventually.be.fulfilled;
     });
 
-    it(".suggest", function () {
+    it(".searchSuggest", function () {
 
         return expect(_spfi.searchSuggest({ querytext: "test" })).to.eventually.be.fulfilled;
     });

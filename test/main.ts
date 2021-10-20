@@ -31,9 +31,9 @@ let site: string = null;
 let skipWeb = false;
 let deleteWeb = false;
 let logging = false;
-let spVerbose = false;
 let deleteAllWebs = false;
 
+// TODO: Add a switch for slow tests and then flag to skip slow tests during "normal" run
 for (let i = 0; i < process.argv.length; i++) {
     const arg = process.argv[i];
     if (/^--mode/i.test(arg)) {
@@ -60,9 +60,6 @@ for (let i = 0; i < process.argv.length; i++) {
     if (/^--logging/i.test(arg)) {
         logging = true;
     }
-    if (/^--spverbose/i.test(arg)) {
-        spVerbose = true;
-    }
 }
 
 console.log("*****************************");
@@ -72,7 +69,6 @@ console.log(`site: ${site}`);
 console.log(`skipWeb: ${skipWeb}`);
 console.log(`deleteWeb: ${deleteWeb}`);
 console.log(`logging: ${logging}`);
-console.log(`spVerbose: ${spVerbose}`);
 console.log("useMSAL: true");
 console.log("*****************************");
 
@@ -160,14 +156,14 @@ export function TestLogging(): TimelinePipe<Queryable> {
 
 async function spTestSetup(ts: ISettings): Promise<void> {
     let siteUsed = false;
-    ts.sp.webUrl = ts.sp.url;
+    ts.sp.testWebUrl = ts.sp.url;
 
     if (site && site.length > 0) {
-        ts.sp.webUrl = site;
+        ts.sp.testWebUrl = site;
         siteUsed = true;
     }
 
-    const rootSP = spfi(ts.sp.webUrl).using(SPDefault({
+    const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
@@ -186,16 +182,9 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     const testWebResult = await _spRoot.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
 
     // set the testing web url so our tests have access if needed
-    ts.sp.webUrl = testWebResult.data.Url;
+    ts.sp.testWebUrl = testWebResult.data.Url;
 
-    // TODO: Deal with verbose headers
-    // if (spVerbose) {
-    //     settingsPart.sp.headers = {
-    //         "Accept": "application/json;odata=verbose",
-    //     };
-    // }
-
-    _sp = spfi(ts.sp.webUrl).using(SPDefault({
+    _sp = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
@@ -260,8 +249,6 @@ after("Finalize Testing", async function () {
         await cleanUpAllSubsites(_spRoot.web);
 
     } else if (deleteWeb && testSettings.enableWebTests) {
-
-        // TODO: Clean up Delete function
         console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
 
         const web = await _sp.web;
@@ -274,11 +261,11 @@ after("Finalize Testing", async function () {
 
         await _sp.web.delete();
 
-        console.log(`Deleted web ${testSettings.sp.webUrl} created during testing.`);
+        console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
 
     } else if (testSettings.enableWebTests) {
 
-        console.log(`Leaving ${testSettings.sp.webUrl} alone.`);
+        console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
     }
 
     console.log("All done. Have a nice day :)");

@@ -24,7 +24,7 @@ describe("Behaviors", function () {
         it("CachingPessimistic", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = spfi(testSettings.sp.webUrl).using(SPDefault({
+                const spInstance = spfi(testSettings.sp.testWebUrl).using(SPDefault({
                     msal: {
                         config: testSettings.sp.msal.init,
                         scopes: testSettings.sp.msal.scopes,
@@ -55,7 +55,7 @@ describe("Behaviors", function () {
         it("Caching", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = spfi(testSettings.sp.webUrl).using(SPDefault({
+                const spInstance = spfi(testSettings.sp.testWebUrl).using(SPDefault({
                     msal: {
                         config: testSettings.sp.msal.init,
                         scopes: testSettings.sp.msal.scopes,

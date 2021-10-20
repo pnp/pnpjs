@@ -17,7 +17,7 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
     }
 
     /**
-     * Gets the term groups associated with this tenant
+     * Gets the term sets associated with this tenant
      */
     public get sets(): ITermSets {
         return TermSets(this);

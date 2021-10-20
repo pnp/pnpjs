@@ -13,7 +13,7 @@ export interface ISettings {
         };
     };
     sp?: {
-        webUrl?: string;
+        testWebUrl?: string;
         id?: string;
         notificationUrl?: string | null;
         secret?: string;

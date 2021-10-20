@@ -8,4 +8,5 @@ export {
     ISiteUsers,
     ISiteUserProps,
     IUserUpdateResult,
+    ISiteUserInfo,
 } from "./types.js";

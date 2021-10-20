@@ -80,7 +80,7 @@ describe.skip("AppCatalog", function () {
                 retryCount++;
             } while (app.InstalledVersion === "");
 
-            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it upgrades an app", async function () {
