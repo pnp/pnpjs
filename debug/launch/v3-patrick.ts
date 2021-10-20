@@ -7,6 +7,10 @@ import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/appcatalog";
+import { Web } from "@pnp/sp/webs";
+import { AssignFrom } from "@pnp/core";
+import { RequestRecorderCache } from "../../test/test-recorder.js";
+import { join } from "path";
 
 declare var process: { exit(code?: number): void };
 
@@ -43,16 +47,20 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
+        const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
+
         const sp2 = spfi("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        })).using(PnPLogging(LogLevel.Verbose));
+        })).using(PnPLogging(LogLevel.Verbose)).using(RequestRecorderCache(recordingPath, "record", () => false));
 
         const web = await sp2.getTenantAppCatalogWeb();
 
-        const y = await web();
+        const web2 = Web("https://318studios.sharepoint.com/sites/dev").using(AssignFrom(web));
+
+        const y = await web2();
 
         console.log(JSON.stringify(y));
 
@@ -60,8 +68,6 @@ export async function Example(settings: ITestingSettings) {
 
         console.error(e);
     }
-
-    console.log("here");
 
     // const [batchedSP, execute] = sp2.batched();
 

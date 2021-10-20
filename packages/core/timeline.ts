@@ -80,7 +80,7 @@ export abstract class Timeline<T extends Moments> {
 
     private _onProxy: typeof Proxy | null = null;
     private _emitProxy: typeof Proxy | null = null;
-    private _inheritingObservers: boolean;
+    protected _inheritingObservers: boolean;
 
     constructor(protected readonly moments: T, protected observers: ObserverCollection = {}) {
         this._inheritingObservers = true;
