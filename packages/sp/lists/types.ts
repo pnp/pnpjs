@@ -92,12 +92,16 @@ export class _Lists extends _SPCollection<IListInfo[]> {
 
         try {
 
-            // this will throw if the list doesn't exist
+            // Works regardless of if Queryable includes ThrowError behavior or Logging
             await list.select("Title")();
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
             if (data === undefined) {
                 const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
-                return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+                if (data === undefined) {
+                    return { created: false, data, list };
+                } else {
+                    return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
+                }
             } else {
                 return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
             }

@@ -1,3 +1,5 @@
+import "./web.js";
+
 export {
     IRelatedItem,
     IRelatedItemManager,
