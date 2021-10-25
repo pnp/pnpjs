@@ -18,6 +18,8 @@ coverage
 # node-waf configuration
 .lock-wscript
 
+.test-recording
+
 # Dependency directory
 node_modules
 

@@ -17,10 +17,10 @@ import * as NodeFetch from "node-fetch";
 })(global);
 
 // auto populate all extensions
-import "./sp-extensions/index.js";
+import "./sp-extensions/stream.js";
 
 // export extension types as a namespace
-import * as SPNS from "./sp-extensions/index.js";
+import * as SPNS from "./sp-extensions/stream.js";
 
 export {
     SPNS,

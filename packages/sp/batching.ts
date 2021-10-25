@@ -1,4 +1,4 @@
-import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe } from "@pnp/core";
+import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
 import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations";
 import { _SPQueryable } from "./spqueryable";
@@ -232,12 +232,17 @@ export function createBatch(base: IQueryableInternal): [TimelinePipe, () => Prom
         // we need to know when each request in the batch's timeline has completed
         instance.on.dispose(function () {
 
-            // let things know we are done with this request
-            (<any>this)[RequestCompleteSym]();
+            if (isFunc((<any>this)[RequestCompleteSym])) {
 
-            // remove the symbol props we added for good hygene
-            delete this[RegistrationCompleteSym];
-            delete this[RequestCompleteSym];
+                // let things know we are done with this request
+                (<any>this)[RequestCompleteSym]();
+                delete this[RequestCompleteSym];
+            }
+
+            if (isFunc((<any>this)[RegistrationCompleteSym])) {
+                // remove the symbol props we added for good hygene
+                delete this[RegistrationCompleteSym];
+            }
         });
 
         return instance;

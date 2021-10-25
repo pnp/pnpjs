@@ -78,6 +78,7 @@ export function CachingPessimisticRefresh(
 
                         const emitError = (e) => {
                             this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
+                            this.emit[this.InternalRejectEvent](e);
                             this.emit.error(e);
                             this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
@@ -108,6 +109,7 @@ export function CachingPessimisticRefresh(
 
                             const emitData = () => {
                                 this.emit.log(`[id:${requestId}] Emitting data`, 0);
+                                this.emit[this.InternalResolveEvent](retVal);
                                 this.emit.data(retVal);
                                 this.emit.log(`[id:${requestId}] Emitted data`, 0);
                             };
@@ -160,8 +162,8 @@ export function CachingPessimisticRefresh(
                     }, 0);
 
                     return new Promise((resolve, reject) => {
-                        this.on.data(resolve);
-                        this.on.error(reject);
+                        this.on[this.InternalResolveEvent].replace(resolve);
+                        this.on[this.InternalRejectEvent].replace(reject);
                     });
                 },
             });

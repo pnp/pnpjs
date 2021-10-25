@@ -12,6 +12,8 @@ import "@pnp/sp/webs";
 import { IWeb, IWebInfo } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
+import { RequestRecorderCache } from "./test-recorder.js";
+import { join } from "path";
 
 chai.use(chaiAsPromised);
 
@@ -187,7 +189,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging());
+    })).using(TestLogging()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
@@ -196,7 +198,7 @@ async function graphTestSetup(): Promise<void> {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
         },
-    })).using(TestLogging());
+    })).using(TestLogging()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 export const testSettings: ISettings = settings.testing;

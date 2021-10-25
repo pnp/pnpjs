@@ -1,5 +1,5 @@
 import { combine, hOP, isUrlAbsolute } from "@pnp/core";
-import { extractWebUrl } from "./extractweburl.js";
+import { extractWebUrl } from "./extract-web-url.js";
 
 export function odataUrlFrom(candidate: any): string {
 

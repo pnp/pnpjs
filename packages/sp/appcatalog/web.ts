@@ -1,21 +1,17 @@
+import { addProp } from "@pnp/queryable/add-prop.js";
 import { _Web } from "../webs/types.js";
 import { AppCatalog, IAppCatalog } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {
-        getAppCatalog(url?: string | _Web): IAppCatalog;
+        appcatalog: IAppCatalog;
     }
     interface IWeb {
         /**
-         * Gets this web (default) or the web specifed by the optional string case
-         * as an IAppCatalog instance
-         *
-         * @param url [Optional] Url of the web to get (default: current web)
+         * Gets the appcatalog (if it exists associated with this web)
          */
-        getAppCatalog(url?: string | _Web): IAppCatalog;
+        appcatalog: IAppCatalog;
     }
 }
 
-_Web.prototype.getAppCatalog = function (this: _Web, url?: string | _Web): IAppCatalog {
-    return AppCatalog(url || this);
-};
+addProp(_Web, "appcatalog", AppCatalog);

@@ -6,11 +6,10 @@ import {
     SPCollection,
 } from "../spqueryable";
 import { spPost } from "../operations.js";
-import { odataUrlFrom } from "../utils/odataUrlFrom.js";
-import { extractWebUrl } from "../utils/extractweburl.js";
+import { odataUrlFrom } from "../utils/odata-url-from.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 import { File, IFile } from "../files/types.js";
-import { CopyFromQueryable } from "@pnp/queryable";
-
+import { AssignFrom } from "@pnp/core";
 
 export class _AppCatalog extends _SPCollection {
 
@@ -44,8 +43,8 @@ export class _AppCatalog extends _SPCollection {
 
         } else {
 
-            const listId = (await SPCollection(webUrl, "lists").using(CopyFromQueryable(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
-            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(CopyFromQueryable(this))();
+            const listId = (await SPCollection(webUrl, "lists").using(AssignFrom(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
+            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(AssignFrom(this))();
 
             if (listItems && listItems.length > 0) {
 

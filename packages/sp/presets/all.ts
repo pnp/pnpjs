@@ -48,7 +48,7 @@ export * from "../hubsites/index.js";
 export * from "../items/index.js";
 export * from "../lists/index.js";
 export * from "../navigation/index.js";
-export * from "../utils/odataUrlFrom.js";
+export * from "../utils/odata-url-from.js";
 export * from "../profiles/index.js";
 export * from "../regional-settings/index.js";
 export * from "../related-items/index.js";

@@ -14,7 +14,7 @@ import { SPFI } from "@pnp/sp";
 
 // npm run test -- -g 'nodejs - sp-extensions'
 // TODO: Figured out what is wrong with these tests.
-describe.skip("nodejs - sp-extensions", function () {
+describe("nodejs - sp-extensions", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -59,7 +59,7 @@ describe.skip("nodejs - sp-extensions", function () {
             const stream = fs.createReadStream(tmpFilePath);
             const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
 
-            await files.addChunked(name, stream, null, true, 10);
+            await files.addChunked(name, stream, null, true);
 
             const fileContent = await files.getByUrl(name).getText();
 

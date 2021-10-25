@@ -2,9 +2,9 @@ import { addProp, headers, body, TextParse } from "@pnp/queryable";
 import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
+import { IResourcePath } from "../utils/to-resource-path.js";
 import { combine, isArray } from "@pnp/core";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { spPost } from "../operations.js";
 import { SPCollection } from "../presets/all.js";
 

@@ -1,7 +1,7 @@
 import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { Folders, IFolders, Folder, IFolder } from "./types.js";
-import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 
 declare module "../webs/types" {
     interface _Web {
