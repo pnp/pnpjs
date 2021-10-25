@@ -18,7 +18,6 @@
     },
     "include": [
         "./**/*.ts",
-        "../packages/sp/**/*.ts",
         "../tools/local-module-resolver/**/*.ts"
     ]
 }

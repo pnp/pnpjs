@@ -10,7 +10,7 @@ import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
-describe.only("Related Items", function () {
+describe("Related Items", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -36,36 +36,32 @@ describe.only("Related Items", function () {
             targetListName = ler2.data.Id;
         });
 
-        it("addSingleLink", async function () {
+        it(".addSingleLink", async function () {
 
-            const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-
-            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
+            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
+            return expect(_spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl)).to.eventually.be.fulfilled;
         });
 
-        it("addSingleLinkToUrl", async function () {
+        it(".addSingleLinkToUrl", async function () {
 
             const file = await _spfi.web.defaultDocumentLibrary.rootFolder.files
-                .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true }).then(r => r.data);
-            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
+                .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true });
+            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
 
-            await _spfi.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file.ServerRelativeUrl);
+            return expect(_spfi.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.data.Id, file.data.ServerRelativeUrl)).to.eventually.be.fulfilled;
         });
 
-        // I can't figure out a reason for this method to exist or how to really test it.
-        it("addSingleLinkFromUrl");
+        it(".deleteSingleLink", async function () {
 
-        it("deleteSingleLink", async function () {
+            const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
+            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
+            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
 
-            const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-            await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
-
-            await _spfi.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
+            return expect(_spfi.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl)).to.eventually.be.fulfilled;
         });
 
-        it("getRelatedItems", async function () {
+        it(".getRelatedItems", async function () {
 
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
@@ -79,7 +75,7 @@ describe.only("Related Items", function () {
             return expect(items).to.be.an.instanceOf(Array).and.have.lengthOf(2);
         });
 
-        it("getPageOneRelatedItems", async function () {
+        it(".getPageOneRelatedItems", async function () {
 
             const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);

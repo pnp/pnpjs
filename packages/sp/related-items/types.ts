@@ -3,6 +3,7 @@ import { extractWebUrl } from "../utils/extract-web-url.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { body } from "@pnp/queryable";
+import { AssignFrom } from "@pnp/core";
 
 @defaultPath("_api/SP.RelatedItemManager")
 export class _RelatedItemManager extends _SPQueryable implements IRelatedItemManager {
@@ -177,7 +178,12 @@ export interface IRelatedItemManager {
         tryDeleteReverseLink?: boolean): Promise<void>;
 }
 
-export const RelatedItemManager = (url: string | ISPQueryable): IRelatedItemManager => new _RelatedItemManager(extractWebUrl(typeof url === "string" ? url : url.toUrl()));
+export const RelatedItemManager = (base: string | ISPQueryable): IRelatedItemManager => {
+    if (typeof base === "string") {
+        return new _RelatedItemManager(extractWebUrl(base));
+    }
+    return new _RelatedItemManager(extractWebUrl(base.toUrl())).using(AssignFrom(base));
+}
 
 export interface IRelatedItem {
     ListId: string;
