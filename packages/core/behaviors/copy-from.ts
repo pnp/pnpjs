@@ -38,15 +38,16 @@ function copyObservers(this: Timeline<any>, source: Timeline<any>, behavior: "re
 
     for (let i = 0; i < keys.length; i++) {
 
+        const key = keys[i];
+        const on = this.on[key];
+
         if (behavior === "replace") {
-            this.on[keys[i]].clear();
+            on.clear();
         }
 
-        const momentObservers = clonedSource[keys[i]];
+        const momentObservers = clonedSource[key];
 
-        momentObservers.forEach(v => {
-            this.on[keys[i]](v);
-        });
+        momentObservers.forEach(v => on(v));
     }
 
     return this;

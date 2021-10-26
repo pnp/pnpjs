@@ -18,8 +18,6 @@ declare module "./types" {
 
 _Items.prototype.getAll = async function (this: _Items, requestSize = 2000, acceptHeader = "application/json;odata=nometadata"): Promise<any[]> {
 
-    // TODO:: need to inject the new telementry stuff here
-
     // this will be used for the actual query
     // and we set no metadata here to try and reduce traffic
     const items = Items(this, "").top(requestSize).using(InjectHeaders({

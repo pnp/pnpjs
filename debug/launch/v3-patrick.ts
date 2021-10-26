@@ -8,7 +8,7 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/appcatalog";
 import { Web } from "@pnp/sp/webs";
-import { AssignFrom } from "@pnp/core";
+import { AssignFrom, CopyFrom } from "@pnp/core";
 import { RequestRecorderCache } from "../../test/test-recorder.js";
 import { join } from "path";
 
@@ -54,11 +54,13 @@ export async function Example(settings: ITestingSettings) {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        })).using(PnPLogging(LogLevel.Verbose)).using(RequestRecorderCache(recordingPath, "record", () => false));
+        })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
         const web = await sp2.getTenantAppCatalogWeb();
 
-        const web2 = Web("https://318studios.sharepoint.com/sites/dev").using(AssignFrom(web));
+        const web2 = Web("https://318studios.sharepoint.com/sites/dev").using(CopyFrom(web));
+
+        web2.on.log(console.log);
 
         const y = await web2();
 
