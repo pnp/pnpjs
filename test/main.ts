@@ -162,7 +162,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         ts.sp.testWebUrl = site;
         siteUsed = true;
     }
-    //TODO: Clean up the addition of the ThrowErrors behavior if it gets added to default.
+    // TODO: Clean up the addition of the ThrowErrors behavior if it gets added to default.
     const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
