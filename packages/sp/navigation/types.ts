@@ -5,10 +5,13 @@ import {
     _SPInstance,
     _SPQueryable,
     IDeleteable,
+    ISPQueryable,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
+import { extractWebUrl } from "../index.js";
+import { combine } from "@pnp/core";
 
 /**
  * Represents a collection of navigation nodes
@@ -140,8 +143,10 @@ export const Navigation: INavigation = <any>spInvokableFactory(_Navigation);
  */
 export class _NavigationService extends _SPQueryable {
 
-    constructor(path: string = null) {
-        super("_api/navigation", path);
+    constructor(base: string | ISPQueryable = null, path?: string) {
+        super(base, path);
+
+        this._url = combine(extractWebUrl(this._url), "_api/navigation", path);
     }
 
     /**
@@ -154,7 +159,7 @@ export class _NavigationService extends _SPQueryable {
      */
     public getMenuState(menuNodeKey: string = null, depth = 10, mapProviderName: string = null, customProperties: string = null): Promise<IMenuNodeCollection> {
 
-        return spPost(<any>NavigationService("MenuState"), body({
+        return spPost(NavigationService(this, "MenuState"), body({
             customProperties,
             depth,
             mapProviderName,
@@ -170,14 +175,14 @@ export class _NavigationService extends _SPQueryable {
      */
     public getMenuNodeKey(currentUrl: string, mapProviderName: string = null): Promise<string> {
 
-        return spPost(<any>NavigationService("MenuNodeKey"), body({
+        return spPost(NavigationService(this, "MenuNodeKey"), body({
             currentUrl,
             mapProviderName,
         }));
     }
 }
 export interface INavigationService extends _NavigationService {}
-export const NavigationService = (path?: string) => <INavigationService>new _NavigationService(path);
+export const NavigationService = (base?: string | ISPQueryable, path?: string) => <INavigationService>new _NavigationService(base, path);
 
 export interface IMenuNode {
     CustomProperties: any[];

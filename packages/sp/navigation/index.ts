@@ -30,6 +30,6 @@ Reflect.defineProperty(SPFI.prototype, "navigation", {
     configurable: true,
     enumerable: true,
     get: function (this: SPFI) {
-        this.create(<any>NavigationService);
+        return this.create(NavigationService);
     },
 });
