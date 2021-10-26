@@ -25,8 +25,8 @@ describe("Lists", function () {
 
         it(".getById", async function () {
             const list = await _spfi.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>();
-            const title = await _spfi.web.lists.getById(list.Id).select("Title")();
-            return expect(title).to.eventually.have.property("Title");
+            const title = await _spfi.web.lists.getById(list.Id).select("Title")<{ Title: string }>();
+            return expect(title).to.have.property("Title");
         });
 
         it(".getByTitle", async function () {
@@ -155,6 +155,7 @@ describe("List", function () {
             return expect(listEnsure.list.getItemsByCAMLQuery(caml, "RoleAssignments")).to.eventually.be.fulfilled;
         });
 
+        // TODO: There is an error in the TextParse, throws error line 15 in queryable/behaviors/parsers.ts
         it(".getListItemChangesSinceToken", async function () {
             const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getListItemChangesSinceToken");
             const query: IChangeLogItemQuery = {
@@ -289,6 +290,7 @@ describe("List", function () {
             return expect(list.reserveListItemId()).to.eventually.be.fulfilled;
         });
 
+        // TODO: Remove these from the library if they are no longer supported
         // Removing unit tests for failing and undocumented APIs that seem to no longer be supported.
 
         // it(".addValidateUpdateItemUsingPath", async function () {

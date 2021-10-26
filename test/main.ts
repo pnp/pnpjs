@@ -1,5 +1,5 @@
 import { delay, getGUID, TimelinePipe } from "@pnp/core";
-import { IInvokable, Queryable } from "@pnp/queryable";
+import { IInvokable, Queryable, ThrowErrors } from "@pnp/queryable";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import { spfi } from "@pnp/sp";
 import * as chai from "chai";
@@ -162,13 +162,13 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         ts.sp.testWebUrl = site;
         siteUsed = true;
     }
-
+    //TODO: Clean up the addition of the ThrowErrors behavior if it gets added to default.
     const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging());
+    })).using(TestLogging()).using(ThrowErrors());
     _spRoot = rootSP;
 
     if (siteUsed) {
@@ -189,7 +189,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging()).using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })).using(TestLogging()).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
@@ -198,7 +198,7 @@ async function graphTestSetup(): Promise<void> {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
         },
-    })).using(TestLogging()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })).using(TestLogging()).using(ThrowErrors());; // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 export const testSettings: ISettings = settings.testing;

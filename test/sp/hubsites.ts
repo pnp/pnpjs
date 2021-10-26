@@ -1,7 +1,8 @@
 import { getSP, testSettings } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/hubsites";
-import { SPFI } from "@pnp/sp";
+import { spfi, SPFI } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
 
 describe("Hubsites", function () {
 
@@ -10,7 +11,14 @@ describe("Hubsites", function () {
         let hubSiteId: string;
 
         before(async function () {
-            _spfi = getSP();
+            // Must use root site
+            _spfi = spfi(testSettings.sp.url).using(SPDefault({
+                msal: {
+                    config: testSettings.sp.msal.init,
+                    scopes: testSettings.sp.msal.scopes,
+                },
+            }));
+
             await _spfi.site.registerHubSite();
             const r = await _spfi.site.select("Id")();
             hubSiteId = r.Id;

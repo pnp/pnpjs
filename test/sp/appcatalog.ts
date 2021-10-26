@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { getSP, testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
-import "@pnp/sp/appcatalog";
+import "@pnp/sp/appcatalog/web";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
