@@ -8,7 +8,7 @@ Moments are the name we use to describe the steps executed during a timeline lif
 function (observers: any[], ...args: any[]): any;
 ```
 
-Let's have a look at one of the included moment factory functions and use it to understand a bit more on how things work. In this example we'll look at the broadcast moment, used to mimic a classic event where no return value is tracked, we just want to emit an event to all the subscribed observers.
+Let's have a look at one of the included moment factory functions, which define how the moment interacts with its registered observers, and use it to understand a bit more on how things work. In this example we'll look at the broadcast moment, used to mimic a classic event where no return value is tracked, we just want to emit an event to all the subscribed observers.
 
 ```TypeScript
 // the broadcast factory function, returning the actual moment implementation function
@@ -35,14 +35,14 @@ Let's use `broadcast` in a couple examples to show how it works. You can also re
 
 ```TypeScript
 // our first type determines the type of the observers that will be regsitered to the moment "first"
-type Broadcast1Observer = (this: Timeline<any>, message: string) => void;
+type Broadcast1ObserverType = (this: Timeline<any>, message: string) => void;
 
 // our second type determines the type of the observers that will be regsitered to the moment "second"
-type Broadcast2Observer = (this: Timeline<any>, value: number, value2: number) => void;
+type Broadcast2ObserverType = (this: Timeline<any>, value: number, value2: number) => void;
 
 const moments = {
-    first: broadcast<Broadcast1Observer>(),
-    second: broadcast<Broadcast2Observer>(),
+    first: broadcast<Broadcast1ObserverType>(),
+    second: broadcast<Broadcast2ObserverType>(),
 } as const;
 ```
 
@@ -51,8 +51,8 @@ Now that we have defined two moments we can update our Timeline implementing cla
 Because we want observers of a given moment to understand what arguments they will get the typings of Timeline are setup to use the type defining the moment's observer across all operations. For example, using our moment "first" from above. Each moment can be subscribed by zero or more observers.
 
 ```TypeScript
-// our observer function matches the type of Broadcast1Observer and the intellisense will reflect that.
-// If you want to change the signature you need only do so in the type Broadcast1Observer and the change will update the on and emit typings as well
+// our observer function matches the type of Broadcast1ObserverType and the intellisense will reflect that.
+// If you want to change the signature you need only do so in the type Broadcast1ObserverType and the change will update the on and emit typings as well
 // here we want to reference "this" inside our observer function (preferred)
 obj.on.first(function (this: Timeline<any>, message: string) {
     // we use "this", which will be the current timeline and the default log method to emit a logging event
@@ -78,11 +78,11 @@ obj.on.second((value: number, value2: number) => {
 });
 ```
 
-### Existing Moment Factories
+## Existing Moment Factories
 
 You a already familiar with `broadcast` which passes the emited args to all subscribed observers, this section lists the existing built in moment factories:
 
-#### broadcast
+### broadcast
 
 Passes the emited args to all subscribed observers. Takes a single type parameter defining the observer signature and always returns void. Is not async.
 
@@ -103,7 +103,7 @@ obj.on.example(function (this: Timeline<any>, message: string) {
 obj.emit.example("Hello");
 ```
 
-#### asyncReduce
+### asyncReduce
 
 Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer. This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state.
 
@@ -131,7 +131,7 @@ obj.on.example(async function (this: Timeline<any>, arg1: string, arg2: number) 
 obj.emit.example("Hello", 42);
 ```
 
-#### request
+### request
 
 Defines a moment where the first registered observer is used to asynchronously execute a request, returning a single result. If no result is returned (undefined) no further action is taken and the result will be undefined (i.e. additional observers are not used).
 
@@ -160,7 +160,7 @@ obj.emit.example("Hello", 42);
 
 ## Additional Examples
 
-### WaitAll
+### waitall
 
 Perhaps you have a situation where you would like to wait until all of the subscribed observers for a given moment complete, but they can run async in parallel.
 
@@ -187,7 +187,7 @@ export function waitall<T extends ObserverFunction>(): (observers: T[], ...args:
 }
 ```
 
-### First
+### first
 
 Perhaps you would instead like to only get the result of the first observer to return.
 
