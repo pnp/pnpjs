@@ -10,7 +10,7 @@ import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
-describe.only("Related Items", function () {
+describe("Related Items", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;

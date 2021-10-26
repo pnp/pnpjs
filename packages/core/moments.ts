@@ -3,7 +3,6 @@ import { isArray } from "./util.js";
 
 // TODO:: docs
 // - you don't need error handling here because that is handled in emit within the timeline
-// - implement first as an example Promise.all(...obs)
 // - explain why we have just these - it is what we needed.
 
 

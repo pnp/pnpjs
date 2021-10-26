@@ -61,7 +61,7 @@ describe.skip("AppCatalog", function () {
 
         it("it installs an app on a web", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it uninstalls an app", async function () {
@@ -85,7 +85,7 @@ describe.skip("AppCatalog", function () {
 
         it("it upgrades an app", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.webUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("it retracts an app", async function () {

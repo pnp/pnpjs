@@ -73,7 +73,7 @@ export function getGUID(): string {
 /**
  * Determines if a given value is a function
  *
- * @param cf The thing to test for functionness
+ * @param f The thing to test for functionness
  */
 export function isFunc(f: any): boolean {
     return typeof f === "function";

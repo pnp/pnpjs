@@ -189,7 +189,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })).using(TestLogging()).using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
