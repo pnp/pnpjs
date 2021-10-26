@@ -6,6 +6,7 @@ The common modules provides a set of utilities classes and reusable building blo
 
 ## Getting Started
 
+>To use the library as a stand alone modules, you will need to install it. It's a peer dependency of the @pnp/sp and @pnp/graph libraries so you do not need to install it seperately if you already have one of those installed.
 Install the library and required dependencies
 
 `npm install @pnp/core --save`
@@ -20,8 +21,9 @@ console.log(getGUID());
 
 ## Exports
 
-* [behaviors](behaviors.md)
-* [moments](moments.md)
-* [storage](storage.md)
 * [timeline](timeline.md)
+* [moments](moments.md)
+* [observers](observers.md)
+* [behaviors](behaviors.md)
+* [storage](storage.md)
 * [util](util.md)
