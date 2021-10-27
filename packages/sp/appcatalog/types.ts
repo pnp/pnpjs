@@ -9,12 +9,13 @@ import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { File, IFile } from "../files/types.js";
-import { AssignFrom } from "@pnp/core";
+import { AssignFrom, combine } from "@pnp/core";
 
 export class _AppCatalog extends _SPCollection {
 
-    constructor(baseUrl: string | ISPQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
-        super(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
+    constructor(base: string | ISPQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+        super(base, null);
+        this._url = combine(extractWebUrl(this._url), path);
     }
 
     /**
@@ -43,8 +44,8 @@ export class _AppCatalog extends _SPCollection {
 
         } else {
 
-            const listId = (await SPCollection(webUrl, "lists").using(AssignFrom(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")())[0].Id;
-            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter("AppProductID eq '${id}'").top(1).using(AssignFrom(this))();
+            const listId = (await SPCollection(webUrl, "lists").using(AssignFrom(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")<{ Id: string }[]>())[0].Id;
+            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter(`AppProductID eq '${id}'`).top(1).using(AssignFrom(this))();
 
             if (listItems && listItems.length > 0) {
 
@@ -56,9 +57,9 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        const poster = AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
+        const poster = AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`).using(AssignFrom(this));
 
-        return await spPost(poster, {});
+        return await spPost(poster);
     }
 
     /**
@@ -72,7 +73,7 @@ export class _AppCatalog extends _SPCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
+        const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`).using(AssignFrom(this));
 
         const r = await spPost(adder, {
             body: content, headers: {

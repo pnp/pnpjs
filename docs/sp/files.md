@@ -26,8 +26,6 @@ const text2: string = await sp.web.getFolderByServerRelativeUrl("/sites/dev/docu
 
 ### getFileByUrl
 
-_Added in 2.0.4_
-
 This method supports opening files from sharing links or absolute urls. The file must reside in the site from which you are trying to open the file.
 
 ```TypeScript
@@ -409,8 +407,6 @@ await sp.web.rootFolder.files.getByName("name.txt").delete();
 
 ### delete with params
 
-_Added in 2.0.9_
-
 Deletes a file with options
 
 ```TypeScript
@@ -424,8 +420,6 @@ await sp.web.rootFolder.files.getByName("name.txt").deleteWithParams({
 ```
 
 ### exists
-
-_Added in 2.0.9_
 
 Checks to see if a file exists
 

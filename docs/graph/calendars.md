@@ -193,7 +193,6 @@ const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82'
 
 ## Get Calendar View
 
-_Added in 2.0.7_
 Gets the events in a calendar during a specified date range.
 
 ```ts

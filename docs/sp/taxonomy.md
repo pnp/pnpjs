@@ -75,7 +75,7 @@ const info: ITermSetInfo = await sp.termStore.groups.getById("338666a8-1111-2222
 
 ### getAllChildrenAsOrderedTree
 
-_Added in 2.0.13_
+
 
 This method will get all of a set's child terms in an ordered array. It is a costly method in terms of requests so we suggest you cache the results as taxonomy trees seldom change.
 
@@ -115,7 +115,7 @@ const infos: ITermInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222
 
 ### List (terms)
 
-_Added in 2.0.13_
+
 
 You can use the terms property to get a flat list of all terms in the set. These terms do not contain parent/child relationship information.
 
