@@ -27,8 +27,6 @@ const w = await sp.web.get();
 
 ## MSAL
 
-_Added in 2.0.11_
-
 You can now use the [@azure/msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node) client with PnPjs using MsalFetchClient. You must configure an AAD application with the appropriate permissions for your application.
 
 > At the time this article was written the msal-node package is not yet GA.

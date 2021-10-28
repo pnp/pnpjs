@@ -47,8 +47,6 @@ sp.setup({
 
 # setProxyAgent
 
-_Added in 2.0.11_
-
 You need to import the `setProxyAgent` function from @pnp/nodejs library and call it with your proxy url. You can supply any valid proxy and it will be used.
 
 ```TypeScript

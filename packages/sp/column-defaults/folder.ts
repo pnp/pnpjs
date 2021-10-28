@@ -5,6 +5,7 @@ import { Web } from "../webs/types.js";
 import "../lists/web.js";
 import { _Folder, Folder } from "../folders/types.js";
 import { IFieldDefault, IFieldDefaultProps } from "./types.js";
+import { AssignFrom } from "@pnp/core";
 
 declare module "../folders/types" {
     interface _Folder {
@@ -37,7 +38,7 @@ _Folder.prototype.getDefaultColumnValues = async function (this: _Folder): Promi
     const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string }>();
     const { ServerRelativePath: serRelPath } = await this.select("ServerRelativePath")<{ ServerRelativePath: IResourcePath }>();
 
-    const web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+    const web = Web(extractWebUrl(odataUrlFrom(folderProps))).using(AssignFrom(this));
     const docLib = web.lists.getById(folderProps.vti_x005f_listname);
 
     // and we return the defaults associated with this folder's server relative path only
@@ -51,7 +52,7 @@ _Folder.prototype.setDefaultColumnValues = async function (fieldDefaults: IField
     const folderProps = await Folder(this, "Properties").select("vti_x005f_listname")<{ vti_x005f_listname: string }>();
 
     // now we create a web, list and batch to get some info we need
-    const web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+    const web = Web(extractWebUrl(odataUrlFrom(folderProps))).using(AssignFrom(this));
     const docLib = web.lists.getById(folderProps.vti_x005f_listname);
 
     // we need the proper folder path

@@ -1,4 +1,4 @@
-import { combine } from "@pnp/core";
+import { combine, AssignFrom } from "@pnp/core";
 import { _List, List } from "../lists/types.js";
 import { SiteScripts } from "./types.js";
 import "../folders/list.js";
@@ -21,7 +21,7 @@ declare module "../lists/types" {
 _List.prototype.getSiteScript = async function (this: _List): Promise<string> {
 
     const rootFolder = await List(this).rootFolder<{ Name: string }>();
-    const web = await Web(extractWebUrl(this.toUrl())).select("Url")();
+    const web = await Web(extractWebUrl(this.toUrl())).using(AssignFrom(this)).select("Url")();
     const absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
     return SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl);
 };

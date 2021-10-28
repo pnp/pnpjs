@@ -496,7 +496,7 @@ const r = await list.userCustomActions();
 
 ### getParentInfos
 
-_Added in 2.0.12_
+
 
 Gets information about an list, including details about the parent list root folder, and parent web.
 

@@ -2,6 +2,8 @@ import { SPFI } from "../fi";
 import { IWeb, Web } from "../webs/types.js";
 import { AssignFrom } from "@pnp/core";
 
+import "./web.js";
+
 export {
     IAppAddResult,
     IApp,

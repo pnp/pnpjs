@@ -57,6 +57,10 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
+        const catalog = await sp2.getTenantAppCatalogWeb();
+
+        await catalog.appcatalog.syncSolutionToTeams("7F905BE6-3226-4A4C-9C54-AB1EDCE3C99C")
+
         // const nav = sp2.navigation;
 
         // console.log(JSON.stringify(v));

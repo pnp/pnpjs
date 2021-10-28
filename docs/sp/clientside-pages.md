@@ -476,8 +476,6 @@ await page.save();
 
 ### Get / Set author details
 
-_Added in 2.0.4_
-
 ```TypeScript
 // our page instance
 const page: IClientsidePage;
@@ -739,8 +737,6 @@ await page.save();
 ```
 
 ### setBannerImageFromExternalUrl
-
-_Added in 2.0.12_
 
 Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.
 

@@ -1,5 +1,5 @@
 import { body, TextParse, BlobParse, BufferParse, JSONParse } from "@pnp/queryable";
-import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
+import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, AssignFrom } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -195,7 +195,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`).using(AssignFrom(this)),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.host}${destUrl}`),
                 options: {
@@ -232,7 +232,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`).using(AssignFrom(this)),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.host}${destUrl}`),
                 options: {

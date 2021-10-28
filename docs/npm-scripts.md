@@ -95,8 +95,6 @@ npm test -- --logging
 
 #### spVerbose
 
-_Added in 2.0.13_
-
 >`--spverbose`
 
 This flag will enable "verbose" OData mode for SharePoint tests. This flag is compatible with other flags.

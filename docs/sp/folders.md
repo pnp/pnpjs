@@ -181,7 +181,7 @@ await sp.web.rootFolder.folders.getByName("My Folder").delete();
 
 ### delete with params
 
-_Added in 2.0.9_
+
 
 Deletes a folder with options
 
@@ -357,7 +357,7 @@ await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
 
 ### addSubFolderUsingPath
 
-_Added in 2.0.9_
+
 
 You can use the addSubFolderUsingPath method to add a folder with some special chars supported
 
@@ -386,7 +386,7 @@ const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152b
 
 ### getParentInfos
 
-_Added in 2.0.12_
+
 
 Gets information about folder, including details about the parent list, parent list root folder, and parent web.
 

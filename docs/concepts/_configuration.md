@@ -385,7 +385,7 @@ All values are optional.
 | Name               | Description                                                                                                                            | Default |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | headers            | Allows you to apply any headers to all calls made by the sp library                                                                    | none    |
-| baseUrl            | Allows you to define a base site url for all requests, takes precedence over all other url logic. Must be absolute. (_Added in 2.0.8_) | none    |
+| baseUrl            | Allows you to define a base site url for all requests, takes precedence over all other url logic. Must be absolute. (
 | fetchClientFactory | Allows you to specify a factory function used to produce [IHttpClientImpl](../common/netutil.md#httpclientimpl) instances              | none    |
 
 > There are many examples of using fetchClientFactory available in the [authentication section](../authentication/index.md).

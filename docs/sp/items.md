@@ -421,7 +421,7 @@ await list.items.getById(1).delete();
 
 ## Delete With Params
 
-_Added in 2.0.9_
+
 
 Deletes the item object with options.
 
@@ -474,7 +474,7 @@ Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Edit
 
 ### getParentInfos
 
-_Added in 2.0.12_
+
 
 Gets information about an item, including details about the parent list, parent list root folder, and parent web.
 

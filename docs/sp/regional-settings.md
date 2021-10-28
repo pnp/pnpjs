@@ -72,7 +72,7 @@ const s7 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date(2019, 
 
 ### Title and Description Resources
 
-_Added in 2.0.4_
+
 
 Some objects allow you to read language specific title information as shown in the following sample. This applies to Web, List, Field, Content Type, and User Custom Actions.
 

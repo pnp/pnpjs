@@ -92,9 +92,9 @@ export class _Lists extends _SPCollection<IListInfo[]> {
 
         try {
 
-            // Works regardless of if Queryable includes ThrowError behavior or Logging
             await list.select("Title")();
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
+
             if (data === undefined) {
                 const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
                 if (data === undefined) {

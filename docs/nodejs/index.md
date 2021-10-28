@@ -18,8 +18,6 @@ exported functionality.
 
 ## SP Extensions
 
-_Added in 2.0.9_
-
 A set of nodejs specific extensions for the [@pnp/sp](../sp/) library.
 
 * [SP Extensions](./sp-extensions.md)
