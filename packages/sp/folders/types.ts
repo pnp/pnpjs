@@ -1,4 +1,4 @@
-import { isUrlAbsolute, combine, AssignFrom } from "@pnp/core";
+import { isUrlAbsolute, combine } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -41,7 +41,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
 
         return {
             data,
-            folder: Folder(extractWebUrl(this.toUrl()), `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativeUrl)}')`).using(AssignFrom(this)),
+            folder: Folder([this, extractWebUrl(this.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativeUrl)}')`),
         };
     }
 }
@@ -114,7 +114,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
         if (q["odata.null"]) {
             throw Error("No associated item was found for this folder. It may be the root folder, which does not have an item.");
         }
-        return Object.assign(Item(odataUrlFrom(q)).using(AssignFrom(this)), q);
+        return Object.assign(Item([this, odataUrlFrom(q)]), q);
     }
 
     /**
@@ -239,7 +239,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
 
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
         const d = await SPInstance(this, "listItemAllFields").select("odata.id")();
-        return Item(odataUrlFrom(d)).using(AssignFrom(this));
+        return Item([this, odataUrlFrom(d)]);
     }
 }
 export interface IFolder extends _Folder, IDeleteableWithETag { }

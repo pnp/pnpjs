@@ -1,11 +1,11 @@
-import { combine } from "@pnp/core";
+import { isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 
 export interface IGraphQueryableConstructor<T> {
     new(baseUrl: string | IGraphQueryable, path?: string): T;
 }
 
-export type IGraphInvokableFactory<R extends IGraphQueryable> = (baseUrl: string | IGraphQueryable, path?: string) => R & IInvokable;
+export type IGraphInvokableFactory<R extends IGraphQueryable> = (base: string | IGraphQueryable | [IGraphQueryable, string], path?: string) => R & IInvokable;
 
 export const graphInvokableFactory = <R extends IGraphQueryable>(f: any): IGraphInvokableFactory<R> => {
     return queryableFactory<R>(f);
@@ -26,21 +26,21 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      * @param base A string or Queryable that should form the base part of the url
      *
      */
-    constructor(base: string | IGraphQueryable, path?: string) {
+    constructor(base: string | IGraphQueryable| [IGraphQueryable, string], path?: string) {
+
+        super(base, path);
 
         if (typeof base === "string") {
 
-            // init base with corrected string value
-            super(combine(base, path));
-
             this.parentUrl = base;
+
+        } else if (isArray(base)) {
+
+            this.parentUrl = (<IGraphQueryable<any>>base[0]).toUrl();
 
         } else {
 
-            // init base with corrected string value
-            super(base, path);
-
-            this.parentUrl = base.toUrl();
+            this.parentUrl = (<IGraphQueryable<any>>base).toUrl();
         }
     }
 

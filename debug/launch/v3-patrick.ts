@@ -57,13 +57,13 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
-        const catalog = await sp2.getTenantAppCatalogWeb();
+        const w = Web([sp2.web, "https://318studios.sharepoint.com/sites/bunnies"]);
 
-        await catalog.appcatalog.syncSolutionToTeams("7F905BE6-3226-4A4C-9C54-AB1EDCE3C99C")
+        const y = await w();
 
         // const nav = sp2.navigation;
 
-        // console.log(JSON.stringify(v));
+        console.log(JSON.stringify(y));
 
     } catch (e) {
 

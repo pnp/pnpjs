@@ -306,7 +306,7 @@ class ProfileLoader extends _SPQueryable {
      *
      */
     public get ownerUserProfile(): Promise<IUserProfile> {
-        return spPost(this.getParent(<any>ProfileLoaderFactory, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile"));
+        return spPost(this.getParent(<any>ProfileLoaderFactory, "_api/sp.userprofiles.profileloader.getowneruserprofile"));
     }
 
     /**

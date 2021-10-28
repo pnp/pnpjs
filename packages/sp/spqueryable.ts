@@ -1,4 +1,4 @@
-import { AssignFrom, combine, isUrlAbsolute } from "@pnp/core";
+import { AssignFrom, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 
@@ -6,7 +6,7 @@ export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
     new(baseUrl: string | ISPQueryable, path?: string): T;
 }
 
-export type ISPInvokableFactory<R extends ISPQueryable> = (baseUrl: string | ISPQueryable, path?: string) => R & IInvokable;
+export type ISPInvokableFactory<R extends ISPQueryable> = (base: string | ISPQueryable | [ISPQueryable, string], path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
@@ -27,7 +27,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      * @param base A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(base: string | ISPQueryable, path?: string) {
+    constructor(base: string | ISPQueryable | [ISPQueryable, string], path?: string) {
 
         if (typeof base === "string") {
 
@@ -62,9 +62,11 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
             super(base, path);
 
-            this.parentUrl = base.toUrl();
+            const q: Queryable<any> = isArray(base) ? base[0] : base;
 
-            const target = base.query.get("@target");
+            this.parentUrl = q.toUrl();
+
+            const target = q.query.get("@target");
             if (target !== undefined) {
                 this.query.set("@target", target);
             }
@@ -123,14 +125,10 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     protected getParent<T extends ISPQueryable>(
         factory: ISPInvokableFactory<any>,
-        baseUrl: string | ISPQueryable = this.parentUrl,
-        path?: string): T {
+        path?: string,
+        baseUrl: string = this.parentUrl): T {
 
-        const parent = factory(baseUrl, path);
-
-        if (typeof baseUrl === "string") {
-            parent.using(AssignFrom(this));
-        }
+        const parent = factory([this, baseUrl], path);
 
         const t = "@target";
         if (this.query.has(t)) {

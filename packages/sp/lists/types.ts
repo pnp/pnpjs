@@ -177,7 +177,7 @@ export class _List extends _SPInstance<IListInfo> {
 
         const data = await spPostMerge(this, body(properties, headers({ "IF-Match": eTag })));
 
-        const list: IList = hOP(properties, "Title") ? this.getParent(List, this.parentUrl, `getByTitle('${properties.Title}')`) : List(this);
+        const list: IList = hOP(properties, "Title") ? this.getParent(List, `getByTitle('${properties.Title}')`) : List(this);
 
         return {
             data,

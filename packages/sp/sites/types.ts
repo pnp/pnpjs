@@ -1,7 +1,7 @@
 import { _SPInstance, spInvokableFactory, SPQueryable } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { AssignFrom, hOP } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
@@ -42,7 +42,7 @@ export class _Site extends _SPInstance {
         const data = await spPost(Site(this, `openWebById('${webId}')`));
         return {
             data,
-            web: Web(extractWebUrl(odataUrlFrom(data))).using(AssignFrom(this)),
+            web: Web([this, extractWebUrl(odataUrlFrom(data))]),
         };
     }
 
@@ -52,7 +52,7 @@ export class _Site extends _SPInstance {
      */
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        return Web(web.Url).using(AssignFrom(this));
+        return Web([this, web.Url]);
     }
 
     /**
@@ -166,7 +166,7 @@ export class _Site extends _SPInstance {
             ...props,
         };
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create").using(AssignFrom(this)), body({ request }));
+        return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/SPSiteManager/Create"), body({ request }));
     }
 
     /**
@@ -175,7 +175,7 @@ export class _Site extends _SPInstance {
      */
     public async exists(url: string): Promise<boolean> {
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists").using(AssignFrom(this)), body({ url }));
+        return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/SP.Site.Exists"), body({ url }));
     }
 
     /**
@@ -246,7 +246,7 @@ export class _Site extends _SPInstance {
             postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${p.siteDesignId}`);
         }
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx").using(AssignFrom(this)), body(postBody));
+        return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/GroupSiteManager/CreateGroupEx"), body(postBody));
     }
 }
 export interface ISite extends _Site { }

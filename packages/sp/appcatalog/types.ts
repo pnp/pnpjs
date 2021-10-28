@@ -9,7 +9,7 @@ import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { File, IFile } from "../files/types.js";
-import { AssignFrom, combine } from "@pnp/core";
+import { combine } from "@pnp/core";
 
 export class _AppCatalog extends _SPCollection {
 
@@ -44,8 +44,8 @@ export class _AppCatalog extends _SPCollection {
 
         } else {
 
-            const listId = (await SPCollection(webUrl, "lists").using(AssignFrom(this)).select("Id").filter("EntityTypeName eq 'AppCatalog'")<{ Id: string }[]>())[0].Id;
-            const listItems = await SPCollection(webUrl, `lists/getById('${listId}')/items`).select("Id").filter(`AppProductID eq '${id}'`).top(1).using(AssignFrom(this))();
+            const listId = (await SPCollection([this, webUrl], "lists").select("Id").filter("EntityTypeName eq 'AppCatalog'")<{ Id: string }[]>())[0].Id;
+            const listItems = await SPCollection([this, webUrl], `lists/getById('${listId}')/items`).select("Id").filter(`AppProductID eq '${id}'`).top(1)();
 
             if (listItems && listItems.length > 0) {
 
@@ -57,7 +57,7 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        const poster = AppCatalog(webUrl, `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`).using(AssignFrom(this));
+        const poster = AppCatalog([this, webUrl], `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
 
         return await spPost(poster);
     }
@@ -73,7 +73,7 @@ export class _AppCatalog extends _SPCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = AppCatalog(extractWebUrl(this.toUrl()), `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`).using(AssignFrom(this));
+        const adder = AppCatalog([this, extractWebUrl(this.toUrl())], `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
 
         const r = await spPost(adder, {
             body: content, headers: {
