@@ -39,8 +39,6 @@ const txt = await new Promise<string>((resolve) => {
 
 ## IFiles.addChunked
 
-_Added in 2.1.0_
-
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -50,17 +48,16 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import * as fs from "fs";
 
-
-const stream = fs.createReadStream("{file path}");
+// NOTE: you must supply the highWaterMark to determine the block size for stream uploads
+const stream = fs.createReadStream("{file path}", { highWaterMark: 10485760 });
 const files = sp.web.defaultDocumentLibrary.rootFolder.files;
 
-await files.addChunked(name, stream, null, true, 10);
+// passing the chunkSize parameter has not affect when using a stream, use the highWaterMark when creating the stream
+await files.addChunked(name, stream, null, true);
 ```
 
 ## IFile.setStreamContentChunked
 
-_Added in 2.1.0_
-
 ```TypeScript
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -70,7 +67,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import * as fs from "fs";
 
-const stream = fs.createReadStream("{file path}");
+const stream = fs.createReadStream("{file path}", { highWaterMark: 10485760 });
 const file = sp.web.defaultDocumentLibrary.rootFolder.files..getByName("file-name.txt");
 
 await file.setStreamContentChunked(stream);

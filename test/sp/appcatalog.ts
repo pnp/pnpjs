@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { getSP, testSettings } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
-import "@pnp/sp/appcatalog/web";
+import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
@@ -15,7 +15,7 @@ import { SPFI } from "@pnp/sp";
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
 // currrently skipping due to permissions issues
-describe.skip("AppCatalog", function () {
+describe("AppCatalog", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -25,10 +25,12 @@ describe.skip("AppCatalog", function () {
         const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
-        before(function () {
+        console.log(`:::>>>>> ${dirname}`);
+
+        before(async function () {
             _spfi = getSP();
-            // appCatWeb = await sp.getTenantAppCatalogWeb();
-            appCatalog = _spfi.web.appcatalog;
+            const appCatWeb = await _spfi.getTenantAppCatalogWeb();
+            appCatalog = appCatWeb.appcatalog;
             // return Promise.resolve();
         });
 
@@ -50,7 +52,8 @@ describe.skip("AppCatalog", function () {
             return expect(myApp.deploy(), `app '${appId}' should've been deployed`).to.eventually.be.fulfilled;
         });
 
-        it("it synchronizes a solution to the Microsoft Teams App Catalog", async function () {
+        // skipping due to permissions required
+        it.skip("it synchronizes a solution to the Microsoft Teams App Catalog", async function () {
             return expect(appCatalog.syncSolutionToTeams(appId), `app '${appId}' should've been synchronized to the Microsoft Teams App Catalog`).to.eventually.be.fulfilled;
         });
 

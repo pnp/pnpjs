@@ -183,7 +183,7 @@ export const RelatedItemManager = (base: string | ISPQueryable): IRelatedItemMan
         return new _RelatedItemManager(extractWebUrl(base));
     }
     return new _RelatedItemManager(extractWebUrl(base.toUrl())).using(AssignFrom(base));
-}
+};
 
 export interface IRelatedItem {
     ListId: string;

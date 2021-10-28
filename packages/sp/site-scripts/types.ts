@@ -2,14 +2,14 @@ import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { combine } from "@pnp/core";
 
 export class _SiteScripts extends _SPQueryable {
 
-    constructor(baseUrl: string | ISPQueryable, methodName = "") {
-        const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
-        super(extractWebUrl(url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
+    constructor(base: string | ISPQueryable, methodName = "") {
+        super(base);
+        this._url = combine(extractWebUrl(this._url), `_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.${methodName}`);
     }
 
     public run<T>(props: any): Promise<T> {

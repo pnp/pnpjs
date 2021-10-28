@@ -7,6 +7,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/appcatalog";
+import "@pnp/sp/navigation";
 import { Web } from "@pnp/sp/webs";
 import { AssignFrom, CopyFrom } from "@pnp/core";
 import { RequestRecorderCache } from "../../test/test-recorder.js";
@@ -56,15 +57,13 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
-        const web = await sp2.getTenantAppCatalogWeb();
+        const catalog = await sp2.getTenantAppCatalogWeb();
 
-        const web2 = Web("https://318studios.sharepoint.com/sites/dev").using(CopyFrom(web));
+        await catalog.appcatalog.syncSolutionToTeams("7F905BE6-3226-4A4C-9C54-AB1EDCE3C99C")
 
-        web2.on.log(console.log);
+        // const nav = sp2.navigation;
 
-        const y = await web2();
-
-        console.log(JSON.stringify(y));
+        // console.log(JSON.stringify(v));
 
     } catch (e) {
 

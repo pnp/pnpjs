@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/queryable/add-prop.js";
+import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { AppCatalog, IAppCatalog } from "./types.js";
 
