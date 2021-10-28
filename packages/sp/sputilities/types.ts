@@ -3,12 +3,13 @@ import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../spqueryable.j
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { spPost } from "../operations.js";
+import { combine } from "@pnp/core";
 
 export class _Utilities extends _SPQueryable implements IUtilities {
 
-    constructor(baseUrl: string | ISPQueryable, methodName: string) {
-        const url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
-        super(extractWebUrl(url), `_api/SP.Utilities.Utility.${methodName}`);
+    constructor(base: string | ISPQueryable, methodName = "") {
+        super(base);
+        this._url = combine(extractWebUrl(this._url), `_api/SP.Utilities.Utility.${methodName}`);
     }
 
     public excute<T>(props: any): Promise<T> {

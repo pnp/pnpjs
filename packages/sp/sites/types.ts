@@ -166,7 +166,7 @@ export class _Site extends _SPInstance {
             ...props,
         };
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), body({ request }));
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create").using(AssignFrom(this)), body({ request }));
     }
 
     /**
@@ -175,7 +175,7 @@ export class _Site extends _SPInstance {
      */
     public async exists(url: string): Promise<boolean> {
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), body({ url }));
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists").using(AssignFrom(this)), body({ url }));
     }
 
     /**
@@ -246,7 +246,7 @@ export class _Site extends _SPInstance {
             postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${p.siteDesignId}`);
         }
 
-        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody));
+        return spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx").using(AssignFrom(this)), body(postBody));
     }
 }
 export interface ISite extends _Site { }

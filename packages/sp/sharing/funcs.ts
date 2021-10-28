@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { jsS } from "@pnp/core";
+import { AssignFrom, jsS } from "@pnp/core";
 import { SPCollection, SPInstance } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Web } from "../webs/types.js";
@@ -218,7 +218,7 @@ export async function shareWith(
 
 async function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<Partial<ISharingResult>> {
 
-    const w = Web(extractWebUrl(o.toUrl()));
+    const w = Web(extractWebUrl(o.toUrl())).using(AssignFrom(this));
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 
