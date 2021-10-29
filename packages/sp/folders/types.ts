@@ -41,7 +41,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
 
         return {
             data,
-            folder: Folder([this, extractWebUrl(this.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativeUrl)}')`),
+            folder: Folder([this, extractWebUrl(this.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(data.ServerRelativeUrl)}')`),
         };
     }
 }
