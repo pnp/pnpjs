@@ -197,13 +197,13 @@ export class _File extends _SPInstance<IFileInfo> {
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
         return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `https://${webBaseUrl.host}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options: {
                     KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `https://${webBaseUrl.host}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
 
@@ -234,13 +234,13 @@ export class _File extends _SPInstance<IFileInfo> {
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
         return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `https://${webBaseUrl.host}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options: {
                     KeepBoth,
                     ResetAuthorAndCreatedOnCopy: false,
                     ShouldBypassSharedLocks: true,
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `https://${webBaseUrl.host}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
 

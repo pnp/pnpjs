@@ -861,7 +861,7 @@ export interface IClientsidePage extends _ClientsidePage { }
  * Invokable factory for IClientSidePage instances
  */
 const ClientsidePage = (
-    baseUrl: string | ISPQueryable | [ISPQueryable, string],
+    base: string | ISPQueryable | [ISPQueryable, string],
     path?: string,
     json?: Partial<IPageData>,
     noInit = false,
@@ -869,7 +869,7 @@ const ClientsidePage = (
     commentsDisabled = false): IClientsidePage => {
 
     // TODO:: does this work
-    return new _ClientsidePage(baseUrl, path, json, noInit, sections, commentsDisabled);
+    return new _ClientsidePage(base, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
