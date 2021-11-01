@@ -13,6 +13,7 @@ import { SPFI } from "@pnp/sp";
 import { AssignFrom, getRandomString, delay } from "@pnp/core";
 
 describe("Batching", function () {
+    this.timeout(120000);
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -20,8 +21,7 @@ describe("Batching", function () {
             _spfi = getSP();
         });
 
-        it("Should execute batches in the expected order for a single request", async function () {
-            this.timeout(60000);
+        it("Single Request", async function () {
             const order: number[] = [];
             const expected: number[] = [1, 2];
 
@@ -37,8 +37,7 @@ describe("Batching", function () {
             return expect(order.toString()).to.eql(expected.toString());
         });
 
-        it("Should execute batches in the expected order for an even number of requests", async function () {
-            this.timeout(120000);
+        it("Even # Requests", async function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3];
 
@@ -59,8 +58,7 @@ describe("Batching", function () {
             return expect(order.toString()).to.eql(expected.toString());
         });
 
-        it("Should execute batches in the expected order for an odd number of requests", async function () {
-            this.timeout(120000);
+        it("Odd # Requests", async function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3, 4];
 
@@ -84,8 +82,7 @@ describe("Batching", function () {
             return expect(order.toString()).to.eql(expected.toString());
         });
 
-        it("Should execute batches that have internally cloned requests", async function () {
-            this.timeout(120000);
+        it("Cloned Requests", async function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3];
             const listTitle = "BatchItemAddTest";
@@ -113,8 +110,7 @@ describe("Batching", function () {
         });
 
         if (testSettings.testUser?.length > 0) {
-            it("Should execute batches that have internally cloned requests but aren't items.add", async function () {
-                this.timeout(120000);
+            it("Cloned Requests (not items.add)", async function () {
                 const order: number[] = [];
                 const expected: number[] = [1, 2, 3];
 
@@ -141,9 +137,7 @@ describe("Batching", function () {
             });
         }
 
-        it("Should handle complex operation ordering", async function () {
-
-            this.timeout(120000);
+        it("Complex Ordering", async function () {
             const order: number[] = [];
             const expected: number[] = [1, 2, 3, 4];
             const listTitle = "BatchOrderingTest";
