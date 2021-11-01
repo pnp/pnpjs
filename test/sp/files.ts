@@ -16,7 +16,7 @@ import { SPFI } from "@pnp/sp";
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
 
-describe("files", function () {
+describe("Files", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -34,24 +34,24 @@ describe("files", function () {
             testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl;
         });
 
-        it("getByName", async function () {
+        it(".getByUrl (FileName)", async function () {
 
             return expect(files.getByUrl(testFileName)()).to.eventually.be.fulfilled;
         });
 
-        it("getByName (percent pound)", async function () {
+        it(".getFileByServerRelativePath (%#)", async function () {
 
             return expect(_spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
         });
 
-        it("getByUrl", async function () {
+        it(".getFileByUrl", async function () {
 
             const item = await _spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
             const urlData = await item.select("EncodedAbsUrl")();
             return expect(_spfi.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
         });
 
-        it("add", async function () {
+        it(".addUsingPath", async function () {
 
             const name = `Testing Add - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -59,7 +59,7 @@ describe("files", function () {
             expect(file.Name).to.eq(name);
         });
 
-        it("add (overwrite)", async function () {
+        it(".addUsingPath (overwrite)", async function () {
 
             const name = `Testing Add - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -68,7 +68,7 @@ describe("files", function () {
             expect(file).to.eq("Different Content.");
         });
 
-        it("add (' char)", async function () {
+        it(".addUsingPath (' char)", async function () {
 
             const name = `Testing Add ' ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -76,23 +76,13 @@ describe("files", function () {
             expect(file.Name).to.eq(name);
         });
 
-        it("add (result invokable)", async function () {
-
-            // TODO:: this used to work with a ' in the test file name
-            const name = `Testing Add ${getRandomString(4)}.txt`;
+        it(".addUsingPath (result invokable)", async function () {
+            const name = `Testing Add - ${getRandomString(4)}.txt`;
             const file = await files.addUsingPath(name, "Some test text content.");
             return expect(file.file.getText()).to.eventually.be.fulfilled;
         });
 
-        it("addUsingPath", async function () {
-
-            const name = `Testing Add %# - ${getRandomString(4)}.txt`;
-            const res = await files.addUsingPath(name, "Some test text content.");
-            const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
-            expect(file.Name).to.eq(name);
-        });
-
-        it("addUsingPath (silly chars)", async function () {
+        it(".addUsingPath (silly chars)", async function () {
 
             const name = `Testing Add & = + - ${getRandomString(4)}.txt`;
             const res = await files.addUsingPath(name, "Some test text content.");
@@ -100,23 +90,7 @@ describe("files", function () {
             expect(file.Name).to.eq(name);
         });
 
-        it("addUsingPath (overwrite)", async function () {
-
-            const name = `Testing Add %# - ${getRandomString(4)}.txt`;
-            await files.addUsingPath(name, "Some test text content.");
-            const res = await files.addUsingPath(name, "Different Content.", { Overwrite: true });
-            const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl).getText();
-            expect(file).to.eq("Different Content.");
-        });
-
-        it("addUsingPath  (result invokable)", async function () {
-
-            const name = `Testing Add %# - ${getRandomString(4)}.txt`;
-            const file = await files.addUsingPath(name, "Some test text content.");
-            return expect(file.file.getText()).to.eventually.be.fulfilled;
-        });
-
-        it.skip("addChunked", async function () {
+        it(".addChunked", async function () {
 
             const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
             const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
@@ -126,7 +100,7 @@ describe("files", function () {
             return expect(far.file()).to.eventually.be.fulfilled;
         });
 
-        it("addTemplateFile", async function () {
+        it(".addTemplateFile", async function () {
 
             const webData = await _spfi.web.select("ServerRelativeUrl")();
             const path = combine("/", webData.ServerRelativeUrl, `/SitePages/Testing template file - ${getRandomString(4)}.aspx`);
@@ -134,7 +108,7 @@ describe("files", function () {
             return expect(far.file()).to.eventually.be.fulfilled;
         });
 
-        it("getFileById", async function () {
+        it(".getFileById", async function () {
 
             const name = `Testing getFileById - ${getRandomString(4)}.txt`;
             const far = await files.addUsingPath(name, "Some test text content.");
@@ -142,7 +116,7 @@ describe("files", function () {
             return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
         });
 
-        it("filter works for silly chars (issue # 1208)", async function () {
+        it(".filter (silly chars)", async function () {
 
             const name = `Testing Silly Chars & = + - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -152,7 +126,7 @@ describe("files", function () {
     }
 });
 
-describe("file", function () {
+describe("File", function () {
 
 
     if (testSettings.enableWebTests) {
@@ -166,7 +140,7 @@ describe("file", function () {
             await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
         });
 
-        it("delete", async function () {
+        it(".delete", async function () {
             const name = `Testing Delete - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             let r = await files.filter(`Name eq '${name}'`)();
@@ -176,7 +150,7 @@ describe("file", function () {
             expect(r.length).to.eq(0);
         });
 
-        it("delete file with params", async function () {
+        it(".deleteWithParams", async function () {
             const name = `Testing Delete - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             let r = await files.filter(`Name eq '${name}'`)();
@@ -190,17 +164,17 @@ describe("file", function () {
             expect(r.length).to.eq(0);
         });
 
-        it("listItemAllFields", function () {
+        it(".listItemAllFields", function () {
 
             return expect(files.getByUrl(testFileName).listItemAllFields()).to.be.fulfilled;
         });
 
-        it("versions", function () {
+        it(".versions", function () {
 
             return expect(files.getByUrl(testFileName).versions()).to.be.fulfilled;
         });
 
-        it("check in/out", async function () {
+        it(".checkin/checkout", async function () {
 
             const name = `Testing check in out - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -209,7 +183,7 @@ describe("file", function () {
             return expect(files.getByUrl(name).checkin()).to.eventually.be.fulfilled;
         });
 
-        it("copyTo", async function () {
+        it(".copyTo", async function () {
 
             const rand = getRandomString(4);
             const name = `Testing copyTo - ${rand}.txt`;
@@ -224,20 +198,7 @@ describe("file", function () {
             return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
-        it("moveTo", async function () {
-
-            const rand = getRandomString(4);
-            const name = `Testing moveTo - ${rand}.txt`;
-            await files.addUsingPath(name, getRandomString(42));
-            const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
-            const name2 = `I Moved - ${rand}.aspx`;
-            const path = combine("/", folderData.ServerRelativeUrl, name2);
-
-            await files.getByUrl(name).moveByPath(path, true);
-            return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
-        });
-
-        it("copyByPath", async function () {
+        it(".copyByPath", async function () {
 
             const rand = getRandomString(4);
             const name = `Testing copyByPath - ${rand}.txt`;
@@ -250,7 +211,7 @@ describe("file", function () {
             return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
-        it("moveByPath", async function () {
+        it(".moveByPath", async function () {
 
             const rand = getRandomString(4);
             const name = `Testing moveByPath - ${rand}.txt`;
@@ -263,7 +224,7 @@ describe("file", function () {
             return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
-        it("recycle", async function () {
+        it(".recycle", async function () {
 
             const name = `Testing Recycle - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
@@ -274,7 +235,7 @@ describe("file", function () {
             expect(r.length).to.eq(0);
         });
 
-        it("exists - true", async function () {
+        it(".exists (true)", async function () {
             const name = `Testing Exists - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             const exists = await files.getByUrl(name).exists();
@@ -282,13 +243,13 @@ describe("file", function () {
             expect(exists).to.be.true;
         });
 
-        it("exists - false", async function () {
+        it(".exists (false)", async function () {
             const exists = await files.getByUrl(`Testing Exists - ${getRandomString(4)}.txt`).exists();
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(exists).to.be.false;
         });
 
-        it("setContent", async function () {
+        it(".setContent", async function () {
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             await files.getByUrl(name).setContent("different.");
@@ -296,7 +257,7 @@ describe("file", function () {
             expect(file).to.eq("different.");
         });
 
-        it("getItem", async function () {
+        it(".getItem", async function () {
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             const item = await files.getByUrl(name).getItem();
