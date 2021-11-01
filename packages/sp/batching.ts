@@ -143,7 +143,7 @@ export function createBatch(base: IQueryableInternal): [TimelinePipe, () => Prom
 
             // write headers into batch body
             headers.forEach((value: string, name: string) => {
-                if (/Accept|Content-Type/i.test(name)) {
+                if (/Accept|Content-Type|IF-Match/i.test(name)) {
                     batchBody.push(`${name}: ${value}\n`);
                 }
             });

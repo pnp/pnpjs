@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - renamed sitedesigns.execute => sitedesigns.run due to naming conflict in new base classes
   - renamed sitescripts.execute => sitescripts.run due to naming conflict in new base classes
   - odataUrlFrom moved to utils folder
+  - getParent signature change, path is second param, baseUrl is third param and only supports string
 
 - graph:
   - Renamed export "graph" -> "graphfi" with type GraphFI

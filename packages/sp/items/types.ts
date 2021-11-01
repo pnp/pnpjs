@@ -9,7 +9,7 @@ import {
     SPInstance,
     ISPInstance,
 } from "../spqueryable.js";
-import { hOP, AssignFrom } from "@pnp/core";
+import { hOP } from "@pnp/core";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
@@ -142,7 +142,7 @@ export class _Item extends _SPInstance {
      * this item's list
      */
     public get list(): IList {
-        return this.getParent<IList>(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(List, "", this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**
@@ -309,7 +309,7 @@ export class PagedItemCollection<T> {
     public getNext(): Promise<PagedItemCollection<T>> {
 
         if (this.hasNext) {
-            const items = <IItems>Items(this.nextUrl, null).using(AssignFrom(this.parent));
+            const items = <IItems>Items([this.parent, this.nextUrl], null);
             return items.getPaged<T>();
         }
 

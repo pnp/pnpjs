@@ -26,7 +26,7 @@ declare module "../webs/types" {
 }
 
 _Web.prototype.hubSiteData = async function (this: _Web, forceRefresh = false): Promise<IHubSiteWebData> {
-    const data = await Web(`hubSiteData(${forceRefresh})`)<IHubSiteWebData>();
+    const data = await Web(this, `hubSiteData(${forceRefresh})`)<IHubSiteWebData>();
     if (typeof data === "string") {
         return JSON.parse(data);
     }

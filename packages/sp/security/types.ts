@@ -178,7 +178,7 @@ export class _RoleDefinition extends _SPInstance<IRoleDefinitionInfo> {
 
         let definition: IRoleDefinition = <any>this;
         if (hOP(properties, "Name")) {
-            const parent = this.getParent<IRoleDefinitions>(RoleDefinitions, this.parentUrl, "");
+            const parent = this.getParent<IRoleDefinitions>(RoleDefinitions);
             definition = parent.getByName((<string>properties.Name));
         }
         return {

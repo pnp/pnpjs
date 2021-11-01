@@ -4,7 +4,7 @@ import { File, Files, IFile, IFileAddResult, IFileInfo, IFiles, IFileUploadProgr
 import { spPost } from "@pnp/sp/operations";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
-import { AssignFrom, extendFactory } from "@pnp/core";
+import { extendFactory } from "@pnp/core";
 import { odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { StreamParse } from "../behaviors/stream-parse.js";
 
@@ -86,7 +86,7 @@ extendFactory(Files, {
     ): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
-        const file = File(odataUrlFrom(response)).using(AssignFrom(this));
+        const file = File([this, odataUrlFrom(response)]);
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress);

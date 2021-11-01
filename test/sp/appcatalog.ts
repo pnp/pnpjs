@@ -25,8 +25,6 @@ describe("AppCatalog", function () {
         const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
         const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
-        console.log(`:::>>>>> ${dirname}`);
-
         before(async function () {
             _spfi = getSP();
             const appCatWeb = await _spfi.getTenantAppCatalogWeb();

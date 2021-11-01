@@ -331,7 +331,7 @@ describe("Web", function () {
         });
 
         describe("site-groups", function () {
-            //.createDefaultAssociatedGroups groups are already created so we get back a forbidden error
+            // .createDefaultAssociatedGroups groups are already created so we get back a forbidden error
         });
 
         describe("site-users", function () {
