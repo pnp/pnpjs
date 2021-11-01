@@ -78,7 +78,8 @@ describe("files", function () {
 
         it("add (result invokable)", async function () {
 
-            const name = `Testing Add ' ${getRandomString(4)}.txt`;
+            // TODO:: this used to work with a ' in the test file name
+            const name = `Testing Add ${getRandomString(4)}.txt`;
             const file = await files.addUsingPath(name, "Some test text content.");
             return expect(file.file.getText()).to.eventually.be.fulfilled;
         });
@@ -226,14 +227,14 @@ describe("file", function () {
         it("moveTo", async function () {
 
             const rand = getRandomString(4);
-            const name = `Testing copyTo - ${rand}.txt`;
+            const name = `Testing moveTo - ${rand}.txt`;
             await files.addUsingPath(name, getRandomString(42));
             const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
             const name2 = `I Moved - ${rand}.aspx`;
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
             await files.getByUrl(name).moveByPath(path, true);
-            return expect(files.getByUrl(name2)).to.eventually.be.fulfilled;
+            return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
         it("copyByPath", async function () {
@@ -246,7 +247,7 @@ describe("file", function () {
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
             await files.getByUrl(name).copyByPath(path, true);
-            return expect(files.getByUrl(name2)).to.eventually.be.fulfilled;
+            return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
         it("moveByPath", async function () {
@@ -259,7 +260,7 @@ describe("file", function () {
             const path = combine("/", folderData.ServerRelativeUrl, name2);
 
             await files.getByUrl(name).moveByPath(path, true);
-            return expect(files.getByUrl(name2)).to.eventually.be.fulfilled;
+            return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
         });
 
         it("recycle", async function () {

@@ -1,5 +1,5 @@
 import { body, headers } from "@pnp/queryable";
-import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray, AssignFrom } from "@pnp/core";
+import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
 import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../spqueryable.js";
@@ -56,20 +56,20 @@ export class _ClientsidePage extends _SPQueryable {
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
     constructor(
-        baseUrl: string | ISPQueryable,
+        base: string | ISPQueryable| [ISPQueryable, string],
         path?: string,
         protected json?: Partial<IPageData>,
         noInit = false,
         public sections: CanvasSection[] = [],
         public commentsDisabled = false) {
 
-        super(baseUrl, path);
+        super(base, path);
 
         this._bannerImageDirty = false;
         this._bannerImageThumbnailUrlDirty = false;
         this.parentUrl = "";
 
-        this._url = combine(extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path);
+        this._url = combine(extractWebUrl(typeof base === "string" ? base : Reflect.has(base, "length") ? (<ISPQueryable>base[0]).toUrl() : (<ISPQueryable>base).toUrl()), path);
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
@@ -305,7 +305,7 @@ export class _ClientsidePage extends _SPQueryable {
             let imgInfo: Pick<IFileInfo, "ListId" | "WebId" | "UniqueId" | "Name" | "SiteId">;
             let webUrl: string;
 
-            const web = Web(extractWebUrl(this.toUrl())).using(AssignFrom(this));
+            const web = Web([this, extractWebUrl(this.toUrl())]);
 
             const [batch, execute] = createBatch(web);
             web.using(batch);
@@ -489,7 +489,7 @@ export class _ClientsidePage extends _SPQueryable {
                 const guidWeb = makeGuid(url.searchParams.get("guidWeb"));
                 const guidFile = makeGuid(url.searchParams.get("guidFile"));
 
-                const site = Site(extractWebUrl(this.toUrl())).using(AssignFrom(this));
+                const site = Site([this, extractWebUrl(this.toUrl())]);
                 const id = await site.select("Id")<{ Id: string }>();
                 // the site guid must match the current site's guid or we are unable to set the image
                 if (id.Id === guidSite) {
@@ -613,8 +613,7 @@ export class _ClientsidePage extends _SPQueryable {
      */
     public async setAuthorById(authorId: number): Promise<void> {
 
-        const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(AssignFrom(this))
+        const userLoginData = await SPCollection([this, extractWebUrl(this.toUrl())], "/_api/web/siteusers")
             .filter(`Id eq ${authorId}`)
             .select("LoginName")<{ LoginName: string }[]>();
 
@@ -632,8 +631,7 @@ export class _ClientsidePage extends _SPQueryable {
      */
     public async setAuthorByLoginName(authorLoginName: string): Promise<void> {
 
-        const userLoginData = await SPCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
-            .using(AssignFrom(this))
+        const userLoginData = await SPCollection([this, extractWebUrl(this.toUrl())], "/_api/web/siteusers")
             .filter(`LoginName eq '${authorLoginName}'`)
             .select("UserPrincipalName", "Title")<{ UserPrincipalName: string; Title: string }[]>();
 
@@ -659,9 +657,9 @@ export class _ClientsidePage extends _SPQueryable {
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
         const initer = ClientsidePage(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         const listData = await spPost<{ Id: string; "odata.id": string }>(initer);
-        const item = List(listData["odata.id"]).using(AssignFrom(this)).items.getById(this.json.Id);
+        const item = List([this, listData["odata.id"]]).items.getById(this.json.Id);
         const itemData: T = await item.select(...selects)();
-        return Object.assign(Item(odataUrlFrom(itemData)).using(AssignFrom(this)), itemData);
+        return Object.assign(Item([this, odataUrlFrom(itemData)]), itemData);
     }
 
     protected getCanvasContent1(): string {
@@ -863,7 +861,7 @@ export interface IClientsidePage extends _ClientsidePage { }
  * Invokable factory for IClientSidePage instances
  */
 const ClientsidePage = (
-    baseUrl: string | ISPQueryable,
+    base: string | ISPQueryable | [ISPQueryable, string],
     path?: string,
     json?: Partial<IPageData>,
     noInit = false,
@@ -871,7 +869,7 @@ const ClientsidePage = (
     commentsDisabled = false): IClientsidePage => {
 
     // TODO:: does this work
-    return new _ClientsidePage(baseUrl, path, json, noInit, sections, commentsDisabled);
+    return new _ClientsidePage(base, path, json, noInit, sections, commentsDisabled);
 };
 
 /**
@@ -882,7 +880,7 @@ const ClientsidePage = (
 export const ClientsidePageFromFile = async (file: IFile): Promise<IClientsidePage> => {
 
     const item = await file.getItem<{ Id: number }>();
-    const page = ClientsidePage(extractWebUrl(file.toUrl()), "", { Id: item.Id }, true).using(AssignFrom(file));
+    const page = ClientsidePage([file, extractWebUrl(file.toUrl())], "", { Id: item.Id }, true);
     return page.load();
 };
 

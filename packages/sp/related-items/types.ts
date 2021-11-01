@@ -3,7 +3,6 @@ import { extractWebUrl } from "../utils/extract-web-url.js";
 import { defaultPath } from "../decorators.js";
 import { spPost } from "../operations.js";
 import { body } from "@pnp/queryable";
-import { AssignFrom } from "@pnp/core";
 
 @defaultPath("_api/SP.RelatedItemManager")
 export class _RelatedItemManager extends _SPQueryable implements IRelatedItemManager {
@@ -182,7 +181,7 @@ export const RelatedItemManager = (base: string | ISPQueryable): IRelatedItemMan
     if (typeof base === "string") {
         return new _RelatedItemManager(extractWebUrl(base));
     }
-    return new _RelatedItemManager(extractWebUrl(base.toUrl())).using(AssignFrom(base));
+    return new _RelatedItemManager([base, extractWebUrl(base.toUrl())]);
 };
 
 export interface IRelatedItem {

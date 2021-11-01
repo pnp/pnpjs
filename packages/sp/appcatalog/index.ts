@@ -1,6 +1,5 @@
 import { SPFI } from "../fi";
 import { IWeb, Web } from "../webs/types.js";
-import { AssignFrom } from "@pnp/core";
 
 import "./web.js";
 
@@ -22,8 +21,8 @@ SPFI.prototype.getTenantAppCatalogWeb = async function (this: SPFI): Promise<IWe
 
     return this.create(async (q) => {
 
-        const data = await Web(q.toUrl().replace(/\/_api\/.*$/i, ""), "/_api/SP_TenantSettings_Current").using(AssignFrom(q))<{ CorporateCatalogUrl: string }>();
+        const data = await Web([q, q.toUrl().replace(/\/_api\/.*$/i, "")], "/_api/SP_TenantSettings_Current")<{ CorporateCatalogUrl: string }>();
 
-        return Web(data.CorporateCatalogUrl).using(AssignFrom(q));
+        return Web([q, data.CorporateCatalogUrl]);
     });
 };

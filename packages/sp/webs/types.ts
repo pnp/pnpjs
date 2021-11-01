@@ -1,4 +1,3 @@
-import { AssignFrom } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -47,7 +46,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
 
         return {
             data,
-            web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).using(AssignFrom(this)),
+            web: Web([this, odataUrlFrom(data).replace(/_api\/web\/?/i, "")]),
         };
     }
 }
@@ -93,8 +92,7 @@ export class _Web extends _SPInstance<IWebInfo> {
     public async getParentWeb(): Promise<IWeb> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
-            return Web(Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length))
-                .using(AssignFrom(this));
+            return Web([this, Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length)]);
         }
         return null;
     }

@@ -13,7 +13,7 @@ export class SPFI {
      *
      * @param root Establishes a root url/configuration for
      */
-    constructor(root: string | ISPQueryable = "") {
+    constructor(root: string | ISPQueryable | [ISPQueryable, string] = "") {
 
         this._root = SPQueryable(root);
     }
@@ -35,6 +35,11 @@ export class SPFI {
     }
 }
 
-export function spfi(root: string | ISPQueryable = ""): SPFI {
-    return new SPFI(root);
+export function spfi(root: string | ISPQueryable | [ISPQueryable, string] | SPFI = ""): SPFI {
+
+    if (typeof root === "object" && !Reflect.has(root, "length")) {
+        root = (<any>root)._root;
+    }
+
+    return new SPFI(<any>root);
 }

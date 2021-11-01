@@ -78,9 +78,8 @@ describe("Folder", function () {
             });
         });
 
-        // TODO: the url for the far folder doesn't include "SiteAssets"
         it(".getItem", async function () {
-            const far = await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test");
+            const far = await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
             const x = await far.folder.getItem();
             return expect(x).to.eventually.be.fulfilled;
         });

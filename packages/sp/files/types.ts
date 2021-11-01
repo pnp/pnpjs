@@ -1,5 +1,5 @@
 import { body, TextParse, BlobParse, BufferParse, JSONParse } from "@pnp/queryable";
-import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, AssignFrom } from "@pnp/core";
+import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -65,7 +65,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         return {
             data: resp,
-            file: File(odataUrlFrom(resp)),
+            file: File([this, odataUrlFrom(resp)]),
         };
     }
 
@@ -82,7 +82,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
-        const file = File(odataUrlFrom(response));
+        const file = File([this, odataUrlFrom(response)]);
         return await file.setContentChunked(content, progress, chunkSize);
     }
 
@@ -195,15 +195,15 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`).using(AssignFrom(this)),
+        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.host}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options: {
                     KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.host}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
 
@@ -232,18 +232,15 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`).using(AssignFrom(this)),
+        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
             body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.host}${destUrl}`),
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options: {
-                    KeepBoth: KeepBoth,
+                    KeepBoth,
                     ResetAuthorAndCreatedOnCopy: false,
                     ShouldBypassSharedLocks: true,
-                    __metadata: {
-                        type: "SP.MoveCopyOptions",
-                    },
                 },
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.host}${srcUrl}`),
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
 
@@ -372,7 +369,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const q = this.listItemAllFields;
         const d = await q.select(...selects)();
-        return Object.assign(Item(odataUrlFrom(d)), d);
+        return Object.assign(Item([this, odataUrlFrom(d)]), d);
     }
 
     /**

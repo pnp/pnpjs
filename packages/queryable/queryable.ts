@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -31,7 +31,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
     protected InternalRejectEvent = Symbol.for("Queryable_Reject");
 
-    constructor(init: Queryable<any> | string, path?: string) {
+    constructor(init: Queryable<any> | string | [Queryable<any>, string], path?: string) {
 
         let url = "";
         let observers;
@@ -40,12 +40,24 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             url = combine(init, path);
 
-        } else {
+        } else if (isArray(init)) {
 
-            const { _url } = init;
+            if (init.length !== 2) {
+                throw Error("When using the tuple first param only two arguments are supported");
+            }
+
+            const q: Queryable<any> = init[0];
+            const _url: string = init[1];
 
             url = combine(_url, path);
-            observers = init.observers;
+            observers = q.observers;
+
+        } else {
+
+            const { _url, observers: _observers } = init as Queryable<any>;
+
+            url = combine(_url, path);
+            observers = _observers;
         }
 
         super(DefaultMoments, observers);
@@ -184,7 +196,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
     readonly query: Map<string, string>;
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
-    using(behavior: (intance: Timeline<any>) => Timeline<any>): this;
+    using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;
     toUrl(): string;
 }
