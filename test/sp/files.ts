@@ -78,6 +78,7 @@ describe("files", function () {
 
         it("add (result invokable)", async function () {
 
+            // TODO:: this used to work with a ' in the test file name
             const name = `Testing Add ${getRandomString(4)}.txt`;
             const file = await files.addUsingPath(name, "Some test text content.");
             return expect(file.file.getText()).to.eventually.be.fulfilled;
