@@ -59,9 +59,11 @@ export async function Example(settings: ITestingSettings) {
 
         const w = Web([sp2.web, "https://318studios.sharepoint.com/sites/bunnies"]);
 
-        const y = await w();
-
-        // const nav = sp2.navigation;
+        const y = await w({
+            headers: {
+                "Content-Type": "application/json;odata=verbose;charset=utf-8",
+            },
+        })
 
         console.log(JSON.stringify(y));
 

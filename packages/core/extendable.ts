@@ -1,4 +1,4 @@
-import { getGUID, isFunc } from "./util";
+import { getGUID, isFunc } from "./util.js";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
