@@ -39,10 +39,10 @@ declare module "../fi" {
 
 SPFI.prototype.search = function (this: SPFI, query: SearchQueryInit): Promise<SearchResults> {
 
-    return this.create(Search)(query);
+    return Search(this._root)(query);
 };
 
 SPFI.prototype.searchSuggest = function (this: SPFI, query: string | ISuggestQuery): Promise<ISuggestResult> {
 
-    return this.create(Suggest)(typeof query === "string" ? { querytext: query } : query);
+    return Suggest(this._root)(typeof query === "string" ? { querytext: query } : query);
 };

@@ -22,6 +22,8 @@ const DefaultMoments = {
     data: broadcast<QueryableDataObserver>(),
 } as const;
 
+export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
+
 @extendable()
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
@@ -31,7 +33,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
     protected InternalRejectEvent = Symbol.for("Queryable_Reject");
 
-    constructor(init: Queryable<any> | string | [Queryable<any>, string], path?: string) {
+    constructor(init: QueryableInit, path?: string) {
 
         let url = "";
         let observers;
@@ -106,7 +108,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         return this._url;
     }
 
-    protected execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<void> {
+    protected execute(userInit: RequestInit): Promise<void> {
 
         setTimeout(async () => {
 
@@ -118,7 +120,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 this.log(`[request:${requestId}] Beginning request`, 1);
 
                 // eslint-disable-next-line prefer-const
-                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), {}, undefined);
 
                 this.log(`[request:${requestId}] Url: ${url}`, 1);
 
@@ -136,6 +138,9 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 this.log(`[request:${requestId}] Emitting auth`, 0);
                 [requestUrl, init] = await this.emit.auth(new URL(url), init);
                 this.log(`[request:${requestId}] Emitted auth`, 0);
+
+                // we always resepect user supplied init over observer modified init
+                init = { ...init, ...userInit, headers: { ...init.headers, ...userInit.headers } };
 
                 this.log(`[request:${requestId}] Emitting send`, 0);
                 let response = await this.emit.send(requestUrl, init);

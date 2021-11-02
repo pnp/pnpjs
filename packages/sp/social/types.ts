@@ -1,6 +1,7 @@
 import {
     _SPInstance,
     ISPQueryable,
+    SPInit,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { hOP } from "@pnp/core";
@@ -49,8 +50,8 @@ export class _Social extends _SPInstance implements ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export const Social = (baseUrl: string | ISPQueryable): ISocial => new _Social(baseUrl);
-const SocialCloneFactory = (baseUrl: string | ISPQueryable, paths?: string): ISocial & ISPQueryable => new _Social(baseUrl, paths);
+export const Social = (baseUrl: SPInit): ISocial => new _Social(baseUrl);
+const SocialCloneFactory = (baseUrl: SPInit, paths?: string): ISocial & ISPQueryable => new _Social(baseUrl, paths);
 
 /**
  * Current user's Social instance

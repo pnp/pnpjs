@@ -4,12 +4,9 @@ import { LogLevel, PnPLogging } from "@pnp/logging";
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/files";
-import "@pnp/sp/folders";
-import "@pnp/sp/appcatalog";
-import "@pnp/sp/navigation";
+import "@pnp/sp/fields";
 import { Web } from "@pnp/sp/webs";
-import { AssignFrom, CopyFrom } from "@pnp/core";
+import { AssignFrom, CopyFrom, getRandomString } from "@pnp/core";
 import { RequestRecorderCache } from "../../test/test-recorder.js";
 import { join } from "path";
 
@@ -57,11 +54,11 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
-        const w = Web([sp2.web, "https://318studios.sharepoint.com/sites/bunnies"]);
 
-        const y = await w();
-
-        // const nav = sp2.navigation;
+        const y = await sp2.web.fields.addText(`~Test${getRandomString(4)}`, {
+            MaxLength: 43,
+            Description: "My amazing description",
+        });
 
         console.log(JSON.stringify(y));
 

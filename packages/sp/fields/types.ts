@@ -66,10 +66,38 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public async add(title: string, fieldTypeKind: number, properties: IFieldCreationProperties): Promise<IFieldAddResult> {
 
-        const data = await spPost<{ Id: string }>(Fields(this, null), body({
+        const createData = await spPost<{ Id: string }>(Fields(this, null), body({
             Title: title,
             FieldTypeKind: fieldTypeKind,
-            ...properties,
+            Required: properties.Required || false,
+        }));
+
+        const field = this.getById(createData.Id);
+
+        await field.update(properties);
+
+        const data = await field();
+
+        return {
+            data,
+            field,
+        };
+    }
+
+    /**
+     * Adds a new field to the collection
+     *
+     * @param title The new field's title
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    public async addField(title: string, fieldTypeKind: number, properties: IAddFieldProperties): Promise<IFieldAddResult> {
+
+        const data = await spPost<{ Id: string }>(Fields(this, "AddField"), body({
+            parameters: {
+                Title: title,
+                FieldTypeKind: fieldTypeKind,
+                ...properties,
+            },
         }));
 
         return {
@@ -198,9 +226,9 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Set of additional properties to set on the new field
      */
-    public async addLookup(title: string, properties?: IFieldCreationProperties & AddLookupProps): Promise<IFieldAddResult> {
+    public async addLookup(title: string, properties?: IAddFieldProperties): Promise<IFieldAddResult> {
 
-        return this.add(title, 7, properties);
+        return this.addField(title, 7, properties);
     }
 
     /**
@@ -227,7 +255,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
     public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
 
         return this.add(title, 15, {
-            EditFormat: ChoiceFieldFormatType.Dropdown,
             FillInChoice: false,
             ...properties,
         });
@@ -395,25 +422,16 @@ export type AddUserProps = {
     SelectionMode?: FieldUserSelectionMode;
 };
 
-export type AddLookupProps = {
-    LookupFieldName: string;
-    LookupListId: string;
-};
-
 export type AddChoiceProps = {
-    Choices: {
-        results: string[];
-    };
+    Choices: string[];
     EditFormat?: ChoiceFieldFormatType;
     FillInChoice?: boolean;
 };
 
-
-
 /**
  * Specifies the type of the field.
  */
-export enum FieldTypes {
+export const enum FieldTypes {
     Invalid = 0,
     Integer = 1,
     Text = 2,
@@ -461,7 +479,7 @@ export enum DateTimeFieldFriendlyFormatType {
 /**
  * Specifies the control settings while adding a field.
  */
-export enum AddFieldOptions {
+export const enum AddFieldOptions {
     /**
    *  Specify that a new field added to the list must also be added to the default content type in the site collection
    */
@@ -497,7 +515,7 @@ export interface IXmlSchemaFieldCreationInformation {
     SchemaXml: string;
 }
 
-export enum CalendarType {
+export const enum CalendarType {
     Gregorian = 1,
     Japan = 3,
     Taiwan = 4,
@@ -537,6 +555,17 @@ export interface IFieldCreationProperties {
     Title?: string;
     ValidationFormula?: string;
     ValidationMessage?: string;
+}
+
+export interface IAddFieldProperties {
+    Title?: string;
+    Type?: number;
+    Required?: boolean;
+    IsCompactName?: boolean;
+    LookupListId?: string;
+    LookupWebId?: string;
+    Choices?: string[];
+    LookupFieldName?: string;
 }
 
 export enum ChoiceFieldFormatType {

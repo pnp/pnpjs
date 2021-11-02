@@ -1,11 +1,13 @@
 import { isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 
+export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
+
 export interface IGraphQueryableConstructor<T> {
-    new(baseUrl: string | IGraphQueryable, path?: string): T;
+    new(base: GraphInit, path?: string): T;
 }
 
-export type IGraphInvokableFactory<R extends IGraphQueryable> = (base: string | IGraphQueryable | [IGraphQueryable, string], path?: string) => R & IInvokable;
+export type IGraphInvokableFactory<R extends IGraphQueryable> = (base: GraphInit, path?: string) => R & IInvokable;
 
 export const graphInvokableFactory = <R extends IGraphQueryable>(f: any): IGraphInvokableFactory<R> => {
     return queryableFactory<R>(f);
@@ -26,7 +28,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      * @param base A string or Queryable that should form the base part of the url
      *
      */
-    constructor(base: string | IGraphQueryable| [IGraphQueryable, string], path?: string) {
+    constructor(base: GraphInit, path?: string) {
 
         super(base, path);
 
@@ -91,10 +93,10 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      */
     protected getParent<T extends _GraphQueryable>(
         factory: IGraphQueryableConstructor<T>,
-        baseUrl: string | IGraphQueryable = this.parentUrl,
+        base: GraphInit = this.parentUrl,
         path?: string): T {
 
-        return new factory(baseUrl, path);
+        return new factory(base, path);
     }
 
     /**

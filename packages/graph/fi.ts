@@ -1,5 +1,5 @@
 import { TimelinePipe } from "@pnp/core";
-import { GraphQueryable, IGraphQueryable } from "./graphqueryable.js";
+import { GraphQueryable, IGraphInvokableFactory, IGraphQueryable, GraphInit } from "./graphqueryable.js";
 
 export class GraphFI {
 
@@ -8,16 +8,20 @@ export class GraphFI {
     /**
      * Creates a new instance of the GraphFI class
      *
-     * @param root Establishes a root url/configuration for
+     * @param root Establishes a root url/configuration
      */
-    constructor(root: string | IGraphQueryable = "") {
+    constructor(root: GraphInit = "") {
 
         this._root = GraphQueryable(root);
     }
 
-    public using(behavior: TimelinePipe): this {
+    /**
+     * Applies one or more behaviors which will be inherited by all instances chained from this root
+     *
+     */
+    public using(...behaviors: TimelinePipe[]): this {
 
-        this._root.using(behavior);
+        this._root.using(...behaviors);
         return this;
     }
 
@@ -27,11 +31,16 @@ export class GraphFI {
      * @param factory The factory for the type of object to create
      * @returns A configured instance of that object
      */
-    protected create<T>(factory: (q: IGraphQueryable, path?: string) => T, path?: string): T {
+    protected create<T extends IGraphQueryable>(factory: IGraphInvokableFactory<T>, path?: string): T {
         return factory(this._root, path);
     }
 }
 
-export function graphfi(root: string | IGraphQueryable = ""): GraphFI {
-    return new GraphFI(root);
+export function graphfi(root: GraphInit | GraphFI = ""): GraphFI {
+
+    if (typeof root === "object" && !Reflect.has(root, "length")) {
+        root = (<any>root)._root;
+    }
+
+    return new GraphFI(<any>root);
 }

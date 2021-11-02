@@ -1,3 +1,4 @@
+import { extractWebUrl } from "..";
 import { SPFI } from "../fi";
 import { IWeb, Web } from "../webs/types.js";
 
@@ -19,10 +20,7 @@ declare module "../fi" {
 
 SPFI.prototype.getTenantAppCatalogWeb = async function (this: SPFI): Promise<IWeb> {
 
-    return this.create(async (q) => {
+    const data = await Web([this._root, extractWebUrl(this._root.toUrl())], "/_api/SP_TenantSettings_Current")<{ CorporateCatalogUrl: string }>();
 
-        const data = await Web([q, q.toUrl().replace(/\/_api\/.*$/i, "")], "/_api/SP_TenantSettings_Current")<{ CorporateCatalogUrl: string }>();
-
-        return Web([q, data.CorporateCatalogUrl]);
-    });
+    return Web([this._root, data.CorporateCatalogUrl]);
 };
