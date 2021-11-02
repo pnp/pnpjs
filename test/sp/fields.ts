@@ -32,7 +32,7 @@ describe("Fields", function () {
         // Web Tests
 
         it("Web: gets field by id", async function () {
-            return expect(_spfi.site.rootWeb.fields.getById(titleFieldId).select("Title")).to.eventually.be.fulfilled;
+            return expect(_spfi.site.rootWeb.fields.getById(titleFieldId).select("Title")()).to.eventually.be.fulfilled;
         });
 
         it("Web: get field by title", async function () {
@@ -124,14 +124,14 @@ describe("Fields", function () {
             const choices = [`Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`];
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spfi.web.fields
-                .addChoice(testFieldNameRand, { Choices: { results: choices }, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: testFieldGroup });
+                .addChoice(testFieldNameRand, { Choices: choices, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("Web: add multi choice field", async function () {
             const choices = [`Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`];
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spfi.web.fields
-                .addMultiChoice(testFieldNameRand, { Choices: { results: choices }, FillInChoice: false, Group: testFieldGroup });
+                .addMultiChoice(testFieldNameRand, { Choices: choices, FillInChoice: false, Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("Web: add boolean field", async function () {
@@ -239,7 +239,7 @@ describe("Fields", function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spfi.web.lists.getByTitle(listName).fields
                 .addCalculated(testFieldNameRand,
-                    { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: testFieldGroup }
+                    { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, Group: testFieldGroup }
                 );
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
@@ -291,14 +291,14 @@ describe("Fields", function () {
             const choices = [`Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`];
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spfi.web.lists.getByTitle(listName).fields
-                .addChoice(testFieldNameRand, { Choices: { results: choices }, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: testFieldGroup });
+                .addChoice(testFieldNameRand, { Choices: choices, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("List: add multi choice field", async function () {
             const choices = [`Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`, `Choice_${getRandomString(5)}`];
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await _spfi.web.lists.getByTitle(listName).fields
-                .addMultiChoice(testFieldNameRand, { Choices: { results: choices }, FillInChoice: false, Group: testFieldGroup });
+                .addMultiChoice(testFieldNameRand, { Choices: choices, FillInChoice: false, Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("List: add boolean field", async function () {

@@ -30,7 +30,7 @@ describe("DefaultColumnValues", function () {
                 const [batchSP, execute] = _spfi.batched();
                 batchSP.web.lists.getByTitle(listName).fields.addText("TextField");
                 batchSP.web.lists.getByTitle(listName).fields.addNumber("NumberField");
-                batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: { results: ["Item 1", "Item 2", "Item 3"] } });
+                batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: ["Item 1", "Item 2", "Item 3"] });
                 await execute();
             }
         });

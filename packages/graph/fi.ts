@@ -36,7 +36,7 @@ export class GraphFI {
     }
 }
 
-export function graphfi(root: GraphInit | GraphFI): GraphFI {
+export function graphfi(root: GraphInit | GraphFI = ""): GraphFI {
 
     if (typeof root === "object" && !Reflect.has(root, "length")) {
         root = (<any>root)._root;
