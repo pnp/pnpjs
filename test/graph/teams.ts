@@ -5,8 +5,8 @@ import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 
-// TODO:: skipping until we enable the test user settings
-describe.skip("Teams", function () {
+// TODO:: not working
+describe("Teams", function () {
 
     if (testSettings.enableWebTests) {
         let _graphfi: GraphFI = null;

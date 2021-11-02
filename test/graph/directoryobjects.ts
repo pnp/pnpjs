@@ -17,12 +17,13 @@ describe("Directory Objects", function () {
         let testChildGroupID = "";
         let testParentGroupID = "";
         const testGUID = getGUID();
+        let userInfo = null;
 
         before(async function () {
             _graphfi = getGraph();
 
             // Get a sample user
-            const userInfo = await getValidUser();
+            userInfo = await getValidUser();
             testUserName = userInfo.userPrincipalName;
 
             // Create a test group to ensure we have a directory object
@@ -50,6 +51,20 @@ describe("Directory Objects", function () {
             testParentGroupID = result.data.id;
         });
 
+        it(".delete", async function () {
+            let groupName = `TestGroup_${getRandomString(4)}`;
+            let result = await _graphfi.groups.add(groupName, groupName, GroupType.Security, {
+                "members@odata.bind": [
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
+                ],
+                "owners@odata.bind": [
+                    "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
+                ],
+            });
+            const testDeleteGroupID = result.data.id;
+            return expect(_graphfi.groups.getById(testDeleteGroupID).delete()).eventually.be.fulfilled;
+        });
+
         it("Get User Member Objects", async function () {
             const memberObjects = await _graphfi.users.getById(testUserName).getMemberObjects();
             return expect(memberObjects).contains(testChildGroupID);
@@ -70,12 +85,12 @@ describe("Directory Objects", function () {
             return expect(memberObjects).contains(testParentGroupID);
         });
 
-        it("Check User Member Groups", async function () {
+        it("Check User Member Groups (1)", async function () {
             const memberGroups = await _graphfi.users.getById(testUserName).checkMemberGroups([testChildGroupID, testParentGroupID, testGUID]);
             return expect(memberGroups.length).is.equal(2);
         });
 
-        it("Check User Member Groups", async function () {
+        it("Check User Member Groups (2)", async function () {
             const memberGroups = await _graphfi.groups.getById(testChildGroupID).checkMemberGroups([testChildGroupID, testParentGroupID, testGUID]);
             return expect(memberGroups.length).is.equal(1);
         });
@@ -89,12 +104,6 @@ describe("Directory Objects", function () {
             const memberObjects = await _graphfi.users.getById(testUserName).memberOf();
             return expect(memberObjects.length).greaterThan(0);
         });
-
-        // This is not supported in an application context
-        // it("Delete Directory Object", async function () {
-        //     await graph.directoryObjects.getById(testChildGroupID).delete();
-        //     return expect(true).is.not.null;
-        // });
 
         // Remove the test data we created
         after(async function () {

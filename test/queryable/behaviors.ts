@@ -9,12 +9,12 @@ import {
     ThrowErrors,
 } from "@pnp/queryable";
 import { spfi } from "@pnp/sp";
-import { SPDefault } from "@pnp/nodejs";
 import { AbortController } from "node-abort-controller";
 import { default as nodeFetch } from "node-fetch";
 
-import { testSettings } from "../main.js";
+import { getSP, testSettings } from "../main.js";
 import "@pnp/sp/webs";
+import { getRandomString } from "@pnp/core";
 
 
 describe("Behaviors", function () {
@@ -24,12 +24,38 @@ describe("Behaviors", function () {
         it("CachingPessimistic", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = spfi(testSettings.sp.testWebUrl).using(SPDefault({
-                    msal: {
-                        config: testSettings.sp.msal.init,
-                        scopes: testSettings.sp.msal.scopes,
-                    },
-                })).using(CachingPessimisticRefresh("session"));
+                const spInstance = spfi(getSP()).using(CachingPessimisticRefresh("session"));
+
+                // Test caching behavior
+                const startCheckpoint = new Date();
+                const u = await spInstance.web();
+                const midCheckpoint = new Date();
+                const u2 = await spInstance.web();
+                const endCheckpoint = new Date();
+
+                // Results should be the same
+                const test1 = JSON.stringify(u) === JSON.stringify(u2);
+
+                // Assume first call should take longer as it's not cached
+                const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
+                const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
+                const test2 = call1Time > call2Time;
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                expect(test1 && test2).to.be.true;
+            } catch (err) {
+                assert.fail(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
+            }
+        });
+
+        it("CachingPessimistic (headers)", async function () {
+            try {
+                // Testing a behavior, creating new instance of sp
+                const spInstance = spfi(getSP()).using(CachingPessimisticRefresh("session"));
+
+                // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
+                const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
+                const f = await spInstance.web.fields.addText(testFieldNameRand);
+                await f.field.delete();
 
                 // Test caching behavior
                 const startCheckpoint = new Date();
@@ -55,12 +81,7 @@ describe("Behaviors", function () {
         it("Caching", async function () {
             try {
                 // Testing a behavior, creating new instance of sp
-                const spInstance = spfi(testSettings.sp.testWebUrl).using(SPDefault({
-                    msal: {
-                        config: testSettings.sp.msal.init,
-                        scopes: testSettings.sp.msal.scopes,
-                    },
-                })).using(Caching("session"));
+                const spInstance = spfi(getSP()).using(Caching("session"));
 
                 // Test caching behavior
                 const startCheckpoint = new Date();

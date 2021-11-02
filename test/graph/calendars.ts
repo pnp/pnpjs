@@ -188,10 +188,10 @@ describe("Calendar", function () {
         });
 
         // This can't be tested in an application context
-        // it("Get Group Calendar", async function () {
-        //    const group = await _graphfi.groups.getById(groupID).calendar();
-        //    return expect(group.id).does.not.equal("");
-        // });
+        it.skip("Get Group Calendar", async function () {
+            const group = await _graphfi.groups.getById("").calendar();
+            return expect(group.id).does.not.equal("");
+        });
 
         it("Get Calendar View", async function () {
             const startDate: Date = new Date();
