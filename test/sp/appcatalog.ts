@@ -42,6 +42,40 @@ describe("AppCatalog", function () {
             return expect(appCatalog.getAppById(appId)(), `app '${appId}' should've been fetched`).to.eventually.be.fulfilled;
         });
 
+        // skip due to permissions in various testing environments
+        it.skip(".setStorageEntity (1)", async function () {
+
+            const key = `testingkey_${getRandomString(4)}`;
+            const value = "Test Value";
+
+            const web = await _spfi.getTenantAppCatalogWeb();
+
+            after(async function () {
+                await web.removeStorageEntity(key);
+            });
+
+            await web.setStorageEntity(key, value);
+            const v = await web.getStorageEntity(key);
+            return expect(v.Value).to.equal(value);
+        });
+
+        // skip due to permissions in various testing environments
+        it.skip(".setStorageEntity (2)", async function () {
+
+            const key = `testingkey'${getRandomString(4)}`;
+            const value = "Test Value";
+
+            const web = await _spfi.getTenantAppCatalogWeb();
+
+            after(async function () {
+                await web.removeStorageEntity(key);
+            });
+
+            await web.setStorageEntity(key, value);
+            const v = await web.getStorageEntity(key);
+            return expect(v.Value).to.equal(value);
+        });
+
         describe("App", function () {
             it(".deploy", async function () {
                 const myApp = appCatalog.getAppById(appId);

@@ -179,17 +179,17 @@ describe("Web", function () {
         });
 
         // skipping this test as the code hasn't changed in years and it takes longer than any other test
-        // it.skip(".applyTheme", function () {
+        it.skip(".applyTheme", function () {
 
-        //     // this takes a long time to process
-        //     this.timeout(60000);
+            // this takes a long time to process
+            this.timeout(60000);
 
-        //     const index = testSettings.sp.webUrl.indexOf("/sites/");
-        //     const colorUrl = "/" + combine(testSettings.sp.webUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-        //     const fontUrl = "/" + combine(testSettings.sp.webUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+            const index = testSettings.sp.testWebUrl.indexOf("/sites/");
+            const colorUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+            const fontUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
-        //     return expect(spRest.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
-        // });
+            return expect(_spfi.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
+        });
 
         // Cannot test because once a template has been applied a new site must be created to apply a different template
         it(".applyWebTemplate");
@@ -218,52 +218,6 @@ describe("Web", function () {
             const result = await _spfi.web.webs.add("Better be deleted!", url);
             return expect(result.web.delete()).to.eventually.be.fulfilled;
         });
-
-        // TODO: Solve for storage entities
-        // skip due to permissions in various testing environments
-        // it.skip("storage entity", async function () {
-
-        //     const key = `testingkey_${getRandomString(4)}`;
-        //     const value = "Test Value";
-
-        //     const web = await _spfi.web.getAppCatalog();
-
-        //     after(async function () {
-        //         await web.removeStorageEntity(key);
-        //     });
-
-        //     await web.setStorageEntity(key, value);
-        //     const v = await web.getStorageEntity(key);
-        //     return expect(v.Value).to.equal(value);
-        // });
-
-        // skip due to permissions in various testing environments
-        // it.skip("storage entity with '", async function () {
-
-        //     const key = `testingkey'${getRandomString(4)}`;
-        //     const value = "Test Value";
-
-        //     const web = await sp.getTenantAppCatalogWeb();
-
-        //     after(async function () {
-        //         await web.removeStorageEntity(key);
-        //     });
-
-        //     await web.setStorageEntity(key, value);
-        //     const v = await web.getStorageEntity(key);
-        //     return expect(v.Value).to.equal(value);
-        // });
-
-        // skipping due to permissions issues across testing tenants
-        // describe.skip("appcatalog", function () {
-
-        //     it(".getAppCatalog", async function () {
-
-        //         const appCatWeb = await sp.getTenantAppCatalogWeb();
-        //         const p = appCatWeb.getAppCatalog()();
-        //         return expect(p).to.eventually.be.fulfilled;
-        //     });
-        // });
 
         describe("client-side-pages", function () {
             it(".getClientSideWebParts", async function () {
