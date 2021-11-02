@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - listeners are now factory functions (new ConsoleListener() => ConsoleListener()), drop the 'new'
   - Console listener now supports pretty printing options with colors and improved formatting (@thechriskent)
 
+- queryable:
+  - changed constructor to also accept a tuple of [queryable, string] to allow easy rebasing of url while inheriting observers
+
 - sp:
   - Renamed export "sp" -> "spfi" with type SPFI
   - Changed to using minimal metadata for all requests

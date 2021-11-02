@@ -9,7 +9,7 @@ export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promi
 
 export const spPostMerge = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
     init = init || {};
-    init.headers = { ...init.headers || {}, "X-HTTP-Method": "MERGE" };
+    init.headers = { ...init.headers, "X-HTTP-Method": "MERGE" };
 
     return spPost<T>(o, init);
 };

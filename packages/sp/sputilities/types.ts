@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { _SPQueryable, spInvokableFactory, ISPQueryable } from "../spqueryable.js";
+import { _SPQueryable, spInvokableFactory, ISPQueryable, SPInit } from "../spqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { spPost } from "../operations.js";
@@ -162,9 +162,9 @@ export interface IUtilities {
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
 }
 
-export const Utilities: (baseUrl: string | ISPQueryable, path?: string) => IUtilities = <any>spInvokableFactory(_Utilities);
+export const Utilities: (base: SPInit, path?: string) => IUtilities = <any>spInvokableFactory(_Utilities);
 type UtilitiesCloneType = IUtilities & ISPQueryable & { excute<T>(props: any): Promise<T> };
-const UtilitiesCloneFactory = (baseUrl: string | ISPQueryable, path?: string): UtilitiesCloneType => <any>Utilities(baseUrl, path);
+const UtilitiesCloneFactory = (base: SPInit, path?: string): UtilitiesCloneType => <any>Utilities(base, path);
 
 export interface IEmailProperties {
     /**

@@ -1,7 +1,7 @@
 import { SearchRequest as ISearchRequestType, SearchResponse as ISearchResponseType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { graphInvokableFactory, IGraphQueryable, _GraphQueryableInstance } from "../graphqueryable.js";
+import { GraphInit, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
 import { graphPost } from "../operations.js";
 
 /**
@@ -17,4 +17,4 @@ export class _Search extends _GraphQueryableInstance<ISearchRequestType[]> {
 export interface ISearch {
     executeQuery(request: { requests: ISearchRequestType[] }): Promise<ISearchResponseType[]>;
 }
-export const Search: (baseUrl: string | IGraphQueryable, path?: string) => ISearch = graphInvokableFactory<any>(_Search);
+export const Search: (base: GraphInit, path?: string) => ISearch = graphInvokableFactory<any>(_Search);

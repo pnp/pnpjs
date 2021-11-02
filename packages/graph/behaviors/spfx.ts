@@ -46,6 +46,7 @@ export function SPFx(context: ISPFXContext, graphBaseUrl = "https://graph.micros
             const provider = await context.aadTokenProviderFactory.getTokenProvider();
             const token = await provider.getToken(`${url.protocol}//${url.hostname}`);
 
+            // eslint-disable-next-line @typescript-eslint/dot-notation
             init.headers["Authorization"] = `Bearer ${token}`;
 
             return [url, init];

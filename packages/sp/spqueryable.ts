@@ -1,12 +1,14 @@
-import { AssignFrom, combine, isUrlAbsolute, isArray } from "@pnp/core";
+import { combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 
+export type SPInit = string | ISPQueryable | [ISPQueryable, string];
+
 export interface ISPConstructor<T extends ISPQueryable = ISPQueryable> {
-    new(baseUrl: string | ISPQueryable, path?: string): T;
+    new(base: SPInit, path?: string): T;
 }
 
-export type ISPInvokableFactory<R extends ISPQueryable> = (base: string | ISPQueryable | [ISPQueryable, string], path?: string) => R & IInvokable;
+export type ISPInvokableFactory<R extends ISPQueryable> = (base: SPInit, path?: string) => R & IInvokable;
 
 export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
@@ -27,7 +29,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      * @param base A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(base: string | ISPQueryable | [ISPQueryable, string], path?: string) {
+    constructor(base: SPInit, path?: string) {
 
         if (typeof base === "string") {
 
@@ -126,9 +128,9 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
     protected getParent<T extends ISPQueryable>(
         factory: ISPInvokableFactory<any>,
         path?: string,
-        baseUrl: string = this.parentUrl): T {
+        base: string = this.parentUrl): T {
 
-        const parent = factory([this, baseUrl], path);
+        const parent = factory([this, base], path);
 
         const t = "@target";
         if (this.query.has(t)) {

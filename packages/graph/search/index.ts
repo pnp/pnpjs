@@ -1,5 +1,5 @@
 import { SearchRequest as ISearchRequestType, SearchResponse as ISearchResponseType } from "@microsoft/microsoft-graph-types";
-import { Search } from "./types.js";
+import { ISearch, Search } from "./types.js";
 import { GraphFI } from "../fi.js";
 
 export {
@@ -14,5 +14,5 @@ declare module "../fi" {
 }
 
 GraphFI.prototype.query = async function (this: GraphFI, ...requests: ISearchRequestType[]): Promise<ISearchResponseType[]> {
-    return this.create(Search).executeQuery({ requests });
+    return (<ISearch><unknown>this.create(<any>Search)).executeQuery({ requests });
 };
