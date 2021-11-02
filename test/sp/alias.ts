@@ -30,17 +30,17 @@ describe("Alias Parameters", function () {
             await ler.list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
         });
 
-        it("Should allow aliasing for folders", function () {
+        it("Folders", function () {
 
             return expect(_spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`)()).to.eventually.be.fulfilled;
         });
 
-        it("Should allow aliasing for files", function () {
+        it("Files", function () {
 
             return expect(_spfi.web.getFileByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/text.txt")}`)()).to.eventually.be.fulfilled;
         });
 
-        it("Should allow aliasing for sub-parameters", function () {
+        it("Sub-parameters", function () {
 
             const folder = _spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`);
             return expect(folder.files.addUsingPath("!@p2::myfilename.txt", "new file content")).to.eventually.be.fulfilled;

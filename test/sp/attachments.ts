@@ -21,7 +21,7 @@ describe("Attachments", function () {
             list = listData.list;
         });
 
-        it(".attachmentFiles()", async function () {
+        it(".attachmentFiles", async function () {
 
             // add some attachments to an item
             const r = await list.items.add({
@@ -34,7 +34,7 @@ describe("Attachments", function () {
             return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
         });
 
-        it(".getByName()", async function () {
+        it(".getByName", async function () {
 
             // add some attachments to an item
             const r = await list.items.add({
@@ -49,106 +49,7 @@ describe("Attachments", function () {
             return expect(info.FileName).to.eq(name);
         });
 
-        // it(".addMultiple()", async function () {
-
-        //     // add some attachments to an item
-        //     const r = await list.items.add({
-        //         Title: `Test_1_${getRandomString(4)}`,
-        //     });
-
-        //     await r.item.attachmentFiles.addMultiple([
-        //         {
-        //             content: "Some Content",
-        //             name: `att_${getRandomString(4)}.txt`,
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: `att_${getRandomString(4)}.txt`,
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: `att_${getRandomString(4)}.txt`,
-        //         },
-        //     ]);
-
-        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(3);
-        // });
-
-        // it(".deleteMultiple()", async function () {
-
-        //     // add some attachments to an item
-        //     const r = await list.items.add({
-        //         Title: `Test_1_${getRandomString(4)}`,
-        //     });
-
-        //     const names = [
-        //         `att_${getRandomString(4)}.txt`,
-        //         `att_${getRandomString(4)}.txt`,
-        //         `att_${getRandomString(4)}.txt`,
-        //     ];
-
-        //     await r.item.attachmentFiles.addMultiple([
-        //         {
-        //             content: "Some Content",
-        //             name: names[0],
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: names[1],
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: names[2],
-        //         },
-        //     ]);
-
-        //     const attachmentInfo = await r.item.attachmentFiles();
-
-        //     expect(attachmentInfo).to.be.an("Array").and.have.length(3);
-
-        //     await r.item.attachmentFiles.deleteMultiple(...names);
-
-        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
-        // });
-
-        // it(".recycleMultiple()", async function () {
-
-        //     // add some attachments to an item
-        //     const r = await list.items.add({
-        //         Title: `Test_1_${getRandomString(4)}`,
-        //     });
-
-        //     const names = [
-        //         `att_${getRandomString(4)}.txt`,
-        //         `att_${getRandomString(4)}.txt`,
-        //         `att_${getRandomString(4)}.txt`,
-        //     ];
-
-        //     await r.item.attachmentFiles.addMultiple([
-        //         {
-        //             content: "Some Content",
-        //             name: names[0],
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: names[1],
-        //         },
-        //         {
-        //             content: "Some Content",
-        //             name: names[2],
-        //         },
-        //     ]);
-
-        //     const attachmentInfo = await r.item.attachmentFiles();
-
-        //     expect(attachmentInfo).to.be.an("Array").and.have.length(3);
-
-        //     await r.item.attachmentFiles.recycleMultiple(...names);
-
-        //     return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
-        // });
-
-        it(".getText()", async function () {
+        it(".getText", async function () {
 
             // add some attachments to an item
             const r = await list.items.add({
@@ -164,7 +65,7 @@ describe("Attachments", function () {
             expect(text).to.eq(content);
         });
 
-        it(".setContent()", async function () {
+        it(".setContent", async function () {
 
             // add some attachments to an item
             const r = await list.items.add({
@@ -186,7 +87,7 @@ describe("Attachments", function () {
             expect(text2).to.eq(content2);
         });
 
-        it(".recycle()", async function () {
+        it(".recycle", async function () {
 
             // add some attachments to an item
             const r = await list.items.add({
