@@ -6,6 +6,7 @@ import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
+// TODO:: Not sure what "Not Found" messages mean after Update Contct and Update Contact Folder
 describe("Contacts", function () {
 
     // We can't test for graph.me.contacts calls in an application context

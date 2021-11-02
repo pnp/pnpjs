@@ -5,6 +5,7 @@ import { GraphFI } from "@pnp/graph";
 import { GroupType } from "@pnp/graph/groups";
 import "@pnp/graph/sites/group";
 
+// TODO:: Double check coverage
 describe("Groups", function () {
 
     if (testSettings.enableWebTests) {
@@ -20,7 +21,7 @@ describe("Groups", function () {
             groupID = "";
         });
 
-        it("add()", async function () {
+        it(".add", async function () {
             const groupName = `TestGroup_${getRandomString(4)}`;
             const groupAddResult = await _graphfi.groups.add(groupName, groupName, GroupType.Office365);
             const group = await groupAddResult.group();
@@ -28,7 +29,7 @@ describe("Groups", function () {
             return expect(group.displayName).is.not.undefined;
         });
 
-        it("delete", async function () {
+        it(".delete", async function () {
             // Create a new group
             const groupName = `TestGroup_${getRandomString(4)}`;
             const groupAddResult = await _graphfi.groups.add(groupName, groupName, GroupType.Office365);
@@ -47,7 +48,7 @@ describe("Groups", function () {
             return expect(groupExists).is.not.true;
         });
 
-        it("getById", async function () {
+        it(".getById", async function () {
             // Create a new group
             const groupName = `TestGroup_${getRandomString(4)}`;
             const groupAddResult = await _graphfi.groups.add(groupName, groupName, GroupType.Office365);
@@ -56,7 +57,7 @@ describe("Groups", function () {
             return expect(group).is.not.undefined;
         });
 
-        it("update", async function () {
+        it(".update", async function () {
             // Create a new group
             const groupName = `TestGroup_${getRandomString(4)}`;
             const groupAddResult = await _graphfi.groups.add(groupName, groupName, GroupType.Office365);
@@ -73,7 +74,7 @@ describe("Groups", function () {
             return expect(groupName === group.displayName).is.not.true;
         });
 
-        it("sites/root/sites", async function () {
+        it(".sites.root.sites", async function () {
             // Find an existing group
             // This has to be tested on existing groups. On a newly created group, this returns an error often
             // "Resource provisioning is in progress. Please try again.". This is expected as the team site provisioning takes a few seconds when creating a new group
@@ -86,7 +87,7 @@ describe("Groups", function () {
             return expect(sitesPromise).to.eventually.be.fulfilled;
         });
 
-        it("sites/root", async function () {
+        it(".sites.root", async function () {
             // Find an existing group
             const groups = await _graphfi.groups();
             const grpID = groups[0].id;

@@ -12,8 +12,6 @@ import "@pnp/sp/webs";
 import { IWeb, IWebInfo } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
-import { RequestRecorderCache } from "./test-recorder.js";
-import { join } from "path";
 
 chai.use(chaiAsPromised);
 
@@ -134,18 +132,20 @@ switch (mode) {
         break;
 }
 
-export function TestLogging(): TimelinePipe<Queryable> {
+//** A custom Behavior to push logging onto a string array that can be used within a specific test */
+export function TestReporting(report: string[]): TimelinePipe<Queryable> {
+
     return (instance: Queryable) => {
 
         instance.on.error((err) => {
             if (logging) {
-                console.error(`🛑 PnPjs Testing Error - ${err.toString()}`);
+                report.push(`🛑 PnPjs Testing Error - ${err.toString()}`);
             }
         });
 
         instance.on.log(function (message, level) {
             if (level === LogLevel.Warning && logging) {
-                console.log(`📃 PnPjs Log Level: ${level} - ${message}.`);
+                report.push(`📃 PnPjs Log Level: ${level} - ${message}.`);
             }
         });
 
@@ -168,7 +168,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging()).using(ThrowErrors());
+    })).using(ThrowErrors());
     _spRoot = rootSP;
 
     if (siteUsed) {
@@ -189,7 +189,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(TestLogging()).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
@@ -198,7 +198,7 @@ async function graphTestSetup(): Promise<void> {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
         },
-    })).using(TestLogging()).using(ThrowErrors());; // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 export const testSettings: ISettings = settings.testing;

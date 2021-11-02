@@ -11,7 +11,7 @@ describe("Logging", function () {
             logger.clearSubscribers();
         });
 
-        it("Can create an Logger instance and subscribe an ILogListener", function () {
+        it("Subscribe an ILogListener", function () {
             const message = "Test message";
             let message2 = "";
             logger.subscribe(FunctionListener((e) => {
@@ -21,7 +21,7 @@ describe("Logging", function () {
             expect(message2).to.eq(message);
         });
 
-        it("Can create an Logger instance and log a simple object", function () {
+        it("Log a simple object", function () {
             let message2 = "";
             let level2 = LogLevel.Verbose;
             logger.subscribe(FunctionListener((e) => {
@@ -33,7 +33,7 @@ describe("Logging", function () {
             expect(level2).to.eql(LogLevel.Error);
         });
 
-        it("Should return an accurate count of subscribers", function () {
+        it("Subscribers Count", function () {
             logger.subscribe(FunctionListener(function () {
                 return;
             }));
@@ -46,7 +46,7 @@ describe("Logging", function () {
             expect(logger.count).to.eq(3);
         });
 
-        it("Should allow multiple subscribes to be added in one call", function () {
+        it("Add multiple subscribes in one call", function () {
             logger.subscribe(
                 FunctionListener(function () {
                     return;
@@ -61,7 +61,7 @@ describe("Logging", function () {
             expect(logger.count).to.eq(3);
         });
 
-        it("Should correctly log to multiple listeners", function () {
+        it("Log to multiple listeners", function () {
             let message1 = "";
             let message2 = "";
             let message3 = "";

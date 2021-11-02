@@ -1,6 +1,5 @@
 import { Queryable } from "../queryable.js";
 import { isFunc, getHashCode, PnPClientStorage, getGUID, extend } from "@pnp/core";
-import { LogLevel } from "@pnp/logging";
 
 /**
  * Pessimistic Caching Behavior
@@ -72,7 +71,7 @@ export function CachingPessimisticRefresh(
 
             const newExecute = extend(this, {
 
-                async execute(requestInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
+                async execute(userInit: RequestInit = { method: "GET", headers: {} }): Promise<any> {
                     setTimeout(async () => {
                         const requestId = getGUID();
 
@@ -92,6 +91,9 @@ export function CachingPessimisticRefresh(
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
                                 this.emit.log(`[id:${requestId}] Emitted auth`, 0);
 
+                                // we always resepect user supplied init over observer modified init
+                                init = { ...init, ...userInit, headers: { ...init.headers, ...userInit.headers } };
+
                                 this.emit.log(`[id:${requestId}] Emitting send`, 0);
                                 let response = await this.emit.send(requestUrl, init);
                                 this.emit.log(`[id:${requestId}] Emitted send`, 0);
@@ -102,7 +104,7 @@ export function CachingPessimisticRefresh(
 
                                 this.emit.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, LogLevel.Verbose);
+                                this.emit.log(`[id:${requestId}] Emitted post`, 0);
 
                                 return result;
                             };
@@ -116,7 +118,7 @@ export function CachingPessimisticRefresh(
 
                             this.emit.log(`[id:${requestId}] Beginning request`, 1);
 
-                            let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), requestInit, undefined);
+                            let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), {}, undefined);
 
                             this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
 

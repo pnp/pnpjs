@@ -12,9 +12,7 @@ import * as path from "path";
 import * as os from "os";
 import { SPFI } from "@pnp/sp";
 
-// npm run test -- -g 'nodejs - sp-extensions'
-// TODO: Figured out what is wrong with these tests.
-describe("nodejs - sp-extensions", function () {
+describe("NodeJS: sp-extensions", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
@@ -22,7 +20,7 @@ describe("nodejs - sp-extensions", function () {
             _spfi = getSP();
         });
 
-        it("Should allow reading of a stream", async function () {
+        it("Read Stream", async function () {
 
             const content = "Some test text content.";
             const name = `Testing setContent - ${getRandomString(4)}.txt`;
@@ -48,7 +46,7 @@ describe("nodejs - sp-extensions", function () {
             expect(txt).to.eq(content);
         });
 
-        it("Should allow adding chunks via stream", async function () {
+        it("Adding Chunks via Stream", async function () {
 
             const name = `Testing addChunked (with Nodejs stream) - ${getRandomString(4)}.txt`;
             const content = "Some test text content.";
@@ -72,7 +70,7 @@ describe("nodejs - sp-extensions", function () {
             }
         });
 
-        it("Should allow adding chunks non-stream", async function () {
+        it("Adding Chunks Non-Stream", async function () {
 
             const name = `Testing addChunked (with Nodejs buffer) - ${getRandomString(4)}.txt`;
             const content = "Some test text content.";
