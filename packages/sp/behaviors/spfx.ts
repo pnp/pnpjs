@@ -41,35 +41,6 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             return [url, init, result];
         });
 
-
-
-        //     **
-        //     * Client wrapping the aadTokenProvider available from SPFx >= 1.6
-        //     */
-        //    export class SPFxAdalClient extends LambdaFetchClient {
-
-        //        /**
-        //         *
-        //         * @param context provide the appropriate SPFx Context object
-        //         */
-        //        constructor(private context: ISPFXContext) {
-        //            super(async (params) => {
-        //                const provider = await context.aadTokenProviderFactory.getTokenProvider();
-        //                return provider.getToken(getADALResource(params.url));
-        //            });
-        //        }
-
-        //        /**
-        //         * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-        //         *
-        //         * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
-        //         */
-        //        public async getToken(resource: string): Promise<string> {
-        //            const provider = await this.context.aadTokenProviderFactory.getTokenProvider();
-        //            return provider.getToken(resource);
-        //        }
-        //    }
-
         return instance;
     };
 }
