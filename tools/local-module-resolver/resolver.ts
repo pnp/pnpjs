@@ -1,6 +1,6 @@
 // based off the work in tsconfig-paths-webpack-plugin, thanks!
 import { resolve, dirname, join } from "path";
-import * as findup from "findup-sync";
+import findup from "findup-sync";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findup("package.json")));

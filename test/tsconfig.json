@@ -15,6 +15,7 @@
             "sharepoint"
         ],
         "removeComments": true,
+        "esModuleInterop": true
     },
     "include": [
         "./**/*.ts",

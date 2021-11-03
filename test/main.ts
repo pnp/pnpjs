@@ -2,10 +2,10 @@ import { delay, getGUID, TimelinePipe } from "@pnp/core";
 import { IInvokable, Queryable, ThrowErrors } from "@pnp/queryable";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import { spfi } from "@pnp/sp";
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 import "mocha";
-import * as findup from "findup-sync";
+import findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -132,7 +132,7 @@ switch (mode) {
         break;
 }
 
-//** A custom Behavior to push logging onto a string array that can be used within a specific test */
+// ** A custom Behavior to push logging onto a string array that can be used within a specific test */
 export function TestReporting(report: string[]): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
