@@ -1,6 +1,6 @@
 import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
-import * as cloneDeep from "lodash.clonedeep";
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * Represents an observer that does not affect the timeline

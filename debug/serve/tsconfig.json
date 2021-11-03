@@ -6,6 +6,7 @@
         "noUnusedParameters": false,
         "composite": false,
         "incremental": true,
+        "esModuleInterop": true
     },
     "include": [
         "./**/*.ts",

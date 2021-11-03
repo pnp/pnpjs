@@ -1,5 +1,5 @@
 import { join, dirname, resolve } from "path";
-import * as findup from "findup-sync";
+import findup from "findup-sync";
 import { LocalModuleResolverPlugin } from "./local-module-resolver-plugin.js"
 
 // give ourselves a single reference to the projectRoot

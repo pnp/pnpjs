@@ -1,6 +1,6 @@
 import { Timeline, ObserverCollection, TimelinePipe } from "../timeline.js";
 import { objectDefinedNotNull } from "../util.js";
-import * as cloneDeep from "lodash.clonedeep";
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * Behavior that will copy all the observers in the source timeline and apply it to the incoming instance

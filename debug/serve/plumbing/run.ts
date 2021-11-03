@@ -1,6 +1,6 @@
 import { spawn } from "child_process";
 import { dirname, resolve } from "path";
-import * as findup from "findup-sync";
+import findup from "findup-sync";
 
 // give outselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findup("package.json")));
