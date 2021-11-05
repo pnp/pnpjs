@@ -1,6 +1,6 @@
-# Sample: Custom PnPjs bundle with rollup
+# Sample: Custom PnPjs bundle with webpack
 
-This project is an example for starting a custom bundle project using rollup.
+This project is an example for starting a custom bundle project using webpack.
 
 ## Steps
 
