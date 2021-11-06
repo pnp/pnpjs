@@ -27,6 +27,7 @@ If you are working on multiple features or want to save sample code for various 
 Using [./debug/launch/sp.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/sp.ts) as a reference create a file in the debug/launch folder, let's call it mydebug.ts and add this content:
 
 ```TypeScript
+import { ITestingSettings } from "../../test/settings.js";
 // note we can use the actual package names for our imports (ex: @pnp/logging)
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 // using the all preset for simplicity in the example, selective imports work as expected
@@ -34,7 +35,7 @@ import { sp, ListEnsureResult } from "@pnp/sp/presets/all";
 
 declare var process: { exit(code?: number): void };
 
-export async function MyDebug() {
+export async function MyDebug(settings: ITestingSettings) {
 
   // configure your options
   // you can have different configs in different modules as needed for your testing/dev work
@@ -78,17 +79,12 @@ export async function MyDebug() {
 
 ### Update main.ts to launch your module
 
-First comment out the import for the default example and then add the import and function call for yours, the updated launch/main.ts should look like this:
+Add the import and function call for the debug module. The updated launch/main.ts file should look like this:
 
 ```TypeScript
-// ...
-
-// comment out the example
-// import { Example } from "./example";
-// Example();
 
 import { MyDebug } from "./mydebug"
-MyDebug();
+MyDebug(settings);
 
 // ...
 ```
