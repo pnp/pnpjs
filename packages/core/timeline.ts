@@ -1,7 +1,6 @@
 import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const cloneDeep = require("lodash.clonedeep");
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * Represents an observer that does not affect the timeline
