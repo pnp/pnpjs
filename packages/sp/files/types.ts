@@ -38,6 +38,15 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
     }
 
     /**
+     * Gets a File by file absolute url
+     *
+     * @param fileUrl The absolute url of the file
+     */
+     public getUsingAbsoluteUrl(fileUrl: string): IFile {
+        return tag.configure(File(`${fileUrl}`), "fis.getFileUsingResponseUrl");
+    }
+
+    /**
      * Uploads a file. Not supported for batching
      *
      * @param url The folder-relative url of the file.
@@ -50,9 +59,10 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`), {
             body: content,
         });
+
         return {
             data: response,
-            file: this.getByName(url),
+            file: this.getUsingAbsoluteUrl(response["odata.id"]),
         };
     }
 
