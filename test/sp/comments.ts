@@ -7,13 +7,25 @@ import "@pnp/sp/items/list";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import { getRandomString } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
+import { ICommentInfo } from "@pnp/sp/comments/types.js";
 
 describe("Comments", function () {
 
     if (testSettings.enableWebTests) {
         let _spfi: SPFI = null;
-        before(function () {
+        let testUserLogin = "";
+        let testUserEmail = "";
+        let testUser = "Test User";
+        before(async function () {
             _spfi = getSP();
+
+            // we need a user to share to
+            if (testSettings.testUser?.length > 0) {
+                await _spfi.web.ensureUser(testSettings.testUser);
+                testUserLogin = testSettings.testUser;
+                const tmp = testSettings.testUser.split("|");
+                testUserEmail = tmp[tmp.length - 1];
+            }
         });
 
         it(".add - clientside page", async function () {
@@ -35,6 +47,19 @@ describe("Comments", function () {
 
             expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
         });
+
+        if (testSettings.testUser?.length > 0) {
+            // TODO:: WIP to fix comment bug for at mentions
+            it.skip(".add - at mention", async function () {
+
+                const pageName = `CommentPage_${getRandomString(4)}`;
+                const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+                await page.save();
+                const commentInfo: ICommentInfo = { mentions: { loginName: testUserLogin, email: testUserEmail, name: testUser }, text: "This is the test comment with at mentions" };
+                const comment = await page.addComment(commentInfo);
+                expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
+            });
+        }
 
         it(".getById - clientside page", async function () {
 

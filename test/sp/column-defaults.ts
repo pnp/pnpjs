@@ -13,6 +13,7 @@ import "@pnp/sp/batching";
 import { SPFI } from "@pnp/sp";
 import { IList } from "@pnp/sp/lists";
 
+// TODO:: All Tests are Failing
 describe("DefaultColumnValues", function () {
 
     if (testSettings.enableWebTests) {
@@ -20,7 +21,6 @@ describe("DefaultColumnValues", function () {
         const listName = "DefaultColumnValuesTests";
         let list: IList = null;
 
-        // TODO: Figure out typings of addMultiChoice
         before(async function () {
             _spfi = getSP();
             const ler = await _spfi.web.lists.ensure(listName, "", 101);

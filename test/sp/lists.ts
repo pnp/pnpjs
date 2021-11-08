@@ -76,18 +76,6 @@ describe("Lists", function () {
             return expect(_spfi.web.lists.ensure(title)).to.eventually.be.fulfilled;
         });
 
-        // it(".ensure with batch fails", async function () {
-        //     const title = "pnp testing ensure";
-        //     const [batch, execute] = _spfi.batched();
-        //     _spfi.web.lists.ensure(title);
-        //     try {
-        //         await execute();
-        //     } catch (e) {
-        //         return assert(true);
-        //     }
-        //     return assert(false);
-        // });
-
         it(".ensureSiteAssetsLibrary", function () {
             return expect(_spfi.web.lists.ensureSiteAssetsLibrary()).to.eventually.be.fulfilled;
         });
@@ -155,17 +143,12 @@ describe("List", function () {
             return expect(listEnsure.list.getItemsByCAMLQuery(caml, "RoleAssignments")).to.eventually.be.fulfilled;
         });
 
-        // TODO: There is an error in the TextParse, throws error line 15 in queryable/behaviors/parsers.ts
+        // TODO: There is an error in the TextParse, throws error line 15 in queryable/behaviors/parsers.ts because response is XML
         it(".getListItemChangesSinceToken", async function () {
             const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getListItemChangesSinceToken");
             const query: IChangeLogItemQuery = {
                 Contains: "<Contains><FieldRef Name=\"Title\"/><Value Type=\"Text\">Testing</Value></Contains>",
-                QueryOptions: `<QueryOptions>
-                <IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns>
-                <DateInUtc>False</DateInUtc>
-                <IncludePermissions>TRUE</IncludePermissions>
-                <IncludeAttachmentUrls>FALSE</IncludeAttachmentUrls>
-                <Folder>Shared Documents/Test1</Folder></QueryOptions>`,
+                QueryOptions: '<QueryOptions><IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns><DateInUtc>False</DateInUtc><IncludePermissions>TRUE</IncludePermissions><IncludeAttachmentUrls>FALSE</IncludeAttachmentUrls><Folder>Shared Documents/Test1</Folder></QueryOptions>',
             };
             return expect(listEnsure.list.getListItemChangesSinceToken(query)).to.eventually.be.fulfilled;
         });

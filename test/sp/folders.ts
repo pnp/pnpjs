@@ -81,7 +81,7 @@ describe("Folder", function () {
         it(".getItem", async function () {
             const far = await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
             const x = await far.folder.getItem();
-            return expect(x).to.eventually.be.fulfilled;
+            return expect(x).to.haveOwnProperty("Id");
         });
 
         it(".moveByPath", async function () {

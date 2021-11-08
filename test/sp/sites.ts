@@ -24,19 +24,19 @@ describe("Sites", function () {
         });
 
         // TODO: This throws error regarding observers
-        it.skip(".getRootWeb", async function () {
+        it(".getRootWeb", async function () {
             const rootWeb: IWeb = await _spfi.site.getRootWeb();
             return expect(rootWeb).to.haveOwnProperty("url");
         });
 
         // TODO: This throw timeout error because post never returns
-        it.skip(".getContextInfo", async function () {
+        it(".getContextInfo", async function () {
             const oContext: IContextInfo = await _spfi.site.getContextInfo();
             return expect(oContext).to.haveOwnProperty("SiteFullUrl");
         });
 
         // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
-        it.skip(".getDocumentLibraries", async function () {
+        it(".getDocumentLibraries", async function () {
             const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
             const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
             return docLibs.forEach((docLib) => {
@@ -45,7 +45,7 @@ describe("Sites", function () {
         });
 
         // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
-        it.skip(".getWebUrlFromPageUrl", async function () {
+        it(".getWebUrlFromPageUrl", async function () {
             const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
             const path = combine(webInfo.Url, "SitePages", "Home.aspx");
             const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);

@@ -56,7 +56,7 @@ export class _ClientsidePage extends _SPQueryable {
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
     constructor(
-        base: string | ISPQueryable| [ISPQueryable, string],
+        base: string | ISPQueryable | [ISPQueryable, string],
         path?: string,
         protected json?: Partial<IPageData>,
         noInit = false,
@@ -69,7 +69,27 @@ export class _ClientsidePage extends _SPQueryable {
         this._bannerImageThumbnailUrlDirty = false;
         this.parentUrl = "";
 
-        this._url = combine(extractWebUrl(typeof base === "string" ? base : Reflect.has(base, "length") ? (<ISPQueryable>base[0]).toUrl() : (<ISPQueryable>base).toUrl()), path);
+        // TODO:: START OF JULIES HACK SOLUTION
+
+        let tmpBase = "";
+        if (typeof base === "string") {
+            tmpBase = base;
+        } else {
+            if (base["length"] > 1) {
+                // If you're just doing ClientsidePageFromFile then this works -- probably??
+                tmpBase = base[base["length"] - 1];
+            } else {
+                // If you're just doing CreateClientsidePage then this works
+                tmpBase = (<ISPQueryable>base).toUrl();
+            }
+        }
+
+        const tmpBase2 = extractWebUrl(tmpBase);
+        this._url = combine(tmpBase2, path);
+
+        // ### FIXES THIS LINE???
+        // this._url = combine(extractWebUrl(typeof base === "string" ? base : Reflect.has(base, "length") ? (<ISPQueryable>base[0]).toUrl() : (<ISPQueryable>base).toUrl()), path);
+        // END OF JULIES HACK SOLUTION
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
