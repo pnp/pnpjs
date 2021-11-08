@@ -12,6 +12,7 @@ import { IFiles, TemplateFileType, MoveOperations } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync = require("findup-sync");
+import { Readable } from "stream";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
@@ -24,14 +25,14 @@ describe("files", () => {
         const testFileNamePercentPound = `testing %# - ${getRandomString(4)}.txt`;
         let testFileNamePercentPoundServerRelPath = "";
         let files: IFiles = null;
+        let oDataId:string = '';
 
         before(async function () {
 
             files = sp.web.defaultDocumentLibrary.rootFolder.files;
             // ensure we have at least one file to get
             await files.add(testFileName, "Test file!", true);
-            const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });
-            testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl;
+            const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });            testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl; oDataId = res.data['__metadata']['id'];
         });
 
         it("getByName", async function () {
@@ -147,6 +148,33 @@ describe("files", () => {
             await files.addUsingPath(name, "Some test text content.");
             const fileList = await files.filter(`Name eq '${name}'`)();
             return expect(fileList).to.be.an.instanceOf(Array).and.to.have.lengthOf(1);
+        });
+
+        it("getUsingAbsoluteUrl", async function () {
+            return expect(files.getUsingAbsoluteUrl(oDataId)()).to.eventually.be.fulfilled;
+        });
+
+        it("add stream file and get item fails with ECONNRESET", (done) => {
+            const contents = Readable.from("2131");
+            const name = `${getRandomString(4)}-upload-stream.txt`;
+            ( async () => {
+                await files.configure({ headers: { "content-length": "4", } }).add(name, contents, true);
+                try {
+                    await files.getByName(name).getItem();
+                } catch (e) {
+                    expect(e['code']).to.be.equal('ECONNRESET');
+                }
+                done();
+            })();
+        }).timeout(600000).retries(0);
+
+        it("add stream file and get item succeeds with getUsingAbsoluteUrl", async function () {
+            const contents = Readable.from("2131");
+            const name = `${getRandomString(4)}-upload-stream.txt`;
+            let response = await files.configure({ headers: { "content-length": "4", } }).add(name, contents, true);
+
+            const item = await files.getUsingAbsoluteUrl(response.data['__metadata']['id']).getItem();
+            return expect(item()).to.eventually.be.fulfilled;
         });
     }
 });
