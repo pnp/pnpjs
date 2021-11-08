@@ -8,7 +8,7 @@ import { ISiteDesignRun, ISiteDesignTask } from "@pnp/sp/site-designs";
 import { getSP, testSettings } from "../main.js";
 import { SPFI } from "@pnp/sp";
 
-// Can only run on a new site collection
+// TODO: Can only run on a new site collection -- Create one?
 describe.skip("SiteDesigns", function () {
     this.timeout(120000);
     const testuser = testSettings.testUser;

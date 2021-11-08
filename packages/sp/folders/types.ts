@@ -110,11 +110,13 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * Gets the associated list item for this folder, loading the default properties
      */
     public async getItem<T>(...selects: string[]): Promise<IItem & T> {
-        const q = await this.listItemAllFields.select(...selects)();
-        if (q["odata.null"]) {
+
+        const q = this.listItemAllFields;
+        const d = await q.select(...selects)();
+        if (d["odata.null"]) {
             throw Error("No associated item was found for this folder. It may be the root folder, which does not have an item.");
         }
-        return Object.assign(Item([this, odataUrlFrom(q)]), q);
+        return Object.assign(Item([this, odataUrlFrom(d)]), d);
     }
 
     /**
