@@ -1,4 +1,4 @@
-import * as findup from "findup-sync";
+import findup from "findup-sync";
 import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
 import { ITestingSettings } from "../../test/settings.js";
 

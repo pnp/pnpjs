@@ -1,7 +1,6 @@
 import { Timeline, ObserverCollection, TimelinePipe } from "../timeline.js";
 import { objectDefinedNotNull } from "../util.js";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const cloneDeep = require("lodash.clonedeep");
+import cloneDeep from "lodash.clonedeep";
 
 /**
  * Behavior that will copy all the observers in the source timeline and apply it to the incoming instance

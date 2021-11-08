@@ -11,6 +11,7 @@
         "noUnusedLocals": false,
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
+        "esModuleInterop": true,
         "types": [
             "sharepoint"
         ],

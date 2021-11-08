@@ -3,5 +3,8 @@
     "include": [
         "./**/*.ts"
     ],
+    "compilerOptions": {
+        "esModuleInterop": true
+    },
     "references": []
 }

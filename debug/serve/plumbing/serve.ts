@@ -1,5 +1,5 @@
-import * as webpack from "webpack";
-import * as server from "webpack-dev-server";
+import webpack from "webpack";
+import server from "webpack-dev-server";
 import config from "./webpack.config.js";
 
 const serverSettings = {
