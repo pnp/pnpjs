@@ -27,6 +27,7 @@ describe("WebParts", function () {
             return expect(scope).to.be.equal(0);
         });
 
+        // TODO: Failing
         it(".webpartDefinitions", async function () {
             const currentWeb = await _spfi.web.select("ServerRelativeUrl")();
             const pageName = `Test_Page_${getRandomString(5)}.aspx`;

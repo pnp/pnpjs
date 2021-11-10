@@ -43,7 +43,7 @@ export class _Comments extends _SPCollection<ICommentInfo[]> {
         return spPost<boolean>(Comments(this, "DeleteAll"));
     }
 }
-export interface IComments extends _Comments {}
+export interface IComments extends _Comments { }
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
 export class _Comment extends _SPInstance<ICommentInfo> {
@@ -76,7 +76,7 @@ export class _Comment extends _SPInstance<ICommentInfo> {
         return spPost(Comment(this, "DeleteComment"));
     }
 }
-export interface IComment extends _Comment {}
+export interface IComment extends _Comment { }
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 @defaultPath("replies")
@@ -98,7 +98,7 @@ export class _Replies extends _SPCollection<ICommentInfo[]> {
         return Object.assign(Comment(odataUrlFrom(d)), d);
     }
 }
-export interface IReplies extends _Replies {}
+export interface IReplies extends _Replies { }
 export const Replies = spInvokableFactory<IReplies>(_Replies);
 
 /**
@@ -120,22 +120,22 @@ export interface ICommentAuthorData {
  * Defines the information for a comment
  */
 export interface ICommentInfo {
-    author: ICommentAuthorData;
-    createdDate: string;
-    id: string;
-    isLikedByUser: boolean;
-    isReply: boolean;
-    itemId: number;
-    likeCount: number;
-    listId: string;
-    mentions: {
+    author?: ICommentAuthorData;
+    createdDate?: string;
+    id?: string;
+    isLikedByUser?: boolean;
+    isReply?: boolean;
+    itemId?: number;
+    likeCount?: number;
+    listId?: string;
+    mentions?: {
         loginName: string;
         email: string;
         name: string;
     } | null;
-    parentId: string;
-    replyCount: number;
-    text: string;
+    parentId?: string;
+    replyCount?: number;
+    text?: string;
 }
 
 export interface ILikeData {

@@ -14,13 +14,9 @@ describe("Outlook", function () {
         let testUserName = "";
         const testCategoryList: string[] = [];
 
-        before(function () {
-            _graphfi = getGraph();
-        });
-
         // Ensure we have the data to test against
         this.beforeAll(async function () {
-
+            _graphfi = getGraph();
             const userInfo = await getValidUser();
             testUserName = userInfo.userPrincipalName;
 
