@@ -148,7 +148,7 @@ export abstract class Timeline<T extends Moments> {
      * @param message The message to log
      * @param level The level at which the message applies
      */
-    public log(message: string, level? = 0): void {
+    public log(message: string, level = 0): void {
         this.emit.log(message, level);
     }
 
