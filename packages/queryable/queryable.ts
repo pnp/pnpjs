@@ -35,8 +35,10 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
     constructor(init: QueryableInit, path?: string) {
 
+        super(DefaultMoments);
+
         let url = "";
-        let observers;
+        let observers = undefined;
 
         if (typeof init === "string") {
 
@@ -62,7 +64,10 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
             observers = _observers;
         }
 
-        super(DefaultMoments, observers);
+        if (typeof observers !== "undefined") {
+            this.observers = observers;
+            this._inheritingObservers = true;
+        }
 
         this._url = url;
         this._query = new Map<string, string>();
