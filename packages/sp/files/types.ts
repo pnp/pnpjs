@@ -8,7 +8,7 @@ import {
     deleteableWithETag,
 } from "../sharepointqueryable.js";
 import { TextParser, BlobParser, JSONParser, BufferParser, headers, body } from "@pnp/odata";
-import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/common";
+import { assign, getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine } from "@pnp/common";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../odata.js";
 import { defaultPath } from "../decorators.js";
@@ -42,8 +42,10 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
      *
      * @param fileUrl The absolute url of the file
      */
-     public getUsingAbsoluteUrl(fileUrl: string): IFile {
-        return tag.configure(File(`${fileUrl}`), "fis.getFileUsingResponseUrl");
+     public getByServerRelativeUrl(serverRelativePath: string): IFile {
+        const filePath = combine("/_api/Web/", `GetFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(`!@p1::${serverRelativePath}`)}')`);
+
+        return tag.configure(File(filePath), "fis.getByServerRelativeUrl");
     }
 
     /**
@@ -62,7 +64,7 @@ export class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
 
         return {
             data: response,
-            file: this.getUsingAbsoluteUrl(response["odata.id"]),
+            file: this.getByServerRelativeUrl(response["ServerRelativeUrl"]),
         };
     }
 

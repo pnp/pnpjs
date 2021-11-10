@@ -25,13 +25,12 @@ describe("files", () => {
         const testFileNamePercentPound = `testing %# - ${getRandomString(4)}.txt`;
         let testFileNamePercentPoundServerRelPath = "";
         let files: IFiles = null;
-        let oDataId:string = '';
 
         before(async function () {
             files = sp.web.defaultDocumentLibrary.rootFolder.files;
             // ensure we have at least one file to get
             await files.add(testFileName, "Test file!", true);
-            const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });            testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl; oDataId = res.data['__metadata']['id'];
+            const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });            testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl;
         });
 
         it("getByName", async function () {
@@ -149,8 +148,8 @@ describe("files", () => {
             return expect(fileList).to.be.an.instanceOf(Array).and.to.have.lengthOf(1);
         });
 
-        it("getUsingAbsoluteUrl", async function () {
-            return expect(files.getUsingAbsoluteUrl(oDataId)()).to.eventually.be.fulfilled;
+        it("getByServerRelativeUrl", async function () {
+            return expect(files.getByServerRelativeUrl(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
         });
 
         it("add stream file and get item fails with ECONNRESET", (done) => {
@@ -167,12 +166,12 @@ describe("files", () => {
             })();
         }).timeout(600000).retries(0);
 
-        it("add stream file and get item succeeds with getUsingAbsoluteUrl", async function () {
+        it("add stream file and get item succeeds with getByServerRelativeUrl", async function () {
             const contents = Readable.from("2131");
             const name = `${getRandomString(4)}-upload-stream.txt`;
             let response = await files.configure({ headers: { "content-length": "4", } }).add(name, contents, true);
 
-            const item = await files.getUsingAbsoluteUrl(response.data['__metadata']['id']).getItem();
+            const item = await files.getByServerRelativeUrl(response.data['ServerRelativeUrl']).getItem();
             return expect(item()).to.eventually.be.fulfilled;
         });
     }
