@@ -41,6 +41,7 @@ jobs:
       - name: Run publishing scripts
         run: |
           npm run clean
-          npm run package          
+          npm run package
+          pnpbuild -n publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
