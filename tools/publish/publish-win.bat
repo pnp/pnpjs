@@ -37,7 +37,7 @@ git push --tags
 ::
 call npm run clean
 call npm run package
-call pnpbuild -n publish
+:: call pnpbuild -n publish
 
 ::
 :: update the documentation
