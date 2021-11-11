@@ -6,14 +6,14 @@ on:
 jobs:
   monthly-release:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          ref: version-3    
+          ref: main    
       # setup nodejs
       - name: Use Node.js 16
         uses: actions/setup-node@v1
@@ -38,7 +38,9 @@ jobs:
         run: echo this would be the tests
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: npm run pnp-publish
+      - name: Run publishing scripts
+        run: |
+          npm run clean
+          npm run package          
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
