@@ -4,6 +4,7 @@ import { File, Files, IFileAddResult, IFileInfo, IFileUploadProgressData, IFiles
 import { spPost, odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
+import { _File } from "@pnp/sp/files/types.js";
 
 export interface IResponseBodyStream {
     body: PassThrough;
@@ -30,34 +31,42 @@ extendFactory(File, {
      * @param progress A callback function which can be used to track the progress of the upload
      * @param chunkSize The size of each file chunks, in bytes (default: 10485760)
      */
-    async setStreamContentChunked(stream: ReadStream, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
+    async setStreamContentChunked(this: _File, stream: ReadStream, progress?: (data: IFileUploadProgressData) => void): Promise<IFileAddResult> {
+
         if (!isFunc(progress)) {
             progress = () => null;
         }
 
         const uploadId = getGUID();
-        let blockNumber = 1;
-        let currentPointer = 0;
-        // const fileSize = ??; // is unknown with a stream, should be receined and passed with fs.stats
-        const fileSize: number = null;
-        // const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
-        const totalBlocks: number = null;
+        let blockNumber = -1;
+        let promise = Promise.resolve(0);
 
-        let chunkBuffer: Buffer = null;
-        while (null !== (chunkBuffer = stream.read(chunkSize))) {
-            if (currentPointer === 0) {
-                progress({ uploadId, blockNumber, chunkSize, currentPointer, fileSize, stage: "starting", totalBlocks });
-                await this.startUpload(uploadId, chunkBuffer);
-            } else {
-                progress({ uploadId, blockNumber, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
-                await this.continueUpload(uploadId, currentPointer, chunkBuffer);
-            }
-            blockNumber += 1;
-            currentPointer += chunkBuffer.length;
-        }
+        return new Promise((resolve) => {
 
-        progress({ uploadId, blockNumber, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
-        return this.finishUpload(uploadId, currentPointer, Buffer.from([]));
+            stream.on("data", (chunk) => {
+
+                blockNumber += 1;
+
+                if (blockNumber === 0) {
+
+                    promise = promise.then(() => {
+                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
+                        return File(this).startUpload(uploadId, <any>chunk);
+                    });
+                } else {
+
+                    promise = promise.then((cp) => {
+                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: cp, fileSize: -1, stage: "continue", totalBlocks: -1 });
+                        return File(this).continueUpload(uploadId, cp, <any>chunk);
+                    });
+                }
+            });
+
+            stream.on("end", async () => {
+                progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
+                promise.then((cp) => resolve(File(this).finishUpload(uploadId, cp, Buffer.from([]))));
+            });
+        });
     },
 });
 
