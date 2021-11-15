@@ -33,10 +33,10 @@ git push
 git push --tags
 
 ::
-:: publish the packages
+:: publish the packages (now done by action)
 ::
-call npm run clean
-call npm run package
+:: call npm run clean
+:: call npm run package
 :: call pnpbuild -n publish
 
 ::
