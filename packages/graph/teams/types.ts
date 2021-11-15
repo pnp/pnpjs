@@ -13,6 +13,10 @@ import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTa
 @updateable()
 export class _Team extends _GraphQueryableInstance<ITeamType> {
 
+    public get primaryChannel(): IChannel {
+        return Channel(this, "primaryChannel");
+    }
+
     public get channels(): IChannels {
         return Channels(this);
     }
