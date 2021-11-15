@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.11.0 - 2021-Nov-15
+
+### Fixed
+
+- sp: Fix setStreamContentChunked with v3 code #1914; ICommentInfo as Partial #1933 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1945)]
+
+### Added
+
+- graph: Add primary channel to a team #1855 [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/1945)]
+
+### Changed
+
+- docs: update webpack custom bundle sample [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1934)]
+
 ## 2.10.0 - 2021-Oct-15
 
 ### Fixed
