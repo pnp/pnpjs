@@ -52,7 +52,7 @@
         "buildDebug": "npm run clean && npm run pnp-buildsystem-init && pnpbuild -n build-debug",
         "clean": "del-cli \"./?(dist|site|build|buildsystem-config.js)\"",
         "clean-build": "npm run clean && npm run build",
-        "just-publish": "npm run pnp-buildsystem-init && pnpbuild -n publish",
+        "just-publish": "pnpbuild -n publish",
         "lint": "eslint ./packages ./test --ext .ts",
         "package": "npm run build && pnpbuild -n package",
         "pnp-buildsystem-init": "tsc -p tsconfig.buildsystem.json",
