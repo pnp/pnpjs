@@ -1065,6 +1065,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#get-primary-channel" class="md-nav__link">
+    Get primary channel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-channel-by-id" class="md-nav__link">
     Get channel by Id
   </a>
@@ -2260,6 +2267,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#get-primary-channel" class="md-nav__link">
+    Get primary channel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-channel-by-id" class="md-nav__link">
     Get channel by Id
   </a>
@@ -2434,6 +2448,14 @@ Follow the example in Groups to create the group and get the GroupID. Then make 
 <span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
 
 <span class="kr">const</span> <span class="nx">channels</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">channels</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="get-primary-channel">Get primary channel<a class="headerlink" href="#get-primary-channel" title="Permanent link">&para;</a></h2>
+<p><em>Added in 2.11.0</em></p>
+<p>Using the teams.getById() you can get a specific Team.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;@pnp/graph/teams&quot;</span>
+
+<span class="kr">const</span> <span class="nx">channel</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">teams</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;3531f3fb-f9ee-4f43-982a-6c90d8226528&#39;</span><span class="p">).</span><span class="nx">primaryChannel</span><span class="p">();</span>
 </code></pre></div>
 <h2 id="get-channel-by-id">Get channel by Id<a class="headerlink" href="#get-channel-by-id" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
