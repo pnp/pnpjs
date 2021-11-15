@@ -130,6 +130,19 @@ import "@pnp/graph/teams"
 const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
 ```
 
+## Get primary channel
+
+_Added in 2.11.0_
+
+Using the teams.getById() you can get a specific Team.
+
+```TypeScript
+import { graph } from "@pnp/graph";
+import "@pnp/graph/teams"
+
+const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').primaryChannel();
+```
+
 ## Get channel by Id
 
 ```TypeScript
