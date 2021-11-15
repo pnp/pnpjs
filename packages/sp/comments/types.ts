@@ -97,7 +97,7 @@ export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
      * @param info Comment information to add
      */
     @tag("reps.add")
-    public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
+    public async add(info: string | Partial<ICommentInfo>): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {
             info = <ICommentInfo>{ text: info };
