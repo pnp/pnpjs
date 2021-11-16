@@ -87,7 +87,7 @@ export class _Replies extends _SPCollection<ICommentInfo[]> {
      *
      * @param info Comment information to add
      */
-    public async add(info: string | ICommentInfo): Promise<IComment & ICommentInfo> {
+    public async add(info: string | Partial<ICommentInfo>): Promise<IComment & ICommentInfo> {
 
         if (typeof info === "string") {
             info = <ICommentInfo>{ text: info };
@@ -120,22 +120,22 @@ export interface ICommentAuthorData {
  * Defines the information for a comment
  */
 export interface ICommentInfo {
-    author?: ICommentAuthorData;
-    createdDate?: string;
-    id?: string;
-    isLikedByUser?: boolean;
-    isReply?: boolean;
-    itemId?: number;
-    likeCount?: number;
-    listId?: string;
-    mentions?: {
+    author: ICommentAuthorData;
+    createdDate: string;
+    id: string;
+    isLikedByUser: boolean;
+    isReply: boolean;
+    itemId: number;
+    likeCount: number;
+    listId: string;
+    mentions: [{
         loginName: string;
         email: string;
         name: string;
-    } | null;
-    parentId?: string;
-    replyCount?: number;
-    text?: string;
+    }] | null;
+    parentId: string;
+    replyCount: number;
+    text: string;
 }
 
 export interface ILikeData {

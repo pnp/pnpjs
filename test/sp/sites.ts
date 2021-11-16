@@ -4,7 +4,7 @@ import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { getSP, testSettings } from "../main.js";
+import { getSP, testSettings, TestReporting } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString } from "@pnp/core";
@@ -23,21 +23,21 @@ describe("Sites", function () {
             return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
         });
 
-        // TODO: This throws error regarding observers
+        // TODO:: rootWeb's _url doesn't match parentUrl
         it(".getRootWeb", async function () {
             const rootWeb: IWeb = await _spfi.site.getRootWeb();
-            return expect(rootWeb).to.haveOwnProperty("url");
+            return expect(rootWeb).to.haveOwnProperty("_url");
         });
 
-        // TODO: This throw timeout error because post never returns
+        // TODO: This errors due to endpoint not returning a value.
         it(".getContextInfo", async function () {
             const oContext: IContextInfo = await _spfi.site.getContextInfo();
             return expect(oContext).to.haveOwnProperty("SiteFullUrl");
         });
 
         // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
-        it(".getDocumentLibraries", async function () {
-            const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
+        it.only(".getDocumentLibraries", async function () {
+            const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
             const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
             return docLibs.forEach((docLib) => {
                 expect(docLib).to.haveOwnProperty("Title");

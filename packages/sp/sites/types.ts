@@ -59,9 +59,18 @@ export class _Site extends _SPInstance {
      * Gets the context information for this site collection
      */
     public async getContextInfo(): Promise<IContextInfo> {
+        // TODO:: Getting context seems to return undefined no matter what you do.  Adjusted the call to
+        // get the root site url in case that would solve the issue, it didn't.
+        const web = await this.rootWeb.select("Url")<{ Url: string }>();
+        const q = Site(web.Url, "_api/contextinfo");
+        // Old Line that uses the url of the subsite because parentUrl is same as string used to create Queryable
+        // const q = Site(this.parentUrl, "_api/contextinfo");
 
-        const q = Site(this.parentUrl, "_api/contextinfo");
-        const data = await spPost(q);
+        // Added Header like docs show just in case that solved it, did not make a difference
+        const requestInit: RequestInit = {
+            headers: { "Accept": "application/json;odata=verbose" }
+        };
+        const data = await spPost(q, requestInit);
 
         if (hOP(data, "GetContextWebInformation")) {
             const info = data.GetContextWebInformation;
@@ -89,8 +98,10 @@ export class _Site extends _SPInstance {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
-
-        const q = SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
+        // TODO:: This doesn't work; I suspect we shouldn't be using SPQueryable this way 
+        // -- as the url is wrong-- but it still returns undefined using the Site method.
+        //const q = SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
+        const q = Site(this.parentUrl, "_api/sp.web.getdocumentlibraries(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;

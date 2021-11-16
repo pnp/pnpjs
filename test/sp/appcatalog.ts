@@ -33,9 +33,16 @@ describe("AppCatalog", function () {
             return expect(appCatalog(), "all apps should've been fetched").to.eventually.be.fulfilled;
         });
 
-        it(".add", function () {
+        it(".add", async function () {
             const appName: string = getRandomString(25);
-            return expect(appCatalog.add(appName, sppkgData), `app '${appName}' should've been added`).to.eventually.be.fulfilled;
+
+            const app = await appCatalog.add(appName, sppkgData);
+
+            after(async function () {
+                await app.file.delete();
+            });
+
+            return expect(app.data.Name).to.eq(appName);
         });
 
         it(".getAppById", async function () {
