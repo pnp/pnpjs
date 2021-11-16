@@ -21,7 +21,7 @@ export class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
 
     }
 }
-export interface IHubSites extends _HubSites {}
+export interface IHubSites extends _HubSites { }
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
 export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
@@ -35,7 +35,7 @@ export class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
         return Site(d.SiteUrl);
     }
 }
-export interface IHubSite extends _HubSite {}
+export interface IHubSite extends _HubSite { }
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
 export interface IHubSiteInfo {
@@ -69,5 +69,5 @@ export interface IHubSiteWebData {
     requiresJoinApproval: boolean;
     hideNameInNavigation: boolean;
     parentHubSiteId: string;
-    relatedHubSiteIds: string | null;
+    relatedHubSiteIds: string[] | null;
 }
