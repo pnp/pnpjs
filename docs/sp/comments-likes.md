@@ -129,10 +129,12 @@ const comments = await item.comments.expand("replies", "likedBy", "replies/liked
 
 ```TypeScript
 // you can add a comment as a string
-item.comments.add("string comment");
+const comment = await item.comments.add("string comment");
 
 // or you can add it as an object to include mentions
-item.comments.add({ text: "comment from object property" });
+const commentInfo: Partial<ICommentInfo> = { text: "This is the test comment with at mentions", 
+    mentions: [{ loginName: 'test@contoso.com', email: 'test@contoso.com', name: 'Test User' }], };
+const comment = await page.addComment(commentInfo);
 ```
 
 ### Delete a Comment

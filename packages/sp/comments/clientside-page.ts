@@ -23,7 +23,7 @@ declare module "../clientside-pages/types" {
          *
          * @param info The comment information
          */
-        addComment(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;
+        addComment(info: string | Partial<ICommentInfo>): Promise<IComment & ICommentInfo>;
         /**
          *
          * @param id gets a comment by id
