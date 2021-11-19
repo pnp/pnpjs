@@ -177,31 +177,49 @@ export class SampleService {
 
 > Please see the [main article on how we support node versions](../nodejs) that require commonjs modules.
 
-`npm i @pnp/sp-commonjs @pnp/nodejs-commonjs`
+`npm i @pnp/sp @pnp/nodejs`
 
-This will install the logging, common, odata, sp, and nodejs packages. You can read more about what each package does starting on the [packages](packages.md) page.
+This will install the sp and nodejs packages. You can read more about what each package does starting on the [packages](packages.md) page.
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
-import { sp } from "@pnp/sp-commonjs";
-import { SPFetchClient } from "@pnp/nodejs-commonjs";
+import { spfi } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
+import { ThrowErrors } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import { readFileSync } from 'fs';
 ```
 
 Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.
 
+
 ```TypeScript
 // configure your node options (only once in your application)
-sp.setup({
-    sp: {
-        fetchClientFactory: () => {
-            return new SPFetchClient("{site url}", "{client id}", "{client secret}");
-        },
+const buffer = readFileSync("c:/temp/key.pem");
+
+const config:any = {
+  auth: {
+    authority: "https://login.microsoftonline.com/{tenant id or common}/",
+    clientId: "{application (client) id}",
+    clientCertificate: {
+      thumbprint: "{certificate thumbprint, displayed in AAD}",
+      privateKey: buffer.toString(),
     },
-});
+  },
+};
+
+const sp = spfi('https://{my tenant}.sharepoint.com/sites/dev/')
+.using(SPDefault({
+  baseUrl: 'https://{my tenant}.sharepoint.com/sites/dev/',
+  msal: {
+    config: config,
+    scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
+  }
+})).using(ThrowErrors());
 
 // make a call to SharePoint and log it in the console
 sp.web.select("Title", "Description").get().then(w => {
-    console.log(JSON.stringify(w, null, 4));
+  console.log(JSON.stringify(w, null, 4));
 });
 ```
 
@@ -211,31 +229,32 @@ Similar to the above you can also make calls to the Graph api from node using th
 [./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts) for a live example.
 
 ```CMD
-npm i @pnp/graph-commonjs @pnp/nodejs-commonjs
+npm i @pnp/graph @pnp/nodejs
 ```
 
 Now we need to import what we'll need to call graph
 
 ```TypeScript
-import { graph } from "@pnp/graph-commonjs";
-import { AdalFetchClient } from "@pnp/nodejs-commonjs";
+import { graphfi } from "@pnp/graph";
+import { GraphDefault } from "@pnp/nodejs";
+import { ThrowErrors } from "@pnp/queryable";
+import "@pnp/graph/users";
 ```
 
-Now we can make our graph calls after setting up the Adal client. Note you'll need to setup an AzureAD App registration with the necessary permissions.
+Now we can make our graph calls after setting up the MSAL client. Note you'll need to setup an AzureAD App registration with the necessary permissions.
 
 ```TypeScript
-graph.setup({
-    graph: {
-        fetchClientFactory: () => {
-            return new AdalFetchClient("{mytenant}.onmicrosoft.com", "{application id}", "{application secret}");
-        },
-    },
-});
-
+const graph = graphfi()
+.using(GraphDefault({
+  baseUrl: 'https://graph.microsoft.com',
+  msal: {
+    config: config,
+    scopes: [ 'https://graph.microsoft.com/.default' ]
+  }
+})).using(ThrowErrors());
 // make a call to Graph and get all the groups
-graph.groups.get().then(g => {
-    console.log(JSON.stringify(g, null, 4));
-});
+const userInfo = await graph.users.top(1)();
+console.log(JSON.stringify(userInfo, null, 4));
 ```
 
 ## Getting Started outside SharePoint Framework
