@@ -133,7 +133,6 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                     this.log(`[request:${requestId}] Result returned from pre`, 1);
                     this.log(`[request:${requestId}] Emitting data`, 0);
-                    this.emit[this.InternalResolveEvent](result);
                     this.emit.data(result);
                     this.log(`[request:${requestId}] Emitted data`, 0);
 
@@ -159,25 +158,14 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 [requestUrl, result] = await this.emit.post(requestUrl, result);
                 this.log(`[request:${requestId}] Emitted post`, 0);
 
-                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
-                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
-                // completed event to signal the request is completed?
-                if (typeof result !== "undefined") {
-                    this.log(`[request:${requestId}] Emitting data`, 0);
-                    this.emit[this.InternalResolveEvent](result);
-                    this.emit.data(result);
-                    this.log(`[request:${requestId}] Emitted data`, 0);
-                } else {
-                    // we need to resolve the promise, perhaps this queryable doesn't return a result
-                    // but hasn't produced an error
-                    this.emit[this.InternalResolveEvent](result);
-                }
+                this.log(`[request:${requestId}] Emitting data`, 0);
+                this.emit.data(result);
+                this.log(`[request:${requestId}] Emitted data`, 0);
 
             } catch (e) {
 
                 this.log(`[request:${requestId}] Emitting error: "${e.message || e}"`, 3);
                 // anything that throws we emit and continue
-                this.emit[this.InternalRejectEvent](e);
                 this.error(e);
                 this.log(`[request:${requestId}] Emitted error: "${e.message || e}"`, 3);
 

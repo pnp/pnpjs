@@ -153,14 +153,6 @@ export abstract class Timeline<T extends Moments> {
     }
 
     /**
-     * Shorthand method to emit a dispose event tied to this timeline
-     *
-     */
-    protected dispose(): void {
-        this.emit.dispose();
-    }
-
-    /**
      * Shorthand method to emit an error event tied to this timeline
      *
      * @param e Optional. Any error object to emit. If none is provided no emit occurs
@@ -169,14 +161,6 @@ export abstract class Timeline<T extends Moments> {
         if (objectDefinedNotNull(e)) {
             this.emit.error(e);
         }
-    }
-
-    /**
-     * Shorthand method to emit an init event tied to this timeline
-     *
-     */
-    protected init(): void {
-        this.emit.init();
     }
 
     /**
@@ -241,10 +225,10 @@ export abstract class Timeline<T extends Moments> {
         try {
 
             // initialize our timeline
-            this.init();
+            this.emit.init();
 
             // execute the timeline
-            return await this.execute(init);
+            return this.execute(init);
 
         } catch (e) {
 
@@ -254,7 +238,7 @@ export abstract class Timeline<T extends Moments> {
 
             try {
 
-                this.dispose();
+                this.emit.dispose();
 
             } catch (e) {
 

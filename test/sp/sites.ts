@@ -36,7 +36,7 @@ describe("Sites", function () {
         });
 
         // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
-        it.only(".getDocumentLibraries", async function () {
+        it(".getDocumentLibraries", async function () {
             const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
             const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
             return docLibs.forEach((docLib) => {

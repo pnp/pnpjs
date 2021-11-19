@@ -77,7 +77,6 @@ export function CachingPessimisticRefresh(
 
                         const emitError = (e) => {
                             this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
-                            this.emit[this.InternalRejectEvent](e);
                             this.emit.error(e);
                             this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
@@ -111,7 +110,6 @@ export function CachingPessimisticRefresh(
 
                             const emitData = () => {
                                 this.emit.log(`[id:${requestId}] Emitting data`, 0);
-                                this.emit[this.InternalResolveEvent](retVal);
                                 this.emit.data(retVal);
                                 this.emit.log(`[id:${requestId}] Emitted data`, 0);
                             };
@@ -146,15 +144,9 @@ export function CachingPessimisticRefresh(
                             } else {
                                 retVal = await emitSend();
 
-                                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
-                                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
-                                // completed event to signal the request is completed?
-                                if (typeof retVal !== "undefined") {
+                                this.emit.log(`[id:${requestId}] Returning results`, 1);
 
-                                    this.emit.log(`[id:${requestId}] Returning results`, 1);
-
-                                    emitData();
-                                }
+                                emitData();
                             }
                         } catch (e) {
                             emitError(e);

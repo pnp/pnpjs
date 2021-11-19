@@ -1,6 +1,6 @@
 import { TimelinePipe } from "@pnp/core";
-import { InjectHeaders, Queryable } from "@pnp/queryable";
-import { Telemetry } from "..";
+import { InjectHeaders, Queryable, RejectOnError, ResolveOnData } from "@pnp/queryable";
+import { Telemetry } from "./telemetry.js";
 
 export function DefaultInit(): TimelinePipe<Queryable> {
 
@@ -14,7 +14,10 @@ export function DefaultInit(): TimelinePipe<Queryable> {
             return [url, init, result];
         });
 
-        Telemetry()(instance);
+        instance.using(
+            Telemetry(),
+            RejectOnError(),
+            ResolveOnData());
 
         return instance;
     };
