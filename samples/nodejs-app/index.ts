@@ -8,7 +8,7 @@ import {readFileSync} from 'fs';
 import "@pnp/sp/webs/index.js";
 import "@pnp/graph/users/index.js";
 
-const buffer = readFileSync("./certs/key.pem");
+const buffer = readFileSync("c:/temp/key.pem");
 
 const config:any = {
     auth: {

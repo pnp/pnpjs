@@ -29,7 +29,7 @@ import {readFileSync} from 'fs';
 import "@pnp/sp/webs/index.js";
 import "@pnp/graph/users/index.js";
 
-const buffer = readFileSync("./certs/key.pem");
+const buffer = readFileSync("c:/temp/key.pem");
 
 // we create the config to use with the node clients
 const config:any = {
