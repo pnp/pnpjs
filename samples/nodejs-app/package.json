@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "description": "Sample nodejs app using PnPjs",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "tsc -p . && node dist/index.js",
+    "start": "tsc -p . && node --experimental-specifier-resolution=node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@pnp/nodejs-commonjs": "^2.0.2-5",
-    "@pnp/sp-commonjs": "^2.0.2-5"
+    "@pnp/sp": "^3.0.0-v3nightly.20211018",
+    "@pnp/graph": "^3.0.0-v3nightly.20211018",
+    "@pnp/nodejs": "^3.0.0-v3nightly.20211018"
   },
   "devDependencies": {
-    "typescript": "^3.7.5"
+    "typescript": "^4.2.3"
   }
 }
