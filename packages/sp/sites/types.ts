@@ -1,8 +1,8 @@
-import { _SPInstance, spInvokableFactory, SPQueryable } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { hOP } from "@pnp/core";
-import { body } from "@pnp/queryable";
+import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
@@ -59,18 +59,8 @@ export class _Site extends _SPInstance {
      * Gets the context information for this site collection
      */
     public async getContextInfo(): Promise<IContextInfo> {
-        // TODO:: Getting context seems to return undefined no matter what you do.  Adjusted the call to
-        // get the root site url in case that would solve the issue, it didn't.
-        const web = await this.rootWeb.select("Url")<{ Url: string }>();
-        const q = Site(web.Url, "_api/contextinfo");
-        // Old Line that uses the url of the subsite because parentUrl is same as string used to create Queryable
-        // const q = Site(this.parentUrl, "_api/contextinfo");
 
-        // Added Header like docs show just in case that solved it, did not make a difference
-        const requestInit: RequestInit = {
-            headers: { "Accept": "application/json;odata=verbose" }
-        };
-        const data = await spPost(q, requestInit);
+        const data = await spPost(Site([this, this.parentUrl], "_api/contextinfo"));
 
         if (hOP(data, "GetContextWebInformation")) {
             const info = data.GetContextWebInformation;
@@ -88,7 +78,7 @@ export class _Site extends _SPInstance {
     public async delete(): Promise<void> {
 
         const site = await Site(this, "").select("Id")<{ Id: string }>();
-        const q = Site(this.parentUrl, "_api/SPSiteManager/Delete");
+        const q = Site([this, this.parentUrl], "_api/SPSiteManager/Delete");
         await spPost(q, body({ siteId: site.Id }));
     }
 
@@ -98,10 +88,7 @@ export class _Site extends _SPInstance {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
-        // TODO:: This doesn't work; I suspect we shouldn't be using SPQueryable this way 
-        // -- as the url is wrong-- but it still returns undefined using the Site method.
-        //const q = SPQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
-        const q = Site(this.parentUrl, "_api/sp.web.getdocumentlibraries(@v)");
+        const q = Site([this, this.parentUrl], "_api/sp.web.getdocumentlibraries(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
@@ -114,7 +101,7 @@ export class _Site extends _SPInstance {
      */
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
-        const q = SPQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
+        const q = Site([this, this.parentUrl], "_api/sp.web.getweburlfrompageurl(@v)");
         q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
@@ -243,21 +230,18 @@ export class _Site extends _SPInstance {
             isPublic: p.isPublic,
             optionalParams: {
                 Classification: p.classification,
-                CreationOptions: {
-                    "results": [`SPSiteLanguage:${p.lcid}`, `HubSiteId:${p.hubSiteId}`],
-                },
+                CreationOptions: [`SPSiteLanguage:${p.lcid}`, `HubSiteId:${p.hubSiteId}`],
+
                 Description: p.description,
-                Owners: {
-                    "results": p.owners,
-                },
+                Owners: p.owners,
             },
         };
 
         if (p.siteDesignId) {
-            postBody.optionalParams.CreationOptions.results.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${p.siteDesignId}`);
+            postBody.optionalParams.CreationOptions.push(`implicit_formula_292aa8a00786498a87a5ca52d9f4214a_${p.siteDesignId}`);
         }
 
-        return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/GroupSiteManager/CreateGroupEx"), body(postBody));
+        return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/GroupSiteManager/CreateGroupEx").using(TextParse()), body(postBody));
     }
 }
 export interface ISite extends _Site { }

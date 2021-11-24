@@ -17,7 +17,7 @@ describe("Sharing", function () {
     this.timeout(120000);
     const testSharingLib = "SharingTestLib";
     const testSharingFolder = "MyTestFolder";
-    const testSharingFile = "test.txt"
+    const testSharingFile = "test.txt";
     let webAbsUrl = "";
     let webRelativeUrl = "";
     let _spfi: SPFI;
@@ -40,8 +40,8 @@ describe("Sharing", function () {
         }
 
         // add a file and folder
-        const folder = await ler.list.rootFolder.folders.addUsingPath(testSharingFolder);
-        const file = await ler.list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
+        await ler.list.rootFolder.folders.addUsingPath(testSharingFolder);
+        await ler.list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
     });
 
     after(async function () {

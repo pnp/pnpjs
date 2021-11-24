@@ -108,6 +108,7 @@ describe("Items", function () {
             const iur = await list.items.getById(item.Id).update({
                 Title: `Item ${getRandomString(4)}`,
             });
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(iur).to.not.be.null;
         });
 

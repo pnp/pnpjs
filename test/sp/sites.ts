@@ -1,10 +1,8 @@
 import { expect } from "chai";
-import { spfi } from "@pnp/sp";
-import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { getSP, testSettings, TestReporting } from "../main.js";
+import { getSP, testSettings } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString } from "@pnp/core";
@@ -23,19 +21,16 @@ describe("Sites", function () {
             return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
         });
 
-        // TODO:: rootWeb's _url doesn't match parentUrl
         it(".getRootWeb", async function () {
             const rootWeb: IWeb = await _spfi.site.getRootWeb();
             return expect(rootWeb).to.haveOwnProperty("_url");
         });
 
-        // TODO: This errors due to endpoint not returning a value.
         it(".getContextInfo", async function () {
             const oContext: IContextInfo = await _spfi.site.getContextInfo();
             return expect(oContext).to.haveOwnProperty("SiteFullUrl");
         });
 
-        // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
         it(".getDocumentLibraries", async function () {
             const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
             const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
@@ -44,7 +39,6 @@ describe("Sites", function () {
             });
         });
 
-        // TODO: This doesn't work, and maybe is no longer valid since it seems to be meant to run from app
         it(".getWebUrlFromPageUrl", async function () {
             const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
             const path = combine(webInfo.Url, "SitePages", "Home.aspx");
@@ -78,8 +72,6 @@ describe("createModern Team & Comm Sites", function () {
     if (testSettings.enableWebTests && testSettings.testUser?.length > 0) {
         let _spfi: SPFI = null;
         let testUserEmail = "";
-        let commSiteUrl = "";
-        let teamSiteUrl = "";
 
         before(function () {
             _spfi = getSP();
@@ -88,54 +80,33 @@ describe("createModern Team & Comm Sites", function () {
             testUserEmail = testUserEmailArray[testUserEmailArray.length - 1];
         });
 
-        after(async function () {
-            if (commSiteUrl.length > 0) {
-                const spComm = spfi(commSiteUrl).using(SPDefault({
-                    msal: {
-                        config: testSettings.sp.msal.init,
-                        scopes: testSettings.sp.msal.scopes,
-                    },
-                }));
-                await spComm.site.delete();
-            }
-            if (teamSiteUrl.length > 0) {
-                const spTeam = spfi(teamSiteUrl).using(SPDefault({
-                    msal: {
-                        config: testSettings.sp.msal.init,
-                        scopes: testSettings.sp.msal.scopes,
-                    },
-                }));
-                await spTeam.site.delete();
-            }
-        });
-
-        // TODO: Verify this is still valid, timing out.
+        // these work but permissions are wonky
         it.skip(".createModernTeamSite", async function () {
             this.timeout(90000);
             const randomNum = getRandomString(5);
-            const teamSite = await _spfi.site.createModernTeamSite(
+            const promise = _spfi.site.createModernTeamSite(
                 "TestModernTeamSite01" + randomNum,
                 "Alias",
                 false,
                 1033,
                 "TestModernTeamSite01" + randomNum + " description", "HBI", [testUserEmail]);
-            teamSiteUrl = teamSite.SiteUrl;
-            return expect(teamSite.SiteUrl).length.to.be.greaterThan(0);
+
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
-        // TODO: Verify this is still valid, timing out.
+        // these work but permissions are wonky
         it.skip(".createCommunicationSite", async function () {
             this.timeout(90000);
             const randomNum = getRandomString(5);
-            const commSite = await _spfi.site.createCommunicationSite(
+            const promise = _spfi.site.createCommunicationSite(
                 "TestModernCommSite01" + randomNum, 1033,
                 false,
                 testSettings.sp.testWebUrl + "/sites/commSite" + randomNum,
                 "TestModernCommSite01", "HBI",
                 "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
                 testUserEmail);
-            commSiteUrl = commSite.SiteUrl;
-            return expect(commSite.SiteUrl).length.to.be.greaterThan(0);
+
+            return expect(promise).to.eventually.be.fulfilled;
         });
     }
 });

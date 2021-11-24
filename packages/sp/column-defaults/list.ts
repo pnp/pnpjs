@@ -1,4 +1,4 @@
-import { addProp, headers, body, TextParse } from "@pnp/queryable";
+import { addProp, body, TextParse, ThrowErrors } from "@pnp/queryable";
 import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
@@ -37,12 +37,11 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms/client_LocationBasedDefaults.html");
     const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`);
 
-    // we do this because we don't want to import file if we don't have to
     let xml = "";
 
     try {
 
-        xml = await Folder(baseFilePath, "$value").using(TextParse())(headers({ "binaryStringResponseBody": "true" }));
+        xml = await <any>Folder([this, baseFilePath], "$value").using(TextParse(), ThrowErrors())();
 
     } catch (e) {
 
@@ -199,7 +198,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");
     const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`, "files");
 
-    await spPost(Folder(baseFilePath, "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
+    await spPost(Folder([this, baseFilePath], "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
 
     // finally we need to ensure this list has the right event receiver added
     const existingReceivers = await this.eventReceivers.filter("ReceiverName eq 'LocationBasedMetadataDefaultsReceiver ItemAdded'").select("ReceiverId")();

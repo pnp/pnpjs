@@ -19,6 +19,7 @@ import "@pnp/sp/regional-settings/web";
 import "@pnp/sp/clientside-pages";
 import { SPFI } from "@pnp/sp";
 import { INavNodeInfo } from "@pnp/sp/navigation/types.js";
+import testSPInvokables from "../test-invokable-props.js";
 
 describe("Webs", function () {
 
@@ -50,95 +51,25 @@ describe("Web", function () {
             _spfi = getSP();
         });
 
-        describe("Invokable Properties", function () {
-            const tests: any = {};
-            tests[".roleDefinitions"] = null;
-            tests[".webs"] = null;
-            tests[".contentTypes"] = null;
-            tests[".lists"] = null;
-            tests[".siteUserInfoList"] = null;
-            tests[".defaultDocumentLibrary"] = null;
-            tests[".customListTemplates"] = null;
-            tests[".siteUsers"] = null;
-            tests[".siteGroups"] = null;
-            tests[".userCustomActions"] = null;
-            tests[".allProperties"] = null;
-            tests[".webinfos"] = null;
-            tests[".features"] = null;
-            tests[".fields"] = null;
-            tests[".availablefields"] = null;
-            tests[".folders"] = null;
-            tests[".rootFolder"] = null;
-            tests[".regionalSettings"] = null;
-
-            before(function () {
-                Object.getOwnPropertyNames(tests).forEach((key) => {
-                    switch (key) {
-                        case ".roleDefinitions":
-                            tests[key] = _spfi.web.roleDefinitions;
-                            break;
-                        case ".webs":
-                            tests[key] = _spfi.web.webs;
-                            break;
-                        case ".contentTypes":
-                            tests[key] = _spfi.web.contentTypes;
-                            break;
-                        case ".lists":
-                            tests[key] = _spfi.web.lists;
-                            break;
-                        case ".siteUserInfoList":
-                            tests[key] = _spfi.web.siteUserInfoList;
-                            break;
-                        case ".defaultDocumentLibrary":
-                            tests[key] = _spfi.web.defaultDocumentLibrary;
-                            break;
-                        case ".customListTemplates":
-                            tests[key] = _spfi.web.customListTemplates;
-                            break;
-                        case ".siteUsers":
-                            tests[key] = _spfi.web.siteUsers;
-                            break;
-                        case ".siteGroups":
-                            tests[key] = _spfi.web.siteGroups;
-                            break;
-                        case ".userCustomActions":
-                            tests[key] = _spfi.web.userCustomActions;
-                            break;
-                        case ".allProperties":
-                            tests[key] = _spfi.web.allProperties;
-                            break;
-                        case ".webinfos":
-                            tests[key] = _spfi.web.webinfos;
-                            break;
-                        case ".features":
-                            tests[key] = _spfi.web.features;
-                            break;
-                        case ".fields":
-                            tests[key] = _spfi.web.fields;
-                            break;
-                        case ".availablefields":
-                            tests[key] = _spfi.web.availablefields;
-                            break;
-                        case ".folders":
-                            tests[key] = _spfi.web.folders;
-                            break;
-                        case ".rootFolder":
-                            tests[key] = _spfi.web.rootFolder;
-                            break;
-                        case ".regionalSettings":
-                            tests[key] = _spfi.web.regionalSettings;
-                            break;
-                    }
-                });
-            });
-
-            Object.getOwnPropertyNames(tests).forEach((key) => {
-                it(key, function () {
-                    const test = tests[key];
-                    return expect((<any>test)()).to.eventually.be.fulfilled;
-                });
-            });
-        });
+        describe.only("Invokable Properties", testSPInvokables(() => _spfi.web,
+            "roleDefinitions",
+            "webs",
+            "contentTypes",
+            "lists",
+            "siteUserInfoList",
+            "defaultDocumentLibrary",
+            "customListTemplates",
+            "siteUsers",
+            "siteGroups",
+            "userCustomActions",
+            "allProperties",
+            "webinfos",
+            "features",
+            "fields",
+            "availablefields",
+            "folders",
+            "rootFolder",
+            "regionalSettings"));
 
         it(".navigation", async function () {
             const ql: INavNodeInfo[] = await _spfi.web.navigation.quicklaunch();
@@ -282,10 +213,6 @@ describe("Web", function () {
 
                 return expect(_spfi.web.relatedItems).to.not.be.null;
             });
-        });
-
-        describe("site-groups", function () {
-            // .createDefaultAssociatedGroups groups are already created so we get back a forbidden error
         });
 
         describe("site-users", function () {

@@ -38,6 +38,6 @@
         }
     },
     "include": [
-        "./packages/**/*.ts", "packages/logging/behaviors",
+        "./packages/**/*.ts",
     ]
 }

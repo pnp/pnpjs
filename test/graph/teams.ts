@@ -48,7 +48,7 @@ describe("Teams", function () {
 
         it(".create()", async function () {
             const teamName = `TestTeam_${getRandomString(4)}`;
-            teamBody["displayName"] = teamName;
+            (<any>teamBody).displayName = teamName;
             const teamCreateResult = await _graphfi.teams.create(teamBody);
             teamID = teamCreateResult.teamId;
             operationID = teamCreateResult.operationId;

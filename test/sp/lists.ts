@@ -143,12 +143,12 @@ describe("List", function () {
             return expect(listEnsure.list.getItemsByCAMLQuery(caml, "RoleAssignments")).to.eventually.be.fulfilled;
         });
 
-        // TODO: There is an error in the TextParse, throws error line 15 in queryable/behaviors/parsers.ts because response is XML
         it(".getListItemChangesSinceToken", async function () {
             const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getListItemChangesSinceToken");
             const query: IChangeLogItemQuery = {
                 Contains: "<Contains><FieldRef Name=\"Title\"/><Value Type=\"Text\">Testing</Value></Contains>",
-                QueryOptions: '<QueryOptions><IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns><DateInUtc>False</DateInUtc><IncludePermissions>TRUE</IncludePermissions><IncludeAttachmentUrls>FALSE</IncludeAttachmentUrls><Folder>Shared Documents/Test1</Folder></QueryOptions>',
+                // eslint-disable-next-line max-len
+                QueryOptions: "<QueryOptions><IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns><DateInUtc>False</DateInUtc><IncludePermissions>TRUE</IncludePermissions><IncludeAttachmentUrls>FALSE</IncludeAttachmentUrls><Folder>Shared Documents/Test1</Folder></QueryOptions>",
             };
             return expect(listEnsure.list.getListItemChangesSinceToken(query)).to.eventually.be.fulfilled;
         });

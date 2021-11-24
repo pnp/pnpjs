@@ -228,7 +228,8 @@ export abstract class Timeline<T extends Moments> {
             this.emit.init();
 
             // execute the timeline
-            return this.execute(init);
+            // (this await is required to ensure dispose is called AFTER execute completes)
+            return await this.execute(init);
 
         } catch (e) {
 

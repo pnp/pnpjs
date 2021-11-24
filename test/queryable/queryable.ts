@@ -4,6 +4,8 @@ import {
     BearerToken,
     InjectHeaders,
     DefaultParse,
+    ResolveOnData,
+    RejectOnError,
 } from "@pnp/queryable";
 
 describe("Queryable", function () {
@@ -13,6 +15,7 @@ describe("Queryable", function () {
         const tracker = [];
 
         const q = new Queryable("https://bing.com");
+        q.using(ResolveOnData(), RejectOnError());
 
         q.on.init(() => {
             tracker.push(1);

@@ -36,7 +36,7 @@
       "runtimeArgs": [],
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["--noretries", "--verbose", "--logging"],
+      "args": ["--retries", "0", "--verbose", "--logging", "--site", "https://318studios.sharepoint.com/sites/dev/08675be5-2bd0-42d9-9acf-0b8fca3788e2"],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

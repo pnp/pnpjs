@@ -65,6 +65,11 @@ describe("Fields", function () {
                 const field = await _spfi.web.fields.addText(testFieldNameRand, { Group: testFieldGroup });
                 return expect(field.data.Title).to.be.equal(testFieldNameRand);
             });
+            it(".addNumber", async function () {
+                const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+                const field = await _spfi.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
+                return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            });
             it(".addCalculated", async function () {
                 const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
                 const field = await _spfi.web.fields
@@ -97,7 +102,14 @@ describe("Fields", function () {
             it(".addMultilineText", async function () {
                 const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
                 const field = await _spfi.web.fields
-                    .addMultilineText(testFieldNameRand, { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: testFieldGroup });
+                    .addMultilineText(testFieldNameRand, {
+                        NumberOfLines: 6,
+                        RichText: true,
+                        RestrictedMode: false,
+                        AppendOnly: false,
+                        AllowHyperlink: true,
+                        Group: testFieldGroup,
+                    });
                 return expect(field.data.Title).to.be.equal(testFieldNameRand);
             });
             it(".addUrl", async function () {
@@ -244,6 +256,11 @@ describe("Fields", function () {
                 const field = await _spfi.web.lists.getByTitle(listName).fields.addText(testFieldNameRand, { MaxLength: 255, Group: testFieldGroup });
                 return expect(field.data.Title).to.be.equal(testFieldNameRand);
             });
+            it(".addNumber", async function () {
+                const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+                const field = await _spfi.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
+                return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            });
             it(".addCalculated", async function () {
                 const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
                 const field = await _spfi.web.lists.getByTitle(listName).fields
@@ -274,7 +291,14 @@ describe("Fields", function () {
             it(".addMultilineText", async function () {
                 const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
                 const field = await _spfi.web.fields
-                    .addMultilineText(testFieldNameRand, { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: testFieldGroup });
+                    .addMultilineText(testFieldNameRand, {
+                        NumberOfLines: 6,
+                        RichText: true,
+                        RestrictedMode: false,
+                        AppendOnly: false,
+                        AllowHyperlink: true,
+                        Group: testFieldGroup,
+                    });
                 return expect(field.data.Title).to.be.equal(testFieldNameRand);
             });
             it(".addUrl", async function () {

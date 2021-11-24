@@ -168,7 +168,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(ThrowErrors());
+    }));
     _spRoot = rootSP;
 
     if (siteUsed) {

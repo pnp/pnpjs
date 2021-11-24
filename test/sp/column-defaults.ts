@@ -13,7 +13,6 @@ import "@pnp/sp/batching";
 import { SPFI } from "@pnp/sp";
 import { IList } from "@pnp/sp/lists";
 
-// TODO:: All Tests are Failing
 describe("DefaultColumnValues", function () {
 
     if (testSettings.enableWebTests) {
@@ -28,9 +27,10 @@ describe("DefaultColumnValues", function () {
 
             if (ler.created) {
                 const [batchSP, execute] = _spfi.batched();
-                batchSP.web.lists.getByTitle(listName).fields.addText("TextField");
-                batchSP.web.lists.getByTitle(listName).fields.addNumber("NumberField");
-                batchSP.web.lists.getByTitle(listName).fields.addMultiChoice("MultiChoiceField", { Choices: ["Item 1", "Item 2", "Item 3"] });
+                const fields = batchSP.web.lists.getByTitle(listName).fields;
+                fields.addText("TextField");
+                fields.addNumber("NumberField");
+                fields.addMultiChoice("MultiChoiceField", { Choices: ["Item 1", "Item 2", "Item 3"] });
                 await execute();
             }
         });

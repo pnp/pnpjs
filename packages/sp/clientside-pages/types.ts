@@ -2,7 +2,7 @@ import { body, headers } from "@pnp/queryable";
 import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
-import { _SPQueryable, ISPQueryable, SPQueryable, SPCollection } from "../spqueryable.js";
+import { _SPQueryable, SPQueryable, SPCollection, SPInit } from "../spqueryable.js";
 import { List } from "../lists/types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { Web, IWeb } from "../webs/types.js";
@@ -56,7 +56,7 @@ export class _ClientsidePage extends _SPQueryable {
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
     constructor(
-        base: string | ISPQueryable | [ISPQueryable, string],
+        base: SPInit,
         path?: string,
         protected json?: Partial<IPageData>,
         noInit = false,
@@ -69,27 +69,11 @@ export class _ClientsidePage extends _SPQueryable {
         this._bannerImageThumbnailUrlDirty = false;
         this.parentUrl = "";
 
-        // TODO:: START OF JULIES HACK SOLUTION
-
-        let tmpBase = "";
-        if (typeof base === "string") {
-            tmpBase = base;
-        } else {
-            if (base["length"] > 1) {
-                // If you're just doing ClientsidePageFromFile then this works -- probably??
-                tmpBase = base[base["length"] - 1];
-            } else {
-                // If you're just doing CreateClientsidePage then this works
-                tmpBase = (<ISPQueryable>base).toUrl();
-            }
-        }
-
-        const tmpBase2 = extractWebUrl(tmpBase);
-        this._url = combine(tmpBase2, path);
-
-        // ### FIXES THIS LINE???
-        // this._url = combine(extractWebUrl(typeof base === "string" ? base : Reflect.has(base, "length") ? (<ISPQueryable>base[0]).toUrl() : (<ISPQueryable>base).toUrl()), path);
-        // END OF JULIES HACK SOLUTION
+        // we need to rebase the url to always be the web url plus the path
+        // Queryable handles the correct parsing of the SPInit, and we pull
+        // the weburl and combine with the supplied path, which is unique
+        // to how ClientsitePages works. This class is a special case.
+        this._url = combine(extractWebUrl(this._url), path);
 
         // set a default page settings slice
         this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
@@ -566,7 +550,7 @@ export class _ClientsidePage extends _SPQueryable {
 
         this.json.BannerImageUrl = url;
         // update serverProcessedContent (page behavior change 2021-Oct-13)
-        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url }, };
+        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url } };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
@@ -881,14 +865,13 @@ export interface IClientsidePage extends _ClientsidePage { }
  * Invokable factory for IClientSidePage instances
  */
 const ClientsidePage = (
-    base: string | ISPQueryable | [ISPQueryable, string],
+    base: SPInit,
     path?: string,
     json?: Partial<IPageData>,
     noInit = false,
     sections: CanvasSection[] = [],
     commentsDisabled = false): IClientsidePage => {
 
-    // TODO:: does this work
     return new _ClientsidePage(base, path, json, noInit, sections, commentsDisabled);
 };
 

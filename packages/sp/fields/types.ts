@@ -74,7 +74,9 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
 
         const field = this.getById(createData.Id);
 
-        await field.update(properties);
+        if (typeof properties !== "undefined") {
+            await field.update(properties);
+        }
 
         const data = await field();
 
@@ -158,7 +160,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 9, properties);
+        return this.add(title, 9, { ...properties });
     }
 
     /**

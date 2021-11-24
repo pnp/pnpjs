@@ -138,7 +138,7 @@ describe("SiteScripts", function () {
                 "the lists site script should've been fetched").to.eventually.be.fulfilled;
         });
 
-        it(".getSiteScript (web)", async function () {
+        it.skip(".getSiteScript (web)", async function () {
             return expect(_rootSite.web.getSiteScript(),
                 "the webs site script should've been fetched").to.eventually.be.fulfilled;
         });

@@ -15,7 +15,7 @@ describe("Comments", function () {
         let _spfi: SPFI = null;
         let testUserLogin = "";
         let testUserEmail = "";
-        let testUser = "Test User";
+        const testUser = "Test User";
         before(async function () {
             _spfi = getSP();
 
@@ -54,7 +54,10 @@ describe("Comments", function () {
                 const pageName = `CommentPage_${getRandomString(4)}`;
                 const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
                 await page.save();
-                const commentInfo: Partial<ICommentInfo> = { mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }], text: "This is the test comment with at mentions" };
+                const commentInfo: Partial<ICommentInfo> = {
+                    mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
+                    text: "This is the test comment with at mentions",
+                };
                 const comment = await page.addComment(commentInfo);
                 expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
             });

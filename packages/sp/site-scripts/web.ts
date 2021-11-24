@@ -1,3 +1,4 @@
+import { AssignFrom } from "@pnp/core/index.js";
 import { _Web } from "../webs/types.js";
 import { SiteScripts } from "./types.js";
 import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types.js";
@@ -16,6 +17,8 @@ declare module "../webs/types" {
     }
 }
 
-_Web.prototype.getSiteScript = function (this: _Web, extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
-    return SiteScripts(this.toUrl(), "").getSiteScriptFromWeb(undefined, extractInfo);
+_Web.prototype.getSiteScript = async function (this: _Web, extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult> {
+
+    const info = await this.select("Url")<{ Url: string }>();
+    return SiteScripts(this.toUrl(), "").using(AssignFrom(this)).getSiteScriptFromWeb(info.Url, extractInfo);
 };

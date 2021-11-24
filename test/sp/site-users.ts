@@ -6,25 +6,25 @@ import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
+function testISiteUserInfo(siteUser: ISiteUserInfo): boolean {
+    return Reflect.has(siteUser, "Email") &&
+        Reflect.has(siteUser, "Id") &&
+        Reflect.has(siteUser, "IsHiddenInUI") &&
+        Reflect.has(siteUser, "IsShareByEmailGuestUser") &&
+        Reflect.has(siteUser, "IsSiteAdmin") &&
+        Reflect.has(siteUser, "LoginName") &&
+        Reflect.has(siteUser, "PrincipalType") &&
+        Reflect.has(siteUser, "Title") &&
+        Reflect.has(siteUser, "Expiration") &&
+        Reflect.has(siteUser, "IsEmailAuthenticationGuestUser") &&
+        Reflect.has(siteUser, "UserId") &&
+        Reflect.has(siteUser, "UserPrincipalName");
+}
+
 describe("Site Users", function () {
     describe(".web", function () {
         if (testSettings.enableWebTests) {
             let _spfi: SPFI = null;
-
-            function testISiteUserInfo(siteUser: ISiteUserInfo): boolean {
-                return siteUser.hasOwnProperty("Email") &&
-                    siteUser.hasOwnProperty("Id") &&
-                    siteUser.hasOwnProperty("IsHiddenInUI") &&
-                    siteUser.hasOwnProperty("IsShareByEmailGuestUser") &&
-                    siteUser.hasOwnProperty("IsSiteAdmin") &&
-                    siteUser.hasOwnProperty("LoginName") &&
-                    siteUser.hasOwnProperty("PrincipalType") &&
-                    siteUser.hasOwnProperty("Title") &&
-                    siteUser.hasOwnProperty("Expiration") &&
-                    siteUser.hasOwnProperty("IsEmailAuthenticationGuestUser") &&
-                    siteUser.hasOwnProperty("UserId") &&
-                    siteUser.hasOwnProperty("UserPrincipalName")
-            }
 
             before(function () {
                 _spfi = getSP();

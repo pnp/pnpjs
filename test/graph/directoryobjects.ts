@@ -52,8 +52,8 @@ describe("Directory Objects", function () {
         });
 
         it(".delete", async function () {
-            let groupName = `TestGroup_${getRandomString(4)}`;
-            let result = await _graphfi.groups.add(groupName, groupName, GroupType.Security, {
+            const groupName = `TestGroup_${getRandomString(4)}`;
+            const result = await _graphfi.groups.add(groupName, groupName, GroupType.Security, {
                 "members@odata.bind": [
                     "https://graph.microsoft.com/v1.0/users/" + userInfo.id,
                 ],

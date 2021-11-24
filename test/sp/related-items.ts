@@ -58,7 +58,9 @@ describe("Related Items", function () {
             const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
             await _spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
 
-            return expect(_spfi.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl)).to.eventually.be.fulfilled;
+            const promise = _spfi.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
+
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it(".getRelatedItems", async function () {
