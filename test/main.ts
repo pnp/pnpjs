@@ -244,28 +244,33 @@ after("Finalize Testing", async function () {
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
-    if (deleteAllWebs) {
+    try {
+        if (deleteAllWebs) {
 
-        await cleanUpAllSubsites(_spRoot.web);
+            await cleanUpAllSubsites(_spRoot.web);
 
-    } else if (deleteWeb && testSettings.enableWebTests) {
-        console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
+        } else if (deleteWeb && testSettings.enableWebTests) {
+            console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
 
-        const web = await _sp.web;
-        await cleanUpAllSubsites(web);
+            const web = await _sp.web;
+            await cleanUpAllSubsites(web);
 
-        console.log("All subsites have been removed.");
+            console.log("All subsites have been removed.");
 
-        // Delay so that web can be deleted
-        await delay(500);
+            // Delay so that web can be deleted
+            await delay(500);
 
-        await _sp.web.delete();
+            await _sp.web.delete();
 
-        console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
+            console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
 
-    } else if (testSettings.enableWebTests) {
+        } else if (testSettings.enableWebTests) {
 
-        console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+            console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+        }
+
+    } catch (e) {
+        console.error(`Error during cleanup: ${JSON.stringify(e)}`);
     }
 
     console.log("All done. Have a nice day :)");

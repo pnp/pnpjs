@@ -106,7 +106,7 @@ describe("DefaultColumnValues", function () {
             const subFolderName = `fld_${getRandomString(4)}`;
             await list.rootFolder.folders.addUsingPath(subFolderName);
 
-            list.setDefaultColumnValues([{
+            await list.setDefaultColumnValues([{
                 name: "TextField",
                 path: `/sites/dev/${listName}`,
                 value: "#PnPjs Rocks!",
@@ -162,7 +162,7 @@ describe("DefaultColumnValues", function () {
             const subFolderName = `fld_${getRandomString(4)}`;
             await list.rootFolder.folders.addUsingPath(subFolderName);
 
-            list.setDefaultColumnValues([{
+            await list.setDefaultColumnValues([{
                 name: "TextField",
                 path: `/sites/dev/${listName}`,
                 value: "#PnPjs Rocks!",

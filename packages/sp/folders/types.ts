@@ -139,9 +139,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
                     KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
-                    // __metadata: {
-                    //     type: "SP.MoveCopyOptions",
-                    // },
                 },
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
@@ -167,9 +164,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
                     KeepBoth: KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
-                    // __metadata: {
-                    //     type: "SP.MoveCopyOptions",
-                    // },
                 },
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
@@ -239,7 +233,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      */
     protected async getShareable(): Promise<IItem> {
 
-        // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
+        // sharing only works on the item end point, not the file one
         const d = await SPInstance(this, "listItemAllFields").select("odata.id")();
         return Item([this, odataUrlFrom(d)]);
     }

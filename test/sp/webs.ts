@@ -51,7 +51,7 @@ describe("Web", function () {
             _spfi = getSP();
         });
 
-        describe.only("Invokable Properties", testSPInvokables(() => _spfi.web,
+        describe("Invokable Properties", testSPInvokables(() => _spfi.web,
             "roleDefinitions",
             "webs",
             "contentTypes",

@@ -9,6 +9,7 @@ import "@pnp/sp/files";
 import { getRandomString } from "@pnp/core";
 import { SharingLinkKind } from "@pnp/sp/sharing";
 import { SPFI } from "@pnp/sp";
+import testSPInvokables from "../test-invokable-props.js";
 
 describe("Folders", function () {
 
@@ -40,43 +41,13 @@ describe("Folder", function () {
             _spfi = getSP();
         });
 
-        describe("Invokable Properties", function () {
-            const tests: any = {};
-            tests[".rootFolder:web"] = null;
-            tests[".folders:web"] = null;
-            tests[".rootFolder:list"] = null;
-            tests[".folders:list"] = null;
-            tests[".folder:item"] = null;
-
-            before(function () {
-                Object.getOwnPropertyNames(tests).forEach((key) => {
-                    switch (key) {
-                        case ".rootFolder:web":
-                            tests[key] = _spfi.web.rootFolder;
-                            break;
-                        case ".folders:web":
-                            tests[key] = _spfi.web.folders;
-                            break;
-                        case ".rootFolder:list":
-                            tests[key] = _spfi.web.lists.getByTitle("Site Pages").rootFolder;
-                            break;
-                        case ".folders:list":
-                            tests[key] = _spfi.web.lists.getByTitle("Site Pages").rootFolder.folders;
-                            break;
-                        case ".folder:item":
-                            tests[key] = _spfi.web.lists.getByTitle("Site Pages").items.getById(1).folder;
-                            break;
-                    }
-                });
-            });
-
-            Object.getOwnPropertyNames(tests).forEach((key) => {
-                it(key, function () {
-                    const test = tests[key];
-                    return expect((<any>test)()).to.eventually.be.fulfilled;
-                });
-            });
-        });
+        describe("Invokable Properties", testSPInvokables<any, any>(() => _spfi.web,
+            "rootFolder",
+            "folders",
+            ["lists().rootFolder", () => _spfi.web.lists.getByTitle("Site Pages").rootFolder],
+            ["lists().rootFolder.folders", () => _spfi.web.lists.getByTitle("Site Pages").rootFolder.folders],
+            ["list.items().folder", () => _spfi.web.lists.getByTitle("Site Pages").items.getById(1).folder],
+        ));
 
         it(".getItem", async function () {
             const far = await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
@@ -143,8 +114,9 @@ describe("Folder", function () {
         });
 
         it(".listItemAllFields", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test4");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test4").listItemAllFields()).to.eventually.be.fulfilled;
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).listItemAllFields()).to.eventually.be.fulfilled;
         });
 
         it(".parentFolder", async function () {
@@ -160,18 +132,21 @@ describe("Folder", function () {
         });
 
         it(".getSharingInformation", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test5");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test5").getSharingInformation()).to.eventually.be.fulfilled;
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).getSharingInformation()).to.eventually.be.fulfilled;
         });
 
         it(".getObjectSharingSettings", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test6");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test6").getObjectSharingSettings()).to.eventually.be.fulfilled;
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).getObjectSharingSettings()).to.eventually.be.fulfilled;
         });
 
         it(".unshare", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test7");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test7").unshare()).to.eventually.be.fulfilled;
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).unshare()).to.eventually.be.fulfilled;
         });
 
         // commented out due to site settings potentially preventing this causing failed test
@@ -181,30 +156,33 @@ describe("Folder", function () {
         // });
 
         it(".checkSharingPermissions", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test9");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test9").checkSharingPermissions([{
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).checkSharingPermissions([{
                 alias: "everyone except external users",
             }])).to.eventually.be.fulfilled;
         });
 
         it(".deleteSharingLinkByKind", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test10");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test10")
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName)
                 .deleteSharingLinkByKind(SharingLinkKind.OrganizationView)).to.eventually.be.fulfilled;
         });
 
         it(".unshareLink", async function () {
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test11");
+            const folderName = `folder_${getRandomString(4)}`;
+            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
             return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders
-                .getByUrl("test11").unshareLink(SharingLinkKind.OrganizationView)).to.eventually.be.fulfilled;
+                .getByUrl(folderName).unshareLink(SharingLinkKind.OrganizationView)).to.eventually.be.fulfilled;
         });
 
-        // TODO: Will be fixed when sharing is fixed.
         it(".shareWith", async function () {
             const user = await _spfi.web.ensureUser("everyone except external users");
             const login = user.data.LoginName;
-            await _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath("test12");
-            return expect(_spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("test12").shareWith(login)).to.eventually.be.fulfilled;
+            const folderName = `folder_${getRandomString(4)}`;           const folders = _spfi.web.rootFolder.folders.getByUrl("SiteAssets").folders;
+            const far = await folders.addUsingPath(folderName);
+            return expect(far.folder.shareWith(login)).to.eventually.be.fulfilled;
         });
 
         it(".getFolderById", async function () {

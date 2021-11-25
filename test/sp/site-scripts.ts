@@ -143,19 +143,19 @@ describe("SiteScripts", function () {
                 "the webs site script should've been fetched").to.eventually.be.fulfilled;
         });
 
-        after(function () {
+        // after(function () {
 
-            const promises: Promise<void>[] = [];
+        //     const promises: Promise<void>[] = [];
 
-            createdSiteScriptIds.forEach((sdId) => {
-                promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
-            });
+        //     createdSiteScriptIds.forEach((sdId) => {
+        //         promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
+        //     });
 
-            createdLists.forEach((list: IList) => {
-                promises.push(list.delete());
-            });
+        //     createdLists.forEach((list: IList) => {
+        //         promises.push(list.delete());
+        //     });
 
-            return Promise.all(promises);
-        });
+        //     return Promise.all(promises);
+        // });
     }
 });
