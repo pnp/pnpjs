@@ -132,7 +132,7 @@ const sp = spfi("{tenant url}").using(SPDefault({
     }
 })).using(ThrowErrors());
 
-const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked( "new.txt", stream, undefined, true, stream.bytesRead );
+const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked( "new.txt", stream, undefined, true );
 ```
 
 ### Setting Associated Item Values
