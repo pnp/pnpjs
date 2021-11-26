@@ -1,7 +1,8 @@
 import { IInvokable } from "@pnp/queryable";
 import { expect } from "chai";
 
-function testSPInvokables<TargetType extends IInvokable, Keys extends string & keyof TargetType>(targetF: () => TargetType, ...keys: (Keys | [string, () => IInvokable])[]): () => void {
+// eslint-disable-next-line max-len
+function testInvokableProps<TargetType extends IInvokable, Keys extends string & keyof TargetType>(targetF: () => TargetType, ...keys: (Keys | [string, () => IInvokable])[]): () => void {
 
     return () => {
 
@@ -31,4 +32,4 @@ function testSPInvokables<TargetType extends IInvokable, Keys extends string & k
     };
 }
 
-export default testSPInvokables;
+export default testInvokableProps;
