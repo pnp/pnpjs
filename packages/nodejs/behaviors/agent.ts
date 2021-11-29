@@ -7,7 +7,6 @@ export function Agent(agent: any): TimelinePipe<Queryable> {
 
         instance.on.pre(async (url, init, result) => {
 
-            // we add the proxy to the request
             (<any>init).agent = agent;
 
             return [url, init, result];

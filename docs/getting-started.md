@@ -185,7 +185,6 @@ Once these are installed you need to import them into your project, to communica
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import { SPDefault } from "@pnp/nodejs";
-import { ThrowErrors } from "@pnp/queryable";
 import "@pnp/sp/webs";
 import { readFileSync } from 'fs';
 ```
@@ -215,7 +214,7 @@ const sp = spfi('https://{my tenant}.sharepoint.com/sites/dev/')
     config: config,
     scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
   }
-})).using(ThrowErrors());
+}));
 
 // make a call to SharePoint and log it in the console
 sp.web.select("Title", "Description").get().then(w => {
@@ -237,7 +236,6 @@ Now we need to import what we'll need to call graph
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
-import { ThrowErrors } from "@pnp/queryable";
 import "@pnp/graph/users";
 ```
 
@@ -251,7 +249,7 @@ const graph = graphfi()
     config: config,
     scopes: [ 'https://graph.microsoft.com/.default' ]
   }
-})).using(ThrowErrors());
+}));
 // make a call to Graph and get all the groups
 const userInfo = await graph.users.top(1)();
 console.log(JSON.stringify(userInfo, null, 4));

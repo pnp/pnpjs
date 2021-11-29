@@ -15,5 +15,4 @@ export * from "./behaviors/caching-pessimistic.js";
 export * from "./behaviors/inject-headers.js";
 export * from "./behaviors/parsers.js";
 export * from "./behaviors/timeout.js";
-export * from "./behaviors/throw.js";
 export * from "./behaviors/resolvers.js";

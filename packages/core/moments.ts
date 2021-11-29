@@ -1,11 +1,6 @@
 import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
 import { isArray } from "./util.js";
 
-// TODO:: docs
-// - you don't need error handling here because that is handled in emit within the timeline
-// - explain why we have just these - it is what we needed.
-
-
 /**
  * Emits to all registered observers the supplied arguments. Any values returned by the observers are ignored
  *

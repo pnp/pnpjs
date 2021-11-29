@@ -1,4 +1,4 @@
-import { addProp, body, TextParse, ThrowErrors } from "@pnp/queryable";
+import { addProp, body, TextParse } from "@pnp/queryable";
 import { _List, List } from "../lists/types.js";
 import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
@@ -41,7 +41,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
 
     try {
 
-        xml = await <any>Folder([this, baseFilePath], "$value").using(TextParse(), ThrowErrors())();
+        xml = await <any>Folder([this, baseFilePath], "$value").using(TextParse())();
 
     } catch (e) {
 

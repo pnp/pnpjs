@@ -57,43 +57,9 @@ export async function Example(settings: ITestingSettings) {
 
         const web = sp.web;
 
-        web.on.log((message, num) => {
+        const i = await web();
 
-          // app insights call here
-
-        });
-
-        web.on.parse.replace(async (url, response, result) => {
-
-            result = "horray!";
-
-            return [url, response, result];
-        });
-
-        web.on.error((err) => {
-
-            // app insights call here
-  
-            
-  
-          });
-
-
-        const [batchSp, execute] = sp.batched();
-
-        batchSp.web().then(r => {
-            console.log(r);
-        });
-
-        batchSp.web.lists().then(r => {
-            console.log(r);
-        });
-
-        execute();
-
-        // const y = await sp.web();
-
-        // console.log(JSON.stringify(y));
+        console.log(JSON.stringify(i));
 
     } catch (e) {
 

@@ -161,7 +161,7 @@ describe("Behaviors", function () {
         await query();
     });
 
-    it("Timeout", async function () {
+    it.only("Timeout", async function () {
 
         // must patch in node < 15
         const controller = new AbortController();
@@ -184,7 +184,8 @@ describe("Behaviors", function () {
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(e).to.not.be.null;
 
-            expect(e).property("name").to.eq("AssertionError");
+            // we expect this to be the error from the abort signal
+            expect(e).property("name").to.eq("AbortError");
         }
     });
 });

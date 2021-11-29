@@ -21,7 +21,7 @@ export function RequestRecorderCache(resolvedRecordingPath: string, mode: "reado
 
             const stack = getSync();
 
-            this[recorderFileKey] = getHashCode(`${init.method}:${url}:${basename(stack[0].fileName)}:${stack[0].lineNumber}:${stack[0].columnNumber}`).toString();
+            this[recorderFileKey] = getHashCode(`${basename(stack[0].fileName)}:${stack[0].lineNumber}:${stack[0].columnNumber}`).toString();
             this[recorderFilePath] = join(resolvedRecordingPath, `result.${this[recorderFileKey]}.json`);
 
             if (existsSync(this[recorderFilePath])) {

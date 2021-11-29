@@ -1,5 +1,5 @@
 import { hOP, isArray, objectDefinedNotNull } from "@pnp/core";
-import { body, headers, TextParse, ThrowErrors } from "@pnp/queryable";
+import { body, headers, TextParse } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -92,7 +92,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
 
         try {
 
-            await list.using(ThrowErrors()).select("Title")();
+            await list.select("Title")();
 
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
 

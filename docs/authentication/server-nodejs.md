@@ -18,7 +18,6 @@ You can call the Microsoft Graph API with a client id and secret or certificate 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
-import { ThrowErrors } from "@pnp/queryable";
 import "@pnp/graph/users";
 
 // configure your node options
@@ -29,7 +28,7 @@ const graph = graphfi()
     config: config,
     scopes: [ 'https://graph.microsoft.com/.default' ]
   }
-})).using(ThrowErrors());
+}));
 
 const userInfo = await graph.users.top(1)();
 console.log(JSON.stringify(userInfo, null, 2));
@@ -51,7 +50,6 @@ Using the above code you end up with three files, "cert.pem", "key.pem", and "ke
 ```TypeScript
 import { spFI } from "@pnp/sp";
 import { SPDefault } from "@pnp/nodejs";
-import { ThrowErrors } from "@pnp/queryable";
 import "@pnp/sp/webs";
 import { readFileSync } from "fs";
 
@@ -77,7 +75,7 @@ const sp = spfi('https://{my tenant}.sharepoint.com/sites/dev/')
     config: config,
     scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
   }
-})).using(ThrowErrors());
+}));
 
 const w = await sp.web();
 ```
