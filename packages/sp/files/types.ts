@@ -97,7 +97,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
         const response = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
             data: response,
-            file: File(odataUrlFrom(response)),
+            file: File([this, odataUrlFrom(response)]),
         };
     }
 }
@@ -385,7 +385,7 @@ export class _File extends _SPInstance<IFileInfo> {
             progress = () => null;
         }
 
-        const fileSize = file.size;
+        const fileSize = file?.size || (<any>file).length;
         const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
@@ -462,7 +462,7 @@ export class _File extends _SPInstance<IFileInfo> {
         const response = await spPost(File(this, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
         return {
             data: response,
-            file: File(odataUrlFrom(response)),
+            file: File([this, odataUrlFrom(response)]),
         };
     }
 }

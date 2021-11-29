@@ -28,7 +28,7 @@ describe.skip("SiteDesigns", function () {
                 Title: title,
                 WebTemplate: "68",
             });
-            createdSiteDesignIds.push(sd.Id)
+            createdSiteDesignIds.push(sd.Id);
 
             return expect(sd.Title).to.be.equal(title);
         });

@@ -6,7 +6,8 @@ import {
     Queryable,
     InjectHeaders,
     Timeout,
-    ThrowErrors,
+    RejectOnError,
+    ResolveOnData,
 } from "@pnp/queryable";
 import { spfi } from "@pnp/sp";
 import { AbortController } from "node-abort-controller";
@@ -120,7 +121,14 @@ describe("Behaviors", function () {
             return null;
         });
 
-        return query();
+        query.on.parse.replace(async function (this: Queryable, url, response, result) {
+
+            this.emit[this.InternalResolveEvent](null);
+
+            return [url, response, result];
+        });
+
+        await query();
     });
 
     it("Inject Headers", async function () {
@@ -143,20 +151,26 @@ describe("Behaviors", function () {
             return null;
         });
 
-        return query();
+        query.on.parse.replace(async function (this: Queryable, url, response, result) {
+
+            this.emit[this.InternalResolveEvent](null);
+
+            return [url, response, result];
+        });
+
+        await query();
     });
 
-    it("Timeout", async function () {
+    it.only("Timeout", async function () {
 
         // must patch in node < 15
         const controller = new AbortController();
 
         const query = new Queryable("https://bing.com");
         query.using(Timeout(controller.signal));
+        query.using(ResolveOnData(), RejectOnError());
 
         query.on.send.replace(async (url, init) => nodeFetch(url, init));
-
-        query.using(ThrowErrors());
 
         try {
 
@@ -170,7 +184,8 @@ describe("Behaviors", function () {
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(e).to.not.be.null;
 
-            expect(e).property("name").to.not.eq("AssertionError");
+            // we expect this to be the error from the abort signal
+            expect(e).property("name").to.eq("AbortError");
         }
     });
 });

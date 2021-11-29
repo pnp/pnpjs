@@ -153,14 +153,6 @@ export abstract class Timeline<T extends Moments> {
     }
 
     /**
-     * Shorthand method to emit a dispose event tied to this timeline
-     *
-     */
-    protected dispose(): void {
-        this.emit.dispose();
-    }
-
-    /**
      * Shorthand method to emit an error event tied to this timeline
      *
      * @param e Optional. Any error object to emit. If none is provided no emit occurs
@@ -169,14 +161,6 @@ export abstract class Timeline<T extends Moments> {
         if (objectDefinedNotNull(e)) {
             this.emit.error(e);
         }
-    }
-
-    /**
-     * Shorthand method to emit an init event tied to this timeline
-     *
-     */
-    protected init(): void {
-        this.emit.init();
     }
 
     /**
@@ -190,16 +174,13 @@ export abstract class Timeline<T extends Moments> {
 
                 get: (target: any, p: string) => (...args: any[]) => {
 
-                    // handle the case there are no observers registered to the target
+                    // handle the case where no observers registered for the target moment
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (!isArray(observers) || observers.length < 1) {
+                    if ((!isArray(observers) || observers.length < 1) && p === "error") {
 
-                        if (p === "error") {
-
-                            // if we are emitting an error, and no error observers are defined, we throw
-                            throw Error(`Unhandled Exception: ${args[0]}`);
-                        }
+                        // if we are emitting an error, and no error observers are defined, we throw
+                        throw Error(`Unhandled Exception: ${args[0]}`);
                     }
 
                     try {
@@ -207,6 +188,7 @@ export abstract class Timeline<T extends Moments> {
                         // default to broadcasting any events without specific impl (will apply to log and error)
                         const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : p === "init" || p === "dispose" ? lifecycle() : broadcast();
 
+                        // pass control to the individual moment's implementation
                         return Reflect.apply(moment, target, [observers, ...args]);
 
                     } catch (e) {
@@ -241,20 +223,18 @@ export abstract class Timeline<T extends Moments> {
         try {
 
             // initialize our timeline
-            this.init();
+            this.emit.init();
 
             // execute the timeline
+            // (this await is required to ensure dispose is called AFTER execute completes)
+            // we do not catch here so that any promise rejects in execute bubble up to the caller
             return await this.execute(init);
-
-        } catch (e) {
-
-            this.error(e);
 
         } finally {
 
             try {
 
-                this.dispose();
+                this.emit.dispose();
 
             } catch (e) {
 

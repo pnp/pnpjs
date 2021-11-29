@@ -120,70 +120,62 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
             const requestId = getGUID();
             let requestUrl: URL;
 
+            const log = (msg: string, level?: number) => {
+                // this allows us to easily and consistently format our messages
+                this.log(`[${requestId}] ${msg}`, level);
+            };
+
             try {
 
-                this.log(`[request:${requestId}] Beginning request`, 1);
+                log("Beginning request", 1);
 
                 // eslint-disable-next-line prefer-const
                 let [url, init, result] = await this.emit.pre(this.toRequestUrl(), {}, undefined);
 
-                this.log(`[request:${requestId}] Url: ${url}`, 1);
+                log(`Url: ${url}`, 1);
 
                 if (typeof result !== "undefined") {
 
-                    this.log(`[request:${requestId}] Result returned from pre`, 1);
-                    this.log(`[request:${requestId}] Emitting data`, 0);
-                    this.emit[this.InternalResolveEvent](result);
+                    log("Result returned from pre");
+                    log("Emitting data");
                     this.emit.data(result);
-                    this.log(`[request:${requestId}] Emitted data`, 0);
-
+                    log("Emitted data");
                     return;
                 }
 
-                this.log(`[request:${requestId}] Emitting auth`, 0);
+                log("Emitting auth");
                 [requestUrl, init] = await this.emit.auth(new URL(url), init);
-                this.log(`[request:${requestId}] Emitted auth`, 0);
+                log("Emitted auth");
 
                 // we always resepect user supplied init over observer modified init
                 init = { ...init, ...userInit, headers: { ...init.headers, ...userInit.headers } };
 
-                this.log(`[request:${requestId}] Emitting send`, 0);
+                log("Emitting send");
                 let response = await this.emit.send(requestUrl, init);
-                this.log(`[request:${requestId}] Emitted send`, 0);
+                log("Emitted send");
 
-                this.log(`[request:${requestId}] Emitting parse`, 0);
+                log("Emitting parse");
                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                this.log(`[request:${requestId}] Emitted parse`, 0);
+                log("Emitted parse");
 
-                this.log(`[request:${requestId}] Emitting post`, 0);
+                log("Emitting post");
                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                this.log(`[request:${requestId}] Emitted post`, 0);
+                log("Emitted post");
 
-                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
-                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
-                // completed event to signal the request is completed?
-                if (typeof result !== "undefined") {
-                    this.log(`[request:${requestId}] Emitting data`, 0);
-                    this.emit[this.InternalResolveEvent](result);
-                    this.emit.data(result);
-                    this.log(`[request:${requestId}] Emitted data`, 0);
-                } else {
-                    // we need to resolve the promise, perhaps this queryable doesn't return a result
-                    // but hasn't produced an error
-                    this.emit[this.InternalResolveEvent](result);
-                }
+                log("Emitting data");
+                this.emit.data(result);
+                log("Emitted data");
 
             } catch (e) {
 
-                this.log(`[request:${requestId}] Emitting error: "${e.message || e}"`, 3);
+                log(`Emitting error: "${e.message || e}"`, 3);
                 // anything that throws we emit and continue
-                this.emit[this.InternalRejectEvent](e);
                 this.error(e);
-                this.log(`[request:${requestId}] Emitted error: "${e.message || e}"`, 3);
+                log("Emitted error", 3);
 
             } finally {
 
-                this.log(`[request:${requestId}] Finished request`, 1);
+                log("Finished request", 1);
             }
 
         }, 0);

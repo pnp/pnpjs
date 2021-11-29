@@ -189,8 +189,7 @@ export async function shareWith(
     const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
 
     // start by looking up the role definition id we need to set the roleValue
-    // remove need to reference Web here, which created a circular build issue
-    const def = await SPCollection("_api/web", "roledefinitions").select("Id").filter(`RoleTypeKind eq ${roleFilter}`)();
+    const def = await SPCollection([o, extractWebUrl(o.toUrl())], "_api/web/roledefinitions").select("Id").filter(`RoleTypeKind eq ${roleFilter}`)();
     if (!Array.isArray(def) || def.length < 1) {
         throw Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
     }

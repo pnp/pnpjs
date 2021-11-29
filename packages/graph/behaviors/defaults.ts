@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
-import { InjectHeaders, Queryable } from "@pnp/queryable";
+import { InjectHeaders, Queryable, RejectOnError, ResolveOnData } from "@pnp/queryable";
 import { Telemetry } from "./telemetry.js";
 
 export function DefaultInit(graphUrl = "https://graph.microsoft.com/v1.0"): TimelinePipe<Queryable> {
@@ -18,7 +18,10 @@ export function DefaultInit(graphUrl = "https://graph.microsoft.com/v1.0"): Time
             return [url, init, result];
         });
 
-        Telemetry()(instance);
+        instance.using(
+            Telemetry(),
+            RejectOnError(),
+            ResolveOnData());
 
         return instance;
     };

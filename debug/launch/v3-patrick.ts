@@ -5,6 +5,7 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
+import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
 import { AssignFrom, CopyFrom, getRandomString } from "@pnp/core";
 import { RequestRecorderCache } from "../../test/test-recorder.js";
@@ -45,22 +46,20 @@ export async function Example(settings: ITestingSettings) {
 
     try {
 
-        const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
+        // const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
 
-        const sp2 = spfi("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+        const sp = spfi("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
             msal: {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
+        const web = sp.web;
 
-        const y = await sp2.web.fields.addText(`~Test${getRandomString(4)}`, {
-            MaxLength: 43,
-            Description: "My amazing description",
-        });
+        const i = await web();
 
-        console.log(JSON.stringify(y));
+        console.log(JSON.stringify(i));
 
     } catch (e) {
 

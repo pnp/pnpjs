@@ -6,7 +6,6 @@ import "@pnp/sp/subscriptions";
 import { dateAdd } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
-// TODO: Failing apparently because the subscription test endpoint is failing?
 describe("Subscriptions", function () {
     if (testSettings.enableWebTests && testSettings.sp.notificationUrl?.length > 0) {
         let _spfi: SPFI = null;

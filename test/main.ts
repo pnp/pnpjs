@@ -1,7 +1,7 @@
 import { delay, getGUID, TimelinePipe } from "@pnp/core";
-import { IInvokable, Queryable, ThrowErrors } from "@pnp/queryable";
+import { IInvokable, Queryable } from "@pnp/queryable";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
-import { spfi } from "@pnp/sp";
+import { extractWebUrl, spfi } from "@pnp/sp";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
@@ -12,6 +12,8 @@ import "@pnp/sp/webs";
 import { IWeb, IWebInfo } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
+// import { RequestRecorderCache } from "./test-recorder.js";
+// import { join } from "path";
 
 chai.use(chaiAsPromised);
 
@@ -162,13 +164,12 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         ts.sp.testWebUrl = site;
         siteUsed = true;
     }
-    // TODO: Clean up the addition of the ThrowErrors behavior if it gets added to default.
     const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(ThrowErrors());
+    }));
     _spRoot = rootSP;
 
     if (siteUsed) {
@@ -189,7 +190,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
@@ -198,7 +199,7 @@ async function graphTestSetup(): Promise<void> {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
         },
-    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 export const testSettings: ISettings = settings.testing;
@@ -244,28 +245,34 @@ after("Finalize Testing", async function () {
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
-    if (deleteAllWebs) {
+    try {
+        if (deleteAllWebs) {
 
-        await cleanUpAllSubsites(_spRoot.web);
+            await cleanUpAllSubsites(_spRoot.web);
 
-    } else if (deleteWeb && testSettings.enableWebTests) {
-        console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
+        } else if (deleteWeb && testSettings.enableWebTests) {
 
-        const web = await _sp.web;
-        await cleanUpAllSubsites(web);
+            console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
-        console.log("All subsites have been removed.");
+            const web = await _sp.web;
+            await cleanUpAllSubsites(web);
 
-        // Delay so that web can be deleted
-        await delay(500);
+            console.log("All subsites have been removed.");
 
-        await _sp.web.delete();
+            // Delay so that web can be deleted
+            await delay(500);
 
-        console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
+            await web.delete();
 
-    } else if (testSettings.enableWebTests) {
+            console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
 
-        console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+        } else if (testSettings.enableWebTests) {
+
+            console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+        }
+
+    } catch (e) {
+        console.error(`Error during cleanup: ${JSON.stringify(e)}`);
     }
 
     console.log("All done. Have a nice day :)");
@@ -273,35 +280,34 @@ after("Finalize Testing", async function () {
 
 // Function deletes all test subsites
 async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> {
-    try {
-        const w = await spObj.webs();
-        if (w != null && w.length > 0) {
-            console.log(`${w.length} subwebs were found.`);
-            w.forEach(async (e: IWebInfo) => {
+    const w = await spObj.webs();
+    if (w != null && w.length > 0) {
+        console.log(`${w.length} subwebs were found.`);
+        w.forEach(async (e: IWebInfo) => {
 
-                const spObjSub = spfi(e["odata.id"]).using(SPDefault({
-                    msal: {
-                        config: settings.testing.sp.msal.init,
-                        scopes: settings.testing.sp.msal.scopes,
-                    },
-                }));
+            const webUrl = extractWebUrl(e["odata.id"]);
 
-                console.log(`Deleting: ${e["odata.id"]}`);
+            const spObjSub = spfi(webUrl).using(SPDefault({
+                msal: {
+                    config: settings.testing.sp.msal.init,
+                    scopes: settings.testing.sp.msal.scopes,
+                },
+            }));
 
-                await cleanUpAllSubsites(spObjSub.web);
+            console.log(`Deleting: ${webUrl}`);
 
-                // Delay so that web can be deleted
-                await delay(500);
+            await cleanUpAllSubsites(spObjSub.web);
 
-                await spObjSub.web.delete();
+            // Delay so that web can be deleted
+            await delay(500);
 
-                console.log(`Deleted: ${e["odata.id"]}`);
-            });
-        } else {
-            console.log(`No subwebs found for site ${spObj.toUrl()}`);
-        }
-    } catch (err) {
-        console.log(`Error cleaning up sub sites for ${spObj.toUrl()} - ${err.message}`);
+            await spObjSub.web.delete();
+
+            console.log(`Deleted: ${webUrl}`);
+        });
+    } else {
+        console.log(`No subwebs found for site ${extractWebUrl(spObj.toUrl())}`);
     }
+
     return;
 }

@@ -10,7 +10,7 @@ import "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
 import { getSP, testSettings } from "../main.js";
 import { SPFI } from "@pnp/sp";
-import { AssignFrom, getRandomString, delay } from "@pnp/core";
+import { AssignFrom, getRandomString } from "@pnp/core";
 
 describe("Batching", function () {
     this.timeout(120000);

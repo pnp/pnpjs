@@ -179,8 +179,19 @@ describe("File", function () {
             const name = `Testing check in out - ${getRandomString(4)}.txt`;
             await files.addUsingPath(name, "Some test text content.");
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(files.getByUrl(name).checkout()).to.eventually.be.fulfilled;
-            return expect(files.getByUrl(name).checkin()).to.eventually.be.fulfilled;
+            const file = files.getByUrl(name);
+
+            await file.checkout();
+
+            let check = await file.select("CheckOutType")<{ CheckOutType: 0 | 1 | 2 }>();
+
+            expect(check.CheckOutType).to.eq(0);
+
+            await file.checkin();
+
+            check = await file.select("CheckOutType")<{ CheckOutType: 0 | 1 | 2 }>();
+
+            expect(check.CheckOutType).to.eq(2);
         });
 
         it(".copyTo", async function () {

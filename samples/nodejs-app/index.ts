@@ -1,7 +1,6 @@
 import { spfi } from "@pnp/sp/index.js";
 import { graphfi } from "@pnp/graph/index.js";
 import { LogLevel  } from "@pnp/logging/index.js";
-import {ThrowErrors} from "@pnp/queryable/index.js";
 import { SPDefault, GraphDefault } from "@pnp/nodejs/index.js";
 
 import {readFileSync} from 'fs';
@@ -38,7 +37,7 @@ async function makeGraphRequest() {
             config: config,
             scopes: [ 'https://graph.microsoft.com/.default' ]
         }
-    })).using(ThrowErrors());
+    }));
 
     const first = await graph.users.top(1)();
     console.log(JSON.stringify(first, null, 2));
@@ -52,7 +51,7 @@ async function makeSPRequest() {
             config: config,
             scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
         }
-    })).using(ThrowErrors());
+    }));
 
     const w = await sp.web();
     console.log(JSON.stringify(w, null, 2));

@@ -132,16 +132,13 @@ export class _Folder extends _SPInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
+        await spPost(Folder([this, uri.origin], "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
                     KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
-                    __metadata: {
-                        type: "SP.MoveCopyOptions",
-                    },
                 },
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
@@ -160,16 +157,13 @@ export class _Folder extends _SPInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
+        await spPost(Folder([this, uri.origin], "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options: {
                     KeepBoth: KeepBoth,
                     ResetAuthorAndCreatedOnCopy: true,
                     ShouldBypassSharedLocks: true,
-                    __metadata: {
-                        type: "SP.MoveCopyOptions",
-                    },
                 },
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
@@ -239,7 +233,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      */
     protected async getShareable(): Promise<IItem> {
 
-        // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
+        // sharing only works on the item end point, not the file one
         const d = await SPInstance(this, "listItemAllFields").select("odata.id")();
         return Item([this, odataUrlFrom(d)]);
     }

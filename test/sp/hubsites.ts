@@ -3,7 +3,6 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites";
 import { spfi, SPFI } from "@pnp/sp";
-import { AssignFrom } from "@pnp/core/index.js";
 
 describe("Hubsites", function () {
 
