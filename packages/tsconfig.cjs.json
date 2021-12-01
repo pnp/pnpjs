@@ -27,9 +27,6 @@
         },
         {
             "path": "./sp/tsconfig.cjs.json"
-        },
-        {
-            "path": "./sp-addinhelpers/tsconfig.cjs.json"
         }
     ]
 }

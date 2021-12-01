@@ -1,6 +1,6 @@
 import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
-import cloneDeep from "lodash.clonedeep";
+// import cloneDeep from "lodash.clonedeep";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -110,7 +110,7 @@ export abstract class Timeline<T extends Moments> {
 
                 }, {
                     toArray: (): ValidObserver[] => {
-                        return Reflect.has(target.observers, p) ? cloneDeep(Reflect.get(target.observers, p)) : [];
+                        return Reflect.has(target.observers, p) ? [...Reflect.get(target.observers, p)] : [];
                     },
                     replace: (handler: ValidObserver) => {
 
@@ -257,7 +257,7 @@ export abstract class Timeline<T extends Moments> {
     protected cloneObserversOnChange() {
         if (this._inheritingObservers) {
             this._inheritingObservers = false;
-            this.observers = cloneDeep(this.observers);
+            this.observers = cloneObserverCollection(this.observers);
         }
     }
 }
@@ -299,4 +299,14 @@ function addObserver(target: Record<string, any>, moment: string, observer: Vali
     }
 
     return target[moment];
+}
+
+export function cloneObserverCollection(source: ObserverCollection): ObserverCollection {
+
+    return Reflect.ownKeys(source).reduce((clone: ObserverCollection, key: string) => {
+
+        clone[key] = [...source[key]];
+
+        return clone;
+    }, {});
 }

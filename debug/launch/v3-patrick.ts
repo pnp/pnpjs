@@ -57,9 +57,16 @@ export async function Example(settings: ITestingSettings) {
 
         const web = sp.web;
 
+        web.on.log((msg) => console.log(msg));
+
+        web.on.data((d) => console.info(d));
+
         const i = await web();
 
-        console.log(JSON.stringify(i));
+        
+        const web2 = sp.web;
+
+        const i2 = await web2();
 
     } catch (e) {
 

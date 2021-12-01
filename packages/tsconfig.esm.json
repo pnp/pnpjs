@@ -27,9 +27,6 @@
         },
         {
             "path": "./sp/tsconfig.esm.json"
-        },
-        {
-            "path": "./sp-addinhelpers/tsconfig.esm.json"
         }
     ]
 }
