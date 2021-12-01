@@ -161,7 +161,7 @@ describe("Behaviors", function () {
         await query();
     });
 
-    it.only("Timeout", async function () {
+    it("Timeout", async function () {
 
         // must patch in node < 15
         const controller = new AbortController();
