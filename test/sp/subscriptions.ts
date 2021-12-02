@@ -8,21 +8,20 @@ import { SPFI } from "@pnp/sp";
 
 describe("Subscriptions", function () {
 
-    let listTitle = "Documents";
-    let notificationUrl = testSettings.sp.notificationUrl;
+    const listTitle = "Documents";
+    let notificationUrl = "";
     let after120Days = (dateAdd(new Date(), "day", 120).toISOString());
     let after180Days = (dateAdd(new Date(), "day", 180).toISOString());
     let _spfi: SPFI = null;
 
     before(function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.sp.notificationUrl)) {
+        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings?.sp?.notificationUrl)) {
             this.skip();
             return;
         }
 
         _spfi = getSP();
-        listTitle = "Documents";
         notificationUrl = testSettings.sp.notificationUrl;
         after120Days = (dateAdd(new Date(), "day", 120).toISOString());
         after180Days = (dateAdd(new Date(), "day", 180).toISOString());
